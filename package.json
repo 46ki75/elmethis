@@ -1,6 +1,6 @@
 {
   "name": "elmethis",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.4",
   "type": "module",
   "author": "Chomolungma Shirayuki",
   "repository": {
@@ -10,12 +10,11 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/elmethis.umd.cjs",
-  "module": "./dist/elmethis.js",
   "exports": {
     ".": {
       "import": "./dist/elmethis.js",
-      "require": "./dist/elmethis.umd.cjs"
+      "require": "./dist/elmethis.umd.cjs",
+      "types": "./dist/index.d.ts"
     },
     "./style.css": "./dist/style.css"
   },
