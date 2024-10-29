@@ -1,11 +1,18 @@
 <template>
-  <div class="wrapper" :style="{ width: '64px', height: '64px' }">
-    <div v-for="n in 3" :key="n" aria-hidden></div>
+  <div class="wrapper" :style="{ width: '64px', height: '64px', color }">
+    <div
+      v-for="n in 3"
+      aria-hidden
+      :key="n"
+      :style="{ backgroundColor: color }"
+    ></div>
   </div>
 </template>
 
 <script setup lang="ts">
-defineProps<{}>()
+import type { Property } from 'csstype'
+
+defineProps<{ color?: Property.BackgroundColor }>()
 </script>
 
 <style scoped lang="scss">
@@ -39,10 +46,10 @@ defineProps<{}>()
     animation-direction: alternate;
     animation-timing-function: ease-out;
 
-    background-color: black;
+    background-color: rgba(0, 0, 0, 0.8);
 
     [data-theme='dark'] & {
-      background-color: white;
+      background-color: rgba(255, 255, 255, 0.8);
     }
 
     &:nth-last-of-type(1) {
