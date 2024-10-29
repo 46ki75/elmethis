@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{}>();
+withDefaults(defineProps<{}>(), {})
 </script>
 
 <style scoped></style>
