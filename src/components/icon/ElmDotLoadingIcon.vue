@@ -64,6 +64,7 @@ withDefaults(
     animation-direction: alternate;
     animation-timing-function: ease-out;
 
+    transition: background-color 400ms;
     background-color: rgba(0, 0, 0, 0.7);
 
     [data-theme='dark'] & {
