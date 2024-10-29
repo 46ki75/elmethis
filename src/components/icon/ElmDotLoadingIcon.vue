@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" :style="{ width: '64px', height: '64px', color }">
+  <div class="wrapper" :style="{ width: size, height: size }">
     <div
       v-for="n in 3"
       aria-hidden
@@ -12,7 +12,25 @@
 <script setup lang="ts">
 import type { Property } from 'csstype'
 
-defineProps<{ color?: Property.BackgroundColor }>()
+withDefaults(
+  defineProps<{
+    /**
+     * Specifies the color of the dot.
+     *
+     * e.g.) `'red'`, `'#ff0000'`, `'rgba(255, 0, 0, 0.5)'`
+     */
+    color?: Property.BackgroundColor
+
+    /**
+     * Specifies the size of the dot.
+     */
+    size?: Property.Width<string | number>
+  }>(),
+  {
+    color: undefined,
+    size: '64px'
+  }
+)
 </script>
 
 <style scoped lang="scss">
@@ -46,10 +64,10 @@ defineProps<{ color?: Property.BackgroundColor }>()
     animation-direction: alternate;
     animation-timing-function: ease-out;
 
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.7);
 
     [data-theme='dark'] & {
-      background-color: rgba(255, 255, 255, 0.8);
+      background-color: rgba(255, 255, 255, 0.7);
     }
 
     &:nth-last-of-type(1) {
