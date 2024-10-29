@@ -1,0 +1,8 @@
+html,
+body,
+.docs-story {
+  background-color: rgba(0, 0, 0, 0.05);
+  [data-theme='dark'] & {
+    background-color: rgba(0, 0, 0, 0.85);
+  }
+}
