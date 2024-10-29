@@ -6,12 +6,14 @@ const meta: Meta<typeof ElmInlineText> = {
   component: ElmInlineText,
   tags: ['autodocs'],
   argTypes: { color: { control: 'color' } },
-  args: {}
+  args: { text: 'Inline Text' }
 }
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Primary: Story = {
-  args: { text: 'Inline Text' }
+export const Primary: Story = {}
+
+export const Colored: Story = {
+  args: { color: '#b36472' }
 }
