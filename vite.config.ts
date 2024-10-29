@@ -8,8 +8,12 @@ import { resolve } from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [vue(), vueJsx(), dts(), cssInjectedByJsPlugin()],
-  base: '/elmethis',
+  plugins: [
+    vue(),
+    vueJsx(),
+    dts({ tsconfigPath: './tsconfig.app.json' }),
+    cssInjectedByJsPlugin()
+  ],
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
