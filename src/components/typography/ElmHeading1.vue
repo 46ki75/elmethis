@@ -13,7 +13,7 @@
 import type { Property } from 'csstype'
 import { ref } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
-import { kebabCase } from 'lodash'
+import { kebabCase } from 'lodash-es'
 
 withDefaults(
   defineProps<{
