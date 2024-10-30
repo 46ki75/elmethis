@@ -1,5 +1,6 @@
 // code
 import ElmPrismHighlighter from './components/code/ElmPrismHighlighter.vue'
+// import ElmKatex from './components/code/ElmKatex.vue'
 
 // containments
 import ElmTooltip from './components/containments/ElmTooltip.vue'
@@ -37,6 +38,7 @@ import ElmNumberedList from './components/typography/ElmNumberedList.vue'
 
 export {
   ElmPrismHighlighter,
+  // ElmKatex,
   ElmTooltip,
   ElmRectangleWave,
   ElmHeading1,
