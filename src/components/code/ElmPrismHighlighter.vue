@@ -1,6 +1,6 @@
 <template>
-  <pre :key="JSON.stringify(props)">
-    <code :class="['code', `language-${language}`]" ref="codeRef" >{{ code }}</code>
+  <pre class="pre" :key="JSON.stringify(props)">
+    <code :class="['code', `language-${language}`]" ref="codeRef" >{{ code.trim() }}</code>
   </pre>
 </template>
 
@@ -27,8 +27,7 @@ const props = withDefaults(
     language?: string
   }>(),
   {
-    language: 'txt',
-    showLineNumbers: false
+    language: 'txt'
   }
 )
 
@@ -41,8 +40,6 @@ const highlightCode = () => {
   if (codeRef.value) {
     Prism.highlightElement(codeRef.value)
   }
-
-  Prism.highlightAll()
 }
 
 onMounted(highlightCode)
@@ -50,16 +47,16 @@ onUpdated(highlightCode)
 </script>
 
 <style scoped lang="scss">
+.pre {
+  all: unset;
+}
+
 .code {
   font-family: 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
 }
 </style>
 
 <style>
-.line-numbers-rows {
-  margin-left: -1.25rem;
-}
-
 :root {
   --prism-foreground: #393a34;
   --prism-background: #f5f5f5;
