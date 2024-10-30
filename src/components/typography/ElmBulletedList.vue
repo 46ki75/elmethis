@@ -10,7 +10,6 @@ withDefaults(defineProps<{}>(), {})
 
 <style lang="scss">
 .elmethis-bulleted-list {
-  transition: opacity 800ms;
   box-sizing: border-box;
   padding-left: 1.25rem;
 
