@@ -26,9 +26,7 @@ withDefaults(
      */
     size?: Property.FontSize
   }>(),
-  {
-    size: '1rem'
-  }
+  {}
 )
 </script>
 
