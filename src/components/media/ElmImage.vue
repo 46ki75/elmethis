@@ -15,11 +15,32 @@
         isLoading = false
       }
     "
+    @click="
+      () => {
+        if (enableModal) {
+          isModalOpen = true
+        }
+      }
+    "
     :style="{
       '--height': isLoading ? '0' : 'auto',
-      '--opacity': isLoading ? 0 : 1
+      '--opacity': isLoading ? 0 : 1,
+      '--cursor': enableModal ? 'zoom-in' : 'auto'
     }"
   />
+
+  <div class="modal" v-if="isModalOpen">
+    <img
+      class="modal-image"
+      :src="src"
+      :alt="alt"
+      @click="
+        () => {
+          isModalOpen = false
+        }
+      "
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -38,11 +59,19 @@ withDefaults(
      * Image alt text
      */
     alt?: string
+
+    /**
+     * Enable modal on image click. Default: `false`
+     */
+    enableModal?: boolean
   }>(),
-  {}
+  {
+    enableModal: false
+  }
 )
 
 const isLoading = ref(true)
+const isModalOpen = ref(false)
 </script>
 
 <style scoped lang="scss">
@@ -51,6 +80,7 @@ const isLoading = ref(true)
   height: var(--height);
   opacity: var(--opacity);
   transition: opacity 400ms;
+  cursor: var(--cursor);
 }
 
 .fallback {
@@ -63,5 +93,26 @@ const isLoading = ref(true)
   justify-content: center;
   align-items: center;
   aspect-ratio: 16 / 9;
+}
+
+.modal {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: zoom-out;
+
+  .modal-image {
+    width: 100vw;
+    height: 100vh;
+    object-fit: contain;
+  }
 }
 </style>
