@@ -1,19 +1,22 @@
 <template>
-  <h1
+  <h2
     ref="target"
-    class="h1"
+    class="h2"
     :id="id ?? kebabCase(text)"
-    :style="{ '--scale': targetIsVisible ? 1 : 0, '--font-size': size }"
+    :style="{
+      '--scale': targetIsVisible ? 1 : 0,
+      '--font-size': size
+    }"
   >
-    {{ text }}
-  </h1>
+    {{ text }}<span class="underline" aria-hidden></span>
+  </h2>
 </template>
 
 <script setup lang="ts">
-import type { Property } from 'csstype'
-import { ref } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
+import type { Property } from 'csstype'
 import { kebabCase } from 'lodash-es'
+import { ref } from 'vue'
 
 withDefaults(
   defineProps<{
@@ -23,7 +26,7 @@ withDefaults(
     text: string
 
     /**
-     * Font size of the text. Default is `'1.5rem'`.
+     * Font size of the text. Default is `'1.4rem'`.
      */
     size?: Property.FontSize
 
@@ -34,7 +37,7 @@ withDefaults(
     id?: string
   }>(),
   {
-    size: '1.5rem'
+    size: '1.4rem'
   }
 )
 
@@ -47,9 +50,10 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 </script>
 
 <style scoped lang="scss">
-.h1 {
+.h2 {
   position: relative;
   font-size: var(--font-size);
+  line-height: var(--font-size);
 
   transition: color 400ms;
 
@@ -71,36 +75,51 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   &::after {
     position: absolute;
     content: '';
-    bottom: -2px;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background-color: rgba(0, 0, 0, 0.5);
+    right: 2px;
+    bottom: -4px;
+    width: 6px;
+    height: 8px;
+    opacity: 0.8;
+    transform: skewX(-25deg);
 
-    transition: transform 800ms;
-    transform: scaleX(var(--scale));
-
+    background-color: rgba(0, 0, 0, 0.8);
     [data-theme='dark'] & {
-      background-color: rgba(255, 255, 255, 0.5);
+      background-color: rgba(255, 255, 255, 0.8);
     }
   }
 
   &::before {
     position: absolute;
     content: '';
+    right: 10px;
     bottom: -4px;
-    left: 45%;
-    width: 10%;
-    height: 2px;
-    background-color: rgba(0, 0, 0, 0.6);
+    width: 6px;
+    height: 8px;
+    opacity: 0.8;
+    transform: skewX(-25deg);
 
-    transition: transform 800ms;
-    transform: scaleY(var(--scale));
-    transform-origin: top;
-
+    background-color: rgba(0, 0, 0, 0.8);
     [data-theme='dark'] & {
-      background-color: rgba(255, 255, 255, 0.6);
+      background-color: rgba(255, 255, 255, 0.8);
     }
+  }
+}
+
+.underline {
+  position: absolute;
+  content: '';
+  bottom: -6px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  transition: transform 800ms;
+  transform: scaleX(var(--scale));
+  transform-origin: left;
+
+  [data-theme='dark'] & {
+    background-color: rgba(255, 255, 255, 0.5);
   }
 }
 </style>

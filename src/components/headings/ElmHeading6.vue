@@ -1,5 +1,5 @@
 <template>
-  <h6 class="h6" :id="id ?? kebabCase(text)" :style="{ '--font-size': size }">
+  <h6 class="h2" :id="id ?? kebabCase(text)" :style="{ '--font-size': size }">
     {{ text }}
   </h6>
 </template>
@@ -33,7 +33,7 @@ withDefaults(
 </script>
 
 <style scoped lang="scss">
-.h6 {
+.h2 {
   font-size: var(--font-size);
 
   transition: color 400ms;
