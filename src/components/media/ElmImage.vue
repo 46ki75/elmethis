@@ -29,18 +29,20 @@
     }"
   />
 
-  <div class="modal" v-if="isModalOpen">
-    <img
-      class="modal-image"
-      :src="src"
-      :alt="alt"
-      @click="
-        () => {
-          isModalOpen = false
-        }
-      "
-    />
-  </div>
+  <transition>
+    <div class="modal" v-if="isModalOpen">
+      <img
+        class="modal-image"
+        :src="src"
+        :alt="alt"
+        @click="
+          () => {
+            isModalOpen = false
+          }
+        "
+      />
+    </div>
+  </transition>
 </template>
 
 <script setup lang="ts">
@@ -114,5 +116,20 @@ const isModalOpen = ref(false)
     height: 100vh;
     object-fit: contain;
   }
+}
+
+.v-enter-to,
+.v-leave-from {
+  opacity: 1;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 300ms;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>
