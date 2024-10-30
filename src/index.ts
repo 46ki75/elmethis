@@ -1,5 +1,26 @@
+// code
+import ElmPrismHighlighter from './components/code/ElmPrismHighlighter.vue'
+
 // icon
 import ElmDotLoadingIcon from './components/icon/ElmDotLoadingIcon.vue'
 import ElmToggleTheme from './components/icon/ElmToggleTheme.vue'
 
-export { ElmDotLoadingIcon, ElmToggleTheme }
+// inline
+import ElmInlineCode from './components/inline/ElmInlineCode.vue'
+import ElmInlineLink from './components/inline/ElmInlineLink.vue'
+import ElmInlineRuby from './components/inline/ElmInlineRuby.vue'
+import ElmInlineText from './components/inline/ElmInlineText.vue'
+
+// typography
+import ElmCallout from './components/typography/ElmCallout.vue'
+
+export {
+  ElmPrismHighlighter,
+  ElmDotLoadingIcon,
+  ElmToggleTheme,
+  ElmInlineCode,
+  ElmInlineLink,
+  ElmInlineRuby,
+  ElmInlineText,
+  ElmCallout
+}
