@@ -1,12 +1,13 @@
 {
   "name": "elmethis",
-  "version": "1.0.0-alpha.7",
+  "version": "1.0.0-alpha.8",
   "type": "module",
   "author": "Chomolungma Shirayuki",
   "repository": {
     "type": "git",
     "url": "git@github.com:46ki75/elmethis.git"
   },
+  "homepage": "https://46ki75.github.io/elmethis",
   "files": [
     "dist"
   ],
