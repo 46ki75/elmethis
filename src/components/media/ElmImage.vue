@@ -49,6 +49,7 @@
 import { ref } from 'vue'
 import ElmRectangleWave from '../fallback/ElmRectangleWave.vue'
 import ElmDotLoadingIcon from '../icon/ElmDotLoadingIcon.vue'
+import { onKeyStroke } from '@vueuse/core'
 
 withDefaults(
   defineProps<{
@@ -74,6 +75,11 @@ withDefaults(
 
 const isLoading = ref(true)
 const isModalOpen = ref(false)
+
+onKeyStroke('Escape', (e) => {
+  e.preventDefault()
+  isModalOpen.value = false
+})
 </script>
 
 <style scoped lang="scss">
