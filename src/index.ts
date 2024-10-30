@@ -13,7 +13,7 @@ import ElmInlineText from './components/inline/ElmInlineText.vue'
 
 // typography
 import ElmCallout from './components/typography/ElmCallout.vue'
-import ElmHeading1 from './components/typography/ElmHeading1.vue'
+import ElmHeading1 from './components/headings/ElmHeading1.vue'
 
 export {
   ElmPrismHighlighter,
