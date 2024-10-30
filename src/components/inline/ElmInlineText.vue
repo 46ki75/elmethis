@@ -1,5 +1,7 @@
 <template>
-  <span class="text" :style="{ '--color': color }">{{ text }}</span>
+  <span class="text" :style="{ '--color': color, '--font-size': size }">{{
+    text
+  }}</span>
 </template>
 
 <script setup lang="ts">
@@ -18,14 +20,22 @@ withDefaults(
      * e.g.) `'red'`, `'#ff0000'`, `'rgba(255, 0, 0, 0.5)'`
      */
     color?: Property.BackgroundColor
+
+    /**
+     * Specifies the font size of the text.
+     */
+    size?: Property.FontSize
   }>(),
-  {}
+  {
+    size: '1rem'
+  }
 )
 </script>
 
 <style scoped lang="scss">
 .text {
   color: var(--color, rgba(0, 0, 0, 0.7));
+  font-size: var(--font-size);
 
   &::selection {
     color: rgba(255, 255, 255, 0.7);
