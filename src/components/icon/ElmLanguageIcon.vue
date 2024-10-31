@@ -39,6 +39,13 @@ const render = () => {
         loadingComponent: CommandLineIcon
       })
 
+    case 'typescript':
+    case 'ts':
+      return defineAsyncComponent({
+        loader: () => import('./languages/TypeScript.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
     default:
       return CommandLineIcon
   }
