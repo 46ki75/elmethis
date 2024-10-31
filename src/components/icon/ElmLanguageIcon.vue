@@ -46,6 +46,14 @@ const render = () => {
         loadingComponent: CommandLineIcon
       })
 
+    case 'bash':
+    case 'sh':
+    case 'shell':
+      return defineAsyncComponent({
+        loader: () => import('./languages/Bash.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
     default:
       return CommandLineIcon
   }

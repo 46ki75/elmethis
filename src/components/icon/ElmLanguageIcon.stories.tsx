@@ -9,7 +9,7 @@ const meta: Meta<typeof ElmLanguageIcon> = {
   argTypes: {
     language: {
       control: 'radio',
-      options: ['rust', 'javascript', 'typescript']
+      options: ['rust', 'javascript', 'typescript', 'bash']
     }
   }
 }
