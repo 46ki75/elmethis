@@ -22,52 +22,51 @@
 <script setup lang="ts">
 import type { Property } from 'csstype'
 
-withDefaults(
-  defineProps<{
-    /**
-     * The text to display.
-     */
-    text: string
+export interface ElmInlineTextProps {
+  /**
+   * The text to display.
+   */
+  text: string
 
-    /**
-     * Specifies the color of the text.
-     *
-     * e.g.) `'red'`, `'#ff0000'`, `'rgba(255, 0, 0, 0.5)'`
-     */
-    color?: Property.BackgroundColor
+  /**
+   * Specifies the color of the text.
+   *
+   * e.g.) `'red'`, `'#ff0000'`, `'rgba(255, 0, 0, 0.5)'`
+   */
+  color?: Property.BackgroundColor
 
-    /**
-     * Specifies the font size of the text.
-     */
-    size?: Property.FontSize
+  /**
+   * Specifies the font size of the text.
+   */
+  size?: Property.FontSize
 
-    /**
-     * Specifies whether the text should be bold.
-     */
-    bold?: boolean
+  /**
+   * Specifies whether the text should be bold.
+   */
+  bold?: boolean
 
-    /**
-     * Specifies whether the text should be italic.
-     */
-    italic?: boolean
+  /**
+   * Specifies whether the text should be italic.
+   */
+  italic?: boolean
 
-    /**
-     * Specifies whether the text should be underlined.
-     */
-    underline?: boolean
+  /**
+   * Specifies whether the text should be underlined.
+   */
+  underline?: boolean
 
-    /**
-     * Specifies whether the text should be strikethrough.
-     */
-    strikethrough?: boolean
-  }>(),
-  {
-    bold: false,
-    italic: false,
-    underline: false,
-    strikethrough: false
-  }
-)
+  /**
+   * Specifies whether the text should be strikethrough.
+   */
+  strikethrough?: boolean
+}
+
+withDefaults(defineProps<ElmInlineTextProps>(), {
+  bold: false,
+  italic: false,
+  underline: false,
+  strikethrough: false
+})
 </script>
 
 <style scoped lang="scss">
