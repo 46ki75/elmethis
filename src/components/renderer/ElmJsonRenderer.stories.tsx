@@ -58,11 +58,48 @@ export const Callout: Story = {
   }
 }
 
-export const List: Story = {
+export const BulletedList: Story = {
   args: {
     json: [
       {
         type: 'ElmBulletedList',
+        props: {},
+        children: [
+          {
+            type: 'ElmListItem',
+            props: {},
+            children: [
+              {
+                type: 'ElmInlineText',
+                props: { text: 'Hello, ' }
+              },
+              {
+                type: 'ElmInlineText',
+                props: { text: 'world!' }
+              }
+            ]
+          },
+          {
+            type: 'ElmListItem',
+            props: {},
+            children: [
+              {
+                type: 'ElmInlineCode',
+                props: { code: 'console.log(0)' }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
+
+export const NumberedList: Story = {
+  args: {
+    json: [
+      {
+        type: 'ElmNumberedList',
         props: {},
         children: [
           {

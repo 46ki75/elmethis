@@ -19,6 +19,9 @@ import ElmCallout, { ElmCalloutProps } from '../typography/ElmCallout.vue'
 import ElmBulletedList, {
   ElmBulletedListProps
 } from '../typography/ElmBulletedList.vue'
+import ElmNumberedList, {
+  ElmNumberedListProps
+} from '../typography/ElmNumberedList.vue'
 import ElmListItem, { ElmListItemProps } from '../typography/ElmListItem.vue'
 import ElmBlockQuote, {
   ElmBlockQuoteProps
@@ -30,6 +33,7 @@ type ComponentType =
   | 'ElmInlineLink'
   | 'ElmCallout'
   | 'ElmBulletedList'
+  | 'ElmNumberedList'
   | 'ElmListItem'
   | 'ElmBlockQuote'
 
@@ -39,6 +43,7 @@ type ComponentProps =
   | ElmInlineLinkProps
   | ElmCalloutProps
   | ElmBulletedListProps
+  | ElmNumberedListProps
   | ElmListItemProps
   | ElmBlockQuoteProps
 
@@ -73,6 +78,11 @@ interface ElmBulletedListJsonComponent extends JsonComponentBase {
   props?: ElmBulletedListProps
 }
 
+interface ElmNumberedListJsonComponent extends JsonComponentBase {
+  type: 'ElmNumberedList'
+  props?: ElmNumberedListProps
+}
+
 interface ElmListItemJsonComponent extends JsonComponentBase {
   type: 'ElmListItem'
   props?: ElmListItemProps
@@ -89,6 +99,7 @@ type JsonComponent =
   | ElmInlineLinkJsonComponent
   | ElmCalloutJsonComponent
   | ElmBulletedListJsonComponent
+  | ElmNumberedListJsonComponent
   | ElmListItemJsonComponent
   | ElmBlockQuoteJsonComponent
 
@@ -104,6 +115,7 @@ const componentMap: Record<ComponentType, any> = {
   ElmInlineLink,
   ElmCallout,
   ElmBulletedList,
+  ElmNumberedList,
   ElmListItem,
   ElmBlockQuote
 }
