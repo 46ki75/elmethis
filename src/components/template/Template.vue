@@ -3,7 +3,9 @@
 </template>
 
 <script setup lang="ts">
-withDefaults(defineProps<{}>(), {})
+export interface TemplateProps {}
+
+withDefaults(defineProps<TemplateProps>(), {})
 </script>
 
 <style scoped lang="scss"></style>
