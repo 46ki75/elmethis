@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import Template from './Template.vue'
+import ElmTemplate from './ElmTemplate.vue'
 
-const meta: Meta<typeof Template> = {
-  title: 'Template/Template/Template',
-  component: Template,
+const meta: Meta<typeof ElmTemplate> = {
+  title: 'Template/Template/ElmTemplate',
+  component: ElmTemplate,
   tags: ['autodocs'],
   args: {}
 }
