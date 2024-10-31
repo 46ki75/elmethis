@@ -5,6 +5,7 @@
         <ElmLanguageIcon :language="language" :size="20" />
         <ElmInlineText :text="caption ?? language" />
       </div>
+      <ClipboardDocumentIcon class="copy-icon" />
     </div>
     <div class="code">
       <elm-prism-highlighter :code="code" :language="language" />
@@ -13,6 +14,7 @@
 </template>
 
 <script setup lang="ts">
+import { ClipboardDocumentIcon } from '@heroicons/vue/24/outline'
 import ElmLanguageIcon from '../icon/ElmLanguageIcon.vue'
 import ElmInlineText from '../inline/ElmInlineText.vue'
 import ElmPrismHighlighter from './ElmPrismHighlighter.vue'
@@ -61,6 +63,7 @@ withDefaults(defineProps<ElmCodeBlockProps>(), {
   margin: 0.5rem;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   font-family: 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
 
   border-bottom: solid 1px rgba(black, 0.2);
@@ -73,6 +76,29 @@ withDefaults(defineProps<ElmCodeBlockProps>(), {
     flex-direction: row;
     align-items: center;
     gap: 0.5rem;
+  }
+}
+
+.copy-icon {
+  box-sizing: border-box;
+  padding: 0.125rem;
+  width: 24px;
+  border-radius: 0.125rem;
+  cursor: pointer;
+
+  transition: background-color 200ms;
+
+  color: rgba(black, 0.7);
+
+  [data-theme='dark'] & {
+    color: rgba(white, 0.7);
+  }
+
+  &:hover {
+    background-color: rgba(black, 0.1);
+    [data-theme='dark'] & {
+      background-color: rgba(white, 0.1);
+    }
   }
 }
 
