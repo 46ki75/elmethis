@@ -6,22 +6,21 @@
 import type { Property } from 'csstype'
 import ElmInlineText from './ElmInlineText.vue'
 
-withDefaults(
-  defineProps<{
-    /**
-     * The code to display.
-     */
-    code: string
+export interface ElmInlineCodeProps {
+  /**
+   * The code to display.
+   */
+  code: string
 
-    /**
-     * Specifies the color of the text.
-     *
-     * e.g.) `'red'`, `'#ff0000'`, `'rgba(255, 0, 0, 0.5)'`
-     */
-    color?: Property.BackgroundColor
-  }>(),
-  {}
-)
+  /**
+   * Specifies the color of the text.
+   *
+   * e.g.) `'red'`, `'#ff0000'`, `'rgba(255, 0, 0, 0.5)'`
+   */
+  color?: Property.BackgroundColor
+}
+
+withDefaults(defineProps<ElmInlineCodeProps>(), {})
 </script>
 
 <style scoped lang="scss">
