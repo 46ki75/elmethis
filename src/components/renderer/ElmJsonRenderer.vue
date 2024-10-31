@@ -16,43 +16,53 @@ import ElmInlineText, { ElmInlineTextProps } from '../inline/ElmInlineText.vue'
 import ElmInlineCode, { ElmInlineCodeProps } from '../inline/ElmInlineCode.vue'
 import ElmInlineLink, { ElmInlineLinkProps } from '../inline/ElmInlineLink.vue'
 import ElmCallout, { ElmCalloutProps } from '../typography/ElmCallout.vue'
+import ElmBulletedList, {
+  ElmBulletedListProps
+} from '../typography/ElmBulletedList.vue'
 
 type ComponentType =
   | 'ElmInlineText'
   | 'ElmInlineCode'
   | 'ElmInlineLink'
   | 'ElmCallout'
+  | 'ElmBulletedList'
 
 type ComponentProps =
   | ElmInlineTextProps
   | ElmInlineCodeProps
   | ElmInlineLinkProps
   | ElmCalloutProps
+  | ElmBulletedListProps
 
 interface JsonComponentBase {
   type: ComponentType
-  props: ComponentProps
+  props?: ComponentProps
   children?: JsonComponent[]
 }
 
 interface ElmInlineTextJsonComponent extends JsonComponentBase {
   type: 'ElmInlineText'
-  props: ElmInlineTextProps
+  props?: ElmInlineTextProps
 }
 
 interface ElmInlineCodeJsonComponent extends JsonComponentBase {
   type: 'ElmInlineCode'
-  props: ElmInlineCodeProps
+  props?: ElmInlineCodeProps
 }
 
 interface ElmInlineLinkJsonComponent extends JsonComponentBase {
   type: 'ElmInlineLink'
-  props: ElmInlineLinkProps
+  props?: ElmInlineLinkProps
 }
 
-export interface ElmCalloutJsonComponent extends JsonComponentBase {
+interface ElmCalloutJsonComponent extends JsonComponentBase {
   type: 'ElmCallout'
-  props: ElmCalloutProps
+  props?: ElmCalloutProps
+}
+
+interface ElmBulletedListJsonComponent extends JsonComponentBase {
+  type: 'ElmBulletedList'
+  props?: ElmBulletedListProps
 }
 
 type JsonComponent =
@@ -60,6 +70,7 @@ type JsonComponent =
   | ElmInlineCodeJsonComponent
   | ElmInlineLinkJsonComponent
   | ElmCalloutJsonComponent
+  | ElmBulletedListJsonComponent
 
 export interface ElmJsonRendererProps {
   json: JsonComponent[]
@@ -71,7 +82,8 @@ const componentMap: Record<ComponentType, any> = {
   ElmInlineText,
   ElmInlineCode,
   ElmInlineLink,
-  ElmCallout
+  ElmCallout,
+  ElmBulletedList
 }
 </script>
 

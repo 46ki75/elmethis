@@ -57,3 +57,28 @@ export const Callout: Story = {
     ]
   }
 }
+
+export const List: Story = {
+  args: {
+    json: [
+      {
+        type: 'ElmBulletedList',
+        props: {},
+        children: [
+          {
+            type: 'ElmInlineText',
+            props: { text: 'Hello, ' }
+          },
+          {
+            type: 'ElmInlineText',
+            props: { text: 'world!' }
+          },
+          {
+            type: 'ElmInlineCode',
+            props: { code: 'console.log(0)' }
+          }
+        ]
+      }
+    ]
+  }
+}
