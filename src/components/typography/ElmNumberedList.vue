@@ -5,7 +5,9 @@
 </template>
 
 <script setup lang="ts">
-withDefaults(defineProps<{}>(), {})
+export interface ElmNumberedListProps {}
+
+withDefaults(defineProps<ElmNumberedListProps>(), {})
 </script>
 
 <style lang="scss">
