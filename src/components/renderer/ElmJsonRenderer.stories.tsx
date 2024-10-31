@@ -32,3 +32,28 @@ export const Primary: Story = {
     ]
   }
 }
+
+export const Callout: Story = {
+  args: {
+    json: [
+      {
+        type: 'ElmCallout',
+        props: { type: 'note' },
+        children: [
+          {
+            type: 'ElmInlineText',
+            props: { text: 'Hello, ' }
+          },
+          {
+            type: 'ElmInlineText',
+            props: { text: 'world!' }
+          },
+          {
+            type: 'ElmInlineCode',
+            props: { code: 'console.log(0)' }
+          }
+        ]
+      }
+    ]
+  }
+}
