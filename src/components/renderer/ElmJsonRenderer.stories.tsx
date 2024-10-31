@@ -148,3 +148,14 @@ export const Headings: Story = {
     ]
   }
 }
+
+export const CodeBlock: Story = {
+  args: {
+    json: [
+      {
+        type: 'ElmCodeBlock',
+        props: { code: 'console.log(0)', language: 'javascript' }
+      }
+    ]
+  }
+}
