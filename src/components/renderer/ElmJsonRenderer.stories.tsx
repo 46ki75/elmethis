@@ -40,18 +40,9 @@ export const Callout: Story = {
         type: 'ElmCallout',
         props: { type: 'note' },
         children: [
-          {
-            type: 'ElmInlineText',
-            props: { text: 'Hello, ' }
-          },
-          {
-            type: 'ElmInlineText',
-            props: { text: 'world!' }
-          },
-          {
-            type: 'ElmInlineCode',
-            props: { code: 'console.log(0)' }
-          }
+          { type: 'ElmInlineText', props: { text: 'Hello, ' } },
+          { type: 'ElmInlineText', props: { text: 'world!' } },
+          { type: 'ElmInlineCode', props: { code: 'console.log(0)' } }
         ]
       }
     ]
@@ -63,30 +54,18 @@ export const BulletedList: Story = {
     json: [
       {
         type: 'ElmBulletedList',
-        props: {},
         children: [
           {
             type: 'ElmListItem',
-            props: {},
             children: [
-              {
-                type: 'ElmInlineText',
-                props: { text: 'Hello, ' }
-              },
-              {
-                type: 'ElmInlineText',
-                props: { text: 'world!' }
-              }
+              { type: 'ElmInlineText', props: { text: 'Hello, ' } },
+              { type: 'ElmInlineText', props: { text: 'world!' } }
             ]
           },
           {
             type: 'ElmListItem',
-            props: {},
             children: [
-              {
-                type: 'ElmInlineCode',
-                props: { code: 'console.log(0)' }
-              }
+              { type: 'ElmInlineCode', props: { code: 'console.log(0)' } }
             ]
           }
         ]
@@ -100,30 +79,18 @@ export const NumberedList: Story = {
     json: [
       {
         type: 'ElmNumberedList',
-        props: {},
         children: [
           {
             type: 'ElmListItem',
-            props: {},
             children: [
-              {
-                type: 'ElmInlineText',
-                props: { text: 'Hello, ' }
-              },
-              {
-                type: 'ElmInlineText',
-                props: { text: 'world!' }
-              }
+              { type: 'ElmInlineText', props: { text: 'Hello, ' } },
+              { type: 'ElmInlineText', props: { text: 'world!' } }
             ]
           },
           {
             type: 'ElmListItem',
-            props: {},
             children: [
-              {
-                type: 'ElmInlineCode',
-                props: { code: 'console.log(0)' }
-              }
+              { type: 'ElmInlineCode', props: { code: 'console.log(0)' } }
             ]
           }
         ]
@@ -137,22 +104,16 @@ export const Blockquote: Story = {
     json: [
       {
         type: 'ElmBlockQuote',
-        props: {},
         children: [
-          {
-            type: 'ElmInlineText',
-            props: { text: 'Hello, ' }
-          },
-          {
-            type: 'ElmInlineText',
-            props: { text: 'world!' }
-          },
-          {
-            type: 'ElmInlineCode',
-            props: { code: 'console.log(0)' }
-          }
+          { type: 'ElmInlineText', props: { text: 'Hello, ' } },
+          { type: 'ElmInlineText', props: { text: 'world!' } },
+          { type: 'ElmInlineCode', props: { code: 'console.log(0)' } }
         ]
       }
     ]
   }
+}
+
+export const Divider: Story = {
+  args: { json: [{ type: 'ElmDivider' }] }
 }
