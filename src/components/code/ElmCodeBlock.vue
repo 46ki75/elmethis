@@ -5,7 +5,26 @@
         <ElmLanguageIcon :language="language" :size="20" />
         <ElmInlineText :text="caption ?? language" />
       </div>
-      <ClipboardDocumentIcon class="copy-icon" />
+
+      <ElmTooltip>
+        <template #original>
+          <ClipboardDocumentIcon
+            class="copy-icon"
+            @click="
+              () => {
+                copy(code)
+              }
+            "
+          />
+        </template>
+        <template #tooltip>
+          <div>
+            <ElmInlineText
+              :text="copied ? 'Copied to Clipboard!' : 'Copy to Clipboard'"
+            />
+          </div>
+        </template>
+      </ElmTooltip>
     </div>
     <div class="code">
       <elm-prism-highlighter :code="code" :language="language" />
@@ -18,6 +37,8 @@ import { ClipboardDocumentIcon } from '@heroicons/vue/24/outline'
 import ElmLanguageIcon from '../icon/ElmLanguageIcon.vue'
 import ElmInlineText from '../inline/ElmInlineText.vue'
 import ElmPrismHighlighter from './ElmPrismHighlighter.vue'
+import { useClipboard } from '@vueuse/core'
+import ElmTooltip from '../containments/ElmTooltip.vue'
 
 export interface ElmCodeBlockProps {
   /**
@@ -37,9 +58,11 @@ export interface ElmCodeBlockProps {
   caption?: string
 }
 
-withDefaults(defineProps<ElmCodeBlockProps>(), {
+const props = withDefaults(defineProps<ElmCodeBlockProps>(), {
   language: 'txt'
 })
+
+const { copy, copied } = useClipboard({ source: props.code })
 </script>
 
 <style scoped lang="scss">
