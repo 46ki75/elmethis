@@ -5,7 +5,13 @@ const meta: Meta<typeof ElmLanguageIcon> = {
   title: 'Components/Icon/ElmLanguageIcon',
   component: ElmLanguageIcon,
   tags: ['autodocs'],
-  args: {}
+  args: {},
+  argTypes: {
+    language: {
+      control: 'radio',
+      options: ['rust', 'javascript']
+    }
+  }
 }
 
 export default meta

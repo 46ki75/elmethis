@@ -27,9 +27,13 @@ const render = () => {
     case 'rs':
       return defineAsyncComponent(() => import('./languages/Rust.vue'))
 
+    case 'javascript':
+    case 'js':
+      return defineAsyncComponent(() => import('./languages/JavaScript.vue'))
+
     default:
       return defineAsyncComponent(
-        () => import('@heroicons/vue/24/outline/MoonIcon')
+        () => import('@heroicons/vue/24/outline/CommandLineIcon')
       )
   }
 }
@@ -39,6 +43,6 @@ const Icon = render()
 
 <style scoped lang="scss">
 .icon {
-  width: var(--width);
+  height: var(--width);
 }
 </style>
