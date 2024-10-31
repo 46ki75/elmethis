@@ -33,6 +33,7 @@ import ElmHeading3, { ElmHeading3Props } from '../headings/ElmHeading3.vue'
 import ElmHeading4, { ElmHeading4Props } from '../headings/ElmHeading4.vue'
 import ElmHeading5, { ElmHeading5Props } from '../headings/ElmHeading5.vue'
 import ElmHeading6, { ElmHeading6Props } from '../headings/ElmHeading6.vue'
+import ElmCodeBlock, { ElmCodeBlockProps } from '../code/ElmCodeBlock.vue'
 
 type ComponentType =
   | 'ElmInlineText'
@@ -50,6 +51,7 @@ type ComponentType =
   | 'ElmHeading4'
   | 'ElmHeading5'
   | 'ElmHeading6'
+  | 'ElmCodeBlock'
 
 type ComponentProps =
   | ElmInlineTextProps
@@ -67,6 +69,7 @@ type ComponentProps =
   | ElmHeading4Props
   | ElmHeading5Props
   | ElmHeading6Props
+  | ElmCodeBlockProps
 
 interface JsonComponentBase {
   type: ComponentType
@@ -149,6 +152,11 @@ interface ElmHeading6JsonComponent extends JsonComponentBase {
   props?: ElmHeading6Props
 }
 
+interface ElmCodeBlockJsonComponent extends JsonComponentBase {
+  type: 'ElmCodeBlock'
+  props?: ElmCodeBlockProps
+}
+
 type JsonComponent =
   | ElmInlineTextJsonComponent
   | ElmInlineCodeJsonComponent
@@ -165,6 +173,7 @@ type JsonComponent =
   | ElmHeading4JsonComponent
   | ElmHeading5JsonComponent
   | ElmHeading6JsonComponent
+  | ElmCodeBlockJsonComponent
 
 export interface ElmJsonRendererProps {
   json: JsonComponent[]
@@ -187,7 +196,8 @@ const componentMap: Record<ComponentType, any> = {
   ElmHeading3,
   ElmHeading4,
   ElmHeading5,
-  ElmHeading6
+  ElmHeading6,
+  ElmCodeBlock
 }
 </script>
 
