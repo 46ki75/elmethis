@@ -94,3 +94,28 @@ export const List: Story = {
     ]
   }
 }
+
+export const Blockquote: Story = {
+  args: {
+    json: [
+      {
+        type: 'ElmBlockQuote',
+        props: {},
+        children: [
+          {
+            type: 'ElmInlineText',
+            props: { text: 'Hello, ' }
+          },
+          {
+            type: 'ElmInlineText',
+            props: { text: 'world!' }
+          },
+          {
+            type: 'ElmInlineCode',
+            props: { code: 'console.log(0)' }
+          }
+        ]
+      }
+    ]
+  }
+}
