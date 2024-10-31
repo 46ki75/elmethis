@@ -1,4 +1,5 @@
 // code
+import ElmCodeBlock from './components/code/ElmCodeBlock.vue'
 import ElmPrismHighlighter from './components/code/ElmPrismHighlighter.vue'
 // import ElmKatex from './components/code/ElmKatex.vue'
 
@@ -19,6 +20,7 @@ import ElmHeading6 from './components/headings/ElmHeading6.vue'
 // icon
 import ElmCubeIcon from './components/icon/ElmCubeIcon.vue'
 import ElmDotLoadingIcon from './components/icon/ElmDotLoadingIcon.vue'
+import ElmLanguageIcon from './components/icon/ElmLanguageIcon.vue'
 import ElmToggleTheme from './components/icon/ElmToggleTheme.vue'
 
 // inline
@@ -37,6 +39,7 @@ import ElmDivider from './components/typography/ElmDivider.vue'
 import ElmNumberedList from './components/typography/ElmNumberedList.vue'
 
 export {
+  ElmCodeBlock,
   ElmPrismHighlighter,
   // ElmKatex,
   ElmTooltip,
@@ -49,6 +52,7 @@ export {
   ElmHeading6,
   ElmCubeIcon,
   ElmDotLoadingIcon,
+  ElmLanguageIcon,
   ElmToggleTheme,
   ElmInlineCode,
   ElmInlineLink,
