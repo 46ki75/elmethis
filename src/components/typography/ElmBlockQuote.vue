@@ -5,7 +5,9 @@
 </template>
 
 <script setup lang="ts">
-withDefaults(defineProps<{}>(), {})
+export interface ElmBlockQuoteProps {}
+
+withDefaults(defineProps<ElmBlockQuoteProps>(), {})
 </script>
 
 <style scoped lang="scss">
