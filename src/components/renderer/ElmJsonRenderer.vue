@@ -1,11 +1,11 @@
 <template>
   <template
     v-for="component in json"
-    :key="component.type + component.props.id"
+    :key="component.type + (component.props?.id || '')"
   >
     <component :is="componentMap[component.type]" v-bind="component.props">
-      <template v-if="component.children" v-for="child in component.children">
-        <component :is="componentMap[child.type]" v-bind="child.props" />
+      <template v-if="component.children">
+        <ElmJsonRenderer :json="component.children" />
       </template>
     </component>
   </template>
@@ -19,6 +19,7 @@ import ElmCallout, { ElmCalloutProps } from '../typography/ElmCallout.vue'
 import ElmBulletedList, {
   ElmBulletedListProps
 } from '../typography/ElmBulletedList.vue'
+import ElmListItem, { ElmListItemProps } from '../typography/ElmListItem.vue'
 
 type ComponentType =
   | 'ElmInlineText'
@@ -26,6 +27,7 @@ type ComponentType =
   | 'ElmInlineLink'
   | 'ElmCallout'
   | 'ElmBulletedList'
+  | 'ElmListItem'
 
 type ComponentProps =
   | ElmInlineTextProps
@@ -33,6 +35,7 @@ type ComponentProps =
   | ElmInlineLinkProps
   | ElmCalloutProps
   | ElmBulletedListProps
+  | ElmListItemProps
 
 interface JsonComponentBase {
   type: ComponentType
@@ -65,12 +68,18 @@ interface ElmBulletedListJsonComponent extends JsonComponentBase {
   props?: ElmBulletedListProps
 }
 
+interface ElmListItemJsonComponent extends JsonComponentBase {
+  type: 'ElmListItem'
+  props?: ElmListItemProps
+}
+
 type JsonComponent =
   | ElmInlineTextJsonComponent
   | ElmInlineCodeJsonComponent
   | ElmInlineLinkJsonComponent
   | ElmCalloutJsonComponent
   | ElmBulletedListJsonComponent
+  | ElmListItemJsonComponent
 
 export interface ElmJsonRendererProps {
   json: JsonComponent[]
@@ -83,7 +92,8 @@ const componentMap: Record<ComponentType, any> = {
   ElmInlineCode,
   ElmInlineLink,
   ElmCallout,
-  ElmBulletedList
+  ElmBulletedList,
+  ElmListItem
 }
 </script>
 

@@ -66,16 +66,28 @@ export const List: Story = {
         props: {},
         children: [
           {
-            type: 'ElmInlineText',
-            props: { text: 'Hello, ' }
+            type: 'ElmListItem',
+            props: {},
+            children: [
+              {
+                type: 'ElmInlineText',
+                props: { text: 'Hello, ' }
+              },
+              {
+                type: 'ElmInlineText',
+                props: { text: 'world!' }
+              }
+            ]
           },
           {
-            type: 'ElmInlineText',
-            props: { text: 'world!' }
-          },
-          {
-            type: 'ElmInlineCode',
-            props: { code: 'console.log(0)' }
+            type: 'ElmListItem',
+            props: {},
+            children: [
+              {
+                type: 'ElmInlineCode',
+                props: { code: 'console.log(0)' }
+              }
+            ]
           }
         ]
       }
