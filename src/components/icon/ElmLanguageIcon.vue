@@ -5,6 +5,8 @@
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue'
 
+import { CommandLineIcon } from '@heroicons/vue/24/outline'
+
 export interface ElmLanguageIconProps {
   /**
    * The size of the icon.
@@ -25,16 +27,20 @@ const render = () => {
   switch (props.language.toLowerCase()) {
     case 'rust':
     case 'rs':
-      return defineAsyncComponent(() => import('./languages/Rust.vue'))
+      return defineAsyncComponent({
+        loader: () => import('./languages/Rust.vue'),
+        loadingComponent: CommandLineIcon
+      })
 
     case 'javascript':
     case 'js':
-      return defineAsyncComponent(() => import('./languages/JavaScript.vue'))
+      return defineAsyncComponent({
+        loader: () => import('./languages/JavaScript.vue'),
+        loadingComponent: CommandLineIcon
+      })
 
     default:
-      return defineAsyncComponent(
-        () => import('@heroicons/vue/24/outline/CommandLineIcon')
-      )
+      return CommandLineIcon
   }
 }
 
