@@ -47,6 +47,8 @@ withDefaults(defineProps<ElmCodeBlockProps>(), {
   border-radius: 0.25rem;
   box-shadow: 0 0 0.25rem rgba(black, 0.1);
 
+  transition: background-color 400ms;
+
   background-color: rgba(white, 0.2);
   [data-theme='dark'] & {
     background-color: rgba(black, 0.2);
@@ -62,7 +64,6 @@ withDefaults(defineProps<ElmCodeBlockProps>(), {
   font-family: 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
 
   border-bottom: solid 1px rgba(black, 0.2);
-
   [data-theme='dark'] & {
     border-color: rgba(white, 0.2);
   }
