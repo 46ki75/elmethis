@@ -20,6 +20,7 @@ import ElmHeading6 from './components/headings/ElmHeading6.vue'
 // icon
 import ElmCubeIcon from './components/icon/ElmCubeIcon.vue'
 import ElmDotLoadingIcon from './components/icon/ElmDotLoadingIcon.vue'
+import ElmLanguageIcon from './components/icon/ElmLanguageIcon.vue'
 import ElmToggleTheme from './components/icon/ElmToggleTheme.vue'
 
 // inline
@@ -51,6 +52,7 @@ export {
   ElmHeading6,
   ElmCubeIcon,
   ElmDotLoadingIcon,
+  ElmLanguageIcon,
   ElmToggleTheme,
   ElmInlineCode,
   ElmInlineLink,
