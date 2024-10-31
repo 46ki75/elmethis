@@ -8,26 +8,25 @@ import { onMounted, onUpdated, ref } from 'vue'
 import katex from 'katex'
 import 'katex/dist/katex.min.css'
 
-const props = withDefaults(
-  defineProps<{
-    /**
-     * The KaTex expression.
-     */
-    equation: string
+export interface ElmKatexProps {
+  /**
+   * The KaTex expression.
+   */
+  equation: string
 
-    /**
-     * Whether to render the equation in block mode.
-     * - If `true`, the equation will be rendered in block mode.
-     * - If `false`, the equation will be rendered in inline mode.
-     *
-     * Default is `false`.
-     */
-    block?: boolean
-  }>(),
-  {
-    block: false
-  }
-)
+  /**
+   * Whether to render the equation in block mode.
+   * - If `true`, the equation will be rendered in block mode.
+   * - If `false`, the equation will be rendered in inline mode.
+   *
+   * Default is `false`.
+   */
+  block?: boolean
+}
+
+const props = withDefaults(defineProps<ElmKatexProps>(), {
+  block: false
+})
 
 const targetRef = ref<HTMLElement | null>(null)
 
