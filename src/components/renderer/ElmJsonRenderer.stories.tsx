@@ -23,6 +23,11 @@ export const Primary: Story = {
         type: 'ElmInlineText',
         props: { text: 'world!' },
         children: []
+      },
+      {
+        type: 'ElmInlineCode',
+        props: { code: 'console.log(0)' },
+        children: []
       }
     ]
   }
