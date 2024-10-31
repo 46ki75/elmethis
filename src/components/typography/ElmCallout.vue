@@ -45,17 +45,16 @@ const colors: Record<AlertType, { code: string; icon: FunctionalComponent }> = {
   caution: { code: '#b36472', icon: XCircleIcon }
 }
 
-withDefaults(
-  defineProps<{
-    /**
-     * Type of alert
-     */
-    type?: AlertType
-  }>(),
-  {
-    type: 'note'
-  }
-)
+export interface ElmCalloutProps {
+  /**
+   * Type of alert
+   */
+  type?: AlertType
+}
+
+withDefaults(defineProps<ElmCalloutProps>(), {
+  type: 'note'
+})
 
 const target = ref(null)
 const targetIsVisible = ref(false)
