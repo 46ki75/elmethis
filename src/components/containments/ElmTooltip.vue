@@ -34,7 +34,9 @@
 import { useElementBounding } from '@vueuse/core'
 import { ref } from 'vue'
 
-withDefaults(defineProps<{}>(), {})
+export interface ElmTooltipProps {}
+
+withDefaults(defineProps<ElmTooltipProps>(), {})
 
 const el = ref(null)
 const { x, y, height } = useElementBounding(el)

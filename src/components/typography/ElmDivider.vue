@@ -12,7 +12,9 @@
 import { useIntersectionObserver } from '@vueuse/core'
 import { ref } from 'vue'
 
-withDefaults(defineProps<{}>(), {})
+export interface ElmDividerProps {}
+
+withDefaults(defineProps<ElmDividerProps>(), {})
 
 const target = ref(null)
 const targetIsVisible = ref(false)

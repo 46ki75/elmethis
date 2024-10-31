@@ -20,14 +20,16 @@
 import { useWindowScroll } from '@vueuse/core'
 import { ref, watch } from 'vue'
 
-withDefaults(
-  defineProps<{
-    position?: 'left' | 'right'
-  }>(),
-  {
-    position: 'right'
-  }
-)
+export interface ElmPagetopProps {
+  /**
+   * Specifies the position of the button.
+   */
+  position?: 'left' | 'right'
+}
+
+withDefaults(defineProps<ElmPagetopProps>(), {
+  position: 'right'
+})
 
 const isVisible = ref<boolean>(false)
 

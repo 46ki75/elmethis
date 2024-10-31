@@ -14,22 +14,21 @@ import 'prism-theme-vars/base.css'
 // Prism.js language autoloader plugin
 import 'prismjs/plugins/autoloader/prism-autoloader.js'
 
-const props = withDefaults(
-  defineProps<{
-    /**
-     * The code to display.
-     */
-    code: string
+export interface ElmPrismHighlighterProps {
+  /**
+   * The code to display.
+   */
+  code: string
 
-    /**
-     * The language of the code.
-     */
-    language?: string
-  }>(),
-  {
-    language: 'txt'
-  }
-)
+  /**
+   * The language of the code.
+   */
+  language?: string
+}
+
+const props = withDefaults(defineProps<ElmPrismHighlighterProps>(), {
+  language: 'txt'
+})
 
 const codeRef = ref<HTMLElement | null>(null)
 

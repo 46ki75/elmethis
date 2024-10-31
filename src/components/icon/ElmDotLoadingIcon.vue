@@ -12,25 +12,24 @@
 <script setup lang="ts">
 import type { Property } from 'csstype'
 
-withDefaults(
-  defineProps<{
-    /**
-     * Specifies the color of the dot.
-     *
-     * e.g.) `'red'`, `'#ff0000'`, `'rgba(255, 0, 0, 0.5)'`
-     */
-    color?: Property.BackgroundColor
+export interface ElmDotLoadingIconProps {
+  /**
+   * Specifies the color of the dot.
+   *
+   * e.g.) `'red'`, `'#ff0000'`, `'rgba(255, 0, 0, 0.5)'`
+   */
+  color?: Property.BackgroundColor
 
-    /**
-     * Specifies the size of the dot.
-     */
-    size?: Property.Width<string | number>
-  }>(),
-  {
-    color: undefined,
-    size: '64px'
-  }
-)
+  /**
+   * Specifies the size of the dot.
+   */
+  size?: Property.Width<string | number>
+}
+
+withDefaults(defineProps<ElmDotLoadingIconProps>(), {
+  color: undefined,
+  size: '64px'
+})
 </script>
 
 <style scoped lang="scss">

@@ -51,27 +51,26 @@ import ElmRectangleWave from '../fallback/ElmRectangleWave.vue'
 import ElmDotLoadingIcon from '../icon/ElmDotLoadingIcon.vue'
 import { onKeyStroke } from '@vueuse/core'
 
-withDefaults(
-  defineProps<{
-    /**
-     * Image source URL
-     */
-    src: string
+export interface ElmImageProps {
+  /**
+   * Image source URL
+   */
+  src: string
 
-    /**
-     * Image alt text
-     */
-    alt?: string
+  /**
+   * Image alt text
+   */
+  alt?: string
 
-    /**
-     * Enable modal on image click. Default: `false`
-     */
-    enableModal?: boolean
-  }>(),
-  {
-    enableModal: false
-  }
-)
+  /**
+   * Enable modal on image click. Default: `false`
+   */
+  enableModal?: boolean
+}
+
+withDefaults(defineProps<ElmImageProps>(), {
+  enableModal: false
+})
 
 const isLoading = ref(true)
 const isModalOpen = ref(false)

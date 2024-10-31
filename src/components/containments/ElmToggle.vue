@@ -29,15 +29,14 @@
 import ElmInlineText from '../inline/ElmInlineText.vue'
 import { ChevronRightIcon, PlusIcon } from '@heroicons/vue/24/outline'
 
-withDefaults(
-  defineProps<{
-    /**
-     * The summary of the toggle.
-     */
-    summary: string
-  }>(),
-  {}
-)
+export interface ElmToggleProps {
+  /**
+   * The summary of the toggle.
+   */
+  summary: string
+}
+
+withDefaults(defineProps<ElmToggleProps>(), {})
 
 const isOpen = defineModel<boolean>('isOpen', {
   default: false

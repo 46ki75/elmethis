@@ -20,18 +20,16 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-// Default prop values
-const props = withDefaults(
-  defineProps<{
-    /**
-     * The size of the cube [px]
-     */
-    size?: number
-  }>(),
-  {
-    size: 128
-  }
-)
+export interface ElmCubeIconProps {
+  /**
+   * The size of the cube [px]
+   */
+  size?: number
+}
+
+const props = withDefaults(defineProps<ElmCubeIconProps>(), {
+  size: 128
+})
 
 const commonTranslateZ = computed(() => `translateZ(${props.size / 2}px)`)
 

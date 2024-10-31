@@ -76,15 +76,14 @@
 <script setup lang="ts">
 import ElmInlineText from '../inline/ElmInlineText.vue'
 
-withDefaults(
-  defineProps<{
-    /**
-     * The label displayed.
-     */
-    label: string
-  }>(),
-  {}
-)
+export interface ElmCheckboxProps {
+  /**
+   * The label displayed.
+   */
+  label: string
+}
+
+withDefaults(defineProps<ElmCheckboxProps>(), {})
 
 const isChecked = defineModel<boolean>('isChecked')
 

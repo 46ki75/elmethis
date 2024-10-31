@@ -3,7 +3,9 @@
 </template>
 
 <script setup lang="ts">
-withDefaults(defineProps<{}>(), {})
+export interface ElmTemplateProps {}
+
+withDefaults(defineProps<ElmTemplateProps>(), {})
 </script>
 
 <style scoped lang="scss"></style>

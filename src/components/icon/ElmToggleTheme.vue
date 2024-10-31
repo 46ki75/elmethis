@@ -12,17 +12,16 @@ import { MoonIcon, SunIcon } from '@heroicons/vue/24/outline'
 import type { Property } from 'csstype'
 import { onMounted, ref, watchEffect } from 'vue'
 
-withDefaults(
-  defineProps<{
-    /**
-     * Specifies the size of the dot.
-     */
-    size?: Property.Width<string | number>
-  }>(),
-  {
-    size: '2rem'
-  }
-)
+export interface ElmToggleThemeProps {
+  /**
+   * Specifies the size of the dot.
+   */
+  size?: Property.Width<string | number>
+}
+
+withDefaults(defineProps<ElmToggleThemeProps>(), {
+  size: '2rem'
+})
 
 const isDarkTheme = ref(false)
 

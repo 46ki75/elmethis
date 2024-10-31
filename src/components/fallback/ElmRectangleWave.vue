@@ -2,6 +2,12 @@
   <div aria-hidden class="rectangle-wave"></div>
 </template>
 
+<script setup lang="ts">
+export interface ElmRectangleWaveProps {}
+
+withDefaults(defineProps<ElmRectangleWaveProps>(), {})
+</script>
+
 <style scoped lang="scss">
 @keyframes wave {
   0% {

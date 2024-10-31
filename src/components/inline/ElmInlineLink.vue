@@ -28,42 +28,41 @@ import {
   ChevronRightIcon
 } from '@heroicons/vue/24/outline'
 
-const props = withDefaults(
-  defineProps<{
-    /**
-     * The text to display.
-     */
-    text?: string
+export interface ElmInlineLinkProps {
+  /**
+   * The text to display.
+   */
+  text?: string
 
-    /**
-     * The URL to navigate to.
-     *
-     * e.g. `https://example.com`
-     */
-    href?: string
+  /**
+   * The URL to navigate to.
+   *
+   * e.g. `https://example.com`
+   */
+  href?: string
 
-    /**
-     * Whether to open the link in a new tab.
-     * Defaults to `true`.
-     */
-    openInNewTab?: boolean
+  /**
+   * Whether to open the link in a new tab.
+   * Defaults to `true`.
+   */
+  openInNewTab?: boolean
 
-    /**
-     * The type of icon to display.
-     * If not provided, the icon is determined by the `openInNewTab` prop.
-     */
-    iconType?: 'internal' | 'external'
+  /**
+   * The type of icon to display.
+   * If not provided, the icon is determined by the `openInNewTab` prop.
+   */
+  iconType?: 'internal' | 'external'
 
-    /**
-     * The function to call when the link is clicked.
-     * If provided, the default behavior (navigating to the URL) is prevented.
-     */
-    onClick?: () => void
-  }>(),
-  {
-    openInNewTab: true
-  }
-)
+  /**
+   * The function to call when the link is clicked.
+   * If provided, the default behavior (navigating to the URL) is prevented.
+   */
+  onClick?: () => void
+}
+
+const props = withDefaults(defineProps<ElmInlineLinkProps>(), {
+  openInNewTab: true
+})
 
 function handleClick(event: MouseEvent) {
   if (props.onClick) {
