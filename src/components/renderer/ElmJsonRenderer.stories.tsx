@@ -117,3 +117,34 @@ export const Blockquote: Story = {
 export const Divider: Story = {
   args: { json: [{ type: 'ElmDivider' }] }
 }
+
+export const Headings: Story = {
+  args: {
+    json: [
+      {
+        type: 'ElmHeading1',
+        props: { text: 'Hello, world!' }
+      },
+      {
+        type: 'ElmHeading2',
+        props: { text: 'Hello, world!' }
+      },
+      {
+        type: 'ElmHeading3',
+        props: { text: 'Hello, world!' }
+      },
+      {
+        type: 'ElmHeading4',
+        props: { text: 'Hello, world!' }
+      },
+      {
+        type: 'ElmHeading5',
+        props: { text: 'Hello, world!' }
+      },
+      {
+        type: 'ElmHeading6',
+        props: { text: 'Hello, world!' }
+      }
+    ]
+  }
+}
