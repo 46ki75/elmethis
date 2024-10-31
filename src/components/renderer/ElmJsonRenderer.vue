@@ -8,17 +8,23 @@
 </template>
 
 <script setup lang="ts">
-import ElmInlineText from '../inline/ElmInlineText.vue'
-import type { ElmInlineTextProps } from '../inline/ElmInlineText.vue'
+import ElmInlineText, { ElmInlineTextProps } from '../inline/ElmInlineText.vue'
 
 type ComponentType = 'ElmInlineText'
 
 type ComponentProps = ElmInlineTextProps
 
-interface JsonComponent {
+interface JsonComponentBase {
   type: ComponentType
   props: ComponentProps
   children?: JsonComponent[]
+}
+
+type JsonComponent = ElmInlineTextJsonComponent
+
+interface ElmInlineTextJsonComponent extends JsonComponentBase {
+  type: 'ElmInlineText'
+  props: ElmInlineTextProps
 }
 
 export interface ElmJsonRendererProps {
