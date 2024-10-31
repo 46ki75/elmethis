@@ -18,28 +18,27 @@ import type { Property } from 'csstype'
 import { kebabCase } from 'lodash-es'
 import { ref } from 'vue'
 
-withDefaults(
-  defineProps<{
-    /**
-     * Text to display
-     */
-    text: string
+export interface ElmHeading2Props {
+  /**
+   * Text to display
+   */
+  text: string
 
-    /**
-     * Font size of the text. Default is `'1.4rem'`.
-     */
-    size?: Property.FontSize
+  /**
+   * Font size of the text. Default is `'1.4rem'`.
+   */
+  size?: Property.FontSize
 
-    /**
-     * ID of the heading element.
-     * Default is kebab-cased `text`. (using lodash)
-     */
-    id?: string
-  }>(),
-  {
-    size: '1.4rem'
-  }
-)
+  /**
+   * ID of the heading element.
+   * Default is kebab-cased `text`. (using lodash)
+   */
+  id?: string
+}
+
+withDefaults(defineProps<ElmHeading2Props>(), {
+  size: '1.4rem'
+})
 
 const target = ref(null)
 const targetIsVisible = ref(false)

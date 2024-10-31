@@ -8,28 +8,27 @@
 import type { Property } from 'csstype'
 import { kebabCase } from 'lodash-es'
 
-withDefaults(
-  defineProps<{
-    /**
-     * Text to display
-     */
-    text: string
+export interface ElmHeading4Props {
+  /**
+   * Text to display
+   */
+  text: string
 
-    /**
-     * Font size of the text. Default is `'1.2rem'`.
-     */
-    size?: Property.FontSize
+  /**
+   * Font size of the text. Default is `'1.2rem'`.
+   */
+  size?: Property.FontSize
 
-    /**
-     * ID of the heading element.
-     * Default is kebab-cased `text`. (using lodash)
-     */
-    id?: string
-  }>(),
-  {
-    size: '1.2rem'
-  }
-)
+  /**
+   * ID of the heading element.
+   * Default is kebab-cased `text`. (using lodash)
+   */
+  id?: string
+}
+
+withDefaults(defineProps<ElmHeading4Props>(), {
+  size: '1.2rem'
+})
 </script>
 
 <style scoped lang="scss">

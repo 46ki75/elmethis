@@ -15,28 +15,27 @@ import { ref } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { kebabCase } from 'lodash-es'
 
-withDefaults(
-  defineProps<{
-    /**
-     * Text to display
-     */
-    text: string
+export interface ElmHeading1Props {
+  /**
+   * Text to display
+   */
+  text: string
 
-    /**
-     * Font size of the text. Default is `'1.5rem'`.
-     */
-    size?: Property.FontSize
+  /**
+   * Font size of the text. Default is `'1.5rem'`.
+   */
+  size?: Property.FontSize
 
-    /**
-     * ID of the heading element.
-     * Default is kebab-cased `text`. (using lodash)
-     */
-    id?: string
-  }>(),
-  {
-    size: '1.5rem'
-  }
-)
+  /**
+   * ID of the heading element.
+   * Default is kebab-cased `text`. (using lodash)
+   */
+  id?: string
+}
+
+withDefaults(defineProps<ElmHeading1Props>(), {
+  size: '1.5rem'
+})
 
 const target = ref(null)
 const targetIsVisible = ref(false)
