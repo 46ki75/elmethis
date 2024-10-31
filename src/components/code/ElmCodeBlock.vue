@@ -82,7 +82,7 @@ const { copy, copied } = useClipboard({ source: props.code })
 
 .header {
   box-sizing: border-box;
-  padding: 0.5rem 0.5rem 0.75rem 0.5rem;
+  padding: 0.25rem 0.5rem 0.5rem 0.5rem;
   margin: 0.5rem;
   display: flex;
   flex-direction: row;
@@ -105,7 +105,7 @@ const { copy, copied } = useClipboard({ source: props.code })
 .copy-icon {
   box-sizing: border-box;
   padding: 0.125rem;
-  width: 24px;
+  width: 26px;
   border-radius: 0.125rem;
   cursor: pointer;
 
