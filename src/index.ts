@@ -1,4 +1,5 @@
 // code
+import ElmCodeBlock from './components/code/ElmCodeBlock.vue'
 import ElmPrismHighlighter from './components/code/ElmPrismHighlighter.vue'
 // import ElmKatex from './components/code/ElmKatex.vue'
 
@@ -37,6 +38,7 @@ import ElmDivider from './components/typography/ElmDivider.vue'
 import ElmNumberedList from './components/typography/ElmNumberedList.vue'
 
 export {
+  ElmCodeBlock,
   ElmPrismHighlighter,
   // ElmKatex,
   ElmTooltip,
