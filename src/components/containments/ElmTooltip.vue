@@ -20,10 +20,17 @@
     <div
       v-if="isHover"
       class="tooltip"
-      :style="{
-        top: `${y + height}px`,
-        left: `${x}px`
-      }"
+      :style="
+        x > windowSize.width.value / 2
+          ? {
+              top: `${y + height}px`,
+              right: `${windowSize.width.value - x - width}px`
+            }
+          : {
+              top: `${y + height}px`,
+              left: `${x}px`
+            }
+      "
     >
       <slot name="tooltip" />
     </div>
@@ -31,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { useElementBounding } from '@vueuse/core'
+import { useElementBounding, useWindowSize } from '@vueuse/core'
 import { ref } from 'vue'
 
 export interface ElmTooltipProps {}
@@ -39,7 +46,8 @@ export interface ElmTooltipProps {}
 withDefaults(defineProps<ElmTooltipProps>(), {})
 
 const el = ref(null)
-const { x, y, height } = useElementBounding(el)
+const { x, y, width, height } = useElementBounding(el)
+const windowSize = useWindowSize()
 
 const isHover = ref(false)
 </script>
