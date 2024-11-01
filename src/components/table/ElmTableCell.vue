@@ -1,11 +1,7 @@
 <template>
-  <th v-if="hasHeader">
+  <component :is="hasHeader ? 'th' : 'td'">
     <slot />
-  </th>
-
-  <td v-else>
-    <slot />
-  </td>
+  </component>
 </template>
 
 <script setup lang="ts">
@@ -17,5 +13,3 @@ withDefaults(defineProps<ElmTableCellProps>(), {
   hasHeader: false
 })
 </script>
-
-<style scoped lang="scss"></style>
