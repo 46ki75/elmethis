@@ -22,11 +22,11 @@ withDefaults(defineProps<ElmTableCellProps>(), {
 td.cell {
   @include common-cell-styles;
 
-  border-bottom: solid 1px rgba(black, 0.2);
+  border-bottom: solid 1px rgba(black, 0.15);
   border-right: dotted 1px rgba(black, 0.1);
 
   [data-theme='dark'] & {
-    border-bottom-color: rgba(white, 0.2);
+    border-bottom-color: rgba(white, 0.15);
     border-right-color: rgba(white, 0.1);
   }
 }
