@@ -12,14 +12,26 @@ withDefaults(defineProps<ElmTableBodyProps>(), {})
 
 <style lang="scss">
 .elmethis-table-header-body {
-  background-color: rgba(black, 0.05);
-  color: rgba(black, 0.7);
-  transition:
-    background-color 400ms,
-    color 400ms;
-  [data-theme='dark'] & {
-    background-color: rgba(white, 0.05);
-    color: rgba(white, 0.7);
+  tr {
+    transition: background-color 200ms;
+
+    &:nth-child(odd) {
+      background-color: transparent;
+    }
+
+    &:nth-child(even) {
+      background-color: rgba(black, 0.025);
+      [data-theme='dark'] & {
+        background-color: rgba(white, 0.025);
+      }
+    }
+
+    &:hover {
+      background-color: rgba(#6987b8, 0.15);
+      [data-theme='dark'] & {
+        background-color: rgba(#6987b8, 0.15);
+      }
+    }
   }
 }
 </style>
