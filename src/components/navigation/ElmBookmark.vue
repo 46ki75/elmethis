@@ -71,10 +71,27 @@ withDefaults(defineProps<ElmBookmarkProps>(), {
 .bookmark {
   display: flex;
   flex-direction: row;
+  box-shadow: 0 0 0.125rem rgba(black, 0.15);
+  cursor: pointer;
+  transition: background-color 200ms;
+  background-color: rgba(white, 0.2);
+
+  [data-theme='dark'] & {
+    background-color: rgba(black, 0.2);
+  }
+
+  &:hover {
+    background-color: rgba(#6987b8, 0.1);
+  }
+
+  &:active {
+    background-color: rgba(#59b57c, 0.1);
+  }
 }
 
 .image {
   max-width: 30%;
+  opacity: 0.9;
 }
 
 .typography {
