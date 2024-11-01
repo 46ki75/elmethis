@@ -1,5 +1,11 @@
 <template>
-  <div class="bookmark">
+  <div
+    class="bookmark"
+    :style="{
+      '--flex-direction': wide ? 'row' : 'column',
+      '--max-width': wide ? '30%' : '100%'
+    }"
+  >
     <div class="image">
       <ElmImage :src="image" />
     </div>
@@ -7,12 +13,9 @@
       <ElmInlineText :text="title" bold />
       <ElmInlineText
         :text="description"
-        size=".9rem"
+        size=".8rem"
         :style="{ opacity: 0.6 }"
       />
-      <div class="link">
-        <div><ElmInlineLink :text="url" href="#" size=".8rem" /></div>
-      </div>
 
       <div class="date" v-if="createdAt != null || updatedAt != null">
         <template v-if="createdAt != null">
@@ -25,6 +28,10 @@
           <ElmInlineText :text="`${updatedAt}`" size=".8rem" />
         </template>
       </div>
+
+      <div v-if="!hideUrl" class="link">
+        <div><ElmInlineLink :text="url" href="#" size=".8rem" /></div>
+      </div>
     </div>
   </div>
 </template>
@@ -36,6 +43,10 @@ import ElmInlineText from '../inline/ElmInlineText.vue'
 import ElmImage from '../media/ElmImage.vue'
 
 export interface ElmBookmarkProps {
+  wide?: boolean
+
+  hideUrl?: boolean
+
   /**
    * The title of the bookmark.
    */
@@ -57,12 +68,20 @@ export interface ElmBookmarkProps {
    */
   url: string
 
+  /**
+   * The date the bookmark was created.
+   */
   createdAt?: string
 
+  /*
+   * The date the bookmark was last updated.
+   */
   updatedAt?: string
 }
 
 withDefaults(defineProps<ElmBookmarkProps>(), {
+  wide: true,
+  hideUrl: false,
   description: 'No description provided'
 })
 </script>
@@ -70,7 +89,7 @@ withDefaults(defineProps<ElmBookmarkProps>(), {
 <style scoped lang="scss">
 .bookmark {
   display: flex;
-  flex-direction: row;
+  flex-direction: var(--flex-direction);
   box-shadow: 0 0 0.125rem rgba(black, 0.15);
   cursor: pointer;
   transition: background-color 200ms;
@@ -87,40 +106,41 @@ withDefaults(defineProps<ElmBookmarkProps>(), {
   &:active {
     background-color: rgba(#59b57c, 0.1);
   }
-}
 
-.image {
-  max-width: 30%;
-  opacity: 0.9;
-}
-
-.typography {
-  box-sizing: border-box;
-  padding: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  .link {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
+  .image {
+    max-width: var(--max-width);
+    opacity: 0.9;
   }
 
-  .date {
-    width: 100%;
+  .typography {
+    box-sizing: border-box;
+    padding: 0.5rem;
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;
+    justify-content: space-between;
     gap: 0.5rem;
+
+    .link {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .date {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+    }
   }
-}
 
-.icon {
-  width: 16px;
+  .icon {
+    width: 16px;
 
-  color: rgba(black, 0.7);
-  [data-theme='dark'] & {
-    color: rgba(white, 0.7);
+    color: rgba(black, 0.7);
+    [data-theme='dark'] & {
+      color: rgba(white, 0.7);
+    }
   }
 }
 </style>
