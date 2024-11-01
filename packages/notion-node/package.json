@@ -25,7 +25,14 @@
       "types": "./dist/index.d.ts"
     }
   },
+  "dependencies": {
+    "@notionhq/client": "^2.2.15",
+    "open-graph-scraper": "^6.8.2"
+  },
   "devDependencies": {
-    "@elmethis/core": "workspace:^"
+    "@elmethis/core": "workspace:^",
+    "dotenv": "^16.4.5",
+    "tsx": "^4.19.2",
+    "vitest": "^2.1.4"
   }
 }
