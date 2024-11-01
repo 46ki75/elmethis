@@ -39,5 +39,7 @@ export class Client {
         }
       }
     }
+
+    return components
   }
 }
