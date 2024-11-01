@@ -1,4 +1,4 @@
-import { divide } from '../src/lib'
+import { divide } from '../src/lib.js'
 import { expect, test } from 'vitest'
 
 test('divide', () => {
