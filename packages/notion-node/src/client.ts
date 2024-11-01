@@ -39,19 +39,33 @@ export class Client {
   #richTextToElmInlineText(
     richText: RichTextItemResponse[]
   ): ElmJsonRendererProps['json'] {
-    return richText.map((text) => {
-      return {
-        type: 'ElmInlineText',
-        props: {
-          text: text.plain_text,
-          bold: text.annotations.bold,
-          italic: text.annotations.italic,
-          underline: text.annotations.underline,
-          strikethrough: text.annotations.strikethrough,
-          color: COLOR_MAP[text.annotations.color]
-        }
+    const results: ElmJsonRendererProps['json'] = []
+
+    for (const text of richText) {
+      if (text.type === 'text' || text.type === 'mention') {
+        results.push({
+          type: 'ElmInlineText',
+          props: {
+            text: text.plain_text,
+            bold: text.annotations.bold,
+            italic: text.annotations.italic,
+            underline: text.annotations.underline,
+            strikethrough: text.annotations.strikethrough,
+            color: COLOR_MAP[text.annotations.color]
+          }
+        })
+      } else if (text.type === 'equation') {
+        results.push({
+          type: 'ElmKatex',
+          props: {
+            expression: text.equation.expression,
+            block: false
+          }
+        })
       }
-    })
+    }
+
+    return results
   }
 
   async convert({ id }: { id: string }) {
