@@ -32,11 +32,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install 
-
-      - name: Link @elmethis/core
-        run: pnpm link ../core
-        working-directory: packages/notion-node
+        run: pnpm install --recursive 
 
       - name: Run Build Test
         run: pnpm run build
