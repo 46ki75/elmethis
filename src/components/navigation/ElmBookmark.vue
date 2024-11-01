@@ -101,7 +101,9 @@ withDefaults(defineProps<ElmBookmarkProps>(), {
   flex-direction: var(--flex-direction);
   box-shadow: 0 0 0.125rem rgba(black, 0.15);
   cursor: pointer;
-  transition: background-color 200ms;
+  transition:
+    background-color 200ms,
+    transform 200ms;
   background-color: rgba(white, 0.2);
 
   [data-theme='dark'] & {
@@ -110,10 +112,12 @@ withDefaults(defineProps<ElmBookmarkProps>(), {
 
   &:hover {
     background-color: rgba(#6987b8, 0.1);
+    transform: translateX(-0.125rem) translateY(-0.125rem);
   }
 
   &:active {
     background-color: rgba(#59b57c, 0.1);
+    transform: translateX(0) translateY(0);
   }
 
   .image {
