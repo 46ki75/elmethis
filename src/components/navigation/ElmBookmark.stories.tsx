@@ -39,7 +39,7 @@ export const WithoutDate: Story = {
 
 export const Card: Story = {
   args: {
-    wide: false,
+    isHorizontal: false,
     title:
       'OGP Checker - Check images for X(Twitter) and Facebook sharing | Web ToolBox',
     description:

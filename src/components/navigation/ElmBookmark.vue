@@ -2,9 +2,9 @@
   <div
     class="bookmark"
     :style="{
-      '--flex-direction': wide ? 'row' : 'column',
-      '--image-width': wide ? '30%' : '100%',
-      '--typography-width': wide ? '70%' : '100%'
+      '--flex-direction': isHorizontal ? 'row' : 'column',
+      '--image-width': isHorizontal ? '30%' : '100%',
+      '--typography-width': isHorizontal ? '70%' : '100%'
     }"
   >
     <div class="image">
@@ -52,7 +52,7 @@ import ElmInlineText from '../inline/ElmInlineText.vue'
 import ElmImage from '../media/ElmImage.vue'
 
 export interface ElmBookmarkProps {
-  wide?: boolean
+  isHorizontal?: boolean
 
   hideUrl?: boolean
 

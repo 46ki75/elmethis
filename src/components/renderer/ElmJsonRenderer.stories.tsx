@@ -279,7 +279,7 @@ export const Bookmark: Story = {
       {
         type: 'ElmBookmark',
         props: {
-          wide: false,
+          isHorizontal: false,
           title:
             'OGP Checker - Check images for X(Twitter) and Facebook sharing | Web ToolBox',
           description:
