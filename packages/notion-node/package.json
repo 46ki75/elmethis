@@ -26,6 +26,6 @@
     }
   },
   "devDependencies": {
-    "@elmethis/core": "workspace:*"
+    "@elmethis/core": "workspace:^"
   }
 }
