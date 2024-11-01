@@ -2,6 +2,7 @@ import { Client as NotionClient } from '@notionhq/client'
 import type { ElmCalloutProps, ElmJsonRendererProps } from '@elmethis/core'
 import { RichTextItemResponse } from '@notionhq/client/build/src/api-endpoints.js'
 import ogs from 'open-graph-scraper'
+import { table } from 'console'
 
 type ColorType = RichTextItemResponse['annotations']['color']
 
@@ -367,6 +368,78 @@ export class Client {
                 ...(await this.convert({ id: block.id })).components
               ]
             })
+            break
+          }
+
+          case 'synced_block': {
+            try {
+              console.warn(
+                'Error: synced_block. Please check your integration settings.'
+              )
+              components.push(
+                ...(await this.convert({ id: block.id })).components
+              )
+            } catch {
+              break
+            }
+          }
+
+          case 'table': {
+            const tbodyRows: ElmJsonRendererProps['json'] = []
+
+            const rows = await this.#notionClient.blocks.children.list({
+              block_id: block.id
+            })
+
+            const rawTheadRow = rows.results.shift()
+
+            if (
+              rawTheadRow != undefined &&
+              'type' in rawTheadRow &&
+              rawTheadRow.type === 'table_row'
+            ) {
+              const theadRow: ElmJsonRendererProps['json'][number] = {
+                type: 'ElmTableRow',
+                children: rawTheadRow.table_row.cells
+                  .map((cell) => cell.map((text) => text.plain_text).join())
+                  .map((title) => ({
+                    type: 'ElmTableCell',
+                    props: {
+                      text: title,
+                      hasHeader: true
+                    }
+                  }))
+              }
+
+              for (const result of rows.results) {
+                if ('type' in result && result.type == 'table_row') {
+                  tbodyRows.push({
+                    type: 'ElmTableRow',
+                    children: result.table_row.cells.map((cell) => ({
+                      type: 'ElmTableCell',
+                      children: this.#richTextToElmInlineText(cell)
+                    }))
+                  })
+                }
+              }
+
+              components.push({
+                type: 'ElmTable',
+                children: [
+                  {
+                    type: 'ElmTableHeader',
+                    children: [theadRow]
+                  },
+                  {
+                    type: 'ElmTableBody',
+                    children: tbodyRows
+                  }
+                ]
+              })
+            } else {
+              break
+            }
+
             break
           }
 
