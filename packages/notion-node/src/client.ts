@@ -1,5 +1,5 @@
 import { Client as NotionClient } from '@notionhq/client'
-import type { ElmJsonRendererProps } from '@elmethis/core'
+import type { ElmCalloutProps, ElmJsonRendererProps } from '@elmethis/core'
 import { RichTextItemResponse } from '@notionhq/client/build/src/api-endpoints.js'
 
 type ColorType = RichTextItemResponse['annotations']['color']
@@ -247,6 +247,54 @@ export class Client {
           case 'divider': {
             components.push({
               type: 'ElmDivider'
+            })
+            break
+          }
+
+          case 'callout': {
+            let type: ElmCalloutProps['type'] = 'note'
+            switch (block.callout.color) {
+              case 'blue':
+              case 'blue_background':
+              case 'gray':
+              case 'gray_background':
+                type = 'note'
+                break
+
+              case 'green':
+              case 'green_background':
+                type = 'tip'
+                break
+
+              case 'purple':
+              case 'purple_background':
+                type = 'important'
+                break
+
+              case 'yellow':
+              case 'yellow_background':
+              case 'orange':
+              case 'orange_background':
+              case 'brown':
+              case 'brown_background':
+                type = 'warning'
+                break
+
+              case 'red':
+              case 'red_background':
+              case 'pink':
+              case 'pink_background':
+                type = 'caution'
+                break
+            }
+
+            components.push({
+              type: 'ElmCallout',
+              props: { type },
+              children: [
+                ...this.#richTextToElmInlineText(block.callout.rich_text),
+                ...(await this.convert({ id: block.id })).components
+              ]
             })
             break
           }
