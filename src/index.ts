@@ -1,59 +1,123 @@
 // code
-import ElmCodeBlock from './components/code/ElmCodeBlock.vue'
-import ElmPrismHighlighter from './components/code/ElmPrismHighlighter.vue'
-import ElmKatex from './components/code/ElmKatex.vue'
+import ElmCodeBlock, {
+  ElmCodeBlockProps
+} from './components/code/ElmCodeBlock.vue'
+import ElmPrismHighlighter, {
+  ElmPrismHighlighterProps
+} from './components/code/ElmPrismHighlighter.vue'
+import ElmKatex, { ElmKatexProps } from './components/code/ElmKatex.vue'
 
 // containments
-import ElmTooltip from './components/containments/ElmTooltip.vue'
+import ElmTooltip, {
+  ElmTooltipProps
+} from './components/containments/ElmTooltip.vue'
 
 // fallback
-import ElmRectangleWave from './components/fallback/ElmRectangleWave.vue'
+import ElmRectangleWave, {
+  ElmRectangleWaveProps
+} from './components/fallback/ElmRectangleWave.vue'
 
 // Headings
-import ElmHeading1 from './components/headings/ElmHeading1.vue'
-import ElmHeading2 from './components/headings/ElmHeading2.vue'
-import ElmHeading3 from './components/headings/ElmHeading3.vue'
-import ElmHeading4 from './components/headings/ElmHeading4.vue'
-import ElmHeading5 from './components/headings/ElmHeading5.vue'
-import ElmHeading6 from './components/headings/ElmHeading6.vue'
+import ElmHeading1, {
+  ElmHeading1Props
+} from './components/headings/ElmHeading1.vue'
+import ElmHeading2, {
+  ElmHeading2Props
+} from './components/headings/ElmHeading2.vue'
+import ElmHeading3, {
+  ElmHeading3Props
+} from './components/headings/ElmHeading3.vue'
+import ElmHeading4, {
+  ElmHeading4Props
+} from './components/headings/ElmHeading4.vue'
+import ElmHeading5, {
+  ElmHeading5Props
+} from './components/headings/ElmHeading5.vue'
+import ElmHeading6, {
+  ElmHeading6Props
+} from './components/headings/ElmHeading6.vue'
 
 // icon
-import ElmCubeIcon from './components/icon/ElmCubeIcon.vue'
-import ElmDotLoadingIcon from './components/icon/ElmDotLoadingIcon.vue'
-import ElmLanguageIcon from './components/icon/ElmLanguageIcon.vue'
-import ElmToggleTheme from './components/icon/ElmToggleTheme.vue'
+import ElmCubeIcon, {
+  ElmCubeIconProps
+} from './components/icon/ElmCubeIcon.vue'
+import ElmDotLoadingIcon, {
+  ElmDotLoadingIconProps
+} from './components/icon/ElmDotLoadingIcon.vue'
+import ElmLanguageIcon, {
+  ElmLanguageIconProps
+} from './components/icon/ElmLanguageIcon.vue'
+import ElmToggleTheme, {
+  ElmToggleThemeProps
+} from './components/icon/ElmToggleTheme.vue'
 
 // inline
-import ElmInlineCode from './components/inline/ElmInlineCode.vue'
-import ElmInlineLink from './components/inline/ElmInlineLink.vue'
-import ElmInlineRuby from './components/inline/ElmInlineRuby.vue'
-import ElmInlineText from './components/inline/ElmInlineText.vue'
+import ElmInlineCode, {
+  ElmInlineCodeProps
+} from './components/inline/ElmInlineCode.vue'
+import ElmInlineLink, {
+  ElmInlineLinkProps
+} from './components/inline/ElmInlineLink.vue'
+import ElmInlineRuby, {
+  ElmInlineRubyProps
+} from './components/inline/ElmInlineRuby.vue'
+import ElmInlineText, {
+  ElmInlineTextProps
+} from './components/inline/ElmInlineText.vue'
 
 // media
-import ElmImage from './components/media/ElmImage.vue'
+import ElmImage, { ElmImageProps } from './components/media/ElmImage.vue'
 
 // navigation
-import ElmBookmark from './components/navigation/ElmBookmark.vue'
-import ElmBreadcrumb from './components/navigation/ElmBreadcrumb.vue'
-import ElmPagetop from './components/navigation/ElmPagetop.vue'
+import ElmBookmark, {
+  ElmBookmarkProps
+} from './components/navigation/ElmBookmark.vue'
+import ElmBreadcrumb, {
+  ElmBreadcrumbProps
+} from './components/navigation/ElmBreadcrumb.vue'
+import ElmPagetop, {
+  ElmPagetopProps
+} from './components/navigation/ElmPagetop.vue'
 
 // renderer
-import ElmJsonRenderer from './components/renderer/ElmJsonRenderer.vue'
+import ElmJsonRenderer, {
+  ElmJsonRendererProps
+} from './components/renderer/ElmJsonRenderer.vue'
 
 // table
-import ElmTable from './components/table/ElmTable.vue'
-import ElmTableHeader from './components/table/ElmTableHeader.vue'
-import ElmTableBody from './components/table/ElmTableBody.vue'
-import ElmTableRow from './components/table/ElmTableRow.vue'
-import ElmTableCell from './components/table/ElmTableCell.vue'
+import ElmTable, { ElmTableProps } from './components/table/ElmTable.vue'
+import ElmTableHeader, {
+  ElmTableHeaderProps
+} from './components/table/ElmTableHeader.vue'
+import ElmTableBody, {
+  ElmTableBodyProps
+} from './components/table/ElmTableBody.vue'
+import ElmTableRow, {
+  ElmTableRowProps
+} from './components/table/ElmTableRow.vue'
+import ElmTableCell, {
+  ElmTableCellProps
+} from './components/table/ElmTableCell.vue'
 
 // typography
-import ElmBlockQuote from './components/typography/ElmBlockQuote.vue'
-import ElmBulletedList from './components/typography/ElmBulletedList.vue'
-import ElmCallout from './components/typography/ElmCallout.vue'
-import ElmDivider from './components/typography/ElmDivider.vue'
-import ElmNumberedList from './components/typography/ElmNumberedList.vue'
-import ElmListItem from './components/typography/ElmListItem.vue'
+import ElmBlockQuote, {
+  ElmBlockQuoteProps
+} from './components/typography/ElmBlockQuote.vue'
+import ElmBulletedList, {
+  ElmBulletedListProps
+} from './components/typography/ElmBulletedList.vue'
+import ElmCallout, {
+  ElmCalloutProps
+} from './components/typography/ElmCallout.vue'
+import ElmDivider, {
+  ElmDividerProps
+} from './components/typography/ElmDivider.vue'
+import ElmNumberedList, {
+  ElmNumberedListProps
+} from './components/typography/ElmNumberedList.vue'
+import ElmListItem, {
+  ElmListItemProps
+} from './components/typography/ElmListItem.vue'
 
 export {
   ElmCodeBlock,
@@ -91,4 +155,42 @@ export {
   ElmDivider,
   ElmNumberedList,
   ElmListItem
+}
+
+export type {
+  ElmCodeBlockProps,
+  ElmPrismHighlighterProps,
+  ElmKatexProps,
+  ElmTooltipProps,
+  ElmRectangleWaveProps,
+  ElmHeading1Props,
+  ElmHeading2Props,
+  ElmHeading3Props,
+  ElmHeading4Props,
+  ElmHeading5Props,
+  ElmHeading6Props,
+  ElmCubeIconProps,
+  ElmDotLoadingIconProps,
+  ElmLanguageIconProps,
+  ElmToggleThemeProps,
+  ElmInlineCodeProps,
+  ElmInlineLinkProps,
+  ElmInlineRubyProps,
+  ElmInlineTextProps,
+  ElmImageProps,
+  ElmBookmarkProps,
+  ElmBreadcrumbProps,
+  ElmPagetopProps,
+  ElmJsonRendererProps,
+  ElmTableProps,
+  ElmTableHeaderProps,
+  ElmTableBodyProps,
+  ElmTableRowProps,
+  ElmTableCellProps,
+  ElmBlockQuoteProps,
+  ElmBulletedListProps,
+  ElmCalloutProps,
+  ElmDividerProps,
+  ElmNumberedListProps,
+  ElmListItemProps
 }
