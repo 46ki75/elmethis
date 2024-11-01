@@ -174,3 +174,78 @@ export const Paragraph: Story = {
     ]
   }
 }
+
+export const Table: Story = {
+  args: {
+    json: [
+      {
+        type: 'ElmTable',
+        children: [
+          {
+            type: 'ElmTableHeader',
+            children: [
+              {
+                type: 'ElmTableRow',
+                children: [
+                  {
+                    type: 'ElmTableCell',
+                    props: { hasHeader: true },
+                    children: [
+                      { type: 'ElmInlineText', props: { text: 'Hello' } }
+                    ]
+                  },
+                  {
+                    type: 'ElmTableCell',
+                    props: { hasHeader: true },
+                    children: [
+                      { type: 'ElmInlineText', props: { text: 'world!' } }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            type: 'ElmTableBody',
+            children: [
+              {
+                type: 'ElmTableRow',
+                children: [
+                  {
+                    type: 'ElmTableCell',
+                    children: [
+                      { type: 'ElmInlineText', props: { text: 'Hello' } }
+                    ]
+                  },
+                  {
+                    type: 'ElmTableCell',
+                    children: [
+                      { type: 'ElmInlineText', props: { text: 'world!' } }
+                    ]
+                  }
+                ]
+              },
+              {
+                type: 'ElmTableRow',
+                children: [
+                  {
+                    type: 'ElmTableCell',
+                    children: [
+                      { type: 'ElmInlineText', props: { text: 'Hello' } }
+                    ]
+                  },
+                  {
+                    type: 'ElmTableCell',
+                    children: [
+                      { type: 'ElmInlineText', props: { text: 'world!' } }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
