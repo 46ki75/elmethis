@@ -1,5 +1,7 @@
 <template>
-  <table></table>
+  <table>
+    <slot />
+  </table>
 </template>
 
 <script setup lang="ts">
