@@ -2,6 +2,9 @@
   "name": "@elmethis/notion-node",
   "version": "1.0.0-alpha.1",
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "vitest",
     "start": "tsx tests/integration.ts",
