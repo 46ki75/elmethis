@@ -180,7 +180,9 @@ export class Client {
                 src:
                   block.image.type === 'external'
                     ? block.image.external.url
-                    : block.image.file.url
+                    : block.image.file.url,
+                alt: block.image.caption.map((text) => text.plain_text).join(),
+                enableModal: true
               }
             })
             break
