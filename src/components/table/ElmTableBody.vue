@@ -46,8 +46,6 @@ withDefaults(defineProps<ElmTableBodyProps>(), {})
       }
 
       [data-theme='dark'] & {
-        color: var(--color, rgba(255, 255, 255, 0.7));
-
         &::selection {
           color: rgba(0, 0, 0, 0.7);
           background-color: var(--color, rgba(255, 255, 255, 0.7));
