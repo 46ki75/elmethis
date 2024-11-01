@@ -8,7 +8,8 @@
     "url": "git@github.com:46ki75/elmethis.git"
   },
   "homepage": "https://46ki75.github.io/elmethis",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "@heroicons/vue": "^2.1.5",
     "@vueuse/core": "^11.2.0",
     "katex": "^0.16.11",
@@ -16,9 +17,7 @@
     "polished": "^4.3.1",
     "prism-theme-vars": "^0.2.5",
     "prismjs": "^1.29.0",
-    "vue": "^3.5.12"
-  },
-  "devDependencies": {
+    "vue": "^3.5.12",
     "@chromatic-com/storybook": "^3.2.2",
     "@storybook/addon-essentials": "^8.4.0",
     "@storybook/addon-interactions": "^8.4.0",
