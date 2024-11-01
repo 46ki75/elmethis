@@ -8,13 +8,14 @@
 
       <ElmTooltip>
         <template #original>
-          <ClipboardDocumentIcon
+          <component
             class="copy-icon"
             @click="
               () => {
                 copy(code)
               }
             "
+            :is="copied ? ClipboardDocumentCheckIcon : ClipboardDocumentIcon"
           />
         </template>
         <template #tooltip>
@@ -33,7 +34,10 @@
 </template>
 
 <script setup lang="ts">
-import { ClipboardDocumentIcon } from '@heroicons/vue/24/outline'
+import {
+  ClipboardDocumentCheckIcon,
+  ClipboardDocumentIcon
+} from '@heroicons/vue/24/outline'
 import ElmLanguageIcon from '../icon/ElmLanguageIcon.vue'
 import ElmInlineText from '../inline/ElmInlineText.vue'
 import ElmPrismHighlighter from './ElmPrismHighlighter.vue'
