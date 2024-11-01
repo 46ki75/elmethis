@@ -30,16 +30,29 @@ export const Primary: Story = {
           <ElmTableRow>
             <ElmTableCell hasHeader>Header 1</ElmTableCell>
             <ElmTableCell hasHeader>Header 2</ElmTableCell>
+            <ElmTableCell hasHeader>Header 3</ElmTableCell>
           </ElmTableRow>
         </ElmTableHeader>
         <ElmTableBody>
           <ElmTableRow>
             <ElmTableCell>Row 1, Cell 1</ElmTableCell>
             <ElmTableCell>Row 1, Cell 2</ElmTableCell>
+            <ElmTableCell>Row 1, Cell 3</ElmTableCell>
           </ElmTableRow>
           <ElmTableRow>
             <ElmTableCell>Row 2, Cell 1</ElmTableCell>
             <ElmTableCell>Row 2, Cell 2</ElmTableCell>
+            <ElmTableCell>Row 2, Cell 3</ElmTableCell>
+          </ElmTableRow>
+          <ElmTableRow>
+            <ElmTableCell>Row 3, Cell 1</ElmTableCell>
+            <ElmTableCell>Row 3, Cell 2</ElmTableCell>
+            <ElmTableCell>Row 3, Cell 3</ElmTableCell>
+          </ElmTableRow>
+          <ElmTableRow>
+            <ElmTableCell>Row 4, Cell 1</ElmTableCell>
+            <ElmTableCell>Row 4, Cell 2</ElmTableCell>
+            <ElmTableCell>Row 4, Cell 3</ElmTableCell>
           </ElmTableRow>
         </ElmTableBody>
       </ElmTable>

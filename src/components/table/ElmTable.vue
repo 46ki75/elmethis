@@ -1,5 +1,5 @@
 <template>
-  <table>
+  <table class="table">
     <slot />
   </table>
 </template>
@@ -10,4 +10,9 @@ export interface ElmTableProps {}
 withDefaults(defineProps<ElmTableProps>(), {})
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+</style>
