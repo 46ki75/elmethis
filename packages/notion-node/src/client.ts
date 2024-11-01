@@ -56,6 +56,8 @@ export class Client {
   async convert({ id }: { id: string }) {
     const components: ElmJsonRendererProps['json'] = []
 
+    let ul: ElmJsonRendererProps['json'][number] | undefined
+
     const { results } = await this.#notionClient.blocks.children.list({
       block_id: id
     })
@@ -181,6 +183,30 @@ export class Client {
             })
             break
           }
+
+          case 'bulleted_list_item': {
+            const li: ElmJsonRendererProps['json'][number] = {
+              type: 'ElmListItem',
+              children: this.#richTextToElmInlineText(
+                block.bulleted_list_item.rich_text
+              )
+            }
+
+            if (ul === undefined || ul.children === undefined) {
+              ul = {
+                type: 'ElmBulletedList',
+                children: [li]
+              }
+              components.push(ul)
+            } else {
+              ul.children.push(li)
+            }
+            break
+          }
+        }
+
+        if (ul !== undefined && block.type !== 'bulleted_list_item') {
+          ul = undefined
         }
       }
     }
