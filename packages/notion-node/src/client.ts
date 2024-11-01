@@ -333,10 +333,32 @@ export class Client {
 
             break
           }
-        }
 
-        if (ul !== undefined && block.type !== 'bulleted_list_item') {
-          ul = undefined
+          case 'equation': {
+            components.push({
+              type: 'ElmKatex',
+              props: {
+                expression: block.equation.expression,
+                block: true
+              }
+            })
+            break
+          }
+
+          case 'audio':
+          case 'video':
+          case 'file':
+          case 'pdf':
+          case 'embed':
+          case 'breadcrumb':
+          case 'child_page':
+          case 'child_database':
+          case 'unsupported':
+          case 'link_preview':
+          case 'link_to_page':
+          case 'table_of_contents':
+          case 'template':
+            break
         }
 
         if (ol !== undefined && block.type !== 'numbered_list_item') {
