@@ -1,17 +1,35 @@
 <template>
-  <ul class="elmethis-bulleted-list">
+  <ul
+    ref="target"
+    class="elmethis-bulleted-list"
+    :style="{
+      '--opacity': targetIsVisible ? 1 : 0
+    }"
+  >
     <slot />
   </ul>
 </template>
 
 <script setup lang="ts">
+import { useIntersectionObserver } from '@vueuse/core'
+import { ref } from 'vue'
+
 export interface ElmBulletedListProps {}
 
 withDefaults(defineProps<ElmBulletedListProps>(), {})
+
+const target = ref(null)
+const targetIsVisible = ref(false)
+
+useIntersectionObserver(target, ([{ isIntersecting }], _) => {
+  targetIsVisible.value = isIntersecting
+})
 </script>
 
 <style lang="scss">
 .elmethis-bulleted-list {
+  opacity: var(--opacity);
+  transition: opacity 800ms;
   box-sizing: border-box;
   padding-left: 1.25rem;
 
