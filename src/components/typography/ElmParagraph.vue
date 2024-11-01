@@ -29,7 +29,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 <style scoped lang="scss">
 .paragraph {
   opacity: var(--opacity);
-  transition: opacity 400ms;
+  transition: opacity 800ms;
   color: rgba(0, 0, 0, 0.7);
 
   &::selection {
