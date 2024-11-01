@@ -2,7 +2,6 @@ import { Client as NotionClient } from '@notionhq/client'
 import type { ElmCalloutProps, ElmJsonRendererProps } from '@elmethis/core'
 import { RichTextItemResponse } from '@notionhq/client/build/src/api-endpoints.js'
 import ogs from 'open-graph-scraper'
-import { table } from 'console'
 
 type ColorType = RichTextItemResponse['annotations']['color']
 
