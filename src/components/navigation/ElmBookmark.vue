@@ -1,11 +1,15 @@
 <template>
   <a
     class="bookmark"
+    :href="url"
+    :target="openInNewTab ? '_blank' : undefined"
+    rel="noopener noreferrer"
     :style="{
       '--flex-direction': isHorizontal ? 'row' : 'column',
       '--image-width': isHorizontal ? '30%' : '100%',
       '--typography-width': isHorizontal ? '70%' : '100%'
     }"
+    @click="handleClick"
   >
     <div class="image">
       <ElmImage :src="image" />
@@ -52,9 +56,21 @@ import ElmInlineText from '../inline/ElmInlineText.vue'
 import ElmImage from '../media/ElmImage.vue'
 
 export interface ElmBookmarkProps {
+  /**
+   * Whether to display the bookmark horizontally.
+   */
   isHorizontal?: boolean
 
+  /**
+   * Whether to hide the URL.
+   */
   hideUrl?: boolean
+
+  /**
+   * Whether to open the link in a new tab.
+   * Defaults to `true`.
+   */
+  openInNewTab?: boolean
 
   /**
    * The title of the bookmark.
@@ -86,13 +102,27 @@ export interface ElmBookmarkProps {
    * The date the bookmark was last updated.
    */
   updatedAt?: string
+
+  /**
+   * The function to call when the link is clicked.
+   * If provided, the default behavior (navigating to the URL) is prevented.
+   */
+  onClick?: () => void
 }
 
-withDefaults(defineProps<ElmBookmarkProps>(), {
+const props = withDefaults(defineProps<ElmBookmarkProps>(), {
   isHorizontal: true,
+  openInNewTab: true,
   hideUrl: false,
   description: 'No description provided'
 })
+
+function handleClick(event: MouseEvent) {
+  if (props.onClick) {
+    event.preventDefault()
+    props.onClick()
+  }
+}
 </script>
 
 <style scoped lang="scss">
