@@ -1,12 +1,22 @@
 <template>
   <component :is="hasHeader ? 'th' : 'td'" class="cell">
-    <slot />
+    <slot v-if="text == null" />
+    {{ text }}
   </component>
 </template>
 
 <script setup lang="ts">
 export interface ElmTableCellProps {
+  /**
+   * Whether the cell is a header cell.
+   */
   hasHeader?: boolean
+
+  /**
+   * The text content of the cell.
+   * If not provided, the cell will render its children as content.
+   */
+  text?: string
 }
 
 withDefaults(defineProps<ElmTableCellProps>(), {
