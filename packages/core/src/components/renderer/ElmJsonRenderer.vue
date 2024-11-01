@@ -46,6 +46,7 @@ import ElmKatex, { ElmKatexProps } from '../code/ElmKatex.vue'
 import ElmImage, { ElmImageProps } from '../media/ElmImage.vue'
 import ElmBookmark, { ElmBookmarkProps } from '../navigation/ElmBookmark.vue'
 import ElmToggle, { ElmToggleProps } from '../containments/ElmToggle.vue'
+import ElmCheckbox, { ElmCheckboxProps } from '../form/ElmCheckbox.vue'
 
 type ComponentType =
   | 'ElmInlineText'
@@ -74,6 +75,7 @@ type ComponentType =
   | 'ElmImage'
   | 'ElmBookmark'
   | 'ElmToggle'
+  | 'ElmCheckbox'
 
 type ComponentProps =
   | ElmInlineTextProps
@@ -102,6 +104,7 @@ type ComponentProps =
   | ElmImageProps
   | ElmBookmarkProps
   | ElmToggleProps
+  | ElmCheckboxProps
 
 interface JsonComponentBase {
   type: ComponentType
@@ -239,6 +242,11 @@ interface ElmToggleJsonComponent extends JsonComponentBase {
   props?: ElmToggleProps
 }
 
+interface ElmCheckboxJsonComponent extends JsonComponentBase {
+  type: 'ElmCheckbox'
+  props?: ElmCheckboxProps
+}
+
 type JsonComponent =
   | ElmInlineTextJsonComponent
   | ElmInlineCodeJsonComponent
@@ -266,6 +274,7 @@ type JsonComponent =
   | ElmImageJsonComponent
   | ElmBookmarkJsonComponent
   | ElmToggleJsonComponent
+  | ElmCheckboxJsonComponent
 
 export interface ElmJsonRendererProps {
   json: JsonComponent[]
@@ -299,7 +308,8 @@ const componentMap: Record<ComponentType, any> = {
   ElmKatex,
   ElmImage,
   ElmBookmark,
-  ElmToggle
+  ElmToggle,
+  ElmCheckbox
 }
 </script>
 
