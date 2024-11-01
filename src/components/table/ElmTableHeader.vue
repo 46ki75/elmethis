@@ -12,6 +12,7 @@ withDefaults(defineProps<ElmTableHeaderProps>(), {})
 
 <style lang="scss">
 .elmethis-table-header-thead {
+  text-align: left;
   background-color: rgba(black, 0.8);
   color: rgba(white, 0.8);
   transition:
