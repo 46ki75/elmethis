@@ -8,7 +8,10 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
-    "typeRoots": ["../../node_modules/@types"]
+    "typeRoots": ["../../node_modules/@types"],
+    "paths": {
+      "@elmethis/core": ["../core/src"]
+    }
   },
   "exclude": ["node_modules", "dist"]
 }
