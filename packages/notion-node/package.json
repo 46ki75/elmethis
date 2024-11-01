@@ -1,6 +1,6 @@
 {
   "name": "@elmethis/notion-node",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -16,6 +16,9 @@
   "author": "Chomolungma Shirayuki",
   "license": "MIT",
   "description": "",
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "import": "./dist/index.js",
