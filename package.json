@@ -1,7 +1,4 @@
 {
-  "workspaces": [
-    "packages/*"
-  ],
   "author": "Chomolungma Shirayuki",
   "repository": {
     "type": "git",
