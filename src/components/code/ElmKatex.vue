@@ -1,5 +1,5 @@
 <template>
-  <span :key="JSON.stringify(props)" ref="targetRef">{{ equation }}</span>
+  <span :key="JSON.stringify(props)" ref="targetRef">{{ expression }}</span>
 </template>
 
 <script setup lang="ts">
@@ -12,7 +12,7 @@ export interface ElmKatexProps {
   /**
    * The KaTex expression.
    */
-  equation: string
+  expression: string
 
   /**
    * Whether to render the equation in block mode.
@@ -33,7 +33,7 @@ const targetRef = ref<HTMLElement | null>(null)
 const render = () => {
   if (targetRef.value) {
     try {
-      katex.render(props.equation, targetRef.value, {
+      katex.render(props.expression, targetRef.value, {
         displayMode: props.block
       })
     } catch (err) {

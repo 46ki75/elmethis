@@ -243,3 +243,54 @@ export const Table: Story = {
     ]
   }
 }
+
+export const Katex: Story = {
+  args: {
+    json: [
+      {
+        type: 'ElmKatex',
+        props: {
+          expression: 'x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}',
+          block: true
+        }
+      }
+    ]
+  }
+}
+
+export const Image: Story = {
+  args: {
+    json: [
+      {
+        type: 'ElmImage',
+        props: {
+          src: 'https://images.unsplash.com/photo-1556983703-27576e5afa24?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb',
+          alt: 'Placeholder image',
+          enableModal: true
+        }
+      }
+    ]
+  }
+}
+
+export const Bookmark: Story = {
+  args: {
+    json: [
+      {
+        type: 'ElmBookmark',
+        props: {
+          isHorizontal: false,
+          title:
+            'OGP Checker - Check images for X(Twitter) and Facebook sharing | Web ToolBox',
+          description:
+            'A tool to check OGP tags and OGP images for SNS shares for a given page in real time, accurately simulating X (formerly Twitter) and Facebook share images on both PC and mobile.',
+          image:
+            'https://web-toolbox.dev/__og-image__/static/en/tools/ogp-checker/og.png',
+          url: 'https://web-toolbox.dev/en/tools/ogp-checker',
+          createdAt: '2021-08-01',
+          updatedAt: '2021-08-01'
+        }
+      }
+    ]
+  }
+}

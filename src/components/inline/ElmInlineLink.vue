@@ -2,6 +2,7 @@
   <a
     class="link"
     :href="href"
+    :style="{ '--font-size': size }"
     :target="openInNewTab ? '_blank' : undefined"
     rel="noopener noreferrer"
     @click="handleClick"
@@ -27,6 +28,7 @@ import {
   ArrowTopRightOnSquareIcon,
   ChevronRightIcon
 } from '@heroicons/vue/24/outline'
+import type { Property } from 'csstype'
 
 export interface ElmInlineLinkProps {
   /**
@@ -40,6 +42,11 @@ export interface ElmInlineLinkProps {
    * e.g. `https://example.com`
    */
   href?: string
+
+  /**
+   * Specifies the font size of the text.
+   */
+  size?: Property.FontSize
 
   /**
    * Whether to open the link in a new tab.
@@ -61,7 +68,8 @@ export interface ElmInlineLinkProps {
 }
 
 const props = withDefaults(defineProps<ElmInlineLinkProps>(), {
-  openInNewTab: true
+  openInNewTab: true,
+  size: '1rem'
 })
 
 function handleClick(event: MouseEvent) {
@@ -77,6 +85,7 @@ function handleClick(event: MouseEvent) {
   all: unset;
   box-sizing: border-box;
   padding: 0 0.25rem;
+  font-size: var(--font-size);
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
@@ -112,7 +121,7 @@ function handleClick(event: MouseEvent) {
   }
 
   .icon {
-    width: 16px;
+    width: var(--font-size);
   }
 }
 </style>

@@ -1,7 +1,7 @@
 // code
 import ElmCodeBlock from './components/code/ElmCodeBlock.vue'
 import ElmPrismHighlighter from './components/code/ElmPrismHighlighter.vue'
-// import ElmKatex from './components/code/ElmKatex.vue'
+import ElmKatex from './components/code/ElmKatex.vue'
 
 // containments
 import ElmTooltip from './components/containments/ElmTooltip.vue'
@@ -32,16 +32,32 @@ import ElmInlineText from './components/inline/ElmInlineText.vue'
 // media
 import ElmImage from './components/media/ElmImage.vue'
 
+// navigation
+import ElmBookmark from './components/navigation/ElmBookmark.vue'
+import ElmPagetop from './components/navigation/ElmPagetop.vue'
+
+// renderer
+import ElmJsonRenderer from './components/renderer/ElmJsonRenderer.vue'
+
+// table
+import ElmTable from './components/table/ElmTable.vue'
+import ElmTableHeader from './components/table/ElmTableHeader.vue'
+import ElmTableBody from './components/table/ElmTableBody.vue'
+import ElmTableRow from './components/table/ElmTableRow.vue'
+import ElmTableCell from './components/table/ElmTableCell.vue'
+
 // typography
+import ElmBlockQuote from './components/typography/ElmBlockQuote.vue'
 import ElmBulletedList from './components/typography/ElmBulletedList.vue'
 import ElmCallout from './components/typography/ElmCallout.vue'
 import ElmDivider from './components/typography/ElmDivider.vue'
 import ElmNumberedList from './components/typography/ElmNumberedList.vue'
+import ElmListItem from './components/typography/ElmListItem.vue'
 
 export {
   ElmCodeBlock,
   ElmPrismHighlighter,
-  // ElmKatex,
+  ElmKatex,
   ElmTooltip,
   ElmRectangleWave,
   ElmHeading1,
@@ -59,8 +75,18 @@ export {
   ElmInlineRuby,
   ElmInlineText,
   ElmImage,
+  ElmBookmark,
+  ElmPagetop,
+  ElmJsonRenderer,
+  ElmTable,
+  ElmTableHeader,
+  ElmTableBody,
+  ElmTableRow,
+  ElmTableCell,
+  ElmBlockQuote,
   ElmBulletedList,
   ElmCallout,
   ElmDivider,
-  ElmNumberedList
+  ElmNumberedList,
+  ElmListItem
 }
