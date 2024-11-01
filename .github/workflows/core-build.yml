@@ -23,11 +23,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm i
 
       - name: Run Build Test
-        run: npm run build
+        run: pnpm run build
         working-directory: packages/core

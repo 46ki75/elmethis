@@ -23,7 +23,7 @@
   },
   "scripts": {
     "build": "vue-tsc && vite build",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "pnpm run build",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   }
