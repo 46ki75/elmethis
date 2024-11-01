@@ -359,6 +359,19 @@ export class Client {
             break
           }
 
+          case 'quote': {
+            components.push({
+              type: 'ElmBlockQuote',
+              children: [
+                ...this.#richTextToElmInlineText(block.quote.rich_text),
+                ...(await this.convert({ id: block.id })).components
+              ]
+            })
+            break
+          }
+
+          case 'column':
+          case 'column_list':
           case 'audio':
           case 'video':
           case 'file':
