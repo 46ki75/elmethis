@@ -6,7 +6,8 @@
     "test": "vitest",
     "start": "tsx tests/integration.ts",
     "prebuild": "rm -rf dist",
-    "build": "tsc -p tsconfig.build.json"
+    "build": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [],
   "author": "Chomolungma Shirayuki",
