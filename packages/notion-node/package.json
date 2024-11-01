@@ -19,7 +19,8 @@
     }
   },
   "dependencies": {
-    "@notionhq/client": "^2.2.15"
+    "@notionhq/client": "^2.2.15",
+    "open-graph-scraper": "^6.8.2"
   },
   "devDependencies": {
     "@elmethis/core": "^1.0.0-alpha.3",

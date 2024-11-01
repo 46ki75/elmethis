@@ -1,6 +1,7 @@
 import { Client as NotionClient } from '@notionhq/client'
 import type { ElmCalloutProps, ElmJsonRendererProps } from '@elmethis/core'
 import { RichTextItemResponse } from '@notionhq/client/build/src/api-endpoints.js'
+import ogs from 'open-graph-scraper'
 
 type ColorType = RichTextItemResponse['annotations']['color']
 
@@ -296,6 +297,38 @@ export class Client {
                 ...(await this.convert({ id: block.id })).components
               ]
             })
+            break
+          }
+
+          case 'bookmark': {
+            const url = block.bookmark.url
+            const { result, response } = await ogs({ url })
+
+            const title =
+              result.ogTitle || result.dcTitle || result.twitterTitle || url
+
+            const description =
+              result.ogDescription ||
+              result.dcDescription ||
+              result.twitterDescription
+
+            const image =
+              result.ogImage && result.ogImage.length > 0
+                ? result.ogImage[0].url
+                : result.twitterImage && result.twitterImage.length > 0
+                  ? result.twitterImage[0].url
+                  : ''
+
+            components.push({
+              type: 'ElmBookmark',
+              props: {
+                title,
+                description,
+                image,
+                url
+              }
+            })
+
             break
           }
         }
