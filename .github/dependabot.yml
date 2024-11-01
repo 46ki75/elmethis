@@ -23,5 +23,3 @@ updates:
           - '*postcss*'
     pull-request-branch-name:
       separator: /
-    reviewers:
-      - '46ki75'
