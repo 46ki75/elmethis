@@ -14,5 +14,6 @@ withDefaults(defineProps<ElmTableProps>(), {})
 .table {
   border-collapse: collapse;
   border-spacing: 0;
+  box-shadow: 0 0 0.125rem rgba(black, 0.1);
 }
 </style>
