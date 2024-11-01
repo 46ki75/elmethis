@@ -32,6 +32,28 @@ withDefaults(defineProps<ElmTableBodyProps>(), {})
         background-color: rgba(#6987b8, 0.15);
       }
     }
+
+    td,
+    th {
+      color: rgba(black, 0.7);
+      [data-theme='dark'] & {
+        color: rgba(white, 0.7);
+      }
+
+      &::selection {
+        color: rgba(255, 255, 255, 0.7);
+        background-color: var(--color, rgba(0, 0, 0, 0.7));
+      }
+
+      [data-theme='dark'] & {
+        color: var(--color, rgba(255, 255, 255, 0.7));
+
+        &::selection {
+          color: rgba(0, 0, 0, 0.7);
+          background-color: var(--color, rgba(255, 255, 255, 0.7));
+        }
+      }
+    }
   }
 }
 </style>
