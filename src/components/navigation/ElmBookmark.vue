@@ -3,19 +3,28 @@
     class="bookmark"
     :style="{
       '--flex-direction': wide ? 'row' : 'column',
-      '--max-width': wide ? '30%' : '100%'
+      '--image-width': wide ? '30%' : '100%',
+      '--typography-width': wide ? '70%' : '100%'
     }"
   >
     <div class="image">
       <ElmImage :src="image" />
     </div>
+
     <div class="typography">
-      <ElmInlineText :text="title" bold />
-      <ElmInlineText
-        :text="description"
-        size=".8rem"
-        :style="{ opacity: 0.6 }"
-      />
+      <div class="title"><ElmInlineText :text="title" bold /></div>
+
+      <div>
+        <ElmInlineText
+          :text="
+            description.length > 200
+              ? description.slice(0, 200) + '...'
+              : description
+          "
+          size=".8rem"
+          :style="{ opacity: 0.6 }"
+        />
+      </div>
 
       <div class="date" v-if="createdAt != null || updatedAt != null">
         <template v-if="createdAt != null">
@@ -108,17 +117,26 @@ withDefaults(defineProps<ElmBookmarkProps>(), {
   }
 
   .image {
-    max-width: var(--max-width);
+    width: var(--image-width);
     opacity: 0.9;
   }
 
   .typography {
+    width: var(--typography-width);
     box-sizing: border-box;
     padding: 0.5rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     gap: 0.5rem;
+
+    .title {
+      display: inline;
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
 
     .link {
       width: 100%;
