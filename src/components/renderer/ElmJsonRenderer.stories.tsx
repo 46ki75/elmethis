@@ -189,17 +189,11 @@ export const Table: Story = {
                 children: [
                   {
                     type: 'ElmTableCell',
-                    props: { hasHeader: true },
-                    children: [
-                      { type: 'ElmInlineText', props: { text: 'Hello' } }
-                    ]
+                    props: { hasHeader: true, text: 'Header 1' }
                   },
                   {
                     type: 'ElmTableCell',
-                    props: { hasHeader: true },
-                    children: [
-                      { type: 'ElmInlineText', props: { text: 'world!' } }
-                    ]
+                    props: { hasHeader: true, text: 'Header 2' }
                   }
                 ]
               }
