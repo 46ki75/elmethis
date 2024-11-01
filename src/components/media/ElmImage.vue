@@ -83,6 +83,7 @@ onKeyStroke('Escape', (e) => {
 
 <style scoped lang="scss">
 .image {
+  display: block;
   width: 100%;
   height: var(--height);
   opacity: var(--opacity);
