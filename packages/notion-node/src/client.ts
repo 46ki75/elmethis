@@ -43,17 +43,27 @@ export class Client {
 
     for (const text of richText) {
       if (text.type === 'text' || text.type === 'mention') {
-        results.push({
-          type: 'ElmInlineText',
-          props: {
-            text: text.plain_text,
-            bold: text.annotations.bold,
-            italic: text.annotations.italic,
-            underline: text.annotations.underline,
-            strikethrough: text.annotations.strikethrough,
-            color: COLOR_MAP[text.annotations.color]
-          }
-        })
+        if (text.annotations.code) {
+          results.push({
+            type: 'ElmInlineCode',
+            props: {
+              code: text.plain_text,
+              color: COLOR_MAP[text.annotations.color]
+            }
+          })
+        } else {
+          results.push({
+            type: 'ElmInlineText',
+            props: {
+              text: text.plain_text,
+              bold: text.annotations.bold,
+              italic: text.annotations.italic,
+              underline: text.annotations.underline,
+              strikethrough: text.annotations.strikethrough,
+              color: COLOR_MAP[text.annotations.color]
+            }
+          })
+        }
       } else if (text.type === 'equation') {
         results.push({
           type: 'ElmKatex',
