@@ -26,3 +26,11 @@ export const OpenInSameTab: Story = {
     openInNewTab: false
   }
 }
+
+export const Size: Story = {
+  args: {
+    text: 'elm-inline-link',
+    href: 'https://example.com',
+    size: '0.75rem'
+  }
+}
