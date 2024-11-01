@@ -53,7 +53,7 @@ export class Client {
     })
   }
 
-  async convert(id: string) {
+  async convert({ id }: { id: string }) {
     const components: ElmJsonRendererProps['json'] = []
 
     const { results } = await this.#notionClient.blocks.children.list({
@@ -93,7 +93,7 @@ export class Client {
                     .map((text) => text.plain_text)
                     .join()
                 },
-                children: await this.convert(block.id)
+                children: (await this.convert({ id: block.id })).components
               })
             } else {
               components.push({
@@ -117,7 +117,7 @@ export class Client {
                     .map((text) => text.plain_text)
                     .join()
                 },
-                children: await this.convert(block.id)
+                children: (await this.convert({ id: block.id })).components
               })
             } else {
               components.push({
@@ -141,7 +141,7 @@ export class Client {
                     .map((text) => text.plain_text)
                     .join()
                 },
-                children: await this.convert(block.id)
+                children: (await this.convert({ id: block.id })).components
               })
             } else {
               components.push({
@@ -164,7 +164,7 @@ export class Client {
                   .map((text) => text.plain_text)
                   .join()
               },
-              children: await this.convert(block.id)
+              children: (await this.convert({ id: block.id })).components
             })
             break
           }
@@ -172,6 +172,6 @@ export class Client {
       }
     }
 
-    return components
+    return { components }
   }
 }
