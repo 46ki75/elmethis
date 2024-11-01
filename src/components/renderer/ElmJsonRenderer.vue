@@ -35,6 +35,13 @@ import ElmHeading5, { ElmHeading5Props } from '../headings/ElmHeading5.vue'
 import ElmHeading6, { ElmHeading6Props } from '../headings/ElmHeading6.vue'
 import ElmCodeBlock, { ElmCodeBlockProps } from '../code/ElmCodeBlock.vue'
 import ElmParagraph, { ElmParagraphProps } from '../typography/ElmParagraph.vue'
+import ElmTable, { ElmTableProps } from '../table/ElmTable.vue'
+import ElmTableHeader, {
+  ElmTableHeaderProps
+} from '../table/ElmTableHeader.vue'
+import ElmTableBody, { ElmTableBodyProps } from '../table/ElmTableBody.vue'
+import ElmTableRow, { ElmTableRowProps } from '../table/ElmTableRow.vue'
+import ElmTableCell, { ElmTableCellProps } from '../table/ElmTableCell.vue'
 
 type ComponentType =
   | 'ElmInlineText'
@@ -54,6 +61,11 @@ type ComponentType =
   | 'ElmHeading6'
   | 'ElmCodeBlock'
   | 'ElmParagraph'
+  | 'ElmTable'
+  | 'ElmTableHeader'
+  | 'ElmTableBody'
+  | 'ElmTableRow'
+  | 'ElmTableCell'
 
 type ComponentProps =
   | ElmInlineTextProps
@@ -73,6 +85,11 @@ type ComponentProps =
   | ElmHeading6Props
   | ElmCodeBlockProps
   | ElmParagraphProps
+  | ElmTableProps
+  | ElmTableHeaderProps
+  | ElmTableBodyProps
+  | ElmTableRowProps
+  | ElmTableCellProps
 
 interface JsonComponentBase {
   type: ComponentType
@@ -165,6 +182,31 @@ interface ElmParagraphJsonComponent extends JsonComponentBase {
   props?: ElmParagraphProps
 }
 
+interface ElmTableJsonComponent extends JsonComponentBase {
+  type: 'ElmTable'
+  props?: ElmTableProps
+}
+
+interface ElmTableHeaderJsonComponent extends JsonComponentBase {
+  type: 'ElmTableHeader'
+  props?: ElmTableHeaderProps
+}
+
+interface ElmTableBodyJsonComponent extends JsonComponentBase {
+  type: 'ElmTableBody'
+  props?: ElmTableBodyProps
+}
+
+interface ElmTableRowJsonComponent extends JsonComponentBase {
+  type: 'ElmTableRow'
+  props?: ElmTableRowProps
+}
+
+interface ElmTableCellJsonComponent extends JsonComponentBase {
+  type: 'ElmTableCell'
+  props?: ElmTableCellProps
+}
+
 type JsonComponent =
   | ElmInlineTextJsonComponent
   | ElmInlineCodeJsonComponent
@@ -183,6 +225,11 @@ type JsonComponent =
   | ElmHeading6JsonComponent
   | ElmCodeBlockJsonComponent
   | ElmParagraphJsonComponent
+  | ElmTableJsonComponent
+  | ElmTableHeaderJsonComponent
+  | ElmTableBodyJsonComponent
+  | ElmTableRowJsonComponent
+  | ElmTableCellJsonComponent
 
 export interface ElmJsonRendererProps {
   json: JsonComponent[]
@@ -207,7 +254,12 @@ const componentMap: Record<ComponentType, any> = {
   ElmHeading5,
   ElmHeading6,
   ElmCodeBlock,
-  ElmParagraph
+  ElmParagraph,
+  ElmTable,
+  ElmTableHeader,
+  ElmTableBody,
+  ElmTableRow,
+  ElmTableCell
 }
 </script>
 
