@@ -1,6 +1,6 @@
 {
   "name": "@elmethis/notion-node",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -26,12 +26,6 @@
     }
   },
   "dependencies": {
-    "@notionhq/client": "^2.2.15",
-    "open-graph-scraper": "^6.8.2"
-  },
-  "devDependencies": {
-    "@elmethis/core": "^1.0.0-alpha.4",
-    "dotenv": "^16.4.5",
-    "vitest": "^2.1.4"
+    "@elmethis/core": "^1.0.0-alpha.5"
   }
 }
