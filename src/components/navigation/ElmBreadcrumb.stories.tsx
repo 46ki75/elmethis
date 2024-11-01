@@ -21,3 +21,21 @@ export const Primary: Story = {
     ]
   }
 }
+
+export const Long: Story = {
+  args: {
+    links: [
+      { text: 'Home' },
+      { text: 'Library' },
+      { text: 'Data' },
+      { text: 'Data' },
+      { text: 'Data' },
+      { text: 'Data' },
+      { text: 'Data' },
+      { text: 'Data' },
+      { text: 'Data' },
+      { text: 'Data' },
+      { text: 'Data' }
+    ]
+  }
+}
