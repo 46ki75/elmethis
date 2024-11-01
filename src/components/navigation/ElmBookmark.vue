@@ -1,5 +1,5 @@
 <template>
-  <div
+  <a
     class="bookmark"
     :style="{
       '--flex-direction': isHorizontal ? 'row' : 'column',
@@ -42,7 +42,7 @@
         <div><ElmInlineLink :text="url" href="#" size=".8rem" /></div>
       </div>
     </div>
-  </div>
+  </a>
 </template>
 
 <script setup lang="ts">
@@ -89,7 +89,7 @@ export interface ElmBookmarkProps {
 }
 
 withDefaults(defineProps<ElmBookmarkProps>(), {
-  wide: true,
+  isHorizontal: true,
   hideUrl: false,
   description: 'No description provided'
 })
@@ -97,6 +97,7 @@ withDefaults(defineProps<ElmBookmarkProps>(), {
 
 <style scoped lang="scss">
 .bookmark {
+  all: unset;
   display: flex;
   flex-direction: var(--flex-direction);
   box-shadow: 0 0 0.125rem rgba(black, 0.15);
