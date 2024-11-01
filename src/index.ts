@@ -32,6 +32,10 @@ import ElmInlineText from './components/inline/ElmInlineText.vue'
 // media
 import ElmImage from './components/media/ElmImage.vue'
 
+// navigation
+import ElmBookmark from './components/navigation/ElmBookmark.vue'
+import ElmPagetop from './components/navigation/ElmPagetop.vue'
+
 // renderer
 import ElmJsonRenderer from './components/renderer/ElmJsonRenderer.vue'
 
@@ -71,6 +75,9 @@ export {
   ElmInlineRuby,
   ElmInlineText,
   ElmImage,
+  ElmBookmark,
+  ElmPagetop,
+  ElmJsonRenderer,
   ElmTable,
   ElmTableHeader,
   ElmTableBody,
@@ -81,6 +88,5 @@ export {
   ElmCallout,
   ElmDivider,
   ElmNumberedList,
-  ElmListItem,
-  ElmJsonRenderer
+  ElmListItem
 }
