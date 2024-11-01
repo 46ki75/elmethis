@@ -7,8 +7,7 @@ version: 2
 updates:
   - package-ecosystem: 'npm'
     directories:
-      - '/'
-      - '/packages/*'
+      - '/packages/core'
     schedule:
       interval: 'daily'
     target-branch: 'main'
@@ -23,5 +22,11 @@ updates:
       postcss-updates:
         patterns:
           - '*postcss*'
-    pull-request-branch-name:
-      separator: /
+
+  - package-ecosystem: 'npm'
+    directories:
+      - '/'
+      - '/packages/notion-node'
+    schedule:
+      interval: 'daily'
+    target-branch: 'main'
