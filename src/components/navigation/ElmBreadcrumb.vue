@@ -14,8 +14,8 @@
             index === 0
               ? HomeIcon
               : index === links.length - 1
-                ? FolderOpenIcon
-                : DocumentTextIcon
+                ? DocumentTextIcon
+                : FolderOpenIcon
           "
           :style="{
             '--delay': `${index * 100}ms`
