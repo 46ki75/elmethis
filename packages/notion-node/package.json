@@ -1,0 +1,27 @@
+{
+  "name": "elmethis-notion-client",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "vitest",
+    "start": "tsx src/index.ts",
+    "prebuild": "rm -rf dist",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "Chomolungma Shirayuki",
+  "license": "MIT",
+  "description": "",
+  "exports": {
+    ".": {
+      "import": "./src/index.js"
+    }
+  },
+  "dependencies": {
+    "@notionhq/client": "^2.2.15"
+  },
+  "devDependencies": {
+    "@elmethis/core": "^1.0.0-alpha.2"
+  }
+}
