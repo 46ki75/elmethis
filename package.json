@@ -1,7 +1,6 @@
 {
   "workspaces": [
-    "./packages/core",
-    "./packages/notion-node"
+    "packages/*"
   ],
   "author": "Chomolungma Shirayuki",
   "repository": {
