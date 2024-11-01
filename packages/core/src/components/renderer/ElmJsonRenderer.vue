@@ -45,6 +45,7 @@ import ElmTableCell, { ElmTableCellProps } from '../table/ElmTableCell.vue'
 import ElmKatex, { ElmKatexProps } from '../code/ElmKatex.vue'
 import ElmImage, { ElmImageProps } from '../media/ElmImage.vue'
 import ElmBookmark, { ElmBookmarkProps } from '../navigation/ElmBookmark.vue'
+import ElmToggle, { ElmToggleProps } from '../containments/ElmToggle.vue'
 
 type ComponentType =
   | 'ElmInlineText'
@@ -72,6 +73,7 @@ type ComponentType =
   | 'ElmKatex'
   | 'ElmImage'
   | 'ElmBookmark'
+  | 'ElmToggle'
 
 type ComponentProps =
   | ElmInlineTextProps
@@ -99,6 +101,7 @@ type ComponentProps =
   | ElmKatexProps
   | ElmImageProps
   | ElmBookmarkProps
+  | ElmToggleProps
 
 interface JsonComponentBase {
   type: ComponentType
@@ -231,6 +234,11 @@ interface ElmBookmarkJsonComponent extends JsonComponentBase {
   props?: ElmBookmarkProps
 }
 
+interface ElmToggleJsonComponent extends JsonComponentBase {
+  type: 'ElmToggle'
+  props?: ElmToggleProps
+}
+
 type JsonComponent =
   | ElmInlineTextJsonComponent
   | ElmInlineCodeJsonComponent
@@ -257,6 +265,7 @@ type JsonComponent =
   | ElmKatexJsonComponent
   | ElmImageJsonComponent
   | ElmBookmarkJsonComponent
+  | ElmToggleJsonComponent
 
 export interface ElmJsonRendererProps {
   json: JsonComponent[]
@@ -289,7 +298,8 @@ const componentMap: Record<ComponentType, any> = {
   ElmTableCell,
   ElmKatex,
   ElmImage,
-  ElmBookmark
+  ElmBookmark,
+  ElmToggle
 }
 </script>
 
