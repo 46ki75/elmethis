@@ -42,6 +42,7 @@ import ElmTableHeader, {
 import ElmTableBody, { ElmTableBodyProps } from '../table/ElmTableBody.vue'
 import ElmTableRow, { ElmTableRowProps } from '../table/ElmTableRow.vue'
 import ElmTableCell, { ElmTableCellProps } from '../table/ElmTableCell.vue'
+import ElmKatex, { ElmKatexProps } from '../code/ElmKatex.vue'
 
 type ComponentType =
   | 'ElmInlineText'
@@ -66,6 +67,7 @@ type ComponentType =
   | 'ElmTableBody'
   | 'ElmTableRow'
   | 'ElmTableCell'
+  | 'ElmKatex'
 
 type ComponentProps =
   | ElmInlineTextProps
@@ -90,6 +92,7 @@ type ComponentProps =
   | ElmTableBodyProps
   | ElmTableRowProps
   | ElmTableCellProps
+  | ElmKatexProps
 
 interface JsonComponentBase {
   type: ComponentType
@@ -207,6 +210,11 @@ interface ElmTableCellJsonComponent extends JsonComponentBase {
   props?: ElmTableCellProps
 }
 
+interface ElmKatexJsonComponent extends JsonComponentBase {
+  type: 'ElmKatex'
+  props?: ElmKatexProps
+}
+
 type JsonComponent =
   | ElmInlineTextJsonComponent
   | ElmInlineCodeJsonComponent
@@ -230,6 +238,7 @@ type JsonComponent =
   | ElmTableBodyJsonComponent
   | ElmTableRowJsonComponent
   | ElmTableCellJsonComponent
+  | ElmKatexJsonComponent
 
 export interface ElmJsonRendererProps {
   json: JsonComponent[]
@@ -259,7 +268,8 @@ const componentMap: Record<ComponentType, any> = {
   ElmTableHeader,
   ElmTableBody,
   ElmTableRow,
-  ElmTableCell
+  ElmTableCell,
+  ElmKatex
 }
 </script>
 

@@ -243,3 +243,17 @@ export const Table: Story = {
     ]
   }
 }
+
+export const Katex: Story = {
+  args: {
+    json: [
+      {
+        type: 'ElmKatex',
+        props: {
+          expression: 'x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}',
+          block: true
+        }
+      }
+    ]
+  }
+}
