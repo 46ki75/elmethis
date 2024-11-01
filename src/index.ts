@@ -34,6 +34,7 @@ import ElmImage from './components/media/ElmImage.vue'
 
 // navigation
 import ElmBookmark from './components/navigation/ElmBookmark.vue'
+import ElmBreadcrumb from './components/navigation/ElmBreadcrumb.vue'
 import ElmPagetop from './components/navigation/ElmPagetop.vue'
 
 // renderer
@@ -76,6 +77,7 @@ export {
   ElmInlineText,
   ElmImage,
   ElmBookmark,
+  ElmBreadcrumb,
   ElmPagetop,
   ElmJsonRenderer,
   ElmTable,
