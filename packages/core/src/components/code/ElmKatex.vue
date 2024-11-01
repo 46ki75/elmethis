@@ -1,5 +1,7 @@
 <template>
-  <span :key="JSON.stringify(props)" ref="targetRef">{{ expression }}</span>
+  <span class="katex" :key="JSON.stringify(props)" ref="targetRef">{{
+    expression
+  }}</span>
 </template>
 
 <script setup lang="ts">
@@ -46,4 +48,22 @@ onMounted(render)
 onUpdated(render)
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.katex {
+  color: rgba(0, 0, 0, 0.7);
+
+  &::selection {
+    color: rgba(255, 255, 255, 0.7);
+    background-color: var(--color, rgba(0, 0, 0, 0.7));
+  }
+
+  [data-theme='dark'] & {
+    color: var(--color, rgba(255, 255, 255, 0.7));
+
+    &::selection {
+      color: rgba(0, 0, 0, 0.7);
+      background-color: var(--color, rgba(255, 255, 255, 0.7));
+    }
+  }
+}
+</style>
