@@ -265,7 +265,8 @@ export const Image: Story = {
         type: 'ElmImage',
         props: {
           src: 'https://images.unsplash.com/photo-1556983703-27576e5afa24?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb',
-          alt: 'Placeholder image'
+          alt: 'Placeholder image',
+          enableModal: true
         }
       }
     ]
