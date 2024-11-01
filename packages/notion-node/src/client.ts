@@ -1,6 +1,5 @@
 import { Client as NotionClient } from '@notionhq/client'
 import type { ElmJsonRendererProps } from '@elmethis/core'
-import { it } from 'node:test'
 
 export class Client {
   #notionClient: NotionClient
