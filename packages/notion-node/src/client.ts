@@ -168,6 +168,19 @@ export class Client {
             })
             break
           }
+
+          case 'image': {
+            components.push({
+              type: 'ElmImage',
+              props: {
+                src:
+                  block.image.type === 'external'
+                    ? block.image.external.url
+                    : block.image.file.url
+              }
+            })
+            break
+          }
         }
       }
     }
