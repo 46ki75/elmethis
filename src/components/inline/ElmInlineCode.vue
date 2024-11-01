@@ -25,6 +25,7 @@ withDefaults(defineProps<ElmInlineCodeProps>(), {})
 
 <style scoped lang="scss">
 .code {
+  margin-inline: 0.25rem;
   padding: 0.25em 0.5em;
   border-radius: 0.125rem;
   background-color: rgba(0, 0, 0, 0.075);
