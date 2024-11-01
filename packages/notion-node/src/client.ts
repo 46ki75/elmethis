@@ -230,6 +230,26 @@ export class Client {
             }
             break
           }
+
+          case 'to_do': {
+            components.push({
+              type: 'ElmCheckbox',
+              props: {
+                label: block.to_do.rich_text
+                  .map((text) => text.plain_text)
+                  .join()
+              }
+            })
+
+            break
+          }
+
+          case 'divider': {
+            components.push({
+              type: 'ElmDivider'
+            })
+            break
+          }
         }
 
         if (ul !== undefined && block.type !== 'bulleted_list_item') {
