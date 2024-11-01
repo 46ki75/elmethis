@@ -188,9 +188,12 @@ export class Client {
           case 'bulleted_list_item': {
             const li: ElmJsonRendererProps['json'][number] = {
               type: 'ElmListItem',
-              children: this.#richTextToElmInlineText(
-                block.bulleted_list_item.rich_text
-              )
+              children: [
+                ...this.#richTextToElmInlineText(
+                  block.bulleted_list_item.rich_text
+                ),
+                ...(await this.convert({ id: block.id })).components
+              ]
             }
 
             if (ul === undefined || ul.children === undefined) {
@@ -208,9 +211,12 @@ export class Client {
           case 'numbered_list_item': {
             const li: ElmJsonRendererProps['json'][number] = {
               type: 'ElmListItem',
-              children: this.#richTextToElmInlineText(
-                block.numbered_list_item.rich_text
-              )
+              children: [
+                ...this.#richTextToElmInlineText(
+                  block.numbered_list_item.rich_text
+                ),
+                ...(await this.convert({ id: block.id })).components
+              ]
             }
 
             if (ol === undefined || ol.children === undefined) {
