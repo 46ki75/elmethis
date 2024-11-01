@@ -1,0 +1,30 @@
+{
+  "name": "@elmethis/core",
+  "version": "1.0.0-alpha.2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "author": "Chomolungma Shirayuki",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:46ki75/elmethis.git"
+  },
+  "homepage": "https://46ki75.github.io/elmethis",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/elmethis.js",
+      "require": "./dist/elmethis.umd.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "vue-tsc && vite build",
+    "prepublishOnly": "npm run build",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  }
+}

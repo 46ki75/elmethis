@@ -30,17 +30,19 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
+          cache-dependency-path: ./package-lock.json
 
       - name: Install dependencies
-        run: npm i
+        run: npm ci
 
       - name: Run Build
         run: npm run build-storybook
+        working-directory: packages/core
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './storybook-static'
+          path: './packages/core/storybook-static'
 
       - name: Deploy to GitHub Pages
         id: deployment
