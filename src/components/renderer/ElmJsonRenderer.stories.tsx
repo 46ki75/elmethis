@@ -159,3 +159,18 @@ export const CodeBlock: Story = {
     ]
   }
 }
+
+export const Paragraph: Story = {
+  args: {
+    json: [
+      {
+        type: 'ElmParagraph',
+        children: [
+          { type: 'ElmInlineText', props: { text: 'Hello, ' } },
+          { type: 'ElmInlineText', props: { text: 'world!' } },
+          { type: 'ElmInlineCode', props: { code: 'console.log(0)' } }
+        ]
+      }
+    ]
+  }
+}

@@ -1,17 +1,35 @@
 <template>
-  <ol class="elmethis-numbered-list">
+  <ol
+    ref="target"
+    class="elmethis-numbered-list"
+    :style="{
+      '--opacity': targetIsVisible ? 1 : 0
+    }"
+  >
     <slot />
   </ol>
 </template>
 
 <script setup lang="ts">
+import { useIntersectionObserver } from '@vueuse/core'
+import { ref } from 'vue'
+
 export interface ElmNumberedListProps {}
 
 withDefaults(defineProps<ElmNumberedListProps>(), {})
+
+const target = ref(null)
+const targetIsVisible = ref(false)
+
+useIntersectionObserver(target, ([{ isIntersecting }], _) => {
+  targetIsVisible.value = isIntersecting
+})
 </script>
 
 <style lang="scss">
 .elmethis-numbered-list {
+  opacity: var(--opacity);
+  transition: opacity 800ms;
   box-sizing: border-box;
   padding-left: 1.25rem;
 
