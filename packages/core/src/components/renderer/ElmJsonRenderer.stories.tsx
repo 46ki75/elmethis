@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import ElmJsonRenderer from './ElmJsonRenderer.vue'
 
+import seed from './seed.json'
+
 const meta: Meta<typeof ElmJsonRenderer> = {
   title: 'Components/Renderer/ElmJsonRenderer',
   component: ElmJsonRenderer,
@@ -292,5 +294,11 @@ export const Bookmark: Story = {
         }
       }
     ]
+  }
+}
+
+export const Full: Story = {
+  args: {
+    json: seed as any
   }
 }
