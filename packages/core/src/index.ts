@@ -24,6 +24,11 @@ import ElmTooltip, {
   ElmTooltipProps
 } from './components/containments/ElmTooltip.vue'
 
+// data
+import ElmProgress, {
+  ElmProgressProps
+} from './components/data/ElmProgress.vue'
+
 // fallback
 import ElmRectangleWave, {
   ElmRectangleWaveProps
@@ -91,6 +96,9 @@ import ElmBreadcrumb, {
 import ElmPagetop, {
   ElmPagetopProps
 } from './components/navigation/ElmPagetop.vue'
+import ElmTableOfContents, {
+  ElmTableOfContentsProps
+} from './components/navigation/ElmTableOfContents.vue'
 
 // renderer
 import ElmJsonRenderer, {
@@ -141,6 +149,7 @@ export {
   ElmParallax,
   ElmToggle,
   ElmTooltip,
+  ElmProgress,
   ElmRectangleWave,
   ElmHeading1,
   ElmHeading2,
@@ -161,6 +170,7 @@ export {
   ElmBookmark,
   ElmBreadcrumb,
   ElmPagetop,
+  ElmTableOfContents,
   ElmJsonRenderer,
   ElmTable,
   ElmTableHeader,
@@ -184,6 +194,7 @@ export type {
   ElmParallaxProps,
   ElmToggleProps,
   ElmTooltipProps,
+  ElmProgressProps,
   ElmRectangleWaveProps,
   ElmHeading1Props,
   ElmHeading2Props,
@@ -204,6 +215,7 @@ export type {
   ElmBookmarkProps,
   ElmBreadcrumbProps,
   ElmPagetopProps,
+  ElmTableOfContentsProps,
   ElmJsonRendererProps,
   ElmTableProps,
   ElmTableHeaderProps,
