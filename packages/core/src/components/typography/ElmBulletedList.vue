@@ -28,6 +28,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 
 <style lang="scss">
 .elmethis-bulleted-list {
+  margin-block: 2rem;
   opacity: var(--opacity);
   transition: opacity 800ms;
   box-sizing: border-box;

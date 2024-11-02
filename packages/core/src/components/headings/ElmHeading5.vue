@@ -33,6 +33,7 @@ withDefaults(defineProps<ElmHeading5Props>(), {
 
 <style scoped lang="scss">
 .h5 {
+  margin-block: 3rem;
   font-size: var(--font-size);
 
   transition: color 400ms;

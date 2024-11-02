@@ -28,6 +28,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 
 <style scoped lang="scss">
 .paragraph {
+  margin-block: 2rem;
   opacity: var(--opacity);
   transition: opacity 800ms;
   color: rgba(0, 0, 0, 0.7);

@@ -28,6 +28,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 
 <style scoped lang="scss">
 .blockquote {
+  margin-block: 2rem;
   opacity: var(--opacity);
   transition: opacity 800ms;
   box-sizing: border-box;

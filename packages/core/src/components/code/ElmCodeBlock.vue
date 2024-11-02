@@ -71,6 +71,7 @@ const { copy, copied } = useClipboard({ source: props.code })
 
 <style scoped lang="scss">
 .wrapper {
+  margin-block: 2rem;
   display: flex;
   flex-direction: column;
   border-radius: 0.25rem;
