@@ -51,3 +51,11 @@ export const Card: Story = {
     updatedAt: '2021-08-01'
   }
 }
+
+export const Square: Story = {
+  args: {
+    url: 'https://pnpm.io/',
+    title: '	Fast, disk space efficient package manager | pnpm',
+    image: 'https://pnpm.io/img/ogimage.png'
+  }
+}
