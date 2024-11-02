@@ -30,15 +30,19 @@ const toggleTheme = () => {
 }
 
 watchEffect(() => {
-  document.documentElement.setAttribute(
-    'data-theme',
-    isDarkTheme.value ? 'dark' : 'light'
-  )
+  if (typeof document !== 'undefined') {
+    document.documentElement.setAttribute(
+      'data-theme',
+      isDarkTheme.value ? 'dark' : 'light'
+    )
+  }
 })
 
 onMounted(() => {
-  const currentTheme = document.documentElement.getAttribute('data-theme')
-  isDarkTheme.value = currentTheme === 'dark'
+  if (typeof document !== 'undefined') {
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    isDarkTheme.value = currentTheme === 'dark'
+  }
 })
 </script>
 
