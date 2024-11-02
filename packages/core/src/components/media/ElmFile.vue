@@ -74,7 +74,7 @@ async function downloadFile(url: string, filename: string) {
     link.download = filename
     link.click()
   } catch (error) {
-    console.error('エラー:', error)
+    console.error('ERROR:', error)
   } finally {
     if (link) URL.revokeObjectURL(link.href)
   }
