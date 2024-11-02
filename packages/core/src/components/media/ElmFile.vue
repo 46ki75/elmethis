@@ -2,7 +2,11 @@
   <div class="file">
     <div class="left-container">
       <DocumentIcon class="icon" />
-      <ElmInlineText :text="name" />
+      <ElmInlineText
+        :text="
+          name ?? getLastPathSegmentWithoutQueryOrHash(src) ?? 'unknown file'
+        "
+      />
     </div>
 
     <div class="right-container">
@@ -16,11 +20,26 @@ import { ArrowDownTrayIcon, DocumentIcon } from '@heroicons/vue/24/outline'
 import ElmInlineText from '../inline/ElmInlineText.vue'
 
 export interface ElmFileProps {
-  name: string
+  /**
+   * The name of the file.
+   */
+  name?: string
+
+  /**
+   * The source of the file.
+   */
   src: string
 }
 
 withDefaults(defineProps<ElmFileProps>(), {})
+
+function getLastPathSegmentWithoutQueryOrHash(
+  urlString: string
+): string | null {
+  const cleanedUrl = urlString.split(/[?#]/)[0]
+  const pathSegments = cleanedUrl.split('/').filter(Boolean)
+  return pathSegments.length > 0 ? pathSegments[pathSegments.length - 1] : null
+}
 </script>
 
 <style scoped lang="scss">
