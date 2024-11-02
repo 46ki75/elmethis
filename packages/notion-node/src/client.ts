@@ -452,11 +452,40 @@ export class Client {
             break
           }
 
-          case 'column':
-          case 'column_list':
+          case 'column': {
+            const child = await this.convert({ id: block.id })
+            components.push({
+              type: 'ElmColumn',
+              children: child.components
+            })
+            break
+          }
+
+          case 'file': {
+            components.push({
+              type: 'ElmFile',
+              props: {
+                name: block.file.name,
+                src:
+                  block.file.type === 'external'
+                    ? block.file.external.url
+                    : block.file.file.url
+              }
+            })
+            break
+          }
+
+          case 'column_list': {
+            const child = await this.convert({ id: block.id })
+            components.push({
+              type: 'ElmColumnList',
+              children: child.components
+            })
+            break
+          }
+
           case 'audio':
           case 'video':
-          case 'file':
           case 'pdf':
           case 'embed':
           case 'breadcrumb':
