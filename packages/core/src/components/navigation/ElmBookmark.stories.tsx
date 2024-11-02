@@ -56,6 +56,17 @@ export const Square: Story = {
   args: {
     url: 'https://pnpm.io/',
     title: '	Fast, disk space efficient package manager | pnpm',
+    description: 'https://pnpm.io/img/ogimage.png',
     image: 'https://pnpm.io/img/ogimage.png'
+  }
+}
+
+export const SquareCard: Story = {
+  args: {
+    url: 'https://pnpm.io/',
+    title: '	Fast, disk space efficient package manager | pnpm',
+    description: 'https://pnpm.io/img/ogimage.png',
+    image: 'https://pnpm.io/img/ogimage.png',
+    isHorizontal: false
   }
 }
