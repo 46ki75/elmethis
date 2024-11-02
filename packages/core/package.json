@@ -14,14 +14,11 @@
   "files": [
     "dist"
   ],
-  "module": "dist/elmethis.js",
-  "main": "dist/elmethis.umd.cjs",
-  "types": "dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/elmethis.js",
-      "require": "./dist/elmethis.umd.cjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/elmethis.umd.cjs"
     }
   },
   "scripts": {
