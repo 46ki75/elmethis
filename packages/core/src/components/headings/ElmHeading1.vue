@@ -74,7 +74,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
     bottom: -2px;
     left: 0;
     width: 100%;
-    height: 1px;
+    height: 0.25px;
     background-color: rgba(0, 0, 0, 0.5);
 
     transition: transform 800ms;
