@@ -6,8 +6,8 @@
     rel="noopener noreferrer"
     :style="{
       '--flex-direction': isHorizontal ? 'row' : 'column',
-      '--image-width': isHorizontal ? '30%' : '100%',
-      '--typography-width': isHorizontal ? '70%' : '100%'
+      '--container-height': isHorizontal ? '150px' : 'auto',
+      '--image-max-width': isHorizontal ? '32%' : '100%'
     }"
     @click="handleClick"
   >
@@ -128,6 +128,7 @@ function handleClick(event: MouseEvent) {
 <style scoped lang="scss">
 .bookmark {
   all: unset;
+  height: var(--container-height);
   display: flex;
   flex-direction: var(--flex-direction);
   box-shadow: 0 0 0.125rem rgba(black, 0.15);
@@ -152,15 +153,23 @@ function handleClick(event: MouseEvent) {
   }
 
   .image {
-    width: var(--image-width);
+    overflow: hidden;
+    max-width: var(--image-max-width);
+    height: 100%;
     opacity: 0.9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 2 / 1;
   }
 
   .typography {
-    width: var(--typography-width);
     box-sizing: border-box;
     padding: 0.5rem;
     display: flex;
+    flex: 1;
     flex-direction: column;
     justify-content: space-between;
     gap: 0.5rem;
