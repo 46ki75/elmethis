@@ -41,7 +41,7 @@ import {
   ElmDividerProps,
   ElmNumberedListProps,
   ElmListItemProps
-} from '.'
+} from '../index'
 
 declare module 'vue' {
   interface GlobalComponents {
