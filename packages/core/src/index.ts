@@ -8,6 +8,15 @@ import ElmPrismHighlighter, {
 import ElmKatex, { ElmKatexProps } from './components/code/ElmKatex.vue'
 
 // containments
+import ElmColumn, {
+  ElmColumnProps
+} from './components/containments/ElmColumn.vue'
+import ElmColumnList, {
+  ElmColumnListProps
+} from './components/containments/ElmColumnList.vue'
+import ElmToggle, {
+  ElmToggleProps
+} from './components/containments/ElmToggle.vue'
 import ElmTooltip, {
   ElmTooltipProps
 } from './components/containments/ElmTooltip.vue'
@@ -124,6 +133,9 @@ export {
   ElmCodeBlock,
   ElmPrismHighlighter,
   ElmKatex,
+  ElmColumn,
+  ElmColumnList,
+  ElmToggle,
   ElmTooltip,
   ElmRectangleWave,
   ElmHeading1,
@@ -163,6 +175,9 @@ export type {
   ElmCodeBlockProps,
   ElmPrismHighlighterProps,
   ElmKatexProps,
+  ElmColumnProps,
+  ElmColumnListProps,
+  ElmToggleProps,
   ElmTooltipProps,
   ElmRectangleWaveProps,
   ElmHeading1Props,
