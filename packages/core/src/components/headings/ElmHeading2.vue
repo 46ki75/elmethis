@@ -50,6 +50,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 
 <style scoped lang="scss">
 .h2 {
+  margin-block: 3rem;
   position: relative;
   font-size: var(--font-size);
   line-height: var(--font-size);

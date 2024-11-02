@@ -33,6 +33,7 @@ withDefaults(defineProps<ElmHeading3Props>(), {
 
 <style scoped lang="scss">
 .h3 {
+  margin-block: 3rem;
   position: relative;
   box-sizing: border-box;
   padding-left: 0.75rem;

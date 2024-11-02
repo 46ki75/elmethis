@@ -47,6 +47,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 
 <style scoped lang="scss">
 .h1 {
+  margin-block: 3rem;
   position: relative;
   font-size: var(--font-size);
 

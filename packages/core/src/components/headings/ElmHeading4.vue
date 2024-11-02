@@ -33,6 +33,7 @@ withDefaults(defineProps<ElmHeading4Props>(), {
 
 <style scoped lang="scss">
 .h4 {
+  margin-block: 3rem;
   font-size: var(--font-size);
 
   transition: color 400ms;
