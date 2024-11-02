@@ -47,6 +47,7 @@ import ElmImage, { ElmImageProps } from '../media/ElmImage.vue'
 import ElmBookmark, { ElmBookmarkProps } from '../navigation/ElmBookmark.vue'
 import ElmToggle, { ElmToggleProps } from '../containments/ElmToggle.vue'
 import ElmCheckbox, { ElmCheckboxProps } from '../form/ElmCheckbox.vue'
+import ElmFile, { ElmFileProps } from '../media/ElmFile.vue'
 
 type ComponentType =
   | 'ElmInlineText'
@@ -76,6 +77,7 @@ type ComponentType =
   | 'ElmBookmark'
   | 'ElmToggle'
   | 'ElmCheckbox'
+  | 'ElmFile'
 
 type ComponentProps =
   | ElmInlineTextProps
@@ -105,6 +107,7 @@ type ComponentProps =
   | ElmBookmarkProps
   | ElmToggleProps
   | ElmCheckboxProps
+  | ElmFileProps
 
 interface JsonComponentBase {
   type: ComponentType
@@ -247,6 +250,11 @@ interface ElmCheckboxJsonComponent extends JsonComponentBase {
   props?: ElmCheckboxProps
 }
 
+interface ElmFileJsonComponent extends JsonComponentBase {
+  type: 'ElmFile'
+  props?: ElmFileProps
+}
+
 type JsonComponent =
   | ElmInlineTextJsonComponent
   | ElmInlineCodeJsonComponent
@@ -275,6 +283,7 @@ type JsonComponent =
   | ElmBookmarkJsonComponent
   | ElmToggleJsonComponent
   | ElmCheckboxJsonComponent
+  | ElmFileJsonComponent
 
 export interface ElmJsonRendererProps {
   json: JsonComponent[]
@@ -309,7 +318,8 @@ const componentMap: Record<ComponentType, any> = {
   ElmImage,
   ElmBookmark,
   ElmToggle,
-  ElmCheckbox
+  ElmCheckbox,
+  ElmFile
 }
 </script>
 
