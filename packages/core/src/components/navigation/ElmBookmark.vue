@@ -6,8 +6,8 @@
     rel="noopener noreferrer"
     :style="{
       '--flex-direction': isHorizontal ? 'row' : 'column',
-      '--container-height': isHorizontal ? '180px' : 'auto',
-      '--image-max-width': isHorizontal ? '30%' : '100%'
+      '--container-height': isHorizontal ? '150px' : 'auto',
+      '--image-max-width': isHorizontal ? '32%' : '100%'
     }"
     @click="handleClick"
   >
@@ -153,9 +153,16 @@ function handleClick(event: MouseEvent) {
   }
 
   .image {
+    overflow: hidden;
     max-width: var(--image-max-width);
+    height: 100%;
     opacity: 0.9;
     display: flex;
+    justify-content: center;
+    align-items: center;
+    object-fit: cover;
+    object-position: center;
+    aspect-ratio: 2 / 1;
   }
 
   .typography {
