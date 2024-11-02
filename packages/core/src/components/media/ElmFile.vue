@@ -11,9 +11,21 @@
 
     <div class="right-container">
       <span :style="{ opacity: 0.6 }"
-        ><ElmInlineText v-if="bytes" :text="formatBytes(bytes)"
+        ><ElmInlineText v-if="filesize" :text="filesize"
       /></span>
-      <ArrowDownTrayIcon class="download-icon" />
+      <ArrowDownTrayIcon
+        class="download-icon"
+        @click="
+          () => {
+            downloadFile(
+              src,
+              name ??
+                getLastPathSegmentWithoutQueryOrHash(src) ??
+                'unknown file'
+            )
+          }
+        "
+      />
     </div>
   </div>
 </template>
@@ -36,7 +48,7 @@ export interface ElmFileProps {
   /**
    * The size of the file in bytes.
    */
-  bytes?: number
+  filesize?: string
 }
 
 withDefaults(defineProps<ElmFileProps>(), {})
@@ -49,14 +61,23 @@ function getLastPathSegmentWithoutQueryOrHash(
   return pathSegments.length > 0 ? pathSegments[pathSegments.length - 1] : null
 }
 
-function formatBytes(bytes: number, decimals = 2): string {
-  if (bytes === 0) return '0 Bytes'
+async function downloadFile(url: string, filename: string) {
+  let link
+  try {
+    const response = await fetch(url)
+    if (!response.ok) throw new Error('Failed to download file')
 
-  const k = 1024
-  const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
+    const blob = await response.blob()
 
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(decimals))} ${sizes[i]}`
+    link = document.createElement('a')
+    link.href = URL.createObjectURL(blob)
+    link.download = filename
+    link.click()
+  } catch (error) {
+    console.error('エラー:', error)
+  } finally {
+    if (link) URL.revokeObjectURL(link.href)
+  }
 }
 </script>
 
