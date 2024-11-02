@@ -10,6 +10,9 @@
     </div>
 
     <div class="right-container">
+      <span :style="{ opacity: 0.6 }"
+        ><ElmInlineText v-if="bytes" :text="formatBytes(bytes)"
+      /></span>
       <ArrowDownTrayIcon class="download-icon" />
     </div>
   </div>
@@ -29,6 +32,11 @@ export interface ElmFileProps {
    * The source of the file.
    */
   src: string
+
+  /**
+   * The size of the file in bytes.
+   */
+  bytes?: number
 }
 
 withDefaults(defineProps<ElmFileProps>(), {})
@@ -39,6 +47,16 @@ function getLastPathSegmentWithoutQueryOrHash(
   const cleanedUrl = urlString.split(/[?#]/)[0]
   const pathSegments = cleanedUrl.split('/').filter(Boolean)
   return pathSegments.length > 0 ? pathSegments[pathSegments.length - 1] : null
+}
+
+function formatBytes(bytes: number, decimals = 2): string {
+  if (bytes === 0) return '0 Bytes'
+
+  const k = 1024
+  const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(decimals))} ${sizes[i]}`
 }
 </script>
 

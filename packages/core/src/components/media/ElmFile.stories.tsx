@@ -13,6 +13,7 @@ type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
   args: {
-    src: '/vue.svg'
+    src: '/vue.svg',
+    bytes: 496
   }
 }
