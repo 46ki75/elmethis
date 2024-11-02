@@ -1,3 +1,5 @@
+import { App } from 'vue'
+
 // code
 import ElmCodeBlock, {
   ElmCodeBlockProps
@@ -228,4 +230,51 @@ export type {
   ElmDividerProps,
   ElmNumberedListProps,
   ElmListItemProps
+}
+
+export const ElmethisPlugin = {
+  install(app: App): void {
+    app.component('ElmCodeBlock', ElmCodeBlock)
+    app.component('ElmPrismHighlighter', ElmPrismHighlighter)
+    app.component('ElmKatex', ElmKatex)
+    app.component('ElmColumn', ElmColumn)
+    app.component('ElmColumnList', ElmColumnList)
+    app.component('ElmParallax', ElmParallax)
+    app.component('ElmToggle', ElmToggle)
+    app.component('ElmTooltip', ElmTooltip)
+    app.component('ElmProgress', ElmProgress)
+    app.component('ElmRectangleWave', ElmRectangleWave)
+    app.component('ElmHeading1', ElmHeading1)
+    app.component('ElmHeading2', ElmHeading2)
+    app.component('ElmHeading3', ElmHeading3)
+    app.component('ElmHeading4', ElmHeading4)
+    app.component('ElmHeading5', ElmHeading5)
+    app.component('ElmHeading6', ElmHeading6)
+    app.component('ElmCubeIcon', ElmCubeIcon)
+    app.component('ElmDotLoadingIcon', ElmDotLoadingIcon)
+    app.component('ElmLanguageIcon', ElmLanguageIcon)
+    app.component('ElmToggleTheme', ElmToggleTheme)
+    app.component('ElmInlineCode', ElmInlineCode)
+    app.component('ElmInlineLink', ElmInlineLink)
+    app.component('ElmInlineRuby', ElmInlineRuby)
+    app.component('ElmInlineText', ElmInlineText)
+    app.component('ElmFile', ElmFile)
+    app.component('ElmImage', ElmImage)
+    app.component('ElmBookmark', ElmBookmark)
+    app.component('ElmBreadcrumb', ElmBreadcrumb)
+    app.component('ElmPagetop', ElmPagetop)
+    app.component('ElmTableOfContents', ElmTableOfContents)
+    app.component('ElmJsonRenderer', ElmJsonRenderer)
+    app.component('ElmTable', ElmTable)
+    app.component('ElmTableHeader', ElmTableHeader)
+    app.component('ElmTableBody', ElmTableBody)
+    app.component('ElmTableRow', ElmTableRow)
+    app.component('ElmTableCell', ElmTableCell)
+    app.component('ElmBlockQuote', ElmBlockQuote)
+    app.component('ElmBulletedList', ElmBulletedList)
+    app.component('ElmCallout', ElmCallout)
+    app.component('ElmDivider', ElmDivider)
+    app.component('ElmNumberedList', ElmNumberedList)
+    app.component('ElmListItem', ElmListItem)
+  }
 }
