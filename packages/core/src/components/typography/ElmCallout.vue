@@ -66,6 +66,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 
 <style scoped lang="scss">
 .callout {
+  margin-block: 2rem;
   position: relative;
   box-sizing: border-box;
   display: flex;
