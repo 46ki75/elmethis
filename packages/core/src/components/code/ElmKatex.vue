@@ -4,7 +4,7 @@
     :key="JSON.stringify(props)"
     ref="targetRef"
     :style="{
-      '--margin-block': props.block ? '1rem' : undefined
+      '--margin-block': props.block ? '3rem' : undefined
     }"
     :is="props.block ? 'div' : 'span'"
     >{{ expression }}</component
@@ -57,7 +57,7 @@ onUpdated(render)
 
 <style scoped lang="scss">
 .katex {
-  margin-block: var(--mergin-block);
+  margin-block: var(--margin-block);
   color: rgba(0, 0, 0, 0.7);
 
   &::selection {
