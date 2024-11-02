@@ -1,10 +1,12 @@
 <template>
   <progress class="progress" />
+
   <div
     class="container"
     :style="{
       '--weight': weight,
-      '--border-radius': round ? 'calc(var(--weight) / 2)' : undefined
+      '--border-radius': round ? 'calc(var(--weight) / 2)' : undefined,
+      '--color': color
     }"
   >
     <div
@@ -51,6 +53,11 @@ export interface ElmProgressProps {
    * Whether the progress should be round.
    */
   round?: boolean
+
+  /**
+   * The color of the progress.
+   */
+  color?: string
 }
 
 withDefaults(defineProps<ElmProgressProps>(), {
@@ -66,10 +73,13 @@ withDefaults(defineProps<ElmProgressProps>(), {
   content: '';
   width: 100%;
   height: 100%;
-  background-color: black;
   transition: transform $transition-duration;
   transform: var(--scale-x, scaleX(0));
   transform-origin: left;
+  background-color: var(--color, rgba(black, 0.8));
+  [data-theme='dark'] & {
+    background-color: var(--color, rgba(white, 0.8));
+  }
 }
 
 .progress {

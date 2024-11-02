@@ -31,3 +31,11 @@ export const Bold: Story = {
     weight: '16px'
   }
 }
+
+export const WithColor: Story = {
+  args: {
+    value: 50,
+    buffer: 70,
+    color: '#b36472'
+  }
+}
