@@ -3,7 +3,8 @@
   <div
     class="container"
     :style="{
-      '--weight': weight
+      '--weight': weight,
+      '--border-radius': round ? 'calc(var(--weight) / 2)' : undefined
     }"
   >
     <div
@@ -26,15 +27,36 @@
 import type { Property } from 'csstype'
 
 export interface ElmProgressProps {
+  /**
+   * The current value of the progress.
+   */
   value: number
+
+  /**
+   * The buffer value of the progress.
+   */
   buffer?: number
+
+  /**
+   * The maximum value of the progress.
+   */
   max?: number
+
+  /**
+   * The weight of the progress.
+   */
   weight: Property.Height<string | number>
+
+  /**
+   * Whether the progress should be round.
+   */
+  round?: boolean
 }
 
 withDefaults(defineProps<ElmProgressProps>(), {
   max: 100,
-  weight: '4px'
+  weight: '4px',
+  round: true
 })
 </script>
 
@@ -58,6 +80,8 @@ withDefaults(defineProps<ElmProgressProps>(), {
   width: 100%;
   height: var(--weight);
   position: relative;
+  border-radius: var(--border-radius);
+  overflow: hidden;
 
   background-color: rgba(black, 0.1);
   [data-theme='dark'] & {

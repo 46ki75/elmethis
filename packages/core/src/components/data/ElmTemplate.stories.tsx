@@ -23,3 +23,11 @@ export const WithBuffer: Story = {
     buffer: 70
   }
 }
+
+export const Bold: Story = {
+  args: {
+    value: 50,
+    buffer: 70,
+    weight: '16px'
+  }
+}
