@@ -23,7 +23,7 @@
 import { BarsArrowDownIcon } from '@heroicons/vue/24/outline'
 import ElmInlineText from '../inline/ElmInlineText.vue'
 
-export interface ElmTemplateProps {
+export interface ElmTableOfContentsProps {
   headings: Array<{
     level: 1 | 2 | 3 | 4 | 5 | 6
     text: string
@@ -31,7 +31,7 @@ export interface ElmTemplateProps {
   }>
 }
 
-withDefaults(defineProps<ElmTemplateProps>(), {})
+withDefaults(defineProps<ElmTableOfContentsProps>(), {})
 </script>
 
 <style scoped lang="scss">

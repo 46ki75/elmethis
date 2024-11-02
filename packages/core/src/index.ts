@@ -96,6 +96,9 @@ import ElmBreadcrumb, {
 import ElmPagetop, {
   ElmPagetopProps
 } from './components/navigation/ElmPagetop.vue'
+import ElmTableOfContents, {
+  ElmTableOfContentsProps
+} from './components/navigation/ElmTableOfContents.vue'
 
 // renderer
 import ElmJsonRenderer, {
@@ -167,6 +170,7 @@ export {
   ElmBookmark,
   ElmBreadcrumb,
   ElmPagetop,
+  ElmTableOfContents,
   ElmJsonRenderer,
   ElmTable,
   ElmTableHeader,
@@ -211,6 +215,7 @@ export type {
   ElmBookmarkProps,
   ElmBreadcrumbProps,
   ElmPagetopProps,
+  ElmTableOfContentsProps,
   ElmJsonRendererProps,
   ElmTableProps,
   ElmTableHeaderProps,
