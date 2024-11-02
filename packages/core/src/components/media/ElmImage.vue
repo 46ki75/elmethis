@@ -25,7 +25,7 @@
     :style="{
       '--height': isLoading ? '0' : 'auto',
       '--opacity': isLoading ? 0 : 1,
-      '--cursor': enableModal ? 'zoom-in' : 'auto'
+      '--cursor': enableModal ? 'zoom-in' : 'inherit'
     }"
   />
 
