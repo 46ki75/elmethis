@@ -66,6 +66,7 @@ import ElmInlineText, {
 } from './components/inline/ElmInlineText.vue'
 
 // media
+import ElmFile, { ElmFileProps } from './components/media/ElmFile.vue'
 import ElmImage, { ElmImageProps } from './components/media/ElmImage.vue'
 
 // navigation
@@ -139,6 +140,7 @@ export {
   ElmInlineLink,
   ElmInlineRuby,
   ElmInlineText,
+  ElmFile,
   ElmImage,
   ElmBookmark,
   ElmBreadcrumb,
@@ -177,6 +179,7 @@ export type {
   ElmInlineLinkProps,
   ElmInlineRubyProps,
   ElmInlineTextProps,
+  ElmFileProps,
   ElmImageProps,
   ElmBookmarkProps,
   ElmBreadcrumbProps,
