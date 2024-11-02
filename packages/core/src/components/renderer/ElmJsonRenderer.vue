@@ -48,6 +48,10 @@ import ElmBookmark, { ElmBookmarkProps } from '../navigation/ElmBookmark.vue'
 import ElmToggle, { ElmToggleProps } from '../containments/ElmToggle.vue'
 import ElmCheckbox, { ElmCheckboxProps } from '../form/ElmCheckbox.vue'
 import ElmFile, { ElmFileProps } from '../media/ElmFile.vue'
+import ElmColumn, { ElmColumnProps } from '../containments/ElmColumn.vue'
+import ElmColumnList, {
+  ElmColumnListProps
+} from '../containments/ElmColumnList.vue'
 
 type ComponentType =
   | 'ElmInlineText'
@@ -78,6 +82,8 @@ type ComponentType =
   | 'ElmToggle'
   | 'ElmCheckbox'
   | 'ElmFile'
+  | 'ElmColumn'
+  | 'ElmColumnList'
 
 type ComponentProps =
   | ElmInlineTextProps
@@ -108,6 +114,8 @@ type ComponentProps =
   | ElmToggleProps
   | ElmCheckboxProps
   | ElmFileProps
+  | ElmColumnProps
+  | ElmColumnListProps
 
 interface JsonComponentBase {
   type: ComponentType
@@ -255,6 +263,16 @@ interface ElmFileJsonComponent extends JsonComponentBase {
   props?: ElmFileProps
 }
 
+interface ElmColumnJsonComponent extends JsonComponentBase {
+  type: 'ElmColumn'
+  props?: ElmColumnProps
+}
+
+interface ElmColumnListJsonComponent extends JsonComponentBase {
+  type: 'ElmColumnList'
+  props?: ElmColumnListProps
+}
+
 type JsonComponent =
   | ElmInlineTextJsonComponent
   | ElmInlineCodeJsonComponent
@@ -284,6 +302,8 @@ type JsonComponent =
   | ElmToggleJsonComponent
   | ElmCheckboxJsonComponent
   | ElmFileJsonComponent
+  | ElmColumnJsonComponent
+  | ElmColumnListJsonComponent
 
 export interface ElmJsonRendererProps {
   json: JsonComponent[]
@@ -319,7 +339,9 @@ const componentMap: Record<ComponentType, any> = {
   ElmBookmark,
   ElmToggle,
   ElmCheckbox,
-  ElmFile
+  ElmFile,
+  ElmColumn,
+  ElmColumnList
 }
 </script>
 
