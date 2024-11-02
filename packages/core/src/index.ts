@@ -14,6 +14,9 @@ import ElmColumn, {
 import ElmColumnList, {
   ElmColumnListProps
 } from './components/containments/ElmColumnList.vue'
+import ElmParallax, {
+  ElmParallaxProps
+} from './components/containments/ElmParallax.vue'
 import ElmToggle, {
   ElmToggleProps
 } from './components/containments/ElmToggle.vue'
@@ -135,6 +138,7 @@ export {
   ElmKatex,
   ElmColumn,
   ElmColumnList,
+  ElmParallax,
   ElmToggle,
   ElmTooltip,
   ElmRectangleWave,
@@ -177,6 +181,7 @@ export type {
   ElmKatexProps,
   ElmColumnProps,
   ElmColumnListProps,
+  ElmParallaxProps,
   ElmToggleProps,
   ElmTooltipProps,
   ElmRectangleWaveProps,
