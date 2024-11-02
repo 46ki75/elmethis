@@ -235,6 +235,7 @@ export type {
 export const ElmethisPlugin = {
   install(app: App): void {
     app.component('ElmCodeBlock', ElmCodeBlock)
+    app.component('ElmCodeBlock', ElmCodeBlock)
     app.component('ElmPrismHighlighter', ElmPrismHighlighter)
     app.component('ElmKatex', ElmKatex)
     app.component('ElmColumn', ElmColumn)
