@@ -1,0 +1,110 @@
+<template>
+  <progress class="progress" />
+
+  <div
+    class="container"
+    :style="{
+      '--weight': weight,
+      '--border-radius': round ? 'calc(var(--weight) / 2)' : undefined,
+      '--color': color
+    }"
+  >
+    <div
+      class="value"
+      :style="{
+        '--scale-x': `scaleX(${value / max})`
+      }"
+    ></div>
+
+    <div
+      class="buffer"
+      :style="{
+        '--scale-x': `scaleX(${buffer != null ? buffer / max : value / max})`
+      }"
+    ></div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import type { Property } from 'csstype'
+
+export interface ElmProgressProps {
+  /**
+   * The current value of the progress.
+   */
+  value: number
+
+  /**
+   * The buffer value of the progress.
+   */
+  buffer?: number
+
+  /**
+   * The maximum value of the progress.
+   */
+  max?: number
+
+  /**
+   * The weight of the progress.
+   */
+  weight: Property.Height<string | number>
+
+  /**
+   * Whether the progress should be round.
+   */
+  round?: boolean
+
+  /**
+   * The color of the progress.
+   */
+  color?: string
+}
+
+withDefaults(defineProps<ElmProgressProps>(), {
+  max: 100,
+  weight: '4px',
+  round: true
+})
+</script>
+
+<style scoped lang="scss">
+@mixin bar($transition-duration: 800ms) {
+  position: absolute;
+  content: '';
+  width: 100%;
+  height: 100%;
+  transition: transform $transition-duration;
+  transform: var(--scale-x, scaleX(0));
+  transform-origin: left;
+  background-color: var(--color, rgba(black, 0.8));
+  [data-theme='dark'] & {
+    background-color: var(--color, rgba(white, 0.8));
+  }
+}
+
+.progress {
+  display: none;
+}
+
+.container {
+  width: 100%;
+  height: var(--weight);
+  position: relative;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+
+  background-color: rgba(black, 0.1);
+  [data-theme='dark'] & {
+    background-color: rgba(white, 0.1);
+  }
+
+  .value {
+    @include bar;
+  }
+
+  .buffer {
+    @include bar(400ms);
+    opacity: 0.25;
+  }
+}
+</style>
