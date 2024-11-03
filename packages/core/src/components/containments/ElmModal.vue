@@ -1,6 +1,14 @@
 <template>
-  <div class="provider">
+  <div
+    class="provider"
+    :style="{
+      '--opacity': isOpen ? 1 : 0,
+      '--pointer-events': isOpen ? 'auto' : 'none'
+    }"
+    @click="isOpen = false"
+  >
     <div
+      v-if="isOpen"
       class="modal"
       :style="{
         '--width': width
@@ -25,10 +33,16 @@ export interface ElmModalProps {
 withDefaults(defineProps<ElmModalProps>(), {
   width: '90%'
 })
+
+const isOpen = defineModel<boolean>('isOpen', {
+  default: false
+})
 </script>
 
 <style scoped lang="scss">
 .provider {
+  opacity: var(--opacity, 0);
+  pointer-events: var(--pointer-events, none);
   margin: 0;
   padding: 0;
   position: fixed;
@@ -40,6 +54,8 @@ withDefaults(defineProps<ElmModalProps>(), {
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: opacity 400ms;
+
   background-color: rgba(black, 0.7);
   [data-theme='dark'] & {
     background-color: rgba(black, 0.1);
