@@ -10,7 +10,7 @@
 <script setup lang="ts">
 import { MoonIcon, SunIcon } from '@heroicons/vue/24/outline'
 import type { Property } from 'csstype'
-import { onMounted, ref, watchEffect } from 'vue'
+import { useElmethisTheme } from '../../hooks/useElmethisTheme'
 
 export interface ElmToggleThemeProps {
   /**
@@ -23,27 +23,7 @@ withDefaults(defineProps<ElmToggleThemeProps>(), {
   size: '2rem'
 })
 
-const isDarkTheme = ref(false)
-
-const toggleTheme = () => {
-  isDarkTheme.value = !isDarkTheme.value
-}
-
-watchEffect(() => {
-  if (typeof document !== 'undefined') {
-    document.documentElement.setAttribute(
-      'data-theme',
-      isDarkTheme.value ? 'dark' : 'light'
-    )
-  }
-})
-
-onMounted(() => {
-  if (typeof document !== 'undefined') {
-    const currentTheme = document.documentElement.getAttribute('data-theme')
-    isDarkTheme.value = currentTheme === 'dark'
-  }
-})
+const { isDarkTheme, toggleTheme } = useElmethisTheme()
 </script>
 
 <style scoped lang="scss">

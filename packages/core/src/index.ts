@@ -143,6 +143,14 @@ import ElmListItem, {
   ElmListItemProps
 } from './components/typography/ElmListItem.vue'
 
+// # --------------------------------------------------------------------------------
+//
+// hooks
+//
+// # --------------------------------------------------------------------------------
+
+import { useElmethisTheme } from './hooks/useElmethisTheme'
+
 export {
   ElmCodeBlock,
   ElmPrismHighlighter,
@@ -186,7 +194,8 @@ export {
   ElmCallout,
   ElmDivider,
   ElmNumberedList,
-  ElmListItem
+  ElmListItem,
+  useElmethisTheme
 }
 
 export type {
