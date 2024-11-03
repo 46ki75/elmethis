@@ -5,21 +5,31 @@
       <div aria-hidden class="dot" :style="{ '--bg': '#c9b990' }"></div>
       <div aria-hidden class="dot" :style="{ '--bg': '#7cc598' }"></div>
     </div>
-    <div class="body"><slot /></div>
+    <div class="body" :style="{ minHeight }"><slot /></div>
   </div>
 </template>
 
 <script setup lang="ts">
-export interface ElmDesktopWindowProps {}
+import { Property } from 'csstype'
 
-withDefaults(defineProps<ElmDesktopWindowProps>(), {})
+export interface ElmDesktopWindowProps {
+  /**
+   * The minimum height of the window.
+   * @default '6rem'
+   */
+  minHeight?: Property.MinHeight
+}
+
+withDefaults(defineProps<ElmDesktopWindowProps>(), {
+  minHeight: '6rem'
+})
 </script>
 
 <style scoped lang="scss">
 .window {
-  min-height: 100px;
   border-radius: 0.25rem;
   overflow: hidden;
+  transition: background-color 400ms;
   box-shadow: 0 0 0.25rem rgba(black, 0.15);
   background-color: rgba(black, 0.05);
   [data-theme='dark'] & {
