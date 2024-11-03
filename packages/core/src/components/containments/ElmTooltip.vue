@@ -14,27 +14,27 @@
     "
   >
     <slot name="original" />
-  </span>
 
-  <transition>
-    <div
-      v-if="isHover"
-      class="tooltip"
-      :style="
-        x > windowSize.width.value / 2
-          ? {
-              top: `${y + height}px`,
-              right: `${windowSize.width.value - x - width}px`
-            }
-          : {
-              top: `${y + height}px`,
-              left: `${x}px`
-            }
-      "
-    >
-      <slot name="tooltip" />
-    </div>
-  </transition>
+    <transition>
+      <div
+        v-if="isHover"
+        class="tooltip"
+        :style="
+          x > windowSize.width.value / 2
+            ? {
+                top: `${y + height}px`,
+                right: `${windowSize.width.value - x - width}px`
+              }
+            : {
+                top: `${y + height}px`,
+                left: `${x}px`
+              }
+        "
+      >
+        <slot name="tooltip" />
+      </div>
+    </transition>
+  </span>
 </template>
 
 <script setup lang="ts">
