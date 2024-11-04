@@ -485,6 +485,10 @@ export class Client {
         if (ol !== undefined && block.type !== 'numbered_list_item') {
           ol = undefined
         }
+
+        if (ul !== undefined && block.type !== 'bulleted_list_item') {
+          ul = undefined
+        }
       }
     }
 
