@@ -3,7 +3,7 @@ import ElmTag from './ElmTag.vue'
 import { lighten } from 'polished'
 
 const meta: Meta<typeof ElmTag> = {
-  title: 'Components/badge/ElmTag',
+  title: 'Components/Badge/ElmTag',
   component: ElmTag,
   tags: ['autodocs'],
   args: {}

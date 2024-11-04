@@ -40,6 +40,9 @@ import ElmProgress, {
 import ElmRectangleWave, {
   ElmRectangleWaveProps
 } from './components/fallback/ElmRectangleWave.vue'
+import ElmBlockFallback, {
+  ElmBlockFallbackProps
+} from './components/fallback/ElmBlockFallback.vue'
 
 // Headings
 import ElmHeading1, {
@@ -183,6 +186,7 @@ export {
   ElmTooltip,
   ElmProgress,
   ElmRectangleWave,
+  ElmBlockFallback,
   ElmHeading1,
   ElmHeading2,
   ElmHeading3,
@@ -236,6 +240,7 @@ export type {
   ElmTooltipProps,
   ElmProgressProps,
   ElmRectangleWaveProps,
+  ElmBlockFallbackProps,
   ElmHeading1Props,
   ElmHeading2Props,
   ElmHeading3Props,
