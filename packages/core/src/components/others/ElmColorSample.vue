@@ -1,9 +1,5 @@
 <template>
-  <div
-    :style="{
-      '--color': color
-    }"
-  >
+  <div :style="{ '--color': color }">
     <ElmTooltip>
       <template #original>
         <div
@@ -48,10 +44,33 @@ const { hue, saturation, lightness } = parseToHsl(props.color)
   border-radius: 0.25rem;
   background-color: var(--background-color);
   cursor: pointer;
+
+  transition: opacity 100ms;
+
+  &:active {
+    opacity: 0.5;
+  }
 }
 
 .text {
+  padding: 0.125rem;
+  border-radius: 0.125rem;
+  transition:
+    color 100ms,
+    background-color 100ms,
+    opacity 100ms;
   color: var(--color);
+  cursor: pointer;
+
+  &:hover {
+    color: white;
+    background-color: var(--color);
+  }
+
+  &:active {
+    opacity: 0.5;
+  }
+
   &::selection {
     color: white;
     background-color: var(--color);
