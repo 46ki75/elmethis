@@ -8,4 +8,4 @@ export interface ElmTemplateProps {}
 withDefaults(defineProps<ElmTemplateProps>(), {})
 </script>
 
-<style scoped lang="scss"></style>
+<style module lang="scss"></style>

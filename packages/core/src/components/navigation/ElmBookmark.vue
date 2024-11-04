@@ -1,6 +1,6 @@
 <template>
   <a
-    class="bookmark"
+    :class="$style.bookmark"
     :href="url"
     :target="openInNewTab ? '_blank' : undefined"
     rel="noopener noreferrer"
@@ -11,12 +11,12 @@
     }"
     @click="handleClick"
   >
-    <div class="image">
+    <div :class="$style.image">
       <ElmImage :src="image" />
     </div>
 
-    <div class="typography">
-      <div class="title"><ElmInlineText :text="title" bold /></div>
+    <div :class="$style.typography">
+      <div :class="$style.title"><ElmInlineText :text="title" bold /></div>
 
       <div>
         <ElmInlineText
@@ -30,19 +30,19 @@
         />
       </div>
 
-      <div class="date" v-if="createdAt != null || updatedAt != null">
+      <div :class="$style.date" v-if="createdAt != null || updatedAt != null">
         <template v-if="createdAt != null">
-          <CalendarDaysIcon class="icon" />
+          <CalendarDaysIcon :class="$style.icon" />
           <ElmInlineText :text="`${createdAt}`" size=".8rem" />
         </template>
 
         <template v-if="updatedAt != null">
-          <ArrowPathIcon class="icon" />
+          <ArrowPathIcon :class="$style.icon" />
           <ElmInlineText :text="`${updatedAt}`" size=".8rem" />
         </template>
       </div>
 
-      <div v-if="!hideUrl" class="link">
+      <div v-if="!hideUrl" :class="$style.link">
         <div><ElmInlineLink :text="url" href="#" size=".8rem" /></div>
       </div>
     </div>
@@ -125,7 +125,7 @@ function handleClick(event: MouseEvent) {
 }
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .bookmark {
   all: unset;
   height: var(--container-height);

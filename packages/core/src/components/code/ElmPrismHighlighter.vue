@@ -1,6 +1,6 @@
 <template>
-  <pre class="pre" :key="JSON.stringify(props)">
-    <code :class="['code', `language-${language}`]" ref="codeRef" >{{ code.trim() }}</code>
+  <pre class="elmethis-prism-code-highlighter-pre" :key="JSON.stringify(props)">
+    <code :class="['elmethis-prism-code-highlighter-code', `language-${language}`]" ref="codeRef">{{ code.trim() }}</code>
   </pre>
 </template>
 
@@ -46,11 +46,11 @@ onUpdated(highlightCode)
 </script>
 
 <style scoped lang="scss">
-.pre {
+.elmethis-prism-code-highlighter-pre {
   all: unset;
 }
 
-.code {
+.elmethis-prism-code-highlighter-code {
   font-family: 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
 }
 </style>

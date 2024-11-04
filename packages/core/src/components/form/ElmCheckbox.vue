@@ -1,5 +1,5 @@
 <template>
-  <div class="container" @click="toggleCheck">
+  <div :class="$style.container" @click="toggleCheck">
     <div
       :style="{
         cursor: 'pointer',
@@ -8,19 +8,19 @@
         gap: '0.5rem'
       }"
     >
-      <svg width="24" height="24" :class="['checkbox']">
+      <svg width="24" height="24" :class="$style.checkbox">
         <rect
           x="4"
           y="4"
           width="16"
           height="16"
-          :class="['rect', { 'rect--checked': isChecked }]"
+          :class="[$style.rect, { [$style['rect--checked']]: isChecked }]"
           strokeWidth="0.8"
         />
 
         <polyline
           v-if="isChecked"
-          class="check-line"
+          :class="$style['check-line']"
           points="5,12 10,17 19,8"
           strokeWidth="1.5"
           fill="transparent"
@@ -92,7 +92,7 @@ function toggleCheck() {
 }
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 // # --------------------------------------------------------------------------------
 //
 // styles
@@ -142,7 +142,13 @@ function toggleCheck() {
 
 .check-line {
   stroke-dasharray: 100%;
-  animation: elmethis-checkbox-check-line 0.2s ease-in-out 0.1s both;
+
+  animation-name: elmethis-checkbox-check-line;
+  animation-duration: 0.2s;
+  animation-timing-function: ease-in-out;
+  animation-delay: 0.1s;
+  animation-fill-mode: both;
+
   transform-origin: center;
 
   stroke: rgba(255, 255, 255, 0.9);

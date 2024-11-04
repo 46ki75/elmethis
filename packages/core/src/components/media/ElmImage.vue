@@ -1,5 +1,5 @@
 <template>
-  <div class="fallback" v-if="isLoading">
+  <div :class="$style.fallback" v-if="isLoading">
     <elm-rectangle-wave />
     <div>
       <elm-dot-loading-icon />
@@ -7,7 +7,7 @@
   </div>
 
   <img
-    class="image"
+    :class="$style.image"
     :src="src"
     :alt="alt"
     @load="
@@ -30,9 +30,9 @@
   />
 
   <transition>
-    <div class="modal" v-if="isModalOpen">
+    <div :class="$style.modal" v-if="isModalOpen">
       <img
-        class="modal-image"
+        :class="$style['modal-image']"
         :src="src"
         :alt="alt"
         @click="
@@ -81,7 +81,7 @@ onKeyStroke('Escape', (e) => {
 })
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .image {
   display: block;
   width: 100%;
@@ -123,7 +123,9 @@ onKeyStroke('Escape', (e) => {
     object-fit: contain;
   }
 }
+</style>
 
+<style scoped lang="scss">
 .v-enter-to,
 .v-leave-from {
   opacity: 1;

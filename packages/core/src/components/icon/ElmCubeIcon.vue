@@ -1,6 +1,6 @@
 <template>
   <div
-    class="cube"
+    :class="$style.cube"
     :style="{
       width: `${size}px`,
       height: `${size}px`
@@ -9,7 +9,7 @@
     <div
       v-for="face in faces"
       :key="face.name"
-      class="face"
+      :class="$style.face"
       :style="{
         transform: `${face.rotate} ${commonTranslateZ}`
       }"
@@ -43,7 +43,7 @@ const faces = [
 ]
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .cube {
   position: relative;
   transform-style: preserve-3d;

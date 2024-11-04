@@ -30,5 +30,3 @@ export interface ElmInlineRubyProps {
 
 withDefaults(defineProps<ElmInlineRubyProps>(), {})
 </script>
-
-<style scoped lang="scss"></style>

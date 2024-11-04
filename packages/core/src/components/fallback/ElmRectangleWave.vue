@@ -1,5 +1,5 @@
 <template>
-  <div aria-hidden class="rectangle-wave"></div>
+  <div aria-hidden :class="$style['rectangle-wave']"></div>
 </template>
 
 <script setup lang="ts">
@@ -8,7 +8,7 @@ export interface ElmRectangleWaveProps {}
 withDefaults(defineProps<ElmRectangleWaveProps>(), {})
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 @keyframes wave {
   0% {
     transform: scale(0);

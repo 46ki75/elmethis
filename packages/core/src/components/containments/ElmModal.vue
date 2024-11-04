@@ -1,6 +1,6 @@
 <template>
   <div
-    class="provider"
+    :class="$style.provider"
     :style="{
       '--opacity': isOpen ? 1 : 0,
       '--pointer-events': isOpen ? 'auto' : 'none'
@@ -10,7 +10,7 @@
     <transition>
       <div
         v-if="isOpen"
-        class="modal"
+        :class="$style.modal"
         :style="{
           '--width': width
         }"
@@ -41,7 +41,7 @@ const isOpen = defineModel<boolean>('isOpen', {
 })
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .provider {
   opacity: var(--opacity, 0);
   pointer-events: var(--pointer-events, none);
@@ -75,7 +75,9 @@ const isOpen = defineModel<boolean>('isOpen', {
     }
   }
 }
+</style>
 
+<style scoped lang="scss">
 .v-enter-to,
 .v-leave-from {
   opacity: 1;
@@ -83,7 +85,7 @@ const isOpen = defineModel<boolean>('isOpen', {
 
 .v-enter-active,
 .v-leave-active {
-  transition: opacity 300ms;
+  transition: opacity 200ms;
 }
 
 .v-enter-from,

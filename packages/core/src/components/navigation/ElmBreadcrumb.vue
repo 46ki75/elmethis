@@ -1,15 +1,15 @@
 <template>
   <nav
-    class="container"
+    :class="$style.container"
     ref="target"
     :style="{
       '--opacity': targetIsVisible ? 1 : 0
     }"
   >
     <template v-for="(link, index) in links">
-      <div class="link-container" @click="link.onClick">
+      <div :class="$style['link-container']" @click="link.onClick">
         <component
-          :class="['icon', 'fade']"
+          :class="[$style.icon, $style.fade]"
           :is="
             index === 0
               ? HomeIcon
@@ -23,7 +23,7 @@
         />
         <ElmInlineText
           :text="link.text"
-          :class="['link-text', 'fade']"
+          :class="$style.fade"
           :style="{
             '--delay': `${index * 100 + 50}ms`
           }"
@@ -32,7 +32,7 @@
 
       <ChevronRightIcon
         v-if="links.length !== index + 1"
-        :class="['chevron', 'fade']"
+        :class="[$style.chevron, $style.fade]"
         :style="{
           '--delay': `${index * 100 + 100}ms`
         }"
@@ -79,7 +79,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 })
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .container {
   display: flex;
   flex-direction: row;

@@ -1,6 +1,6 @@
 <template>
   <component
-    class="katex"
+    :class="$style.katex"
     :key="JSON.stringify(props)"
     ref="targetRef"
     :style="{
@@ -55,7 +55,7 @@ onMounted(render)
 onUpdated(render)
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .katex {
   margin-block: var(--margin-block);
   color: rgba(0, 0, 0, 0.7);

@@ -1,6 +1,6 @@
 <template>
   <component
-    class="icon"
+    :class="$style.icon"
     :is="isDarkTheme ? MoonIcon : SunIcon"
     :style="{ width: size, height: size }"
     @click="toggleTheme"
@@ -26,7 +26,7 @@ withDefaults(defineProps<ElmToggleThemeProps>(), {
 const { isDarkTheme, toggleTheme } = useElmethisTheme()
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 @mixin icon($color) {
   box-sizing: border-box;
   padding: 0.25rem;

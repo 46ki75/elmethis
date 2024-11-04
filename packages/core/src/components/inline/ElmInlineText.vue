@@ -1,6 +1,6 @@
 <template>
   <span
-    class="text"
+    :class="$style.text"
     :style="{
       '--color': color,
       '--font-size': size,
@@ -69,7 +69,7 @@ withDefaults(defineProps<ElmInlineTextProps>(), {
 })
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .text {
   color: var(--color, rgba(0, 0, 0, 0.7));
   font-size: var(--font-size);

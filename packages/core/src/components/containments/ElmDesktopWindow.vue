@@ -1,11 +1,11 @@
 <template>
-  <div class="window">
-    <div class="header">
-      <div aria-hidden class="dot" :style="{ '--bg': '#c48691' }"></div>
-      <div aria-hidden class="dot" :style="{ '--bg': '#c9b990' }"></div>
-      <div aria-hidden class="dot" :style="{ '--bg': '#7cc598' }"></div>
+  <div :class="$style.window">
+    <div :class="$style.header">
+      <div aria-hidden :class="$style.dot" :style="{ '--bg': '#c48691' }"></div>
+      <div aria-hidden :class="$style.dot" :style="{ '--bg': '#c9b990' }"></div>
+      <div aria-hidden :class="$style.dot" :style="{ '--bg': '#7cc598' }"></div>
     </div>
-    <div class="body" :style="{ minHeight }"><slot /></div>
+    <div :style="{ minHeight }"><slot /></div>
   </div>
 </template>
 
@@ -25,7 +25,7 @@ withDefaults(defineProps<ElmDesktopWindowProps>(), {
 })
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .window {
   border-radius: 0.25rem;
   overflow: hidden;

@@ -1,5 +1,5 @@
 <template>
-  <div class="elmethis-block-fallback">
+  <div :class="$style['elmethis-block-fallback']">
     <ElmDotLoadingIcon />
   </div>
 </template>
@@ -12,7 +12,7 @@ export interface ElmBlockFallbackProps {}
 withDefaults(defineProps<ElmBlockFallbackProps>(), {})
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .elmethis-block-fallback {
   width: 100%;
   height: 8rem;

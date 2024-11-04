@@ -1,5 +1,9 @@
 <template>
-  <h4 class="h4" :id="id ?? kebabCase(text)" :style="{ '--font-size': size }">
+  <h4
+    :class="$style.h4"
+    :id="id ?? kebabCase(text)"
+    :style="{ '--font-size': size }"
+  >
     {{ text }}
   </h4>
 </template>
@@ -31,7 +35,7 @@ withDefaults(defineProps<ElmHeading4Props>(), {
 })
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .h4 {
   margin-block: 3rem;
   font-size: var(--font-size);

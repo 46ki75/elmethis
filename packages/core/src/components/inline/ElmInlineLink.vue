@@ -1,6 +1,6 @@
 <template>
   <a
-    class="link"
+    :class="$style.link"
     :href="href"
     :style="{ '--font-size': size }"
     :target="openInNewTab ? '_blank' : undefined"
@@ -18,7 +18,7 @@
             ? ArrowTopRightOnSquareIcon
             : ChevronRightIcon
       "
-      class="icon"
+      :class="$style.icon"
     />
   </a>
 </template>
@@ -80,7 +80,7 @@ function handleClick(event: MouseEvent) {
 }
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .link {
   all: unset;
   box-sizing: border-box;

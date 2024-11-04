@@ -1,5 +1,9 @@
 <template>
-  <h3 class="h3" :id="id ?? kebabCase(text)" :style="{ '--font-size': size }">
+  <h3
+    :class="$style.h3"
+    :id="id ?? kebabCase(text)"
+    :style="{ '--font-size': size }"
+  >
     {{ text }}
   </h3>
 </template>
@@ -31,7 +35,7 @@ withDefaults(defineProps<ElmHeading3Props>(), {
 })
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .h3 {
   margin-block: 3rem;
   position: relative;
