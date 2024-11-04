@@ -38,6 +38,7 @@ const icon = icons['tag'].toSvg({
   display: flex;
   width: min-content;
   flex-direction: row;
+  flex-wrap: nowrap;
   justify-content: center;
   align-items: flex-end;
   border-radius: 0.25rem;
