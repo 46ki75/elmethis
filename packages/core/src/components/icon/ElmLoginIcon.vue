@@ -18,7 +18,7 @@
     </template>
     <template #tooltip>
       <ElmInlineText
-        :text="isLoading ? 'Loading...' : isLogin ? 'Login' : 'Logout'"
+        :text="isLoading ? 'Loading...' : isLogin ? 'Logout' : 'Login'"
       />
     </template>
   </ElmTooltip>
