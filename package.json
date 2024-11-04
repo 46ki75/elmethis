@@ -6,7 +6,7 @@
   },
   "homepage": "https://46ki75.github.io/elmethis",
   "devDependencies": {
-    "@types/node": "^22.8.6",
+    "@types/node": "^22.8.7",
     "typescript": "~5.6.2"
   }
 }
