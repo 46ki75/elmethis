@@ -21,20 +21,14 @@
 import { darken } from 'polished'
 import ElmColorSample from './ElmColorSample.vue'
 
-export interface ElmTemplateProps {}
+export interface ElmTemplateProps {
+  /**
+   * The colors to display.
+   */
+  colors: { name: string; code: string }[]
+}
 
 withDefaults(defineProps<ElmTemplateProps>(), {})
-
-const colors = [
-  { name: 'crimson', code: '#b36472' },
-  { name: 'amber', code: '#bf7e71' },
-  { name: 'gold', code: '#b8a36e' },
-  { name: 'emerald', code: '#59b57c' },
-  { name: 'blue', code: '#6987b8' },
-  { name: 'purple', code: '#9771bd' },
-  { name: 'pink', code: '#c9699e' },
-  { name: 'slate', code: '#868e9c' }
-]
 </script>
 
 <style scoped lang="scss">

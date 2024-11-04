@@ -34,6 +34,9 @@ import { useClipboard } from '@vueuse/core'
 import { CheckIcon } from '@heroicons/vue/24/outline'
 
 export interface ElmColorSampleProps {
+  /**
+   * The color to display.
+   */
   color: string
 }
 
