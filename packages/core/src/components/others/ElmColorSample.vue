@@ -7,17 +7,21 @@
           :style="{
             '--background-color': color
           }"
-        ></div>
-        <div class="text">{{ rgbToColorString(parseToRgb(color)) }}</div>
+          @click="copy(hex)"
+        >
+          <transition>
+            <CheckIcon
+              v-if="copied"
+              :style="{ width: '16px', color: 'white' }"
+            />
+          </transition>
+        </div>
+        <div class="text" @click="copy(hex)">{{ hex }}</div>
       </template>
       <template #tooltip>
-        <div class="text">{{ rgbToColorString(parseToRgb(color)) }}</div>
-        <div class="text">{{ `rgb(${red}, ${green}, ${blue})` }}</div>
-        <div class="text">
-          {{
-            `hsl(${Math.floor(hue)}, ${Math.floor(saturation * 100)}%, ${Math.floor(lightness * 100)}%)`
-          }}
-        </div>
+        <div class="text" @click="copy(hex)">{{ hex }}</div>
+        <div class="text" @click="copy(rgb)">{{ rgb }}</div>
+        <div class="text" @click="copy(hsl)">{{ hsl }}</div>
       </template>
     </ElmTooltip>
   </div>
@@ -26,6 +30,8 @@
 <script setup lang="ts">
 import { parseToHsl, parseToRgb, rgbToColorString } from 'polished'
 import ElmTooltip from '../containments/ElmTooltip.vue'
+import { useClipboard } from '@vueuse/core'
+import { CheckIcon } from '@heroicons/vue/24/outline'
 
 export interface ElmColorSampleProps {
   color: string
@@ -35,6 +41,12 @@ const props = withDefaults(defineProps<ElmColorSampleProps>(), {})
 
 const { blue, green, red } = parseToRgb(props.color)
 const { hue, saturation, lightness } = parseToHsl(props.color)
+
+const hex = rgbToColorString(parseToRgb(props.color))
+const rgb = `rgb(${red}, ${green}, ${blue})`
+const hsl = `hsl(${Math.floor(hue)}, ${Math.floor(saturation * 100)}%, ${Math.floor(lightness * 100)}%)`
+
+const { copy, copied } = useClipboard()
 </script>
 
 <style scoped lang="scss">
@@ -53,6 +65,7 @@ const { hue, saturation, lightness } = parseToHsl(props.color)
 }
 
 .text {
+  margin-block: 0.125rem;
   padding: 0.125rem;
   border-radius: 0.125rem;
   transition:
@@ -75,5 +88,20 @@ const { hue, saturation, lightness } = parseToHsl(props.color)
     color: white;
     background-color: var(--color);
   }
+}
+
+.v-enter-to,
+.v-leave-from {
+  opacity: 1;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 300ms;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>
