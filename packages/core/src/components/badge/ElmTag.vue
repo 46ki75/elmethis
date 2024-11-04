@@ -1,15 +1,12 @@
 <template>
   <div class="container" :style="{ backgroundColor: color }">
     <div class="icon" v-html="icon"></div>
-    <div>
-      <ElmInlineText :text="text" />
-    </div>
+    <div class="text">{{ text }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { icons } from 'feather-icons'
-import ElmInlineText from '../inline/ElmInlineText.vue'
 
 export interface ElmTagProps {
   /**
@@ -44,6 +41,11 @@ const icon = icons['tag'].toSvg({
   border-radius: 0.25rem;
   gap: 0.25rem;
   padding: 0.125rem 0.25rem;
+
+  color: rgba(black, 0.7);
+  [data-theme='dark'] & {
+    color: rgba(white, 0.7);
+  }
 }
 
 .icon {
@@ -51,9 +53,9 @@ const icon = icons['tag'].toSvg({
   line-height: 1;
   margin: 0;
   padding: 0;
-  color: rgba(black, 0.7);
-  [data-theme='dark'] & {
-    color: rgba(white, 0.7);
-  }
+}
+
+.text {
+  white-space: nowrap;
 }
 </style>
