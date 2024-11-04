@@ -1,8 +1,10 @@
 <template>
-  <span class="container" :style="{ backgroundColor: color }">
-    <span class="icon" v-html="icon"></span>
-    <ElmInlineText :text="text" />
-  </span>
+  <div class="container" :style="{ backgroundColor: color }">
+    <div class="icon" v-html="icon"></div>
+    <div>
+      <ElmInlineText :text="text" />
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -18,7 +20,7 @@ export interface ElmTagProps {
   /**
    * The color of the tag.
    */
-  color: string
+  color?: string
 }
 
 withDefaults(defineProps<ElmTagProps>(), {
@@ -33,7 +35,8 @@ const icon = icons['tag'].toSvg({
 
 <style scoped lang="scss">
 .container {
-  display: inline-flex;
+  display: flex;
+  width: min-content;
   flex-direction: row;
   justify-content: center;
   align-items: flex-end;
@@ -43,8 +46,7 @@ const icon = icons['tag'].toSvg({
 }
 
 .icon {
-  display: inline-block;
-  vertical-align: middle;
+  display: block;
   line-height: 1;
   margin: 0;
   padding: 0;
