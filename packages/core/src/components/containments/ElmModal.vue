@@ -7,15 +7,17 @@
     }"
     @click="isOpen = false"
   >
-    <div
-      v-if="isOpen"
-      class="modal"
-      :style="{
-        '--width': width
-      }"
-    >
-      <slot />
-    </div>
+    <transition>
+      <div
+        v-if="isOpen"
+        class="modal"
+        :style="{
+          '--width': width
+        }"
+      >
+        <slot />
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -35,7 +37,7 @@ withDefaults(defineProps<ElmModalProps>(), {
 })
 
 const isOpen = defineModel<boolean>('isOpen', {
-  default: false
+  default: true
 })
 </script>
 
@@ -72,5 +74,20 @@ const isOpen = defineModel<boolean>('isOpen', {
       background-color: rgba(22, 22, 22, 0.8);
     }
   }
+}
+
+.v-enter-to,
+.v-leave-from {
+  opacity: 1;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 300ms;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>
