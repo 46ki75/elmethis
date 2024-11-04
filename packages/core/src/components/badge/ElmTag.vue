@@ -21,7 +21,9 @@ export interface ElmTagProps {
   color: string
 }
 
-withDefaults(defineProps<ElmTagProps>(), {})
+withDefaults(defineProps<ElmTagProps>(), {
+  color: 'transparent'
+})
 
 const icon = icons['tag'].toSvg({
   width: 16,
