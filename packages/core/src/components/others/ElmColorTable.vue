@@ -2,7 +2,9 @@
   <div class="container">
     <template v-for="color in colors">
       <div class="row-container">
-        <div class="color-name">{{ color.name }}</div>
+        <div class="color-name" :style="{ '--color': color.code }">
+          {{ color.name }}
+        </div>
         <template
           v-for="darkness in [
             -0.2, -0.15, -0.1, -0.05, 0, 0.05, 0.1, 0.15, 0.2
@@ -53,6 +55,11 @@ const colors = [
     .color-name {
       width: 6rem;
       color: var(--color);
+
+      &::selection {
+        background-color: var(--color);
+        color: white;
+      }
     }
   }
 }
