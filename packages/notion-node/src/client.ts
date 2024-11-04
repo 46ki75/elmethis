@@ -80,6 +80,10 @@ export class Client {
 
   async convert({ id }: { id: string }) {
     const components: ElmJsonRendererProps['json'] = []
+    const headings: Array<{
+      level: number
+      text: string
+    }> = []
 
     let ul: ElmJsonRendererProps['json'][number] | undefined
     let ol: ElmJsonRendererProps['json'][number] | undefined
@@ -113,73 +117,52 @@ export class Client {
           }
 
           case 'heading_1': {
+            const text = block.heading_1.rich_text
+              .map((text) => text.plain_text)
+              .join()
+            headings.push({ level: 1, text })
             if (block.heading_1.is_toggleable) {
               components.push({
                 type: 'ElmToggle',
-                props: {
-                  summary: block.heading_1.rich_text
-                    .map((text) => text.plain_text)
-                    .join()
-                },
+                props: { summary: text },
                 children: (await this.convert({ id: block.id })).components
               })
             } else {
-              components.push({
-                type: 'ElmHeading1',
-                props: {
-                  text: block.heading_1.rich_text
-                    .map((text) => text.plain_text)
-                    .join()
-                }
-              })
+              components.push({ type: 'ElmHeading1', props: { text } })
             }
             break
           }
 
           case 'heading_2': {
+            const text = block.heading_2.rich_text
+              .map((text) => text.plain_text)
+              .join()
+            headings.push({ level: 2, text })
             if (block.heading_2.is_toggleable) {
               components.push({
                 type: 'ElmToggle',
-                props: {
-                  summary: block.heading_2.rich_text
-                    .map((text) => text.plain_text)
-                    .join()
-                },
+                props: { summary: text },
                 children: (await this.convert({ id: block.id })).components
               })
             } else {
-              components.push({
-                type: 'ElmHeading2',
-                props: {
-                  text: block.heading_2.rich_text
-                    .map((text) => text.plain_text)
-                    .join()
-                }
-              })
+              components.push({ type: 'ElmHeading2', props: { text } })
             }
             break
           }
 
           case 'heading_3': {
+            const text = block.heading_3.rich_text
+              .map((text) => text.plain_text)
+              .join()
+            headings.push({ level: 3, text })
             if (block.heading_3.is_toggleable) {
               components.push({
                 type: 'ElmToggle',
-                props: {
-                  summary: block.heading_3.rich_text
-                    .map((text) => text.plain_text)
-                    .join()
-                },
+                props: { summary: text },
                 children: (await this.convert({ id: block.id })).components
               })
             } else {
-              components.push({
-                type: 'ElmHeading3',
-                props: {
-                  text: block.heading_3.rich_text
-                    .map((text) => text.plain_text)
-                    .join()
-                }
-              })
+              components.push({ type: 'ElmHeading3', props: { text } })
             }
             break
           }
