@@ -1,3 +1,6 @@
+// badge
+import ElmTag, { ElmTagProps } from './components/badge/ElmTag.vue'
+
 // code
 import ElmCodeBlock, {
   ElmCodeBlockProps
@@ -151,6 +154,9 @@ import ElmDivider, {
 import ElmNumberedList, {
   ElmNumberedListProps
 } from './components/typography/ElmNumberedList.vue'
+import ElmParagraph, {
+  ElmParagraphProps
+} from './components/typography/ElmParagraph.vue'
 import ElmListItem, {
   ElmListItemProps
 } from './components/typography/ElmListItem.vue'
@@ -164,6 +170,7 @@ import ElmListItem, {
 import { useElmethisTheme } from './hooks/useElmethisTheme'
 
 export {
+  ElmTag,
   ElmCodeBlock,
   ElmPrismHighlighter,
   ElmKatex,
@@ -210,11 +217,13 @@ export {
   ElmCallout,
   ElmDivider,
   ElmNumberedList,
+  ElmParagraph,
   ElmListItem,
   useElmethisTheme
 }
 
 export type {
+  ElmTagProps,
   ElmCodeBlockProps,
   ElmPrismHighlighterProps,
   ElmKatexProps,
@@ -261,5 +270,6 @@ export type {
   ElmCalloutProps,
   ElmDividerProps,
   ElmNumberedListProps,
+  ElmParagraphProps,
   ElmListItemProps
 }
