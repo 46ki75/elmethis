@@ -344,5 +344,3 @@ const componentMap: Record<ComponentType, any> = {
   ElmColumnList
 }
 </script>
-
-<style scoped lang="scss"></style>

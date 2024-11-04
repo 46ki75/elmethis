@@ -1,8 +1,8 @@
 <template>
-  <progress class="progress" />
+  <progress :class="$style.progress" />
 
   <div
-    class="container"
+    :class="$style.container"
     :style="{
       '--weight': weight,
       '--border-radius': round ? 'calc(var(--weight) / 2)' : undefined,
@@ -10,14 +10,14 @@
     }"
   >
     <div
-      class="value"
+      :class="$style.value"
       :style="{
         '--scale-x': `scaleX(${value / max})`
       }"
     ></div>
 
     <div
-      class="buffer"
+      :class="$style.buffer"
       :style="{
         '--scale-x': `scaleX(${buffer != null ? buffer / max : value / max})`
       }"
@@ -67,7 +67,7 @@ withDefaults(defineProps<ElmProgressProps>(), {
 })
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 @mixin bar($transition-duration: 800ms) {
   position: absolute;
   content: '';

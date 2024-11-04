@@ -1,5 +1,9 @@
 <template>
-  <h5 class="h5" :id="id ?? kebabCase(text)" :style="{ '--font-size': size }">
+  <h5
+    :class="$style.h5"
+    :id="id ?? kebabCase(text)"
+    :style="{ '--font-size': size }"
+  >
     {{ text }}
   </h5>
 </template>
@@ -31,7 +35,7 @@ withDefaults(defineProps<ElmHeading5Props>(), {
 })
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .h5 {
   margin-block: 3rem;
   font-size: var(--font-size);

@@ -1,7 +1,7 @@
 <template>
-  <div class="container" :style="{ backgroundColor: color }">
-    <div class="icon" v-html="icon"></div>
-    <div class="text">{{ text }}</div>
+  <div :class="$style.tag" :style="{ backgroundColor: color }">
+    <div :class="$style.icon" v-html="icon"></div>
+    <div :class="$style.text">{{ text }}</div>
   </div>
 </template>
 
@@ -30,8 +30,8 @@ const icon = icons['tag'].toSvg({
 })
 </script>
 
-<style scoped lang="scss">
-.container {
+<style module lang="scss">
+.tag {
   display: flex;
   width: min-content;
   flex-direction: row;

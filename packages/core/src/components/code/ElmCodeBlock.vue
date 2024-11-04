@@ -1,7 +1,7 @@
 <template>
-  <div class="wrapper">
-    <div class="header">
-      <div class="header__left">
+  <div :class="$style.wrapper">
+    <div :class="$style.header">
+      <div :class="$style.header__left">
         <ElmLanguageIcon :language="language" :size="20" />
         <ElmInlineText :text="caption ?? language" />
       </div>
@@ -9,7 +9,7 @@
       <ElmTooltip>
         <template #original>
           <component
-            class="copy-icon"
+            :class="$style['copy-icon']"
             @click="
               () => {
                 copy(code)
@@ -27,7 +27,7 @@
         </template>
       </ElmTooltip>
     </div>
-    <div class="code">
+    <div :class="$style.code">
       <elm-prism-highlighter :code="code" :language="language" />
     </div>
   </div>
@@ -69,9 +69,8 @@ const props = withDefaults(defineProps<ElmCodeBlockProps>(), {
 const { copy, copied } = useClipboard({ source: props.code })
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .wrapper {
-  margin-block: 2rem;
   display: flex;
   flex-direction: column;
   border-radius: 0.25rem;
@@ -98,13 +97,13 @@ const { copy, copied } = useClipboard({ source: props.code })
   [data-theme='dark'] & {
     border-color: rgba(white, 0.2);
   }
+}
 
-  &__left {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 0.5rem;
-  }
+.header__left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .copy-icon {

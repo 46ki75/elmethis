@@ -1,7 +1,7 @@
 <template>
   <blockquote
     ref="target"
-    class="blockquote"
+    :class="$style.blockquote"
     :style="{
       '--opacity': targetIsVisible ? 1 : 0
     }"
@@ -26,7 +26,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 })
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .blockquote {
   margin-block: 2rem;
   opacity: var(--opacity);

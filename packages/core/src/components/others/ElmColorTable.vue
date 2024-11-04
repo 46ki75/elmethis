@@ -1,8 +1,8 @@
 <template>
-  <div class="container">
+  <div :class="$style.container">
     <template v-for="color in colors">
-      <div class="row-container">
-        <div class="color-name" :style="{ '--color': color.code }">
+      <div :class="$style['row-container']">
+        <div :class="$style['color-name']" :style="{ '--color': color.code }">
           {{ color.name }}
         </div>
         <template
@@ -31,7 +31,7 @@ export interface ElmColorTableProps {
 withDefaults(defineProps<ElmColorTableProps>(), {})
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .container {
   display: flex;
   flex-direction: column;

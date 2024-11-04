@@ -1,6 +1,6 @@
 <template>
   <div
-    class="parallax"
+    :class="$style.parallax"
     :style="{
       backgroundImage: `url(${imageUrl1})`,
       transform: `scale(1.2) translateY(${y / 400}%)`,
@@ -8,7 +8,7 @@
     }"
   ></div>
   <div
-    class="parallax"
+    :class="$style.parallax"
     :style="{
       backgroundImage: `url(${imageUrl2})`,
       transform: `scale(1.2) translateY(${y / 900}%)`,
@@ -30,7 +30,7 @@ withDefaults(defineProps<ElmParallaxProps>(), {})
 const { y } = useWindowScroll()
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .parallax {
   position: fixed;
   height: 2000vh;

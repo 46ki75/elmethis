@@ -2,7 +2,7 @@
   <ElmTooltip>
     <template #original>
       <component
-        class="icon"
+        :class="$style.icon"
         :style="{
           '--width': size,
           '--color': isLogin ? '#b36472' : '#6987b8'
@@ -56,7 +56,7 @@ withDefaults(defineProps<ElmLoginIconProps>(), {
 })
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .icon {
   box-sizing: border-box;
   width: var(--width);

@@ -1,5 +1,5 @@
 <template>
-  <Icon class="icon" :style="{ '--width': `${size}px` }" />
+  <Icon :class="$style.icon" :style="{ '--width': `${size}px` }" />
 </template>
 
 <script setup lang="ts">
@@ -62,7 +62,7 @@ const render = () => {
 const Icon = render()
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .icon {
   height: var(--width);
 }

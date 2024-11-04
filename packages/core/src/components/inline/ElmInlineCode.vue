@@ -1,5 +1,7 @@
 <template>
-  <code class="code"><ElmInlineText :text="code" :color="color" /></code>
+  <code :class="$style.code">
+    <ElmInlineText :text="code" :color="color" />
+  </code>
 </template>
 
 <script setup lang="ts">
@@ -23,7 +25,7 @@ export interface ElmInlineCodeProps {
 withDefaults(defineProps<ElmInlineCodeProps>(), {})
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .code {
   margin-inline: 0.25rem;
   padding: 0.25em 0.5em;

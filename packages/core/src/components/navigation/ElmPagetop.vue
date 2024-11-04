@@ -1,7 +1,6 @@
 <template>
   <nav
-    class="wrapper"
-    :class="{ 'wrapper--visible': isVisible }"
+    :class="[$style.wrapper, { [$style['wrapper--visible']]: isVisible }]"
     :style="{
       '--size': `${64}px`,
       left: position === 'left' ? '0' : 'auto',
@@ -9,10 +8,10 @@
     }"
     @click="toTop"
   >
-    <div aria-hidden></div>
-    <div aria-hidden></div>
-    <div aria-hidden></div>
-    <span>Back to Top</span>
+    <div aria-hidden :class="$style.partial"></div>
+    <div aria-hidden :class="$style.partial"></div>
+    <div aria-hidden :class="$style.partial"></div>
+    <span :class="$style.text">Back to Top</span>
   </nav>
 </template>
 
@@ -47,7 +46,7 @@ const toTop = () => {
 }
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .wrapper {
   --const-margin: 1rem;
 
@@ -112,7 +111,7 @@ const toTop = () => {
     }
   }
 
-  div {
+  .partial {
     position: absolute;
     width: var(--size);
     height: 20px;
@@ -152,7 +151,7 @@ const toTop = () => {
     }
   }
 
-  span {
+  .text {
     transition: opacity 200ms ease 400ms;
     width: 100%;
     text-align: center;

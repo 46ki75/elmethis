@@ -1,5 +1,5 @@
 <template>
-  <div class="column-list">
+  <div :class="$style['column-list']">
     <slot />
   </div>
 </template>
@@ -10,7 +10,7 @@ export interface ElmColumnListProps {}
 withDefaults(defineProps<ElmColumnListProps>(), {})
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .column-list {
   display: flex;
   flex-direction: row;

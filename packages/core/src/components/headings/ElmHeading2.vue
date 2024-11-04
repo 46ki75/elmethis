@@ -1,14 +1,14 @@
 <template>
   <h2
     ref="target"
-    class="h2"
+    :class="$style.h2"
     :id="id ?? kebabCase(text)"
     :style="{
       '--scale': targetIsVisible ? 1 : 0,
       '--font-size': size
     }"
   >
-    {{ text }}<span class="underline" aria-hidden></span>
+    {{ text }}<span :class="$style.underline" aria-hidden></span>
   </h2>
 </template>
 
@@ -48,7 +48,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 })
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .h2 {
   margin-block: 3rem;
   position: relative;

@@ -3,7 +3,7 @@
     <ElmTooltip>
       <template #original>
         <div
-          class="color-bg"
+          :class="$style['color-bg']"
           :style="{
             '--background-color': color
           }"
@@ -16,12 +16,12 @@
             />
           </transition>
         </div>
-        <div class="text" @click="copy(hex)">{{ hex }}</div>
+        <div :class="$style.text" @click="copy(hex)">{{ hex }}</div>
       </template>
       <template #tooltip>
-        <div class="text" @click="copy(hex)">{{ hex }}</div>
-        <div class="text" @click="copy(rgb)">{{ rgb }}</div>
-        <div class="text" @click="copy(hsl)">{{ hsl }}</div>
+        <div :class="$style.text" @click="copy(hex)">{{ hex }}</div>
+        <div :class="$style.text" @click="copy(rgb)">{{ rgb }}</div>
+        <div :class="$style.text" @click="copy(hsl)">{{ hsl }}</div>
       </template>
     </ElmTooltip>
   </div>
@@ -52,7 +52,7 @@ const hsl = `hsl(${Math.floor(hue)}, ${Math.floor(saturation * 100)}%, ${Math.fl
 const { copy, copied } = useClipboard()
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .color-bg {
   width: 5rem;
   height: 2rem;
@@ -92,7 +92,9 @@ const { copy, copied } = useClipboard()
     background-color: var(--color);
   }
 }
+</style>
 
+<style scoped lang="scss">
 .v-enter-to,
 .v-leave-from {
   opacity: 1;

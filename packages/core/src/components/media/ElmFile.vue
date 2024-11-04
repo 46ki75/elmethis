@@ -1,7 +1,7 @@
 <template>
-  <div class="file">
-    <div class="left-container">
-      <DocumentIcon class="icon" />
+  <div :class="$style.file">
+    <div :class="$style['left-container']">
+      <DocumentIcon :class="$style.icon" />
       <ElmInlineText
         :text="
           name ?? getLastPathSegmentWithoutQueryOrHash(src) ?? 'unknown file'
@@ -9,12 +9,12 @@
       />
     </div>
 
-    <div class="right-container">
+    <div :class="$style['right-container']">
       <span :style="{ opacity: 0.6 }"
         ><ElmInlineText v-if="filesize" :text="filesize"
       /></span>
       <ArrowDownTrayIcon
-        class="download-icon"
+        :class="$style['download-icon']"
         @click="
           () => {
             downloadFile(
@@ -81,7 +81,7 @@ async function downloadFile(url: string, filename: string) {
 }
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .file {
   box-sizing: border-box;
   width: 100%;

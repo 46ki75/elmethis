@@ -1,17 +1,17 @@
 <template>
   <aside
     ref="target"
-    class="callout"
+    :class="$style.callout"
     :style="{
       '--border-color': colors[type].code,
       '--bg-color': rgba(colors[type].code, 0.1),
       '--scale': targetIsVisible ? 1 : 0
     }"
   >
-    <div class="header">
+    <div :class="$style.header">
       <component
         :is="colors[type].icon"
-        class="icon"
+        :class="$style.icon"
         :style="{ '--icon-color': colors[type].code }"
       />
       <elm-inline-text :text="type.toUpperCase()" :color="colors[type].code" />
@@ -64,7 +64,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 })
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .callout {
   margin-block: 2rem;
   position: relative;

@@ -1,7 +1,7 @@
 <template>
-  <nav class="toc">
+  <nav :class="$style.toc">
     <a
-      class="link"
+      :class="$style.link"
       v-for="heading in headings"
       :href="`#${heading.id ?? heading.text}`"
       :style="{ '--padding-left': `${heading.level * 0.5}rem` }"
@@ -14,7 +14,7 @@
         />
       </sup>
       <ElmInlineText :text="heading.text" />
-      <BarsArrowDownIcon class="icon" />
+      <BarsArrowDownIcon :class="$style.icon" />
     </a>
   </nav>
 </template>
@@ -34,7 +34,7 @@ export interface ElmTableOfContentsProps {
 withDefaults(defineProps<ElmTableOfContentsProps>(), {})
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .toc {
   box-sizing: border-box;
   display: flex;

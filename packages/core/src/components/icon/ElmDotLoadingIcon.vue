@@ -1,6 +1,7 @@
 <template>
-  <div class="wrapper" :style="{ width: size, height: size }">
+  <div :class="$style.wrapper" :style="{ width: size, height: size }">
     <div
+      :class="$style.dot"
       v-for="n in 3"
       aria-hidden
       :key="n"
@@ -32,7 +33,7 @@ withDefaults(defineProps<ElmDotLoadingIconProps>(), {
 })
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 @keyframes bounce {
   0% {
     transform: translateY(0%) scaleY(0.3) scaleX(1.5);
@@ -53,7 +54,7 @@ withDefaults(defineProps<ElmDotLoadingIconProps>(), {
   justify-content: space-around;
   align-items: flex-end;
 
-  div {
+  .dot {
     width: 20%;
     height: 20%;
     border-radius: 50%;

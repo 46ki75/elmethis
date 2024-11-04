@@ -1,7 +1,7 @@
 <template>
   <h1
     ref="target"
-    class="h1"
+    :class="$style.h1"
     :id="id ?? kebabCase(text)"
     :style="{ '--scale': targetIsVisible ? 1 : 0, '--font-size': size }"
   >
@@ -45,7 +45,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 })
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .h1 {
   margin-block: 3rem;
   position: relative;

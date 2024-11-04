@@ -1,7 +1,7 @@
 <template>
   <span
     ref="el"
-    class="original"
+    :class="$style.original"
     @mouseover="
       () => {
         isHover = true
@@ -18,7 +18,7 @@
     <transition>
       <div
         v-if="isHover"
-        class="tooltip"
+        :class="$style.tooltip"
         :style="
           x > windowSize.width.value / 2
             ? {
@@ -52,7 +52,7 @@ const windowSize = useWindowSize()
 const isHover = ref(false)
 </script>
 
-<style scoped lang="scss">
+<style module lang="scss">
 .tooltip {
   position: fixed;
   z-index: 1000;
@@ -71,7 +71,9 @@ const isHover = ref(false)
     background-color: rgba(0, 0, 0, 0.9);
   }
 }
+</style>
 
+<style scoped lang="scss">
 .v-enter-to,
 .v-leave-from {
   opacity: 1;

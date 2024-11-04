@@ -1,15 +1,15 @@
 <template>
-  <div class="wrapper">
-    <div class="summary" @click="handleClick">
+  <div :class="$style.toggle">
+    <div :class="$style.summary" @click="handleClick">
       <div :style="{ display: 'flex', gap: '0.5rem' }">
         <ChevronRightIcon
-          class="icon"
+          :class="$style.icon"
           :style="{ '--rotate': isOpen ? '90deg' : '0deg' }"
         />
         <strong> <elm-inline-text :text="summary" /></strong>
       </div>
       <PlusIcon
-        class="icon"
+        :class="$style.icon"
         :style="{
           '--rotate': isOpen ? '135deg' : '0deg',
           '--color': isOpen ? '#b36472' : undefined
@@ -18,7 +18,7 @@
     </div>
 
     <transition>
-      <div v-if="isOpen" class="content">
+      <div v-if="isOpen" :class="$style.content">
         <slot />
       </div>
     </transition>
@@ -48,18 +48,10 @@ const handleClick = (event: Event): void => {
 }
 </script>
 
-<style scoped lang="scss">
-.wrapper {
+<style module lang="scss">
+.toggle {
   box-shadow: 0 0 0.25rem rgba(black, 0.05);
 }
-
-.icon {
-  width: 1.25rem;
-  color: var(--color, #59b57c);
-  transform: rotate(var(--rotate, 0deg));
-  transition: transform 200ms;
-}
-
 .summary {
   box-sizing: border-box;
   width: 100%;
@@ -79,6 +71,13 @@ const handleClick = (event: Event): void => {
   }
 }
 
+.icon {
+  width: 1.25rem;
+  color: var(--color, #59b57c);
+  transform: rotate(var(--rotate, 0deg));
+  transition: transform 200ms;
+}
+
 .content {
   margin: 0;
   padding: 0.75rem;
@@ -92,7 +91,9 @@ const handleClick = (event: Event): void => {
     background-color: rgba(white, 0.025);
   }
 }
+</style>
 
+<style scoped lang="scss">
 .v-enter-to,
 .v-leave-from {
   opacity: 1;
