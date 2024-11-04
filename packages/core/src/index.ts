@@ -68,6 +68,9 @@ import ElmDotLoadingIcon, {
 import ElmLanguageIcon, {
   ElmLanguageIconProps
 } from './components/icon/ElmLanguageIcon.vue'
+import ElmLoginIcon, {
+  ElmLoginIconProps
+} from './components/icon/ElmLoginIcon.vue'
 import ElmToggleTheme, {
   ElmToggleThemeProps
 } from './components/icon/ElmToggleTheme.vue'
@@ -174,6 +177,7 @@ export {
   ElmCubeIcon,
   ElmDotLoadingIcon,
   ElmLanguageIcon,
+  ElmLoginIcon,
   ElmToggleTheme,
   ElmInlineCode,
   ElmInlineLink,
@@ -222,6 +226,7 @@ export type {
   ElmCubeIconProps,
   ElmDotLoadingIconProps,
   ElmLanguageIconProps,
+  ElmLoginIconProps,
   ElmToggleThemeProps,
   ElmInlineCodeProps,
   ElmInlineLinkProps,
