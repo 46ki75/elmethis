@@ -64,11 +64,11 @@ const isHover = ref(false)
   box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.1);
 
   color: rgba(0, 0, 0, 0.7);
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.9);
 
   [data-theme='dark'] & {
     color: rgba(255, 255, 255, 0.7);
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.9);
   }
 }
 
