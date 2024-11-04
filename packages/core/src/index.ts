@@ -107,6 +107,14 @@ import ElmTableOfContents, {
   ElmTableOfContentsProps
 } from './components/navigation/ElmTableOfContents.vue'
 
+// others
+import ElmColorSample, {
+  ElmColorSampleProps
+} from './components/others/ElmColorSample.vue'
+import ElmColorTable, {
+  ElmColorTableProps
+} from './components/others/ElmColorTable.vue'
+
 // renderer
 import ElmJsonRenderer, {
   ElmJsonRendererProps
@@ -189,6 +197,8 @@ export {
   ElmBreadcrumb,
   ElmPagetop,
   ElmTableOfContents,
+  ElmColorSample,
+  ElmColorTable,
   ElmJsonRenderer,
   ElmTable,
   ElmTableHeader,
@@ -239,6 +249,8 @@ export type {
   ElmPagetopProps,
   ElmTableOfContentsProps,
   ElmJsonRendererProps,
+  ElmColorSampleProps,
+  ElmColorTableProps,
   ElmTableProps,
   ElmTableHeaderProps,
   ElmTableBodyProps,
