@@ -17,6 +17,7 @@ import ElmColumnList, {
 import ElmDesktopWindow, {
   ElmDesktopWindowProps
 } from './components/containments/ElmDesktopWindow.vue'
+import ElmModal, { ElmModalProps } from './components/containments/ElmModal.vue'
 import ElmParallax, {
   ElmParallaxProps
 } from './components/containments/ElmParallax.vue'
@@ -158,6 +159,7 @@ export {
   ElmColumn,
   ElmColumnList,
   ElmDesktopWindow,
+  ElmModal,
   ElmParallax,
   ElmToggle,
   ElmTooltip,
@@ -205,6 +207,7 @@ export type {
   ElmColumnProps,
   ElmColumnListProps,
   ElmDesktopWindowProps,
+  ElmModalProps,
   ElmParallaxProps,
   ElmToggleProps,
   ElmTooltipProps,
