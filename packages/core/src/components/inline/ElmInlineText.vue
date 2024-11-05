@@ -73,6 +73,7 @@ withDefaults(defineProps<ElmInlineTextProps>(), {
 .text {
   color: var(--color, rgba(0, 0, 0, 0.7));
   font-size: var(--font-size);
+  line-height: var(--font-size);
   font-weight: var(--font-weight);
   font-style: var(--font-style);
   text-decoration: var(--text-decoration);
