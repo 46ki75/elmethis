@@ -6,7 +6,10 @@
           :class="$style.icon"
           :style="{ '--rotate': isOpen ? '90deg' : '0deg' }"
         />
-        <strong> <elm-inline-text :text="summary" /></strong>
+        <div>
+          <elm-inline-text v-if="summary != null" :text="summary" />
+          <slot v-else name="summary" />
+        </div>
       </div>
       <PlusIcon
         :class="$style.icon"
