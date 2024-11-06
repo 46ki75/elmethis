@@ -1,9 +1,11 @@
 <template>
   <button
-    :class="$style.button"
+    :class="[$style.button, { [$style.enable]: !loading && !disabled }]"
     :style="{
       display: block ? 'flex' : 'inline-flex',
-      width: block ? '100%' : 'auto'
+      width: block ? '100%' : 'auto',
+      cursor: disabled ? 'not-allowed' : loading ? 'progress' : 'pointer',
+      opacity: disabled ? 0.5 : 'unset'
     }"
   >
     <transition mode="out-in">
@@ -22,11 +24,14 @@ export interface ElmButtonProps {
   loading?: boolean
 
   block?: boolean
+
+  disabled?: boolean
 }
 
 withDefaults(defineProps<ElmButtonProps>(), {
   loading: false,
-  block: false
+  block: false,
+  disabled: false
 })
 </script>
 
@@ -50,11 +55,16 @@ withDefaults(defineProps<ElmButtonProps>(), {
   transition:
     background-color 200ms,
     transform 200ms;
+
   [data-theme='dark'] & {
     color: rgba(white, 0.6);
     box-shadow: 0 0 0.25rem rgba(black, 0.6);
     background-color: rgba(white, 0.1);
+  }
+}
 
+.enable {
+  [data-theme='dark'] & {
     &:hover {
       transform: translateX(-1px) translateY(-1px);
       background-color: rgba(#6987b8, 0.2);

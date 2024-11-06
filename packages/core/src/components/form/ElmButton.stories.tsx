@@ -7,19 +7,18 @@ const meta: Meta<typeof ElmButton> = {
   title: 'Components/Form/ElmButton',
   component: ElmButton,
   tags: ['autodocs'],
-  args: {}
-}
-
-export default meta
-type Story = StoryObj<typeof meta>
-
-export const Primary: Story = {
+  args: {},
   render: (args) => ({
     setup: () => ({ args }),
     components: { ElmButton, ElmInlineText },
     template: '<ElmButton v-bind="args">elm-button</ElmButton>'
   })
 }
+
+export default meta
+type Story = StoryObj<typeof meta>
+
+export const Primary: Story = {}
 
 export const Block: Story = {
   args: { block: true },
@@ -61,4 +60,8 @@ export const Flex: Story = {
         </div>
       `
   })
+}
+
+export const Disabled: Story = {
+  args: { block: true, disabled: true }
 }
