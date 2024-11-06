@@ -6,8 +6,10 @@
       width: block ? '100%' : 'auto'
     }"
   >
-    <ElmDotLoadingIcon v-if="loading" size="1.5rem" />
-    <slot v-else />
+    <transition>
+      <ElmDotLoadingIcon v-if="loading" size="1.5rem" />
+      <slot v-else />
+    </transition>
   </button>
 </template>
 
@@ -71,5 +73,22 @@ withDefaults(defineProps<ElmButtonProps>(), {
     transform: translateX(1px) translateY(1px);
     background-color: rgba(#59b57c, 0.1);
   }
+}
+</style>
+
+<style scoped lang="scss">
+.v-enter-to,
+.v-leave-from {
+  opacity: 1;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 300ms;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>
