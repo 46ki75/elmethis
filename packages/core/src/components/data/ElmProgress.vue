@@ -1,5 +1,5 @@
 <template>
-  <progress :class="$style.progress" />
+  <progress :class="$style.progress" :value="value" :max="max" />
 
   <div
     :class="$style.container"
