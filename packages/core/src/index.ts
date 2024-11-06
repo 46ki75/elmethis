@@ -44,6 +44,12 @@ import ElmBlockFallback, {
   ElmBlockFallbackProps
 } from './components/fallback/ElmBlockFallback.vue'
 
+// from
+import ElmButton, { ElmButtonProps } from './components/form/ElmButton.vue'
+import ElmCheckbox, {
+  ElmCheckboxProps
+} from './components/form/ElmCheckbox.vue'
+
 // Headings
 import ElmHeading1, {
   ElmHeading1Props
@@ -190,6 +196,8 @@ export {
   ElmProgress,
   ElmRectangleWave,
   ElmBlockFallback,
+  ElmButton,
+  ElmCheckbox,
   ElmHeading1,
   ElmHeading2,
   ElmHeading3,
@@ -245,6 +253,8 @@ export type {
   ElmProgressProps,
   ElmRectangleWaveProps,
   ElmBlockFallbackProps,
+  ElmButtonProps,
+  ElmCheckboxProps,
   ElmHeading1Props,
   ElmHeading2Props,
   ElmHeading3Props,
