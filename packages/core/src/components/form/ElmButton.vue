@@ -8,7 +8,9 @@
   >
     <transition mode="out-in">
       <ElmDotLoadingIcon v-if="loading" size="1.5rem" />
-      <slot v-else />
+      <span v-else :class="$style.flex">
+        <slot />
+      </span>
     </transition>
   </button>
 </template>
@@ -73,6 +75,13 @@ withDefaults(defineProps<ElmButtonProps>(), {
     transform: translateX(1px) translateY(1px);
     background-color: rgba(#59b57c, 0.1);
   }
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
 }
 </style>
 
