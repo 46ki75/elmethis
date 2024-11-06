@@ -25,3 +25,10 @@ export const Block: Story = {
     template: '<ElmButton block>elm-button</ElmButton>'
   })
 }
+
+export const Loading: Story = {
+  render: () => ({
+    components: { ElmButton, ElmInlineText },
+    template: '<ElmButton block loading>elm-button</ElmButton>'
+  })
+}
