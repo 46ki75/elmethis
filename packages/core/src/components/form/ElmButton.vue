@@ -84,7 +84,7 @@ withDefaults(defineProps<ElmButtonProps>(), {
 
 .v-enter-active,
 .v-leave-active {
-  transition: opacity 300ms;
+  transition: opacity 100ms;
 }
 
 .v-enter-from,
