@@ -8,7 +8,7 @@
   >
     <transition>
       <ElmDotLoadingIcon v-if="loading" size="1.5rem" />
-      <slot v-else />
+      <span v-else><slot /></span>
     </transition>
   </button>
 </template>
