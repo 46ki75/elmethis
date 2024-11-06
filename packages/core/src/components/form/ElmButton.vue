@@ -33,6 +33,7 @@ withDefaults(defineProps<ElmButtonProps>(), {
   align-items: center;
   gap: 0.5rem;
 
+  box-sizing: border-box;
   padding: 0.5rem 1.5rem;
   line-height: 1.5rem;
 
