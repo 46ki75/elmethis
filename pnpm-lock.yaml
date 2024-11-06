@@ -39,8 +39,8 @@ importers:
         specifier: ^8.4.2
         version: 8.4.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@8.4.1(prettier@3.3.3))
       '@storybook/test':
-        specifier: ^8.3.6
-        version: 8.4.1(storybook@8.4.1(prettier@3.3.3))
+        specifier: ^8.4.2
+        version: 8.4.2(storybook@8.4.1(prettier@3.3.3))
       '@storybook/vue3':
         specifier: ^8.4.1
         version: 8.4.1(storybook@8.4.1(prettier@3.3.3))(vue@3.5.12(typescript@5.6.3))
@@ -1306,11 +1306,6 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
 
-  '@storybook/instrumenter@8.4.1':
-    resolution: {integrity: sha512-MgrhrLVW78jqno+Dh9h9Es06Ja3867TlrIUd8B3K3U1hsCFUQuFKXJBuGjNJF8U0QJY/aSIRnAgUBurHdVkPcw==}
-    peerDependencies:
-      storybook: ^8.4.1
-
   '@storybook/instrumenter@8.4.2':
     resolution: {integrity: sha512-gPYCZ/0O6gRLI3zmenu2N6QtKzxDZFdT2xf4RWcNUSZyp28RZkRCIgKFMt3fTmvE0yMzAjQyRSkBdrONjQ44HA==}
     peerDependencies:
@@ -1332,11 +1327,6 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
       storybook: ^8.4.2
-
-  '@storybook/test@8.4.1':
-    resolution: {integrity: sha512-najn9kCxB8NaHykhD7Fv+Iq0FnxmIJYOJlYiI8NMgVLwaSDFf6gnqAY6HHVPRqkhej8TuT1L2e2RxKqzWEB+mA==}
-    peerDependencies:
-      storybook: ^8.4.1
 
   '@storybook/test@8.4.2':
     resolution: {integrity: sha512-MipTdboStv0hsqF2Sw8TZgP0YnxCcDYwxkTOd4hmRzev/7Brtvpi4pqjqh8k98ZCvhrCPAPVIoX5drk+oi3YUA==}
@@ -3994,12 +3984,6 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@storybook/instrumenter@8.4.1(storybook@8.4.1(prettier@3.3.3))':
-    dependencies:
-      '@storybook/global': 5.0.0
-      '@vitest/utils': 2.1.4
-      storybook: 8.4.1(prettier@3.3.3)
-
   '@storybook/instrumenter@8.4.2(storybook@8.4.1(prettier@3.3.3))':
     dependencies:
       '@storybook/global': 5.0.0
@@ -4018,18 +4002,6 @@ snapshots:
     dependencies:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      storybook: 8.4.1(prettier@3.3.3)
-
-  '@storybook/test@8.4.1(storybook@8.4.1(prettier@3.3.3))':
-    dependencies:
-      '@storybook/csf': 0.1.11
-      '@storybook/global': 5.0.0
-      '@storybook/instrumenter': 8.4.1(storybook@8.4.1(prettier@3.3.3))
-      '@testing-library/dom': 10.4.0
-      '@testing-library/jest-dom': 6.5.0
-      '@testing-library/user-event': 14.5.2(@testing-library/dom@10.4.0)
-      '@vitest/expect': 2.0.5
-      '@vitest/spy': 2.0.5
       storybook: 8.4.1(prettier@3.3.3)
 
   '@storybook/test@8.4.2(storybook@8.4.1(prettier@3.3.3))':
