@@ -47,7 +47,7 @@ export interface ElmProgressProps {
   /**
    * The weight of the progress.
    */
-  weight: Property.Height<string | number>
+  weight?: Property.Height<string | number>
 
   /**
    * Whether the progress should be round.
