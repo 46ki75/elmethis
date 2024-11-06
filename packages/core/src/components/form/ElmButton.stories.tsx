@@ -65,3 +65,17 @@ export const Flex: Story = {
 export const Disabled: Story = {
   args: { block: true, disabled: true }
 }
+
+export const WithPrimary: Story = {
+  args: { block: true },
+  render: (args) => ({
+    setup: () => ({ args }),
+    components: { ElmButton, PencilSquareIcon },
+    template: `
+        <div style="display: flex; gap: 1rem;">
+          <ElmButton v-bind="args" primary><PencilSquareIcon style="width: 16px;" />elm-button</ElmButton>
+          <ElmButton v-bind="args"><PencilSquareIcon style="width: 16px;" />elm-button</ElmButton>
+        </div>
+      `
+  })
+}
