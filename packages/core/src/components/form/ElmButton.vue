@@ -6,7 +6,7 @@
       width: block ? '100%' : 'auto'
     }"
   >
-    <transition>
+    <transition mode="out-in">
       <ElmDotLoadingIcon v-if="loading" size="1.5rem" />
       <span v-else><slot /></span>
     </transition>
