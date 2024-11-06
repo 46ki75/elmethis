@@ -131,7 +131,7 @@ const { copy, copied } = useClipboard({ source: props.code })
 
 .code {
   padding: 0.25rem 1rem 1rem 1rem;
-  overflow-x: scroll;
+  overflow-x: auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(#6987b8, 0.3) rgba(#6987b8, 0.15);
 }
