@@ -1,5 +1,5 @@
 <template>
-  <progress :class="$style.progress" />
+  <progress :class="$style.progress" :value="value" :max="max" />
 
   <div
     :class="$style.container"
@@ -12,14 +12,16 @@
     <div
       :class="$style.value"
       :style="{
-        '--scale-x': `scaleX(${value / max})`
+        '--scale-x': `scaleX(${loading ? 0 : value / max})`
       }"
     ></div>
+
+    <div v-if="loading" :class="$style.loading"></div>
 
     <div
       :class="$style.buffer"
       :style="{
-        '--scale-x': `scaleX(${buffer != null ? buffer / max : value / max})`
+        '--scale-x': `scaleX(${loading ? 0 : buffer != null ? buffer / max : value / max})`
       }"
     ></div>
   </div>
@@ -58,12 +60,18 @@ export interface ElmProgressProps {
    * The color of the progress.
    */
   color?: string
+
+  /**
+   * Whether the progress is loading.
+   */
+  loading?: boolean
 }
 
 withDefaults(defineProps<ElmProgressProps>(), {
   max: 100,
   weight: '4px',
-  round: true
+  round: true,
+  loading: false
 })
 </script>
 
@@ -84,6 +92,35 @@ withDefaults(defineProps<ElmProgressProps>(), {
 
 .progress {
   display: none;
+}
+
+@keyframes loading {
+  0% {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  49% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  51% {
+    transform: scaleX(1);
+    transform-origin: right;
+  }
+
+  100% {
+    transform: scaleX(0);
+    transform-origin: right;
+  }
+}
+
+.loading {
+  @include bar;
+  animation-name: loading;
+  animation-duration: 1600ms;
+  animation-iteration-count: infinite;
 }
 
 .container {

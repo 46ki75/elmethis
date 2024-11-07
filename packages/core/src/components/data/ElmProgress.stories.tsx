@@ -39,3 +39,11 @@ export const WithColor: Story = {
     color: '#b36472'
   }
 }
+
+export const Loading: Story = {
+  args: {
+    value: 50,
+    buffer: 70,
+    loading: true
+  }
+}
