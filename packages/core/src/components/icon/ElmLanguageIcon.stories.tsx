@@ -18,7 +18,8 @@ const meta: Meta<typeof ElmLanguageIcon> = {
         'css',
         'html',
         'npm',
-        'java'
+        'java',
+        'go'
       ]
     }
   }

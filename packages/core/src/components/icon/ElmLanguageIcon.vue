@@ -91,6 +91,13 @@ const render = () => {
         loadingComponent: CommandLineIcon
       })
 
+    case 'go':
+    case 'golang':
+      return defineAsyncComponent({
+        loader: () => import('./languages/Go.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
     default:
       return CommandLineIcon
   }
