@@ -18,9 +18,11 @@ const notion = new NotionClient({ auth: process.env.NOTION_API_KEY })
 
 const client = new Client({ auth: process.env.NOTION_API_KEY })
 
-const { components } = await client.convert({
+await client.convert({
   id: NOTION_PAGE_ID
 })
 
-console.log(JSON.stringify(components))
+console.log(JSON.stringify(client.components))
 console.log(client.images)
+
+await client.save('./out')

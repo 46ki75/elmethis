@@ -2,6 +2,7 @@ import { Client as NotionClient } from '@notionhq/client'
 import type { ElmCalloutProps, ElmJsonRendererProps } from '@elmethis/core'
 import { RichTextItemResponse } from '@notionhq/client/build/src/api-endpoints.js'
 import ogs from 'open-graph-scraper'
+import { cloneDeepWith } from 'lodash-es'
 import { Image } from './image.js'
 
 type ColorType = RichTextItemResponse['annotations']['color']
@@ -32,11 +33,36 @@ const COLOR_MAP: ColorMap = {
 
 export class Client {
   #notionClient: NotionClient
+  components: ElmJsonRendererProps['json']
   images: Image[]
 
   constructor(options?: ConstructorParameters<typeof NotionClient>[0]) {
     this.#notionClient = new NotionClient(options)
+    this.components = []
     this.images = []
+  }
+
+  static replaceString({
+    obj,
+    target,
+    replacement
+  }: {
+    obj: any
+    target: string
+    replacement: string
+  }) {
+    return cloneDeepWith(obj, (value) => {
+      if (typeof value === 'string' && value === target) {
+        return replacement
+      }
+    })
+  }
+
+  async save(basePath: string) {
+    for (const [index, image] of this.images.entries()) {
+      const filePath = `${basePath}/notion/images/${index}.${image.getExtension()}`
+      await image.save(filePath)
+    }
   }
 
   #richTextToElmInlineText(
@@ -512,6 +538,7 @@ export class Client {
       }
     }
 
+    this.components = components
     return { components }
   }
 }
