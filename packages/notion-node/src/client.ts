@@ -60,10 +60,9 @@ export class Client {
   }
 
   /**
-   * Save images to the specified path.
-   * download images from the internet and save them to the specified path.
-   * (e.g. `/_notion/images/0.png`)
-   * @param basePath path to save images (e.g. './public')
+   * Saves images and files uploaded to Notion locally.
+   * After saving, replaces the signed S3 URLs with the local paths.
+   * @param basePath path to save files (e.g. './public')
    */
   async save(basePath: string) {
     for (const [index, image] of this.images.entries()) {
