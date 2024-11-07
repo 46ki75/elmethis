@@ -110,7 +110,8 @@ export class Client {
                 code: block.code.rich_text
                   .map((text) => text.plain_text)
                   .join(),
-                language: block.code.language
+                language: block.code.language,
+                margin: '2rem'
               }
             })
             break
