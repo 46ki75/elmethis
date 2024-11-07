@@ -130,6 +130,13 @@ const render = () => {
         loadingComponent: CommandLineIcon
       })
 
+    case 'cs':
+    case 'csharp':
+      return defineAsyncComponent({
+        loader: () => import('./languages/Csharp.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
     default:
       return CommandLineIcon
   }
