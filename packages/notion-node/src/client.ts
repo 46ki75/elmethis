@@ -173,7 +173,8 @@ export class Client {
               props: {
                 summary: block.toggle.rich_text
                   .map((text) => text.plain_text)
-                  .join()
+                  .join(),
+                margin: '2rem'
               },
               children: (await this.convert({ id: block.id })).components
             })
@@ -189,7 +190,8 @@ export class Client {
                     ? block.image.external.url
                     : block.image.file.url,
                 alt: block.image.caption.map((text) => text.plain_text).join(),
-                enableModal: true
+                enableModal: true,
+                margin: '2rem'
               }
             })
             break
@@ -256,7 +258,8 @@ export class Client {
 
           case 'divider': {
             components.push({
-              type: 'ElmDivider'
+              type: 'ElmDivider',
+              props: { margin: '2rem' }
             })
             break
           }
@@ -311,7 +314,7 @@ export class Client {
 
           case 'bookmark': {
             const url = block.bookmark.url
-            const { result, response } = await ogs({ url })
+            const { result } = await ogs({ url })
 
             const title =
               result.ogTitle || result.dcTitle || result.twitterTitle || url
@@ -334,7 +337,8 @@ export class Client {
                 title,
                 description,
                 image,
-                url
+                url,
+                margin: '2rem'
               }
             })
 
@@ -417,6 +421,7 @@ export class Client {
 
               components.push({
                 type: 'ElmTable',
+                props: { margin: '2rem' },
                 children: [
                   {
                     type: 'ElmTableHeader',
@@ -452,7 +457,8 @@ export class Client {
                 src:
                   block.file.type === 'external'
                     ? block.file.external.url
-                    : block.file.file.url
+                    : block.file.file.url,
+                margin: '2rem'
               }
             })
             break
