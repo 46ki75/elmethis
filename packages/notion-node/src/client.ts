@@ -66,7 +66,7 @@ export class Client {
    */
   async save(basePath: string) {
     for (const [index, image] of this.images.entries()) {
-      const path = `/_notion/images/${index}.${image.getExtension()}`
+      const path = `/_notion/images/${index}.webp`
       const filePath = `${basePath}${path}`
       await image.save(filePath)
       this.replaceString({ target: image.src, replacement: path })
