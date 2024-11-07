@@ -4,6 +4,7 @@ import { RichTextItemResponse } from '@notionhq/client/build/src/api-endpoints.j
 import ogs from 'open-graph-scraper'
 import { cloneDeepWith } from 'lodash-es'
 import { Image } from './image.js'
+import { NotionFile } from './file.js'
 
 type ColorType = RichTextItemResponse['annotations']['color']
 
@@ -35,11 +36,13 @@ export class Client {
   #notionClient: NotionClient
   components: ElmJsonRendererProps['json']
   images: Image[]
+  files: NotionFile[]
 
   constructor(options?: ConstructorParameters<typeof NotionClient>[0]) {
     this.#notionClient = new NotionClient(options)
     this.components = []
     this.images = []
+    this.files = []
   }
 
   replaceString({
@@ -68,6 +71,13 @@ export class Client {
       const filePath = `${basePath}${path}`
       await image.save(filePath)
       this.replaceString({ target: image.src, replacement: path })
+    }
+
+    for (const [index, file] of this.files.entries()) {
+      const path = `/_notion/files/${index}.${file.getExtension()}`
+      const filePath = `${basePath}${path}`
+      await file.save(filePath)
+      this.replaceString({ target: file.src, replacement: path })
     }
   }
 
@@ -496,6 +506,16 @@ export class Client {
           }
 
           case 'file': {
+            this.files.push(
+              new NotionFile({
+                type: block.file.type,
+                src:
+                  block.file.type === 'external'
+                    ? block.file.external.url
+                    : block.file.file.url
+              })
+            )
+
             components.push({
               type: 'ElmFile',
               props: {
