@@ -1,11 +1,14 @@
 <template>
-  <Icon :class="$style.icon" :style="{ '--width': `${size}px` }" />
+  <transition mode="out-in">
+    <Icon :class="$style.icon" :style="{ '--width': `${size}px` }" />
+  </transition>
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, ref } from 'vue'
 
 import { CommandLineIcon } from '@heroicons/vue/24/outline'
+import { watch } from 'vue'
 
 export interface ElmLanguageIconProps {
   /**
@@ -59,11 +62,36 @@ const render = () => {
   }
 }
 
-const Icon = render()
+const Icon = ref(render())
+
+watch(
+  () => props.language,
+  () => {
+    Icon.value = render()
+  }
+)
 </script>
 
 <style module lang="scss">
 .icon {
   height: var(--width);
+  width: var(--width);
+}
+</style>
+
+<style scoped lang="scss">
+.v-enter-to,
+.v-leave-from {
+  opacity: 1;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 100ms;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>
