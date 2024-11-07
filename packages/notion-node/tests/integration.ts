@@ -26,3 +26,5 @@ console.log(JSON.stringify(client.components))
 console.log(client.images)
 
 await client.save('./out')
+
+console.log(JSON.stringify(client.components))

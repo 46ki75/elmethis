@@ -42,26 +42,32 @@ export class Client {
     this.images = []
   }
 
-  static replaceString({
-    obj,
+  replaceString({
     target,
     replacement
   }: {
-    obj: any
     target: string
     replacement: string
   }) {
-    return cloneDeepWith(obj, (value) => {
+    this.components = cloneDeepWith(this.components, (value) => {
       if (typeof value === 'string' && value === target) {
         return replacement
       }
     })
   }
 
+  /**
+   * Save images to the specified path.
+   * download images from the internet and save them to the specified path.
+   * (e.g. `/_notion/images/0.png`)
+   * @param basePath path to save images (e.g. './public')
+   */
   async save(basePath: string) {
     for (const [index, image] of this.images.entries()) {
-      const filePath = `${basePath}/notion/images/${index}.${image.getExtension()}`
+      const path = `/_notion/images/${index}.${image.getExtension()}`
+      const filePath = `${basePath}${path}`
       await image.save(filePath)
+      this.replaceString({ target: image.src, replacement: path })
     }
   }
 
