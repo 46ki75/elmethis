@@ -79,6 +79,12 @@ const render = () => {
         loadingComponent: CommandLineIcon
       })
 
+    case 'npm':
+      return defineAsyncComponent({
+        loader: () => import('./languages/Npm.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
     default:
       return CommandLineIcon
   }
