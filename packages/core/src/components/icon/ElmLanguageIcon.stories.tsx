@@ -26,7 +26,8 @@ const meta: Meta<typeof ElmLanguageIcon> = {
         'json',
         'lua',
         'csharp',
-        'cpp'
+        'cpp',
+        'c'
       ]
     }
   }

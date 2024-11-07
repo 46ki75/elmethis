@@ -144,6 +144,12 @@ const render = () => {
         loadingComponent: CommandLineIcon
       })
 
+    case 'c':
+      return defineAsyncComponent({
+        loader: () => import('./languages/C.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
     default:
       return CommandLineIcon
   }
