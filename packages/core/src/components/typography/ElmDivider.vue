@@ -16,7 +16,7 @@ import { ref } from 'vue'
 
 export interface ElmDividerProps {
   /**
-   * The margin of the toggle.
+   * The margin of the divider.
    */
   margin?: Property.MarginBlock
 }
