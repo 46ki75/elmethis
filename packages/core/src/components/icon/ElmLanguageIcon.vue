@@ -1,11 +1,16 @@
 <template>
-  <Icon :class="$style.icon" :style="{ '--width': `${size}px` }" />
+  <div :class="$style.block" :style="{ '--size': `${size}px` }">
+    <transition mode="out-in">
+      <Icon :class="$style.icon" />
+    </transition>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, ref } from 'vue'
 
 import { CommandLineIcon } from '@heroicons/vue/24/outline'
+import { watch } from 'vue'
 
 export interface ElmLanguageIconProps {
   /**
@@ -54,16 +59,138 @@ const render = () => {
         loadingComponent: CommandLineIcon
       })
 
+    case 'tf':
+    case 'terraform':
+    case 'hcl':
+      return defineAsyncComponent({
+        loader: () => import('./languages/Terraform.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
+    case 'html':
+      return defineAsyncComponent({
+        loader: () => import('./languages/Html.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
+    case 'css':
+      return defineAsyncComponent({
+        loader: () => import('./languages/Css.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
+    case 'npm':
+      return defineAsyncComponent({
+        loader: () => import('./languages/Npm.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
+    case 'java':
+      return defineAsyncComponent({
+        loader: () => import('./languages/Java.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
+    case 'kotlin':
+    case 'kt':
+      return defineAsyncComponent({
+        loader: () => import('./languages/Kotlin.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
+    case 'go':
+    case 'golang':
+      return defineAsyncComponent({
+        loader: () => import('./languages/Go.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
+    case 'python':
+    case 'py':
+      return defineAsyncComponent({
+        loader: () => import('./languages/Python.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
+    case 'sql':
+      return defineAsyncComponent({
+        loader: () => import('./languages/Sql.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
+    case 'json':
+      return defineAsyncComponent({
+        loader: () => import('./languages/Json.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
+    case 'lua':
+      return defineAsyncComponent({
+        loader: () => import('./languages/Lua.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
+    case 'cs':
+    case 'csharp':
+      return defineAsyncComponent({
+        loader: () => import('./languages/Csharp.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
+    case 'cpp':
+    case 'c++':
+      return defineAsyncComponent({
+        loader: () => import('./languages/Cpp.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
+    case 'c':
+      return defineAsyncComponent({
+        loader: () => import('./languages/C.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
     default:
       return CommandLineIcon
   }
 }
 
-const Icon = render()
+const Icon = ref(render())
+
+watch(
+  () => props.language,
+  () => {
+    Icon.value = render()
+  }
+)
 </script>
 
 <style module lang="scss">
+.block {
+  display: inline-block;
+  height: var(--size);
+  width: var(--size);
+}
+
 .icon {
-  height: var(--width);
+  height: var(--size);
+  width: var(--size);
+}
+</style>
+
+<style scoped lang="scss">
+.v-enter-to,
+.v-leave-from {
+  opacity: 1;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 100ms;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>

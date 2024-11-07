@@ -23,6 +23,9 @@ importers:
       '@heroicons/vue':
         specifier: ^2.1.5
         version: 2.1.5(vue@3.5.12(typescript@5.6.3))
+      '@iconify/vue':
+        specifier: ^4.1.2
+        version: 4.1.2(vue@3.5.12(typescript@5.6.3))
       '@storybook/addon-essentials':
         specifier: ^8.4.2
         version: 8.4.2(@types/react@18.3.12)(storybook@8.4.2(prettier@3.3.3))
@@ -956,6 +959,14 @@ packages:
     resolution: {integrity: sha512-IpqR72sFqFs55kyKfFS7tN+Ww6odFNeH/7UxycIOrlVYfj4WUGAdzQtLBnJspucSeqWFQsKM0g0YrgU655BEfA==}
     peerDependencies:
       vue: '>= 3'
+
+  '@iconify/types@2.0.0':
+    resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
+
+  '@iconify/vue@4.1.2':
+    resolution: {integrity: sha512-CQnYqLiQD5LOAaXhBrmj1mdL2/NCJvwcC4jtW2Z8ukhThiFkLDkutarTOV2trfc9EXqUqRs0KqXOL9pZ/IyysA==}
+    peerDependencies:
+      vue: '>=3'
 
   '@img/sharp-darwin-arm64@0.33.5':
     resolution: {integrity: sha512-UT4p+iz/2H4twwAoLCqfA9UH5pI6DggwKEGuaPy7nCVQ8ZsiY5PIcrRvD1DzuY3qYL07NtIQcWnBSY/heikIFQ==}
@@ -3728,6 +3739,13 @@ snapshots:
 
   '@heroicons/vue@2.1.5(vue@3.5.12(typescript@5.6.3))':
     dependencies:
+      vue: 3.5.12(typescript@5.6.3)
+
+  '@iconify/types@2.0.0': {}
+
+  '@iconify/vue@4.1.2(vue@3.5.12(typescript@5.6.3))':
+    dependencies:
+      '@iconify/types': 2.0.0
       vue: 3.5.12(typescript@5.6.3)
 
   '@img/sharp-darwin-arm64@0.33.5':
