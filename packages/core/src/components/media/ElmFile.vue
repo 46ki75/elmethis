@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.file">
+  <div :class="$style.file" :style="{ '--margin-block': margin }">
     <div :class="$style['left-container']">
       <DocumentIcon :class="$style.icon" />
       <ElmInlineText
@@ -33,6 +33,7 @@
 <script setup lang="ts">
 import { ArrowDownTrayIcon, DocumentIcon } from '@heroicons/vue/24/outline'
 import ElmInlineText from '../inline/ElmInlineText.vue'
+import { Property } from 'csstype'
 
 export interface ElmFileProps {
   /**
@@ -49,6 +50,11 @@ export interface ElmFileProps {
    * The size of the file in bytes.
    */
   filesize?: string
+
+  /**
+   * The margin of the file.
+   */
+  margin?: Property.MarginBlock
 }
 
 withDefaults(defineProps<ElmFileProps>(), {})
@@ -83,6 +89,7 @@ async function downloadFile(url: string, filename: string) {
 
 <style module lang="scss">
 .file {
+  margin-block: var(--margin-block);
   box-sizing: border-box;
   width: 100%;
   padding: 1rem;
