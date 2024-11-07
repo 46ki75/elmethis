@@ -1,10 +1,5 @@
 <template>
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="20"
-    height="20"
-    viewBox="0 0 128 128"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
     <g fill-rule="evenodd">
       <path fill="#5c4ee5" d="M77.941 44.5v36.836L46.324 62.918V26.082zm0 0" />
       <path
