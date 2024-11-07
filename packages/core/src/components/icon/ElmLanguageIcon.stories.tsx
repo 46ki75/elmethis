@@ -17,7 +17,8 @@ const meta: Meta<typeof ElmLanguageIcon> = {
         'tf',
         'css',
         'html',
-        'npm'
+        'npm',
+        'java'
       ]
     }
   }

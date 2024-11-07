@@ -85,6 +85,12 @@ const render = () => {
         loadingComponent: CommandLineIcon
       })
 
+    case 'java':
+      return defineAsyncComponent({
+        loader: () => import('./languages/Java.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
     default:
       return CommandLineIcon
   }
