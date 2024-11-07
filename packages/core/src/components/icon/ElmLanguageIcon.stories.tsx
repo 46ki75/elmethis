@@ -20,7 +20,8 @@ const meta: Meta<typeof ElmLanguageIcon> = {
         'npm',
         'java',
         'go',
-        'python'
+        'python',
+        'sql'
       ]
     }
   }

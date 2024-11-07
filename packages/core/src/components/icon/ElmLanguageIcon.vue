@@ -105,6 +105,12 @@ const render = () => {
         loadingComponent: CommandLineIcon
       })
 
+    case 'sql':
+      return defineAsyncComponent({
+        loader: () => import('./languages/Sql.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
     default:
       return CommandLineIcon
   }
