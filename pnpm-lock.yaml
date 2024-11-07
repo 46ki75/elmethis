@@ -127,8 +127,8 @@ importers:
         version: 6.8.2
     devDependencies:
       '@elmethis/core':
-        specifier: 1.0.0-alpha.20
-        version: 1.0.0-alpha.20
+        specifier: 1.0.0-alpha.41
+        version: 1.0.0-alpha.41
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
@@ -511,8 +511,8 @@ packages:
     peerDependencies:
       postcss: ^8.4
 
-  '@elmethis/core@1.0.0-alpha.20':
-    resolution: {integrity: sha512-Ao/eeOlXv4G5SPgrIRT02Kd/PlIURYT9PB67Vp0SRVOoElfGyNK7WIRDcOXyzeH/eTSyrPe5y4sDYQ934bMm5A==}
+  '@elmethis/core@1.0.0-alpha.41':
+    resolution: {integrity: sha512-mf3Hqny3iDjfsBS08BGGg0y1ckUg7gZClJfs3O/eMD6AuJgaG4+KZ0SA5QJtRvFevC/lVaraIVFqlLjAZXaKNg==}
 
   '@esbuild/aix-ppc64@0.21.5':
     resolution: {integrity: sha512-1SDgH6ZSPTlggy1yI6+Dbkiz8xzpHJEVAlF/AM1tHPLsf5STom9rwtjE4hKAF20FfXXNTFqEYXyJNWh1GiZedQ==}
@@ -3368,7 +3368,7 @@ snapshots:
     dependencies:
       postcss: 8.4.47
 
-  '@elmethis/core@1.0.0-alpha.20': {}
+  '@elmethis/core@1.0.0-alpha.41': {}
 
   '@esbuild/aix-ppc64@0.21.5':
     optional: true

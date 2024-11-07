@@ -7,7 +7,8 @@
     :style="{
       '--flex-direction': isHorizontal ? 'row' : 'column',
       '--container-height': isHorizontal ? '150px' : 'auto',
-      '--image-max-width': isHorizontal ? '32%' : '100%'
+      '--image-max-width': isHorizontal ? '32%' : '100%',
+      '--margin-block': margin
     }"
     @click="handleClick"
   >
@@ -54,6 +55,7 @@ import { CalendarDaysIcon, ArrowPathIcon } from '@heroicons/vue/24/outline'
 import ElmInlineLink from '../inline/ElmInlineLink.vue'
 import ElmInlineText from '../inline/ElmInlineText.vue'
 import ElmImage from '../media/ElmImage.vue'
+import type { Property } from 'csstype'
 
 export interface ElmBookmarkProps {
   /**
@@ -108,6 +110,11 @@ export interface ElmBookmarkProps {
    * If provided, the default behavior (navigating to the URL) is prevented.
    */
   onClick?: () => void
+
+  /**
+   * The margin of the bookmark.
+   */
+  margin?: Property.MarginBlock
 }
 
 const props = withDefaults(defineProps<ElmBookmarkProps>(), {
@@ -128,6 +135,7 @@ function handleClick(event: MouseEvent) {
 <style module lang="scss">
 .bookmark {
   all: unset;
+  margin-block: var(--margin-block);
   height: var(--container-height);
   display: flex;
   flex-direction: var(--flex-direction);
