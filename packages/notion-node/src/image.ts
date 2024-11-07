@@ -1,5 +1,6 @@
 import { promises } from 'node:fs'
 import { dirname, extname } from 'node:path'
+import sharp from 'sharp'
 
 export class Image {
   type: 'external' | 'file'
@@ -24,22 +25,9 @@ export class Image {
 
       const buffer = await response.arrayBuffer()
 
-      await promises.writeFile(filePath, Buffer.from(buffer))
-    }
-  }
+      const outputBuffer = await sharp(buffer).toFormat('webp').toBuffer()
 
-  getExtension(): string {
-    try {
-      const pathname = new URL(this.src).pathname
-      const extension = extname(pathname)
-
-      if (extension == null) {
-        throw new Error('Invalid extension')
-      }
-      return extension.slice(1)
-    } catch (error) {
-      console.error('Invalid URL:', error)
-      throw error
+      await promises.writeFile(filePath, Buffer.from(outputBuffer))
     }
   }
 }
