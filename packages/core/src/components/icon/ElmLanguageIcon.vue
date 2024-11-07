@@ -91,6 +91,13 @@ const render = () => {
         loadingComponent: CommandLineIcon
       })
 
+    case 'kotlin':
+    case 'kt':
+      return defineAsyncComponent({
+        loader: () => import('./languages/Kotlin.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
     case 'go':
     case 'golang':
       return defineAsyncComponent({
