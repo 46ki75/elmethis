@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.toggle">
+  <div :class="$style.toggle" :style="{ '--margin-block': margin }">
     <div :class="$style.summary" @click="handleClick">
       <div :style="{ display: 'flex', gap: '0.5rem' }">
         <ChevronRightIcon
@@ -31,12 +31,18 @@
 <script setup lang="ts">
 import ElmInlineText from '../inline/ElmInlineText.vue'
 import { ChevronRightIcon, PlusIcon } from '@heroicons/vue/24/outline'
+import type { Property } from 'csstype'
 
 export interface ElmToggleProps {
   /**
    * The summary of the toggle.
    */
   summary: string
+
+  /**
+   * The margin of the toggle.
+   */
+  margin: Property.MarginBlock
 }
 
 withDefaults(defineProps<ElmToggleProps>(), {})
@@ -53,6 +59,7 @@ const handleClick = (event: Event): void => {
 
 <style module lang="scss">
 .toggle {
+  margin-block: var(--margin-block);
   box-shadow: 0 0 0.25rem rgba(black, 0.05);
 }
 .summary {

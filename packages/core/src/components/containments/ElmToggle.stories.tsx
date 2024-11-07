@@ -14,18 +14,20 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
-  render: () => ({
+  render: (args) => ({
+    setup: () => ({ args }),
     components: { ElmToggle, ElmInlineText },
     template:
-      '<ElmToggle summary="Toggle Blocks"><p><ElmInlineText text="Block Content" /></p></ElmToggle>',
+      '<ElmToggle summary="Toggle Blocks" v-bind="args"><p><ElmInlineText text="Block Content" /></p></ElmToggle>',
     data: () => ({ value: false })
   })
 }
 
 export const InlineSummary: Story = {
-  render: () => ({
+  render: (args) => ({
+    setup: () => ({ args }),
     components: { ElmToggle, ElmInlineText, ElmInlineCode },
-    template: `<ElmToggle>
+    template: `<ElmToggle v-bind="args">
       <template #summary>
         <ElmInlineText text="How to use " />
         <ElmInlineCode code="console.table()" />
