@@ -19,7 +19,8 @@ const meta: Meta<typeof ElmLanguageIcon> = {
         'html',
         'npm',
         'java',
-        'go'
+        'go',
+        'python'
       ]
     }
   }

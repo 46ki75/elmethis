@@ -98,6 +98,13 @@ const render = () => {
         loadingComponent: CommandLineIcon
       })
 
+    case 'python':
+    case 'py':
+      return defineAsyncComponent({
+        loader: () => import('./languages/Python.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
     default:
       return CommandLineIcon
   }
