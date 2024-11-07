@@ -1,7 +1,9 @@
 <template>
-  <transition mode="out-in">
-    <Icon :class="$style.icon" :style="{ '--width': `${size}px` }" />
-  </transition>
+  <div :class="$style.block" :style="{ '--size': `${size}px` }">
+    <transition mode="out-in">
+      <Icon :class="$style.icon" />
+    </transition>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -57,6 +59,14 @@ const render = () => {
         loadingComponent: CommandLineIcon
       })
 
+    case 'tf':
+    case 'terraform':
+    case 'hcl':
+      return defineAsyncComponent({
+        loader: () => import('./languages/Terraform.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
     default:
       return CommandLineIcon
   }
@@ -73,9 +83,15 @@ watch(
 </script>
 
 <style module lang="scss">
+.block {
+  display: inline-block;
+  height: var(--size);
+  width: var(--size);
+}
+
 .icon {
-  height: var(--width);
-  width: var(--width);
+  height: var(--size);
+  width: var(--size);
 }
 </style>
 
