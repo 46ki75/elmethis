@@ -11,19 +11,21 @@ export class Image {
   }
 
   async save(filePath: string) {
-    const dir = dirname(filePath)
+    if (this.type === 'file') {
+      const dir = dirname(filePath)
 
-    await promises.mkdir(dir, { recursive: true })
+      await promises.mkdir(dir, { recursive: true })
 
-    const response = await fetch(this.src)
+      const response = await fetch(this.src)
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch image: ${response.statusText}`)
+      if (!response.ok) {
+        throw new Error(`Failed to fetch image: ${response.statusText}`)
+      }
+
+      const buffer = await response.arrayBuffer()
+
+      await promises.writeFile(filePath, Buffer.from(buffer))
     }
-
-    const buffer = await response.arrayBuffer()
-
-    await promises.writeFile(filePath, Buffer.from(buffer))
   }
 
   getExtension(): string {
