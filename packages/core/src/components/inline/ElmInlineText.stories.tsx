@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import ElmInlineText from './ElmInlineText.vue'
+import { opacify } from 'polished'
 
 const meta: Meta<typeof ElmInlineText> = {
   title: 'Components/Inline/ElmInlineText',
@@ -16,4 +17,8 @@ export const Primary: Story = {}
 
 export const Colored: Story = {
   args: { color: '#b36472' }
+}
+
+export const Background: Story = {
+  args: { background: opacify(-0.5, '#6987b8') }
 }

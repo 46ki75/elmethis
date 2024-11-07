@@ -13,7 +13,8 @@
             ? 'underline'
             : strikethrough
               ? 'line-through'
-              : undefined
+              : undefined,
+      '--background-color': background
     }"
     >{{ text }}</span
   >
@@ -33,7 +34,7 @@ export interface ElmInlineTextProps {
    *
    * e.g.) `'red'`, `'#ff0000'`, `'rgba(255, 0, 0, 0.5)'`
    */
-  color?: Property.BackgroundColor
+  color?: Property.Color
 
   /**
    * Specifies the font size of the text.
@@ -59,6 +60,8 @@ export interface ElmInlineTextProps {
    * Specifies whether the text should be strikethrough.
    */
   strikethrough?: boolean
+
+  background?: Property.BackgroundColor
 }
 
 withDefaults(defineProps<ElmInlineTextProps>(), {
@@ -77,6 +80,7 @@ withDefaults(defineProps<ElmInlineTextProps>(), {
   font-weight: var(--font-weight);
   font-style: var(--font-style);
   text-decoration: var(--text-decoration);
+  background-color: var(--background-color);
 
   &::selection {
     color: rgba(255, 255, 255, 0.7);
