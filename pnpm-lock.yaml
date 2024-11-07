@@ -122,6 +122,9 @@ importers:
       '@notionhq/client':
         specifier: ^2.2.15
         version: 2.2.15
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
       open-graph-scraper:
         specifier: ^6.8.2
         version: 6.8.2
@@ -129,6 +132,9 @@ importers:
       '@elmethis/core':
         specifier: 1.0.0-alpha.43
         version: 1.0.0-alpha.43
+      '@types/lodash-es':
+        specifier: ^4.17.12
+        version: 4.17.12
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5

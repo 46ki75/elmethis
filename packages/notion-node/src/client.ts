@@ -2,6 +2,9 @@ import { Client as NotionClient } from '@notionhq/client'
 import type { ElmCalloutProps, ElmJsonRendererProps } from '@elmethis/core'
 import { RichTextItemResponse } from '@notionhq/client/build/src/api-endpoints.js'
 import ogs from 'open-graph-scraper'
+import { cloneDeepWith } from 'lodash-es'
+import { Image } from './image.js'
+import { NotionFile } from './file.js'
 
 type ColorType = RichTextItemResponse['annotations']['color']
 
@@ -31,9 +34,50 @@ const COLOR_MAP: ColorMap = {
 
 export class Client {
   #notionClient: NotionClient
+  components: ElmJsonRendererProps['json']
+  images: Image[]
+  files: NotionFile[]
 
   constructor(options?: ConstructorParameters<typeof NotionClient>[0]) {
     this.#notionClient = new NotionClient(options)
+    this.components = []
+    this.images = []
+    this.files = []
+  }
+
+  replaceString({
+    target,
+    replacement
+  }: {
+    target: string
+    replacement: string
+  }) {
+    this.components = cloneDeepWith(this.components, (value) => {
+      if (typeof value === 'string' && value === target) {
+        return replacement
+      }
+    })
+  }
+
+  /**
+   * Saves images and files uploaded to Notion locally.
+   * After saving, replaces the signed S3 URLs with the local paths.
+   * @param basePath path to save files (e.g. './public')
+   */
+  async save(basePath: string) {
+    for (const [index, image] of this.images.entries()) {
+      const path = `/_notion/images/${index}.${image.getExtension()}`
+      const filePath = `${basePath}${path}`
+      await image.save(filePath)
+      this.replaceString({ target: image.src, replacement: path })
+    }
+
+    for (const [index, file] of this.files.entries()) {
+      const path = `/_notion/files/${index}.${file.getExtension()}`
+      const filePath = `${basePath}${path}`
+      await file.save(filePath)
+      this.replaceString({ target: file.src, replacement: path })
+    }
   }
 
   #richTextToElmInlineText(
@@ -183,6 +227,16 @@ export class Client {
           }
 
           case 'image': {
+            this.images.push(
+              new Image({
+                type: block.image.type,
+                src:
+                  block.image.type === 'external'
+                    ? block.image.external.url
+                    : block.image.file.url
+              })
+            )
+
             components.push({
               type: 'ElmImage',
               props: {
@@ -451,6 +505,16 @@ export class Client {
           }
 
           case 'file': {
+            this.files.push(
+              new NotionFile({
+                type: block.file.type,
+                src:
+                  block.file.type === 'external'
+                    ? block.file.external.url
+                    : block.file.file.url
+              })
+            )
+
             components.push({
               type: 'ElmFile',
               props: {
@@ -499,6 +563,7 @@ export class Client {
       }
     }
 
+    this.components = components
     return { components }
   }
 }
