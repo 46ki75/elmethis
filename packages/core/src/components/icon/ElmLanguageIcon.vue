@@ -137,6 +137,13 @@ const render = () => {
         loadingComponent: CommandLineIcon
       })
 
+    case 'cpp':
+    case 'c++':
+      return defineAsyncComponent({
+        loader: () => import('./languages/Cpp.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
     default:
       return CommandLineIcon
   }
