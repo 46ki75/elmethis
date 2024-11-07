@@ -73,7 +73,10 @@ export interface ElmImageProps {
    */
   enableModal?: boolean
 
-  margin: Property.MarginBlock
+  /**
+   * The margin of the image.
+   */
+  margin?: Property.MarginBlock
 }
 
 withDefaults(defineProps<ElmImageProps>(), {

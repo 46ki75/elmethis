@@ -42,7 +42,7 @@ export interface ElmToggleProps {
   /**
    * The margin of the toggle.
    */
-  margin: Property.MarginBlock
+  margin?: Property.MarginBlock
 }
 
 withDefaults(defineProps<ElmToggleProps>(), {})

@@ -65,7 +65,7 @@ export interface ElmCodeBlockProps {
   /**
    * The margin of the code block.
    */
-  margin: Property.MarginBlock
+  margin?: Property.MarginBlock
 }
 
 const props = withDefaults(defineProps<ElmCodeBlockProps>(), {
