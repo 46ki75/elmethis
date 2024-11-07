@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.wrapper">
+  <div :class="$style.wrapper" :style="{ '--margin-block': margin }">
     <div :class="$style.header">
       <div :class="$style.header__left">
         <ElmLanguageIcon :language="language" :size="20" />
@@ -43,6 +43,7 @@ import ElmInlineText from '../inline/ElmInlineText.vue'
 import ElmPrismHighlighter from './ElmPrismHighlighter.vue'
 import { useClipboard } from '@vueuse/core'
 import ElmTooltip from '../containments/ElmTooltip.vue'
+import type { Property } from 'csstype'
 
 export interface ElmCodeBlockProps {
   /**
@@ -60,6 +61,11 @@ export interface ElmCodeBlockProps {
    * If not provided, the language will be used.
    */
   caption?: string
+
+  /**
+   * The margin of the code block.
+   */
+  margin?: Property.MarginBlock
 }
 
 const props = withDefaults(defineProps<ElmCodeBlockProps>(), {
@@ -71,6 +77,7 @@ const { copy, copied } = useClipboard({ source: props.code })
 
 <style module lang="scss">
 .wrapper {
+  margin-block: var(--margin-block);
   display: flex;
   flex-direction: column;
   border-radius: 0.25rem;

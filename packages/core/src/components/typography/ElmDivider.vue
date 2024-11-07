@@ -3,16 +3,23 @@
     ref="target"
     :class="$style.divider"
     :style="{
-      '--scale': targetIsVisible ? 1 : 0
+      '--scale': targetIsVisible ? 1 : 0,
+      '--margin-block': margin
     }"
   />
 </template>
 
 <script setup lang="ts">
 import { useIntersectionObserver } from '@vueuse/core'
+import type { Property } from 'csstype'
 import { ref } from 'vue'
 
-export interface ElmDividerProps {}
+export interface ElmDividerProps {
+  /**
+   * The margin of the divider.
+   */
+  margin?: Property.MarginBlock
+}
 
 withDefaults(defineProps<ElmDividerProps>(), {})
 
@@ -40,6 +47,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 }
 
 .divider {
+  margin-block: var(--margin-block);
   position: relative;
   display: block;
   width: 100%;

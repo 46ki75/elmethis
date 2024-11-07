@@ -1,5 +1,9 @@
 <template>
-  <div :class="$style.fallback" v-if="isLoading">
+  <div
+    :class="$style.fallback"
+    v-if="isLoading"
+    :style="{ '--margin-block': margin }"
+  >
     <elm-rectangle-wave />
     <div>
       <elm-dot-loading-icon />
@@ -25,7 +29,8 @@
     :style="{
       '--height': isLoading ? '0' : 'auto',
       '--opacity': isLoading ? 0 : 1,
-      '--cursor': enableModal ? 'zoom-in' : 'inherit'
+      '--cursor': enableModal ? 'zoom-in' : 'inherit',
+      '--margin-block': margin
     }"
   />
 
@@ -50,6 +55,7 @@ import { ref } from 'vue'
 import ElmRectangleWave from '../fallback/ElmRectangleWave.vue'
 import ElmDotLoadingIcon from '../icon/ElmDotLoadingIcon.vue'
 import { onKeyStroke } from '@vueuse/core'
+import type { Property } from 'csstype'
 
 export interface ElmImageProps {
   /**
@@ -66,6 +72,11 @@ export interface ElmImageProps {
    * Enable modal on image click. Default: `false`
    */
   enableModal?: boolean
+
+  /**
+   * The margin of the image.
+   */
+  margin?: Property.MarginBlock
 }
 
 withDefaults(defineProps<ElmImageProps>(), {
@@ -83,6 +94,7 @@ onKeyStroke('Escape', (e) => {
 
 <style module lang="scss">
 .image {
+  margin-block: var(--margin-block);
   display: block;
   width: 100%;
   height: var(--height);
@@ -92,6 +104,7 @@ onKeyStroke('Escape', (e) => {
 }
 
 .fallback {
+  margin-block: var(--margin-block);
   margin: 0;
   padding: 0;
   position: relative;
