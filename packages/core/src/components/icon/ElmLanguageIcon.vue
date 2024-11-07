@@ -111,6 +111,12 @@ const render = () => {
         loadingComponent: CommandLineIcon
       })
 
+    case 'json':
+      return defineAsyncComponent({
+        loader: () => import('./languages/Json.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
     default:
       return CommandLineIcon
   }

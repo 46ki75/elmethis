@@ -21,7 +21,8 @@ const meta: Meta<typeof ElmLanguageIcon> = {
         'java',
         'go',
         'python',
-        'sql'
+        'sql',
+        'json'
       ]
     }
   }
