@@ -117,6 +117,12 @@ const render = () => {
         loadingComponent: CommandLineIcon
       })
 
+    case 'lua':
+      return defineAsyncComponent({
+        loader: () => import('./languages/Lua.vue'),
+        loadingComponent: CommandLineIcon
+      })
+
     default:
       return CommandLineIcon
   }
