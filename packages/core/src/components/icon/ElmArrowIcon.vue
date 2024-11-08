@@ -56,7 +56,7 @@ withDefaults(defineProps<ElmArrowIconProps>(), {
   height: 2rem;
   background: linear-gradient(
     to right,
-    rgba(black, 0.8) 0 50%,
+    rgba(black, 0.7) 0 50%,
     rgba(black, 0.2) 50%
   );
   background-size: 200% 100%;
@@ -74,7 +74,7 @@ withDefaults(defineProps<ElmArrowIconProps>(), {
   [data-theme='dark'] & {
     background: linear-gradient(
       to right,
-      rgba(white, 0.8) 0 50%,
+      rgba(white, 0.7) 0 50%,
       rgba(white, 0.2) 50%
     );
     background-size: 200% 100%;
@@ -88,10 +88,10 @@ withDefaults(defineProps<ElmArrowIconProps>(), {
 }
 
 .normal {
-  background: rgba(black, 0.8);
+  background: rgba(black, 0.7);
   transition: background 800ms;
   [data-theme='dark'] & {
-    background: rgba(white, 0.8);
+    background: rgba(white, 0.7);
   }
 }
 </style>
