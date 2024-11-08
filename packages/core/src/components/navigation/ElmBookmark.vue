@@ -43,7 +43,7 @@
         </template>
       </div>
 
-      <div v-if="!hideUrl || url == null" :class="$style.link">
+      <div v-if="!hideUrl && url != null" :class="$style.link">
         <div><ElmInlineLink :text="url" href="#" size=".8rem" /></div>
       </div>
     </div>
