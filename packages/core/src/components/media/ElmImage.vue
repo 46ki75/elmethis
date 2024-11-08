@@ -1,7 +1,11 @@
 <template>
+  <div v-if="error" :class="$style.error">
+    <ElmInlineText text="Error loading image" color="#c56565" size="1.5rem" />
+  </div>
+
   <div
     :class="$style.fallback"
-    v-if="isLoading"
+    v-else-if="isLoading"
     :style="{ '--margin-block': margin }"
   >
     <elm-rectangle-wave />
@@ -11,14 +15,10 @@
   </div>
 
   <img
+    v-else
     :class="$style.image"
     :src="src"
     :alt="alt"
-    @load="
-      () => {
-        isLoading = false
-      }
-    "
     @click="
       () => {
         if (enableModal) {
@@ -55,8 +55,9 @@
 import { ref } from 'vue'
 import ElmRectangleWave from '../fallback/ElmRectangleWave.vue'
 import ElmDotLoadingIcon from '../icon/ElmDotLoadingIcon.vue'
-import { onKeyStroke } from '@vueuse/core'
+import { onKeyStroke, useImage } from '@vueuse/core'
 import type { Property } from 'csstype'
+import ElmInlineText from '../inline/ElmInlineText.vue'
 
 export interface ElmImageProps {
   /**
@@ -80,11 +81,12 @@ export interface ElmImageProps {
   margin?: Property.MarginBlock
 }
 
-withDefaults(defineProps<ElmImageProps>(), {
+const { src } = withDefaults(defineProps<ElmImageProps>(), {
   enableModal: false
 })
 
-const isLoading = ref(true)
+const { isLoading, error } = useImage({ src })
+
 const isModalOpen = ref(false)
 
 onKeyStroke('Escape', (e) => {
@@ -102,6 +104,15 @@ onKeyStroke('Escape', (e) => {
   opacity: var(--opacity);
   transition: opacity 400ms;
   cursor: var(--cursor);
+}
+
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  min-height: 10rem;
 }
 
 .fallback {

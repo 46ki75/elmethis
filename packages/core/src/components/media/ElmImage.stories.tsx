@@ -20,3 +20,9 @@ export const Modal: Story = {
     enableModal: true
   }
 }
+
+export const Invalid: Story = {
+  args: {
+    src: 'invalid'
+  }
+}
