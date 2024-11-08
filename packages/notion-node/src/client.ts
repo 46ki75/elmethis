@@ -62,18 +62,20 @@ export class Client {
   /**
    * Saves images and files uploaded to Notion locally.
    * After saving, replaces the signed S3 URLs with the local paths.
+   *
+   * - `${basePath}/_notion/images/${directory}/${index}.extension`
    * @param basePath path to save files (e.g. './public')
    */
-  async save(basePath: string) {
+  async save(basePath: string, directory: string) {
     for (const [index, image] of this.images.entries()) {
-      const path = `/_notion/images/${index}.webp`
+      const path = `/_notion/images/${directory}/${index}.webp`
       const filePath = `${basePath}${path}`
       await image.save(filePath)
       this.replaceString({ target: image.src, replacement: path })
     }
 
     for (const [index, file] of this.files.entries()) {
-      const path = `/_notion/files/${index}.${file.getExtension()}`
+      const path = `/_notion/files/${directory}/${index}.${file.getExtension()}`
       const filePath = `${basePath}${path}`
       await file.save(filePath)
       this.replaceString({ target: file.src, replacement: path })

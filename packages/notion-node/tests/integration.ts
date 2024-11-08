@@ -25,6 +25,6 @@ await client.convert({
 console.log(JSON.stringify(client.components))
 console.log(client.images)
 
-await client.save('./out')
+await client.save('./out', '1')
 
 console.log(JSON.stringify(client.components))
