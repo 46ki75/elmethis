@@ -81,11 +81,11 @@ export interface ElmImageProps {
   margin?: Property.MarginBlock
 }
 
-const { src } = withDefaults(defineProps<ElmImageProps>(), {
+const props = withDefaults(defineProps<ElmImageProps>(), {
   enableModal: false
 })
 
-const { isLoading, error } = useImage({ src })
+const { isLoading, error } = useImage({ src: props.src })
 
 const isModalOpen = ref(false)
 
