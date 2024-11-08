@@ -3,11 +3,13 @@
     :class="[
       $style.arrow,
       {
+        [$style.normal]: !loading && !pending,
         [$style.loading]: loading,
-        [$style.normal]: !loading
+        [$style.pending]: !loading && pending
       }
     ]"
     :style="{
+      '--size': size,
       transform:
         direction === 'up'
           ? 'rotate(270deg)'
@@ -21,14 +23,35 @@
 </template>
 
 <script setup lang="ts">
+import type { Property } from 'csstype'
+
 export interface ElmArrowIconProps {
+  /**
+   * Specifies the direction of the arrow.
+   */
   direction?: 'up' | 'down' | 'left' | 'right'
+
+  /**
+   * Specifies whether the arrow is in loading state.
+   */
   loading?: boolean
+
+  /**
+   * Specifies whether the arrow is in pending state.
+   */
+  pending?: boolean
+
+  /**
+   * Specifies the size of the arrow.
+   */
+  size?: Property.Height
 }
 
 withDefaults(defineProps<ElmArrowIconProps>(), {
   direction: 'right',
-  loading: false
+  loading: false,
+  pending: false,
+  size: '2rem'
 })
 </script>
 
@@ -52,8 +75,8 @@ withDefaults(defineProps<ElmArrowIconProps>(), {
 }
 
 .arrow {
-  width: 2rem;
-  height: 2rem;
+  width: var(--size);
+  height: var(--size);
   background: linear-gradient(
     to right,
     rgba(black, 0.7) 0 50%,
@@ -89,9 +112,17 @@ withDefaults(defineProps<ElmArrowIconProps>(), {
 
 .normal {
   background: rgba(black, 0.7);
-  transition: background 800ms;
+  transition: background 400ms;
   [data-theme='dark'] & {
     background: rgba(white, 0.7);
+  }
+}
+
+.pending {
+  background: rgba(black, 0.2);
+  transition: background 400ms;
+  [data-theme='dark'] & {
+    background: rgba(white, 0.2);
   }
 }
 </style>
