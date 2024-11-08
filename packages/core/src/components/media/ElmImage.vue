@@ -1,39 +1,42 @@
 <template>
-  <div v-if="error" :class="$style.error">
-    <ElmInlineText text="Error loading image" color="#c56565" size="1.5rem" />
-  </div>
-
-  <div
-    :class="$style.fallback"
-    v-else-if="isLoading"
-    :style="{ '--margin-block': margin }"
-  >
-    <elm-rectangle-wave />
-    <div>
-      <elm-dot-loading-icon />
+  <transition mode="out-in">
+    <div v-if="error" :class="$style.error">
+      <PhotoIcon :style="{ height: 24 }" />
+      <ElmInlineText text="Error loading image" color="#c56565" size="1.5rem" />
     </div>
-  </div>
 
-  <img
-    v-else
-    :class="$style.image"
-    :src="src"
-    :alt="alt"
-    @click="
-      () => {
-        if (enableModal) {
-          isModalOpen = true
+    <div
+      :class="$style.fallback"
+      v-else-if="isLoading"
+      :style="{ '--margin-block': margin }"
+    >
+      <elm-rectangle-wave />
+      <div>
+        <elm-dot-loading-icon />
+      </div>
+    </div>
+
+    <img
+      v-else
+      :class="$style.image"
+      :src="src"
+      :alt="alt"
+      @click="
+        () => {
+          if (enableModal) {
+            isModalOpen = true
+          }
         }
-      }
-    "
-    :style="{
-      '--height': isLoading ? '0' : 'auto',
-      '--opacity': isLoading ? 0 : 1,
-      '--cursor': enableModal ? 'zoom-in' : 'inherit',
-      '--margin-block': margin,
-      display: isLoading ? 'none' : 'block'
-    }"
-  />
+      "
+      :style="{
+        '--height': isLoading ? '0' : 'auto',
+        '--opacity': isLoading ? 0 : 1,
+        '--cursor': enableModal ? 'zoom-in' : 'inherit',
+        '--margin-block': margin,
+        display: isLoading ? 'none' : 'block'
+      }"
+    />
+  </transition>
 
   <transition>
     <div :class="$style.modal" v-if="isModalOpen">
@@ -58,6 +61,7 @@ import ElmDotLoadingIcon from '../icon/ElmDotLoadingIcon.vue'
 import { onKeyStroke, useImage } from '@vueuse/core'
 import type { Property } from 'csstype'
 import ElmInlineText from '../inline/ElmInlineText.vue'
+import { PhotoIcon } from '@heroicons/vue/24/outline'
 
 export interface ElmImageProps {
   /**
@@ -110,9 +114,12 @@ onKeyStroke('Escape', (e) => {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 1rem;
   width: 100%;
   height: 100%;
   min-height: 10rem;
+  line-height: 1.5rem;
+  color: #c56565;
 }
 
 .fallback {
