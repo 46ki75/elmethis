@@ -74,6 +74,9 @@ import ElmHeading6, {
 } from './components/headings/ElmHeading6.vue'
 
 // icon
+import ElmArrowIcon, {
+  ElmArrowIconProps
+} from './components/icon/ElmArrowIcon.vue'
 import ElmBookmarkIcon, {
   ElmBookmarkIconProps
 } from './components/icon/ElmBookmarkIcon.vue'
@@ -208,6 +211,7 @@ export {
   ElmHeading4,
   ElmHeading5,
   ElmHeading6,
+  ElmArrowIcon,
   ElmBookmarkIcon,
   ElmCubeIcon,
   ElmDotLoadingIcon,
@@ -266,6 +270,7 @@ export type {
   ElmHeading4Props,
   ElmHeading5Props,
   ElmHeading6Props,
+  ElmArrowIconProps,
   ElmBookmarkIconProps,
   ElmCubeIconProps,
   ElmDotLoadingIconProps,
