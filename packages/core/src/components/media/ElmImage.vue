@@ -30,7 +30,8 @@
       '--height': isLoading ? '0' : 'auto',
       '--opacity': isLoading ? 0 : 1,
       '--cursor': enableModal ? 'zoom-in' : 'inherit',
-      '--margin-block': margin
+      '--margin-block': margin,
+      display: isLoading ? 'none' : 'block'
     }"
   />
 
@@ -94,8 +95,8 @@ onKeyStroke('Escape', (e) => {
 
 <style module lang="scss">
 .image {
-  margin-block: var(--margin-block);
   display: block;
+  margin-block: var(--margin-block);
   width: 100%;
   height: var(--height);
   opacity: var(--opacity);

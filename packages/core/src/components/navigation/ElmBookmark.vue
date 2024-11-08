@@ -43,7 +43,7 @@
         </template>
       </div>
 
-      <div v-if="!hideUrl" :class="$style.link">
+      <div v-if="!hideUrl || url == null" :class="$style.link">
         <div><ElmInlineLink :text="url" href="#" size=".8rem" /></div>
       </div>
     </div>
@@ -93,7 +93,7 @@ export interface ElmBookmarkProps {
   /**
    * The URL to navigate to.
    */
-  url: string
+  url?: string
 
   /**
    * The date the bookmark was created.
