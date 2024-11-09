@@ -1,14 +1,4 @@
 <template>
-  <!-- <component
-    v-for="component in json"
-    :is="componentMap[component.type]"
-    v-bind="component.props"
-  >
-    <template v-if="component.children">
-      <ElmJsonRenderer :json="component.children" />
-    </template>
-  </component> -->
-
   <component :is="() => render(json)" />
 </template>
 
