@@ -2,10 +2,6 @@
   <ElmBlockFallback v-if="isLoading" />
 
   <component :is="() => notion" />
-
-  <!-- <template v-else v-for="vnode in notion">
-    <component :is="vnode.type" v-bind="vnode.props" />
-  </template> -->
 </template>
 
 <script setup lang="ts">
