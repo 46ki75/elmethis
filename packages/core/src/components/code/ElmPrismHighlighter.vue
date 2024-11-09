@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, onBeforeMount, onMounted, onUpdated, ref } from 'vue'
+import { nextTick, onMounted, onUpdated, ref } from 'vue'
 
 import Prism from 'prismjs'
 
@@ -36,15 +36,12 @@ Prism.plugins.autoloader.languages_path =
   'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/'
 
 const highlightCode = async () => {
+  Prism.plugins.autoloader.languages_path =
+    'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/'
   if (codeRef.value) {
     Prism.highlightElement(codeRef.value)
   }
 }
-
-onBeforeMount(() => {
-  Prism.plugins.autoloader.languages_path =
-    'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/'
-})
 
 onMounted(() => {
   nextTick(() => {
