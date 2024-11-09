@@ -3,7 +3,11 @@
     ref="target"
     :class="$style.h1"
     :id="id ?? kebabCase(text)"
-    :style="{ '--scale': targetIsVisible ? 1 : 0, '--font-size': size }"
+    :style="{
+      '--scale': targetIsVisible ? 1 : 0,
+      '--font-size': size,
+      '--opacity': targetIsVisible ? 1 : 0
+    }"
   >
     {{ text }}
   </h1>
@@ -50,21 +54,25 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   margin-block: 3rem;
   position: relative;
   font-size: var(--font-size);
+  line-height: var(cacl(--font-size + 0.25rem));
+  opacity: var(--opacity);
 
-  transition: color 400ms;
+  transition:
+    color 400ms,
+    opacity 800ms;
 
-  color: rgba(0, 0, 0, 0.8);
+  color: rgba(black, 0.8);
   &::selection {
-    color: rgba(255, 255, 255, 0.8);
-    background-color: rgba(0, 0, 0, 0.8);
+    color: rgba(white, 0.8);
+    background-color: rgba(black, 0.8);
   }
 
   [data-theme='dark'] & {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(white, 0.8);
 
     &::selection {
-      color: rgba(0, 0, 0, 0.8);
-      background-color: rgba(255, 255, 255, 0.8);
+      color: rgba(black, 0.8);
+      background-color: rgba(white, 0.8);
     }
   }
 

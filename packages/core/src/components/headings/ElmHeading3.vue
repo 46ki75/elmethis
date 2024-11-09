@@ -1,16 +1,19 @@
 <template>
   <h3
+    ref="target"
     :class="$style.h3"
     :id="id ?? kebabCase(text)"
-    :style="{ '--font-size': size }"
+    :style="{ '--font-size': size, '--opacity': targetIsVisible ? 1 : 0 }"
   >
     {{ text }}
   </h3>
 </template>
 
 <script setup lang="ts">
+import { useIntersectionObserver } from '@vueuse/core'
 import type { Property } from 'csstype'
 import { kebabCase } from 'lodash-es'
+import { ref } from 'vue'
 
 export interface ElmHeading3Props {
   /**
@@ -33,6 +36,13 @@ export interface ElmHeading3Props {
 withDefaults(defineProps<ElmHeading3Props>(), {
   size: '1.3rem'
 })
+
+const target = ref(null)
+const targetIsVisible = ref(false)
+
+useIntersectionObserver(target, ([{ isIntersecting }], _) => {
+  targetIsVisible.value = isIntersecting
+})
 </script>
 
 <style module lang="scss">
@@ -43,20 +53,23 @@ withDefaults(defineProps<ElmHeading3Props>(), {
   padding-left: 0.75rem;
   font-size: var(--font-size);
   line-height: var(--font-size);
-  transition: color 400ms;
+  opacity: var(--opacity);
+  transition:
+    color 400ms,
+    opacity 800ms;
 
-  color: rgba(0, 0, 0, 0.8);
+  color: rgba(black, 0.8);
   &::selection {
-    color: rgba(255, 255, 255, 0.8);
-    background-color: rgba(0, 0, 0, 0.8);
+    color: rgba(white, 0.8);
+    background-color: rgba(black, 0.8);
   }
 
   [data-theme='dark'] & {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(white, 0.8);
 
     &::selection {
-      color: rgba(0, 0, 0, 0.8);
-      background-color: rgba(255, 255, 255, 0.8);
+      color: rgba(black, 0.8);
+      background-color: rgba(white, 0.8);
     }
   }
 
