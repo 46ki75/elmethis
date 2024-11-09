@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUpdated, ref } from 'vue'
+import { nextTick, onMounted, onUpdated, ref } from 'vue'
 
 import Prism from 'prismjs'
 
@@ -43,8 +43,17 @@ const highlightCode = () => {
   }
 }
 
-onMounted(highlightCode)
-onUpdated(highlightCode)
+onMounted(() => {
+  nextTick(() => {
+    highlightCode()
+  })
+})
+
+onUpdated(() => {
+  nextTick(() => {
+    highlightCode()
+  })
+})
 </script>
 
 <style scoped lang="scss">
