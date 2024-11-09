@@ -1,14 +1,13 @@
 <template>
-  <template
+  <component
     v-for="component in json"
-    :key="component.type + (component.props?.id || '')"
+    :is="componentMap[component.type]"
+    v-bind="component.props"
   >
-    <component :is="componentMap[component.type]" v-bind="component.props">
-      <template v-if="component.children">
-        <ElmJsonRenderer :json="component.children" />
-      </template>
-    </component>
-  </template>
+    <template v-if="component.children">
+      <ElmJsonRenderer :json="component.children" />
+    </template>
+  </component>
 </template>
 
 <script setup lang="ts">
