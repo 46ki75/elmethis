@@ -7,8 +7,6 @@
 <script setup lang="ts">
 import { nextTick, onMounted, onUpdated, ref } from 'vue'
 
-import Prism from 'prismjs'
-
 import 'prism-theme-vars/base.css'
 
 // Prism.js language autoloader plugin
@@ -32,7 +30,9 @@ withDefaults(defineProps<ElmPrismHighlighterProps>(), {
 
 const codeRef = ref<HTMLElement | null>(null)
 
-const highlightCode = () => {
+const highlightCode = async () => {
+  const Prism = await import('prismjs')
+
   Prism.plugins.autoloader.languages_path =
     'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/'
 
