@@ -12,7 +12,7 @@ import Prism from 'prismjs'
 import 'prism-theme-vars/base.css'
 
 // Prism.js language autoloader plugin
-import 'prismjs/plugins/autoloader/prism-autoloader.js'
+import './prism-autoloader.js'
 
 export interface ElmPrismHighlighterProps {
   /**
