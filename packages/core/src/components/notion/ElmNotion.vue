@@ -26,6 +26,9 @@ import ElmCodeBlock from '../code/ElmCodeBlock.vue'
 import ElmToggle from '../containments/ElmToggle.vue'
 import ElmColumn from '../containments/ElmColumn.vue'
 import ElmDivider from '../typography/ElmDivider.vue'
+import ElmBulletedList from '../typography/ElmBulletedList.vue'
+import ElmListItem from '../typography/ElmListItem.vue'
+import ElmNumberedList from '../typography/ElmNumberedList.vue'
 
 type BlockResponseResults = Awaited<
   ReturnType<typeof Client.prototype.blocks.children.list>
@@ -49,6 +52,8 @@ onMounted(async () => {
 
 const render = async (id: string, endpoint: string): Promise<VNode[]> => {
   const vnodes: VNode[] = []
+  let ulli: VNode[] = []
+  let olli: VNode[] = []
 
   const blocks = await ofetch<BlockResponseResults>(`${endpoint}/${id}`)
 
@@ -147,7 +152,6 @@ const render = async (id: string, endpoint: string): Promise<VNode[]> => {
         }
 
         case 'toggle': {
-          console.log(block.id)
           vnodes.push(
             h(
               ElmToggle,
@@ -165,9 +169,41 @@ const render = async (id: string, endpoint: string): Promise<VNode[]> => {
           break
         }
 
+        case 'bulleted_list_item': {
+          const li = h(ElmListItem, {}, [
+            h(ElmNotionRichText, {
+              richText: block.bulleted_list_item.rich_text
+            }),
+            await render(block.id, endpoint)
+          ])
+          ulli.push(li)
+          break
+        }
+
+        case 'numbered_list_item': {
+          const li = h(ElmListItem, {}, [
+            h(ElmNotionRichText, {
+              richText: block.numbered_list_item.rich_text
+            }),
+            await render(block.id, endpoint)
+          ])
+          olli.push(li)
+          break
+        }
+
         default: {
           break
         }
+      }
+
+      if (block.type !== 'bulleted_list_item' && ulli.length > 0) {
+        vnodes.push(h(ElmBulletedList, {}, ulli))
+        ulli = []
+      }
+
+      if (block.type !== 'numbered_list_item' && olli.length > 0) {
+        vnodes.push(h(ElmNumberedList, {}, olli))
+        olli = []
       }
     }
   }
