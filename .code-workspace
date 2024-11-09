@@ -11,6 +11,10 @@
     {
       "path": "./packages/notion-node",
       "name": "notion-node"
+    },
+    {
+      "path": "./packages/nitro-app",
+      "name": "nitro-app"
     }
   ]
 }
