@@ -9,7 +9,7 @@
 import ElmInlineText from '../inline/ElmInlineText.vue'
 import ElmInlineCode from '../inline/ElmInlineCode.vue'
 
-export interface ElmTemplateProps {
+export interface ElmNotionRichTextProps {
   richText:
     | Array<{
         type: 'text'
@@ -52,5 +52,5 @@ export interface ElmTemplateProps {
     | any[]
 }
 
-withDefaults(defineProps<ElmTemplateProps>(), {})
+withDefaults(defineProps<ElmNotionRichTextProps>(), {})
 </script>
