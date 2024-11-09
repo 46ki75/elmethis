@@ -33,11 +33,13 @@ const props = withDefaults(defineProps<ElmPrismHighlighterProps>(), {
 const codeRef = ref<HTMLElement | null>(null)
 
 const highlightCode = () => {
-  Prism.plugins.autoloader.languages_path =
-    'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/'
+  if (document != null) {
+    Prism.plugins.autoloader.languages_path =
+      'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/'
 
-  if (codeRef.value) {
-    Prism.highlightElement(codeRef.value)
+    if (codeRef.value) {
+      Prism.highlightElement(codeRef.value)
+    }
   }
 }
 
