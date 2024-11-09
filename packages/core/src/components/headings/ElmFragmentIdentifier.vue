@@ -17,6 +17,10 @@ export interface ElmFragmentIdentifierProps {
 withDefaults(defineProps<ElmFragmentIdentifierProps>(), {})
 
 const handleLinkClick = (id: string) => {
+  const url = new URL(window.location.href)
+  url.hash = id
+  window.history.replaceState(null, '', url.toString())
+
   const target = document.getElementById(id)
   if (target != null) {
     target.scrollIntoView({ behavior: 'smooth' })
