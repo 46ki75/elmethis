@@ -12,7 +12,13 @@ import Prism from 'prismjs'
 import 'prism-theme-vars/base.css'
 
 // Prism.js language autoloader plugin
-import './prism-autoloader.js'
+// import './prism-autoloader.js'
+import 'prismjs/plugins/autoloader/prism-autoloader'
+
+if (!(typeof Prism === 'undefined' || typeof document === 'undefined')) {
+  Prism.plugins.autoloader.languages_path =
+    'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/'
+}
 
 export interface ElmPrismHighlighterProps {
   /**
