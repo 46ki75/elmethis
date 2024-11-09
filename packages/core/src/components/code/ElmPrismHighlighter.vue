@@ -32,14 +32,13 @@ withDefaults(defineProps<ElmPrismHighlighterProps>(), {
 
 const codeRef = ref<HTMLElement | null>(null)
 
-Prism.plugins.autoloader.languages_path =
-  'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/'
-
 const highlightCode = async () => {
-  Prism.plugins.autoloader.languages_path =
-    'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/'
-  if (codeRef.value) {
-    Prism.highlightElement(codeRef.value)
+  if (document != null) {
+    Prism.plugins.autoloader.languages_path =
+      'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/'
+    if (codeRef.value) {
+      Prism.highlightElement(codeRef.value)
+    }
   }
 }
 
