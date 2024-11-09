@@ -7,6 +7,7 @@
   >
     {{ text }}
   </h3>
+  <ElmFragmentIdentifier :id="id ?? kebabCase(text)" />
 </template>
 
 <script setup lang="ts">
@@ -14,6 +15,7 @@ import { useIntersectionObserver } from '@vueuse/core'
 import type { Property } from 'csstype'
 import { kebabCase } from 'lodash-es'
 import { ref } from 'vue'
+import ElmFragmentIdentifier from './ElmFragmentIdentifier.vue'
 
 export interface ElmHeading3Props {
   /**
@@ -47,7 +49,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 
 <style module lang="scss">
 .h3 {
-  margin-block: 3rem;
+  margin-block: 1rem;
   position: relative;
   box-sizing: border-box;
   padding-left: 0.75rem;
