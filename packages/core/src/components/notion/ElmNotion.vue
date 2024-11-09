@@ -3,7 +3,15 @@
 </template>
 
 <script setup lang="ts">
-export interface ElmNotionProps {}
+import type { Client } from '@notionhq/client'
+
+type BlockResponseResults = Awaited<
+  ReturnType<typeof Client.prototype.blocks.children.list>
+>['results']
+
+export interface ElmNotionProps {
+  blocks: BlockResponseResults
+}
 
 withDefaults(defineProps<ElmNotionProps>(), {})
 </script>
