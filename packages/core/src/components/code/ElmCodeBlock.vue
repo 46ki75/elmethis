@@ -1,5 +1,12 @@
 <template>
-  <div :class="$style.wrapper" :style="{ '--margin-block': margin }">
+  <div
+    ref="target"
+    :class="$style.wrapper"
+    :style="{
+      '--margin-block': margin,
+      '--opacity': targetIsVisible ? 1 : 0
+    }"
+  >
     <div :class="$style.header">
       <div :class="$style.header__left">
         <ElmLanguageIcon :language="language" :size="20" />
@@ -41,9 +48,10 @@ import {
 import ElmLanguageIcon from '../icon/ElmLanguageIcon.vue'
 import ElmInlineText from '../inline/ElmInlineText.vue'
 import ElmPrismHighlighter from './ElmPrismHighlighter.vue'
-import { useClipboard } from '@vueuse/core'
+import { useClipboard, useIntersectionObserver } from '@vueuse/core'
 import ElmTooltip from '../containments/ElmTooltip.vue'
 import type { Property } from 'csstype'
+import { ref } from 'vue'
 
 export interface ElmCodeBlockProps {
   /**
@@ -73,17 +81,27 @@ const props = withDefaults(defineProps<ElmCodeBlockProps>(), {
 })
 
 const { copy, copied } = useClipboard({ source: props.code })
+
+const target = ref(null)
+const targetIsVisible = ref(false)
+
+useIntersectionObserver(target, ([{ isIntersecting }], _) => {
+  targetIsVisible.value = isIntersecting
+})
 </script>
 
 <style module lang="scss">
 .wrapper {
   margin-block: var(--margin-block);
+  opacity: var(--opacity);
   display: flex;
   flex-direction: column;
   border-radius: 0.25rem;
   box-shadow: 0 0 0.25rem rgba(black, 0.1);
 
-  transition: background-color 400ms;
+  transition:
+    background-color 400ms,
+    opacity 800ms;
 
   background-color: rgba(white, 0.2);
   [data-theme='dark'] & {
