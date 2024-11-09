@@ -6,11 +6,13 @@
   >
     {{ text }}
   </h4>
+  <ElmFragmentIdentifier :id="id ?? kebabCase(text)" />
 </template>
 
 <script setup lang="ts">
 import type { Property } from 'csstype'
 import { kebabCase } from 'lodash-es'
+import ElmFragmentIdentifier from './ElmFragmentIdentifier.vue'
 
 export interface ElmHeading4Props {
   /**
@@ -37,7 +39,7 @@ withDefaults(defineProps<ElmHeading4Props>(), {
 
 <style module lang="scss">
 .h4 {
-  margin-block: 3rem;
+  margin-block: 0.5rem;
   font-size: var(--font-size);
 
   transition: color 400ms;

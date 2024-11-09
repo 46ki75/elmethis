@@ -11,7 +11,6 @@
   >
     {{ text }}
   </h1>
-  <ElmFragmentIdentifier :id="id ?? kebabCase(text)" />
 </template>
 
 <script setup lang="ts">
@@ -19,7 +18,6 @@ import type { Property } from 'csstype'
 import { ref } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { kebabCase } from 'lodash-es'
-import ElmFragmentIdentifier from './ElmFragmentIdentifier.vue'
 
 export interface ElmHeading1Props {
   /**

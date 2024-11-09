@@ -11,6 +11,7 @@
   >
     {{ text }}<span :class="$style.underline" aria-hidden></span>
   </h2>
+  <ElmFragmentIdentifier :id="id ?? kebabCase(text)" />
 </template>
 
 <script setup lang="ts">
@@ -18,6 +19,7 @@ import { useIntersectionObserver } from '@vueuse/core'
 import type { Property } from 'csstype'
 import { kebabCase } from 'lodash-es'
 import { ref } from 'vue'
+import ElmFragmentIdentifier from './ElmFragmentIdentifier.vue'
 
 export interface ElmHeading2Props {
   /**
@@ -51,7 +53,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 
 <style module lang="scss">
 .h2 {
-  margin-block: 3rem;
+  margin-block: 1rem;
   position: relative;
   font-size: var(--font-size);
   line-height: var(--font-size);
