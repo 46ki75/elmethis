@@ -11,4 +11,9 @@ const meta: Meta<typeof ElmNotion> = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Primary: Story = {}
+export const Primary: Story = {
+  args: {
+    id: '131a03d79b268054a43ece134d63ca4a',
+    endpoint: 'http://localhost:3000'
+  }
+}
