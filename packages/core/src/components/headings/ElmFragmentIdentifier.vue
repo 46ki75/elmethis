@@ -1,11 +1,13 @@
 <template>
   <div :class="$style.fragment">
+    <HashtagIcon :class="$style.icon" @click="handleHashClick(id)" />
     <LinkIcon :class="$style.icon" @click="handleLinkClick(id)" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { LinkIcon } from '@heroicons/vue/24/outline'
+import { HashtagIcon, LinkIcon } from '@heroicons/vue/24/outline'
+import { useClipboard } from '@vueuse/core'
 import { nextTick, onMounted } from 'vue'
 
 export interface ElmFragmentIdentifierProps {
@@ -17,7 +19,7 @@ export interface ElmFragmentIdentifierProps {
 
 withDefaults(defineProps<ElmFragmentIdentifierProps>(), {})
 
-const handleLinkClick = (id: string) => {
+const handleHashClick = (id: string) => {
   const url = new URL(window.location.href)
   url.hash = id
   window.history.replaceState(null, '', url.toString())
@@ -27,6 +29,16 @@ const handleLinkClick = (id: string) => {
     target.scrollIntoView({ behavior: 'smooth' })
   }
 }
+
+const handleLinkClick = (id: string) => {
+  const url = new URL(window.location.href)
+  url.hash = id
+  window.history.replaceState(null, '', url.toString())
+
+  copy(window.location.href)
+}
+
+const { copy } = useClipboard()
 
 onMounted(() => {
   nextTick(() => {
