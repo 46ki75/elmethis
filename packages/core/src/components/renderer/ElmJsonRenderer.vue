@@ -53,6 +53,8 @@ import ElmColumnList, {
   ElmColumnListProps
 } from '../containments/ElmColumnList.vue'
 
+import { markRaw } from 'vue'
+
 type ComponentType =
   | 'ElmInlineText'
   | 'ElmInlineCode'
@@ -312,35 +314,35 @@ export interface ElmJsonRendererProps {
 withDefaults(defineProps<ElmJsonRendererProps>(), {})
 
 const componentMap: Record<ComponentType, any> = {
-  ElmInlineText,
-  ElmInlineCode,
-  ElmInlineLink,
-  ElmCallout,
-  ElmBulletedList,
-  ElmNumberedList,
-  ElmListItem,
-  ElmBlockQuote,
-  ElmDivider,
-  ElmHeading1,
-  ElmHeading2,
-  ElmHeading3,
-  ElmHeading4,
-  ElmHeading5,
-  ElmHeading6,
-  ElmCodeBlock,
-  ElmParagraph,
-  ElmTable,
-  ElmTableHeader,
-  ElmTableBody,
-  ElmTableRow,
-  ElmTableCell,
-  ElmKatex,
-  ElmImage,
-  ElmBookmark,
-  ElmToggle,
-  ElmCheckbox,
-  ElmFile,
-  ElmColumn,
-  ElmColumnList
+  ElmInlineText: markRaw(ElmInlineText),
+  ElmInlineCode: markRaw(ElmInlineCode),
+  ElmInlineLink: markRaw(ElmInlineLink),
+  ElmCallout: markRaw(ElmCallout),
+  ElmBulletedList: markRaw(ElmBulletedList),
+  ElmNumberedList: markRaw(ElmNumberedList),
+  ElmListItem: markRaw(ElmListItem),
+  ElmBlockQuote: markRaw(ElmBlockQuote),
+  ElmDivider: markRaw(ElmDivider),
+  ElmHeading1: markRaw(ElmHeading1),
+  ElmHeading2: markRaw(ElmHeading2),
+  ElmHeading3: markRaw(ElmHeading3),
+  ElmHeading4: markRaw(ElmHeading4),
+  ElmHeading5: markRaw(ElmHeading5),
+  ElmHeading6: markRaw(ElmHeading6),
+  ElmCodeBlock: markRaw(ElmCodeBlock),
+  ElmParagraph: markRaw(ElmParagraph),
+  ElmTable: markRaw(ElmTable),
+  ElmTableHeader: markRaw(ElmTableHeader),
+  ElmTableBody: markRaw(ElmTableBody),
+  ElmTableRow: markRaw(ElmTableRow),
+  ElmTableCell: markRaw(ElmTableCell),
+  ElmKatex: markRaw(ElmKatex),
+  ElmImage: markRaw(ElmImage),
+  ElmBookmark: markRaw(ElmBookmark),
+  ElmToggle: markRaw(ElmToggle),
+  ElmCheckbox: markRaw(ElmCheckbox),
+  ElmFile: markRaw(ElmFile),
+  ElmColumn: markRaw(ElmColumn),
+  ElmColumnList: markRaw(ElmColumnList)
 }
 </script>
