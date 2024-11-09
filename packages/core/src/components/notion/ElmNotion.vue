@@ -25,6 +25,7 @@ import ElmDivider from '../typography/ElmDivider.vue'
 import ElmBulletedList from '../typography/ElmBulletedList.vue'
 import ElmListItem from '../typography/ElmListItem.vue'
 import ElmNumberedList from '../typography/ElmNumberedList.vue'
+import ElmCheckbox from '../form/ElmCheckbox.vue'
 
 type BlockResponseResults = Awaited<
   ReturnType<typeof Client.prototype.blocks.children.list>
@@ -184,6 +185,15 @@ const render = async (id: string, endpoint: string): Promise<VNode[]> => {
             await render(block.id, endpoint)
           ])
           olli.push(li)
+          break
+        }
+
+        case 'to_do': {
+          vnodes.push(
+            h(ElmCheckbox, {
+              label: block.to_do.rich_text.map((t) => t.plain_text).join()
+            })
+          )
           break
         }
 
