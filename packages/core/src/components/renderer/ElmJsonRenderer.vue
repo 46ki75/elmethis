@@ -1,5 +1,5 @@
 <template>
-  <component
+  <!-- <component
     v-for="component in json"
     :is="componentMap[component.type]"
     v-bind="component.props"
@@ -7,7 +7,9 @@
     <template v-if="component.children">
       <ElmJsonRenderer :json="component.children" />
     </template>
-  </component>
+  </component> -->
+
+  <component :is="() => render(json)" />
 </template>
 
 <script setup lang="ts">
@@ -52,7 +54,7 @@ import ElmColumnList, {
   ElmColumnListProps
 } from '../containments/ElmColumnList.vue'
 
-import { markRaw } from 'vue'
+import { h, markRaw, VNode } from 'vue'
 
 type ComponentType =
   | 'ElmInlineText'
@@ -343,5 +345,19 @@ const componentMap: Record<ComponentType, any> = {
   ElmFile: markRaw(ElmFile),
   ElmColumn: markRaw(ElmColumn),
   ElmColumnList: markRaw(ElmColumnList)
+}
+
+const render = (json: JsonComponent[]) => {
+  const vnodes: VNode[] = []
+  for (const component of json) {
+    vnodes.push(
+      h(componentMap[component.type], component.props, () => {
+        if (component.children != null) {
+          return render(component.children)
+        }
+      })
+    )
+  }
+  return vnodes
 }
 </script>
