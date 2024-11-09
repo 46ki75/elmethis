@@ -6,6 +6,7 @@
 
 <script setup lang="ts">
 import { LinkIcon } from '@heroicons/vue/24/outline'
+import { nextTick, onMounted } from 'vue'
 
 export interface ElmFragmentIdentifierProps {
   /**
@@ -26,6 +27,15 @@ const handleLinkClick = (id: string) => {
     target.scrollIntoView({ behavior: 'smooth' })
   }
 }
+
+onMounted(() => {
+  nextTick(() => {
+    const element = document.querySelector(window.location.hash)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' })
+    }
+  })
+})
 </script>
 
 <style module lang="scss">
