@@ -12,6 +12,8 @@
 </template>
 
 <script setup lang="ts">
+import { defineAsyncComponent } from 'vue'
+
 import ElmInlineText, { ElmInlineTextProps } from '../inline/ElmInlineText.vue'
 import ElmInlineCode, { ElmInlineCodeProps } from '../inline/ElmInlineCode.vue'
 import ElmInlineLink, { ElmInlineLinkProps } from '../inline/ElmInlineLink.vue'
@@ -33,7 +35,10 @@ import ElmHeading3, { ElmHeading3Props } from '../headings/ElmHeading3.vue'
 import ElmHeading4, { ElmHeading4Props } from '../headings/ElmHeading4.vue'
 import ElmHeading5, { ElmHeading5Props } from '../headings/ElmHeading5.vue'
 import ElmHeading6, { ElmHeading6Props } from '../headings/ElmHeading6.vue'
-import ElmCodeBlock, { ElmCodeBlockProps } from '../code/ElmCodeBlock.vue'
+import { ElmCodeBlockProps } from '../code/ElmCodeBlock.vue'
+const ElmCodeBlock = defineAsyncComponent(
+  () => import('../code/ElmCodeBlock.vue')
+)
 import ElmParagraph, { ElmParagraphProps } from '../typography/ElmParagraph.vue'
 import ElmTable, { ElmTableProps } from '../table/ElmTable.vue'
 import ElmTableHeader, {
