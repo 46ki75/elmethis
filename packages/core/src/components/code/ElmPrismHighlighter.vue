@@ -1,5 +1,5 @@
 <template>
-  <pre class="elmethis-prism-code-highlighter-pre" :key="JSON.stringify(props)">
+  <pre class="elmethis-prism-code-highlighter-pre">
     <code :class="['elmethis-prism-code-highlighter-code', `language-${language}`]" ref="codeRef">{{ code.trim() }}</code>
   </pre>
 </template>
@@ -26,7 +26,7 @@ export interface ElmPrismHighlighterProps {
   language?: string
 }
 
-const props = withDefaults(defineProps<ElmPrismHighlighterProps>(), {
+withDefaults(defineProps<ElmPrismHighlighterProps>(), {
   language: 'txt'
 })
 
