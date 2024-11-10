@@ -95,22 +95,22 @@ const render = () => {
 
 <style module lang="scss">
 .text {
-  color: var(--color, rgba(0, 0, 0, 0.7));
+  color: var(--color, rgba(black, 0.7));
   font-size: var(--font-size);
   line-height: var(--font-size);
   background-color: var(--background-color);
 
   &::selection {
-    color: rgba(255, 255, 255, 0.7);
-    background-color: var(--color, rgba(0, 0, 0, 0.7));
+    color: rgba(white, 0.7);
+    background-color: var(--color, rgba(black, 0.7));
   }
 
   [data-theme='dark'] & {
-    color: var(--color, rgba(255, 255, 255, 0.7));
+    color: var(--color, rgba(white, 0.7));
 
     &::selection {
-      color: rgba(0, 0, 0, 0.7);
-      background-color: var(--color, rgba(255, 255, 255, 0.7));
+      color: rgba(black, 0.7);
+      background-color: var(--color, rgba(white, 0.7));
     }
   }
 }
