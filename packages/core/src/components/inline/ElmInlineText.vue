@@ -1,27 +1,10 @@
 <template>
-  <span
-    :class="$style.text"
-    :style="{
-      '--color': color,
-      '--font-size': size,
-      '--font-weight': bold ? 'bold' : undefined,
-      '--font-style': italic ? 'italic' : undefined,
-      '--text-decoration':
-        underline && strikethrough
-          ? 'underline line-through'
-          : underline
-            ? 'underline'
-            : strikethrough
-              ? 'line-through'
-              : undefined,
-      '--background-color': background
-    }"
-    >{{ text }}</span
-  >
+  <component :is="render()"></component>
 </template>
 
 <script setup lang="ts">
 import type { Property } from 'csstype'
+import { h, useCssModule } from 'vue'
 
 export interface ElmInlineTextProps {
   /**
@@ -61,38 +44,73 @@ export interface ElmInlineTextProps {
    */
   strikethrough?: boolean
 
+  code?: boolean
+
   background?: Property.BackgroundColor
 }
 
-withDefaults(defineProps<ElmInlineTextProps>(), {
+const props = withDefaults(defineProps<ElmInlineTextProps>(), {
   bold: false,
   italic: false,
   underline: false,
-  strikethrough: false
+  strikethrough: false,
+  code: false
 })
+
+const style = useCssModule()
+
+const render = () => {
+  let vnode = h(
+    'span',
+    {
+      class: style.text,
+      style: {
+        '--color': props.color,
+        '--font-size': props.size,
+        '--background-color': props.background
+      }
+    },
+    props.text
+  )
+
+  if (props.strikethrough) {
+    vnode = h('del', {}, vnode)
+  }
+
+  if (props.italic) {
+    vnode = h('em', {}, vnode)
+  }
+
+  if (props.underline) {
+    vnode = h('ins', {}, vnode)
+  }
+
+  if (props.bold) {
+    vnode = h('strong', {}, vnode)
+  }
+
+  return vnode
+}
 </script>
 
 <style module lang="scss">
 .text {
-  color: var(--color, rgba(0, 0, 0, 0.7));
+  color: var(--color, rgba(black, 0.7));
   font-size: var(--font-size);
   line-height: var(--font-size);
-  font-weight: var(--font-weight);
-  font-style: var(--font-style);
-  text-decoration: var(--text-decoration);
   background-color: var(--background-color);
 
   &::selection {
-    color: rgba(255, 255, 255, 0.7);
-    background-color: var(--color, rgba(0, 0, 0, 0.7));
+    color: rgba(white, 0.7);
+    background-color: var(--color, rgba(black, 0.7));
   }
 
   [data-theme='dark'] & {
-    color: var(--color, rgba(255, 255, 255, 0.7));
+    color: var(--color, rgba(white, 0.7));
 
     &::selection {
-      color: rgba(0, 0, 0, 0.7);
-      background-color: var(--color, rgba(255, 255, 255, 0.7));
+      color: rgba(black, 0.7);
+      background-color: var(--color, rgba(white, 0.7));
     }
   }
 }
