@@ -1,27 +1,10 @@
 <template>
-  <span
-    :class="$style.text"
-    :style="{
-      '--color': color,
-      '--font-size': size,
-      '--font-weight': bold ? 'bold' : undefined,
-      '--font-style': italic ? 'italic' : undefined,
-      '--text-decoration':
-        underline && strikethrough
-          ? 'underline line-through'
-          : underline
-            ? 'underline'
-            : strikethrough
-              ? 'line-through'
-              : undefined,
-      '--background-color': background
-    }"
-    >{{ text }}</span
-  >
+  <component :is="render()"></component>
 </template>
 
 <script setup lang="ts">
 import type { Property } from 'csstype'
+import { h, useCssModule } from 'vue'
 
 export interface ElmInlineTextProps {
   /**
@@ -64,12 +47,44 @@ export interface ElmInlineTextProps {
   background?: Property.BackgroundColor
 }
 
-withDefaults(defineProps<ElmInlineTextProps>(), {
+const props = withDefaults(defineProps<ElmInlineTextProps>(), {
   bold: false,
   italic: false,
   underline: false,
   strikethrough: false
 })
+
+const style = useCssModule()
+
+const render = () => {
+  let vnode = h('span', { class: style.text }, props.text)
+
+  if (props.strikethrough) {
+    vnode = h('del', {}, vnode)
+  }
+
+  if (props.italic) {
+    vnode = h('em', {}, vnode)
+  }
+
+  if (props.underline) {
+    vnode = h('ins', {}, vnode)
+  }
+
+  if (props.bold) {
+    vnode = h(
+      'strong',
+      {
+        '--color': props.color,
+        '--font-size': props.size,
+        '--background-color': props.background
+      },
+      vnode
+    )
+  }
+
+  return vnode
+}
 </script>
 
 <style module lang="scss">
