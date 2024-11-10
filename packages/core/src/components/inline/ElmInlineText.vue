@@ -44,6 +44,8 @@ export interface ElmInlineTextProps {
    */
   strikethrough?: boolean
 
+  code?: boolean
+
   background?: Property.BackgroundColor
 }
 
@@ -51,13 +53,25 @@ const props = withDefaults(defineProps<ElmInlineTextProps>(), {
   bold: false,
   italic: false,
   underline: false,
-  strikethrough: false
+  strikethrough: false,
+  code: false
 })
 
 const style = useCssModule()
 
 const render = () => {
-  let vnode = h('span', { class: style.text }, props.text)
+  let vnode = h(
+    'span',
+    {
+      class: style.text,
+      style: {
+        '--color': props.color,
+        '--font-size': props.size,
+        '--background-color': props.background
+      }
+    },
+    props.text
+  )
 
   if (props.strikethrough) {
     vnode = h('del', {}, vnode)
@@ -72,15 +86,7 @@ const render = () => {
   }
 
   if (props.bold) {
-    vnode = h(
-      'strong',
-      {
-        '--color': props.color,
-        '--font-size': props.size,
-        '--background-color': props.background
-      },
-      vnode
-    )
+    vnode = h('strong', {}, vnode)
   }
 
   return vnode
@@ -92,9 +98,6 @@ const render = () => {
   color: var(--color, rgba(0, 0, 0, 0.7));
   font-size: var(--font-size);
   line-height: var(--font-size);
-  font-weight: var(--font-weight);
-  font-style: var(--font-style);
-  text-decoration: var(--text-decoration);
   background-color: var(--background-color);
 
   &::selection {
