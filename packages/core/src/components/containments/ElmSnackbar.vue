@@ -1,13 +1,11 @@
 <template>
   <div :class="$style.snackbar">
     <div><slot /></div>
-    <XMarkIcon :class="$style.icon" @click="handleClose" />
+    <XMarkIcon :class="$style.icon" @click="close" />
     <div
       :class="$style.progress"
       :style="{
-        transform:
-          timeout === 0 ? undefined : `scaleX(${(timeout - remain) / timeout})`,
-        transformOrigin: 'left'
+        animationDuration: `${timeout}ms`
       }"
     ></div>
   </div>
@@ -18,19 +16,12 @@ import { XMarkIcon } from '@heroicons/vue/24/outline'
 
 export interface ElmSnackbarProps {
   timeout?: number
-  remain?: number
+  close: () => void
 }
 
 withDefaults(defineProps<ElmSnackbarProps>(), {
-  timeout: 5000,
-  remain: 5000
+  timeout: 5000
 })
-
-const isShown = defineModel({ default: true })
-
-const handleClose = () => {
-  isShown.value = false
-}
 </script>
 
 <style module lang="scss">
@@ -67,6 +58,17 @@ const handleClose = () => {
   }
 }
 
+@keyframes progress {
+  0% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  100% {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+}
+
 .progress {
   position: absolute;
   width: 100%;
@@ -74,5 +76,9 @@ const handleClose = () => {
   bottom: 0;
   left: 0;
   background-color: #6987b8;
+  animation-name: progress;
+  animation-iteration-count: 1;
+  animation-fill-mode: both;
+  animation-timing-function: linear;
 }
 </style>

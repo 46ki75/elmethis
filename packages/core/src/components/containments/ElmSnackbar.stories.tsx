@@ -1,10 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import ElmSnackbar from './ElmSnackbar.vue'
-import ElmInlineText from '../inline/ElmInlineText.vue'
+import ElmSnackbarContainer from './ElmSnackbarContainer.vue'
+import { ref } from 'vue'
+import { nanoid } from 'nanoid'
+import { useTimeoutFn } from '@vueuse/core'
 
-const meta: Meta<typeof ElmSnackbar> = {
+const meta: Meta<typeof ElmSnackbarContainer> = {
   title: 'Components/Containments/ElmSnackbar',
-  component: ElmSnackbar,
+  component: ElmSnackbarContainer,
   tags: ['autodocs'],
   args: {}
 }
@@ -14,43 +16,37 @@ type Story = StoryObj<typeof meta>
 
 export const SnackbarOnly: Story = {
   args: {
-    timeout: 5000,
-    remain: 2500
+    snackbars: []
   },
   render: (args) => ({
-    components: { ElmSnackbar, ElmInlineText },
+    components: { ElmSnackbarContainer },
     setup() {
-      return { args }
+      const snackbars = ref(args.snackbars)
+
+      const remove = (id: string) => {
+        snackbars.value = snackbars.value.filter(
+          (snackbar) => snackbar.id !== id
+        )
+      }
+
+      const push = () => {
+        const id = nanoid()
+        snackbars.value.push({
+          id,
+          label: 'Snackbar Content',
+          timeout: 5000,
+          close: () => remove(id)
+        })
+
+        useTimeoutFn(() => {
+          remove(id)
+        }, 5000)
+      }
+
+      return { args, snackbars, push, remove }
     },
     template: `
-      <ElmSnackbar v-bind="args">
-        <ElmInlineText text="Snackbar Content" />
-      </ElmSnackbar>
-    `
+    <button @click="push">PUSH</button>
+    <ElmSnackbarContainer v-bind="args" :snackbars="snackbars" />`
   })
 }
-
-// export const Primary: Story = {
-//   render: (args) => ({
-//     components: { ElmSnackbar, ElmInlineText, ElmSnackbarContainer },
-//     setup() {
-//       const isShown = ref(true)
-//       const handleToggle = () => {
-//         isShown.value = !isShown.value
-//       }
-
-//       return { args, isShown, handleToggle }
-//     },
-//     template: `
-//       <button @click="handleToggle">Toggle</button>
-//       <ElmSnackbarContainer>
-//         <ElmSnackbar v-if="isShown" v-bind="args" v-model="isShown">
-//           <ElmInlineText text="Snackbar Content" />
-//         </ElmSnackbar>
-//         <ElmSnackbar >
-//           <ElmInlineText text="Snackbar Content" />
-//         </ElmSnackbar>
-//       </ElmSnackbarContainer>
-//     `
-//   })
-// }

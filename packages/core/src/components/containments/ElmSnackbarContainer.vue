@@ -1,13 +1,30 @@
 <template>
   <div :class="$style['snackbar-screen']">
     <div :class="$style['snackbar-container']">
-      <transition><slot /></transition>
+      <TransitionGroup name="fade">
+        <ElmSnackbar
+          v-for="snackbar in snackbars"
+          :key="snackbar.id"
+          :close="snackbar.close"
+        >
+          {{ snackbar.label }}
+        </ElmSnackbar>
+      </TransitionGroup>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-export interface ElmSnackbarContainerProps {}
+import ElmSnackbar from './ElmSnackbar.vue'
+
+export interface ElmSnackbarContainerProps {
+  snackbars: {
+    id: string
+    label: string
+    timeout?: number
+    close: () => void
+  }[]
+}
 
 withDefaults(defineProps<ElmSnackbarContainerProps>(), {})
 </script>
@@ -37,18 +54,13 @@ withDefaults(defineProps<ElmSnackbarContainerProps>(), {})
 </style>
 
 <style scoped lang="scss">
-.v-enter-to,
-.v-leave-from {
-  opacity: 1;
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 300ms ease;
 }
-
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 200ms;
-}
-
-.v-enter-from,
-.v-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
+  transform: translateX(30px);
 }
 </style>
