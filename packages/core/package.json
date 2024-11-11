@@ -1,6 +1,6 @@
 {
   "name": "@elmethis/core",
-  "version": "1.0.0-alpha.82",
+  "version": "1.0.0-alpha.83",
   "publishConfig": {
     "access": "public"
   },
@@ -64,5 +64,8 @@
     "vite-plugin-dts": "^4.3.0",
     "vue": "^3.5.12",
     "vue-tsc": "^2.1.10"
+  },
+  "dependencies": {
+    "nanoid": "^5.0.8"
   }
 }
