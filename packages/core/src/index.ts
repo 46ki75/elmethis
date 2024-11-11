@@ -149,6 +149,7 @@ import ElmColorTable, {
 import ElmJsonRenderer, {
   ElmJsonRendererProps
 } from './components/renderer/ElmJsonRenderer.vue'
+import ElmJsonRendererAsync from './components/renderer/ElmJsonRendererAsync.vue'
 
 // table
 import ElmTable, { ElmTableProps } from './components/table/ElmTable.vue'
@@ -243,6 +244,7 @@ export {
   ElmColorSample,
   ElmColorTable,
   ElmJsonRenderer,
+  ElmJsonRendererAsync,
   ElmTable,
   ElmTableHeader,
   ElmTableBody,
