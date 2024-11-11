@@ -32,5 +32,6 @@ withDefaults(defineProps<ElmSnackbarContainerProps>(), {})
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-end;
+  gap: 0.5rem;
 }
 </style>
