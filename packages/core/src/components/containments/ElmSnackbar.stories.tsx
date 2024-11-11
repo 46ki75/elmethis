@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3'
 import ElmSnackbar from './ElmSnackbar.vue'
 import ElmInlineText from '../inline/ElmInlineText.vue'
 import { ref } from 'vue'
+import ElmSnackbarContainer from './ElmSnackbarContainer.vue'
 
 const meta: Meta<typeof ElmSnackbar> = {
   title: 'Components/Containments/ElmSnackbar',
@@ -15,7 +16,7 @@ type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
   render: (args) => ({
-    components: { ElmSnackbar, ElmInlineText },
+    components: { ElmSnackbar, ElmInlineText, ElmSnackbarContainer },
     setup() {
       const isShown = ref(true)
       const handleToggle = () => {
@@ -26,9 +27,11 @@ export const Primary: Story = {
     },
     template: `
       <button @click="handleToggle">Toggle</button>
-      <ElmSnackbar v-bind="args" v-model="isShown" @update:modelValue="val => isShown = val">
-        <ElmInlineText text="Hello, I'm a snackbar" />
-      </ElmSnackbar>
+      <ElmSnackbarContainer>
+        <ElmSnackbar v-bind="args" v-model="isShown" @update:modelValue="val => isShown = val">
+          <ElmInlineText text="Hello, I'm a snackbar" />
+        </ElmSnackbar>
+      </ElmSnackbarContainer>
     `
   })
 }
