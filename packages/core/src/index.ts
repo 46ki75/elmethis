@@ -38,6 +38,9 @@ import ElmProgress, {
 import ElmMultiProgress, {
   ElmMultiProgressProps
 } from './components/data/ElmMultiProgress.vue'
+import ElmStatusMessage, {
+  ElmStatusMessageProps
+} from './components/data/ElmStatusMessage.vue'
 
 // fallback
 import ElmRectangleWave, {
@@ -211,6 +214,7 @@ export {
   ElmTooltip,
   ElmProgress,
   ElmMultiProgress,
+  ElmStatusMessage,
   ElmRectangleWave,
   ElmBlockFallback,
   ElmButton,
@@ -274,6 +278,7 @@ export type {
   ElmTooltipProps,
   ElmProgressProps,
   ElmMultiProgressProps,
+  ElmStatusMessageProps,
   ElmRectangleWaveProps,
   ElmBlockFallbackProps,
   ElmButtonProps,
