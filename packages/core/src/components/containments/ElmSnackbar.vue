@@ -1,76 +1,42 @@
 <template>
-  <transition>
-    <div v-if="isShown" :class="$style.snackbar">
-      <div><slot /></div>
-      <XMarkIcon :class="$style.icon" @click="handleClose" />
-      <div
-        :class="$style.progress"
-        :style="{
-          transform:
-            timeout === 0
-              ? undefined
-              : `scaleX(${(timeout - remain) / timeout})`,
-          transformOrigin: 'left'
-        }"
-      ></div>
-    </div>
-  </transition>
+  <div :class="$style.snackbar">
+    <div><slot /></div>
+    <XMarkIcon :class="$style.icon" @click="handleClose" />
+    <div
+      :class="$style.progress"
+      :style="{
+        transform:
+          timeout === 0 ? undefined : `scaleX(${(timeout - remain) / timeout})`,
+        transformOrigin: 'left'
+      }"
+    ></div>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { XMarkIcon } from '@heroicons/vue/24/outline'
-import { onMounted, ref, watch } from 'vue'
 
 export interface ElmSnackbarProps {
   timeout?: number
+  remain?: number
 }
 
-const props = withDefaults(defineProps<ElmSnackbarProps>(), {
-  timeout: 5000
+withDefaults(defineProps<ElmSnackbarProps>(), {
+  timeout: 5000,
+  remain: 5000
 })
 
 const isShown = defineModel({ default: true })
-const remain = ref<number>(0)
-
-const timeoutId = ref<number | null>(null)
-const intervalId = ref<number | null>(null)
 
 const handleClose = () => {
   isShown.value = false
 }
-
-const display = (modalIsShown: boolean) => {
-  if (modalIsShown) {
-    timeoutId.value = window.setTimeout(() => {
-      isShown.value = false
-    }, props.timeout)
-    remain.value = 0
-    intervalId.value = window.setInterval(() => {
-      remain.value += 10
-    }, 10)
-  } else {
-    if (timeoutId.value) {
-      window.clearTimeout(timeoutId.value)
-    }
-    if (intervalId.value) {
-      window.clearInterval(intervalId.value)
-    }
-  }
-}
-
-watch(isShown, (value) => {
-  display(value)
-})
-
-onMounted(() => {
-  display(isShown.value)
-})
 </script>
 
 <style module lang="scss">
 .snackbar {
   position: relative;
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
   gap: 1rem;
   align-items: center;
