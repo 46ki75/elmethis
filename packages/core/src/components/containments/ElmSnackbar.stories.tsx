@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import ElmSnackbar from './ElmSnackbar.vue'
 import ElmInlineText from '../inline/ElmInlineText.vue'
-import { ref } from 'vue'
+import { h, ref } from 'vue'
 import ElmSnackbarContainer from './ElmSnackbarContainer.vue'
 
 const meta: Meta<typeof ElmSnackbar> = {
@@ -23,14 +23,22 @@ export const Primary: Story = {
         isShown.value = !isShown.value
       }
 
-      return { args, isShown, handleToggle }
+      const render = () => {
+        return h(
+          ElmSnackbar,
+          { ...args, modelValue: isShown.value },
+          {
+            default: () => h(ElmInlineText, { text: "Hello, I'm a snackbar" })
+          }
+        )
+      }
+
+      return { args, isShown, handleToggle, render }
     },
     template: `
       <button @click="handleToggle">Toggle</button>
       <ElmSnackbarContainer>
-        <ElmSnackbar v-bind="args" v-model="isShown">
-          <ElmInlineText text="Hello, I'm a snackbar" />
-        </ElmSnackbar>
+        <component :is="() => render()" />
       </ElmSnackbarContainer>
     `
   })

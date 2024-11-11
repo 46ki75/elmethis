@@ -1,6 +1,6 @@
 <template>
   <transition>
-    <div :class="$style.snackbar" v-if="isShown">
+    <div v-if="isShown" :class="$style.snackbar">
       <div><slot /></div>
       <XMarkIcon :class="$style.icon" @click="handleClose" />
       <div
