@@ -76,20 +76,3 @@ const handleClose = () => {
   background-color: #6987b8;
 }
 </style>
-
-<style scoped lang="scss">
-.v-enter-to,
-.v-leave-from {
-  opacity: 1;
-}
-
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 200ms;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
-}
-</style>
