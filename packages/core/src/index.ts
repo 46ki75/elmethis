@@ -27,6 +27,9 @@ import ElmParallax, {
 import ElmSnackbar, {
   ElmSnackbarProps
 } from './components/containments/ElmSnackbar.vue'
+import ElmSnackbarContainer, {
+  ElmSnackbarContainerProps
+} from './components/containments/ElmSnackbarContainer.vue'
 import ElmToggle, {
   ElmToggleProps
 } from './components/containments/ElmToggle.vue'
@@ -214,6 +217,7 @@ export {
   ElmModal,
   ElmParallax,
   ElmSnackbar,
+  ElmSnackbarContainer,
   ElmToggle,
   ElmTooltip,
   ElmProgress,
@@ -279,6 +283,7 @@ export type {
   ElmModalProps,
   ElmParallaxProps,
   ElmSnackbarProps,
+  ElmSnackbarContainerProps,
   ElmToggleProps,
   ElmTooltipProps,
   ElmProgressProps,
