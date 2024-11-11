@@ -54,7 +54,7 @@
     "ofetch": "^1.4.1",
     "polished": "^4.3.1",
     "postcss": "^8.4.47",
-    "postcss-preset-env": "^10.0.9",
+    "postcss-preset-env": "^10.1.0",
     "prism-theme-vars": "^0.2.5",
     "prismjs": "^1.29.0",
     "sass": "^1.80.6",
