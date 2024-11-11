@@ -1,20 +1,24 @@
 <template>
-  <transition>
-    <div :class="$style.snackbar" v-if="isShown">
-      <div><slot /></div>
-      <XMarkIcon :class="$style.icon" @click="handleClose" />
-      <div
-        :class="$style.progress"
-        :style="{
-          transform:
-            timeout === 0
-              ? undefined
-              : `scaleX(${(timeout - remain) / timeout})`,
-          transformOrigin: 'left'
-        }"
-      ></div>
+  <div :class="$style['snackbar-screen']">
+    <div :class="$style['snackbar-container']">
+      <transition>
+        <div :class="$style.snackbar" v-if="isShown">
+          <div><slot /></div>
+          <XMarkIcon :class="$style.icon" @click="handleClose" />
+          <div
+            :class="$style.progress"
+            :style="{
+              transform:
+                timeout === 0
+                  ? undefined
+                  : `scaleX(${(timeout - remain) / timeout})`,
+              transformOrigin: 'left'
+            }"
+          ></div>
+        </div>
+      </transition>
     </div>
-  </transition>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -68,16 +72,35 @@ onMounted(() => {
 </script>
 
 <style module lang="scss">
+.snackbar-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  pointer-events: none;
+}
+
+.snackbar-container {
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
 .snackbar {
+  position: relative;
   display: flex;
   flex-direction: row;
   gap: 1rem;
   align-items: center;
-  position: fixed;
   padding: 0.75rem;
-  margin: 1rem;
-  bottom: 0;
-  right: 0;
+  pointer-events: all;
   border-radius: 0.25rem;
   box-shadow: 0 0 0.25rem rgba(black, 0.25);
   background-color: rgba(white, 0.5);
