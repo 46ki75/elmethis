@@ -1,6 +1,7 @@
 <template>
   <div :class="$style.snackbar">
-    <div><slot /></div>
+    <div v-if="props.label != null">{{ props.label }}</div>
+    <component v-else :is="() => props.children" />
     <XMarkIcon :class="$style.icon" @click="close" />
     <div
       :class="$style.progress"
@@ -13,13 +14,16 @@
 
 <script setup lang="ts">
 import { XMarkIcon } from '@heroicons/vue/24/outline'
+import { VNode } from 'vue'
 
 export interface ElmSnackbarProps {
+  label?: string
+  children?: VNode
   timeout?: number
   close: () => void
 }
 
-withDefaults(defineProps<ElmSnackbarProps>(), {
+const props = withDefaults(defineProps<ElmSnackbarProps>(), {
   timeout: 5000
 })
 </script>

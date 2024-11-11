@@ -4,10 +4,9 @@
       <TransitionGroup name="fade">
         <ElmSnackbar
           v-for="snackbar in snackbars"
+          v-bind="snackbar"
           :key="snackbar.id"
-          :close="snackbar.close"
         >
-          {{ snackbar.label }}
         </ElmSnackbar>
       </TransitionGroup>
     </div>

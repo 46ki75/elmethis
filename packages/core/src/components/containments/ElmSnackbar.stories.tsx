@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import ElmSnackbarContainer from './ElmSnackbarContainer.vue'
-import { ref } from 'vue'
-import { nanoid } from 'nanoid'
-import { useTimeoutFn } from '@vueuse/core'
+import { useSnackbarState } from './useSnackbarState'
+import { h } from 'vue'
 
 const meta: Meta<typeof ElmSnackbarContainer> = {
   title: 'Components/Containments/ElmSnackbar',
@@ -21,32 +20,25 @@ export const SnackbarOnly: Story = {
   render: (args) => ({
     components: { ElmSnackbarContainer },
     setup() {
-      const snackbars = ref(args.snackbars)
+      const { snackbars, push, remove } = useSnackbarState()
 
-      const remove = (id: string) => {
-        snackbars.value = snackbars.value.filter(
-          (snackbar) => snackbar.id !== id
-        )
-      }
-
-      const push = () => {
-        const id = nanoid()
-        snackbars.value.push({
-          id,
-          label: 'Snackbar Content',
-          timeout: 5000,
-          close: () => remove(id)
+      const handlePushChildren = () => {
+        push({
+          children: h('p', 'Hello World')
         })
-
-        useTimeoutFn(() => {
-          remove(id)
-        }, 5000)
       }
 
-      return { args, snackbars, push, remove }
+      const handlePushLabel = () => {
+        push({
+          label: 'Hello World'
+        })
+      }
+
+      return { args, snackbars, handlePushChildren, handlePushLabel, remove }
     },
     template: `
-    <button @click="push">PUSH</button>
+    <button @click="handlePushChildren">Push Children</button>
+    <button @click="handlePushLabel">Push Label</button>
     <ElmSnackbarContainer v-bind="args" :snackbars="snackbars" />`
   })
 }
