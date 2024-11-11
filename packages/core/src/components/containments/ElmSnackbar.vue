@@ -1,6 +1,6 @@
 <template>
   <div :class="$style.snackbar">
-    <div v-if="props.label != null">{{ props.label }}</div>
+    <ElmInlineText v-if="props.label != null" :text="props.label" />
     <component v-else :is="() => props.children" />
     <XMarkIcon :class="$style.icon" @click="close" />
     <div
@@ -15,6 +15,7 @@
 <script setup lang="ts">
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import { VNode } from 'vue'
+import ElmInlineText from '../inline/ElmInlineText.vue'
 
 export interface ElmSnackbarProps {
   label?: string
@@ -52,7 +53,12 @@ const props = withDefaults(defineProps<ElmSnackbarProps>(), {
   width: 1rem;
   height: 1rem;
   cursor: pointer;
-  transition: background-color 100ms;
+  transition: background-color 200ms;
+
+  color: rgba(black, 0.75);
+  [data-theme='dark'] & {
+    color: rgba(white, 0.75);
+  }
 
   &:hover {
     background-color: rgba(black, 0.1);
