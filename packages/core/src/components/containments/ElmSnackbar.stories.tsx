@@ -28,7 +28,7 @@ export const Primary: Story = {
     template: `
       <button @click="handleToggle">Toggle</button>
       <ElmSnackbarContainer>
-        <ElmSnackbar v-bind="args" v-model="isShown" @update:modelValue="val => isShown = val">
+        <ElmSnackbar v-bind="args" v-model="isShown">
           <ElmInlineText text="Hello, I'm a snackbar" />
         </ElmSnackbar>
       </ElmSnackbarContainer>
