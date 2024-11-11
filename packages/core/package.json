@@ -53,7 +53,7 @@
     "lodash-es": "^4.17.21",
     "ofetch": "^1.4.1",
     "polished": "^4.3.1",
-    "postcss": "^8.4.47",
+    "postcss": "^8.4.49",
     "postcss-preset-env": "^10.1.0",
     "prism-theme-vars": "^0.2.5",
     "prismjs": "^1.29.0",
