@@ -38,7 +38,7 @@
     "@storybook/addon-onboarding": "^8.4.3",
     "@storybook/blocks": "^8.4.2",
     "@storybook/test": "^8.4.2",
-    "@storybook/vue3": "^8.4.2",
+    "@storybook/vue3": "^8.4.3",
     "@storybook/vue3-vite": "^8.4.2",
     "@types/feather-icons": "^4.29.4",
     "@types/katex": "^0.16.7",
