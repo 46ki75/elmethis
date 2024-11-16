@@ -24,6 +24,16 @@
       />
     </div>
 
+    <!-- const -->
+
+    <div v-if="schema.const != null">
+      <ElmFieldAttribute
+        icon="ic:baseline-gps-not-fixed"
+        name="const"
+        :content="String(schema.const)"
+      />
+    </div>
+
     <template v-if="schema.items != null && schema.type === 'array'">
       <div
         v-if="Array.isArray(schema.items)"

@@ -18,6 +18,11 @@ export const Primary: Story = {
       type: 'object',
       description: 'A user object',
       properties: {
+        type: {
+          type: 'string',
+          const: 'user',
+          description: 'Always user'
+        },
         name: {
           type: 'string',
           description: 'The name of the user'
