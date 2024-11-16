@@ -1,11 +1,13 @@
 <template>
   <div v-if="schema.type === 'boolean'" :class="$style.normal">
-    <div :class="$style['column-name']">
+    <div :class="$style['column-info']">
       <span :class="$style.boolean">
         <Icon icon="stash:data-boolean" :class="$style.icon" />
         <ElmInlineText text="Boolean" />
       </span>
-      <ElmInlineText v-if="name" :text="name" />
+      <span v-if="name" :class="$style['column-name']">
+        <ElmInlineText :text="name" />
+      </span>
     </div>
 
     <div>
@@ -14,12 +16,14 @@
   </div>
 
   <div v-else-if="schema.type === 'string'" :class="$style.normal">
-    <div :class="$style['column-name']">
+    <div :class="$style['column-info']">
       <span :class="$style.string">
         <Icon icon="icon-park-outline:text" :class="$style.icon" />
         <ElmInlineText text="String" />
       </span>
-      <ElmInlineText v-if="name" :text="name" />
+      <span v-if="name" :class="$style['column-name']">
+        <ElmInlineText :text="name" />
+      </span>
     </div>
 
     <div>
@@ -28,12 +32,14 @@
   </div>
 
   <div v-else-if="schema.type === 'number'" :class="$style.normal">
-    <div :class="$style['column-name']">
+    <div :class="$style['column-info']">
       <span :class="$style.number">
         <Icon icon="icon-park-outline:hashtag-key" :class="$style.icon" />
         <ElmInlineText text="Number" />
       </span>
-      <ElmInlineText v-if="name" :text="name" />
+      <span v-if="name" :class="$style['column-name']">
+        <ElmInlineText :text="name" />
+      </span>
     </div>
 
     <div>
@@ -42,12 +48,14 @@
   </div>
 
   <div v-else-if="schema.type === 'null'" :class="$style.normal">
-    <div :class="$style['column-name']">
+    <div :class="$style['column-info']">
       <span :class="$style.null">
         <Icon icon="mdi:null-off" :class="$style.icon" />
         <ElmInlineText text="Null" />
       </span>
-      <ElmInlineText v-if="name" :text="name" />
+      <span v-if="name" :class="$style['column-name']">
+        <ElmInlineText :text="name" />
+      </span>
     </div>
 
     <div>
@@ -56,33 +64,39 @@
   </div>
 
   <div v-else-if="schema.type === 'array'" :class="$style.normal">
-    <div :class="$style['column-name']">
+    <div :class="$style['column-info']">
       <span :class="$style.array">
         <Icon icon="ic:baseline-data-array" :class="$style.icon" />
         <ElmInlineText text="Array" />
       </span>
-      <ElmInlineText v-if="name" :text="name" />
+
+      <span v-if="name" :class="$style['column-name']">
+        <ElmInlineText :text="name" />
+      </span>
     </div>
 
-    <div style="padding-left: 2rem">
+    <div :class="$style.nested">
       <ElmOpenApiSchemaObject :schema="schema.items" />
     </div>
   </div>
 
   <div v-else-if="schema.type === 'object'" :class="$style.normal">
-    <div :class="$style['column-name']">
+    <div :class="$style['column-info']">
       <span :class="$style.object">
         <Icon icon="carbon:object" :class="$style.icon" />
         <ElmInlineText text="Object" />
       </span>
-      <ElmInlineText v-if="name" :text="name" />
+
+      <span v-if="name" :class="$style['column-name']">
+        <ElmInlineText :text="name" />
+      </span>
     </div>
 
     <div>
       <ElmInlineText :text="schema.description ?? 'No enum provided.'" />
     </div>
 
-    <div style="padding-left: 2rem">
+    <div :class="$style.nested">
       <ElmOpenApiSchemaObject
         v-for="key in Object.keys(schema.properties || {})"
         :name="key"
@@ -108,13 +122,21 @@ withDefaults(defineProps<ElmOpenApiProps>(), {})
 <style module lang="scss">
 .normal {
   box-sizing: border-box;
-  padding: 0.75rem;
-  padding-right: 0;
-  padding-bottom: 0;
+  padding-left: 0.5rem;
+
+  display: flex;
+  flex-direction: column;
+
   border-left: solid 0.125rem rgba(black, 0.125);
+
   [data-theme='dark'] & {
     border-color: rgba(white, 0.125);
   }
+}
+
+.nested {
+  padding-left: 1.5rem;
+  padding-block-start: 0.5rem;
 }
 
 .icon {
@@ -124,9 +146,18 @@ withDefaults(defineProps<ElmOpenApiProps>(), {})
   }
 }
 
-.column-name {
+.column-info {
   display: flex;
   gap: 0.5rem;
+  margin-block: 0.5rem;
+}
+
+.column-name {
+  display: inline-block;
+  border-radius: 0.25rem;
+  font-family: ui-monospace, monospace;
+  margin: auto 0;
+  vertical-align: middle;
 }
 
 @mixin type($color) {
