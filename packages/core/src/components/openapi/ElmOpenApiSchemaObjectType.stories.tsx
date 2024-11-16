@@ -12,7 +12,6 @@ const meta: Meta<typeof ElmOpenApiSchemaObjectType> = {
         'object',
         'array',
         'string',
-        ,
         'number',
         'boolean',
         'integer',
@@ -30,5 +29,13 @@ export const Primary: Story = {
   args: {
     type: 'object',
     name: 'user'
+  }
+}
+
+export const Maybe: Story = {
+  args: {
+    type: 'object',
+    name: 'user',
+    nullable: true
   }
 }

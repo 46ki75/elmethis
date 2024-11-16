@@ -1,44 +1,18 @@
 <template>
   <div :class="$style.normal">
-    <div
-      :class="[
-        $style['column-type-name'],
-        {
-          [$style.string]: schema.type === 'string',
-          [$style.number]: schema.type === 'number',
-          [$style.boolean]: schema.type === 'boolean',
-          [$style.null]: schema.type === 'null',
-          [$style.array]: schema.type === 'array',
-          [$style.object]: schema.type === 'object'
-        }
-      ]"
-    >
-      <span :class="$style['column-type']">
-        <Icon
-          :class="$style.icon"
-          :icon="
-            schema.type === 'boolean'
-              ? 'stash:data-boolean'
-              : schema.type === 'string'
-                ? 'icon-park-outline:text'
-                : schema.type === 'number'
-                  ? 'icon-park-outline:hashtag-key'
-                  : schema.type === 'null'
-                    ? 'mdi:null-off'
-                    : schema.type === 'array'
-                      ? 'ic:baseline-data-array'
-                      : schema.type === 'object'
-                        ? 'carbon:object'
-                        : ''
-          "
-        />
-        <ElmInlineText :text="String(schema.type)" />
-      </span>
+    <ElmOpenApiSchemaObjectType
+      v-if="typeof schema.type === 'string'"
+      :type="schema.type"
+      :name="name"
+    />
 
-      <div v-if="name" :class="$style['column-name']">
-        <ElmInlineText :text="name" />
-      </div>
-    </div>
+    <template v-else-if="Array.isArray(schema.type)">
+      <ElmOpenApiSchemaObjectType
+        v-for="type in schema.type"
+        :type="type"
+        :name="name"
+      />
+    </template>
 
     <div>
       <ElmInlineText :text="schema.description ?? 'No enum provided.'" />
@@ -59,9 +33,10 @@
 </template>
 
 <script setup lang="ts">
-import { OpenAPIV3_1 } from 'openapi-types'
-import { Icon } from '@iconify/vue'
+import { type OpenAPIV3_1 } from 'openapi-types'
+
 import ElmInlineText from '../inline/ElmInlineText.vue'
+import ElmOpenApiSchemaObjectType from './ElmOpenApiSchemaObjectType.vue'
 
 export interface ElmOpenApiProps {
   name?: string
@@ -89,79 +64,5 @@ withDefaults(defineProps<ElmOpenApiProps>(), {})
 .nested {
   padding-left: 1.5rem;
   padding-block-start: 0.5rem;
-}
-
-.icon {
-  color: rgba(black, 0.8);
-  [data-theme='dark'] & {
-    color: rgba(white, 0.8);
-  }
-}
-
-.column-type-name {
-  display: flex;
-  align-items: stretch;
-  justify-content: stretch;
-
-  width: min-content;
-  border-radius: 0.25rem;
-  margin-block: 0.5rem;
-  white-space: nowrap;
-
-  &.string {
-    border: solid 1px rgba(#a0d4b4, 0.5);
-    .column-type {
-      background-color: rgba(#a0d4b4, 0.5);
-    }
-  }
-
-  &.number {
-    border: solid 1px rgba(#aebed9, 0.5);
-    .column-type {
-      background-color: rgba(#aebed9, 0.5);
-    }
-  }
-
-  &.boolean {
-    border: solid 1px rgba(#cab7dd, 0.5);
-    .column-type {
-      background-color: rgba(#cab7dd, 0.5);
-    }
-  }
-
-  &.null {
-    border: solid 1px rgba(#bec2ca, 0.5);
-    .column-type {
-      background-color: rgba(#bec2ca, 0.5);
-    }
-  }
-
-  &.array {
-    border: solid 1px rgba(#e4b4ce, 0.5);
-    .column-type {
-      background-color: rgba(#e4b4ce, 0.5);
-    }
-  }
-
-  &.object {
-    border: solid 1px rgba(#e9dec5, 0.5);
-    .column-type {
-      background-color: rgba(#e9dec5, 0.5);
-    }
-  }
-
-  .column-type {
-    padding-inline-start: 0.25rem;
-    padding-inline-end: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .column-name {
-    padding-inline: 0.5rem;
-    font-family: ui-monospace, monospace;
-    margin: auto 0;
-  }
 }
 </style>

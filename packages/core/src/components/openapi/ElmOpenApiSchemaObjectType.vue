@@ -14,7 +14,7 @@
   >
     <span :class="$style['column-type']">
       <Icon :class="$style.icon" :icon="getIconForType(type)" />
-      <ElmInlineText :text="String(type)" />
+      <ElmInlineText :text="`${type}${nullable ? ' ?' : ''}`" />
     </span>
 
     <div v-if="name" :class="$style['column-name']">
@@ -30,7 +30,8 @@ import ElmInlineText from '../inline/ElmInlineText.vue'
 
 export interface ElmOpenApiSchemaObjectTypeProps {
   type: 'array' | OpenAPIV3_1.NonArraySchemaObjectType
-  name: string
+  name?: string
+  nullable?: boolean
 }
 
 withDefaults(defineProps<ElmOpenApiSchemaObjectTypeProps>(), {})
@@ -38,13 +39,13 @@ withDefaults(defineProps<ElmOpenApiSchemaObjectTypeProps>(), {})
 function getIconForType(type: string) {
   switch (type) {
     case 'boolean':
-      return 'stash:data-boolean'
+      return 'carbon:boolean'
     case 'string':
       return 'icon-park-outline:text'
     case 'number':
       return 'icon-park-outline:hashtag-key'
     case 'null':
-      return 'mdi:null-off'
+      return 'ph:empty'
     case 'array':
       return 'ic:baseline-data-array'
     case 'object':
@@ -118,9 +119,9 @@ function getIconForType(type: string) {
     .icon {
       width: 20px;
       height: 20px;
-      color: rgba(black, 0.8);
+      color: rgba(black, 0.7);
       [data-theme='dark'] & {
-        color: rgba(white, 0.8);
+        color: rgba(white, 0.7);
       }
     }
   }
