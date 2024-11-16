@@ -16,6 +16,7 @@ export const Primary: Story = {
     name: 'John Doe',
     schema: {
       type: 'object',
+      description: 'A user object',
       properties: {
         name: {
           type: 'string',
@@ -28,6 +29,10 @@ export const Primary: Story = {
         isAdult: {
           type: 'boolean',
           description: 'Is the user an adult'
+        },
+        marker: {
+          type: 'null',
+          description: 'A marker for the user'
         },
         tags: {
           type: 'array',
