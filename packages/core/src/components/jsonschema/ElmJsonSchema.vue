@@ -110,9 +110,14 @@ function isBoolean(value: any): value is boolean {
   flex-direction: column;
 
   border-left: solid 0.125rem rgba(black, 0.125);
+  transition: background-color 200ms;
 
   [data-theme='dark'] & {
     border-color: rgba(white, 0.125);
+  }
+
+  &:hover {
+    background-color: rgba(#6987b8, 0.05);
   }
 }
 
