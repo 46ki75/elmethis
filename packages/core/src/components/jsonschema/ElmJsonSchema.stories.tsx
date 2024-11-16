@@ -37,7 +37,7 @@ export const Primary: Story = {
           default: 'user'
         },
         age: {
-          type: 'number',
+          type: 'integer',
           description: 'The age of the user',
           minimum: 0,
           maximum: 120

@@ -83,6 +83,15 @@
       -->
 
       <template v-if="schema.type === 'number' || schema.type === 'integer'">
+        <!-- multipleOf -->
+
+        <ElmFieldAttribute
+          v-if="schema.multipleOf != null"
+          icon="stash:times-light"
+          name="MultipleOf"
+          :content="String(schema.multipleOf)"
+        />
+
         <!-- minimum -->
 
         <ElmFieldAttribute
@@ -99,6 +108,24 @@
           icon="mingcute:arrow-to-up-line"
           name="maximum"
           :content="String(schema.maximum)"
+        />
+
+        <!-- exclusiveMinimum -->
+
+        <ElmFieldAttribute
+          v-if="schema.exclusiveMinimum != null"
+          icon="mingcute:arrow-to-down-line"
+          name="ExclusiveMinimum"
+          :content="String(schema.exclusiveMinimum)"
+        />
+
+        <!-- exclusiveMaximum -->
+
+        <ElmFieldAttribute
+          v-if="schema.exclusiveMaximum != null"
+          icon="mingcute:arrow-to-up-line"
+          name="ExclusiveMaximum"
+          :content="String(schema.exclusiveMaximum)"
         />
       </template>
 
