@@ -14,6 +14,16 @@
       <ElmInlineText :text="schema.description ?? 'No description provided.'" />
     </div>
 
+    <!-- enum -->
+
+    <div v-if="schema.enum != null">
+      <ElmFieldAttribute
+        icon="gg:list"
+        name="Enum"
+        :content="schema.enum.join(', ')"
+      />
+    </div>
+
     <template v-if="schema.items != null && schema.type === 'array'">
       <div
         v-if="Array.isArray(schema.items)"
@@ -53,6 +63,7 @@ import { type JSONSchema7Definition } from 'json-schema'
 
 import ElmInlineText from '../inline/ElmInlineText.vue'
 import ElmFieldType from './ElmFieldType.vue'
+import ElmFieldAttribute from './ElmFieldAttribute.vue'
 
 export interface ElmJsonSchemaProps {
   name?: string

@@ -23,6 +23,7 @@ withDefaults(defineProps<ElmFieldAttributeProps>(), {})
 
 <style module lang="scss">
 .wrapper {
+  margin-block: 0.5rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -42,5 +43,9 @@ withDefaults(defineProps<ElmFieldAttributeProps>(), {})
   width: 1rem;
   height: 1rem;
   line-height: 1rem;
+  color: rgba(black, 0.7);
+  [data-theme='dark'] & {
+    color: rgba(white, 0.7);
+  }
 }
 </style>
