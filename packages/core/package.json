@@ -41,6 +41,7 @@
     "@storybook/vue3": "^8.4.3",
     "@storybook/vue3-vite": "^8.4.4",
     "@types/feather-icons": "^4.29.4",
+    "@types/json-schema": "^7.0.15",
     "@types/katex": "^0.16.7",
     "@types/lodash-es": "^4.17.12",
     "@types/prismjs": "^1.26.5",
