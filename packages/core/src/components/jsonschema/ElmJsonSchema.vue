@@ -11,7 +11,7 @@
     </template>
 
     <div>
-      <ElmInlineText :text="schema.description ?? 'No enum provided.'" />
+      <ElmInlineText :text="schema.description ?? 'No description provided.'" />
     </div>
 
     <template v-if="schema.items != null && schema.type === 'array'">
