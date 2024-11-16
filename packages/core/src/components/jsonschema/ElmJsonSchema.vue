@@ -59,10 +59,13 @@
     </template>
 
     <template v-if="schema.type === 'object'">
-      <div>
-        Required:
-        <ElmInlineText
-          :text="schema.required != null ? schema.required.join(',') : '[]'"
+      <!-- default -->
+
+      <div v-if="schema.required != null">
+        <ElmFieldAttribute
+          icon="material-symbols:asterisk"
+          name="Required"
+          :content="String(schema.required.join(', '))"
         />
       </div>
 
@@ -101,6 +104,7 @@ function isBoolean(value: any): value is boolean {
 .wrapper {
   box-sizing: border-box;
   padding-left: 0.5rem;
+  margin-block: 0.75rem;
 
   display: flex;
   flex-direction: column;
@@ -114,10 +118,10 @@ function isBoolean(value: any): value is boolean {
 
 .description {
   padding-block-end: 0.5rem;
+  opacity: 0.8;
 }
 
 .nested {
   padding-left: 1.5rem;
-  padding-block-start: 0.5rem;
 }
 </style>
