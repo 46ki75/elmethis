@@ -1,16 +1,19 @@
 <template>
   <div :class="$style.normal">
-    <div :class="$style['column-info']">
-      <span
-        :class="{
+    <div
+      :class="[
+        $style['column-type-name'],
+        {
           [$style.string]: schema.type === 'string',
           [$style.number]: schema.type === 'number',
           [$style.boolean]: schema.type === 'boolean',
           [$style.null]: schema.type === 'null',
           [$style.array]: schema.type === 'array',
           [$style.object]: schema.type === 'object'
-        }"
-      >
+        }
+      ]"
+    >
+      <span :class="$style['column-type']">
         <Icon
           :class="$style.icon"
           :icon="
@@ -32,9 +35,9 @@
         <ElmInlineText :text="String(schema.type)" />
       </span>
 
-      <span v-if="name" :class="$style['column-name']">
+      <div v-if="name" :class="$style['column-name']">
         <ElmInlineText :text="name" />
-      </span>
+      </div>
     </div>
 
     <div>
@@ -95,52 +98,70 @@ withDefaults(defineProps<ElmOpenApiProps>(), {})
   }
 }
 
-.column-info {
-  width: min-content;
+.column-type-name {
   display: flex;
-  gap: 0.5rem;
-  margin-block: 0.5rem;
-  border: solid 1px #a0d4b4;
-}
+  align-items: stretch;
+  justify-content: stretch;
 
-.column-name {
-  display: inline-block;
+  width: min-content;
   border-radius: 0.25rem;
-  font-family: ui-monospace, monospace;
-  margin: auto 0;
-  vertical-align: middle;
-}
+  margin-block: 0.5rem;
+  white-space: nowrap;
 
-@mixin type($color) {
-  display: inline-flex;
-  gap: 0.25rem;
-  align-items: center;
-  padding: 0.125rem 0.5rem;
-  border-radius: 0.125rem;
-  background-color: $color;
-}
+  &.string {
+    border: solid 1px rgba(#a0d4b4, 0.5);
+    .column-type {
+      background-color: rgba(#a0d4b4, 0.5);
+    }
+  }
 
-.string {
-  @include type(rgba(#a0d4b4, 0.5));
-}
+  &.number {
+    border: solid 1px rgba(#aebed9, 0.5);
+    .column-type {
+      background-color: rgba(#aebed9, 0.5);
+    }
+  }
 
-.number {
-  @include type(rgba(#aebed9, 0.5));
-}
+  &.boolean {
+    border: solid 1px rgba(#cab7dd, 0.5);
+    .column-type {
+      background-color: rgba(#cab7dd, 0.5);
+    }
+  }
 
-.boolean {
-  @include type(rgba(#cab7dd, 0.5));
-}
+  &.null {
+    border: solid 1px rgba(#bec2ca, 0.5);
+    .column-type {
+      background-color: rgba(#bec2ca, 0.5);
+    }
+  }
 
-.null {
-  @include type(rgba(#bec2ca, 0.5));
-}
+  &.array {
+    border: solid 1px rgba(#e4b4ce, 0.5);
+    .column-type {
+      background-color: rgba(#e4b4ce, 0.5);
+    }
+  }
 
-.array {
-  @include type(rgba(#e4b4ce, 0.5));
-}
+  &.object {
+    border: solid 1px rgba(#e9dec5, 0.5);
+    .column-type {
+      background-color: rgba(#e9dec5, 0.5);
+    }
+  }
 
-.object {
-  @include type(rgba(#e9dec5, 0.5));
+  .column-type {
+    padding-inline-start: 0.25rem;
+    padding-inline-end: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .column-name {
+    padding-inline: 0.5rem;
+    font-family: ui-monospace, monospace;
+    margin: auto 0;
+  }
 }
 </style>
