@@ -28,14 +28,23 @@
       </div>
     </template>
 
-    <div v-if="schema.type === 'object'" :class="$style.nested">
-      <ElmJsonSchema
-        v-for="key in Object.keys(schema.properties || {})"
-        v-if="schema.properties != null"
-        :name="key"
-        :schema="schema.properties[key]"
-      />
-    </div>
+    <template v-if="schema.type === 'object'">
+      <div>
+        Required:
+        <ElmInlineText
+          :text="schema.required != null ? schema.required.join(',') : '[]'"
+        />
+      </div>
+
+      <div :class="$style.nested">
+        <ElmJsonSchema
+          v-for="key in Object.keys(schema.properties || {})"
+          v-if="schema.properties != null"
+          :name="key"
+          :schema="schema.properties[key]"
+        />
+      </div>
+    </template>
   </div>
 </template>
 

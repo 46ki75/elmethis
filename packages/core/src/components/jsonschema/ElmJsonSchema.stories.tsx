@@ -42,7 +42,8 @@ export const Primary: Story = {
           },
           description: 'The tags of the user'
         }
-      }
+      },
+      required: ['name', 'age']
     }
   }
 }
