@@ -35,7 +35,9 @@ export const Primary: Story = {
         },
         age: {
           type: 'number',
-          description: 'The age of the user'
+          description: 'The age of the user',
+          minimum: 0,
+          maximum: 120
         },
         isAdult: {
           type: 'boolean',

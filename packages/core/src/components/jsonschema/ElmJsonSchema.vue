@@ -44,6 +44,28 @@
       />
     </div>
 
+    <template v-if="schema.type === 'number' || schema.type === 'integer'">
+      <!-- minimum -->
+
+      <div v-if="schema.minimum != null">
+        <ElmFieldAttribute
+          icon="mingcute:arrow-to-down-line"
+          name="minimum"
+          :content="String(schema.minimum)"
+        />
+      </div>
+
+      <!-- maximum -->
+
+      <div v-if="schema.maximum != null">
+        <ElmFieldAttribute
+          icon="mingcute:arrow-to-up-line"
+          name="maximum"
+          :content="String(schema.maximum)"
+        />
+      </div>
+    </template>
+
     <template v-if="schema.items != null && schema.type === 'array'">
       <div
         v-if="Array.isArray(schema.items)"
