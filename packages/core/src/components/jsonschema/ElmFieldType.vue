@@ -4,7 +4,7 @@
       $style['column-type-name'],
       {
         [$style.string]: type === 'string',
-        [$style.number]: type === 'number',
+        [$style.number]: type === 'number' || type === 'integer',
         [$style.boolean]: type === 'boolean',
         [$style.null]: type === 'null',
         [$style.array]: type === 'array',
@@ -44,6 +44,7 @@ function getIconForType(type: string) {
     case 'string':
       return 'icon-park-outline:text'
     case 'number':
+    case 'integer':
       return 'icon-park-outline:hashtag-key'
     case 'null':
       return 'ph:empty'
