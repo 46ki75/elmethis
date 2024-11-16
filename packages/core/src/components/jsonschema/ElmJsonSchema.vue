@@ -14,92 +14,98 @@
       <ElmInlineText :text="schema.description ?? 'No description provided.'" />
     </div>
 
-    <!-- enum -->
+    <div :class="$style.attributes">
+      <!-- enum -->
 
-    <div v-if="schema.enum != null">
-      <ElmFieldAttribute
-        icon="gg:list"
-        name="Enum"
-        :content="schema.enum.join(', ')"
-      />
-    </div>
-
-    <!-- const -->
-
-    <div v-if="schema.const != null">
-      <ElmFieldAttribute
-        icon="ic:baseline-gps-not-fixed"
-        name="const"
-        :content="String(schema.const)"
-      />
-    </div>
-
-    <!-- default -->
-
-    <div v-if="schema.default != null">
-      <ElmFieldAttribute
-        icon="material-symbols:circle-outline"
-        name="const"
-        :content="String(schema.default)"
-      />
-    </div>
-
-    <template v-if="schema.type === 'number' || schema.type === 'integer'">
-      <!-- minimum -->
-
-      <div v-if="schema.minimum != null">
+      <div v-if="schema.enum != null">
         <ElmFieldAttribute
-          icon="mingcute:arrow-to-down-line"
-          name="minimum"
-          :content="String(schema.minimum)"
+          icon="gg:list"
+          name="Enum"
+          :content="schema.enum.join(', ')"
         />
       </div>
 
-      <!-- maximum -->
+      <!-- const -->
 
-      <div v-if="schema.maximum != null">
+      <div v-if="schema.const != null">
         <ElmFieldAttribute
-          icon="mingcute:arrow-to-up-line"
-          name="maximum"
-          :content="String(schema.maximum)"
+          icon="ic:baseline-gps-not-fixed"
+          name="const"
+          :content="String(schema.const)"
         />
       </div>
-    </template>
 
-    <template v-if="schema.items != null && schema.type === 'array'">
-      <div
-        v-if="Array.isArray(schema.items)"
-        :class="$style.nested"
-        v-for="item in schema.items"
-      >
-        <ElmJsonSchema :schema="item" />
-      </div>
-
-      <div v-else :class="$style.nested">
-        <ElmJsonSchema :schema="schema.items" />
-      </div>
-    </template>
-
-    <template v-if="schema.type === 'object'">
       <!-- default -->
 
-      <div v-if="schema.required != null">
+      <div v-if="schema.default != null">
         <ElmFieldAttribute
-          icon="material-symbols:asterisk"
-          name="Required"
-          :content="String(schema.required.join(', '))"
+          icon="material-symbols:circle-outline"
+          name="const"
+          :content="String(schema.default)"
         />
       </div>
 
-      <div :class="$style.nested">
-        <ElmJsonSchema
-          v-for="key in Object.keys(schema.properties || {})"
-          v-if="schema.properties != null"
-          :name="key"
-          :schema="schema.properties[key]"
-        />
-      </div>
-    </template>
+      <template v-if="schema.type === 'number' || schema.type === 'integer'">
+        <!-- minimum -->
+
+        <div v-if="schema.minimum != null">
+          <ElmFieldAttribute
+            icon="mingcute:arrow-to-down-line"
+            name="minimum"
+            :content="String(schema.minimum)"
+          />
+        </div>
+
+        <!-- maximum -->
+
+        <div v-if="schema.maximum != null">
+          <ElmFieldAttribute
+            icon="mingcute:arrow-to-up-line"
+            name="maximum"
+            :content="String(schema.maximum)"
+          />
+        </div>
+      </template>
+
+      <template v-if="schema.type === 'object'">
+        <!-- required -->
+
+        <div v-if="schema.required != null">
+          <ElmFieldAttribute
+            icon="material-symbols:asterisk"
+            name="Required"
+            :content="String(schema.required.join(', '))"
+          />
+        </div>
+      </template>
+    </div>
+
+    <div>
+      <template v-if="schema.items != null && schema.type === 'array'">
+        <div
+          v-if="Array.isArray(schema.items)"
+          :class="$style.nested"
+          v-for="item in schema.items"
+        >
+          <ElmJsonSchema :schema="item" />
+        </div>
+
+        <div v-else :class="$style.nested">
+          <ElmJsonSchema :schema="schema.items" />
+        </div>
+      </template>
+
+      <template v-if="schema.type === 'object'">
+        <div :class="$style.nested">
+          <ElmJsonSchema
+            v-for="key in Object.keys(schema.properties || {})"
+            v-if="schema.properties != null"
+            :name="key"
+            :schema="schema.properties[key]"
+          />
+        </div>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -146,6 +152,13 @@ function isBoolean(value: any): value is boolean {
 .description {
   padding-block-end: 0.5rem;
   opacity: 0.8;
+}
+
+.attributes {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .nested {
