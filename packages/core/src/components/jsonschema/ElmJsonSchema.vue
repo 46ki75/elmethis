@@ -53,13 +53,22 @@
       -->
 
       <template v-if="schema.type === 'string'">
-        <!-- pattern -->
+        <!-- minLength -->
 
         <ElmFieldAttribute
-          v-if="schema.pattern != null"
-          icon="mdi:regex"
-          name="pattern"
-          :content="String(schema.pattern)"
+          v-if="schema.minLength != null"
+          icon="fluent-mdl2:minimum-value"
+          name="MinLength"
+          :content="String(schema.minLength)"
+        />
+
+        <!-- maxLength -->
+
+        <ElmFieldAttribute
+          v-if="schema.maxLength != null"
+          icon="fluent-mdl2:maximum-value"
+          name="MaxLength"
+          :content="String(schema.maxLength)"
         />
       </template>
 

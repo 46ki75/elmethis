@@ -26,7 +26,9 @@ export const Primary: Story = {
         name: {
           type: 'string',
           description: 'The name of the user',
-          pattern: '^[A-Za-z]+$'
+          pattern: '^[A-Za-z]+$',
+          maxLength: 20,
+          minLength: 3
         },
         group: {
           type: 'string',
