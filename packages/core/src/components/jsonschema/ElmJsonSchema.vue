@@ -153,6 +153,13 @@
 
     <div>
       <template v-if="schema.items != null && schema.type === 'array'">
+        <ElmFieldAttribute
+          v-if="schema.items != null"
+          icon="qlementine-icons:items-list-16"
+          name="Items"
+          :content="String()"
+        />
+
         <div
           v-if="Array.isArray(schema.items)"
           :class="$style.nested"
@@ -167,6 +174,13 @@
       </template>
 
       <template v-if="schema.type === 'object'">
+        <ElmFieldAttribute
+          v-if="schema.properties != null"
+          icon="uil:setting"
+          name="Properties"
+          :content="String()"
+        />
+
         <div :class="$style.nested">
           <ElmJsonSchema
             v-for="key in Object.keys(schema.properties || {})"
