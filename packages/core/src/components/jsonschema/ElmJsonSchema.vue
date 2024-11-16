@@ -17,66 +17,101 @@
     <div :class="$style.attributes">
       <!-- enum -->
 
-      <div v-if="schema.enum != null">
-        <ElmFieldAttribute
-          icon="gg:list"
-          name="Enum"
-          :content="schema.enum.join(', ')"
-        />
-      </div>
+      <ElmFieldAttribute
+        v-if="schema.enum != null"
+        icon="gg:list"
+        name="Enum"
+        :content="schema.enum.join(', ')"
+      />
 
       <!-- const -->
 
-      <div v-if="schema.const != null">
-        <ElmFieldAttribute
-          icon="ic:baseline-gps-not-fixed"
-          name="const"
-          :content="String(schema.const)"
-        />
-      </div>
+      <ElmFieldAttribute
+        v-if="schema.const != null"
+        icon="ic:baseline-gps-not-fixed"
+        name="const"
+        :content="String(schema.const)"
+      />
 
       <!-- default -->
 
-      <div v-if="schema.default != null">
+      <ElmFieldAttribute
+        v-if="schema.default != null"
+        icon="material-symbols:circle-outline"
+        name="const"
+        :content="String(schema.default)"
+      />
+
+      <!-- 
+      
+      // # --------------------------------------------------------------------------------
+      //
+      // Attributes string
+      //
+      // # --------------------------------------------------------------------------------
+      
+      -->
+
+      <template v-if="schema.type === 'string'">
+        <!-- pattern -->
+
         <ElmFieldAttribute
-          icon="material-symbols:circle-outline"
-          name="const"
-          :content="String(schema.default)"
+          v-if="schema.pattern != null"
+          icon="mdi:regex"
+          name="pattern"
+          :content="String(schema.pattern)"
         />
-      </div>
+      </template>
+
+      <!-- 
+      
+      // # --------------------------------------------------------------------------------
+      //
+      // Attributes number | integer
+      //
+      // # --------------------------------------------------------------------------------
+      
+      -->
 
       <template v-if="schema.type === 'number' || schema.type === 'integer'">
         <!-- minimum -->
 
-        <div v-if="schema.minimum != null">
-          <ElmFieldAttribute
-            icon="mingcute:arrow-to-down-line"
-            name="minimum"
-            :content="String(schema.minimum)"
-          />
-        </div>
+        <ElmFieldAttribute
+          v-if="schema.minimum != null"
+          icon="mingcute:arrow-to-down-line"
+          name="minimum"
+          :content="String(schema.minimum)"
+        />
 
         <!-- maximum -->
 
-        <div v-if="schema.maximum != null">
-          <ElmFieldAttribute
-            icon="mingcute:arrow-to-up-line"
-            name="maximum"
-            :content="String(schema.maximum)"
-          />
-        </div>
+        <ElmFieldAttribute
+          v-if="schema.maximum != null"
+          icon="mingcute:arrow-to-up-line"
+          name="maximum"
+          :content="String(schema.maximum)"
+        />
       </template>
+
+      <!-- 
+      
+      // # --------------------------------------------------------------------------------
+      //
+      // Attributes object
+      //
+      // # --------------------------------------------------------------------------------
+      
+      -->
 
       <template v-if="schema.type === 'object'">
         <!-- required -->
 
-        <div v-if="schema.required != null">
-          <ElmFieldAttribute
-            icon="material-symbols:asterisk"
-            name="Required"
-            :content="String(schema.required.join(', '))"
-          />
-        </div>
+        <ElmFieldAttribute
+          v-if="schema.required != null"
+          icon="material-symbols:asterisk"
+          name="Required"
+          :content="String(schema.required.join(', '))"
+        />
       </template>
     </div>
 

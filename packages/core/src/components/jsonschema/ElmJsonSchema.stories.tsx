@@ -25,7 +25,8 @@ export const Primary: Story = {
         },
         name: {
           type: 'string',
-          description: 'The name of the user'
+          description: 'The name of the user',
+          pattern: '^[A-Za-z]+$'
         },
         group: {
           type: 'string',
