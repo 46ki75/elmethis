@@ -64,6 +64,7 @@ withDefaults(defineProps<ElmTagProps>(), {
   margin: 0;
   padding: 0.25rem;
   color: var(--font-color);
+  border-radius: 0.125rem 0 0 0.125rem;
 }
 
 .text {
