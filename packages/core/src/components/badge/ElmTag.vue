@@ -1,12 +1,26 @@
 <template>
-  <div :class="$style.tag" :style="{ backgroundColor: color }">
-    <div :class="$style.icon" v-html="icon"></div>
-    <div :class="$style.text">{{ text }}</div>
+  <div :class="$style.tag" :style="{ '--color': color }">
+    <Icon
+      icon="tabler:tag"
+      :class="$style.icon"
+      :style="{
+        backgroundColor: color,
+        '--font-color':
+          getLuminance(color) > 0.5
+            ? 'rgba(0,0,0,0.7)'
+            : 'rgba(255,255,255,0.7)'
+      }"
+    />
+    <div :class="$style.text">
+      <ElmInlineText :style="{ color: 'unset' }" :text="text" />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { icons } from 'feather-icons'
+import { Icon } from '@iconify/vue'
+import ElmInlineText from '../inline/ElmInlineText.vue'
+import { getLuminance } from 'polished'
 
 export interface ElmTagProps {
   /**
@@ -23,24 +37,20 @@ export interface ElmTagProps {
 withDefaults(defineProps<ElmTagProps>(), {
   color: 'transparent'
 })
-
-const icon = icons['tag'].toSvg({
-  width: 16,
-  height: 16
-})
 </script>
 
 <style module lang="scss">
 .tag {
-  display: flex;
+  display: inline-flex;
   width: min-content;
   flex-direction: row;
   flex-wrap: nowrap;
-  justify-content: center;
-  align-items: flex-end;
+  justify-content: flex-start;
+  align-items: center;
+  border-width: 1px;
+  border-style: solid;
   border-radius: 0.25rem;
-  gap: 0.25rem;
-  padding: 0.125rem 0.25rem;
+  border-color: var(--color);
 
   color: rgba(black, 0.7);
   [data-theme='dark'] & {
@@ -52,10 +62,12 @@ const icon = icons['tag'].toSvg({
   display: block;
   line-height: 1;
   margin: 0;
-  padding: 0;
+  padding: 0.25rem;
+  color: var(--font-color);
 }
 
 .text {
   white-space: nowrap;
+  padding-inline: 0.5rem;
 }
 </style>
