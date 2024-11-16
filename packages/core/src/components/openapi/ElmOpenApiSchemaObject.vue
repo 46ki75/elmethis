@@ -1,10 +1,37 @@
 <template>
-  <div v-if="schema.type === 'boolean'" :class="$style.normal">
+  <div :class="$style.normal">
     <div :class="$style['column-info']">
-      <span :class="$style.boolean">
-        <Icon icon="stash:data-boolean" :class="$style.icon" />
-        <ElmInlineText text="Boolean" />
+      <span
+        :class="{
+          [$style.string]: schema.type === 'string',
+          [$style.number]: schema.type === 'number',
+          [$style.boolean]: schema.type === 'boolean',
+          [$style.null]: schema.type === 'null',
+          [$style.array]: schema.type === 'array',
+          [$style.object]: schema.type === 'object'
+        }"
+      >
+        <Icon
+          :class="$style.icon"
+          :icon="
+            schema.type === 'boolean'
+              ? 'stash:data-boolean'
+              : schema.type === 'string'
+                ? 'icon-park-outline:text'
+                : schema.type === 'number'
+                  ? 'icon-park-outline:hashtag-key'
+                  : schema.type === 'null'
+                    ? 'mdi:null-off'
+                    : schema.type === 'array'
+                      ? 'ic:baseline-data-array'
+                      : schema.type === 'object'
+                        ? 'carbon:object'
+                        : ''
+          "
+        />
+        <ElmInlineText :text="String(schema.type)" />
       </span>
+
       <span v-if="name" :class="$style['column-name']">
         <ElmInlineText :text="name" />
       </span>
@@ -13,90 +40,12 @@
     <div>
       <ElmInlineText :text="schema.description ?? 'No enum provided.'" />
     </div>
-  </div>
 
-  <div v-else-if="schema.type === 'string'" :class="$style.normal">
-    <div :class="$style['column-info']">
-      <span :class="$style.string">
-        <Icon icon="icon-park-outline:text" :class="$style.icon" />
-        <ElmInlineText text="String" />
-      </span>
-      <span v-if="name" :class="$style['column-name']">
-        <ElmInlineText :text="name" />
-      </span>
-    </div>
-
-    <div>
-      <ElmInlineText :text="schema.description ?? 'No enum provided.'" />
-    </div>
-  </div>
-
-  <div v-else-if="schema.type === 'number'" :class="$style.normal">
-    <div :class="$style['column-info']">
-      <span :class="$style.number">
-        <Icon icon="icon-park-outline:hashtag-key" :class="$style.icon" />
-        <ElmInlineText text="Number" />
-      </span>
-      <span v-if="name" :class="$style['column-name']">
-        <ElmInlineText :text="name" />
-      </span>
-    </div>
-
-    <div>
-      <ElmInlineText :text="schema.description ?? 'No enum provided.'" />
-    </div>
-  </div>
-
-  <div v-else-if="schema.type === 'null'" :class="$style.normal">
-    <div :class="$style['column-info']">
-      <span :class="$style.null">
-        <Icon icon="mdi:null-off" :class="$style.icon" />
-        <ElmInlineText text="Null" />
-      </span>
-      <span v-if="name" :class="$style['column-name']">
-        <ElmInlineText :text="name" />
-      </span>
-    </div>
-
-    <div>
-      <ElmInlineText :text="schema.description ?? 'No enum provided.'" />
-    </div>
-  </div>
-
-  <div v-else-if="schema.type === 'array'" :class="$style.normal">
-    <div :class="$style['column-info']">
-      <span :class="$style.array">
-        <Icon icon="ic:baseline-data-array" :class="$style.icon" />
-        <ElmInlineText text="Array" />
-      </span>
-
-      <span v-if="name" :class="$style['column-name']">
-        <ElmInlineText :text="name" />
-      </span>
-    </div>
-
-    <div :class="$style.nested">
+    <div v-if="schema.type === 'array'" :class="$style.nested">
       <ElmOpenApiSchemaObject :schema="schema.items" />
     </div>
-  </div>
 
-  <div v-else-if="schema.type === 'object'" :class="$style.normal">
-    <div :class="$style['column-info']">
-      <span :class="$style.object">
-        <Icon icon="carbon:object" :class="$style.icon" />
-        <ElmInlineText text="Object" />
-      </span>
-
-      <span v-if="name" :class="$style['column-name']">
-        <ElmInlineText :text="name" />
-      </span>
-    </div>
-
-    <div>
-      <ElmInlineText :text="schema.description ?? 'No enum provided.'" />
-    </div>
-
-    <div :class="$style.nested">
+    <div v-if="schema.type === 'object'" :class="$style.nested">
       <ElmOpenApiSchemaObject
         v-for="key in Object.keys(schema.properties || {})"
         :name="key"
@@ -147,9 +96,11 @@ withDefaults(defineProps<ElmOpenApiProps>(), {})
 }
 
 .column-info {
+  width: min-content;
   display: flex;
   gap: 0.5rem;
   margin-block: 0.5rem;
+  border: solid 1px #a0d4b4;
 }
 
 .column-name {
