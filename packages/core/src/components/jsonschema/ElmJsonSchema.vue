@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.normal">
+  <div :class="$style.normal" v-if="!isBoolean(schema)">
     <ElmFieldType
       v-if="typeof schema.type === 'string'"
       :type="schema.type"
@@ -14,32 +14,47 @@
       <ElmInlineText :text="schema.description ?? 'No enum provided.'" />
     </div>
 
-    <div v-if="schema.type === 'array'" :class="$style.nested">
-      <ElmOpenApiSchemaObject :schema="schema.items" />
-    </div>
+    <template v-if="schema.items != null && schema.type === 'array'">
+      <div
+        v-if="Array.isArray(schema.items)"
+        :class="$style.nested"
+        v-for="item in schema.items"
+      >
+        <ElmJsonSchema :schema="item" />
+      </div>
+
+      <div v-else :class="$style.nested">
+        <ElmJsonSchema :schema="schema.items" />
+      </div>
+    </template>
 
     <div v-if="schema.type === 'object'" :class="$style.nested">
-      <ElmOpenApiSchemaObject
+      <ElmJsonSchema
         v-for="key in Object.keys(schema.properties || {})"
+        v-if="schema.properties != null"
         :name="key"
-        :schema="schema.properties![key]"
+        :schema="schema.properties[key]"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { type JSONSchema7 } from 'json-schema'
+import { type JSONSchema7Definition } from 'json-schema'
 
 import ElmInlineText from '../inline/ElmInlineText.vue'
 import ElmFieldType from './ElmFieldType.vue'
 
 export interface ElmJsonSchemaProps {
   name?: string
-  schema: JSONSchema7
+  schema: JSONSchema7Definition
 }
 
 withDefaults(defineProps<ElmJsonSchemaProps>(), {})
+
+function isBoolean(value: any): value is boolean {
+  return typeof value === 'boolean'
+}
 </script>
 
 <style module lang="scss">
