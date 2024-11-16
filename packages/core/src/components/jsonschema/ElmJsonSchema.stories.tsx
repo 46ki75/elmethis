@@ -30,7 +30,8 @@ export const Primary: Story = {
         group: {
           type: 'string',
           description: 'The group of the user',
-          enum: ['admin', 'user']
+          enum: ['admin', 'user'],
+          default: 'user'
         },
         age: {
           type: 'number',

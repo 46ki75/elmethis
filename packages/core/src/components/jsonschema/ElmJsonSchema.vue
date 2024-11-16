@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.normal" v-if="!isBoolean(schema)">
+  <div :class="$style.wrapper" v-if="!isBoolean(schema)">
     <ElmFieldType
       v-if="typeof schema.type === 'string'"
       :type="schema.type"
@@ -10,7 +10,7 @@
       <ElmFieldType v-for="type in schema.type" :type="type" :name="name" />
     </template>
 
-    <div>
+    <div :class="$style.description">
       <ElmInlineText :text="schema.description ?? 'No description provided.'" />
     </div>
 
@@ -31,6 +31,16 @@
         icon="ic:baseline-gps-not-fixed"
         name="const"
         :content="String(schema.const)"
+      />
+    </div>
+
+    <!-- default -->
+
+    <div v-if="schema.default != null">
+      <ElmFieldAttribute
+        icon="material-symbols:circle-outline"
+        name="const"
+        :content="String(schema.default)"
       />
     </div>
 
@@ -88,7 +98,7 @@ function isBoolean(value: any): value is boolean {
 </script>
 
 <style module lang="scss">
-.normal {
+.wrapper {
   box-sizing: border-box;
   padding-left: 0.5rem;
 
@@ -100,6 +110,10 @@ function isBoolean(value: any): value is boolean {
   [data-theme='dark'] & {
     border-color: rgba(white, 0.125);
   }
+}
+
+.description {
+  padding-block-end: 0.5rem;
 }
 
 .nested {

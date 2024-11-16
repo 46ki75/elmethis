@@ -23,7 +23,7 @@ withDefaults(defineProps<ElmFieldAttributeProps>(), {})
 
 <style module lang="scss">
 .wrapper {
-  margin-block: 0.5rem;
+  margin-block: 0.25rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
