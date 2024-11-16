@@ -1,4 +1,5 @@
 // badge
+import ElmBadge, { ElmBadgeProps } from './components/badge/ElmBadge.vue'
 import ElmTag, { ElmTagProps } from './components/badge/ElmTag.vue'
 
 // code
@@ -207,6 +208,7 @@ import ElmListItem, {
 import { useElmethisTheme } from './hooks/useElmethisTheme'
 
 export {
+  ElmBadge,
   ElmTag,
   ElmCodeBlock,
   ElmPrismHighlighter,
@@ -273,6 +275,7 @@ export {
 }
 
 export type {
+  ElmBadgeProps,
   ElmTagProps,
   ElmCodeBlockProps,
   ElmPrismHighlighterProps,
