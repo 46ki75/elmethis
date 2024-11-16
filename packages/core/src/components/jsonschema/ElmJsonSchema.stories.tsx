@@ -46,3 +46,23 @@ export const Primary: Story = {
     }
   }
 }
+
+export const Union: Story = {
+  args: {
+    name: 'John Doe',
+    schema: {
+      type: ['object', 'array'],
+      description: 'A user object',
+      properties: {
+        name: {
+          type: 'string',
+          description: 'The name of the user'
+        },
+        age: {
+          type: ['number', 'string'],
+          description: 'The age of the user'
+        }
+      }
+    }
+  }
+}
