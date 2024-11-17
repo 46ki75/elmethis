@@ -153,42 +153,32 @@
 
     <div>
       <template v-if="schema.items != null && schema.type === 'array'">
-        <ElmFieldAttribute
-          v-if="schema.items != null"
-          icon="qlementine-icons:items-list-16"
-          name="Items"
-          :content="String()"
-        />
+        <ElmChildContainer icon="qlementine-icons:items-list-16" text="Items">
+          <div
+            v-if="Array.isArray(schema.items)"
+            :class="$style.nested"
+            v-for="item in schema.items"
+          >
+            <ElmJsonSchema :schema="item" />
+          </div>
 
-        <div
-          v-if="Array.isArray(schema.items)"
-          :class="$style.nested"
-          v-for="item in schema.items"
-        >
-          <ElmJsonSchema :schema="item" />
-        </div>
-
-        <div v-else :class="$style.nested">
-          <ElmJsonSchema :schema="schema.items" />
-        </div>
+          <div v-else :class="$style.nested">
+            <ElmJsonSchema :schema="schema.items" />
+          </div>
+        </ElmChildContainer>
       </template>
 
       <template v-if="schema.type === 'object'">
-        <ElmFieldAttribute
-          v-if="schema.properties != null"
-          icon="uil:setting"
-          name="Properties"
-          :content="String()"
-        />
-
-        <div :class="$style.nested">
-          <ElmJsonSchema
-            v-for="key in Object.keys(schema.properties || {})"
-            v-if="schema.properties != null"
-            :name="key"
-            :schema="schema.properties[key]"
-          />
-        </div>
+        <ElmChildContainer icon="uil:setting" text="Properties">
+          <div :class="$style.nested">
+            <ElmJsonSchema
+              v-for="key in Object.keys(schema.properties || {})"
+              v-if="schema.properties != null"
+              :name="key"
+              :schema="schema.properties[key]"
+            />
+          </div>
+        </ElmChildContainer>
       </template>
     </div>
   </div>
@@ -200,6 +190,7 @@ import { type JSONSchema7Definition } from 'json-schema'
 import ElmInlineText from '../inline/ElmInlineText.vue'
 import ElmFieldType from './ElmFieldType.vue'
 import ElmFieldAttribute from './ElmFieldAttribute.vue'
+import ElmChildContainer from './ElmChildContainer.vue'
 
 export interface ElmJsonSchemaProps {
   name?: string
