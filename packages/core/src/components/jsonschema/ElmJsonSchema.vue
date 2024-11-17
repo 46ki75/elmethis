@@ -52,7 +52,9 @@
       
       -->
 
-      <template v-if="schema.type === 'string'">
+      <template
+        v-if="schema.type === 'string' || schema.type?.includes('string')"
+      >
         <!-- minLength -->
 
         <ElmFieldAttribute
@@ -82,7 +84,14 @@
       
       -->
 
-      <template v-if="schema.type === 'number' || schema.type === 'integer'">
+      <template
+        v-if="
+          schema.type === 'number' ||
+          schema.type === 'integer' ||
+          schema.type?.includes('number') ||
+          schema.type?.includes('integer')
+        "
+      >
         <!-- multipleOf -->
 
         <ElmFieldAttribute
@@ -139,7 +148,9 @@
       
       -->
 
-      <template v-if="schema.type === 'object'">
+      <template
+        v-if="schema.type === 'object' || schema.type?.includes('object')"
+      >
         <!-- required -->
 
         <ElmFieldAttribute
@@ -182,7 +193,10 @@
 
     <div>
       <ElmChildContainer
-        v-if="schema.items != null && schema.type === 'array'"
+        v-if="
+          schema.items != null &&
+          (schema.type === 'array' || schema.type?.includes('array'))
+        "
         icon="qlementine-icons:items-list-16"
         text="Items"
       >
@@ -197,7 +211,7 @@
       </ElmChildContainer>
 
       <ElmChildContainer
-        v-if="schema.type === 'object'"
+        v-if="schema.type === 'object' || schema.type?.includes('object')"
         icon="tabler:tag"
         text="Properties"
       >
@@ -211,7 +225,7 @@
 
       <ElmChildContainer
         v-if="
-          schema.type === 'object' &&
+          (schema.type === 'object' || schema.type?.includes('object')) &&
           schema.additionalProperties != null &&
           !isBoolean(schema.additionalProperties)
         "
