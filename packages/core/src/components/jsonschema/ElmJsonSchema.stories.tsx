@@ -59,7 +59,20 @@ export const Primary: Story = {
           description: 'The tags of the user'
         }
       },
-      required: ['name', 'age']
+      required: ['name', 'age'],
+      additionalProperties: {
+        type: 'object',
+        properties: {
+          name: {
+            type: 'string',
+            description: 'The name of the user'
+          },
+          age: {
+            type: 'integer',
+            description: 'The age of the user'
+          }
+        }
+      }
     }
   }
 }

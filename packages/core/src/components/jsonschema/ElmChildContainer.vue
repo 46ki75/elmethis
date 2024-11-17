@@ -46,6 +46,6 @@ withDefaults(defineProps<ElmChildContainerProps>(), {})
 }
 
 .container {
-  padding: 0.25rem;
+  padding: 0 0.75rem;
 }
 </style>

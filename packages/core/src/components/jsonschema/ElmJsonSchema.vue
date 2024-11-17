@@ -148,38 +148,78 @@
           name="Required"
           :content="String(schema.required.join(', '))"
         />
+
+        <!-- additionalProperties -->
+
+        <ElmFieldAttribute
+          v-if="schema.additionalProperties == null"
+          icon="tabler:tag-plus"
+          name="AdditionalProperties"
+          content="Allow (Implicit)"
+        />
+
+        <ElmFieldAttribute
+          v-else-if="
+            typeof schema.additionalProperties === 'boolean' &&
+            schema.additionalProperties === true
+          "
+          icon="tabler:tag-plus"
+          name="AdditionalProperties"
+          content="Allow"
+        />
+
+        <ElmFieldAttribute
+          v-else-if="
+            typeof schema.additionalProperties === 'boolean' &&
+            schema.additionalProperties === false
+          "
+          icon="tabler:tag-plus"
+          name="AdditionalProperties"
+          content="Disallow"
+        />
       </template>
     </div>
 
     <div>
-      <template v-if="schema.items != null && schema.type === 'array'">
-        <ElmChildContainer icon="qlementine-icons:items-list-16" text="Items">
-          <div
-            v-if="Array.isArray(schema.items)"
-            :class="$style.nested"
-            v-for="item in schema.items"
-          >
-            <ElmJsonSchema :schema="item" />
-          </div>
+      <ElmChildContainer
+        v-if="schema.items != null && schema.type === 'array'"
+        icon="qlementine-icons:items-list-16"
+        text="Items"
+      >
+        <ElmJsonSchema
+          v-if="Array.isArray(schema.items)"
+          :class="$style.nested"
+          v-for="item in schema.items"
+          :schema="item"
+        />
 
-          <div v-else :class="$style.nested">
-            <ElmJsonSchema :schema="schema.items" />
-          </div>
-        </ElmChildContainer>
-      </template>
+        <ElmJsonSchema v-else :schema="schema.items" />
+      </ElmChildContainer>
 
-      <template v-if="schema.type === 'object'">
-        <ElmChildContainer icon="uil:setting" text="Properties">
-          <div :class="$style.nested">
-            <ElmJsonSchema
-              v-for="key in Object.keys(schema.properties || {})"
-              v-if="schema.properties != null"
-              :name="key"
-              :schema="schema.properties[key]"
-            />
-          </div>
-        </ElmChildContainer>
-      </template>
+      <ElmChildContainer
+        v-if="schema.type === 'object'"
+        icon="tabler:tag"
+        text="Properties"
+      >
+        <ElmJsonSchema
+          v-for="key in Object.keys(schema.properties || {})"
+          v-if="schema.properties != null"
+          :name="key"
+          :schema="schema.properties[key]"
+        />
+      </ElmChildContainer>
+
+      <ElmChildContainer
+        v-if="
+          schema.type === 'object' &&
+          schema.additionalProperties != null &&
+          !isBoolean(schema.additionalProperties)
+        "
+        icon="tabler:tag-plus"
+        text="AdditionalProperties"
+      >
+        <ElmJsonSchema :schema="schema.additionalProperties" />
+      </ElmChildContainer>
     </div>
   </div>
 </template>
@@ -235,9 +275,5 @@ function isBoolean(value: any): value is boolean {
   flex-direction: row;
   flex-wrap: wrap;
   gap: 1rem;
-}
-
-.nested {
-  padding-left: 1.5rem;
 }
 </style>
