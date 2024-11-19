@@ -25,8 +25,8 @@ importers:
         specifier: ^3.2.2
         version: 3.2.2(react@18.3.1)(storybook@8.4.4(prettier@3.3.3))
       '@heroicons/vue':
-        specifier: ^2.1.5
-        version: 2.1.5(vue@3.5.13(typescript@5.6.3))
+        specifier: ^2.2.0
+        version: 2.2.0(vue@3.5.13(typescript@5.6.3))
       '@iconify/vue':
         specifier: ^4.1.2
         version: 4.1.2(vue@3.5.13(typescript@5.6.3))
@@ -1004,8 +1004,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@heroicons/vue@2.1.5':
-    resolution: {integrity: sha512-IpqR72sFqFs55kyKfFS7tN+Ww6odFNeH/7UxycIOrlVYfj4WUGAdzQtLBnJspucSeqWFQsKM0g0YrgU655BEfA==}
+  '@heroicons/vue@2.2.0':
+    resolution: {integrity: sha512-G3dbSxoeEKqbi/DFalhRxJU4mTXJn7GwZ7ae8NuEQzd1bqdd0jAbdaBZlHPcvPD2xI1iGzNVB4k20Un2AguYPw==}
     peerDependencies:
       vue: '>= 3'
 
@@ -4999,7 +4999,7 @@ snapshots:
   '@esbuild/win32-x64@0.24.0':
     optional: true
 
-  '@heroicons/vue@2.1.5(vue@3.5.13(typescript@5.6.3))':
+  '@heroicons/vue@2.2.0(vue@3.5.13(typescript@5.6.3))':
     dependencies:
       vue: 3.5.13(typescript@5.6.3)
 
