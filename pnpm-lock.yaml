@@ -37,8 +37,8 @@ importers:
         specifier: ^8.4.4
         version: 8.4.4(@types/react@18.3.12)(storybook@8.4.5(prettier@3.3.3))
       '@storybook/addon-interactions':
-        specifier: ^8.4.4
-        version: 8.4.4(storybook@8.4.5(prettier@3.3.3))
+        specifier: ^8.4.5
+        version: 8.4.5(storybook@8.4.5(prettier@3.3.3))
       '@storybook/addon-links':
         specifier: ^8.4.4
         version: 8.4.4(react@18.3.1)(storybook@8.4.5(prettier@3.3.3))
@@ -1519,10 +1519,10 @@ packages:
     peerDependencies:
       storybook: ^8.4.4
 
-  '@storybook/addon-interactions@8.4.4':
-    resolution: {integrity: sha512-izqcc6tY0BiKW7DYrEnoXUEH9FYDPWNfQnqqE0nVBv3BS2DoNmm8M9SB8fZx7pPfw53cMJBGt3vrlY0Wtxy1+Q==}
+  '@storybook/addon-interactions@8.4.5':
+    resolution: {integrity: sha512-s6R8XVD8LTp+LQTDbhtDjDLE6S44I7FtMLxPdMNwN9VEJjBk01NONLDuGDpNq5o/0bnybA3rMHk9+3afsgzidQ==}
     peerDependencies:
-      storybook: ^8.4.4
+      storybook: ^8.4.5
 
   '@storybook/addon-links@8.4.4':
     resolution: {integrity: sha512-hqTv06fPq9k5GUZD8JR49ANw5sBg8EYAsuCNoSd9OwVSBO/3y53HrMA0NCILUK8hnupPvtBuKXXoHmHes9R+1g==}
@@ -1612,6 +1612,11 @@ packages:
     peerDependencies:
       storybook: ^8.4.4
 
+  '@storybook/instrumenter@8.4.5':
+    resolution: {integrity: sha512-8qM35FkueuRpJr0zA6ENvhQICbo+iKL1ln450DwV1kKJtc41KdbA3CuCvtZ/FnoPsFnwdtPjhhICFtRt8LRTSg==}
+    peerDependencies:
+      storybook: ^8.4.5
+
   '@storybook/manager-api@8.4.4':
     resolution: {integrity: sha512-rmNPcbEyzakEHoaecUbhkW7WWOkyZ0z7ywH4d5/s0ZuQS57Px2N+ZLVgRJwYK+YNHiJYqDf1BTln9YJ/Mt1L6Q==}
     peerDependencies:
@@ -1633,6 +1638,11 @@ packages:
     resolution: {integrity: sha512-tmJd+lxl3MC0Xdu1KW/69V8tibv98OvdopxGqfVR0x5dkRHM3sFK/tv1ZJAUeronlvRyhGySOu1tHUrMjcNqyA==}
     peerDependencies:
       storybook: ^8.4.4
+
+  '@storybook/test@8.4.5':
+    resolution: {integrity: sha512-mHsRc6m60nfcEBsjvUkKz+Jnz0or4WH5jmJ1VL2pGKO4VzESCPqAwDnwDqP2YyeSQ0b/MAKUT5kdoLE2RE2eVw==}
+    peerDependencies:
+      storybook: ^8.4.5
 
   '@storybook/theming@8.4.4':
     resolution: {integrity: sha512-iq4yt3Fx35ZV5owNC//E6G+QPV19xHHVN2Ugi3p7KOSFK3chuXX9mxZ1rfir+t+U30a5EPOEnlsY3/1LXn7aTw==}
@@ -5484,11 +5494,11 @@ snapshots:
       '@storybook/global': 5.0.0
       storybook: 8.4.5(prettier@3.3.3)
 
-  '@storybook/addon-interactions@8.4.4(storybook@8.4.5(prettier@3.3.3))':
+  '@storybook/addon-interactions@8.4.5(storybook@8.4.5(prettier@3.3.3))':
     dependencies:
       '@storybook/global': 5.0.0
-      '@storybook/instrumenter': 8.4.4(storybook@8.4.5(prettier@3.3.3))
-      '@storybook/test': 8.4.4(storybook@8.4.5(prettier@3.3.3))
+      '@storybook/instrumenter': 8.4.5(storybook@8.4.5(prettier@3.3.3))
+      '@storybook/test': 8.4.5(storybook@8.4.5(prettier@3.3.3))
       polished: 4.3.1
       storybook: 8.4.5(prettier@3.3.3)
       ts-dedent: 2.2.0
@@ -5598,6 +5608,12 @@ snapshots:
       '@vitest/utils': 2.1.5
       storybook: 8.4.5(prettier@3.3.3)
 
+  '@storybook/instrumenter@8.4.5(storybook@8.4.5(prettier@3.3.3))':
+    dependencies:
+      '@storybook/global': 5.0.0
+      '@vitest/utils': 2.1.5
+      storybook: 8.4.5(prettier@3.3.3)
+
   '@storybook/manager-api@8.4.4(storybook@8.4.5(prettier@3.3.3))':
     dependencies:
       storybook: 8.4.5(prettier@3.3.3)
@@ -5617,6 +5633,18 @@ snapshots:
       '@storybook/csf': 0.1.11
       '@storybook/global': 5.0.0
       '@storybook/instrumenter': 8.4.4(storybook@8.4.5(prettier@3.3.3))
+      '@testing-library/dom': 10.4.0
+      '@testing-library/jest-dom': 6.5.0
+      '@testing-library/user-event': 14.5.2(@testing-library/dom@10.4.0)
+      '@vitest/expect': 2.0.5
+      '@vitest/spy': 2.0.5
+      storybook: 8.4.5(prettier@3.3.3)
+
+  '@storybook/test@8.4.5(storybook@8.4.5(prettier@3.3.3))':
+    dependencies:
+      '@storybook/csf': 0.1.11
+      '@storybook/global': 5.0.0
+      '@storybook/instrumenter': 8.4.5(storybook@8.4.5(prettier@3.3.3))
       '@testing-library/dom': 10.4.0
       '@testing-library/jest-dom': 6.5.0
       '@testing-library/user-event': 14.5.2(@testing-library/dom@10.4.0)
