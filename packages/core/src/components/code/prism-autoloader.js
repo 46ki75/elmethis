@@ -1,4 +1,3 @@
-import Prism from 'prismjs'
 ;(function () {
   if (typeof Prism === 'undefined' || typeof document === 'undefined') {
     return
@@ -115,7 +114,7 @@ import Prism from 'prismjs'
     xquery: 'markup'
   } /*]*/
 
-  var lang_aliases: { [key: string]: string } = /*aliases_placeholder[*/ {
+  var lang_aliases = /*aliases_placeholder[*/ {
     html: 'markup',
     xml: 'markup',
     svg: 'markup',
@@ -237,7 +236,7 @@ import Prism from 'prismjs'
   var languages_path =
     'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/'
 
-  var script = (Prism.util as any).currentScript()
+  var script = Prism.util.currentScript()
   if (script) {
     var autoloaderFile =
       /\bplugins\/autoloader\/prism-autoloader\.(?:min\.)?js(?:\?[^\r\n/]*)?$/i
@@ -272,11 +271,7 @@ import Prism from 'prismjs'
    * @param {() => void} [success]
    * @param {() => void} [error]
    */
-  function addScript(
-    src: string,
-    success: { (): void; (): any },
-    error: { (): void; (): any }
-  ) {
+  function addScript(src, success, error) {
     var s = document.createElement('script')
     s.src = src
     s.async = true
@@ -297,7 +292,7 @@ import Prism from 'prismjs'
    * @param {Element} element
    * @returns {string[]}
    */
-  function getDependencies(element: Element) {
+  function getDependencies(element) {
     var deps = (element.getAttribute('data-dependencies') || '').trim()
     if (!deps) {
       var parent = element.parentElement
@@ -314,21 +309,21 @@ import Prism from 'prismjs'
    * @param {string} lang
    * @returns {boolean}
    */
-  function isLoaded(lang: string | string[]) {
+  function isLoaded(lang) {
     if (lang.indexOf('!') >= 0) {
       // forced reload
       return false
     }
 
-    lang = typeof lang === 'string' ? lang_aliases[lang] || lang : lang // resolve alias
+    lang = lang_aliases[lang] || lang // resolve alias
 
-    if ((lang as any) in Prism.languages) {
+    if (lang in Prism.languages) {
       // the given language is already loaded
       return true
     }
 
     // this will catch extensions like CSS extras that don't add a grammar to Prism.languages
-    var data = (lang_data as any)[lang as any]
+    var data = lang_data[lang]
     return data && !data.error && data.loading === false
   }
 
@@ -338,7 +333,7 @@ import Prism from 'prismjs'
    * @param {string} lang
    * @returns {string}
    */
-  function getLanguagePath(lang: string) {
+  function getLanguagePath(lang) {
     return (
       config.languages_path +
       'prism-' +
@@ -355,11 +350,7 @@ import Prism from 'prismjs'
    * @param {(languages: string[]) => void} [success]
    * @param {(language: string) => void} [error] This callback will be invoked on the first language to fail.
    */
-  function loadLanguages(
-    languages: string[],
-    success: { (): void; (): void; (arg0: any): any },
-    error: ((arg0: string) => any) | undefined
-  ) {
+  function loadLanguages(languages, success, error) {
     if (typeof languages === 'string') {
       languages = [languages]
     }
@@ -385,7 +376,7 @@ import Prism from 'prismjs'
       }
     }
 
-    languages.forEach(function (lang: string) {
+    languages.forEach(function (lang) {
       loadLanguage(lang, successCallback, function () {
         if (failed) {
           return
@@ -403,16 +394,16 @@ import Prism from 'prismjs'
    * @param {() => void} [success]
    * @param {() => void} [error]
    */
-  function loadLanguage(lang: any, success: any, error: any) {
+  function loadLanguage(lang, success, error) {
     var force = lang.indexOf('!') >= 0
 
     lang = lang.replace('!', '')
     lang = lang_aliases[lang] || lang
 
     function load() {
-      var data = (lang_data as any)[lang as any]
+      var data = lang_data[lang]
       if (!data) {
-        data = (lang_data as any)[lang as any] = {
+        data = lang_data[lang] = {
           callbacks: []
         }
       }
@@ -447,7 +438,7 @@ import Prism from 'prismjs'
       }
     }
 
-    var dependencies = (lang_dependencies as any)[lang]
+    var dependencies = lang_dependencies[lang]
     if (dependencies && dependencies.length) {
       loadLanguages(dependencies, load, error)
     } else {
@@ -461,9 +452,9 @@ import Prism from 'prismjs'
    * @param {string} lang
    * @param {"success" | "error"} type
    */
-  function languageCallback(lang: any, type: string) {
-    if ((lang_data as any)[lang as any]) {
-      var callbacks = (lang_data as any)[lang as any].callbacks
+  function languageCallback(lang, type) {
+    if (lang_data[lang]) {
+      var callbacks = lang_data[lang].callbacks
       for (var i = 0, l = callbacks.length; i < l; i++) {
         var callback = callbacks[i][type]
         if (callback) {
@@ -492,15 +483,9 @@ import Prism from 'prismjs'
 
     if (!deps.every(isLoaded)) {
       // the language or some dependencies aren't loaded
-      loadLanguages(
-        deps,
-        function () {
-          Prism.highlightElement(element)
-        },
-        function (lang) {
-          console.error('Failed to load language:', lang)
-        }
-      )
+      loadLanguages(deps, function () {
+        Prism.highlightElement(element)
+      })
     }
   })
 })()
