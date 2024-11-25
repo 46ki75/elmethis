@@ -1,53 +1,50 @@
 <template>
-  <a
-    :class="$style.bookmark"
-    :href="url"
-    :target="openInNewTab ? '_blank' : undefined"
-    rel="noopener noreferrer"
-    :style="{
-      '--flex-direction': isHorizontal ? 'row' : 'column',
-      '--container-height': isHorizontal ? '150px' : 'auto',
-      '--image-max-width': isHorizontal ? '32%' : '100%',
-      '--margin-block': margin
-    }"
-    @click="handleClick"
-  >
-    <div :class="$style.image">
-      <ElmImage :src="image" />
-    </div>
-
-    <div :class="$style.typography">
-      <div :class="$style.title"><ElmInlineText :text="title" bold /></div>
-
-      <div>
-        <ElmInlineText
-          :text="
-            description.length > 200
-              ? description.slice(0, 200) + '...'
-              : description
-          "
-          size=".8rem"
-          :style="{ opacity: 0.6 }"
-        />
+  <div :class="$style.parent">
+    <a
+      :class="$style.bookmark"
+      :href="url"
+      :target="openInNewTab ? '_blank' : undefined"
+      rel="noopener noreferrer"
+      :style="{ '--margin-block': margin }"
+      @click="handleClick"
+    >
+      <div :class="$style.image">
+        <ElmImage :src="image" />
       </div>
 
-      <div :class="$style.date" v-if="createdAt != null || updatedAt != null">
-        <template v-if="createdAt != null">
-          <CalendarDaysIcon :class="$style.icon" />
-          <ElmInlineText :text="`${createdAt}`" size=".8rem" />
-        </template>
+      <div :class="$style.typography">
+        <div :class="$style.title"><ElmInlineText :text="title" bold /></div>
 
-        <template v-if="updatedAt != null">
-          <ArrowPathIcon :class="$style.icon" />
-          <ElmInlineText :text="`${updatedAt}`" size=".8rem" />
-        </template>
-      </div>
+        <div>
+          <ElmInlineText
+            :text="
+              description.length > 200
+                ? description.slice(0, 200) + '...'
+                : description
+            "
+            size=".8rem"
+            :style="{ opacity: 0.6 }"
+          />
+        </div>
 
-      <div v-if="!hideUrl && url != null" :class="$style.link">
-        <div><ElmInlineLink :text="url" href="#" size=".8rem" /></div>
+        <div :class="$style.date" v-if="createdAt != null || updatedAt != null">
+          <template v-if="createdAt != null">
+            <CalendarDaysIcon :class="$style.icon" />
+            <ElmInlineText :text="`${createdAt}`" size=".8rem" />
+          </template>
+
+          <template v-if="updatedAt != null">
+            <ArrowPathIcon :class="$style.icon" />
+            <ElmInlineText :text="`${updatedAt}`" size=".8rem" />
+          </template>
+        </div>
+
+        <div v-if="!hideUrl && url != null" :class="$style.link">
+          <div><ElmInlineLink :text="url" href="#" size=".8rem" /></div>
+        </div>
       </div>
-    </div>
-  </a>
+    </a>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -58,11 +55,6 @@ import ElmImage from '../media/ElmImage.vue'
 import type { Property } from 'csstype'
 
 export interface ElmBookmarkProps {
-  /**
-   * Whether to display the bookmark horizontally.
-   */
-  isHorizontal?: boolean
-
   /**
    * Whether to hide the URL.
    */
@@ -133,12 +125,14 @@ function handleClick(event: MouseEvent) {
 </script>
 
 <style module lang="scss">
+.parent {
+  container-type: inline-size;
+}
+
 .bookmark {
   all: unset;
   margin-block: var(--margin-block);
-  height: var(--container-height);
   display: flex;
-  flex-direction: var(--flex-direction);
   box-shadow: 0 0 0.125rem rgba(black, 0.15);
   cursor: pointer;
   transition:
@@ -148,6 +142,16 @@ function handleClick(event: MouseEvent) {
 
   [data-theme='dark'] & {
     background-color: rgba(black, 0.2);
+  }
+
+  flex-direction: row;
+  height: 150px;
+
+  @container (max-width: 700px) {
+    & {
+      flex-direction: column;
+      height: auto;
+    }
   }
 
   &:hover {
@@ -162,7 +166,6 @@ function handleClick(event: MouseEvent) {
 
   .image {
     overflow: hidden;
-    max-width: var(--image-max-width);
     height: 100%;
     opacity: 0.9;
     display: flex;
@@ -171,6 +174,13 @@ function handleClick(event: MouseEvent) {
     object-fit: cover;
     object-position: center;
     aspect-ratio: 2 / 1;
+    max-width: 32%;
+
+    @container (max-width: 700px) {
+      & {
+        max-width: 100%;
+      }
+    }
   }
 
   .typography {
