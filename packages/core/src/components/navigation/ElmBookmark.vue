@@ -18,8 +18,8 @@
         <div>
           <ElmInlineText
             :text="
-              description.length > 200
-                ? description.slice(0, 200) + '...'
+              description.length > 100
+                ? description.slice(0, 100) + '...'
                 : description
             "
             size=".8rem"
@@ -145,7 +145,7 @@ function handleClick(event: MouseEvent) {
   }
 
   flex-direction: row;
-  height: 150px;
+  height: 120px;
 
   @container (max-width: 700px) {
     & {
@@ -174,23 +174,27 @@ function handleClick(event: MouseEvent) {
     object-fit: cover;
     object-position: center;
     aspect-ratio: 2 / 1;
-    max-width: 32%;
+    min-width: min-content;
+    max-width: 35%;
 
     @container (max-width: 700px) {
       & {
-        max-width: 100%;
+        min-width: unset;
+        max-width: unset;
+        width: 100%;
       }
     }
   }
 
   .typography {
+    overflow: hidden;
     box-sizing: border-box;
     padding: 0.5rem;
     display: flex;
     flex: 1;
     flex-direction: column;
     justify-content: space-between;
-    gap: 0.5rem;
+    gap: 0.25rem;
 
     .title {
       display: inline;
@@ -204,6 +208,8 @@ function handleClick(event: MouseEvent) {
       width: 100%;
       display: flex;
       justify-content: flex-end;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
 
     .date {
@@ -211,6 +217,8 @@ function handleClick(event: MouseEvent) {
       display: flex;
       justify-content: flex-end;
       gap: 0.5rem;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
   }
 
