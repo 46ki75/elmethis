@@ -141,12 +141,6 @@ import ElmTableOfContents, {
   ElmTableOfContentsProps
 } from './components/navigation/ElmTableOfContents.vue'
 
-// notion
-import ElmNotion, { ElmNotionProps } from './components/notion/ElmNotion.vue'
-import ElmNotionRichText, {
-  ElmNotionRichTextProps
-} from './components/notion/ElmNotionRichText.vue'
-
 // others
 import ElmColorSample, {
   ElmColorSampleProps
@@ -253,8 +247,6 @@ export {
   ElmBreadcrumb,
   ElmPagetop,
   ElmTableOfContents,
-  ElmNotion,
-  ElmNotionRichText,
   ElmColorSample,
   ElmColorTable,
   ElmJsonRenderer,
@@ -320,8 +312,6 @@ export type {
   ElmBreadcrumbProps,
   ElmPagetopProps,
   ElmTableOfContentsProps,
-  ElmNotionProps,
-  ElmNotionRichTextProps,
   ElmJsonRendererProps,
   ElmColorSampleProps,
   ElmColorTableProps,
