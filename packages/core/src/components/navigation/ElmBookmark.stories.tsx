@@ -39,7 +39,6 @@ export const WithoutDate: Story = {
 
 export const Card: Story = {
   args: {
-    isHorizontal: false,
     title:
       'OGP Checker - Check images for X(Twitter) and Facebook sharing | Web ToolBox',
     description:
@@ -66,8 +65,7 @@ export const SquareCard: Story = {
     url: 'https://pnpm.io/',
     title: '	Fast, disk space efficient package manager | pnpm',
     description: 'Fast, disk space efficient package manager',
-    image: 'https://pnpm.io/img/ogimage.png',
-    isHorizontal: false
+    image: 'https://pnpm.io/img/ogimage.png'
   }
 }
 
@@ -76,7 +74,6 @@ export const InvalidImage: Story = {
     url: 'https://pnpm.io/',
     title: '	Fast, disk space efficient package manager | pnpm',
     description: 'Fast, disk space efficient package manager',
-    image: 'https://pnpm.io/',
-    isHorizontal: false
+    image: 'https://pnpm.io/'
   }
 }
