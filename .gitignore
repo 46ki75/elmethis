@@ -30,3 +30,7 @@ storybook-static/
 .env
 
 out/
+
+# Rust
+
+target/

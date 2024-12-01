@@ -15,6 +15,10 @@
     {
       "path": "./packages/nitro-app",
       "name": "nitro-app"
+    },
+    {
+      "path": "./crates/elmethis-notion",
+      "name": "elmethis-notion (Rust)"
     }
   ]
 }
