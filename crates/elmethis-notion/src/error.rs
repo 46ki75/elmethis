@@ -5,4 +5,7 @@ pub enum Error {
 
     #[error("reqwest error: {0}")]
     Reqwest(#[from] reqwest::Error),
+
+    #[error("scraper error: {0}")]
+    Scraper(#[from] scraper::error::SelectorErrorKind<'static>),
 }

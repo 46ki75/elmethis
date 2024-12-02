@@ -67,8 +67,7 @@ impl Client {
 
                     let document = scraper::Html::parse_document(&response);
 
-                    let og_title_selector =
-                        scraper::Selector::parse("meta[property='og:title']").unwrap();
+                    let og_title_selector = scraper::Selector::parse("meta[property='og:title']")?;
 
                     if let Some(element) = document.select(&og_title_selector).next() {
                         if let Some(content) = element.value().attr("content") {
@@ -77,7 +76,7 @@ impl Client {
                     }
 
                     let og_description_selector =
-                        scraper::Selector::parse("meta[property='og:description']").unwrap();
+                        scraper::Selector::parse("meta[property='og:description']")?;
 
                     if let Some(element) = document.select(&og_description_selector).next() {
                         if let Some(content) = element.value().attr("content") {
@@ -85,8 +84,7 @@ impl Client {
                         }
                     }
 
-                    let og_image_selector =
-                        scraper::Selector::parse("meta[property='og:image']").unwrap();
+                    let og_image_selector = scraper::Selector::parse("meta[property='og:image']")?;
 
                     if let Some(element) = document.select(&og_image_selector).next() {
                         if let Some(content) = element.value().attr("content") {
