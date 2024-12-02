@@ -5,7 +5,7 @@ async fn main() {
     let secret = std::env::var("NOTION_TOKEN").expect("No Token Provided.");
     let page_id = std::env::var("NOTION_PAGE_ID").expect("No NOTION_PAGE_ID Provided.");
 
-    let clinet = elmethis_notion::client::Client::new(secret);
+    let mut clinet = elmethis_notion::client::Client::new(secret);
 
     let block = clinet.convert_block(&page_id).await.unwrap();
 
