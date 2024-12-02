@@ -1,6 +1,11 @@
 pub struct Client {
     pub notionrs_client: notionrs::Client,
-    pub images: Vec<String>,
+    pub images: Vec<Image>,
+}
+
+pub struct Image {
+    pub src: String,
+    pub id: String,
 }
 
 impl Client {
@@ -373,10 +378,11 @@ impl Client {
                         margin: "2rem".to_string(),
                     };
 
-                    let block = crate::block::Block::ElmImage(crate::block::ElmImage { props });
+                    let image_block =
+                        crate::block::Block::ElmImage(crate::block::ElmImage { props });
 
-                    blocks.push(block);
-                    self.images.push(src);
+                    blocks.push(image_block);
+                    self.images.push(Image { src, id: block.id });
                 }
                 notionrs::block::Block::LinkPreview { link_preview: _ } => {}
                 notionrs::block::Block::NumberedListItem { numbered_list_item } => {
