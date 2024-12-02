@@ -26,7 +26,6 @@ rustls-tls = ["reqwest/rustls-tls", "notionrs/rustls-tls"]
 native-tls = [
     "reqwest/default-tls",
     "reqwest/native-tls",
-    "notionrs/default-tls",
     "notionrs/native-tls",
 ]
 native-tls-alpn = ["reqwest/native-tls-alpn", "notionrs/native-tls-alpn"]
