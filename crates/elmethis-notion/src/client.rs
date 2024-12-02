@@ -1,5 +1,6 @@
 pub struct Client {
     pub notionrs_client: notionrs::Client,
+    pub images: Vec<String>,
 }
 
 impl Client {
@@ -9,12 +10,13 @@ impl Client {
     {
         Client {
             notionrs_client: notionrs::Client::new().secret(secret),
+            images: Vec::default(),
         }
     }
 
     #[async_recursion::async_recursion]
     pub async fn convert_block(
-        &self,
+        &mut self,
         page_id: &str,
     ) -> Result<Vec<crate::block::Block>, crate::error::Error> {
         let mut blocks: Vec<crate::block::Block> = Vec::new();
@@ -365,7 +367,7 @@ impl Client {
                     };
 
                     let props = crate::block::ElmImageProps {
-                        src,
+                        src: src.clone(),
                         alt,
                         enable_modal: true,
                         margin: "2rem".to_string(),
@@ -374,6 +376,7 @@ impl Client {
                     let block = crate::block::Block::ElmImage(crate::block::ElmImage { props });
 
                     blocks.push(block);
+                    self.images.push(src);
                 }
                 notionrs::block::Block::LinkPreview { link_preview: _ } => {}
                 notionrs::block::Block::NumberedListItem { numbered_list_item } => {
