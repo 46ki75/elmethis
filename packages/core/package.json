@@ -60,7 +60,7 @@
     "prism-theme-vars": "^0.2.5",
     "prismjs": "^1.29.0",
     "sass": "^1.82.0",
-    "storybook": "^8.4.6",
+    "storybook": "^8.4.7",
     "vite": "^6.0.2",
     "vite-plugin-css-injected-by-js": "^3.5.2",
     "vite-plugin-dts": "^4.3.0",
