@@ -4,6 +4,7 @@
 
 <script setup lang="ts">
 import type { Property } from 'csstype'
+import { getLuminance } from 'polished'
 import { h, useCssModule } from 'vue'
 
 export interface ElmInlineTextProps {
@@ -49,7 +50,10 @@ export interface ElmInlineTextProps {
    */
   code?: boolean
 
-  background?: Property.BackgroundColor
+  /**
+   * Specifies the background color of the text.
+   */
+  backgroundColor?: Property.BackgroundColor
 }
 
 const props = withDefaults(defineProps<ElmInlineTextProps>(), {
@@ -63,14 +67,19 @@ const props = withDefaults(defineProps<ElmInlineTextProps>(), {
 const style = useCssModule()
 
 const render = () => {
+  const backgroundColor =
+    props.backgroundColor != null && getLuminance(props.backgroundColor) < 0.5
+      ? 'rgba(255, 255, 255, 0.7)'
+      : 'rgba(0, 0, 0, 0.7)'
+
   let vnode = h(
     'span',
     {
       class: style.text,
       style: {
-        '--color': props.color,
+        '--color': props.color ?? backgroundColor,
         '--font-size': props.size,
-        '--background-color': props.background
+        '--background-color': props.backgroundColor
       }
     },
     props.text

@@ -20,5 +20,5 @@ export const Colored: Story = {
 }
 
 export const Background: Story = {
-  args: { background: opacify(-0.5, '#6987b8') }
+  args: { backgroundColor: opacify(-0.5, '#6987b8') }
 }
