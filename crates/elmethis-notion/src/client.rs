@@ -581,7 +581,7 @@ impl Client {
                 underline: annotations.underline,
                 strikethrough: annotations.italic,
                 code: annotations.code,
-                color: annotations.color,
+                color: annotations.color.to_string(),
             };
 
             blocks.push(crate::block::Block::ElmInlineText(
