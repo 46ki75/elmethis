@@ -581,7 +581,19 @@ impl Client {
                 underline: annotations.underline,
                 strikethrough: annotations.italic,
                 code: annotations.code,
-                color: annotations.color.to_string(),
+                color: match annotations.color {
+                    notionrs::Color::Default => None,
+                    notionrs::Color::Blue => Some(String::from("#6987b8")),
+                    notionrs::Color::Brown => Some(String::from("#8b4c3f")),
+                    notionrs::Color::Gray => Some(String::from("#868e9c")),
+                    notionrs::Color::Green => Some(String::from("#59b57c")),
+                    notionrs::Color::Orange => Some(String::from("#bf7e71")),
+                    notionrs::Color::Pink => Some(String::from("#c9699e")),
+                    notionrs::Color::Purple => Some(String::from("#9771bd")),
+                    notionrs::Color::Red => Some(String::from("#b36472")),
+                    notionrs::Color::Yellow => Some(String::from("#b8a36e")),
+                    _ => None,
+                },
             };
 
             blocks.push(crate::block::Block::ElmInlineText(

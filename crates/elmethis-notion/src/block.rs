@@ -256,5 +256,5 @@ pub struct ElmInlineTextProps {
     pub underline: bool,
     pub strikethrough: bool,
     pub code: bool,
-    pub color: String,
+    pub color: Option<String>,
 }
