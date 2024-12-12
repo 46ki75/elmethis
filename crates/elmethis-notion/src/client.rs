@@ -399,16 +399,6 @@ impl Client {
                             ));
                         }
                     };
-
-                    // match &mut ol {
-                    //     Some(ol) => {
-                    //         ol.children.push(list_item_block);
-                    //     }
-                    //     None => {
-                    //         let new_ol = vec![list_item_block];
-                    //         ol = Some(crate::block::ElmNumberedList { children: new_ol })
-                    //     }
-                    // };
                 }
                 notionrs::block::Block::Paragraph { paragraph } => {
                     let block = crate::block::Block::ElmParagraph(crate::block::ElmParagraph {
