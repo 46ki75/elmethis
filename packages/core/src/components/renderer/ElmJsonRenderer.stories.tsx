@@ -27,8 +27,8 @@ export const Primary: Story = {
         children: []
       },
       {
-        type: 'ElmInlineCode',
-        props: { code: 'console.log(0)' },
+        type: 'ElmInlineText',
+        props: { text: 'console.log(0)', code: true },
         children: []
       }
     ]
@@ -44,7 +44,10 @@ export const Callout: Story = {
         children: [
           { type: 'ElmInlineText', props: { text: 'Hello, ' } },
           { type: 'ElmInlineText', props: { text: 'world!' } },
-          { type: 'ElmInlineCode', props: { code: 'console.log(0)' } }
+          {
+            type: 'ElmInlineText',
+            props: { text: 'console.log(0)', code: true }
+          }
         ]
       }
     ]
@@ -67,7 +70,10 @@ export const BulletedList: Story = {
           {
             type: 'ElmListItem',
             children: [
-              { type: 'ElmInlineCode', props: { code: 'console.log(0)' } }
+              {
+                type: 'ElmInlineText',
+                props: { text: 'console.log(0)', code: true }
+              }
             ]
           }
         ]
@@ -92,7 +98,10 @@ export const NumberedList: Story = {
           {
             type: 'ElmListItem',
             children: [
-              { type: 'ElmInlineCode', props: { code: 'console.log(0)' } }
+              {
+                type: 'ElmInlineText',
+                props: { text: 'console.log(0)', code: true }
+              }
             ]
           }
         ]
@@ -109,7 +118,10 @@ export const Blockquote: Story = {
         children: [
           { type: 'ElmInlineText', props: { text: 'Hello, ' } },
           { type: 'ElmInlineText', props: { text: 'world!' } },
-          { type: 'ElmInlineCode', props: { code: 'console.log(0)' } }
+          {
+            type: 'ElmInlineText',
+            props: { text: 'console.log(0)', code: true }
+          }
         ]
       }
     ]
@@ -170,7 +182,10 @@ export const Paragraph: Story = {
         children: [
           { type: 'ElmInlineText', props: { text: 'Hello, ' } },
           { type: 'ElmInlineText', props: { text: 'world!' } },
-          { type: 'ElmInlineCode', props: { code: 'console.log(0)' } }
+          {
+            type: 'ElmInlineText',
+            props: { text: 'console.log(0)', code: true }
+          }
         ]
       }
     ]
