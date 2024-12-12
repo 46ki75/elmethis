@@ -4,6 +4,7 @@
 
 <script setup lang="ts">
 import type { Property } from 'csstype'
+import { getLuminance } from 'polished'
 import { h, useCssModule } from 'vue'
 
 export interface ElmInlineTextProps {
@@ -44,9 +45,15 @@ export interface ElmInlineTextProps {
    */
   strikethrough?: boolean
 
+  /**
+   * Specifies whether the text should be displayed as code.
+   */
   code?: boolean
 
-  background?: Property.BackgroundColor
+  /**
+   * Specifies the background color of the text.
+   */
+  backgroundColor?: Property.BackgroundColor
 }
 
 const props = withDefaults(defineProps<ElmInlineTextProps>(), {
@@ -60,14 +67,19 @@ const props = withDefaults(defineProps<ElmInlineTextProps>(), {
 const style = useCssModule()
 
 const render = () => {
+  const backgroundColor =
+    props.backgroundColor != null && getLuminance(props.backgroundColor) < 0.5
+      ? 'rgba(255, 255, 255, 0.7)'
+      : 'rgba(0, 0, 0, 0.7)'
+
   let vnode = h(
     'span',
     {
       class: style.text,
       style: {
-        '--color': props.color,
+        '--color': props.color ?? backgroundColor,
         '--font-size': props.size,
-        '--background-color': props.background
+        '--background-color': props.backgroundColor
       }
     },
     props.text
@@ -87,6 +99,10 @@ const render = () => {
 
   if (props.bold) {
     vnode = h('strong', {}, vnode)
+  }
+
+  if (props.code) {
+    vnode = h('code', { class: style.code }, vnode)
   }
 
   return vnode
@@ -113,5 +129,12 @@ const render = () => {
       background-color: var(--color, rgba(white, 0.7));
     }
   }
+}
+
+.code {
+  margin-inline: 0.25rem;
+  padding: 0.25em 0.5em;
+  border-radius: 0.125rem;
+  background-color: rgba(0, 0, 0, 0.075);
 }
 </style>
