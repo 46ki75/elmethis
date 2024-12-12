@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import ElmToggle from './ElmToggle.vue'
 import ElmInlineText from '../inline/ElmInlineText.vue'
-import ElmInlineCode from '../inline/ElmInlineCode.vue'
 
 const meta: Meta<typeof ElmToggle> = {
   title: 'Components/Containments/ElmToggle',
@@ -26,11 +25,11 @@ export const Primary: Story = {
 export const InlineSummary: Story = {
   render: (args) => ({
     setup: () => ({ args }),
-    components: { ElmToggle, ElmInlineText, ElmInlineCode },
+    components: { ElmToggle, ElmInlineText },
     template: `<ElmToggle v-bind="args">
       <template #summary>
         <ElmInlineText text="How to use " />
-        <ElmInlineCode code="console.table()" />
+        <ElmInlineText text="console.table()" code />
         <ElmInlineText text="?" />
       </template>
       <p><ElmInlineText text="Block Content" /></p>
