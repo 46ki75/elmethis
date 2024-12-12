@@ -36,26 +36,7 @@ impl Client {
 
         let results = page.results;
 
-        let mut ul: Option<crate::block::ElmBulletedList> = None;
-        let mut ol: Option<crate::block::ElmNumberedList> = None;
-
         for block in results {
-            if !matches!(
-                block.block,
-                notionrs::block::Block::BulletedListItem { .. }
-                    | notionrs::block::Block::NumberedListItem { .. }
-            ) {
-                if let Some(block) = ul {
-                    blocks.push(crate::block::Block::ElmBulletedList(block));
-                    ul = None
-                };
-
-                if let Some(block) = ol {
-                    blocks.push(crate::block::Block::ElmNumberedList(block));
-                    ol = None
-                };
-            }
-
             match block.block {
                 notionrs::block::Block::Audio { audio: _ } => {}
                 notionrs::block::Block::Bookmark { bookmark } => {
@@ -121,13 +102,17 @@ impl Client {
                             children: list_item_children,
                         });
 
-                    match &mut ul {
-                        Some(ul) => {
-                            ul.children.push(list_item_block);
+                    let last_item = blocks.last_mut();
+
+                    match last_item {
+                        Some(crate::block::Block::ElmBulletedList(elm_bulleted_list)) => {
+                            elm_bulleted_list.children.push(list_item_block);
                         }
-                        None => {
+                        Some(_) | None => {
                             let new_ul = vec![list_item_block];
-                            ul = Some(crate::block::ElmBulletedList { children: new_ul })
+                            blocks.push(crate::block::Block::ElmBulletedList(
+                                crate::block::ElmBulletedList { children: new_ul },
+                            ));
                         }
                     };
                 }
@@ -401,13 +386,17 @@ impl Client {
                             children: list_item_children,
                         });
 
-                    match &mut ol {
-                        Some(ol) => {
-                            ol.children.push(list_item_block);
+                    let last_item = blocks.last_mut();
+
+                    match last_item {
+                        Some(crate::block::Block::ElmNumberedList(elm_numbered_list)) => {
+                            elm_numbered_list.children.push(list_item_block);
                         }
-                        None => {
+                        Some(_) | None => {
                             let new_ol = vec![list_item_block];
-                            ol = Some(crate::block::ElmNumberedList { children: new_ol })
+                            blocks.push(crate::block::Block::ElmNumberedList(
+                                crate::block::ElmNumberedList { children: new_ol },
+                            ));
                         }
                     };
                 }
@@ -592,7 +581,19 @@ impl Client {
                 underline: annotations.underline,
                 strikethrough: annotations.italic,
                 code: annotations.code,
-                color: annotations.color,
+                color: match annotations.color {
+                    notionrs::Color::Default => None,
+                    notionrs::Color::Blue => Some(String::from("#6987b8")),
+                    notionrs::Color::Brown => Some(String::from("#8b4c3f")),
+                    notionrs::Color::Gray => Some(String::from("#868e9c")),
+                    notionrs::Color::Green => Some(String::from("#59b57c")),
+                    notionrs::Color::Orange => Some(String::from("#bf7e71")),
+                    notionrs::Color::Pink => Some(String::from("#c9699e")),
+                    notionrs::Color::Purple => Some(String::from("#9771bd")),
+                    notionrs::Color::Red => Some(String::from("#b36472")),
+                    notionrs::Color::Yellow => Some(String::from("#b8a36e")),
+                    _ => None,
+                },
             };
 
             blocks.push(crate::block::Block::ElmInlineText(
