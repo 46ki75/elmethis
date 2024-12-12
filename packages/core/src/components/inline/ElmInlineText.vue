@@ -44,6 +44,9 @@ export interface ElmInlineTextProps {
    */
   strikethrough?: boolean
 
+  /**
+   * Specifies whether the text should be displayed as code.
+   */
   code?: boolean
 
   background?: Property.BackgroundColor
@@ -89,6 +92,10 @@ const render = () => {
     vnode = h('strong', {}, vnode)
   }
 
+  if (props.code) {
+    vnode = h('code', { class: style.code }, vnode)
+  }
+
   return vnode
 }
 </script>
@@ -113,5 +120,12 @@ const render = () => {
       background-color: var(--color, rgba(white, 0.7));
     }
   }
+}
+
+.code {
+  margin-inline: 0.25rem;
+  padding: 0.25em 0.5em;
+  border-radius: 0.125rem;
+  background-color: rgba(0, 0, 0, 0.075);
 }
 </style>

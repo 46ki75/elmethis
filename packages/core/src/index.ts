@@ -110,9 +110,6 @@ import ElmToggleTheme, {
 } from './components/icon/ElmToggleTheme.vue'
 
 // inline
-import ElmInlineCode, {
-  ElmInlineCodeProps
-} from './components/inline/ElmInlineCode.vue'
 import ElmInlineLink, {
   ElmInlineLinkProps
 } from './components/inline/ElmInlineLink.vue'
@@ -237,7 +234,6 @@ export {
   ElmLanguageIcon,
   ElmLoginIcon,
   ElmToggleTheme,
-  ElmInlineCode,
   ElmInlineLink,
   ElmInlineRuby,
   ElmInlineText,
@@ -302,7 +298,6 @@ export type {
   ElmLanguageIconProps,
   ElmLoginIconProps,
   ElmToggleThemeProps,
-  ElmInlineCodeProps,
   ElmInlineLinkProps,
   ElmInlineRubyProps,
   ElmInlineTextProps,
