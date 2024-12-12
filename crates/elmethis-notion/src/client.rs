@@ -36,26 +36,7 @@ impl Client {
 
         let results = page.results;
 
-        let mut ul: Option<crate::block::ElmBulletedList> = None;
-        let mut ol: Option<crate::block::ElmNumberedList> = None;
-
         for block in results {
-            if !matches!(
-                block.block,
-                notionrs::block::Block::BulletedListItem { .. }
-                    | notionrs::block::Block::NumberedListItem { .. }
-            ) {
-                if let Some(block) = ul {
-                    blocks.push(crate::block::Block::ElmBulletedList(block));
-                    ul = None
-                };
-
-                if let Some(block) = ol {
-                    blocks.push(crate::block::Block::ElmNumberedList(block));
-                    ol = None
-                };
-            }
-
             match block.block {
                 notionrs::block::Block::Audio { audio: _ } => {}
                 notionrs::block::Block::Bookmark { bookmark } => {
@@ -121,13 +102,17 @@ impl Client {
                             children: list_item_children,
                         });
 
-                    match &mut ul {
-                        Some(ul) => {
-                            ul.children.push(list_item_block);
+                    let last_item = blocks.last_mut();
+
+                    match last_item {
+                        Some(crate::block::Block::ElmBulletedList(elm_bulleted_list)) => {
+                            elm_bulleted_list.children.push(list_item_block);
                         }
-                        None => {
+                        Some(_) | None => {
                             let new_ul = vec![list_item_block];
-                            ul = Some(crate::block::ElmBulletedList { children: new_ul })
+                            blocks.push(crate::block::Block::ElmBulletedList(
+                                crate::block::ElmBulletedList { children: new_ul },
+                            ));
                         }
                     };
                 }
@@ -401,15 +386,29 @@ impl Client {
                             children: list_item_children,
                         });
 
-                    match &mut ol {
-                        Some(ol) => {
-                            ol.children.push(list_item_block);
+                    let last_item = blocks.last_mut();
+
+                    match last_item {
+                        Some(crate::block::Block::ElmNumberedList(elm_numbered_list)) => {
+                            elm_numbered_list.children.push(list_item_block);
                         }
-                        None => {
+                        Some(_) | None => {
                             let new_ol = vec![list_item_block];
-                            ol = Some(crate::block::ElmNumberedList { children: new_ol })
+                            blocks.push(crate::block::Block::ElmNumberedList(
+                                crate::block::ElmNumberedList { children: new_ol },
+                            ));
                         }
                     };
+
+                    // match &mut ol {
+                    //     Some(ol) => {
+                    //         ol.children.push(list_item_block);
+                    //     }
+                    //     None => {
+                    //         let new_ol = vec![list_item_block];
+                    //         ol = Some(crate::block::ElmNumberedList { children: new_ol })
+                    //     }
+                    // };
                 }
                 notionrs::block::Block::Paragraph { paragraph } => {
                     let block = crate::block::Block::ElmParagraph(crate::block::ElmParagraph {
