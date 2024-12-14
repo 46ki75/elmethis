@@ -125,6 +125,7 @@ impl Client {
 
                     let r#type = match callout.color {
                         notionrs::Color::Default
+                        | notionrs::Color::DefaultBackground
                         | notionrs::Color::Blue
                         | notionrs::Color::BlueBackground
                         | notionrs::Color::Gray
