@@ -580,7 +580,7 @@ impl Client {
                 bold: annotations.bold,
                 italic: annotations.italic,
                 underline: annotations.underline,
-                strikethrough: annotations.italic,
+                strikethrough: annotations.strikethrough,
                 code: annotations.code,
                 color: match annotations.color {
                     notionrs::Color::Default => None,
