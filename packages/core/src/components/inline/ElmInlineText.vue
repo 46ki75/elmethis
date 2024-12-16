@@ -68,9 +68,11 @@ const style = useCssModule()
 
 const render = () => {
   const backgroundColor =
-    props.backgroundColor != null && getLuminance(props.backgroundColor) < 0.5
-      ? 'rgba(255, 255, 255, 0.7)'
-      : 'rgba(0, 0, 0, 0.7)'
+    props.backgroundColor != null
+      ? getLuminance(props.backgroundColor) < 0.5
+        ? 'rgba(255, 255, 255, 0.7)'
+        : 'rgba(0, 0, 0, 0.7)'
+      : undefined
 
   let vnode = h(
     'span',

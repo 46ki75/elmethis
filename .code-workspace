@@ -20,5 +20,10 @@
       "path": "./crates/elmethis-notion",
       "name": "elmethis-notion (Rust)"
     }
-  ]
+  ],
+  "settings": {
+    "terminal.integrated.env.linux": {},
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  }
 }
