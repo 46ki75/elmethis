@@ -88,8 +88,8 @@ importers:
         specifier: ^4.29.2
         version: 4.29.2
       katex:
-        specifier: ^0.16.15
-        version: 0.16.15
+        specifier: ^0.16.17
+        version: 0.16.17
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
@@ -2974,8 +2974,8 @@ packages:
   jstransformer@1.0.0:
     resolution: {integrity: sha512-C9YK3Rf8q6VAPDCCU9fnqo3mAfOH6vUGnMcP4AQAYIEpWtfGLpwOTmZ+igtdK5y+VvI2n3CyYSzy4Qh34eq24A==}
 
-  katex@0.16.15:
-    resolution: {integrity: sha512-yE9YJIEAk2aZ+FL/G8r+UGw0CTUzEA8ZFy6E+8tc3spHUKq3qBnzCkI1CQwGoI9atJhVyFPEypQsTY7mJ1Pi9w==}
+  katex@0.16.17:
+    resolution: {integrity: sha512-OyzSrXBllz+Jdc9Auiw0kt21gbZ4hkz8Q5srVAb2U9INcYIfGKbxe+bvNvEz1bQ/NrDeRRho5eLCyk/L03maAw==}
     hasBin: true
 
   klona@2.0.6:
@@ -7151,7 +7151,7 @@ snapshots:
       is-promise: 2.2.2
       promise: 7.3.1
 
-  katex@0.16.15:
+  katex@0.16.17:
     dependencies:
       commander: 8.3.0
 
