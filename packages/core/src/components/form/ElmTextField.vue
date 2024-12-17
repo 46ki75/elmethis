@@ -12,6 +12,16 @@
       />
       <BackspaceIcon :class="$style.icon" @click="handleDelete" />
     </div>
+
+    <span
+      v-if="maxLength != null"
+      :class="$style['count']"
+      :style="{
+        '--color': input.length > maxLength ? '#c56565' : 'gray'
+      }"
+    >
+      {{ `${String(input.length)} / ${String(maxLength)}` }}
+    </span>
   </label>
 </template>
 
@@ -21,7 +31,9 @@ import ElmInlineText from '../inline/ElmInlineText.vue'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
 import { ref } from 'vue'
 
-export interface ElmTextFieldProps {}
+export interface ElmTextFieldProps {
+  maxLength?: number
+}
 
 withDefaults(defineProps<ElmTextFieldProps>(), {})
 
@@ -147,5 +159,14 @@ const handleVisibleSwitch = () => {
   &:hover {
     background-color: rgba(gray, 0.2);
   }
+}
+.count {
+  position: absolute;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+  top: 0;
+  right: 0;
+  color: var(--color);
+  opacity: 0.8;
 }
 </style>
