@@ -3,7 +3,7 @@
     :class="$style.wrapper"
     :style="{
       '--border-color': isFocused ? '#59b57c' : 'transparent',
-      backgroundColor: disabled ? 'rgba(0,0,0,0.15)' : undefined
+      backgroundColor: disabled || loading ? 'rgba(0,0,0,0.15)' : undefined
     }"
   >
     <div :class="$style.header">
@@ -30,7 +30,10 @@
         :placeholder="placeholder"
         @focus="isFocused = true"
         @blur="isFocused = false"
-        :disabled="disabled"
+        :disabled="disabled || loading"
+        :style="{
+          cursor: disabled ? 'not-allowed' : loading ? 'progress' : 'auto'
+        }"
       />
 
       <div :class="$style['icon-box']">
@@ -46,6 +49,8 @@
         <BackspaceIcon :class="$style.icon" @click="handleDelete" />
       </div>
     </div>
+
+    <div v-if="loading" :class="$style.loading"></div>
   </div>
 </template>
 
@@ -66,10 +71,12 @@ export interface ElmTextFieldProps {
   suffix?: string
   placeholder?: string
   disabled?: boolean
+  loading?: boolean
 }
 
 withDefaults(defineProps<ElmTextFieldProps>(), {
-  disabled: false
+  disabled: false,
+  loading: false
 })
 
 const input = defineModel({ default: '' })
@@ -86,7 +93,42 @@ const handleVisibleSwitch = () => {
 </script>
 
 <style module lang="scss">
+@keyframes loading {
+  0% {
+    transform-origin: 0%;
+    transform: scaleX(0);
+  }
+  40% {
+    transform-origin: 0%;
+    transform: scaleX(1);
+  }
+  60% {
+    transform-origin: 100%;
+    transform: scaleX(1);
+  }
+  100% {
+    transform-origin: 100%;
+    transform: scaleX(0);
+  }
+}
+
+.loading {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: #6987b8;
+  opacity: 0.2;
+
+  animation-name: loading;
+  animation-iteration-count: infinite;
+  animation-duration: 1600ms;
+}
+
 .wrapper {
+  overflow: hidden;
+  position: relative;
   box-sizing: border-box;
   width: 100%;
   padding: 0.25rem;
