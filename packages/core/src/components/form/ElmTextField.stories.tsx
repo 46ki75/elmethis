@@ -13,8 +13,9 @@ type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
   args: {
-    label: 'First Name',
+    label: 'Email',
     maxLength: 20,
-    suffix: '@46ki75.com'
+    suffix: '@46ki75.com',
+    placeholder: 'Enter your email'
   }
 }

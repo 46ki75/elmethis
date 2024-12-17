@@ -12,7 +12,13 @@
       />
     </div>
     <div :class="$style.body">
-      <input :id="id" v-model="input" :type="type" :class="$style.input" />
+      <input
+        :id="id"
+        v-model="input"
+        :type="type"
+        :class="$style.input"
+        :placeholder="placeholder"
+      />
 
       <div :class="$style['icon-box']">
         <span :class="$style.suffix">
@@ -43,6 +49,7 @@ export interface ElmTextFieldProps {
   label: string
   maxLength?: number
   suffix?: string
+  placeholder?: string
 }
 
 withDefaults(defineProps<ElmTextFieldProps>(), {})
@@ -117,6 +124,10 @@ const handleVisibleSwitch = () => {
   width: 100%;
   color: rgba(black, 0.7);
   caret-color: rgba(black, 0.7);
+
+  &::placeholder {
+    opacity: 0.5;
+  }
 
   &::selection {
     background-color: rgba(black, 0.7);
