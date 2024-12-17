@@ -1,13 +1,16 @@
 <template>
   <div
     :class="$style.wrapper"
-    :style="{ '--border-color': isFocused ? '#59b57c' : 'transparent' }"
+    :style="{
+      '--border-color': isFocused ? '#59b57c' : 'transparent',
+      backgroundColor: disabled ? 'rgba(0,0,0,0.15)' : undefined
+    }"
   >
     <div :class="$style.header">
       <label
         :for="id"
         :class="$style.label"
-        :style="{ '--color': isFocused ? '#59b57c' : 'gray' }"
+        :style="{ '--color': isFocused ? '#59b57c' : undefined }"
       >
         {{ label }}
       </label>
@@ -27,6 +30,7 @@
         :placeholder="placeholder"
         @focus="isFocused = true"
         @blur="isFocused = false"
+        :disabled="disabled"
       />
 
       <div :class="$style['icon-box']">
@@ -61,9 +65,12 @@ export interface ElmTextFieldProps {
   maxLength?: number
   suffix?: string
   placeholder?: string
+  disabled?: boolean
 }
 
-withDefaults(defineProps<ElmTextFieldProps>(), {})
+withDefaults(defineProps<ElmTextFieldProps>(), {
+  disabled: false
+})
 
 const input = defineModel({ default: '' })
 
@@ -88,7 +95,9 @@ const handleVisibleSwitch = () => {
   flex-direction: column;
   justify-content: space-between;
 
-  transition: border-color 200ms;
+  transition:
+    border-color 200ms,
+    background-color 200ms;
 
   border-style: solid;
   border-width: 1px;
@@ -98,7 +107,7 @@ const handleVisibleSwitch = () => {
   box-shadow: 0 0 0.25rem rgba(black, 0.15);
 
   [data-theme='dark'] & {
-    background-color: rgba(white, 0.1);
+    background-color: rgba(white, 0.2);
     box-shadow: 0 0 0.25rem rgba(black, 0.6);
   }
 }
@@ -119,8 +128,13 @@ const handleVisibleSwitch = () => {
   line-height: 0.75rem;
   height: 0.75rem;
   vertical-align: top;
+  transition: color 200ms;
 
-  color: var(--color);
+  color: var(--color, rgba(black, 0.65));
+
+  [data-theme='dark'] & {
+    color: var(--color, rgba(white, 0.65));
+  }
 }
 
 .body {
@@ -140,6 +154,10 @@ const handleVisibleSwitch = () => {
 
   &::placeholder {
     opacity: 0.5;
+
+    [data-theme='dark'] & {
+      opacity: 0.7;
+    }
   }
 
   &::selection {
