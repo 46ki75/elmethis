@@ -36,7 +36,6 @@ import ElmInlineText from '../inline/ElmInlineText.vue'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
 import { ref } from 'vue'
 import { nanoid } from 'nanoid'
-import { opacify } from 'polished'
 
 const id = nanoid()
 
