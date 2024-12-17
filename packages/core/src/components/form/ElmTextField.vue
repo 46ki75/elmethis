@@ -1,18 +1,24 @@
 <template>
   <label :class="$style.wrapper">
     <ElmInlineText text="Label" :class="$style.label" />
-    <input ref="ref" type="text" :class="$style.input" />
+    <input v-model="input" type="text" :class="$style.input" />
+    <BackspaceIcon :class="$style.icon" @click="handleDelete" />
   </label>
 </template>
 
 <script setup lang="ts">
+import { BackspaceIcon } from '@heroicons/vue/24/solid'
 import ElmInlineText from '../inline/ElmInlineText.vue'
 
 export interface ElmTextFieldProps {}
 
 withDefaults(defineProps<ElmTextFieldProps>(), {})
 
-const ref = defineModel({ default: '' })
+const input = defineModel({ default: '' })
+
+const handleDelete = () => {
+  input.value = ''
+}
 </script>
 
 <style module lang="scss">
@@ -87,6 +93,24 @@ const ref = defineModel({ default: '' })
       background-color: rgba(white, 0.7);
       color: rgba(black, 0.7);
     }
+  }
+}
+
+.icon {
+  position: absolute;
+  padding: 0.25rem;
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+  top: calc(50% - 16px);
+  right: 8px;
+  color: gray;
+
+  transition: background-color 200ms;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(gray, 0.2);
   }
 }
 </style>
