@@ -22,6 +22,8 @@
       />
     </div>
     <div :class="$style.body">
+      <component :is="icon" :class="$style['left-icon']"></component>
+
       <input
         :id="id"
         v-model="input"
@@ -63,7 +65,7 @@
 import { BackspaceIcon } from '@heroicons/vue/24/solid'
 import ElmInlineText from '../inline/ElmInlineText.vue'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
-import { ref } from 'vue'
+import { ref, type VNode, type FunctionalComponent } from 'vue'
 import { nanoid } from 'nanoid'
 
 const id = nanoid()
@@ -77,6 +79,7 @@ export interface ElmTextFieldProps {
   placeholder?: string
   disabled?: boolean
   loading?: boolean
+  icon?: VNode | FunctionalComponent
 }
 
 const props = withDefaults(defineProps<ElmTextFieldProps>(), {
@@ -191,6 +194,20 @@ const handleVisibleSwitch = () => {
   justify-content: space-between;
   align-items: center;
   padding-right: 0.5rem;
+}
+
+.left-icon {
+  margin: auto 0.25rem;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.7;
+
+  [data-theme='dark'] & {
+    filter: invert(1);
+  }
 }
 
 .input {
