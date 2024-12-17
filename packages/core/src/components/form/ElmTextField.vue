@@ -1,14 +1,24 @@
 <template>
   <label :class="$style.wrapper">
     <ElmInlineText text="Label" :class="$style.label" />
-    <input v-model="input" type="text" :class="$style.input" />
-    <BackspaceIcon :class="$style.icon" @click="handleDelete" />
+    <input v-model="input" :type="type" :class="$style.input" />
+
+    <div :class="$style['icon-container']">
+      <Component
+        :class="$style.icon"
+        @click="handleVisibleSwitch"
+        :is="type === 'password' ? EyeSlashIcon : EyeIcon"
+      />
+      <BackspaceIcon :class="$style.icon" @click="handleDelete" />
+    </div>
   </label>
 </template>
 
 <script setup lang="ts">
 import { BackspaceIcon } from '@heroicons/vue/24/solid'
 import ElmInlineText from '../inline/ElmInlineText.vue'
+import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
+import { ref } from 'vue'
 
 export interface ElmTextFieldProps {}
 
@@ -16,8 +26,14 @@ withDefaults(defineProps<ElmTextFieldProps>(), {})
 
 const input = defineModel({ default: '' })
 
+const type = ref('text')
+
 const handleDelete = () => {
   input.value = ''
+}
+
+const handleVisibleSwitch = () => {
+  type.value = type.value === 'text' ? 'password' : 'text'
 }
 </script>
 
@@ -96,15 +112,19 @@ const handleDelete = () => {
   }
 }
 
-.icon {
+.icon-container {
   position: absolute;
+  top: calc(50% - 16px);
+  right: 8px;
+}
+
+.icon {
   padding: 0.25rem;
   border-radius: 50%;
   height: 20px;
   width: 20px;
-  top: calc(50% - 16px);
-  right: 8px;
   color: gray;
+  user-select: none;
 
   transition: background-color 200ms;
   cursor: pointer;
