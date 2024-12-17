@@ -66,6 +66,8 @@ const isHover = ref(false)
   color: rgba(0, 0, 0, 0.7);
   background-color: rgba(255, 255, 255, 0.9);
 
+  transform-origin: top;
+
   [data-theme='dark'] & {
     color: rgba(255, 255, 255, 0.7);
     background-color: rgba(0, 0, 0, 0.9);
@@ -76,16 +78,20 @@ const isHover = ref(false)
 <style scoped lang="scss">
 .v-enter-to,
 .v-leave-from {
+  transform: scale(1);
   opacity: 1;
 }
 
 .v-enter-active,
 .v-leave-active {
-  transition: opacity 100ms;
+  transition:
+    opacity 100ms,
+    transform 200ms;
 }
 
 .v-enter-from,
 .v-leave-to {
+  transform: scale(0.5);
   opacity: 0;
 }
 </style>
