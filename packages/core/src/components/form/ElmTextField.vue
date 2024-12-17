@@ -50,7 +50,12 @@
       </div>
     </div>
 
-    <div v-if="loading" :class="$style.loading"></div>
+    <div
+      :class="$style.loading"
+      :style="{
+        opacity: loading ? 0.2 : 0
+      }"
+    ></div>
   </div>
 </template>
 
@@ -119,7 +124,7 @@ const handleVisibleSwitch = () => {
   top: 0;
   left: 0;
   background-color: #6987b8;
-  opacity: 0.2;
+  transition: opacity 200ms;
 
   animation-name: loading;
   animation-iteration-count: infinite;
