@@ -1,7 +1,7 @@
 <template>
   <label :class="$style.wrapper">
     <ElmInlineText text="Label" :class="$style.label" />
-    <input type="text" :class="$style.input" />
+    <input ref="ref" type="text" :class="$style.input" />
   </label>
 </template>
 
@@ -11,6 +11,8 @@ import ElmInlineText from '../inline/ElmInlineText.vue'
 export interface ElmTextFieldProps {}
 
 withDefaults(defineProps<ElmTextFieldProps>(), {})
+
+const ref = defineModel({ default: '' })
 </script>
 
 <style module lang="scss">
