@@ -107,8 +107,8 @@ const handleVisibleSwitch = () => {
   box-shadow: 0 0 0.25rem rgba(black, 0.15);
 
   [data-theme='dark'] & {
-    background-color: rgba(white, 0.2);
-    box-shadow: 0 0 0.25rem rgba(black, 0.6);
+    background-color: rgba(white, 0.15);
+    box-shadow: 0 0 0.25rem rgba(black, 0.75);
   }
 }
 
