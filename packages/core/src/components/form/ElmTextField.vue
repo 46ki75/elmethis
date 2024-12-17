@@ -40,6 +40,9 @@ const handleVisibleSwitch = () => {
 <style module lang="scss">
 .wrapper {
   position: relative;
+  display: block;
+  height: 100%;
+  width: 100%;
 
   &:has(input:focus) {
     .label {
@@ -58,7 +61,7 @@ const handleVisibleSwitch = () => {
 
 .label {
   position: absolute;
-  top: -100%;
+  top: 0%;
   left: 0.25rem;
   padding: 0.25rem;
   font-size: 0.75rem;
@@ -68,6 +71,8 @@ const handleVisibleSwitch = () => {
 
 .input {
   all: unset;
+  height: 100%;
+  width: 100%;
   caret-color: rgba(black, 0.6);
   box-sizing: border-box;
   padding: 0.5rem 0.75rem;
@@ -114,7 +119,7 @@ const handleVisibleSwitch = () => {
 
 .icon-container {
   position: absolute;
-  top: calc(50% - 16px);
+  top: calc(50% - 8px);
   right: 8px;
 }
 
