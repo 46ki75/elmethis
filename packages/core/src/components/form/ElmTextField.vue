@@ -1,8 +1,15 @@
 <template>
-  <div :class="$style.wrapper">
+  <div
+    :class="$style.wrapper"
+    :style="{ '--border-color': isFocused ? '#59b57c' : 'transparent' }"
+  >
     <div :class="$style.header">
-      <label :for="id" :class="$style.label">
-        <ElmInlineText :text="label" />
+      <label
+        :for="id"
+        :class="$style.label"
+        :style="{ '--color': isFocused ? '#59b57c' : 'gray' }"
+      >
+        {{ label }}
       </label>
       <ElmInlineText
         v-if="maxLength != null"
@@ -18,6 +25,8 @@
         :type="type"
         :class="$style.input"
         :placeholder="placeholder"
+        @focus="isFocused = true"
+        @blur="isFocused = false"
       />
 
       <div :class="$style['icon-box']">
@@ -44,6 +53,8 @@ import { ref } from 'vue'
 import { nanoid } from 'nanoid'
 
 const id = nanoid()
+
+const isFocused = ref<boolean>(false)
 
 export interface ElmTextFieldProps {
   label: string
@@ -77,6 +88,12 @@ const handleVisibleSwitch = () => {
   flex-direction: column;
   justify-content: space-between;
 
+  transition: border-color 200ms;
+
+  border-style: solid;
+  border-width: 1px;
+  border-color: var(--border-color);
+
   background-color: rgba(white, 0.8);
   box-shadow: 0 0 0.25rem rgba(black, 0.15);
 
@@ -103,11 +120,7 @@ const handleVisibleSwitch = () => {
   height: 0.75rem;
   vertical-align: top;
 
-  color: rgba(black, 0.7);
-
-  [data-theme='dark'] & {
-    color: rgba(white, 0.7);
-  }
+  color: var(--color);
 }
 
 .body {
