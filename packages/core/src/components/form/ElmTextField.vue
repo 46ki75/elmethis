@@ -4,6 +4,7 @@
     <input v-model="input" :type="type" :class="$style.input" />
 
     <div :class="$style['icon-container']">
+      <span :class="$style.suffix">@46ki75.com</span>
       <Component
         :class="$style.icon"
         @click="handleVisibleSwitch"
@@ -121,6 +122,15 @@ const handleVisibleSwitch = () => {
   position: absolute;
   top: calc(50% - 8px);
   right: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.suffix {
+  color: gray;
+  opacity: 0.8;
+  user-select: none;
 }
 
 .icon {
