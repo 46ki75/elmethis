@@ -79,7 +79,7 @@ export interface ElmTextFieldProps {
   loading?: boolean
 }
 
-withDefaults(defineProps<ElmTextFieldProps>(), {
+const props = withDefaults(defineProps<ElmTextFieldProps>(), {
   disabled: false,
   loading: false
 })
@@ -89,11 +89,12 @@ const input = defineModel({ default: '' })
 const type = ref('text')
 
 const handleDelete = () => {
-  input.value = ''
+  if (!props.loading && !props.disabled) input.value = ''
 }
 
 const handleVisibleSwitch = () => {
-  type.value = type.value === 'text' ? 'password' : 'text'
+  if (!props.loading && !props.disabled)
+    type.value = type.value === 'text' ? 'password' : 'text'
 }
 </script>
 
@@ -125,6 +126,7 @@ const handleVisibleSwitch = () => {
   left: 0;
   background-color: #6987b8;
   transition: opacity 200ms;
+  pointer-events: none;
 
   animation-name: loading;
   animation-iteration-count: infinite;
@@ -236,8 +238,8 @@ const handleVisibleSwitch = () => {
   width: 28px;
   height: 28px;
   transition: background-color 200ms;
-  cursor: pointer;
   color: gray;
+  cursor: pointer;
 
   &:hover {
     background-color: rgba(gray, 0.2);
