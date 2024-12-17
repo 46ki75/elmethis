@@ -62,6 +62,9 @@ import ElmButton, { ElmButtonProps } from './components/form/ElmButton.vue'
 import ElmCheckbox, {
   ElmCheckboxProps
 } from './components/form/ElmCheckbox.vue'
+import ElmTextField, {
+  ElmTextFieldProps
+} from './components/form/ElmTextField.vue'
 
 // Headings
 import ElmHeading1, {
@@ -220,6 +223,7 @@ export {
   ElmBlockFallback,
   ElmButton,
   ElmCheckbox,
+  ElmTextField,
   ElmHeading1,
   ElmHeading2,
   ElmHeading3,
@@ -284,6 +288,7 @@ export type {
   ElmBlockFallbackProps,
   ElmButtonProps,
   ElmCheckboxProps,
+  ElmTextFieldProps,
   ElmHeading1Props,
   ElmHeading2Props,
   ElmHeading3Props,
