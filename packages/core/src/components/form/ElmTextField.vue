@@ -4,11 +4,21 @@
       <label :for="id" :class="$style.label">
         <ElmInlineText :text="label" />
       </label>
+      <ElmInlineText
+        v-if="maxLength != null"
+        :text="`${input.length} / ${maxLength}`"
+        :color="input.length > maxLength ? '#c56565' : 'gray'"
+        size="0.75rem"
+      />
     </div>
     <div :class="$style.body">
       <input :id="id" v-model="input" :type="type" :class="$style.input" />
 
       <div :class="$style['icon-box']">
+        <span :class="$style.suffix">
+          <ElmInlineText v-if="suffix != null" :text="suffix" />
+        </span>
+
         <component
           :is="type === 'text' ? EyeIcon : EyeSlashIcon"
           :class="$style.icon"
@@ -26,12 +36,14 @@ import ElmInlineText from '../inline/ElmInlineText.vue'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
 import { ref } from 'vue'
 import { nanoid } from 'nanoid'
+import { opacify } from 'polished'
 
 const id = nanoid()
 
 export interface ElmTextFieldProps {
   label: string
   maxLength?: number
+  suffix?: string
 }
 
 withDefaults(defineProps<ElmTextFieldProps>(), {})
@@ -69,7 +81,11 @@ const handleVisibleSwitch = () => {
 }
 
 .header {
+  box-sizing: border-box;
   height: 0.75rem;
+  padding: 0 0.25rem;
+  display: flex;
+  justify-content: space-between;
 }
 
 .label {
@@ -79,7 +95,6 @@ const handleVisibleSwitch = () => {
   font-size: 0.75rem;
   line-height: 0.75rem;
   height: 0.75rem;
-  padding-left: 0.25rem;
   vertical-align: top;
 
   color: rgba(black, 0.7);
@@ -139,5 +154,11 @@ const handleVisibleSwitch = () => {
   &:hover {
     background-color: rgba(gray, 0.2);
   }
+}
+
+.suffix {
+  opacity: 0.6;
+  padding: 0 0.5rem;
+  user-select: none;
 }
 </style>
