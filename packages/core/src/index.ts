@@ -201,6 +201,7 @@ import ElmListItem, {
 // # --------------------------------------------------------------------------------
 
 import { useElmethisTheme } from './hooks/useElmethisTheme'
+import { useTyping } from './hooks/useTyping'
 
 export {
   ElmBadge,
@@ -265,7 +266,8 @@ export {
   ElmNumberedList,
   ElmParagraph,
   ElmListItem,
-  useElmethisTheme
+  useElmethisTheme,
+  useTyping
 }
 
 export type {

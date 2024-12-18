@@ -21,9 +21,9 @@
 import { onMounted } from 'vue'
 import { useTyping } from '../../hooks/useTyping'
 
-export interface ElmTyping {}
+export interface ElmTypingProps {}
 
-withDefaults(defineProps<ElmTyping>(), {})
+withDefaults(defineProps<ElmTypingProps>(), {})
 
 const { start, targetArray, isFinished, mistakes } = useTyping()
 
