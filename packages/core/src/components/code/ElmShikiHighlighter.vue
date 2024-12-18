@@ -35,8 +35,8 @@ onMounted(async () => {
   html.value = highlighter.codeToHtml(props.code, {
     lang: props.language,
     themes: {
-      dark: 'vitesse-dark',
-      light: 'vitesse-light'
+      light: 'vitesse-light',
+      dark: 'vitesse-dark'
     },
     colorReplacements: {
       '#ffffff': 'transparent',
