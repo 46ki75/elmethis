@@ -35,7 +35,7 @@
       </ElmTooltip>
     </div>
     <div :class="$style.code">
-      <elm-prism-highlighter :code="code" :language="language" />
+      <ElmShikiHighlighter :code="code" :language="language" />
     </div>
   </div>
 </template>
@@ -47,7 +47,7 @@ import {
 } from '@heroicons/vue/24/outline'
 import ElmLanguageIcon from '../icon/ElmLanguageIcon.vue'
 import ElmInlineText from '../inline/ElmInlineText.vue'
-import ElmPrismHighlighter from './ElmPrismHighlighter.vue'
+import ElmShikiHighlighter from './ElmShikiHighlighter.vue'
 import { useClipboard, useIntersectionObserver } from '@vueuse/core'
 import ElmTooltip from '../containments/ElmTooltip.vue'
 import type { Property } from 'csstype'
@@ -97,15 +97,16 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   display: flex;
   flex-direction: column;
   border-radius: 0.25rem;
-  box-shadow: 0 0 0.25rem rgba(black, 0.1);
 
   transition:
     background-color 400ms,
     opacity 800ms;
 
-  background-color: rgba(white, 0.2);
+  background-color: rgba(white, 0.4);
+  box-shadow: 0 0 0.25rem rgba(black, 0.1);
   [data-theme='dark'] & {
-    background-color: rgba(black, 0.2);
+    background-color: rgba(white, 0.05);
+    box-shadow: 0 0 0.25rem rgba(black, 0.3);
   }
 }
 
