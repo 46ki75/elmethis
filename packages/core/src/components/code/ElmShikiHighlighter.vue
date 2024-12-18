@@ -35,8 +35,8 @@ onMounted(async () => {
   html.value = highlighter.codeToHtml(props.code, {
     lang: props.language,
     themes: {
-      light: 'vitesse-light',
-      dark: 'vitesse-dark'
+      dark: 'vitesse-dark',
+      light: 'vitesse-light'
     },
     colorReplacements: {
       '#ffffff': 'transparent',
@@ -53,7 +53,7 @@ onMounted(async () => {
 }
 </style>
 
-<style>
+<style lang="scss">
 .shiki,
 .shiki span {
   font-family: 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace !important;
