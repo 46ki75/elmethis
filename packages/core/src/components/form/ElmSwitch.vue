@@ -1,6 +1,6 @@
 <template>
   <div
-    @click="checked = !checked"
+    @click="handleClick"
     :style="{
       '--color': color,
       '--padding': '2px',
@@ -8,10 +8,29 @@
       '--width': 'calc(var(--size) * 2 + var(--padding) * 2)'
     }"
   >
-    <input :class="[$style.switch]" type="checkbox" :checked="checked" />
-    <div :class="[$style.bar, { [$style['bar--checked']]: checked }]">
+    <input
+      :class="[$style.switch]"
+      type="checkbox"
+      :checked="checked"
+      :disabled="disabled"
+    />
+    <div
+      :class="[
+        $style.bar,
+        {
+          [$style['bar--checked']]: checked,
+          [$style['bar--disabled']]: disabled
+        }
+      ]"
+    >
       <div
-        :class="[$style.circle, { [$style['circle--checked']]: checked }]"
+        :class="[
+          $style.circle,
+          {
+            [$style['circle--checked']]: checked,
+            [$style['circle--disabled']]: disabled
+          }
+        ]"
       ></div>
     </div>
   </div>
@@ -21,16 +40,33 @@
 import { Property } from 'csstype'
 
 export interface ElmSwitchProps {
+  /**
+   * The color of the switch when checked.
+   */
   color: string
+
+  /**
+   * The size of the switch.
+   */
   size: Property.Width
+
+  /**
+   * Whether the switch is disabled.
+   */
+  disabled?: boolean
 }
 
-withDefaults(defineProps<ElmSwitchProps>(), {
+const props = withDefaults(defineProps<ElmSwitchProps>(), {
   color: '#6987b8',
-  size: '18px'
+  size: '18px',
+  disabled: false
 })
 
 const checked = defineModel({ default: false })
+
+const handleClick = () => {
+  if (!props.disabled) checked.value = !checked.value
+}
 </script>
 
 <style module lang="scss">
@@ -56,6 +92,10 @@ const checked = defineModel({ default: false })
   &--checked {
     background-color: var(--color);
   }
+
+  &--disabled {
+    cursor: not-allowed;
+  }
 }
 
 .circle {
@@ -70,10 +110,15 @@ const checked = defineModel({ default: false })
     transform 300ms,
     opacity 300ms,
     background-color 300ms;
-  background-color: white;
+  background-color: rgba(white, 0.9);
 
   &--checked {
     transform: translateX(calc(var(--width) - var(--size)));
+  }
+
+  &--disabled {
+    opacity: 0.5;
+    background-color: gray;
   }
 
   &:hover {
