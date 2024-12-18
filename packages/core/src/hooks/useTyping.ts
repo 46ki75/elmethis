@@ -17,13 +17,13 @@ export function useTyping() {
   const isFinished = ref(false)
 
   const start = (target: string) => {
+    isFinished.value = false
+    currentCharIndex.value = 0
     targetString.value = target
     targetArray.value = target
       .split('')
       .map((char) => ({ char, status: 'default' }))
-    targetArray.value[currentCharIndex.value] = targetArray.value[0]
     targetArray.value[0].status = 'current'
-    currentCharIndex.value = 0
   }
 
   onKeyStroke((event) => {
