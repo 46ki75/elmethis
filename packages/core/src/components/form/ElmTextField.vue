@@ -44,6 +44,7 @@
         </span>
 
         <component
+          v-if="isPassword"
           :is="type === 'text' ? EyeIcon : EyeSlashIcon"
           :class="$style.icon"
           @click="handleVisibleSwitch"
@@ -80,16 +81,18 @@ export interface ElmTextFieldProps {
   disabled?: boolean
   loading?: boolean
   icon?: VNode | FunctionalComponent
+  isPassword?: boolean
 }
 
 const props = withDefaults(defineProps<ElmTextFieldProps>(), {
   disabled: false,
-  loading: false
+  loading: false,
+  isPassword: false
 })
 
 const input = defineModel({ default: '' })
 
-const type = ref('text')
+const type = ref(props.isPassword ? 'password' : 'text')
 
 const handleDelete = () => {
   if (!props.loading && !props.disabled) input.value = ''
