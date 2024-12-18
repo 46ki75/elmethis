@@ -1,5 +1,13 @@
 <template>
-  <div @click="checked = !checked" :style="{ '--color': color }">
+  <div
+    @click="checked = !checked"
+    :style="{
+      '--color': color,
+      '--padding': '2px',
+      '--size': size,
+      '--width': 'calc(var(--size) * 2 + var(--padding) * 2)'
+    }"
+  >
     <input :class="[$style.switch]" type="checkbox" :checked="checked" />
     <div :class="[$style.bar, { [$style['bar--checked']]: checked }]">
       <div
@@ -10,12 +18,16 @@
 </template>
 
 <script setup lang="ts">
+import { Property } from 'csstype'
+
 export interface ElmSwitchProps {
   color: string
+  size: Property.Width
 }
 
 withDefaults(defineProps<ElmSwitchProps>(), {
-  color: '#6987b8'
+  color: '#6987b8',
+  size: '18px'
 })
 
 const checked = defineModel({ default: false })
@@ -27,10 +39,6 @@ const checked = defineModel({ default: false })
 }
 
 .bar {
-  --padding: 2px;
-  --size: 20px;
-  --width: 42px;
-
   z-index: 0;
   padding: var(--padding);
   width: var(--width);
