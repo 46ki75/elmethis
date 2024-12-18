@@ -1,0 +1,66 @@
+<template>
+  <div :class="$style.code">
+    <div class="shiki" v-html="html"></div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { createHighlighter } from 'shiki'
+import { onMounted, ref } from 'vue'
+
+export interface ElmShikiHighlighterProps {
+  /**
+   * The code to display.
+   */
+  code: string
+
+  /**
+   * The language of the code.
+   */
+  language?: string
+}
+
+const props = withDefaults(defineProps<ElmShikiHighlighterProps>(), {
+  language: 'txt'
+})
+
+const html = ref(`<pre>${props.code}</pre>`)
+
+onMounted(async () => {
+  const highlighter = await createHighlighter({
+    langs: [props.language],
+    themes: ['vitesse-light', 'vitesse-dark']
+  })
+
+  html.value = highlighter.codeToHtml(props.code, {
+    lang: props.language,
+    themes: {
+      dark: 'vitesse-dark',
+      light: 'vitesse-light'
+    },
+    colorReplacements: {
+      '#ffffff': 'transparent',
+      '#121212': 'transparent'
+    }
+  })
+})
+</script>
+
+<style module lang="scss">
+.code {
+  font-size: 16px;
+  line-height: 24px;
+}
+</style>
+
+<style>
+.shiki,
+.shiki span {
+  font-family: 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace !important;
+
+  [data-theme='dark'] & {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+  }
+}
+</style>
