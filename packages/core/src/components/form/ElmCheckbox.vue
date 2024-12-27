@@ -85,7 +85,7 @@ export interface ElmCheckboxProps {
 
 withDefaults(defineProps<ElmCheckboxProps>(), {})
 
-const isChecked = defineModel<boolean>('isChecked')
+const isChecked = defineModel<boolean>({})
 
 function toggleCheck() {
   isChecked.value = !isChecked.value
