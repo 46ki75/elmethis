@@ -58,6 +58,14 @@ onMounted(async () => {
 .shiki span {
   font-family: 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace !important;
 
+  *::selection {
+    background-color: rgba(black, 0.1);
+
+    [data-theme='dark'] & {
+      background-color: rgba(white, 0.15);
+    }
+  }
+
   [data-theme='dark'] & {
     color: var(--shiki-dark) !important;
     background-color: var(--shiki-dark-bg) !important;
