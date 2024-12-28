@@ -1,21 +1,49 @@
 <template>
-  <div :class="$style.container" @click="toggleCheck">
+  <div
+    :class="[
+      $style.container,
+      {
+        [$style['container--disabled']]: disabled
+      }
+    ]"
+    @click="toggleCheck"
+  >
     <div
       :style="{
-        cursor: 'pointer',
         display: 'flex',
         alignItems: 'center',
         gap: '0.5rem'
       }"
     >
-      <svg width="24" height="24" :class="$style.checkbox">
+      <svg width="24" height="24" :class="[$style.checkbox]">
         <rect
           x="4"
           y="4"
           width="16"
           height="16"
-          :class="[$style.rect, { [$style['rect--checked']]: isChecked }]"
+          :class="[
+            $style.rect,
+            {
+              [$style['rect--checked']]: isChecked,
+              [$style['rect--disabled']]: disabled
+            }
+          ]"
           strokeWidth="0.8"
+        />
+
+        <line
+          :class="[
+            $style['disable-slash'],
+            {
+              [$style['disable-slash--disabled']]: disabled
+            }
+          ]"
+          x1="24"
+          y1="0"
+          x2="0"
+          y2="24"
+          strokeWidth="0.5"
+          fill="transparent"
         />
 
         <polyline
@@ -81,9 +109,13 @@ export interface ElmCheckboxProps {
    * The label displayed.
    */
   label?: string
+
+  disabled?: boolean
 }
 
-withDefaults(defineProps<ElmCheckboxProps>(), {})
+withDefaults(defineProps<ElmCheckboxProps>(), {
+  disabled: false
+})
 
 const isChecked = defineModel<boolean>({})
 
@@ -106,8 +138,19 @@ function toggleCheck() {
 
   transition: opacity 200ms;
 
+  cursor: pointer;
+
   &:hover {
-    opacity: 0.8;
+    opacity: 0.6;
+  }
+
+  &--disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+
+    &:hover {
+      opacity: 0.4;
+    }
   }
 }
 
@@ -154,6 +197,14 @@ function toggleCheck() {
   stroke: rgba(255, 255, 255, 0.9);
   [data-theme='dark'] & {
     stroke: rgba(0, 0, 0, 0.9);
+  }
+}
+
+.disable-slash {
+  opacity: 0;
+
+  &--disabled {
+    opacity: 1;
   }
 }
 </style>
