@@ -299,7 +299,7 @@ impl Client {
                         };
 
                         let block =
-                            crate::block::Block::ElmHeading1(crate::block::ElmHeading1 { props });
+                            crate::block::Block::ElmHeading2(crate::block::ElmHeading2 { props });
 
                         blocks.push(block);
                     }
@@ -336,7 +336,7 @@ impl Client {
                         };
 
                         let block =
-                            crate::block::Block::ElmHeading1(crate::block::ElmHeading1 { props });
+                            crate::block::Block::ElmHeading3(crate::block::ElmHeading3 { props });
 
                         blocks.push(block);
                     }
