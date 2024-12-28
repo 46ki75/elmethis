@@ -68,7 +68,7 @@
           fill="transparent"
         />
       </svg>
-      <elm-inline-text :text="label" />
+      <elm-inline-text v-if="label != null" :text="label" />
     </div>
   </div>
 </template>
@@ -80,7 +80,7 @@ export interface ElmCheckboxProps {
   /**
    * The label displayed.
    */
-  label: string
+  label?: string
 }
 
 withDefaults(defineProps<ElmCheckboxProps>(), {})
