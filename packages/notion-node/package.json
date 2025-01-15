@@ -28,7 +28,7 @@
   "dependencies": {
     "@notionhq/client": "^2.2.15",
     "lodash-es": "^4.17.21",
-    "open-graph-scraper": "^6.8.3",
+    "open-graph-scraper": "^6.8.4",
     "sharp": "^0.33.5"
   },
   "devDependencies": {
