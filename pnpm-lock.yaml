@@ -161,8 +161,8 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       open-graph-scraper:
-        specifier: ^6.8.3
-        version: 6.8.3
+        specifier: ^6.8.4
+        version: 6.8.4
       sharp:
         specifier: ^0.33.5
         version: 0.33.5
@@ -3499,8 +3499,8 @@ packages:
   oniguruma-to-es@1.0.0:
     resolution: {integrity: sha512-kihvp0O4lFwf5tZMkfanwQLIZ9ORe9OeOFgZonH0BQeThgwfJiaZFeOfvvJVnJIM9TiVmx0RDD35hUJDR0++rQ==}
 
-  open-graph-scraper@6.8.3:
-    resolution: {integrity: sha512-nzMlmvwoFOcFsghNxtrSMXayxiZKqEN373AbtTGKrOxw6LRXaTay8kBjGpUaTIAc0gsjpnGZloR2uQuNc7QoQA==}
+  open-graph-scraper@6.8.4:
+    resolution: {integrity: sha512-AIhZi5DaQGFY+Kbz6U8ORNw0ZW7ZTS76k8++a/BlMmzZ6FEHNDhVfVBqed5GZ4ery9sHd1OXoNcjgyxoNzIZkg==}
     engines: {node: '>=18.0.0'}
 
   open@8.4.2:
@@ -8005,7 +8005,7 @@ snapshots:
       regex: 5.1.1
       regex-recursion: 5.1.1
 
-  open-graph-scraper@6.8.3:
+  open-graph-scraper@6.8.4:
     dependencies:
       chardet: 2.0.0
       cheerio: 1.0.0
