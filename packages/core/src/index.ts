@@ -69,6 +69,9 @@ import ElmSwitch, { ElmSwitchProps } from './components/form/ElmSwitch.vue'
 import ElmTextField, {
   ElmTextFieldProps
 } from './components/form/ElmTextField.vue'
+import ElmTotp, {
+  ElmTotpProps
+} from './components/form/ElmTotp.vue'
 
 // Headings
 import ElmHeading1, {
@@ -231,6 +234,7 @@ export {
   ElmCheckbox,
   ElmSwitch,
   ElmTextField,
+  ElmTotp,
   ElmHeading1,
   ElmHeading2,
   ElmHeading3,
@@ -299,6 +303,7 @@ export type {
   ElmCheckboxProps,
   ElmSwitchProps,
   ElmTextFieldProps,
+  ElmTotpProps,
   ElmHeading1Props,
   ElmHeading2Props,
   ElmHeading3Props,
