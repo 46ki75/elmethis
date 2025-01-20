@@ -2,7 +2,7 @@
   <div>
     <div :class="$style.container">
       <div
-        v-for="(char, index) in inputModel.split('')"
+        v-for="(char, index) in paddedInputRef.split('')"
         :class="[
           $style['char-box'],
           {
@@ -18,26 +18,26 @@
       </div>
       <BackspaceIcon :class="$style.icon" @click="reset" />
     </div>
+
+    <input
+      aria-hidden
+      type="text"
+      :class="$style['dummy-input']"
+      v-model="inputModel"
+      ref="targetRef"
+      :maxlength="length"
+      @input="onInputChange"
+      :disabled="loading"
+    />
+
+    <div>DEBUG-MODEL: {{ inputModel }}</div>
   </div>
-
-  <input
-    aria-hidden
-    :class="$style['dummy-input']"
-    type="text"
-    v-model="inputModel"
-    ref="inputRef"
-    :maxlength="length"
-    @input="onInputChange"
-    :disabled="loading"
-  />
-
-  <div>DEBUG-MODEL: {{ inputModel }}</div>
 </template>
 
 <script setup lang="ts">
 import { BackspaceIcon } from '@heroicons/vue/24/outline'
 import { useFocus } from '@vueuse/core'
-import { nextTick, onMounted, ref } from 'vue'
+import { nextTick, onMounted, ref, computed } from 'vue'
 
 export interface ElmTotpProps {
   length: number
@@ -50,14 +50,14 @@ const props = withDefaults(defineProps<ElmTotpProps>(), {
   loading: false
 })
 
-const inputModel = defineModel({
-  default: ''
+const inputModel = ref<string>('')
+
+const paddedInputRef = computed(() => {
+  return inputModel.value.padEnd(props.length, ' ')
 })
 
-const inputRef = ref<HTMLInputElement | null>(null)
-
-const { focused } = useFocus(inputRef)
-
+const targetRef = ref<HTMLInputElement | null>(null)
+const { focused } = useFocus(targetRef)
 const selectedIndex = ref<number | null>(0)
 
 const select = (index: number) => {
@@ -66,9 +66,9 @@ const select = (index: number) => {
 }
 
 const selectText = (index: number): void => {
-  if (inputRef.value) {
-    inputRef.value.focus()
-    inputRef.value.setSelectionRange(index, index + 1)
+  if (targetRef.value) {
+    targetRef.value.focus()
+    targetRef.value.setSelectionRange(index, index + 1)
   }
 }
 
@@ -83,19 +83,18 @@ const handleInput = () => {
 }
 
 const onInputChange = () => {
-  const inputValue = inputRef.value?.value ?? ''
-  const paddedValue = inputValue.padEnd(props.length, ' ')
-  inputModel.value = paddedValue
+  const inputValue = targetRef.value?.value ?? ''
+  inputModel.value = inputValue.slice(0, props.length)
   handleInput()
 }
 
 const reset = () => {
-  inputModel.value = ' '.repeat(props.length)
+  inputModel.value = ''
   nextTick(() => select(0))
 }
 
 onMounted(() => {
-  inputModel.value = ' '.repeat(props.length)
+  inputModel.value = ''
   if (props.focusOnMount) nextTick(() => select(0))
 })
 </script>
