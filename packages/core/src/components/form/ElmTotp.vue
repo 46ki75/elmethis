@@ -59,8 +59,9 @@ const { focused } = useFocus(targetRef)
 const selectedIndex = ref<number | null>(0)
 
 const select = (index: number) => {
-  selectText(index)
-  selectedIndex.value = index
+  const maxIndex = Math.min(index, inputModel.value.length)
+  selectText(maxIndex)
+  selectedIndex.value = maxIndex
 }
 
 const selectText = (index: number): void => {
