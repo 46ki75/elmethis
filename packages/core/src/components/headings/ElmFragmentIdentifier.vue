@@ -1,12 +1,20 @@
 <template>
   <div :class="$style.fragment">
-    <HashtagIcon :class="$style.icon" @click="handleHashClick(id)" />
-    <LinkIcon :class="$style.icon" @click="handleLinkClick(id)" />
+    <Icon
+      icon="mdi:hashtag-box-outline"
+      :class="$style.icon"
+      @click="handleHashClick(id)"
+    />
+    <Icon
+      icon="mdi:link-box-variant-outline"
+      :class="$style.icon"
+      @click="handleLinkClick(id)"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { HashtagIcon, LinkIcon } from '@heroicons/vue/24/outline'
+import { Icon } from '@iconify/vue/dist/iconify.js'
 import { useClipboard } from '@vueuse/core'
 import { nextTick, onMounted } from 'vue'
 
@@ -58,10 +66,10 @@ onMounted(() => {
 }
 
 .icon {
-  padding: 0.25rem;
+  padding: 1px;
   border-radius: 0.25rem;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   color: #6987b8;
   transition: background-color 200ms;
   cursor: pointer;
