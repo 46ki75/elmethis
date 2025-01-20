@@ -12,7 +12,11 @@
       :alt="`favicon of ${name ?? href}`"
     />
 
-    <GlobeAsiaAustraliaIcon v-else :class="$style['favicon-svg']" />
+    <Icon
+      icon="material-symbols-light:globe-asia"
+      v-else
+      :class="$style['favicon-svg']"
+    />
 
     <div :class="$style.text">
       <ElmInlineText :text="name ?? href" size=".6rem" />
@@ -21,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { GlobeAsiaAustraliaIcon } from '@heroicons/vue/24/outline'
+import { Icon } from '@iconify/vue/dist/iconify.js'
 import ElmInlineText from '../inline/ElmInlineText.vue'
 
 export interface ElmBookmarkIconProps {
