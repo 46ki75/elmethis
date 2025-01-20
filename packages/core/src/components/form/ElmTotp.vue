@@ -1,39 +1,41 @@
 <template>
   <div>
-    <input
-      :class="$style['dummy-input']"
-      v-model="input"
-      ref="inputRef"
-      type="text"
-      :maxlength="length"
-      :disabled="loading"
-    />
     <div :class="$style.container">
       <div
-        v-for="(char, index) in inputArray"
+        v-for="(char, index) in inputModel.split('')"
         :class="[
           $style['char-box'],
           {
-            [$style.focused]: index + 1 === currentPosition,
+            [$style.focused]: focused && selectedIndex === index,
             [$style.loading]: loading
           }
         ]"
-        @click="focus(index + 1)"
+        @click="select(index)"
       >
-        <span :class="$style.char">
+        <span :class="$style.char" v-if="char !== ' '">
           {{ char }}
         </span>
       </div>
       <BackspaceIcon :class="$style.icon" @click="reset" />
     </div>
   </div>
+
+  <input
+    type="text"
+    v-model="inputModel"
+    ref="inputRef"
+    :maxlength="length"
+    @input="onInputChange"
+    :disabled="loading"
+  />
+
+  <div>DEBUG-MODEL: {{ inputModel }}</div>
 </template>
 
 <script setup lang="ts">
 import { BackspaceIcon } from '@heroicons/vue/24/outline'
-import { onKeyStroke, useFocus } from '@vueuse/core'
-import { nextTick } from 'process'
-import { onMounted, ref, watch } from 'vue'
+import { useFocus } from '@vueuse/core'
+import { nextTick, onMounted, ref } from 'vue'
 
 export interface ElmTotpProps {
   length: number
@@ -46,7 +48,7 @@ const props = withDefaults(defineProps<ElmTotpProps>(), {
   loading: false
 })
 
-const input = defineModel({
+const inputModel = defineModel({
   default: ''
 })
 
@@ -54,90 +56,49 @@ const inputRef = ref<HTMLInputElement | null>(null)
 
 const { focused } = useFocus(inputRef)
 
-const inputArray = ref<Array<string | null>>(new Array(props.length).fill(null))
+const selectedIndex = ref<number | null>(0)
 
-const currentPosition = ref(0)
-
-const reset = () => {
-  input.value = ''
-  focus(1)
+const select = (index: number) => {
+  selectText(index)
+  selectedIndex.value = index
 }
 
-watch(input, (newVal) => {
-  const result: Array<string | null> = newVal.split('')
-
-  while (result.length < props.length) {
-    result.push(null)
-  }
-
-  inputArray.value = result
-})
-
-const focus = (toPosition: number): void => {
-  if (inputRef.value && !props.loading) {
-    const inputElement = inputRef.value
-    const cursorPosition = Math.min(toPosition, inputElement.value.length + 1)
-    inputElement.setSelectionRange(cursorPosition - 1, cursorPosition)
-    inputElement.focus()
-    currentPosition.value = cursorPosition
-    if (toPosition <= 0) {
-      focused.value = false
-    }
+const selectText = (index: number): void => {
+  if (inputRef.value) {
+    inputRef.value.focus()
+    inputRef.value.setSelectionRange(index, index + 1)
   }
 }
-
-onKeyStroke(() => {
-  if (focused.value) {
-    nextTick(handleInput)
-  }
-})
 
 const handleInput = () => {
-  const currentLength = input.value.length
-  if (currentLength > currentPosition.value) {
-    focus(currentPosition.value + 1)
-  } else if (currentLength < props.length) {
-    focus(currentLength + 1)
-  } else if (currentLength === props.length) {
-    focus(0)
-  }
-}
-
-watch(
-  () => props.loading,
-  (newVal) => {
-    if (newVal) {
-      nextTick(() => focus(0))
+  if (focused.value && selectedIndex.value !== null) {
+    if (selectedIndex.value < props.length - 1) {
+      select(selectedIndex.value + 1)
     } else {
-      nextTick(() => focus(1))
+      select(0)
     }
   }
-)
-
-watch(focused, (newVal) => {
-  if (!newVal) {
-    focus(0)
-  }
-})
-
-if (props.focusOnMount) {
-  onMounted(() => {
-    nextTick(() => {
-      focus(1)
-    })
-  })
 }
+
+const onInputChange = () => {
+  const inputValue = inputRef.value?.value ?? ''
+  const paddedValue = inputValue.padEnd(props.length, ' ')
+  inputModel.value = paddedValue
+  handleInput()
+}
+
+const reset = () => {
+  inputModel.value = ' '.repeat(props.length)
+  nextTick(() => select(0))
+}
+
+onMounted(() => {
+  inputModel.value = ' '.repeat(props.length)
+  if (props.focusOnMount) nextTick(() => select(0))
+})
 </script>
 
 <style module lang="scss">
-.dummy-input {
-  all: unset;
-  height: 1px;
-  width: 1px;
-  opacity: 0;
-  user-select: none;
-}
-
 .container {
   display: flex;
   align-items: center;
