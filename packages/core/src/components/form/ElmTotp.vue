@@ -22,11 +22,13 @@
           {{ char }}
         </span>
       </div>
+      <BackspaceIcon :class="$style.icon" @click="reset" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { BackspaceIcon } from '@heroicons/vue/24/outline'
 import { onKeyStroke, useFocus } from '@vueuse/core'
 import { nextTick } from 'process'
 import { onMounted, ref, watch } from 'vue'
@@ -51,6 +53,11 @@ const { focused } = useFocus(inputRef)
 const inputArray = ref<Array<string | null>>(new Array(props.length).fill(null))
 
 const currentPosition = ref(0)
+
+const reset = () => {
+  input.value = ''
+  focus(1)
+}
 
 watch(input, (newVal) => {
   const result: Array<string | null> = newVal.split('')
@@ -116,6 +123,7 @@ if (props.focusOnMount) {
 
 .container {
   display: flex;
+  align-items: center;
   gap: 0.5rem;
   cursor: pointer;
 }
@@ -138,9 +146,30 @@ if (props.focusOnMount) {
 
 .focused {
   transition:
-    border-color 50ms,
-    background-color 50ms;
+    border-color 150ms,
+    background-color 150ms;
   border-color: #6987b8;
   background-color: rgba(#6987b8, 0.05);
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  padding: 0.5rem;
+  border-radius: 50%;
+
+  transition: background-color 200ms;
+
+  color: rgba(black, 0.7);
+  &:hover {
+    background-color: rgba(black, 0.05);
+  }
+
+  [data-theme='dark'] & {
+    color: rgba(white, 0.7);
+    &:hover {
+      background-color: rgba(white, 0.05);
+    }
+  }
 }
 </style>
