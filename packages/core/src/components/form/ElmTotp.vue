@@ -157,7 +157,8 @@ if (props.focusOnMount) {
 
   transition:
     border-color 100ms,
-    background-color 100ms;
+    background-color 100ms,
+    opacity 100ms;
 }
 
 .focused {
