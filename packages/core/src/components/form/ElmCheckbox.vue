@@ -9,12 +9,68 @@
       }"
     >
       <svg width="24" height="24" :class="$style.checkbox">
+        <circle
+          cx="0"
+          cy="0"
+          r="2"
+          :class="$style.loading"
+          :style="{ opacity: props.loading ? 1 : 0 }"
+        >
+          <animate
+            attributeName="cx"
+            values="4; 20; 20; 4; 4"
+            dur="1.2s"
+            repeatCount="indefinite"
+            keySplines="0.25 0.1 0.25 1; 0.42 0 0.58 1; 0.25 0.1 0.25 1; 0.42 0 0.58 1"
+            calcMode="spline"
+          />
+          <animate
+            attributeName="cy"
+            values="4; 4; 20; 20; 4"
+            dur="1.2s"
+            repeatCount="indefinite"
+            keySplines="0.25 0.1 0.25 1; 0.42 0 0.58 1; 0.25 0.1 0.25 1; 0.42 0 0.58 1"
+            calcMode="spline"
+          />
+        </circle>
+
+        <circle
+          cx="20"
+          cy="20"
+          r="2"
+          :class="$style.loading"
+          :style="{ opacity: props.loading ? 1 : 0 }"
+        >
+          <animate
+            attributeName="cx"
+            values="20; 4; 4; 20; 20"
+            dur="1.2s"
+            repeatCount="indefinite"
+            keySplines="0.25 0.1 0.25 1; 0.42 0 0.58 1; 0.25 0.1 0.25 1; 0.42 0 0.58 1"
+            calcMode="spline"
+          />
+          <animate
+            attributeName="cy"
+            values="20; 20; 4; 4; 20"
+            dur="1.2s"
+            repeatCount="indefinite"
+            keySplines="0.25 0.1 0.25 1; 0.42 0 0.58 1; 0.25 0.1 0.25 1; 0.42 0 0.58 1"
+            calcMode="spline"
+          />
+        </circle>
+
         <rect
           x="4"
           y="4"
           width="16"
           height="16"
-          :class="[$style.rect, { [$style['rect--checked']]: isChecked }]"
+          :class="[
+            $style.rect,
+            {
+              [$style['rect--checked']]: isChecked,
+              [$style['rect--loading']]: props.loading
+            }
+          ]"
           strokeWidth="0.8"
         />
 
@@ -81,14 +137,20 @@ export interface ElmCheckboxProps {
    * The label displayed.
    */
   label: string
+
+  loading?: boolean
 }
 
-withDefaults(defineProps<ElmCheckboxProps>(), {})
+const props = withDefaults(defineProps<ElmCheckboxProps>(), {
+  loading: false
+})
 
 const isChecked = defineModel<boolean>({})
 
 function toggleCheck() {
-  isChecked.value = !isChecked.value
+  if (!props.loading) {
+    isChecked.value = !isChecked.value
+  }
 }
 </script>
 
@@ -123,11 +185,24 @@ function toggleCheck() {
 .rect {
   transition: all 0.2s;
 
+  &--loading {
+    opacity: 0.3;
+  }
+
   &--checked {
     fill: rgba(0, 0, 0, 0.8);
     [data-theme='dark'] & {
       fill: rgba(255, 255, 255, 0.8);
     }
+  }
+}
+
+.loading {
+  transition: opacity 200ms;
+
+  fill: rgba(black, 0.7);
+  [data-theme='dark'] & {
+    fill: rgba(white, 0.7);
   }
 }
 
