@@ -7,9 +7,8 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, ref } from 'vue'
-
-import { CommandLineIcon } from '@heroicons/vue/24/outline'
+import { defineAsyncComponent, h, ref } from 'vue'
+import { Icon as Iconify } from '@iconify/vue/dist/iconify.js'
 import { watch } from 'vue'
 
 export interface ElmLanguageIconProps {
@@ -26,6 +25,12 @@ export interface ElmLanguageIconProps {
 
 const props = withDefaults(defineProps<ElmLanguageIconProps>(), {
   size: 24
+})
+
+const CommandLineIcon = h(Iconify, {
+  icon: 'heroicons:command-line',
+  width: props.size,
+  height: props.size
 })
 
 const render = () => {
