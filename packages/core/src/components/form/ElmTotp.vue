@@ -1,27 +1,33 @@
 <template>
-  <input v-model="input" ref="inputRef" type="text" :maxlength="length" />
+  <input
+    :class="$style['dummy-input']"
+    v-model="input"
+    ref="inputRef"
+    type="text"
+    :maxlength="length"
+  />
   <div :class="$style.container">
     <div
       v-for="(char, index) in inputArray"
       :class="[
         $style['char-box'],
         {
-          [$style.focused]: index + 1 === position
+          [$style.focused]: index + 1 === currentPosition
         }
       ]"
-      @click="focus(index)"
+      @click="focus(index + 1)"
     >
       <span :class="$style.char">
         {{ char }}
       </span>
     </div>
   </div>
-  <div>DEBUG: {{ input }}</div>
-  <div>POSITION: {{ position }}</div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { onKeyStroke, useFocus } from '@vueuse/core'
+import { nextTick } from 'process'
+import { onMounted, ref, watch } from 'vue'
 
 export interface ElmTotpProps {
   length: number
@@ -35,9 +41,11 @@ const input = defineModel({
 
 const inputRef = ref<HTMLInputElement | null>(null)
 
+const { focused } = useFocus(inputRef)
+
 const inputArray = ref<Array<string | null>>(new Array(props.length).fill(null))
 
-const position = ref(0)
+const currentPosition = ref(0)
 
 watch(input, (newVal) => {
   const result: Array<string | null> = newVal.split('')
@@ -52,27 +60,54 @@ watch(input, (newVal) => {
 const focus = (toPosition: number): void => {
   if (inputRef.value) {
     const inputElement = inputRef.value
-    const cursorPosition = Math.min(toPosition, inputElement.value.length) + 1
+    const cursorPosition = Math.min(toPosition, inputElement.value.length + 1)
     inputElement.setSelectionRange(cursorPosition - 1, cursorPosition)
     inputElement.focus()
-    position.value = cursorPosition
+    currentPosition.value = cursorPosition
+    if (toPosition <= 0) {
+      focused.value = false
+    }
   }
 }
 
-watch(input, (newVal) => {
-  const currentLength = newVal.length
-  if (currentLength < props.length) {
-    focus(currentLength)
-  } else {
-    focus(position.value - 1)
+onKeyStroke(() => {
+  if (focused.value) {
+    nextTick(() => {
+      const currentLength = input.value.length
+      if (currentLength > currentPosition.value) {
+        focus(currentPosition.value + 1)
+      } else if (currentLength < props.length) {
+        focus(currentLength + 1)
+      } else if (currentLength === props.length) {
+        focus(0)
+      }
+    })
   }
+})
+
+watch(focused, (newVal) => {
+  if (!newVal) {
+    focus(0)
+  }
+})
+
+onMounted(() => {
+  focus(1)
 })
 </script>
 
 <style module lang="scss">
+.dummy-input {
+  all: unset;
+  height: 0px;
+  width: 0px;
+  pointer-events: none;
+}
+
 .container {
   display: flex;
   gap: 0.5rem;
+  cursor: pointer;
 }
 
 .char-box {
