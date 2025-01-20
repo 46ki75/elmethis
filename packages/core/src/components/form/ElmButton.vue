@@ -1,20 +1,17 @@
 <template>
-  <button
-    :class="[
-      $style.button,
-      {
-        [$style.enable]: !loading && !disabled,
-        [$style.normal]: !primary,
-        [$style.primary]: primary
-      }
-    ]"
-    :style="{
-      display: block ? 'flex' : 'inline-flex',
-      width: block ? '100%' : 'auto',
-      cursor: disabled ? 'not-allowed' : loading ? 'progress' : 'pointer',
-      '--opacity': disabled ? 0.5 : undefined
-    }"
-  >
+  <button :class="[
+    $style.button,
+    {
+      [$style.enable]: !loading && !disabled,
+      [$style.normal]: !primary,
+      [$style.primary]: primary
+    }
+  ]" :style="{
+    display: block ? 'flex' : 'inline-flex',
+    width: block ? '100%' : 'auto',
+    cursor: disabled ? 'not-allowed' : loading ? 'progress' : 'pointer',
+    '--opacity': disabled ? 0.6 : undefined
+  }" @click="handleClick">
     <transition mode="out-in">
       <ElmDotLoadingIcon v-if="loading" size="1.5rem" />
       <span v-else :class="$style.flex">
@@ -47,14 +44,22 @@ export interface ElmButtonProps {
    * Whether the button is primary.
    */
   primary?: boolean
+
+  onClick: () => void
 }
 
-withDefaults(defineProps<ElmButtonProps>(), {
+const props = withDefaults(defineProps<ElmButtonProps>(), {
   loading: false,
   block: false,
   disabled: false,
   primary: false
 })
+
+const handleClick = () => {
+  if (!props.loading && !props.disabled && props.onClick) {
+    props.onClick()
+  }
+}
 </script>
 
 <style module lang="scss">
@@ -63,6 +68,7 @@ withDefaults(defineProps<ElmButtonProps>(), {
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
+  border-radius: 0.25rem;
 
   box-sizing: border-box;
   padding: 0.5rem 1.5rem;
@@ -74,6 +80,8 @@ withDefaults(defineProps<ElmButtonProps>(), {
   transition:
     opacity 200ms,
     transform 200ms;
+
+  opacity: var(--opacity);
 }
 
 .normal {

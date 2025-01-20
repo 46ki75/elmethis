@@ -9,7 +9,9 @@ const meta: Meta<typeof ElmButton> = {
   tags: ['autodocs'],
   args: {},
   render: (args) => ({
-    setup: () => ({ args }),
+    setup: () => ({
+      args: { ...args, onClick: () => window.alert('clicked') }
+    }),
     components: { ElmButton, ElmInlineText },
     template: '<ElmButton v-bind="args">elm-button</ElmButton>'
   })
@@ -21,31 +23,11 @@ type Story = StoryObj<typeof meta>
 export const Primary: Story = {}
 
 export const Block: Story = {
-  args: { block: true },
-  render: (args) => ({
-    setup: () => ({ args }),
-    components: { ElmButton, ElmInlineText },
-    template: '<ElmButton block>elm-button</ElmButton>'
-  })
+  args: { block: true }
 }
 
 export const Loading: Story = {
-  args: { loading: true, block: true },
-  render: (args) => ({
-    setup: () => ({ args }),
-    components: { ElmButton, ElmInlineText },
-    template: '<ElmButton v-bind="args">elm-button</ElmButton>'
-  })
-}
-
-export const Icon: Story = {
-  args: { block: true },
-  render: (args) => ({
-    setup: () => ({ args }),
-    components: { ElmButton, PencilSquareIcon },
-    template:
-      '<ElmButton v-bind="args"><PencilSquareIcon style="width: 16px;" />elm-button</ElmButton>'
-  })
+  args: { loading: true, block: true }
 }
 
 export const Flex: Story = {
