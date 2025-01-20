@@ -1,25 +1,27 @@
 <template>
-  <input
-    :class="$style['dummy-input']"
-    v-model="input"
-    ref="inputRef"
-    type="text"
-    :maxlength="length"
-  />
-  <div :class="$style.container">
-    <div
-      v-for="(char, index) in inputArray"
-      :class="[
-        $style['char-box'],
-        {
-          [$style.focused]: index + 1 === currentPosition
-        }
-      ]"
-      @click="focus(index + 1)"
-    >
-      <span :class="$style.char">
-        {{ char }}
-      </span>
+  <div>
+    <input
+      :class="$style['dummy-input']"
+      v-model="input"
+      ref="inputRef"
+      type="text"
+      :maxlength="length"
+    />
+    <div :class="$style.container">
+      <div
+        v-for="(char, index) in inputArray"
+        :class="[
+          $style['char-box'],
+          {
+            [$style.focused]: index + 1 === currentPosition
+          }
+        ]"
+        @click="focus(index + 1)"
+      >
+        <span :class="$style.char">
+          {{ char }}
+        </span>
+      </div>
     </div>
   </div>
 </template>
@@ -31,9 +33,12 @@ import { onMounted, ref, watch } from 'vue'
 
 export interface ElmTotpProps {
   length: number
+  focusOnMount?: boolean
 }
 
-const props = withDefaults(defineProps<ElmTotpProps>(), {})
+const props = withDefaults(defineProps<ElmTotpProps>(), {
+  focusOnMount: true
+})
 
 const input = defineModel({
   default: ''
@@ -91,17 +96,22 @@ watch(focused, (newVal) => {
   }
 })
 
-onMounted(() => {
-  focus(1)
-})
+if (props.focusOnMount) {
+  onMounted(() => {
+    nextTick(() => {
+      focus(1)
+    })
+  })
+}
 </script>
 
 <style module lang="scss">
 .dummy-input {
   all: unset;
-  height: 0px;
-  width: 0px;
-  pointer-events: none;
+  height: 1px;
+  width: 1px;
+  opacity: 0;
+  user-select: none;
 }
 
 .container {
