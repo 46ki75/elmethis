@@ -29,8 +29,6 @@
       @input="onInputChange"
       :disabled="loading"
     />
-
-    <div>DEBUG-MODEL: {{ inputModel }}</div>
   </div>
 </template>
 
