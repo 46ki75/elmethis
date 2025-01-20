@@ -1,8 +1,15 @@
 <template>
-  <div :class="$style.container" @click="toggleCheck">
+  <div
+    :class="[
+      $style.container,
+      {
+        [$style['container--disable']]: props.disable
+      }
+    ]"
+    @click="toggleCheck"
+  >
     <div
       :style="{
-        cursor: 'pointer',
         display: 'flex',
         alignItems: 'center',
         gap: '0.5rem'
@@ -138,7 +145,15 @@ export interface ElmCheckboxProps {
    */
   label: string
 
+  /**
+   * Whether the checkbox is in a loading state.
+   */
   loading?: boolean
+
+  /**
+   * Whether the checkbox is disabled.
+   */
+  disable?: boolean
 }
 
 const props = withDefaults(defineProps<ElmCheckboxProps>(), {
@@ -148,7 +163,7 @@ const props = withDefaults(defineProps<ElmCheckboxProps>(), {
 const isChecked = defineModel<boolean>({})
 
 function toggleCheck() {
-  if (!props.loading) {
+  if (!props.loading && !props.disable) {
     isChecked.value = !isChecked.value
   }
 }
@@ -165,11 +180,21 @@ function toggleCheck() {
   width: fit-content;
   font-family: sans-serif;
   user-select: none;
+  cursor: pointer;
 
   transition: opacity 200ms;
 
   &:hover {
     opacity: 0.8;
+  }
+
+  &--disable {
+    opacity: 0.45;
+    cursor: not-allowed;
+
+    &:hover {
+      opacity: 0.45;
+    }
   }
 }
 
