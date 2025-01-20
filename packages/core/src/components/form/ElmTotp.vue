@@ -6,6 +6,7 @@
       ref="inputRef"
       type="text"
       :maxlength="length"
+      :disabled="loading"
     />
     <div :class="$style.container">
       <div
@@ -36,10 +37,12 @@ import { onMounted, ref, watch } from 'vue'
 export interface ElmTotpProps {
   length: number
   focusOnMount?: boolean
+  loading?: boolean
 }
 
 const props = withDefaults(defineProps<ElmTotpProps>(), {
-  focusOnMount: true
+  focusOnMount: true,
+  loading: false
 })
 
 const input = defineModel({
@@ -70,7 +73,7 @@ watch(input, (newVal) => {
 })
 
 const focus = (toPosition: number): void => {
-  if (inputRef.value) {
+  if (inputRef.value && !props.loading) {
     const inputElement = inputRef.value
     const cursorPosition = Math.min(toPosition, inputElement.value.length + 1)
     inputElement.setSelectionRange(cursorPosition - 1, cursorPosition)
@@ -84,18 +87,31 @@ const focus = (toPosition: number): void => {
 
 onKeyStroke(() => {
   if (focused.value) {
-    nextTick(() => {
-      const currentLength = input.value.length
-      if (currentLength > currentPosition.value) {
-        focus(currentPosition.value + 1)
-      } else if (currentLength < props.length) {
-        focus(currentLength + 1)
-      } else if (currentLength === props.length) {
-        focus(0)
-      }
-    })
+    nextTick(handleInput)
   }
 })
+
+const handleInput = () => {
+  const currentLength = input.value.length
+  if (currentLength > currentPosition.value) {
+    focus(currentPosition.value + 1)
+  } else if (currentLength < props.length) {
+    focus(currentLength + 1)
+  } else if (currentLength === props.length) {
+    focus(0)
+  }
+}
+
+watch(
+  () => props.loading,
+  (newVal) => {
+    if (newVal) {
+      nextTick(() => focus(0))
+    } else {
+      nextTick(() => focus(1))
+    }
+  }
+)
 
 watch(focused, (newVal) => {
   if (!newVal) {
@@ -146,8 +162,8 @@ if (props.focusOnMount) {
 
 .focused {
   transition:
-    border-color 150ms,
-    background-color 150ms;
+    border-color 100ms,
+    background-color 100ms;
   border-color: #6987b8;
   background-color: rgba(#6987b8, 0.05);
 }
