@@ -12,7 +12,8 @@
         :class="$style.label"
         :style="{ '--color': isFocused ? '#59b57c' : undefined }"
       >
-        {{ label }}
+        <span>{{ label }}</span>
+        <span v-if="required" :class="$style.requierd">*</span>
       </label>
       <ElmInlineText
         v-if="maxLength != null"
@@ -36,6 +37,7 @@
         :style="{
           cursor: disabled ? 'not-allowed' : loading ? 'progress' : 'auto'
         }"
+        :aria-required="required"
       />
 
       <div :class="$style['icon-box']">
@@ -82,12 +84,14 @@ export interface ElmTextFieldProps {
   loading?: boolean
   icon?: VNode | FunctionalComponent
   isPassword?: boolean
+  required?: boolean
 }
 
 const props = withDefaults(defineProps<ElmTextFieldProps>(), {
   disabled: false,
   loading: false,
-  isPassword: false
+  isPassword: false,
+  required: false
 })
 
 const input = defineModel({ default: '' })
@@ -110,14 +114,17 @@ const handleVisibleSwitch = () => {
     transform-origin: 0%;
     transform: scaleX(0);
   }
+
   40% {
     transform-origin: 0%;
     transform: scaleX(1);
   }
+
   60% {
     transform-origin: 100%;
     transform: scaleX(1);
   }
+
   100% {
     transform-origin: 100%;
     transform: scaleX(0);
@@ -190,6 +197,12 @@ const handleVisibleSwitch = () => {
   [data-theme='dark'] & {
     color: var(--color, rgba(white, 0.65));
   }
+}
+
+.requierd {
+  padding-inline: 0.25rem;
+  color: #c56565;
+  font-weight: bold;
 }
 
 .body {
