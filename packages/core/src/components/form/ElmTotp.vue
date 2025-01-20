@@ -21,6 +21,8 @@
   </div>
 
   <input
+    aria-hidden
+    :class="$style['dummy-input']"
     type="text"
     v-model="inputModel"
     ref="inputRef"
@@ -99,6 +101,11 @@ onMounted(() => {
 </script>
 
 <style module lang="scss">
+.dummy-input {
+  all: unset;
+  height: 0px;
+}
+
 .container {
   display: flex;
   align-items: center;
@@ -120,6 +127,11 @@ onMounted(() => {
     border-color 100ms,
     background-color 100ms,
     opacity 100ms;
+
+  background-color: rgba(black, 0.025);
+  [data-theme='dark'] & {
+    background-color: rgba(white, 0.025);
+  }
 }
 
 .focused {
