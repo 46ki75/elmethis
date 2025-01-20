@@ -56,6 +56,9 @@ import ElmRectangleWave, {
 import ElmBlockFallback, {
   ElmBlockFallbackProps
 } from './components/fallback/ElmBlockFallback.vue'
+import ElmSpinner, {
+  ElmSpinnerProps
+} from './components/fallback/ElmSpinner.vue'
 
 // from
 import ElmButton, { ElmButtonProps } from './components/form/ElmButton.vue'
@@ -223,6 +226,7 @@ export {
   ElmStatusMessage,
   ElmRectangleWave,
   ElmBlockFallback,
+  ElmSpinner,
   ElmButton,
   ElmCheckbox,
   ElmSwitch,
@@ -290,6 +294,7 @@ export type {
   ElmStatusMessageProps,
   ElmRectangleWaveProps,
   ElmBlockFallbackProps,
+  ElmSpinnerProps,
   ElmButtonProps,
   ElmCheckboxProps,
   ElmSwitchProps,
