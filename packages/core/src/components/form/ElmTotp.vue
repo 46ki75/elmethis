@@ -14,7 +14,8 @@
         :class="[
           $style['char-box'],
           {
-            [$style.focused]: index + 1 === currentPosition
+            [$style.focused]: index + 1 === currentPosition,
+            [$style.loading]: loading
           }
         ]"
         @click="focus(index + 1)"
@@ -153,19 +154,32 @@ if (props.focusOnMount) {
   height: 4rem;
   border: solid 1px #ccc;
   border-radius: 0.25rem;
+
+  transition:
+    border-color 100ms,
+    background-color 100ms;
+}
+
+.focused {
+  border-color: #6987b8;
+  background-color: rgba(#6987b8, 0.05);
+}
+
+.loading {
+  opacity: 0.5;
+  background-color: rgba(black, 0.2);
+  [data-theme='dark'] & {
+    background-color: rgba(white, 0.2);
+  }
 }
 
 .char {
   font-size: 1.75rem;
   font-family: monospace;
-}
-
-.focused {
-  transition:
-    border-color 100ms,
-    background-color 100ms;
-  border-color: #6987b8;
-  background-color: rgba(#6987b8, 0.05);
+  color: rgba(black, 0.7);
+  [data-theme='dark'] & {
+    color: rgba(white, 0.7);
+  }
 }
 
 .icon {
