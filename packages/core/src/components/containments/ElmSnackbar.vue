@@ -2,7 +2,7 @@
   <div :class="$style.snackbar">
     <ElmInlineText v-if="props.label != null" :text="props.label" />
     <component v-else :is="() => props.children" />
-    <XMarkIcon :class="$style.icon" @click="close" />
+    <Icon icon="mdi:cross-circle-outline" :class="$style.icon" @click="close" />
     <div
       :class="$style.progress"
       :style="{
@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { XMarkIcon } from '@heroicons/vue/24/outline'
+import { Icon } from '@iconify/vue'
 import { VNode } from 'vue'
 import ElmInlineText from '../inline/ElmInlineText.vue'
 
