@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import ElmTextField from './ElmTextField.vue'
-import { EnvelopeIcon } from '@heroicons/vue/24/outline'
+
+import { Icon } from '@iconify/vue'
+import { h } from 'vue'
+
+const EnvelopeIcon = h(Icon, { icon: 'heroicons:envelope' })
 
 const meta: Meta<typeof ElmTextField> = {
   title: 'Components/Form/ElmTextField',

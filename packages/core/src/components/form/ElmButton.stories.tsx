@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import ElmButton from './ElmButton.vue'
 import ElmInlineText from '../inline/ElmInlineText.vue'
-import { PencilSquareIcon } from '@heroicons/vue/24/outline'
+
+import { Icon } from '@iconify/vue'
+import { h } from 'vue'
+
+const PencilSquareIcon = h(Icon, { icon: 'heroicons:pencil-square-16-solid' })
 
 const meta: Meta<typeof ElmButton> = {
   title: 'Components/Form/ElmButton',

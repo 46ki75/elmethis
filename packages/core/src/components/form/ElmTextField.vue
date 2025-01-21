@@ -45,13 +45,18 @@
           <ElmInlineText v-if="suffix != null" :text="suffix" />
         </span>
 
-        <component
+        <Icon
           v-if="isPassword"
-          :is="type === 'text' ? EyeIcon : EyeSlashIcon"
+          :icon="type === 'text' ? 'heroicons:eye' : 'heroicons:eye-slash'"
           :class="$style.icon"
           @click="handleVisibleSwitch"
         />
-        <BackspaceIcon :class="$style.icon" @click="handleDelete" />
+
+        <Icon
+          icon="heroicons:backspace-16-solid"
+          :class="$style.icon"
+          @click="handleDelete"
+        />
       </div>
     </div>
 
@@ -65,9 +70,8 @@
 </template>
 
 <script setup lang="ts">
-import { BackspaceIcon } from '@heroicons/vue/24/solid'
+import { Icon } from '@iconify/vue'
 import ElmInlineText from '../inline/ElmInlineText.vue'
-import { EyeIcon, EyeSlashIcon } from '@heroicons/vue/24/outline'
 import { ref, type VNode, type FunctionalComponent } from 'vue'
 import { nanoid } from 'nanoid'
 
