@@ -8,14 +8,14 @@
   >
     <template v-for="(link, index) in links">
       <div :class="$style['link-container']" @click="link.onClick">
-        <component
+        <Icon
           :class="[$style.icon, $style.fade]"
-          :is="
+          :icon="
             index === 0
-              ? HomeIcon
+              ? 'material-symbols:house'
               : index === links.length - 1
-                ? DocumentTextIcon
-                : FolderOpenIcon
+                ? 'material-symbols:file-copy-rounded'
+                : 'material-symbols:folder'
           "
           :style="{
             '--delay': `${index * 100}ms`
@@ -29,8 +29,8 @@
           }"
         />
       </div>
-
-      <ChevronRightIcon
+      <Icon
+        icon="mdi-light:chevron-right"
         v-if="links.length !== index + 1"
         :class="[$style.chevron, $style.fade]"
         :style="{
@@ -42,12 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  ChevronRightIcon,
-  DocumentTextIcon,
-  FolderOpenIcon,
-  HomeIcon
-} from '@heroicons/vue/24/outline'
+import { Icon } from '@iconify/vue/dist/iconify.js'
 import ElmInlineText from '../inline/ElmInlineText.vue'
 import { ref } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
@@ -89,6 +84,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 
   .icon {
     width: 20px;
+    height: 20px;
     color: rgba(black, 0.7);
     [data-theme='dark'] & {
       color: rgba(white, 0.7);
@@ -96,8 +92,8 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   }
 
   .chevron {
-    width: 12px;
-    height: 12px;
+    width: 16px;
+    height: 16px;
     color: gray;
   }
 
