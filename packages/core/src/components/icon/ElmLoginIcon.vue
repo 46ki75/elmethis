@@ -1,18 +1,18 @@
 <template>
   <ElmTooltip>
     <template #original>
-      <component
+      <Icon
         :class="$style.icon"
         :style="{
           '--width': size,
-          '--color': isLogin ? '#b36472' : '#6987b8'
+          '--color': isLoading ? 'gray' : isLogin ? '#b36472' : '#6987b8'
         }"
-        :is="
+        :icon="
           isLoading
-            ? h(ElmDotLoadingIcon, { size: size })
+            ? 'svg-spinners:ring-resize'
             : isLogin
-              ? ArrowRightStartOnRectangleIcon
-              : ArrowRightEndOnRectangleIcon
+              ? 'mdi:logout-variant'
+              : 'mdi:login-variant'
         "
       />
     </template>
@@ -25,14 +25,9 @@
 </template>
 
 <script setup lang="ts">
-import {
-  ArrowRightEndOnRectangleIcon,
-  ArrowRightStartOnRectangleIcon
-} from '@heroicons/vue/24/outline'
+import { Icon } from '@iconify/vue'
 import ElmTooltip from '../containments/ElmTooltip.vue'
 import ElmInlineText from '../inline/ElmInlineText.vue'
-import ElmDotLoadingIcon from './ElmDotLoadingIcon.vue'
-import { h } from 'vue'
 
 export interface ElmLoginIconProps {
   /**
@@ -60,6 +55,7 @@ withDefaults(defineProps<ElmLoginIconProps>(), {
 .icon {
   box-sizing: border-box;
   width: var(--width);
+  height: var(--width);
   padding: 0.25rem;
   border-radius: 0.25rem;
   color: var(--color);
