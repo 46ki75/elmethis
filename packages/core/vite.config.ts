@@ -19,9 +19,6 @@ export default defineConfig({
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'elmethis',
       fileName: 'elmethis'
-    },
-    rollupOptions: {
-      external: ['vue'],
     }
   },
   esbuild: {
