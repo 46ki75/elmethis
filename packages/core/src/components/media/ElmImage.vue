@@ -1,6 +1,7 @@
 <template>
   <transition mode="out-in">
     <div v-if="error" :class="$style.error">
+      <PhotoIcon :style="{ height: 24 }" />
       <ElmInlineText text="Error loading image" color="#c56565" size="1.5rem" />
     </div>
 
@@ -60,6 +61,7 @@ import ElmDotLoadingIcon from '../icon/ElmDotLoadingIcon.vue'
 import { onKeyStroke, useImage } from '@vueuse/core'
 import type { Property } from 'csstype'
 import ElmInlineText from '../inline/ElmInlineText.vue'
+import { PhotoIcon } from '@heroicons/vue/24/outline'
 
 export interface ElmImageProps {
   /**

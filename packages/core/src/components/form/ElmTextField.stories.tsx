@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import ElmTextField from './ElmTextField.vue'
-import { Icon } from '@iconify/vue/dist/iconify.js'
-import { h } from 'vue'
+import { EnvelopeIcon } from '@heroicons/vue/24/outline'
 
 const meta: Meta<typeof ElmTextField> = {
   title: 'Components/Form/ElmTextField',
@@ -19,6 +18,6 @@ export const Primary: Story = {
     maxLength: 20,
     suffix: '@46ki75.com',
     placeholder: 'Enter your email',
-    icon: h(Icon, { icon: 'mdi:envelope-outline' })
+    icon: EnvelopeIcon
   }
 }

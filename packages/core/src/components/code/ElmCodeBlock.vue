@@ -15,20 +15,14 @@
 
       <ElmTooltip>
         <template #original>
-          <Icon
-            width="24"
-            height="24"
-            :icon="
-              copied
-                ? 'mdi:clipboard-check-multiple-outline'
-                : 'mdi:clipboard-multiple-outline'
-            "
+          <component
             :class="$style['copy-icon']"
             @click="
               () => {
                 copy(code)
               }
             "
+            :is="copied ? ClipboardDocumentCheckIcon : ClipboardDocumentIcon"
           />
         </template>
         <template #tooltip>
@@ -47,6 +41,10 @@
 </template>
 
 <script setup lang="ts">
+import {
+  ClipboardDocumentCheckIcon,
+  ClipboardDocumentIcon
+} from '@heroicons/vue/24/outline'
 import ElmLanguageIcon from '../icon/ElmLanguageIcon.vue'
 import ElmInlineText from '../inline/ElmInlineText.vue'
 import ElmShikiHighlighter from './ElmShikiHighlighter.vue'
@@ -54,7 +52,6 @@ import { useClipboard, useIntersectionObserver } from '@vueuse/core'
 import ElmTooltip from '../containments/ElmTooltip.vue'
 import type { Property } from 'csstype'
 import { ref } from 'vue'
-import { Icon } from '@iconify/vue/dist/iconify.js'
 
 export interface ElmCodeBlockProps {
   /**

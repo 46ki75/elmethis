@@ -2,10 +2,7 @@
   <div :class="$style.toggle" :style="{ '--margin-block': margin }">
     <div :class="$style.summary" @click="handleClick">
       <div :style="{ display: 'flex', gap: '0.5rem' }">
-        <Icon
-          icon="mdi:chevron-right"
-          width="24"
-          height="24"
+        <ChevronRightIcon
           :class="$style.icon"
           :style="{ '--rotate': isOpen ? '90deg' : '0deg' }"
         />
@@ -14,10 +11,7 @@
           <slot v-else name="summary" />
         </div>
       </div>
-      <Icon
-        icon="mdi:plus"
-        width="24"
-        height="24"
+      <PlusIcon
         :class="$style.icon"
         :style="{
           '--rotate': isOpen ? '135deg' : '0deg',
@@ -36,7 +30,7 @@
 
 <script setup lang="ts">
 import ElmInlineText from '../inline/ElmInlineText.vue'
-import { Icon } from '@iconify/vue/dist/iconify.js'
+import { ChevronRightIcon, PlusIcon } from '@heroicons/vue/24/outline'
 import type { Property } from 'csstype'
 
 export interface ElmToggleProps {

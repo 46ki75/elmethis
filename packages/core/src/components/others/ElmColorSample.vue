@@ -10,8 +10,7 @@
           @click="copy(hex)"
         >
           <transition>
-            <Icon
-              icon="mdi:check"
+            <CheckIcon
               v-if="copied"
               :style="{ width: '16px', color: 'white' }"
             />
@@ -32,7 +31,7 @@
 import { parseToHsl, parseToRgb, rgbToColorString } from 'polished'
 import ElmTooltip from '../containments/ElmTooltip.vue'
 import { useClipboard } from '@vueuse/core'
-import { Icon } from '@iconify/vue/dist/iconify.js'
+import { CheckIcon } from '@heroicons/vue/24/outline'
 
 export interface ElmColorSampleProps {
   /**

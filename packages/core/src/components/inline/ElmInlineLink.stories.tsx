@@ -12,7 +12,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
-  args: { text: 'elm-inline-link', href: 'https://google.com' }
+  args: { text: 'elm-inline-link', href: 'https://example.com' }
 }
 
 export const OnClick: Story = {

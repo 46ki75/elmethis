@@ -1,26 +1,17 @@
 <template>
   <transition mode="out-in">
     <div v-if="status === 'pending'" :class="$style.wrapper">
-      <Icon
-        icon="heroicons:arrow-path-solid"
-        :class="$style.icon"
-        :style="{ color: '#6987b8' }"
-      />
+      <ArrowPathIcon :class="$style.icon" :style="{ color: '#6987b8' }" />
       <ElmInlineText :text="message" color="#6987b8" />
     </div>
 
     <div v-else-if="status === 'error'" :class="$style.wrapper">
-      <Icon
-        icon="ic:outline-error"
-        :class="$style.icon"
-        :style="{ color: '#c56565' }"
-      />
+      <XMarkIcon :class="$style.icon" :style="{ color: '#c56565' }" />
       <ElmInlineText :text="message" color="#c56565" />
     </div>
 
     <div v-else-if="status === 'warning'" :class="$style.wrapper">
-      <Icon
-        icon="heroicons:exclamation-triangle"
+      <ExclamationTriangleIcon
         :class="$style.icon"
         :style="{ color: '#cdb57b' }"
       />
@@ -28,18 +19,19 @@
     </div>
 
     <div v-else :class="$style.wrapper">
-      <Icon
-        icon="heroicons:check-circle"
-        :class="$style.icon"
-        :style="{ color: '#59b57c' }"
-      />
+      <CheckIcon :class="$style.icon" :style="{ color: '#59b57c' }" />
       <ElmInlineText :text="message" color="#59b57c" />
     </div>
   </transition>
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@iconify/vue/dist/iconify.js'
+import {
+  ArrowPathIcon,
+  CheckIcon,
+  ExclamationTriangleIcon,
+  XMarkIcon
+} from '@heroicons/vue/24/outline'
 import ElmInlineText from '../inline/ElmInlineText.vue'
 
 export interface ElmStatusMessageProps {

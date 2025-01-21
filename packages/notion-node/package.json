@@ -28,11 +28,11 @@
   "dependencies": {
     "@notionhq/client": "^2.2.15",
     "lodash-es": "^4.17.21",
-    "open-graph-scraper": "^6.9.0",
+    "open-graph-scraper": "^6.8.4",
     "sharp": "^0.33.5"
   },
   "devDependencies": {
-    "@elmethis/core": "1.0.0-alpha.100",
+    "@elmethis/core": "1.0.0-alpha.92",
     "@types/lodash-es": "^4.17.12",
     "dotenv": "^16.4.7",
     "tsx": "^4.19.2",

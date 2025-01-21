@@ -29,12 +29,12 @@
 
         <div :class="$style.date" v-if="createdAt != null || updatedAt != null">
           <template v-if="createdAt != null">
-            <Icon icon="mdi:calendar-edit" :class="$style.icon" />
+            <CalendarDaysIcon :class="$style.icon" />
             <ElmInlineText :text="`${createdAt}`" size=".8rem" />
           </template>
 
           <template v-if="updatedAt != null">
-            <Icon icon="mdi:calendar-sync" :class="$style.icon" />
+            <ArrowPathIcon :class="$style.icon" />
             <ElmInlineText :text="`${updatedAt}`" size=".8rem" />
           </template>
         </div>
@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@iconify/vue/dist/iconify.js'
+import { CalendarDaysIcon, ArrowPathIcon } from '@heroicons/vue/24/outline'
 import ElmInlineLink from '../inline/ElmInlineLink.vue'
 import ElmInlineText from '../inline/ElmInlineText.vue'
 import ElmImage from '../media/ElmImage.vue'
@@ -224,7 +224,6 @@ function handleClick(event: MouseEvent) {
 
   .icon {
     width: 16px;
-    height: 16px;
 
     color: rgba(black, 0.7);
     [data-theme='dark'] & {

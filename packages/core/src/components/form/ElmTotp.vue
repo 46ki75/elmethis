@@ -16,7 +16,7 @@
           {{ char }}
         </span>
       </div>
-      <Icon :icon="'heroicons:backspace'" :class="$style.icon" @click="reset" />
+      <BackspaceIcon :class="$style.icon" @click="reset" />
     </div>
 
     <input
@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@iconify/vue/dist/iconify.js'
+import { BackspaceIcon } from '@heroicons/vue/24/outline'
 import { useFocus } from '@vueuse/core'
 import { nextTick, onMounted, ref, computed } from 'vue'
 
@@ -59,9 +59,8 @@ const { focused } = useFocus(targetRef)
 const selectedIndex = ref<number | null>(0)
 
 const select = (index: number) => {
-  const maxIndex = Math.min(index, inputModel.value.length)
-  selectText(maxIndex)
-  selectedIndex.value = maxIndex
+  selectText(index)
+  selectedIndex.value = index
 }
 
 const selectText = (index: number): void => {

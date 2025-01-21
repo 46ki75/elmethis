@@ -1,7 +1,7 @@
 <template>
   <div :class="$style.file" :style="{ '--margin-block': margin }">
     <div :class="$style['left-container']">
-      <Icon icon="mdi:folder-file-outline" :class="$style.icon" />
+      <DocumentIcon :class="$style.icon" />
       <ElmInlineText
         :text="
           name ?? getLastPathSegmentWithoutQueryOrHash(src) ?? 'unknown file'
@@ -13,8 +13,7 @@
       <span :style="{ opacity: 0.6 }"
         ><ElmInlineText v-if="filesize" :text="filesize"
       /></span>
-      <Icon
-        icon="mdi:tray-download"
+      <ArrowDownTrayIcon
         :class="$style['download-icon']"
         @click="
           () => {
@@ -32,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@iconify/vue/dist/iconify.js'
+import { ArrowDownTrayIcon, DocumentIcon } from '@heroicons/vue/24/outline'
 import ElmInlineText from '../inline/ElmInlineText.vue'
 import { Property } from 'csstype'
 
@@ -98,7 +97,6 @@ async function downloadFile(url: string, filename: string) {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-radius: 0.25rem;
 
   background-color: rgba(white, 0.2);
   [data-theme='dark'] & {
@@ -113,7 +111,6 @@ async function downloadFile(url: string, filename: string) {
 
     .icon {
       width: 20px;
-      height: 20px;
       transition: color 200ms;
       color: rgba(black, 0.8);
       [data-theme='dark'] & {
@@ -131,8 +128,6 @@ async function downloadFile(url: string, filename: string) {
     .download-icon {
       padding: 0.125rem;
       width: 20px;
-      height: 20px;
-      border-radius: 0.125rem;
       cursor: pointer;
       transition:
         color 200ms,
