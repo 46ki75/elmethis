@@ -127,8 +127,8 @@ importers:
         specifier: ^3.5.2
         version: 3.5.2(vite@6.0.9(@types/node@22.10.7)(jiti@2.4.0)(sass@1.83.1)(terser@5.36.0)(tsx@4.19.2))
       vite-plugin-dts:
-        specifier: ^4.5.0
-        version: 4.5.0(@types/node@22.10.7)(rollup@4.24.3)(typescript@5.7.3)(vite@6.0.9(@types/node@22.10.7)(jiti@2.4.0)(sass@1.83.1)(terser@5.36.0)(tsx@4.19.2))
+        specifier: ^4.4.0
+        version: 4.4.0(@types/node@22.10.7)(rollup@4.24.3)(typescript@5.7.3)(vite@6.0.9(@types/node@22.10.7)(jiti@2.4.0)(sass@1.83.1)(terser@5.36.0)(tsx@4.19.2))
       vue:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.7.3)
@@ -4169,8 +4169,9 @@ packages:
     peerDependencies:
       vite: '>2.0.0-0'
 
-  vite-plugin-dts@4.5.0:
-    resolution: {integrity: sha512-M1lrPTdi7gilLYRZoLmGYnl4fbPryVYsehPN9JgaxjJKTs8/f7tuAlvCCvOLB5gRDQTTKnptBcB0ACsaw2wNLw==}
+  vite-plugin-dts@4.4.0:
+    resolution: {integrity: sha512-CJ6phvnnPLF+aFk8Jz2ZcMBLleJ4gKJOXb9We5Kzmsp5bPuD+uMDeVefjFNYSXZ+wdcqnf+Yp2P7oA5hBKQTlQ==}
+    engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       typescript: '*'
       vite: '*'
@@ -8548,12 +8549,12 @@ snapshots:
     dependencies:
       vite: 6.0.9(@types/node@22.10.7)(jiti@2.4.0)(sass@1.83.1)(terser@5.36.0)(tsx@4.19.2)
 
-  vite-plugin-dts@4.5.0(@types/node@22.10.7)(rollup@4.24.3)(typescript@5.7.3)(vite@6.0.9(@types/node@22.10.7)(jiti@2.4.0)(sass@1.83.1)(terser@5.36.0)(tsx@4.19.2)):
+  vite-plugin-dts@4.4.0(@types/node@22.10.7)(rollup@4.24.3)(typescript@5.7.3)(vite@6.0.9(@types/node@22.10.7)(jiti@2.4.0)(sass@1.83.1)(terser@5.36.0)(tsx@4.19.2)):
     dependencies:
       '@microsoft/api-extractor': 7.49.1(@types/node@22.10.7)
       '@rollup/pluginutils': 5.1.4(rollup@4.24.3)
       '@volar/typescript': 2.4.11
-      '@vue/language-core': 2.2.0(typescript@5.7.3)
+      '@vue/language-core': 2.1.10(typescript@5.7.3)
       compare-versions: 6.1.1
       debug: 4.4.0(supports-color@9.4.0)
       kolorist: 1.8.0
