@@ -27,9 +27,6 @@ export default defineConfig({
       }
     }
   },
-  esbuild: {
-    jsx: 'preserve'
-  },
   css: {
     modules: {
       scopeBehaviour: 'local'
