@@ -9,8 +9,8 @@
     }"
   >
     <div :class="$style.header">
-      <component
-        :is="colors[type].icon"
+      <Icon
+        :icon="colors[type].icon"
         :class="$style.icon"
         :style="{ '--icon-color': colors[type].code }"
       />
@@ -23,26 +23,20 @@
 </template>
 
 <script setup lang="ts">
-import {
-  ChartBarSquareIcon,
-  LightBulbIcon,
-  ShieldCheckIcon,
-  ExclamationTriangleIcon,
-  XCircleIcon
-} from '@heroicons/vue/24/outline'
+import { Icon } from '@iconify/vue'
 import ElmInlineText from '../inline/ElmInlineText.vue'
-import { ref, type FunctionalComponent } from 'vue'
+import { ref } from 'vue'
 import { rgba } from 'polished'
 import { useIntersectionObserver } from '@vueuse/core'
 
 export type AlertType = 'note' | 'tip' | 'important' | 'warning' | 'caution'
 
-const colors: Record<AlertType, { code: string; icon: FunctionalComponent }> = {
-  note: { code: '#6987b8', icon: ChartBarSquareIcon },
-  tip: { code: '#59b57c', icon: LightBulbIcon },
-  important: { code: '#9771bd', icon: ShieldCheckIcon },
-  warning: { code: '#b8a36e', icon: ExclamationTriangleIcon },
-  caution: { code: '#b36472', icon: XCircleIcon }
+const colors: Record<AlertType, { code: string; icon: string }> = {
+  note: { code: '#6987b8', icon: 'mdi:information-slab-box-outline' },
+  tip: { code: '#59b57c', icon: 'heroicons:light-bulb' },
+  important: { code: '#9771bd', icon: 'heroicons:shield-exclamation' },
+  warning: { code: '#b8a36e', icon: 'heroicons:exclamation-triangle' },
+  caution: { code: '#b36472', icon: 'heroicons:x-circle' }
 }
 
 export interface ElmCalloutProps {
@@ -98,6 +92,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 
 .icon {
   width: 20px;
+  height: 20px;
   color: var(--icon-color);
 }
 </style>
