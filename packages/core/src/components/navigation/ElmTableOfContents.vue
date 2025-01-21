@@ -14,13 +14,13 @@
         />
       </sup>
       <ElmInlineText :text="heading.text" />
-      <BarsArrowDownIcon :class="$style.icon" />
+      <Icon icon="heroicons:bars-arrow-down" :class="$style.icon" />
     </a>
   </nav>
 </template>
 
 <script setup lang="ts">
-import { BarsArrowDownIcon } from '@heroicons/vue/24/outline'
+import { Icon } from '@iconify/vue'
 import ElmInlineText from '../inline/ElmInlineText.vue'
 
 export interface ElmTableOfContentsProps {
@@ -65,6 +65,7 @@ withDefaults(defineProps<ElmTableOfContentsProps>(), {})
 
     .icon {
       width: 12px;
+      height: 12px;
       color: #6987b8;
     }
   }
