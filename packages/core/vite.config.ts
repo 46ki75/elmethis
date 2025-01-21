@@ -18,7 +18,7 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'elmethis',
-      fileName: 'elmethis'
+      fileName: 'elmethis',
     },
     rollupOptions: {
       external: ['vue'],
@@ -27,7 +27,7 @@ export default defineConfig({
           vue: 'Vue'
         }
       }
-    }
+    },
   },
   css: {
     modules: {
