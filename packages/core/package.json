@@ -1,6 +1,6 @@
 {
   "name": "@elmethis/core",
-  "version": "1.0.0-alpha.115",
+  "version": "1.0.0-alpha.116",
   "publishConfig": {
     "access": "public"
   },
@@ -68,6 +68,7 @@
   "scripts": {
     "build": "vue-tsc && vite build",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "prepublishOnly": "pnpm run build"
   }
 }
