@@ -1,7 +1,7 @@
 <template>
   <div :class="$style.block" :style="{ '--size': `${size}px` }">
     <transition mode="out-in">
-      <Icon :class="$style.icon" />
+      <Icon :class="$style.icon" :key="language" />
     </transition>
   </div>
 </template>
@@ -41,16 +41,16 @@ const render = () => {
 
     case 'javascript':
     case 'js':
-      return defineAsyncComponent({
-        loader: () => import('./languages/JavaScript.vue'),
-        loadingComponent: Fallback
+      return h(Iconify, {
+        icon: 'devicon:javascript',
+        class: style.icon
       })
 
     case 'typescript':
     case 'ts':
-      return defineAsyncComponent({
-        loader: () => import('./languages/TypeScript.vue'),
-        loadingComponent: Fallback
+      return h(Iconify, {
+        icon: 'devicon:typescript',
+        class: style.icon
       })
 
     case 'bash':
@@ -64,15 +64,15 @@ const render = () => {
     case 'tf':
     case 'terraform':
     case 'hcl':
-      return defineAsyncComponent({
-        loader: () => import('./languages/Terraform.vue'),
-        loadingComponent: Fallback
+      return h(Iconify, {
+        icon: 'devicon:terraform',
+        class: style.icon
       })
 
     case 'html':
-      return defineAsyncComponent({
-        loader: () => import('./languages/Html.vue'),
-        loadingComponent: Fallback
+      return h(Iconify, {
+        icon: 'devicon:html5',
+        class: style.icon
       })
 
     case 'css':
@@ -82,74 +82,74 @@ const render = () => {
       })
 
     case 'npm':
-      return defineAsyncComponent({
-        loader: () => import('./languages/Npm.vue'),
-        loadingComponent: Fallback
+      return h(Iconify, {
+        icon: 'devicon:npm',
+        class: style.icon
       })
 
     case 'java':
-      return defineAsyncComponent({
-        loader: () => import('./languages/Java.vue'),
-        loadingComponent: Fallback
+      return h(Iconify, {
+        icon: 'devicon:java',
+        class: style.icon
       })
 
     case 'kotlin':
     case 'kt':
-      return defineAsyncComponent({
-        loader: () => import('./languages/Kotlin.vue'),
-        loadingComponent: Fallback
+      return h(Iconify, {
+        icon: 'devicon:kotlin',
+        class: style.icon
       })
 
     case 'go':
     case 'golang':
-      return defineAsyncComponent({
-        loader: () => import('./languages/Go.vue'),
-        loadingComponent: Fallback
+      return h(Iconify, {
+        icon: 'logos:go',
+        class: style.icon
       })
 
     case 'python':
     case 'py':
-      return defineAsyncComponent({
-        loader: () => import('./languages/Python.vue'),
-        loadingComponent: Fallback
+      return h(Iconify, {
+        icon: 'devicon:python',
+        class: style.icon
       })
 
     case 'sql':
-      return defineAsyncComponent({
-        loader: () => import('./languages/Sql.vue'),
-        loadingComponent: Fallback
+      return h(Iconify, {
+        icon: 'vscode-icons:file-type-sql',
+        class: style.icon
       })
 
     case 'json':
-      return defineAsyncComponent({
-        loader: () => import('./languages/Json.vue'),
-        loadingComponent: Fallback
+      return h(Iconify, {
+        icon: 'devicon:json',
+        class: style.icon
       })
 
     case 'lua':
-      return defineAsyncComponent({
-        loader: () => import('./languages/Lua.vue'),
-        loadingComponent: Fallback
+      return h(Iconify, {
+        icon: 'devicon:lua',
+        class: style.icon
       })
 
     case 'cs':
     case 'csharp':
-      return defineAsyncComponent({
-        loader: () => import('./languages/Csharp.vue'),
-        loadingComponent: Fallback
+      return h(Iconify, {
+        icon: 'devicon:csharp',
+        class: style.icon
       })
 
     case 'cpp':
     case 'c++':
-      return defineAsyncComponent({
-        loader: () => import('./languages/Cpp.vue'),
-        loadingComponent: Fallback
+      return h(Iconify, {
+        icon: 'devicon:cplusplus',
+        class: style.icon
       })
 
     case 'c':
-      return defineAsyncComponent({
-        loader: () => import('./languages/C.vue'),
-        loadingComponent: Fallback
+      return h(Iconify, {
+        icon: 'devicon:c',
+        class: style.icon
       })
 
     default:
