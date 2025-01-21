@@ -1,6 +1,6 @@
 {
   "name": "@elmethis/core",
-  "version": "1.0.0-alpha.106",
+  "version": "1.0.0-alpha.107",
   "publishConfig": {
     "access": "public"
   },
@@ -67,6 +67,7 @@
     "vue-tsc": "^2.2.0"
   },
   "dependencies": {
+    "@heroicons/vue": "^2.2.0",
     "nanoid": "^5.0.9"
   }
 }
