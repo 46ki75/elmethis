@@ -15,14 +15,18 @@
 
       <ElmTooltip>
         <template #original>
-          <component
+          <Icon
             :class="$style['copy-icon']"
             @click="
               () => {
                 copy(code)
               }
             "
-            :is="copied ? ClipboardDocumentCheckIcon : ClipboardDocumentIcon"
+            :icon="
+              copied
+                ? 'mdi:clipboard-check-multiple-outline'
+                : 'mdi:clipboard-multiple-outline'
+            "
           />
         </template>
         <template #tooltip>
@@ -41,10 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  ClipboardDocumentCheckIcon,
-  ClipboardDocumentIcon
-} from '@heroicons/vue/24/outline'
+import { Icon } from '@iconify/vue'
 import ElmLanguageIcon from '../icon/ElmLanguageIcon.vue'
 import ElmInlineText from '../inline/ElmInlineText.vue'
 import ElmShikiHighlighter from './ElmShikiHighlighter.vue'
@@ -136,6 +137,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   box-sizing: border-box;
   padding: 0.125rem;
   width: 26px;
+  height: 26px;
   border-radius: 0.125rem;
   cursor: pointer;
 
