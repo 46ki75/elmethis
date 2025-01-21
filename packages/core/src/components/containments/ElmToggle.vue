@@ -2,7 +2,8 @@
   <div :class="$style.toggle" :style="{ '--margin-block': margin }">
     <div :class="$style.summary" @click="handleClick">
       <div :style="{ display: 'flex', gap: '0.5rem' }">
-        <ChevronRightIcon
+        <Icon
+          icon="mdi:chevron-right"
           :class="$style.icon"
           :style="{ '--rotate': isOpen ? '90deg' : '0deg' }"
         />
@@ -11,7 +12,8 @@
           <slot v-else name="summary" />
         </div>
       </div>
-      <PlusIcon
+      <Icon
+        icon="mdi:plus"
         :class="$style.icon"
         :style="{
           '--rotate': isOpen ? '135deg' : '0deg',
@@ -30,7 +32,7 @@
 
 <script setup lang="ts">
 import ElmInlineText from '../inline/ElmInlineText.vue'
-import { ChevronRightIcon, PlusIcon } from '@heroicons/vue/24/outline'
+import { Icon } from '@iconify/vue'
 import type { Property } from 'csstype'
 
 export interface ElmToggleProps {
@@ -60,7 +62,9 @@ const handleClick = (event: Event): void => {
 <style module lang="scss">
 .toggle {
   margin-block: var(--margin-block);
-  box-shadow: 0 0 0.25rem rgba(black, 0.05);
+  box-shadow: 0 0 0.25rem rgba(black, 0.25);
+  border-radius: 0.25rem;
+  overflow: hidden;
 }
 .summary {
   box-sizing: border-box;
@@ -73,7 +77,6 @@ const handleClick = (event: Event): void => {
   align-items: center;
   gap: 0.5rem;
 
-  border: solid 1px rgba(black, 0.1);
   background-color: rgba(black, 0.05);
   [data-theme='dark'] & {
     border-color: rgba(white, 0.1);
@@ -83,6 +86,7 @@ const handleClick = (event: Event): void => {
 
 .icon {
   width: 1.25rem;
+  height: 1.25rem;
   color: var(--color, #59b57c);
   transform: rotate(var(--rotate, 0deg));
   transition: transform 200ms;
@@ -95,7 +99,7 @@ const handleClick = (event: Event): void => {
 
   border: solid 1px rgba(black, 0.1);
   border-top: none;
-  background-color: rgba(black, 0.025);
+  background-color: rgba(white, 0.025);
   [data-theme='dark'] & {
     border-color: rgba(white, 0.1);
     background-color: rgba(white, 0.025);
