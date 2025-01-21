@@ -16,7 +16,8 @@
           {{ char }}
         </span>
       </div>
-      <BackspaceIcon :class="$style.icon" @click="reset" />
+
+      <Icon icon="heroicons:backspace" :class="$style.icon" @click="reset" />
     </div>
 
     <input
@@ -33,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { BackspaceIcon } from '@heroicons/vue/24/outline'
+import { Icon } from '@iconify/vue'
 import { useFocus } from '@vueuse/core'
 import { nextTick, onMounted, ref, computed } from 'vue'
 
