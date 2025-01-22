@@ -168,8 +168,8 @@ importers:
         version: 0.33.5
     devDependencies:
       '@elmethis/core':
-        specifier: 1.0.0-alpha.92
-        version: 1.0.0-alpha.92
+        specifier: 1.0.0-alpha.134
+        version: 1.0.0-alpha.134
       '@types/lodash-es':
         specifier: ^4.17.12
         version: 4.17.12
@@ -575,8 +575,8 @@ packages:
     peerDependencies:
       postcss: ^8.4
 
-  '@elmethis/core@1.0.0-alpha.92':
-    resolution: {integrity: sha512-cDKuU1BQ2ahar9EzhtlzSehOo45T93itPYMBbWZSt9JPITfsOSzIDuIt33GCIYuMQ3Hg3JMsA+BLSD7Cp/aeRQ==}
+  '@elmethis/core@1.0.0-alpha.134':
+    resolution: {integrity: sha512-DcyOej5/7ZQSA1o1YaJTLOE1awVLgzeMgIikuYv4nvMNNfmLiz350SL7+keupDbrpmpAT71MMZUUATR1Wx691Q==}
 
   '@emnapi/runtime@1.3.1':
     resolution: {integrity: sha512-kEBmG8KyqtxJZv+ygbEim+KCGtIq1fC22Ms3S4ziXmYKm8uyoLX0MHONVKwp+9opg390VaKRNt4a7A9NwmpNhw==}
@@ -5009,7 +5009,7 @@ snapshots:
     dependencies:
       postcss: 8.5.1
 
-  '@elmethis/core@1.0.0-alpha.92':
+  '@elmethis/core@1.0.0-alpha.134':
     dependencies:
       nanoid: 5.0.9
 
