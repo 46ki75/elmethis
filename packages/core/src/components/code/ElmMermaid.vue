@@ -11,9 +11,22 @@ import ElmBlockFallback from '../fallback/ElmBlockFallback.vue'
 
 export interface ElmMermaidProps {
   code: string
+
+  themeVariables?: any
 }
 
-const props = withDefaults(defineProps<ElmMermaidProps>(), {})
+const props = withDefaults(defineProps<ElmMermaidProps>(), {
+  themeVariables: {
+    git0: '#b8a36e',
+    git1: '#59b57c',
+    git2: '#6987b8',
+    git3: '#9771bd',
+    git4: '#c9699e',
+    git5: '#b36472',
+    git6: '#bf7e71',
+    git7: '#868e9c'
+  }
+})
 
 const dataUrl = ref<string | null>(null)
 
@@ -22,7 +35,10 @@ onMounted(async () => {
     const mermaidModule = await import('mermaid')
     const mermaid = mermaidModule.default ?? mermaidModule
 
-    mermaid.initialize({ startOnLoad: true })
+    mermaid.initialize({
+      startOnLoad: true,
+      themeVariables: props.themeVariables
+    })
     const { svg } = await mermaid.render('mermaid-svg', props.code)
 
     const base64 = btoa(

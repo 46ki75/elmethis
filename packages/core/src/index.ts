@@ -10,6 +10,7 @@ import ElmPrismHighlighter, {
   ElmPrismHighlighterProps
 } from './components/code/ElmPrismHighlighter.vue'
 import ElmKatex, { ElmKatexProps } from './components/code/ElmKatex.vue'
+import ElmMermaid, { ElmMermaidProps } from './components/code/ElmMermaid.vue'
 
 // containments
 import ElmColumn, {
@@ -215,6 +216,7 @@ export {
   ElmCodeBlock,
   ElmPrismHighlighter,
   ElmKatex,
+  ElmMermaid,
   ElmColumn,
   ElmColumnList,
   ElmDesktopWindow,
@@ -284,6 +286,7 @@ export type {
   ElmCodeBlockProps,
   ElmPrismHighlighterProps,
   ElmKatexProps,
+  ElmMermaidProps,
   ElmColumnProps,
   ElmColumnListProps,
   ElmDesktopWindowProps,
