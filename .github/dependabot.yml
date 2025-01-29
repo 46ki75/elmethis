@@ -22,6 +22,11 @@ updates:
       postcss-updates:
         patterns:
           - '*postcss*'
+    labels:
+      - 'dependencies'
+      - 'npm'
+    reviewers:
+      - '46ki75'
 
   - package-ecosystem: 'npm'
     directories:
@@ -30,3 +35,8 @@ updates:
     schedule:
       interval: 'daily'
     target-branch: 'main'
+    labels:
+      - 'dependencies'
+      - 'npm'
+    reviewers:
+      - '46ki75'
