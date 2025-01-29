@@ -6,7 +6,6 @@
 </template>
 
 <script setup lang="ts">
-// import { Mermaid } from 'mermaid'
 import { onMounted, ref } from 'vue'
 import ElmBlockFallback from '../fallback/ElmBlockFallback.vue'
 
