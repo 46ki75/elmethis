@@ -6,9 +6,6 @@ import ElmTag, { ElmTagProps } from './components/badge/ElmTag.vue'
 import ElmCodeBlock, {
   ElmCodeBlockProps
 } from './components/code/ElmCodeBlock.vue'
-import ElmPrismHighlighter, {
-  ElmPrismHighlighterProps
-} from './components/code/ElmPrismHighlighter.vue'
 import ElmKatex, { ElmKatexProps } from './components/code/ElmKatex.vue'
 import ElmMermaid, { ElmMermaidProps } from './components/code/ElmMermaid.vue'
 
@@ -214,7 +211,6 @@ export {
   ElmBadge,
   ElmTag,
   ElmCodeBlock,
-  ElmPrismHighlighter,
   ElmKatex,
   ElmMermaid,
   ElmColumn,
@@ -284,7 +280,6 @@ export type {
   ElmBadgeProps,
   ElmTagProps,
   ElmCodeBlockProps,
-  ElmPrismHighlighterProps,
   ElmKatexProps,
   ElmMermaidProps,
   ElmColumnProps,
