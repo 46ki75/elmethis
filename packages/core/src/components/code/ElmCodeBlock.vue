@@ -39,7 +39,7 @@
       </ElmTooltip>
     </div>
     <div :class="$style.code">
-      <ElmShikiHighlighter :code="code" :language="language" />
+      <AsyncElmShikiHighlighter :code="code" :language="language" />
     </div>
   </div>
 </template>
@@ -48,11 +48,11 @@
 import { Icon } from '@iconify/vue'
 import ElmLanguageIcon from '../icon/ElmLanguageIcon.vue'
 import ElmInlineText from '../inline/ElmInlineText.vue'
-import ElmShikiHighlighter from './ElmShikiHighlighter.vue'
 import { useClipboard, useIntersectionObserver } from '@vueuse/core'
 import ElmTooltip from '../containments/ElmTooltip.vue'
 import type { Property } from 'csstype'
-import { ref } from 'vue'
+import { defineAsyncComponent, ref } from 'vue'
+import ElmBlockFallback from '../fallback/ElmBlockFallback.vue'
 
 export interface ElmCodeBlockProps {
   /**
@@ -79,6 +79,11 @@ export interface ElmCodeBlockProps {
 
 const props = withDefaults(defineProps<ElmCodeBlockProps>(), {
   language: 'txt'
+})
+
+const AsyncElmShikiHighlighter = defineAsyncComponent({
+  loader: () => import('./ElmShikiHighlighter.vue'),
+  loadingComponent: ElmBlockFallback
 })
 
 const { copy, copied } = useClipboard({ source: props.code })
