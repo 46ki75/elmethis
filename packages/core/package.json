@@ -32,7 +32,7 @@
     "@heroicons/vue": "^2.2.0",
     "@iconify/vue": "^4.3.0",
     "@notionhq/client": "^2.2.15",
-    "@storybook/addon-essentials": "^8.5.2",
+    "@storybook/addon-essentials": "^8.5.3",
     "@storybook/addon-interactions": "^8.5.2",
     "@storybook/addon-links": "^8.5.2",
     "@storybook/addon-onboarding": "^8.5.2",
