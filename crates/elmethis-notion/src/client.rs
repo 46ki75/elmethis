@@ -48,6 +48,7 @@ impl Client {
 
                     let response = reqwest::Client::new()
                         .get(&bookmark.url)
+                        .header("user-agent", "Rust - reqwest")
                         .send()
                         .await?
                         .text()
@@ -55,12 +56,34 @@ impl Client {
 
                     let document = scraper::Html::parse_document(&response);
 
+                    // title
+
+                    let title = document
+                        .select(&scraper::Selector::parse("title")?)
+                        .next()
+                        .map(|element| element.text().collect::<String>());
+
                     let og_title_selector = scraper::Selector::parse("meta[property='og:title']")?;
 
                     if let Some(element) = document.select(&og_title_selector).next() {
                         if let Some(content) = element.value().attr("content") {
-                            props.title = content.to_string();
+                            props.title = Some(content.to_string());
                         }
+                    }
+
+                    if let Some(title) = title {
+                        props.title = Some(title);
+                    }
+
+                    // description
+
+                    let description = document
+                        .select(&scraper::Selector::parse("meta[name='description']")?)
+                        .next()
+                        .map(|element| element.value().attr("content").unwrap().to_string());
+
+                    if let Some(description) = description {
+                        props.description = Some(description);
                     }
 
                     let og_description_selector =
@@ -68,7 +91,7 @@ impl Client {
 
                     if let Some(element) = document.select(&og_description_selector).next() {
                         if let Some(content) = element.value().attr("content") {
-                            props.description = content.to_string();
+                            props.description = Some(content.to_string());
                         }
                     }
 
@@ -76,7 +99,7 @@ impl Client {
 
                     if let Some(element) = document.select(&og_image_selector).next() {
                         if let Some(content) = element.value().attr("content") {
-                            props.image = content.to_string();
+                            props.image = Some(content.to_string());
                         }
                     }
 

@@ -8,19 +8,23 @@
       :style="{ '--margin-block': margin }"
       @click="handleClick"
     >
-      <div :class="$style.image">
+      <div v-if="image != null" :class="$style.image">
         <ElmImage :src="image" />
       </div>
 
       <div :class="$style.typography">
-        <div :class="$style.title"><ElmInlineText :text="title" bold /></div>
+        <div :class="$style.title">
+          <ElmInlineText :text="title ?? 'No title provided'" bold />
+        </div>
 
         <div>
           <ElmInlineText
             :text="
-              description.length > 100
-                ? description.slice(0, 100) + '...'
-                : description
+              description == null
+                ? 'No description provided'
+                : description.length > 100
+                  ? description.slice(0, 100) + '...'
+                  : description
             "
             size=".8rem"
             :style="{ opacity: 0.6 }"
@@ -40,7 +44,13 @@
         </div>
 
         <div v-if="!hideUrl && url != null" :class="$style.link">
-          <div><ElmInlineLink :text="url" href="#" size=".8rem" /></div>
+          <img
+            v-if="favicon"
+            :src="favicon"
+            alt="favicon"
+            :class="$style.favicon"
+          />
+          <ElmInlineText :text="`${url}`" size=".8rem" color="#6987b8" />
         </div>
       </div>
     </a>
@@ -49,7 +59,6 @@
 
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import ElmInlineLink from '../inline/ElmInlineLink.vue'
 import ElmInlineText from '../inline/ElmInlineText.vue'
 import ElmImage from '../media/ElmImage.vue'
 import type { Property } from 'csstype'
@@ -69,7 +78,7 @@ export interface ElmBookmarkProps {
   /**
    * The title of the bookmark.
    */
-  title: string
+  title?: string
 
   /**
    * The description of the bookmark.
@@ -80,7 +89,7 @@ export interface ElmBookmarkProps {
    * The image to display.
    * This can be a URL or a base64-encoded image.
    */
-  image: string
+  image?: string
 
   /**
    * The URL to navigate to.
@@ -107,6 +116,11 @@ export interface ElmBookmarkProps {
    * The margin of the bookmark.
    */
   margin?: Property.MarginBlock
+
+  /**
+   * The URL of the favicon.
+   */
+  favicon?: string
 }
 
 const props = withDefaults(defineProps<ElmBookmarkProps>(), {
@@ -127,18 +141,31 @@ function handleClick(event: MouseEvent) {
 <style module lang="scss">
 .parent {
   container-type: inline-size;
+  border-radius: 0.25rem;
+  box-shadow: 0 0 0.125rem rgba(black, 0.1);
+  overflow: hidden;
+
+  transition:
+    background-color 200ms,
+    transform 200ms;
+
+  &:hover {
+    background-color: rgba(#6987b8, 0.1);
+    transform: translateX(-0.125rem) translateY(-0.125rem);
+  }
+
+  &:active {
+    background-color: rgba(#59b57c, 0.1);
+    transform: translateX(0) translateY(0);
+  }
 }
 
 .bookmark {
   all: unset;
   margin-block: var(--margin-block);
   display: flex;
-  box-shadow: 0 0 0.125rem rgba(black, 0.15);
   cursor: pointer;
-  transition:
-    background-color 200ms,
-    transform 200ms;
-  background-color: rgba(white, 0.2);
+  background-color: rgba(white, 0.5);
 
   [data-theme='dark'] & {
     background-color: rgba(black, 0.2);
@@ -152,16 +179,6 @@ function handleClick(event: MouseEvent) {
       flex-direction: column;
       height: auto;
     }
-  }
-
-  &:hover {
-    background-color: rgba(#6987b8, 0.1);
-    transform: translateX(-0.125rem) translateY(-0.125rem);
-  }
-
-  &:active {
-    background-color: rgba(#59b57c, 0.1);
-    transform: translateX(0) translateY(0);
   }
 
   .image {
@@ -204,14 +221,6 @@ function handleClick(event: MouseEvent) {
       text-overflow: ellipsis;
     }
 
-    .link {
-      width: 100%;
-      display: flex;
-      justify-content: flex-end;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-
     .date {
       width: 100%;
       display: flex;
@@ -231,5 +240,20 @@ function handleClick(event: MouseEvent) {
       color: rgba(white, 0.7);
     }
   }
+}
+
+.link {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  gap: 0.5rem;
+}
+
+.favicon {
+  width: 16px;
+  height: 16px;
 }
 </style>

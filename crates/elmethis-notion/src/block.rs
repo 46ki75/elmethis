@@ -54,9 +54,9 @@ pub struct ElmBookmark {
 
 #[derive(Serialize, Clone, Default)]
 pub struct ElmBookmarkProps {
-    pub title: String,
-    pub description: String,
-    pub image: String,
+    pub title: Option<String>,
+    pub description: Option<String>,
+    pub image: Option<String>,
     pub url: String,
     pub margin: String,
 }

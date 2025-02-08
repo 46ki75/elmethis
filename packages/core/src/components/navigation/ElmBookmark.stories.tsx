@@ -21,7 +21,8 @@ export const Primary: Story = {
       'https://web-toolbox.dev/__og-image__/static/en/tools/ogp-checker/og.png',
     url: 'https://web-toolbox.dev/en/tools/ogp-checker',
     createdAt: '2021-08-01',
-    updatedAt: '2021-08-01'
+    updatedAt: '2021-08-01',
+    favicon: 'https://pnpm.io/img/favicon.png'
   }
 }
 
@@ -75,5 +76,14 @@ export const InvalidImage: Story = {
     title: '	Fast, disk space efficient package manager | pnpm',
     description: 'Fast, disk space efficient package manager',
     image: 'https://pnpm.io/'
+  }
+}
+
+export const NoImage: Story = {
+  args: {
+    url: 'https://pnpm.io/',
+    title: '	Fast, disk space efficient package manager | pnpm',
+    description: 'Fast, disk space efficient package manager',
+    favicon: 'https://pnpm.io/img/favicon.png'
   }
 }
