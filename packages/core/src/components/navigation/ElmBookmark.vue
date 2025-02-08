@@ -8,7 +8,7 @@
       :style="{ '--margin-block': margin }"
       @click="handleClick"
     >
-      <div :class="$style.image">
+      <div v-if="image != null" :class="$style.image">
         <ElmImage :src="image" />
       </div>
 
@@ -80,7 +80,7 @@ export interface ElmBookmarkProps {
    * The image to display.
    * This can be a URL or a base64-encoded image.
    */
-  image: string
+  image?: string
 
   /**
    * The URL to navigate to.

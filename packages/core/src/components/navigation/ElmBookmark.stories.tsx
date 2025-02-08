@@ -77,3 +77,11 @@ export const InvalidImage: Story = {
     image: 'https://pnpm.io/'
   }
 }
+
+export const NoImage: Story = {
+  args: {
+    url: 'https://pnpm.io/',
+    title: '	Fast, disk space efficient package manager | pnpm',
+    description: 'Fast, disk space efficient package manager'
+  }
+}
