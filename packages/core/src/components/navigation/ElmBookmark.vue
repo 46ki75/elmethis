@@ -44,14 +44,13 @@
         </div>
 
         <div v-if="!hideUrl && url != null" :class="$style.link">
-          <div>
-            <ElmInlineText
-              :text="`${url}`"
-              size=".8rem"
-              color="#aebed9"
-              :style="{ opacity: 0.8 }"
-            />
-          </div>
+          <img
+            v-if="favicon"
+            :src="favicon"
+            alt="favicon"
+            :class="$style.favicon"
+          />
+          <ElmInlineText :text="`${url}`" size=".8rem" color="#6987b8" />
         </div>
       </div>
     </a>
@@ -222,14 +221,6 @@ function handleClick(event: MouseEvent) {
       text-overflow: ellipsis;
     }
 
-    .link {
-      width: 100%;
-      display: flex;
-      justify-content: flex-end;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-
     .date {
       width: 100%;
       display: flex;
@@ -249,5 +240,20 @@ function handleClick(event: MouseEvent) {
       color: rgba(white, 0.7);
     }
   }
+}
+
+.link {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  gap: 0.5rem;
+}
+
+.favicon {
+  width: 16px;
+  height: 16px;
 }
 </style>
