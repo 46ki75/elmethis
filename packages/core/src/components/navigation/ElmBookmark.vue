@@ -44,7 +44,14 @@
         </div>
 
         <div v-if="!hideUrl && url != null" :class="$style.link">
-          <div><ElmInlineLink :text="url" href="#" size=".8rem" /></div>
+          <div>
+            <ElmInlineText
+              :text="`${url}`"
+              size=".8rem"
+              color="#aebed9"
+              :style="{ opacity: 0.8 }"
+            />
+          </div>
         </div>
       </div>
     </a>
@@ -53,7 +60,6 @@
 
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import ElmInlineLink from '../inline/ElmInlineLink.vue'
 import ElmInlineText from '../inline/ElmInlineText.vue'
 import ElmImage from '../media/ElmImage.vue'
 import type { Property } from 'csstype'
@@ -111,6 +117,11 @@ export interface ElmBookmarkProps {
    * The margin of the bookmark.
    */
   margin?: Property.MarginBlock
+
+  /**
+   * The URL of the favicon.
+   */
+  favicon?: string
 }
 
 const props = withDefaults(defineProps<ElmBookmarkProps>(), {
@@ -131,18 +142,31 @@ function handleClick(event: MouseEvent) {
 <style module lang="scss">
 .parent {
   container-type: inline-size;
+  border-radius: 0.25rem;
+  box-shadow: 0 0 0.125rem rgba(black, 0.1);
+  overflow: hidden;
+
+  transition:
+    background-color 200ms,
+    transform 200ms;
+
+  &:hover {
+    background-color: rgba(#6987b8, 0.1);
+    transform: translateX(-0.125rem) translateY(-0.125rem);
+  }
+
+  &:active {
+    background-color: rgba(#59b57c, 0.1);
+    transform: translateX(0) translateY(0);
+  }
 }
 
 .bookmark {
   all: unset;
   margin-block: var(--margin-block);
   display: flex;
-  box-shadow: 0 0 0.125rem rgba(black, 0.15);
   cursor: pointer;
-  transition:
-    background-color 200ms,
-    transform 200ms;
-  background-color: rgba(white, 0.2);
+  background-color: rgba(white, 0.5);
 
   [data-theme='dark'] & {
     background-color: rgba(black, 0.2);
@@ -156,16 +180,6 @@ function handleClick(event: MouseEvent) {
       flex-direction: column;
       height: auto;
     }
-  }
-
-  &:hover {
-    background-color: rgba(#6987b8, 0.1);
-    transform: translateX(-0.125rem) translateY(-0.125rem);
-  }
-
-  &:active {
-    background-color: rgba(#59b57c, 0.1);
-    transform: translateX(0) translateY(0);
   }
 
   .image {
