@@ -13,14 +13,18 @@
       </div>
 
       <div :class="$style.typography">
-        <div :class="$style.title"><ElmInlineText :text="title" bold /></div>
+        <div :class="$style.title">
+          <ElmInlineText :text="title ?? 'No title provided'" bold />
+        </div>
 
         <div>
           <ElmInlineText
             :text="
-              description.length > 100
-                ? description.slice(0, 100) + '...'
-                : description
+              description == null
+                ? 'No description provided'
+                : description.length > 100
+                  ? description.slice(0, 100) + '...'
+                  : description
             "
             size=".8rem"
             :style="{ opacity: 0.6 }"
@@ -69,7 +73,7 @@ export interface ElmBookmarkProps {
   /**
    * The title of the bookmark.
    */
-  title: string
+  title?: string
 
   /**
    * The description of the bookmark.
