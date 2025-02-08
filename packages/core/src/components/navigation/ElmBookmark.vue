@@ -1,11 +1,10 @@
 <template>
-  <div :class="$style.parent">
+  <div :class="$style.parent" :style="{ '--margin-block': margin }">
     <a
       :class="$style.bookmark"
       :href="url"
       :target="openInNewTab ? '_blank' : undefined"
       rel="noopener noreferrer"
-      :style="{ '--margin-block': margin }"
       @click="handleClick"
     >
       <div v-if="image != null" :class="$style.image">
@@ -141,6 +140,7 @@ function handleClick(event: MouseEvent) {
 <style module lang="scss">
 .parent {
   container-type: inline-size;
+  margin-block: var(--margin-block);
   border-radius: 0.25rem;
   box-shadow: 0 0 0.125rem rgba(black, 0.1);
   overflow: hidden;
@@ -162,7 +162,6 @@ function handleClick(event: MouseEvent) {
 
 .bookmark {
   all: unset;
-  margin-block: var(--margin-block);
   display: flex;
   cursor: pointer;
   background-color: rgba(white, 0.5);
