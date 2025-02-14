@@ -61,7 +61,7 @@
     "prismjs": "^1.29.0",
     "sass": "^1.84.0",
     "shiki": "^2.3.2",
-    "storybook": "^8.5.3",
+    "storybook": "^8.5.5",
     "vite": "^6.1.0",
     "vite-plugin-css-injected-by-js": "^3.5.2",
     "vite-plugin-dts": "^4.5.0",
