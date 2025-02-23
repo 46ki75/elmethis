@@ -31,6 +31,9 @@ storybook-static/
 
 out/
 
+# pnpm
+.pnpm-store
+
 # Rust
 
 target/
