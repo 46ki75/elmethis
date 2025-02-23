@@ -1,0 +1,33 @@
+{
+  "name": "Dev Container",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {},
+      "extensions": [
+        "usernamehw.errorlens",
+        "Gruntfuggly.todo-tree",
+        "christian-kohler.path-intellisense",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-azuretools.vscode-docker",
+        "Vue.volar",
+        "GraphQL.vscode-graphql",
+        "rust-lang.rust-analyzer"
+      ]
+    }
+  },
+  "forwardPorts": [
+    6006
+  ],
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli": {},
+    "ghcr.io/devcontainers-extra/features/starship": {},
+    "ghcr.io/devcontainers/features/rust": {},
+    "ghcr.io/devcontainers/features/node": {
+      "version": "22"
+    }
+  }
+}
