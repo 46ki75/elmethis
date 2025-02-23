@@ -21,6 +21,7 @@ const COLOR_MAP: ColorMap = {
   purple: '#9771bd',
   pink: '#c9699e',
   red: '#b36472',
+  default_background: undefined,
   gray_background: '#868e9c',
   blue_background: '#6987b8',
   purple_background: '#9771bd',
@@ -91,9 +92,9 @@ export class Client {
       if (text.type === 'text' || text.type === 'mention') {
         if (text.annotations.code) {
           results.push({
-            type: 'ElmInlineCode',
+            type: 'ElmInlineText',
             props: {
-              code: text.plain_text,
+              text: text.plain_text,
               color: COLOR_MAP[text.annotations.color]
             }
           })
