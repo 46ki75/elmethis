@@ -26,15 +26,12 @@ impl Client {
     ) -> Result<Vec<crate::block::Block>, crate::error::Error> {
         let mut blocks: Vec<crate::block::Block> = Vec::new();
 
-        let page = self
+        let results = self
             .notionrs_client
-            .get_block_children()
+            .get_block_children_all()
             .block_id(page_id)
-            .page_size(100)
             .send()
             .await?;
-
-        let results = page.results;
 
         for block in results {
             match block.block {
@@ -455,12 +452,12 @@ impl Client {
                 notionrs::block::Block::Table { table: _ } => {
                     let rows = self
                         .notionrs_client
-                        .get_block_children()
+                        .get_block_children_all()
                         .block_id(block.id)
                         .send()
                         .await?;
 
-                    if let Some((header_row, body_rows)) = rows.results.split_first() {
+                    if let Some((header_row, body_rows)) = rows.split_first() {
                         let table_header_block =
                             if let notionrs::block::Block::TableRow { table_row } =
                                 &header_row.block
