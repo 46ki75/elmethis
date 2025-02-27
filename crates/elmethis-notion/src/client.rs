@@ -1,8 +1,10 @@
+#[derive(Debug)]
 pub struct Client {
     pub notionrs_client: notionrs::Client,
     pub images: Vec<Image>,
 }
 
+#[derive(Debug)]
 pub struct Image {
     pub src: String,
     pub id: String,
