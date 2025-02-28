@@ -52,8 +52,8 @@ importers:
         specifier: ^8.6.2
         version: 8.6.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.6.2(prettier@3.3.3))
       '@storybook/test':
-        specifier: ^8.6.0
-        version: 8.6.0(storybook@8.6.2(prettier@3.3.3))
+        specifier: ^8.6.2
+        version: 8.6.2(storybook@8.6.2(prettier@3.3.3))
       '@storybook/vue3':
         specifier: ^8.6.0
         version: 8.6.0(storybook@8.6.2(prettier@3.3.3))(vue@3.5.13(typescript@5.7.3))
@@ -1657,11 +1657,6 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
 
-  '@storybook/instrumenter@8.6.0':
-    resolution: {integrity: sha512-eEY/Hfa3Vj5Nv4vHRHlSqjoyW6oAKNK3rKIXfL/eawQwb7rKhzijDLG5YBH44Hh7dEPIqUp0LEdgpyIY7GXezg==}
-    peerDependencies:
-      storybook: ^8.6.0
-
   '@storybook/instrumenter@8.6.2':
     resolution: {integrity: sha512-26z5KiAhS/j0DzPwpT08/JZ1Uy2D9TQOiD6pZ8f6H1UJyPhAuctJqAfMCC0rTAKBIWeA5KKxBbjd+lhiMsusRA==}
     peerDependencies:
@@ -1693,11 +1688,6 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
       storybook: ^8.6.2
-
-  '@storybook/test@8.6.0':
-    resolution: {integrity: sha512-qiiv4wh4FoxTb1PoiA/noo9HcLDqfTwL0svMoNpTy2Bxm6xajgg5zYmmIT4pKyQkMd9pfKKQKILok31VxAj8vw==}
-    peerDependencies:
-      storybook: ^8.6.0
 
   '@storybook/test@8.6.2':
     resolution: {integrity: sha512-9GgLzIqYrHwpfffp43KJR9WIx3LkXIuej9BvSZk/KBWeBbOgqDbHG4CqC8P6uRl994RC91K85vdeRhAShkdtkA==}
@@ -6292,12 +6282,6 @@ snapshots:
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
 
-  '@storybook/instrumenter@8.6.0(storybook@8.6.2(prettier@3.3.3))':
-    dependencies:
-      '@storybook/global': 5.0.0
-      '@vitest/utils': 2.1.9
-      storybook: 8.6.2(prettier@3.3.3)
-
   '@storybook/instrumenter@8.6.2(storybook@8.6.2(prettier@3.3.3))':
     dependencies:
       '@storybook/global': 5.0.0
@@ -6324,17 +6308,6 @@ snapshots:
     dependencies:
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
-      storybook: 8.6.2(prettier@3.3.3)
-
-  '@storybook/test@8.6.0(storybook@8.6.2(prettier@3.3.3))':
-    dependencies:
-      '@storybook/global': 5.0.0
-      '@storybook/instrumenter': 8.6.0(storybook@8.6.2(prettier@3.3.3))
-      '@testing-library/dom': 10.4.0
-      '@testing-library/jest-dom': 6.5.0
-      '@testing-library/user-event': 14.5.2(@testing-library/dom@10.4.0)
-      '@vitest/expect': 2.0.5
-      '@vitest/spy': 2.0.5
       storybook: 8.6.2(prettier@3.3.3)
 
   '@storybook/test@8.6.2(storybook@8.6.2(prettier@3.3.3))':
