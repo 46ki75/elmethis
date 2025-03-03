@@ -55,8 +55,8 @@ importers:
         specifier: ^8.6.2
         version: 8.6.2(storybook@8.6.2(prettier@3.3.3))
       '@storybook/vue3':
-        specifier: ^8.6.2
-        version: 8.6.2(storybook@8.6.2(prettier@3.3.3))(vue@3.5.13(typescript@5.7.3))
+        specifier: ^8.6.3
+        version: 8.6.3(storybook@8.6.2(prettier@3.3.3))(vue@3.5.13(typescript@5.7.3))
       '@storybook/vue3-vite':
         specifier: ^8.6.2
         version: 8.6.2(storybook@8.6.2(prettier@3.3.3))(vite@6.2.0(@types/node@22.13.5)(jiti@2.4.0)(sass@1.85.1)(terser@5.36.0)(tsx@4.19.3))(vue@3.5.13(typescript@5.7.3))
@@ -1629,6 +1629,11 @@ packages:
     peerDependencies:
       storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
 
+  '@storybook/components@8.6.3':
+    resolution: {integrity: sha512-q5DQkV+E/j0KfF818RywgqEHjaZTg71q5YY4z0UO8CRSzDQ/VYF6L76oc69corbkJtYAk/GqaYJllzrWykS4sg==}
+    peerDependencies:
+      storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
+
   '@storybook/core@8.6.2':
     resolution: {integrity: sha512-i8a/nUuzzH5RLKjPn8DM7l8xxuTdLZ6xbI4hgpruas3JY8lQq72I7qmH6pmI7ByjGangDWK1iPh+tghdKkS6KQ==}
     peerDependencies:
@@ -1662,8 +1667,18 @@ packages:
     peerDependencies:
       storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
 
+  '@storybook/manager-api@8.6.3':
+    resolution: {integrity: sha512-7m9MQELc6XpuKIuliqMiQWzl8yVWpUDwTcpr+rTT7l3OfRzw7Y00UFct2tI03YG6EXsxsykw8EmueMQhe0lG5Q==}
+    peerDependencies:
+      storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
+
   '@storybook/preview-api@8.6.2':
     resolution: {integrity: sha512-hkKmQ9OWlCpS2mHYsuWTbXMfeLx90fiWdUblTBIUQnj8VLhSbNtmeBZdZRkz33uYHFkAqZ3F2nQ9I2iTv8AmwA==}
+    peerDependencies:
+      storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
+
+  '@storybook/preview-api@8.6.3':
+    resolution: {integrity: sha512-y2Ic6eHBQD/AwaCHctKOJ4tOM1r7/mPXfhGh0I+Qf8kZPlDTgQcJ6Z7/Ruma1L+ijXPBWouDaPw51gipcX+t9Q==}
     peerDependencies:
       storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
 
@@ -1684,6 +1699,11 @@ packages:
     peerDependencies:
       storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
 
+  '@storybook/theming@8.6.3':
+    resolution: {integrity: sha512-sDcWnnko73KOCIc9stQyec9KvTmGOuMswqeKtWh0ha/wsgYB6G2/2j1xOheFmWKPitOsbwgvqtjCP7bRE68uIA==}
+    peerDependencies:
+      storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
+
   '@storybook/vue3-vite@8.6.2':
     resolution: {integrity: sha512-ASr6IHwmlfeQboUdCe/26hGKtRyagkGO9wNQt+CzlZGOk4/05RxrRkCXkhZmvOXR8imSS+IEQ5dp3ipm9VR+Qw==}
     engines: {node: '>=18.0.0'}
@@ -1696,6 +1716,13 @@ packages:
     engines: {node: '>=18.0.0'}
     peerDependencies:
       storybook: ^8.6.2
+      vue: ^3.0.0
+
+  '@storybook/vue3@8.6.3':
+    resolution: {integrity: sha512-QMvAlX20+Yq37vkcR7VP21+f1yj+HoS5j6nvQZnfp36rs08KVnXBTF8KtnbjAqBA1KFdZgSXMtB4fWxvCHGLbA==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      storybook: ^8.6.3
       vue: ^3.0.0
 
   '@testing-library/dom@10.4.0':
@@ -4473,12 +4500,8 @@ packages:
     resolution: {integrity: sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==}
     engines: {node: '>=12.20'}
 
-  type-fest@4.34.1:
-    resolution: {integrity: sha512-6kSc32kT0rbwxD6QL1CYe8IqdzN/J/ILMrNK+HMQCKH3insCDRY/3ITb0vcBss0a3t72fzh2YSzj8ko1HgwT3g==}
-    engines: {node: '>=16'}
-
-  type-fest@4.35.0:
-    resolution: {integrity: sha512-2/AwEFQDFEy30iOLjrvHDIH7e4HEWH+f1Yl1bI5XMqzuoCUqwYCdxachgsgv0og/JdVZUhbfjcJAoHj5L1753A==}
+  type-fest@4.36.0:
+    resolution: {integrity: sha512-3T/PUdKTCnkUmhQU6FFJEHsLwadsRegktX3TNHk+2JJB9HlA8gp1/VXblXVDI93kSnXF2rdPx0GMbHtJIV2LPg==}
     engines: {node: '>=16'}
 
   typescript@5.7.3:
@@ -4757,6 +4780,9 @@ packages:
 
   vue-component-type-helpers@2.2.4:
     resolution: {integrity: sha512-F66p0XLbAu92BRz6kakHyAcaUSF7HWpWX/THCqL0TxySSj7z/nok5UUMohfNkkCm1pZtawsdzoJ4p1cjNqCx0Q==}
+
+  vue-component-type-helpers@2.2.8:
+    resolution: {integrity: sha512-4bjIsC284coDO9om4HPA62M7wfsTvcmZyzdfR0aUlFXqq4tXxM1APyXpNVxPC8QazKw9OhmZNHBVDA6ODaZsrA==}
 
   vue-docgen-api@4.79.2:
     resolution: {integrity: sha512-n9ENAcs+40awPZMsas7STqjkZiVlIjxIKgiJr5rSohDP0/JCrD9VtlzNojafsA1MChm/hz2h3PDtUedx3lbgfA==}
@@ -6218,6 +6244,10 @@ snapshots:
     dependencies:
       storybook: 8.6.2(prettier@3.3.3)
 
+  '@storybook/components@8.6.3(storybook@8.6.2(prettier@3.3.3))':
+    dependencies:
+      storybook: 8.6.2(prettier@3.3.3)
+
   '@storybook/core@8.6.2(prettier@3.3.3)(storybook@8.6.2(prettier@3.3.3))':
     dependencies:
       '@storybook/theming': 8.6.2(storybook@8.6.2(prettier@3.3.3))
@@ -6261,7 +6291,15 @@ snapshots:
     dependencies:
       storybook: 8.6.2(prettier@3.3.3)
 
+  '@storybook/manager-api@8.6.3(storybook@8.6.2(prettier@3.3.3))':
+    dependencies:
+      storybook: 8.6.2(prettier@3.3.3)
+
   '@storybook/preview-api@8.6.2(storybook@8.6.2(prettier@3.3.3))':
+    dependencies:
+      storybook: 8.6.2(prettier@3.3.3)
+
+  '@storybook/preview-api@8.6.3(storybook@8.6.2(prettier@3.3.3))':
     dependencies:
       storybook: 8.6.2(prettier@3.3.3)
 
@@ -6283,6 +6321,10 @@ snapshots:
       storybook: 8.6.2(prettier@3.3.3)
 
   '@storybook/theming@8.6.2(storybook@8.6.2(prettier@3.3.3))':
+    dependencies:
+      storybook: 8.6.2(prettier@3.3.3)
+
+  '@storybook/theming@8.6.3(storybook@8.6.2(prettier@3.3.3))':
     dependencies:
       storybook: 8.6.2(prettier@3.3.3)
 
@@ -6312,7 +6354,21 @@ snapshots:
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       vue: 3.5.13(typescript@5.7.3)
-      vue-component-type-helpers: 2.2.4
+      vue-component-type-helpers: 2.2.8
+
+  '@storybook/vue3@8.6.3(storybook@8.6.2(prettier@3.3.3))(vue@3.5.13(typescript@5.7.3))':
+    dependencies:
+      '@storybook/components': 8.6.3(storybook@8.6.2(prettier@3.3.3))
+      '@storybook/global': 5.0.0
+      '@storybook/manager-api': 8.6.3(storybook@8.6.2(prettier@3.3.3))
+      '@storybook/preview-api': 8.6.3(storybook@8.6.2(prettier@3.3.3))
+      '@storybook/theming': 8.6.3(storybook@8.6.2(prettier@3.3.3))
+      '@vue/compiler-core': 3.5.13
+      storybook: 8.6.2(prettier@3.3.3)
+      ts-dedent: 2.2.0
+      type-fest: 2.19.0
+      vue: 3.5.13(typescript@5.7.3)
+      vue-component-type-helpers: 2.2.8
 
   '@testing-library/dom@10.4.0':
     dependencies:
@@ -7507,7 +7563,7 @@ snapshots:
 
   dot-prop@9.0.0:
     dependencies:
-      type-fest: 4.34.1
+      type-fest: 4.36.0
 
   dotenv@16.4.7: {}
 
@@ -8564,7 +8620,7 @@ snapshots:
     dependencies:
       '@babel/code-frame': 7.26.2
       index-to-position: 0.1.2
-      type-fest: 4.35.0
+      type-fest: 4.36.0
 
   parse5-htmlparser2-tree-adapter@7.1.0:
     dependencies:
@@ -9471,9 +9527,7 @@ snapshots:
 
   type-fest@2.19.0: {}
 
-  type-fest@4.34.1: {}
-
-  type-fest@4.35.0: {}
+  type-fest@4.36.0: {}
 
   typescript@5.7.3: {}
 
@@ -9772,6 +9826,8 @@ snapshots:
       typescript: 5.7.3
 
   vue-component-type-helpers@2.2.4: {}
+
+  vue-component-type-helpers@2.2.8: {}
 
   vue-docgen-api@4.79.2(vue@3.5.13(typescript@5.7.3)):
     dependencies:
