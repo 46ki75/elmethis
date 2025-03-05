@@ -34,7 +34,7 @@
     "@notionhq/client": "^2.2.16",
     "@storybook/addon-essentials": "^8.6.3",
     "@storybook/addon-interactions": "^8.6.3",
-    "@storybook/addon-links": "^8.6.3",
+    "@storybook/addon-links": "^8.6.4",
     "@storybook/addon-onboarding": "^8.6.3",
     "@storybook/blocks": "^8.6.3",
     "@storybook/test": "^8.6.3",
