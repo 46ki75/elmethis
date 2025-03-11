@@ -1,7 +1,7 @@
 [package]
 name = "elmethis-notion"
-version = "1.0.0-alpha.11"
-edition = "2021"
+version = "1.0.0-alpha.12"
+edition = "2024"
 description = "Notion to Elmethis"
 authors = ["Chomolungma Shirayuki"]
 repository = "https://github.com/46ki75/elmethis-notion"
@@ -12,7 +12,7 @@ documentation = "https://docs.rs/elmethis-notion"
 reqwest = { version = "0.12.9", default-features = false }
 async-recursion = "1.1.1"
 dotenvy = "0.15.7"
-notionrs = "1.0.0-alpha.35"
+notionrs = "1.0.0-alpha.37"
 scraper = "0.21.0"
 serde = { version = "1.0.215", features = ["derive"] }
 serde_json = "1.0.133"
