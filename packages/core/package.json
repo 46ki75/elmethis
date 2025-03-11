@@ -58,7 +58,7 @@
     "postcss": "^8.5.3",
     "postcss-preset-env": "^10.1.5",
     "prism-theme-vars": "^0.2.5",
-    "prismjs": "^1.29.0",
+    "prismjs": "^1.30.0",
     "sass": "^1.85.1",
     "shiki": "^3.1.0",
     "storybook": "^8.6.4",
