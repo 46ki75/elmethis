@@ -69,7 +69,7 @@
     "vue-tsc": "^2.2.8"
   },
   "dependencies": {
-    "mermaid": "^11.4.1",
+    "mermaid": "^11.5.0",
     "nanoid": "^5.1.3"
   }
 }
