@@ -33,22 +33,26 @@ pub enum Block {
 // ListItem
 #[derive(Serialize, Clone)]
 pub struct ElmListItem {
+    pub id: String,
     pub children: Vec<Block>,
 }
 
 #[derive(Serialize, Clone)]
 pub struct ElmBulletedList {
+    pub id: String,
     pub children: Vec<Block>,
 }
 
 #[derive(Serialize, Clone)]
 pub struct ElmNumberedList {
+    pub id: String,
     pub children: Vec<Block>,
 }
 
 // ElmBookmark
 #[derive(Serialize, Clone)]
 pub struct ElmBookmark {
+    pub id: String,
     pub props: ElmBookmarkProps,
 }
 
@@ -64,6 +68,7 @@ pub struct ElmBookmarkProps {
 // CodeBlock
 #[derive(Serialize, Clone)]
 pub struct ElmCodeBlock {
+    pub id: String,
     pub props: ElmCodeBlockProps,
 }
 
@@ -78,6 +83,7 @@ pub struct ElmCodeBlockProps {
 // Divider
 #[derive(Serialize, Clone)]
 pub struct ElmDivider {
+    pub id: String,
     pub props: ElmDividerProps,
 }
 
@@ -89,6 +95,7 @@ pub struct ElmDividerProps {
 // Callout
 #[derive(Serialize, Clone)]
 pub struct ElmCallout {
+    pub id: String,
     pub props: ElmCalloutProps,
     pub children: Vec<Block>,
 }
@@ -101,18 +108,21 @@ pub struct ElmCalloutProps {
 // ColumnList
 #[derive(Serialize, Clone)]
 pub struct ElmColumnList {
+    pub id: String,
     pub children: Vec<Block>,
 }
 
 // ColumnList
 #[derive(Serialize, Clone)]
 pub struct ElmColumn {
+    pub id: String,
     pub children: Vec<Block>,
 }
 
 // Equation
 #[derive(Serialize, Clone)]
 pub struct ElmKatex {
+    pub id: String,
     pub props: ElmKatexProps,
 }
 
@@ -125,6 +135,7 @@ pub struct ElmKatexProps {
 // File
 #[derive(Serialize, Clone)]
 pub struct ElmFile {
+    pub id: String,
     pub props: ElmFileProps,
 }
 
@@ -139,16 +150,19 @@ pub struct ElmFileProps {
 // Heading1
 #[derive(Serialize, Clone)]
 pub struct ElmHeading1 {
+    pub id: String,
     pub props: ElmHeadingProps,
 }
 
 #[derive(Serialize, Clone)]
 pub struct ElmHeading2 {
+    pub id: String,
     pub props: ElmHeadingProps,
 }
 
 #[derive(Serialize, Clone)]
 pub struct ElmHeading3 {
+    pub id: String,
     pub props: ElmHeadingProps,
 }
 
@@ -160,6 +174,7 @@ pub struct ElmHeadingProps {
 // Image
 #[derive(Serialize, Clone)]
 pub struct ElmImage {
+    pub id: String,
     pub props: ElmImageProps,
 }
 
@@ -176,18 +191,21 @@ pub struct ElmImageProps {
 // Paragraph
 #[derive(Serialize, Clone)]
 pub struct ElmParagraph {
+    pub id: String,
     pub children: Vec<Block>,
 }
 
 // Quote
 #[derive(Serialize, Clone)]
 pub struct ElmBlockQuote {
+    pub id: String,
     pub children: Vec<Block>,
 }
 
 // ElmCheck
 #[derive(Serialize, Clone)]
 pub struct ElmCheckbox {
+    pub id: String,
     pub props: ElmCheckboxProps,
 }
 
@@ -199,6 +217,7 @@ pub struct ElmCheckboxProps {
 // Toggle
 #[derive(Serialize, Clone)]
 pub struct ElmToggle {
+    pub id: String,
     pub props: ElmToggleProps,
     pub children: Vec<Block>,
 }

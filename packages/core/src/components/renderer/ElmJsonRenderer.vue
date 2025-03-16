@@ -109,152 +109,182 @@ type ComponentProps =
 
 interface JsonComponentBase {
   type: ComponentType
+  id?: string
   props?: ComponentProps
   children?: JsonComponent[]
 }
 
 interface ElmInlineTextJsonComponent extends JsonComponentBase {
   type: 'ElmInlineText'
+  id?: string
   props?: ElmInlineTextProps
 }
 
 interface ElmInlineLinkJsonComponent extends JsonComponentBase {
   type: 'ElmInlineLink'
+  id?: string
   props?: ElmInlineLinkProps
 }
 
 interface ElmCalloutJsonComponent extends JsonComponentBase {
   type: 'ElmCallout'
+  id?: string
   props?: ElmCalloutProps
 }
 
 interface ElmBulletedListJsonComponent extends JsonComponentBase {
   type: 'ElmBulletedList'
+  id?: string
   props?: ElmBulletedListProps
 }
 
 interface ElmNumberedListJsonComponent extends JsonComponentBase {
   type: 'ElmNumberedList'
+  id?: string
   props?: ElmNumberedListProps
 }
 
 interface ElmListItemJsonComponent extends JsonComponentBase {
   type: 'ElmListItem'
+  id?: string
   props?: ElmListItemProps
 }
 
 interface ElmBlockQuoteJsonComponent extends JsonComponentBase {
   type: 'ElmBlockQuote'
+  id?: string
   props?: ElmBlockQuoteProps
 }
 
 interface ElmDividerJsonComponent extends JsonComponentBase {
   type: 'ElmDivider'
+  id?: string
   props?: ElmDividerProps
 }
 
 interface ElmHeading1JsonComponent extends JsonComponentBase {
   type: 'ElmHeading1'
+  id?: string
   props?: ElmHeading1Props
 }
 
 interface ElmHeading2JsonComponent extends JsonComponentBase {
   type: 'ElmHeading2'
+  id?: string
   props?: ElmHeading2Props
 }
 
 interface ElmHeading3JsonComponent extends JsonComponentBase {
   type: 'ElmHeading3'
+  id?: string
   props?: ElmHeading3Props
 }
 
 interface ElmHeading4JsonComponent extends JsonComponentBase {
   type: 'ElmHeading4'
+  id?: string
   props?: ElmHeading4Props
 }
 
 interface ElmHeading5JsonComponent extends JsonComponentBase {
   type: 'ElmHeading5'
+  id?: string
   props?: ElmHeading5Props
 }
 
 interface ElmHeading6JsonComponent extends JsonComponentBase {
   type: 'ElmHeading6'
+  id?: string
   props?: ElmHeading6Props
 }
 
 interface ElmCodeBlockJsonComponent extends JsonComponentBase {
   type: 'ElmCodeBlock'
+  id?: string
   props?: ElmCodeBlockProps
 }
 
 interface ElmParagraphJsonComponent extends JsonComponentBase {
   type: 'ElmParagraph'
+  id?: string
   props?: ElmParagraphProps
 }
 
 interface ElmTableJsonComponent extends JsonComponentBase {
   type: 'ElmTable'
+  id?: string
   props?: ElmTableProps
 }
 
 interface ElmTableHeaderJsonComponent extends JsonComponentBase {
   type: 'ElmTableHeader'
+  id?: string
   props?: ElmTableHeaderProps
 }
 
 interface ElmTableBodyJsonComponent extends JsonComponentBase {
   type: 'ElmTableBody'
+  id?: string
   props?: ElmTableBodyProps
 }
 
 interface ElmTableRowJsonComponent extends JsonComponentBase {
   type: 'ElmTableRow'
+  id?: string
   props?: ElmTableRowProps
 }
 
 interface ElmTableCellJsonComponent extends JsonComponentBase {
   type: 'ElmTableCell'
+  id?: string
   props?: ElmTableCellProps
 }
 
 interface ElmKatexJsonComponent extends JsonComponentBase {
   type: 'ElmKatex'
+  id?: string
   props?: ElmKatexProps
 }
 
 interface ElmImageJsonComponent extends JsonComponentBase {
   type: 'ElmImage'
+  id?: string
   props?: ElmImageProps
 }
 
 interface ElmBookmarkJsonComponent extends JsonComponentBase {
   type: 'ElmBookmark'
+  id?: string
   props?: ElmBookmarkProps
 }
 
 interface ElmToggleJsonComponent extends JsonComponentBase {
   type: 'ElmToggle'
+  id?: string
   props?: ElmToggleProps
 }
 
 interface ElmCheckboxJsonComponent extends JsonComponentBase {
   type: 'ElmCheckbox'
+  id?: string
   props?: ElmCheckboxProps
 }
 
 interface ElmFileJsonComponent extends JsonComponentBase {
   type: 'ElmFile'
+  id?: string
   props?: ElmFileProps
 }
 
 interface ElmColumnJsonComponent extends JsonComponentBase {
   type: 'ElmColumn'
+  id?: string
   props?: ElmColumnProps
 }
 
 interface ElmColumnListJsonComponent extends JsonComponentBase {
   type: 'ElmColumnList'
+  id?: string
   props?: ElmColumnListProps
 }
 
@@ -331,11 +361,15 @@ const render = (json: JsonComponent[]) => {
   const vnodes: VNode[] = []
   for (const component of json) {
     vnodes.push(
-      h(componentMap[component.type], component.props, () => {
-        if (component.children != null) {
-          return render(component.children)
+      h(
+        componentMap[component.type],
+        { ...component.props, key: component.id },
+        () => {
+          if (component.children != null) {
+            return render(component.children)
+          }
         }
-      })
+      )
     )
   }
   return vnodes

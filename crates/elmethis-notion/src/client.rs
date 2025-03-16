@@ -102,8 +102,10 @@ impl Client {
                         }
                     }
 
-                    let block =
-                        crate::block::Block::ElmBookmark(crate::block::ElmBookmark { props });
+                    let block = crate::block::Block::ElmBookmark(crate::block::ElmBookmark {
+                        props,
+                        id: block.id,
+                    });
 
                     blocks.push(block);
                 }
@@ -122,6 +124,7 @@ impl Client {
                     let list_item_block =
                         crate::block::Block::ElmListItem(crate::block::ElmListItem {
                             children: list_item_children,
+                            id: block.id.clone(),
                         });
 
                     let last_item = blocks.last_mut();
@@ -133,7 +136,10 @@ impl Client {
                         Some(_) | None => {
                             let new_ul = vec![list_item_block];
                             blocks.push(crate::block::Block::ElmBulletedList(
-                                crate::block::ElmBulletedList { children: new_ul },
+                                crate::block::ElmBulletedList {
+                                    children: new_ul,
+                                    id: block.id,
+                                },
                             ));
                         }
                     };
@@ -174,6 +180,7 @@ impl Client {
                     let callout_block = crate::block::Block::ElmCallout(crate::block::ElmCallout {
                         props,
                         children,
+                        id: block.id,
                     });
                     blocks.push(callout_block);
                 }
@@ -204,20 +211,26 @@ impl Client {
                     };
 
                     blocks.push(crate::block::Block::ElmCodeBlock(
-                        crate::block::ElmCodeBlock { props },
+                        crate::block::ElmCodeBlock {
+                            props,
+                            id: block.id,
+                        },
                     ));
                 }
                 notionrs::object::block::Block::ColumnList { column_list: _ } => {
                     let children = self.convert_block(&block.id).await?;
                     let block = crate::block::Block::ElmColumnList(crate::block::ElmColumnList {
                         children,
+                        id: block.id,
                     });
                     blocks.push(block);
                 }
                 notionrs::object::block::Block::Column { column: _ } => {
                     let children = self.convert_block(&block.id).await?;
-                    let block =
-                        crate::block::Block::ElmColumn(crate::block::ElmColumn { children });
+                    let block = crate::block::Block::ElmColumn(crate::block::ElmColumn {
+                        children,
+                        id: block.id,
+                    });
                     blocks.push(block);
                 }
                 notionrs::object::block::Block::Divider { divider: _ } => {
@@ -225,6 +238,7 @@ impl Client {
                         props: crate::block::ElmDividerProps {
                             margin: "2rem".to_string(),
                         },
+                        id: block.id,
                     }));
                 }
                 notionrs::object::block::Block::Embed { embed: _ } => {}
@@ -234,7 +248,10 @@ impl Client {
                         block: true,
                     };
 
-                    let block = crate::block::Block::ElmKatex(crate::block::ElmKatex { props });
+                    let block = crate::block::Block::ElmKatex(crate::block::ElmKatex {
+                        props,
+                        id: block.id,
+                    });
 
                     blocks.push(block);
                 }
@@ -250,7 +267,10 @@ impl Client {
                         margin: "2rem".to_string(),
                     };
 
-                    let block = crate::block::Block::ElmFile(crate::block::ElmFile { props });
+                    let block = crate::block::Block::ElmFile(crate::block::ElmFile {
+                        props,
+                        id: block.id,
+                    });
 
                     blocks.push(block);
                 }
@@ -273,6 +293,7 @@ impl Client {
                         let block = crate::block::Block::ElmToggle(crate::block::ElmToggle {
                             props,
                             children,
+                            id: block.id,
                         });
 
                         blocks.push(block);
@@ -285,8 +306,10 @@ impl Client {
                                 .collect::<String>(),
                         };
 
-                        let block =
-                            crate::block::Block::ElmHeading1(crate::block::ElmHeading1 { props });
+                        let block = crate::block::Block::ElmHeading1(crate::block::ElmHeading1 {
+                            props,
+                            id: block.id,
+                        });
 
                         blocks.push(block);
                     }
@@ -310,6 +333,7 @@ impl Client {
                         let block = crate::block::Block::ElmToggle(crate::block::ElmToggle {
                             props,
                             children,
+                            id: block.id,
                         });
 
                         blocks.push(block);
@@ -322,8 +346,10 @@ impl Client {
                                 .collect::<String>(),
                         };
 
-                        let block =
-                            crate::block::Block::ElmHeading1(crate::block::ElmHeading1 { props });
+                        let block = crate::block::Block::ElmHeading1(crate::block::ElmHeading1 {
+                            props,
+                            id: block.id,
+                        });
 
                         blocks.push(block);
                     }
@@ -347,6 +373,7 @@ impl Client {
                         let block = crate::block::Block::ElmToggle(crate::block::ElmToggle {
                             props,
                             children,
+                            id: block.id,
                         });
 
                         blocks.push(block);
@@ -359,8 +386,10 @@ impl Client {
                                 .collect::<String>(),
                         };
 
-                        let block =
-                            crate::block::Block::ElmHeading1(crate::block::ElmHeading1 { props });
+                        let block = crate::block::Block::ElmHeading1(crate::block::ElmHeading1 {
+                            props,
+                            id: block.id,
+                        });
 
                         blocks.push(block);
                     }
@@ -388,8 +417,10 @@ impl Client {
                         margin: "2rem".to_string(),
                     };
 
-                    let image_block =
-                        crate::block::Block::ElmImage(crate::block::ElmImage { props });
+                    let image_block = crate::block::Block::ElmImage(crate::block::ElmImage {
+                        props,
+                        id: block.id.clone(),
+                    });
 
                     blocks.push(image_block);
                     self.images.push(Image { src, id: block.id });
@@ -409,6 +440,7 @@ impl Client {
                     let list_item_block =
                         crate::block::Block::ElmListItem(crate::block::ElmListItem {
                             children: list_item_children,
+                            id: block.id.clone(),
                         });
 
                     let last_item = blocks.last_mut();
@@ -420,7 +452,10 @@ impl Client {
                         Some(_) | None => {
                             let new_ol = vec![list_item_block];
                             blocks.push(crate::block::Block::ElmNumberedList(
-                                crate::block::ElmNumberedList { children: new_ol },
+                                crate::block::ElmNumberedList {
+                                    children: new_ol,
+                                    id: block.id,
+                                },
                             ));
                         }
                     };
@@ -428,6 +463,7 @@ impl Client {
                 notionrs::object::block::Block::Paragraph { paragraph } => {
                     let block = crate::block::Block::ElmParagraph(crate::block::ElmParagraph {
                         children: Client::convert_rich_text(paragraph.rich_text),
+                        id: block.id,
                     });
 
                     blocks.push(block);
@@ -445,6 +481,7 @@ impl Client {
 
                     let block = crate::block::Block::ElmBlockQuote(crate::block::ElmBlockQuote {
                         children,
+                        id: block.id,
                     });
 
                     blocks.push(block);
@@ -551,8 +588,10 @@ impl Client {
                             .collect::<String>(),
                     };
 
-                    let block =
-                        crate::block::Block::ElmCheckbox(crate::block::ElmCheckbox { props });
+                    let block = crate::block::Block::ElmCheckbox(crate::block::ElmCheckbox {
+                        props,
+                        id: block.id,
+                    });
 
                     blocks.push(block);
                 }
@@ -570,8 +609,11 @@ impl Client {
 
                     let children = self.convert_block(&block.id).await?;
 
-                    let block =
-                        crate::block::Block::ElmToggle(crate::block::ElmToggle { props, children });
+                    let block = crate::block::Block::ElmToggle(crate::block::ElmToggle {
+                        props,
+                        children,
+                        id: block.id,
+                    });
 
                     blocks.push(block);
                 }

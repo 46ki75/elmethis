@@ -3,7 +3,8 @@
         "type": "ElmHeading1",
         "props": {
             "text": "pnpm: A Fast and Efficient Package Manager for Node.js"
-        }
+        },
+        "id": "a"
     },
     {
         "type": "ElmParagraph",
@@ -18,13 +19,15 @@
                     "strikethrough": false
                 }
             }
-        ]
+        ],
+        "id": "a"
     },
     {
         "type": "ElmHeading2",
         "props": {
             "text": "What is pnpm?"
-        }
+        },
+        "id": "a"
     },
     {
         "type": "ElmParagraph",
@@ -39,13 +42,15 @@
                     "strikethrough": false
                 }
             }
-        ]
+        ],
+        "id": "a"
     },
     {
         "type": "ElmHeading2",
         "props": {
             "text": "Key Features of pnpm"
-        }
+        },
+        "id": "a"
     },
     {
         "type": "ElmBulletedList",
