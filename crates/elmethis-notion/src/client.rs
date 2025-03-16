@@ -1,7 +1,6 @@
 #[derive(Debug)]
 pub struct Client {
     pub notionrs_client: notionrs::client::Client,
-    pub images: Vec<Image>,
 }
 
 #[derive(Debug)]
@@ -17,7 +16,6 @@ impl Client {
     {
         Client {
             notionrs_client: notionrs::client::Client::new().secret(secret),
-            images: Vec::default(),
         }
     }
 
@@ -423,7 +421,6 @@ impl Client {
                     });
 
                     blocks.push(image_block);
-                    self.images.push(Image { src, id: block.id });
                 }
                 notionrs::object::block::Block::LinkPreview { link_preview: _ } => {}
                 notionrs::object::block::Block::NumberedListItem { numbered_list_item } => {
