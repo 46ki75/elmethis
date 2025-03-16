@@ -1,6 +1,6 @@
 {
   "name": "@elmethis/core",
-  "version": "1.0.0-alpha.142",
+  "version": "1.0.0-alpha.143",
   "publishConfig": {
     "access": "public"
   },
@@ -14,12 +14,10 @@
   "files": [
     "dist"
   ],
-  "module": "dist/elmethis.js",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/elmethis.js",
-      "require": "./dist/elmethis.umd.cjs"
+      "default": "./dist/elmethis.js"
     }
   },
   "scripts": {
