@@ -25,8 +25,8 @@ importers:
         version: 5.1.3
     devDependencies:
       '@chromatic-com/storybook':
-        specifier: ^3.2.5
-        version: 3.2.5(react@19.0.0)(storybook@8.6.4(prettier@3.3.3))
+        specifier: ^3.2.6
+        version: 3.2.6(react@19.0.0)(storybook@8.6.4(prettier@3.3.3))
       '@heroicons/vue':
         specifier: ^2.2.0
         version: 2.2.0(vue@3.5.13(typescript@5.8.2))
@@ -349,8 +349,8 @@ packages:
   '@chevrotain/utils@11.0.3':
     resolution: {integrity: sha512-YslZMgtJUyuMbZ+aKvfF3x1f5liK4mWNxghFRv7jqRR9C3R3fAOGTTKvxXDa2Y1s9zSbcpuO0cAxDYsc9SrXoQ==}
 
-  '@chromatic-com/storybook@3.2.5':
-    resolution: {integrity: sha512-Y388ft6po5FmGKdkcqz3r2sW6aMF5DSBaatC0jvT5bI/Dh27RJw3gPTmXJcZVNjteNl6tpiP3qxZ9MswAk5luw==}
+  '@chromatic-com/storybook@3.2.6':
+    resolution: {integrity: sha512-FDmn5Ry2DzQdik+eq2sp/kJMMT36Ewe7ONXUXM2Izd97c7r6R/QyGli8eyh/F0iyqVvbLveNYFyF0dBOJNwLqw==}
     engines: {node: '>=16.0.0', yarn: '>=1.22.18'}
     peerDependencies:
       storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
@@ -2247,8 +2247,8 @@ packages:
     resolution: {integrity: sha512-+IxzY9BZOQd/XuYPRmrvEVjF/nqj5kgT4kEq7VofrDoM1MxoRjEWkrCC3EtLi59TVawxTAn+orJwFQcrqEN1+g==}
     engines: {node: '>=18'}
 
-  chromatic@11.26.1:
-    resolution: {integrity: sha512-kVMTigrKI7TOOV04i1lTTIVJsmQ+fj6ZFXyZ3LcdCioOrxO/zCVB1y74iX0iKS++cpi3bJcG+UszkmvptGDEuA==}
+  chromatic@11.27.0:
+    resolution: {integrity: sha512-jQ2ufjS+ePpg+NtcPI9B2eOi+pAzlRd2nhd1LgNMsVCC9Bzf5t8mJtyd8v2AUuJS0LdX0QVBgkOnlNv9xviHzA==}
     hasBin: true
     peerDependencies:
       '@chromatic-com/cypress': ^0.*.* || ^1.0.0
@@ -3910,8 +3910,8 @@ packages:
   rc9@2.1.2:
     resolution: {integrity: sha512-btXCnMmRIBINM2LDZoEmOogIZU7Qe7zn4BpomSKZ/ykbLObuBdvG+mFq11DL6fjH1DRwHhrlgtYWG96bJiC7Cg==}
 
-  react-confetti@6.2.3:
-    resolution: {integrity: sha512-Jt6Fy3jE7FrpKxeDQ3oh36Bz6LoYt4o+vU578ghuF//NxADlcauDYvWr24S8hHKnQ90Uv01XXOngnKVBdZ73zQ==}
+  react-confetti@6.4.0:
+    resolution: {integrity: sha512-5MdGUcqxrTU26I2EU7ltkWPwxvucQTuqMm8dUz72z2YMqTD6s9vMcDUysk7n9jnC+lXuCPeJJ7Knf98VEYE9Rg==}
     engines: {node: '>=16'}
     peerDependencies:
       react: ^16.3.0 || ^17.0.1 || ^18.0.0 || ^19.0.0
@@ -4974,12 +4974,12 @@ snapshots:
 
   '@chevrotain/utils@11.0.3': {}
 
-  '@chromatic-com/storybook@3.2.5(react@19.0.0)(storybook@8.6.4(prettier@3.3.3))':
+  '@chromatic-com/storybook@3.2.6(react@19.0.0)(storybook@8.6.4(prettier@3.3.3))':
     dependencies:
-      chromatic: 11.26.1
+      chromatic: 11.27.0
       filesize: 10.1.6
       jsonfile: 6.1.0
-      react-confetti: 6.2.3(react@19.0.0)
+      react-confetti: 6.4.0(react@19.0.0)
       storybook: 8.6.4(prettier@3.3.3)
       strip-ansi: 7.1.0
     transitivePeerDependencies:
@@ -6914,7 +6914,7 @@ snapshots:
 
   chownr@3.0.0: {}
 
-  chromatic@11.26.1: {}
+  chromatic@11.27.0: {}
 
   citty@0.1.6:
     dependencies:
@@ -8724,7 +8724,7 @@ snapshots:
       defu: 6.1.4
       destr: 2.0.3
 
-  react-confetti@6.2.3(react@19.0.0):
+  react-confetti@6.4.0(react@19.0.0):
     dependencies:
       react: 19.0.0
       tween-functions: 1.2.0
