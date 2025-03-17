@@ -43,8 +43,8 @@ importers:
         specifier: ^8.6.4
         version: 8.6.4(storybook@8.6.4(prettier@3.3.3))
       '@storybook/addon-links':
-        specifier: ^8.6.4
-        version: 8.6.4(react@19.0.0)(storybook@8.6.4(prettier@3.3.3))
+        specifier: ^8.6.7
+        version: 8.6.7(react@19.0.0)(storybook@8.6.4(prettier@3.3.3))
       '@storybook/addon-onboarding':
         specifier: ^8.6.4
         version: 8.6.4(storybook@8.6.4(prettier@3.3.3))
@@ -1498,11 +1498,11 @@ packages:
     peerDependencies:
       storybook: ^8.6.4
 
-  '@storybook/addon-links@8.6.4':
-    resolution: {integrity: sha512-TaSIteYLJ12+dVBk7fW96ZvNIFizKs+Vo/YuNAe4xTzFJRrjLkFj9htLVi/dusMfn7lYo5DHIns08LuM+po1Dg==}
+  '@storybook/addon-links@8.6.7':
+    resolution: {integrity: sha512-fIiXlaOa9Bv2tbBshQbh/BjzGOilXVx+6nrX9VkLOg7UvzAvivtSraRmPWjgdtsChAHC8Xac42KUCNGQ/rkf5w==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
-      storybook: ^8.6.4
+      storybook: ^8.6.7
     peerDependenciesMeta:
       react:
         optional: true
@@ -4635,8 +4635,8 @@ packages:
   vue-component-type-helpers@2.2.4:
     resolution: {integrity: sha512-F66p0XLbAu92BRz6kakHyAcaUSF7HWpWX/THCqL0TxySSj7z/nok5UUMohfNkkCm1pZtawsdzoJ4p1cjNqCx0Q==}
 
-  vue-component-type-helpers@2.2.8:
-    resolution: {integrity: sha512-4bjIsC284coDO9om4HPA62M7wfsTvcmZyzdfR0aUlFXqq4tXxM1APyXpNVxPC8QazKw9OhmZNHBVDA6ODaZsrA==}
+  vue-component-type-helpers@3.0.0-alpha.2:
+    resolution: {integrity: sha512-dv9YzsuJFLnpRNxKU0exwIlCIA/v+rXrgCsEtaENsFJLPFMw1Sr4IRctilwfjnjCzoJGgGACHRZfxo6ZwlH2fQ==}
 
   vue-docgen-api@4.79.2:
     resolution: {integrity: sha512-n9ENAcs+40awPZMsas7STqjkZiVlIjxIKgiJr5rSohDP0/JCrD9VtlzNojafsA1MChm/hz2h3PDtUedx3lbgfA==}
@@ -5997,7 +5997,7 @@ snapshots:
       storybook: 8.6.4(prettier@3.3.3)
       ts-dedent: 2.2.0
 
-  '@storybook/addon-links@8.6.4(react@19.0.0)(storybook@8.6.4(prettier@3.3.3))':
+  '@storybook/addon-links@8.6.7(react@19.0.0)(storybook@8.6.4(prettier@3.3.3))':
     dependencies:
       '@storybook/global': 5.0.0
       storybook: 8.6.4(prettier@3.3.3)
@@ -6145,7 +6145,7 @@ snapshots:
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       vue: 3.5.13(typescript@5.8.2)
-      vue-component-type-helpers: 2.2.8
+      vue-component-type-helpers: 3.0.0-alpha.2
 
   '@testing-library/dom@10.4.0':
     dependencies:
@@ -9478,7 +9478,7 @@ snapshots:
 
   vue-component-type-helpers@2.2.4: {}
 
-  vue-component-type-helpers@2.2.8: {}
+  vue-component-type-helpers@3.0.0-alpha.2: {}
 
   vue-docgen-api@4.79.2(vue@3.5.13(typescript@5.8.2)):
     dependencies:
