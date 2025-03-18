@@ -76,8 +76,8 @@ importers:
         specifier: ^1.26.5
         version: 1.26.5
       '@vitejs/plugin-vue':
-        specifier: ^5.2.1
-        version: 5.2.1(vite@6.2.2(@types/node@22.13.10)(jiti@2.4.2)(sass@1.86.0)(terser@5.39.0)(tsx@4.19.3))(vue@3.5.13(typescript@5.8.2))
+        specifier: ^5.2.3
+        version: 5.2.3(vite@6.2.2(@types/node@22.13.10)(jiti@2.4.2)(sass@1.86.0)(terser@5.39.0)(tsx@4.19.3))(vue@3.5.13(typescript@5.8.2))
       '@vitejs/plugin-vue-jsx':
         specifier: ^4.1.2
         version: 4.1.2(vite@6.2.2(@types/node@22.13.10)(jiti@2.4.2)(sass@1.86.0)(terser@5.39.0)(tsx@4.19.3))(vue@3.5.13(typescript@5.8.2))
@@ -1904,8 +1904,8 @@ packages:
       vite: ^5.0.0 || ^6.0.0
       vue: ^3.0.0
 
-  '@vitejs/plugin-vue@5.2.1':
-    resolution: {integrity: sha512-cxh314tzaWwOLqVes2gnnCtvBDcM1UMdn+iFR+UjAn411dPT3tOmqrJjbMd7koZpMAmBM/GqeV4n9ge7JSiJJQ==}
+  '@vitejs/plugin-vue@5.2.3':
+    resolution: {integrity: sha512-IYSLEQj4LgZZuoVpdSUCw3dIynTWQgPlaRP6iAvMle4My0HdYwr5g5wQAfwOeHQBmYwEkqF70nRpSilr6PoUDg==}
     engines: {node: ^18.0.0 || >=20.0.0}
     peerDependencies:
       vite: ^5.0.0 || ^6.0.0
@@ -6497,7 +6497,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitejs/plugin-vue@5.2.1(vite@6.2.2(@types/node@22.13.10)(jiti@2.4.2)(sass@1.86.0)(terser@5.39.0)(tsx@4.19.3))(vue@3.5.13(typescript@5.8.2))':
+  '@vitejs/plugin-vue@5.2.3(vite@6.2.2(@types/node@22.13.10)(jiti@2.4.2)(sass@1.86.0)(terser@5.39.0)(tsx@4.19.3))(vue@3.5.13(typescript@5.8.2))':
     dependencies:
       vite: 6.2.2(@types/node@22.13.10)(jiti@2.4.2)(sass@1.86.0)(terser@5.39.0)(tsx@4.19.3)
       vue: 3.5.13(typescript@5.8.2)
