@@ -69,6 +69,6 @@
   },
   "dependencies": {
     "mermaid": "^11.5.0",
-    "nanoid": "^5.1.4"
+    "nanoid": "^5.1.5"
   }
 }
