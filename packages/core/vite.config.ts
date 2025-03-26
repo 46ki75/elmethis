@@ -22,12 +22,20 @@ export default defineConfig({
       formats: ['es']
     },
     rollupOptions: {
-      external: ['vue'],
-      output: {
-        globals: {
-          vue: 'Vue'
-        }
-      }
+      external: [
+        '@heroicons/vue',
+        '@iconify/vue',
+        'mermaid',
+        'katex',
+        'shiki',
+        'lodash-es',
+        'polished',
+        'ofetch',
+        'nanoid',
+        'prism-theme-vars',
+        'prismjs',
+        'vue'
+      ]
     }
   },
   esbuild: {
