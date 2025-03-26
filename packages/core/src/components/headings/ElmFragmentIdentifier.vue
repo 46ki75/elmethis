@@ -6,7 +6,7 @@
       @click="handleHashClick(id)"
     />
     <Icon
-      icon="line-md:link"
+      icon="mingcute:link-line"
       :class="$style.icon"
       @click="handleLinkClick(id)"
     />
