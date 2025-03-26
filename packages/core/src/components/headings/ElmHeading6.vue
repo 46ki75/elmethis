@@ -6,7 +6,10 @@
   >
     {{ text }}
   </h6>
-  <ElmFragmentIdentifier :id="id ?? kebabCase(text)" />
+  <ElmFragmentIdentifier
+    v-if="!disableFragmentIdentifier"
+    :id="id ?? kebabCase(text)"
+  />
 </template>
 
 <script setup lang="ts">
@@ -30,10 +33,17 @@ export interface ElmHeading6Props {
    * Default is kebab-cased `text`. (using lodash)
    */
   id?: string
+
+  /**
+   * Whether to disable fragment identifier.
+   * Default is `false`.
+   */
+  disableFragmentIdentifier?: boolean
 }
 
 withDefaults(defineProps<ElmHeading6Props>(), {
-  size: '1.1rem'
+  size: '1.1rem',
+  disableFragmentIdentifier: false
 })
 </script>
 

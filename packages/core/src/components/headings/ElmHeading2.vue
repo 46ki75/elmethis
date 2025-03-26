@@ -11,7 +11,10 @@
   >
     {{ text }}<span :class="$style.underline" aria-hidden></span>
   </h2>
-  <ElmFragmentIdentifier :id="id ?? kebabCase(text)" />
+  <ElmFragmentIdentifier
+    v-if="!disableFragmentIdentifier"
+    :id="id ?? kebabCase(text)"
+  />
 </template>
 
 <script setup lang="ts">
@@ -37,10 +40,17 @@ export interface ElmHeading2Props {
    * Default is kebab-cased `text`. (using lodash)
    */
   id?: string
+
+  /**
+   * Whether to disable fragment identifier.
+   * Default is `false`.
+   */
+  disableFragmentIdentifier?: boolean
 }
 
 withDefaults(defineProps<ElmHeading2Props>(), {
-  size: '1.4rem'
+  size: '1.4rem',
+  disableFragmentIdentifier: false
 })
 
 const target = ref(null)

@@ -1,12 +1,12 @@
 <template>
   <div :class="$style.fragment">
     <Icon
-      icon="mdi:hashtag-box-outline"
+      icon="material-symbols:anchor"
       :class="$style.icon"
       @click="handleHashClick(id)"
     />
     <Icon
-      icon="mdi:link-box-variant-outline"
+      icon="line-md:link"
       :class="$style.icon"
       @click="handleLinkClick(id)"
     />

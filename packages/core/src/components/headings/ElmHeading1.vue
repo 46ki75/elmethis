@@ -11,6 +11,10 @@
   >
     {{ text }}
   </h1>
+  <ElmFragmentIdentifier
+    v-if="!disableFragmentIdentifier"
+    :id="id ?? kebabCase(text)"
+  />
 </template>
 
 <script setup lang="ts">
@@ -18,6 +22,7 @@ import type { Property } from 'csstype'
 import { ref } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { kebabCase } from 'lodash-es'
+import ElmFragmentIdentifier from './ElmFragmentIdentifier.vue'
 
 export interface ElmHeading1Props {
   /**
@@ -35,10 +40,17 @@ export interface ElmHeading1Props {
    * Default is kebab-cased `text`. (using lodash)
    */
   id?: string
+
+  /**
+   * Whether to disable fragment identifier.
+   * Default is `false`.
+   */
+  disableFragmentIdentifier?: boolean
 }
 
 withDefaults(defineProps<ElmHeading1Props>(), {
-  size: '1.5rem'
+  size: '1.5rem',
+  disableFragmentIdentifier: false
 })
 
 const target = ref(null)
