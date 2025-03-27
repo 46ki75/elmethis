@@ -39,8 +39,8 @@ importers:
         specifier: ^8.6.10
         version: 8.6.10(react@19.0.0)(storybook@8.6.10(prettier@3.3.3))
       '@storybook/addon-onboarding':
-        specifier: ^8.6.9
-        version: 8.6.9(storybook@8.6.10(prettier@3.3.3))
+        specifier: ^8.6.10
+        version: 8.6.10(storybook@8.6.10(prettier@3.3.3))
       '@storybook/blocks':
         specifier: ^8.6.10
         version: 8.6.10(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.6.10(prettier@3.3.3))
@@ -1451,10 +1451,10 @@ packages:
     peerDependencies:
       storybook: ^8.6.10
 
-  '@storybook/addon-onboarding@8.6.9':
-    resolution: {integrity: sha512-3F2OUib+ZOfR7I1HLsOxPuRsjAtN+jW2au5qSz+5EJPPxqgDJX41QemN4qRHEz+J5DWwtqCaUB6dbnwBNiMlRA==}
+  '@storybook/addon-onboarding@8.6.10':
+    resolution: {integrity: sha512-n4wtlZqYQiigtYCDCRXH1ilmGGv+DG5mggiTLpcLJEh9tZg2dGUptSyGARRF6igYYeiZTdDo8OPvwFUZc5N+vg==}
     peerDependencies:
-      storybook: ^8.6.9
+      storybook: ^8.6.10
 
   '@storybook/addon-outline@8.6.10':
     resolution: {integrity: sha512-Z5lQ/q9rULtlD99V1S3ymEU59tJGD2KHEdr4HRUgxo+fkyy7nOZDi88sOupoICBuAVYBIcxLKiMeYrUIwjHqtg==}
@@ -5867,7 +5867,7 @@ snapshots:
       storybook: 8.6.10(prettier@3.3.3)
       tiny-invariant: 1.3.3
 
-  '@storybook/addon-onboarding@8.6.9(storybook@8.6.10(prettier@3.3.3))':
+  '@storybook/addon-onboarding@8.6.10(storybook@8.6.10(prettier@3.3.3))':
     dependencies:
       storybook: 8.6.10(prettier@3.3.3)
 
