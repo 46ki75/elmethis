@@ -1,6 +1,6 @@
 {
   "name": "@elmethis/core",
-  "version": "1.0.0-alpha.150",
+  "version": "1.0.0-alpha.151",
   "publishConfig": {
     "access": "public"
   },
@@ -27,12 +27,11 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
-    "@iconify/vue": "^4.3.0",
     "@heroicons/vue": "^2.2.0",
+    "@iconify/vue": "^4.3.0",
     "@vueuse/core": "^13.0.0",
     "katex": "^0.16.21",
     "lodash-es": "^4.17.21",
-    "mermaid": "^11.6.0",
     "nanoid": "^5.1.5",
     "ofetch": "^1.4.1",
     "polished": "^4.3.1",

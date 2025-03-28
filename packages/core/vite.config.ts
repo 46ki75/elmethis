@@ -30,6 +30,7 @@ export default defineConfig({
         '@vueuse/core',
         'katex',
         'lodash-es',
+        'nanoid',
         'ofetch',
         'polished',
         'shiki'
