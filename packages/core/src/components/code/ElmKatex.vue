@@ -7,14 +7,16 @@
       '--margin-block': props.block ? '3rem' : undefined
     }"
     :is="props.block ? 'div' : 'span'"
-    >{{ expression }}</component
   >
+    <span v-if="isRendered" v-html="html"></span>
+    <span v-else>{{ expression }}</span>
+  </component>
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUpdated, ref } from 'vue'
+import { onMounted, onServerPrefetch, onUpdated, ref } from 'vue'
 
-import katex from 'katex'
+import { renderToString } from 'katex'
 import 'katex/dist/katex.min.css'
 
 export interface ElmKatexProps {
@@ -37,20 +39,24 @@ const props = withDefaults(defineProps<ElmKatexProps>(), {
   block: false
 })
 
-const targetRef = ref<HTMLElement | null>(null)
+const isRendered = ref(false)
+
+const html = ref<string>(props.expression)
 
 const render = () => {
-  if (targetRef.value) {
+  if (!isRendered.value) {
     try {
-      katex.render(props.expression, targetRef.value, {
+      html.value = renderToString(props.expression, {
         displayMode: props.block
       })
+      isRendered.value = true
     } catch (err) {
       console.error('KaTeX rendering error:', err)
     }
   }
 }
 
+onServerPrefetch(render)
 onMounted(render)
 onUpdated(render)
 </script>
