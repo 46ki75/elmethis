@@ -31,7 +31,6 @@ export default defineConfig({
         'katex',
         'lodash-es',
         'nanoid',
-        'ofetch',
         'polished',
         'shiki'
       ],

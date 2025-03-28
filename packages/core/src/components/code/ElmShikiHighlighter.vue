@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { createHighlighter } from 'shiki'
-import { onMounted, ref } from 'vue'
+import { onMounted, onServerPrefetch, ref } from 'vue'
 
 export interface ElmShikiHighlighterProps {
   /**
@@ -24,26 +24,35 @@ const props = withDefaults(defineProps<ElmShikiHighlighterProps>(), {
   language: 'txt'
 })
 
+const isRendered = ref(false)
+
 const html = ref(`<pre>${props.code}</pre>`)
 
-onMounted(async () => {
-  const highlighter = await createHighlighter({
-    langs: [props.language],
-    themes: ['vitesse-light', 'vitesse-dark']
-  })
+const render = async () => {
+  if (!isRendered.value) {
+    const highlighter = await createHighlighter({
+      langs: [props.language],
+      themes: ['vitesse-light', 'vitesse-dark']
+    })
 
-  html.value = highlighter.codeToHtml(props.code, {
-    lang: props.language,
-    themes: {
-      dark: 'vitesse-dark',
-      light: 'vitesse-light'
-    },
-    colorReplacements: {
-      '#ffffff': 'transparent',
-      '#121212': 'transparent'
-    }
-  })
-})
+    html.value = highlighter.codeToHtml(props.code, {
+      lang: props.language,
+      themes: {
+        dark: 'vitesse-dark',
+        light: 'vitesse-light'
+      },
+      colorReplacements: {
+        '#ffffff': 'transparent',
+        '#121212': 'transparent'
+      }
+    })
+
+    isRendered.value = true
+  }
+}
+
+onMounted(render)
+onServerPrefetch(render)
 </script>
 
 <style module lang="scss">

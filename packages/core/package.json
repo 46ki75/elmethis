@@ -1,6 +1,6 @@
 {
   "name": "@elmethis/core",
-  "version": "1.0.0-alpha.153",
+  "version": "1.0.0-alpha.154",
   "publishConfig": {
     "access": "public"
   },
@@ -35,7 +35,6 @@
     "katex": "^0.16.21",
     "lodash-es": "^4.17.21",
     "nanoid": "^5.1.5",
-    "ofetch": "^1.4.1",
     "polished": "^4.3.1",
     "shiki": "^3.2.1"
   },
