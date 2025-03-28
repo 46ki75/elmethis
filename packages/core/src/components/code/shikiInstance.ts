@@ -63,6 +63,7 @@ export function getHighlighterSingleton() {
         'shell',
         'sql',
         'swift',
+        'toml',
         'typescript',
         'wasm',
         'xml',
