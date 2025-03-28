@@ -15,6 +15,7 @@ export default defineConfig({
     cssInjectedByJsPlugin()
   ],
   build: {
+    minify: false,
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'elmethis',
@@ -22,7 +23,22 @@ export default defineConfig({
       formats: ['es']
     },
     rollupOptions: {
-      external: ['vue']
+      external: [
+        'vue',
+        '@iconify/vue',
+        '@heroicons/vue',
+        '@vueuse/core',
+        'katex',
+        'lodash-es',
+        'ofetch',
+        'polished',
+        'shiki'
+      ],
+      output: {
+        preserveModules: true,
+        preserveModulesRoot: 'src',
+        entryFileNames: '[name].mjs'
+      }
     }
   },
   esbuild: {
