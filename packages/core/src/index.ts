@@ -7,7 +7,6 @@ import ElmCodeBlock, {
   ElmCodeBlockProps
 } from './components/code/ElmCodeBlock.vue'
 import ElmKatex, { ElmKatexProps } from './components/code/ElmKatex.vue'
-import ElmMermaid, { ElmMermaidProps } from './components/code/ElmMermaid.vue'
 
 // containments
 import ElmColumn, {
@@ -67,9 +66,7 @@ import ElmSwitch, { ElmSwitchProps } from './components/form/ElmSwitch.vue'
 import ElmTextField, {
   ElmTextFieldProps
 } from './components/form/ElmTextField.vue'
-import ElmTotp, {
-  ElmTotpProps
-} from './components/form/ElmTotp.vue'
+import ElmTotp, { ElmTotpProps } from './components/form/ElmTotp.vue'
 
 // Headings
 import ElmHeading1, {
@@ -212,7 +209,6 @@ export {
   ElmTag,
   ElmCodeBlock,
   ElmKatex,
-  ElmMermaid,
   ElmColumn,
   ElmColumnList,
   ElmDesktopWindow,
@@ -281,7 +277,6 @@ export type {
   ElmTagProps,
   ElmCodeBlockProps,
   ElmKatexProps,
-  ElmMermaidProps,
   ElmColumnProps,
   ElmColumnListProps,
   ElmDesktopWindowProps,
