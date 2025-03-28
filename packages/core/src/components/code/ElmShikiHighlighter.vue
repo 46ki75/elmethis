@@ -5,8 +5,9 @@
 </template>
 
 <script setup lang="ts">
-import { createHighlighter } from 'shiki'
+// import { createHighlighter } from 'shiki'
 import { onMounted, onServerPrefetch, ref } from 'vue'
+import { getHighlighterSingleton } from './shikiInstance'
 
 export interface ElmShikiHighlighterProps {
   /**
@@ -30,10 +31,7 @@ const html = ref(`<pre>${props.code}</pre>`)
 
 const render = async () => {
   if (!isRendered.value) {
-    const highlighter = await createHighlighter({
-      langs: [props.language],
-      themes: ['vitesse-light', 'vitesse-dark']
-    })
+    const highlighter = await getHighlighterSingleton()
 
     html.value = highlighter.codeToHtml(props.code, {
       lang: props.language,
