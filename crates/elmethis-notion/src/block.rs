@@ -35,18 +35,24 @@ pub enum Block {
 #[derive(Serialize, Clone)]
 pub struct ElmListItem {
     pub id: String,
+
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub children: Vec<Block>,
 }
 
 #[derive(Serialize, Clone)]
 pub struct ElmBulletedList {
     pub id: String,
+
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub children: Vec<Block>,
 }
 
 #[derive(Serialize, Clone)]
 pub struct ElmNumberedList {
     pub id: String,
+
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub children: Vec<Block>,
 }
 
@@ -98,6 +104,8 @@ pub struct ElmDividerProps {
 pub struct ElmCallout {
     pub id: String,
     pub props: ElmCalloutProps,
+
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub children: Vec<Block>,
 }
 
@@ -110,6 +118,8 @@ pub struct ElmCalloutProps {
 #[derive(Serialize, Clone)]
 pub struct ElmColumnList {
     pub id: String,
+
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub children: Vec<Block>,
 }
 
@@ -117,6 +127,8 @@ pub struct ElmColumnList {
 #[derive(Serialize, Clone)]
 pub struct ElmColumn {
     pub id: String,
+
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub children: Vec<Block>,
 }
 
@@ -196,6 +208,8 @@ pub struct ElmImageProps {
 #[derive(Serialize, Clone)]
 pub struct ElmParagraph {
     pub id: String,
+
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub children: Vec<Block>,
 }
 
@@ -203,6 +217,8 @@ pub struct ElmParagraph {
 #[derive(Serialize, Clone)]
 pub struct ElmBlockQuote {
     pub id: String,
+
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub children: Vec<Block>,
 }
 
@@ -223,6 +239,8 @@ pub struct ElmCheckboxProps {
 pub struct ElmToggle {
     pub id: String,
     pub props: ElmToggleProps,
+
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub children: Vec<Block>,
 }
 
@@ -235,21 +253,25 @@ pub struct ElmToggleProps {
 // ElmTable
 #[derive(Serialize, Clone)]
 pub struct ElmTable {
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub children: Vec<Block>,
 }
 
 #[derive(Serialize, Clone)]
 pub struct ElmTableHeader {
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub children: Vec<Block>,
 }
 
 #[derive(Serialize, Clone)]
 pub struct ElmTableBody {
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub children: Vec<Block>,
 }
 
 #[derive(Serialize, Clone)]
 pub struct ElmTableRow {
+    #[serde(skip_serializing_if = "Vec::is_empty")]
     pub children: Vec<Block>,
 }
 
