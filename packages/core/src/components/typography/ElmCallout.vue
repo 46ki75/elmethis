@@ -60,6 +60,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 
 <style module lang="scss">
 .callout {
+  z-index: 1;
   margin-block: 2rem;
   position: relative;
   box-sizing: border-box;
@@ -71,7 +72,6 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 
   &::after {
     position: absolute;
-    z-index: -1;
     content: '';
     left: 0;
     top: 0;
