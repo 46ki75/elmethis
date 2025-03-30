@@ -35,6 +35,29 @@ export const Primary: Story = {
   }
 }
 
+export const InlineIcon: Story = {
+  args: {
+    json: [
+      {
+        type: 'ElmInlineText',
+        props: { text: 'Rust: A language ' }
+      },
+      {
+        type: 'ElmInlineIcon',
+        props: {
+          src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Rust_programming_language_black_logo.svg/800px-Rust_programming_language_black_logo.svg.png'
+        }
+      },
+      {
+        type: 'ElmInlineText',
+        props: {
+          text: ' empowering everyone to build reliable and efficient software.'
+        }
+      }
+    ]
+  }
+}
+
 export const Callout: Story = {
   args: {
     json: [

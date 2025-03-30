@@ -5,6 +5,7 @@
 <script setup lang="ts">
 import ElmInlineText, { ElmInlineTextProps } from '../inline/ElmInlineText.vue'
 import ElmInlineLink, { ElmInlineLinkProps } from '../inline/ElmInlineLink.vue'
+import ElmInlineIcon, { ElmInlineIconProps } from '../inline/ElmInlineIcon.vue'
 import ElmCallout, { ElmCalloutProps } from '../typography/ElmCallout.vue'
 import ElmBulletedList, {
   ElmBulletedListProps
@@ -48,6 +49,7 @@ import { h, markRaw, VNode } from 'vue'
 type ComponentType =
   | 'ElmInlineText'
   | 'ElmInlineLink'
+  | 'ElmInlineIcon'
   | 'ElmCallout'
   | 'ElmBulletedList'
   | 'ElmNumberedList'
@@ -79,6 +81,7 @@ type ComponentType =
 type ComponentProps =
   | ElmInlineTextProps
   | ElmInlineLinkProps
+  | ElmInlineIconProps
   | ElmCalloutProps
   | ElmBulletedListProps
   | ElmNumberedListProps
@@ -124,6 +127,12 @@ interface ElmInlineLinkJsonComponent extends JsonComponentBase {
   type: 'ElmInlineLink'
   id?: string
   props?: ElmInlineLinkProps
+}
+
+interface ElmInlineIconJsonComponent extends JsonComponentBase {
+  type: 'ElmInlineIcon'
+  id?: string
+  props?: ElmInlineIconProps
 }
 
 interface ElmCalloutJsonComponent extends JsonComponentBase {
@@ -291,6 +300,7 @@ interface ElmColumnListJsonComponent extends JsonComponentBase {
 type JsonComponent =
   | ElmInlineTextJsonComponent
   | ElmInlineLinkJsonComponent
+  | ElmInlineIconJsonComponent
   | ElmCalloutJsonComponent
   | ElmBulletedListJsonComponent
   | ElmNumberedListJsonComponent
@@ -328,6 +338,7 @@ withDefaults(defineProps<ElmJsonRendererProps>(), {})
 const componentMap: Record<ComponentType, any> = {
   ElmInlineText: markRaw(ElmInlineText),
   ElmInlineLink: markRaw(ElmInlineLink),
+  ElmInlineIcon: markRaw(ElmInlineIcon),
   ElmCallout: markRaw(ElmCallout),
   ElmBulletedList: markRaw(ElmBulletedList),
   ElmNumberedList: markRaw(ElmNumberedList),
