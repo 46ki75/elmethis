@@ -182,10 +182,13 @@ pub struct ElmImage {
 #[derive(Serialize, Clone)]
 pub struct ElmImageProps {
     pub src: String,
+
     #[serde(skip_serializing_if = "Option::is_none")]
     pub alt: Option<String>,
+
     #[serde(rename = "enableModal")]
     pub enable_modal: bool,
+
     pub margin: String,
 }
 
@@ -271,11 +274,23 @@ pub struct ElmInlineText {
 #[derive(Serialize, Clone)]
 pub struct ElmInlineTextProps {
     pub text: String,
+
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
     pub bold: bool,
+
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
     pub italic: bool,
+
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
     pub underline: bool,
+
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
     pub strikethrough: bool,
+
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
     pub code: bool,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub color: Option<String>,
 }
 
