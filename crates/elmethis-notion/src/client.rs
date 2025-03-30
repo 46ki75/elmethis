@@ -625,47 +625,71 @@ impl Client {
     pub fn convert_rich_text(
         rich_text: Vec<notionrs::object::rich_text::RichText>,
     ) -> Vec<crate::block::Block> {
-        let mut blocks: Vec<crate::block::Block> = Vec::new();
+        let blocks: Vec<crate::block::Block> = rich_text
+            .iter()
+            .map(|r| {
+                if let notionrs::object::rich_text::RichText::Mention { mention, .. } = r {
+                    if let notionrs::object::rich_text::mention::Mention::CustomEmoji {
+                        custom_emoji,
+                    } = mention
+                    {
+                        let props = crate::block::ElmInlineIconProps {
+                            src: custom_emoji.url.to_string(),
+                            alt: custom_emoji.name.to_string(),
+                        };
 
-        for r in rich_text {
-            let annotations = match r {
-                notionrs::object::rich_text::RichText::Text { annotations, .. } => annotations,
-                notionrs::object::rich_text::RichText::Mention { annotations, .. } => annotations,
-                notionrs::object::rich_text::RichText::Equation { annotations, .. } => annotations,
-            };
+                        let block =
+                            crate::block::Block::ElmInlineIcon(crate::block::ElmInlineIcon {
+                                id: custom_emoji.id.to_string(),
+                                props,
+                            });
 
-            let plain_text = match r {
-                notionrs::object::rich_text::RichText::Text { plain_text, .. } => plain_text,
-                notionrs::object::rich_text::RichText::Mention { plain_text, .. } => plain_text,
-                notionrs::object::rich_text::RichText::Equation { plain_text, .. } => plain_text,
-            };
+                        return block;
+                    }
+                }
 
-            let props = crate::block::ElmInlineTextProps {
-                text: plain_text,
-                bold: annotations.bold,
-                italic: annotations.italic,
-                underline: annotations.underline,
-                strikethrough: annotations.strikethrough,
-                code: annotations.code,
-                color: match annotations.color {
-                    notionrs::object::color::Color::Default => None,
-                    notionrs::object::color::Color::Blue => Some(String::from("#6987b8")),
-                    notionrs::object::color::Color::Brown => Some(String::from("#8b4c3f")),
-                    notionrs::object::color::Color::Gray => Some(String::from("#868e9c")),
-                    notionrs::object::color::Color::Green => Some(String::from("#59b57c")),
-                    notionrs::object::color::Color::Orange => Some(String::from("#bf7e71")),
-                    notionrs::object::color::Color::Pink => Some(String::from("#c9699e")),
-                    notionrs::object::color::Color::Purple => Some(String::from("#9771bd")),
-                    notionrs::object::color::Color::Red => Some(String::from("#b36472")),
-                    notionrs::object::color::Color::Yellow => Some(String::from("#b8a36e")),
-                    _ => None,
-                },
-            };
+                let annotations = match r {
+                    notionrs::object::rich_text::RichText::Text { annotations, .. } => annotations,
+                    notionrs::object::rich_text::RichText::Mention { annotations, .. } => {
+                        annotations
+                    }
+                    notionrs::object::rich_text::RichText::Equation { annotations, .. } => {
+                        annotations
+                    }
+                };
 
-            blocks.push(crate::block::Block::ElmInlineText(
-                crate::block::ElmInlineText { props },
-            ));
-        }
+                let plain_text = match r {
+                    notionrs::object::rich_text::RichText::Text { plain_text, .. } => plain_text,
+                    notionrs::object::rich_text::RichText::Mention { plain_text, .. } => plain_text,
+                    notionrs::object::rich_text::RichText::Equation { plain_text, .. } => {
+                        plain_text
+                    }
+                };
+
+                let props = crate::block::ElmInlineTextProps {
+                    text: plain_text.to_string(),
+                    bold: annotations.bold,
+                    italic: annotations.italic,
+                    underline: annotations.underline,
+                    strikethrough: annotations.strikethrough,
+                    code: annotations.code,
+                    color: match annotations.color {
+                        notionrs::object::color::Color::Default => None,
+                        notionrs::object::color::Color::Blue => Some(String::from("#6987b8")),
+                        notionrs::object::color::Color::Brown => Some(String::from("#8b4c3f")),
+                        notionrs::object::color::Color::Gray => Some(String::from("#868e9c")),
+                        notionrs::object::color::Color::Green => Some(String::from("#59b57c")),
+                        notionrs::object::color::Color::Orange => Some(String::from("#bf7e71")),
+                        notionrs::object::color::Color::Pink => Some(String::from("#c9699e")),
+                        notionrs::object::color::Color::Purple => Some(String::from("#9771bd")),
+                        notionrs::object::color::Color::Red => Some(String::from("#b36472")),
+                        notionrs::object::color::Color::Yellow => Some(String::from("#b8a36e")),
+                        _ => None,
+                    },
+                };
+                crate::block::Block::ElmInlineText(crate::block::ElmInlineText { props })
+            })
+            .collect();
 
         blocks
     }

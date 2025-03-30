@@ -113,9 +113,11 @@ const render = () => {
 
 <style module lang="scss">
 .text {
+  padding: 0;
+  margin: 0;
   color: var(--color, rgba(black, 0.7));
-  font-size: var(--font-size);
-  line-height: var(--font-size);
+  font-size: var(--font-size, 1rem);
+  line-height: var(--font-size, 1rem);
   background-color: var(--background-color);
 
   &::selection {
