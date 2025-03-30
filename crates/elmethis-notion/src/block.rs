@@ -28,6 +28,7 @@ pub enum Block {
     ElmTableRow(ElmTableRow),
     ElmTableCell(ElmTableCell),
     ElmInlineText(ElmInlineText),
+    ElmInlineIcon(ElmInlineIcon),
 }
 
 // ListItem
@@ -276,4 +277,17 @@ pub struct ElmInlineTextProps {
     pub strikethrough: bool,
     pub code: bool,
     pub color: Option<String>,
+}
+
+// InlineIcon
+#[derive(Serialize, Clone)]
+pub struct ElmInlineIcon {
+    pub id: String,
+    pub props: ElmInlineIconProps,
+}
+
+#[derive(Serialize, Clone)]
+pub struct ElmInlineIconProps {
+    pub src: String,
+    pub alt: String,
 }
