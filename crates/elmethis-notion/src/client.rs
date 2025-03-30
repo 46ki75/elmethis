@@ -344,7 +344,7 @@ impl Client {
                                 .collect::<String>(),
                         };
 
-                        let block = crate::block::Block::ElmHeading1(crate::block::ElmHeading1 {
+                        let block = crate::block::Block::ElmHeading2(crate::block::ElmHeading2 {
                             props,
                             id: block.id,
                         });
@@ -384,7 +384,7 @@ impl Client {
                                 .collect::<String>(),
                         };
 
-                        let block = crate::block::Block::ElmHeading1(crate::block::ElmHeading1 {
+                        let block = crate::block::Block::ElmHeading3(crate::block::ElmHeading3 {
                             props,
                             id: block.id,
                         });
