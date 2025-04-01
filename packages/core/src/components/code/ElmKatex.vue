@@ -9,7 +9,6 @@
     :is="props.block ? 'div' : 'span'"
   >
     <span v-if="html" v-html="html"></span>
-    <span v-else>{{ expression }}</span>
   </component>
 </template>
 
