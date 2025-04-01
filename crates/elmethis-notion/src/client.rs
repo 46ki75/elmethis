@@ -683,10 +683,19 @@ impl Client {
                     notionrs::object::rich_text::mention::Mention::Database { database: _ } => {
                         continue;
                     }
-                    notionrs::object::rich_text::mention::Mention::CustomEmoji {
-                        custom_emoji: _,
-                    } => {
-                        continue;
+                    notionrs::object::rich_text::mention::Mention::CustomEmoji { custom_emoji } => {
+                        let props = crate::block::ElmInlineIconProps {
+                            src: custom_emoji.url.to_string(),
+                            alt: custom_emoji.name.to_string(),
+                        };
+
+                        let block =
+                            crate::block::Block::ElmInlineIcon(crate::block::ElmInlineIcon {
+                                id: custom_emoji.id.to_string(),
+                                props,
+                            });
+
+                        Ok(block)
                     }
                 },
                 notionrs::object::rich_text::RichText::Text {
