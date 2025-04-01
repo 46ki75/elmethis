@@ -3,46 +3,121 @@
 </template>
 
 <script setup lang="ts">
-import ElmInlineText, { ElmInlineTextProps } from '../inline/ElmInlineText.vue'
-import ElmInlineLink, { ElmInlineLinkProps } from '../inline/ElmInlineLink.vue'
-import ElmInlineIcon, { ElmInlineIconProps } from '../inline/ElmInlineIcon.vue'
-import ElmCallout, { ElmCalloutProps } from '../typography/ElmCallout.vue'
-import ElmBulletedList, {
-  ElmBulletedListProps
-} from '../typography/ElmBulletedList.vue'
-import ElmNumberedList, {
-  ElmNumberedListProps
-} from '../typography/ElmNumberedList.vue'
-import ElmListItem, { ElmListItemProps } from '../typography/ElmListItem.vue'
-import ElmBlockQuote, {
-  ElmBlockQuoteProps
-} from '../typography/ElmBlockQuote.vue'
-import ElmDivider, { ElmDividerProps } from '../typography/ElmDivider.vue'
-import ElmHeading1, { ElmHeading1Props } from '../headings/ElmHeading1.vue'
-import ElmHeading2, { ElmHeading2Props } from '../headings/ElmHeading2.vue'
-import ElmHeading3, { ElmHeading3Props } from '../headings/ElmHeading3.vue'
-import ElmHeading4, { ElmHeading4Props } from '../headings/ElmHeading4.vue'
-import ElmHeading5, { ElmHeading5Props } from '../headings/ElmHeading5.vue'
-import ElmHeading6, { ElmHeading6Props } from '../headings/ElmHeading6.vue'
-import ElmCodeBlock, { ElmCodeBlockProps } from '../code/ElmCodeBlock.vue'
-import ElmParagraph, { ElmParagraphProps } from '../typography/ElmParagraph.vue'
-import ElmTable, { ElmTableProps } from '../table/ElmTable.vue'
-import ElmTableHeader, {
-  ElmTableHeaderProps
-} from '../table/ElmTableHeader.vue'
-import ElmTableBody, { ElmTableBodyProps } from '../table/ElmTableBody.vue'
-import ElmTableRow, { ElmTableRowProps } from '../table/ElmTableRow.vue'
-import ElmTableCell, { ElmTableCellProps } from '../table/ElmTableCell.vue'
-import ElmKatex, { ElmKatexProps } from '../code/ElmKatex.vue'
-import ElmImage, { ElmImageProps } from '../media/ElmImage.vue'
-import ElmBookmark, { ElmBookmarkProps } from '../navigation/ElmBookmark.vue'
-import ElmToggle, { ElmToggleProps } from '../containments/ElmToggle.vue'
-import ElmCheckbox, { ElmCheckboxProps } from '../form/ElmCheckbox.vue'
-import ElmFile, { ElmFileProps } from '../media/ElmFile.vue'
-import ElmColumn, { ElmColumnProps } from '../containments/ElmColumn.vue'
-import ElmColumnList, {
-  ElmColumnListProps
-} from '../containments/ElmColumnList.vue'
+import { defineAsyncComponent } from 'vue'
+
+import type { ElmInlineTextProps } from '../inline/ElmInlineText.vue'
+import type { ElmInlineLinkProps } from '../inline/ElmInlineLink.vue'
+import type { ElmInlineIconProps } from '../inline/ElmInlineIcon.vue'
+import type { ElmCalloutProps } from '../typography/ElmCallout.vue'
+import type { ElmBulletedListProps } from '../typography/ElmBulletedList.vue'
+import type { ElmNumberedListProps } from '../typography/ElmNumberedList.vue'
+import type { ElmListItemProps } from '../typography/ElmListItem.vue'
+import type { ElmBlockQuoteProps } from '../typography/ElmBlockQuote.vue'
+import type { ElmDividerProps } from '../typography/ElmDivider.vue'
+import type { ElmHeading1Props } from '../headings/ElmHeading1.vue'
+import type { ElmHeading2Props } from '../headings/ElmHeading2.vue'
+import type { ElmHeading3Props } from '../headings/ElmHeading3.vue'
+import type { ElmHeading4Props } from '../headings/ElmHeading4.vue'
+import type { ElmHeading5Props } from '../headings/ElmHeading5.vue'
+import type { ElmHeading6Props } from '../headings/ElmHeading6.vue'
+import type { ElmCodeBlockProps } from '../code/ElmCodeBlock.vue'
+import type { ElmParagraphProps } from '../typography/ElmParagraph.vue'
+import type { ElmTableProps } from '../table/ElmTable.vue'
+import type { ElmTableHeaderProps } from '../table/ElmTableHeader.vue'
+import type { ElmTableBodyProps } from '../table/ElmTableBody.vue'
+import type { ElmTableRowProps } from '../table/ElmTableRow.vue'
+import type { ElmTableCellProps } from '../table/ElmTableCell.vue'
+import type { ElmKatexProps } from '../code/ElmKatex.vue'
+import type { ElmImageProps } from '../media/ElmImage.vue'
+import type { ElmBookmarkProps } from '../navigation/ElmBookmark.vue'
+import type { ElmToggleProps } from '../containments/ElmToggle.vue'
+import type { ElmCheckboxProps } from '../form/ElmCheckbox.vue'
+import type { ElmFileProps } from '../media/ElmFile.vue'
+import type { ElmColumnProps } from '../containments/ElmColumn.vue'
+import type { ElmColumnListProps } from '../containments/ElmColumnList.vue'
+
+const ElmInlineText = defineAsyncComponent(
+  () => import('../inline/ElmInlineText.vue')
+)
+const ElmInlineLink = defineAsyncComponent(
+  () => import('../inline/ElmInlineLink.vue')
+)
+const ElmInlineIcon = defineAsyncComponent(
+  () => import('../inline/ElmInlineIcon.vue')
+)
+const ElmCallout = defineAsyncComponent(
+  () => import('../typography/ElmCallout.vue')
+)
+const ElmBulletedList = defineAsyncComponent(
+  () => import('../typography/ElmBulletedList.vue')
+)
+const ElmNumberedList = defineAsyncComponent(
+  () => import('../typography/ElmNumberedList.vue')
+)
+const ElmListItem = defineAsyncComponent(
+  () => import('../typography/ElmListItem.vue')
+)
+const ElmBlockQuote = defineAsyncComponent(
+  () => import('../typography/ElmBlockQuote.vue')
+)
+const ElmDivider = defineAsyncComponent(
+  () => import('../typography/ElmDivider.vue')
+)
+const ElmHeading1 = defineAsyncComponent(
+  () => import('../headings/ElmHeading1.vue')
+)
+const ElmHeading2 = defineAsyncComponent(
+  () => import('../headings/ElmHeading2.vue')
+)
+const ElmHeading3 = defineAsyncComponent(
+  () => import('../headings/ElmHeading3.vue')
+)
+const ElmHeading4 = defineAsyncComponent(
+  () => import('../headings/ElmHeading4.vue')
+)
+const ElmHeading5 = defineAsyncComponent(
+  () => import('../headings/ElmHeading5.vue')
+)
+const ElmHeading6 = defineAsyncComponent(
+  () => import('../headings/ElmHeading6.vue')
+)
+const ElmCodeBlock = defineAsyncComponent(
+  () => import('../code/ElmCodeBlock.vue')
+)
+const ElmParagraph = defineAsyncComponent(
+  () => import('../typography/ElmParagraph.vue')
+)
+const ElmTable = defineAsyncComponent(() => import('../table/ElmTable.vue'))
+const ElmTableHeader = defineAsyncComponent(
+  () => import('../table/ElmTableHeader.vue')
+)
+const ElmTableBody = defineAsyncComponent(
+  () => import('../table/ElmTableBody.vue')
+)
+const ElmTableRow = defineAsyncComponent(
+  () => import('../table/ElmTableRow.vue')
+)
+const ElmTableCell = defineAsyncComponent(
+  () => import('../table/ElmTableCell.vue')
+)
+const ElmKatex = defineAsyncComponent(() => import('../code/ElmKatex.vue'))
+const ElmImage = defineAsyncComponent(() => import('../media/ElmImage.vue'))
+const ElmBookmark = defineAsyncComponent(
+  () => import('../navigation/ElmBookmark.vue')
+)
+const ElmToggle = defineAsyncComponent(
+  () => import('../containments/ElmToggle.vue')
+)
+const ElmCheckbox = defineAsyncComponent(
+  () => import('../form/ElmCheckbox.vue')
+)
+const ElmFile = defineAsyncComponent(() => import('../media/ElmFile.vue'))
+const ElmColumn = defineAsyncComponent(
+  () => import('../containments/ElmColumn.vue')
+)
+const ElmColumnList = defineAsyncComponent(
+  () => import('../containments/ElmColumnList.vue')
+)
 
 import { h, markRaw, VNode } from 'vue'
 
