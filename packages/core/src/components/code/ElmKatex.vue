@@ -1,19 +1,30 @@
 <template>
-  <component
-    :class="$style.katex"
-    :key="JSON.stringify(props)"
+  <div
+    v-if="props.block"
     ref="targetRef"
+    :class="$style.katex"
     :style="{
       '--margin-block': props.block ? '3rem' : undefined
     }"
-    :is="props.block ? 'div' : 'span'"
   >
     <span v-if="html" v-html="html"></span>
-  </component>
+  </div>
+
+  <span
+    v-else
+    ref="targetRef"
+    :class="$style.katex"
+    :style="{
+      '--margin-block': props.block ? '3rem' : undefined
+    }"
+  >
+    <span v-if="html" v-html="html"></span
+  ></span>
 </template>
 
 <script setup lang="ts">
-import { onMounted, onServerPrefetch, onUpdated, ref } from 'vue'
+import { renderToString } from 'katex'
+import { onMounted, onServerPrefetch, ref } from 'vue'
 
 export interface ElmKatexProps {
   /**
@@ -37,26 +48,10 @@ const props = withDefaults(defineProps<ElmKatexProps>(), {
 
 const html = ref<string | undefined>()
 
-let katexRenderToString:
-  | ((expression: string, options: { displayMode: boolean }) => string)
-  | null = null
-
-const loadKatex = async () => {
-  if (!katexRenderToString) {
-    const [{ renderToString }] = await Promise.all([
-      import('katex'),
-      import('katex/dist/katex.min.css')
-    ])
-    katexRenderToString = renderToString
-  }
-}
-
 const render = async () => {
-  await loadKatex()
-
-  if (!html.value && katexRenderToString) {
+  if (html.value == null) {
     try {
-      html.value = katexRenderToString(props.expression, {
+      html.value = renderToString(props.expression, {
         displayMode: props.block
       })
     } catch (err) {
@@ -65,9 +60,8 @@ const render = async () => {
   }
 }
 
-onServerPrefetch(render)
 onMounted(render)
-onUpdated(render)
+onServerPrefetch(render)
 </script>
 
 <style module lang="scss">
