@@ -8,7 +8,7 @@
     }"
     :is="props.block ? 'div' : 'span'"
   >
-    <span v-if="isRendered" v-html="html"></span>
+    <span v-if="html" v-html="html"></span>
     <span v-else>{{ expression }}</span>
   </component>
 </template>
@@ -36,9 +36,7 @@ const props = withDefaults(defineProps<ElmKatexProps>(), {
   block: false
 })
 
-const isRendered = ref(false)
-
-const html = ref<string>(props.expression)
+const html = ref<string | undefined>()
 
 let katexRenderToString:
   | ((expression: string, options: { displayMode: boolean }) => string)
@@ -57,12 +55,11 @@ const loadKatex = async () => {
 const render = async () => {
   await loadKatex()
 
-  if (!isRendered.value && katexRenderToString) {
+  if (!html.value && katexRenderToString) {
     try {
       html.value = katexRenderToString(props.expression, {
         displayMode: props.block
       })
-      isRendered.value = true
     } catch (err) {
       console.error('KaTeX rendering error:', err)
     }
