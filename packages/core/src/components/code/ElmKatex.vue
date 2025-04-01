@@ -56,10 +56,7 @@ let katexRenderToString:
 
 const loadKatex = async () => {
   if (!katexRenderToString) {
-    const [{ renderToString }] = await Promise.all([
-      import('katex'),
-      import('katex/dist/katex.min.css')
-    ])
+    const { renderToString } = await import('katex')
     katexRenderToString = renderToString
   }
 }
