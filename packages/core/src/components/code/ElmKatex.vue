@@ -16,9 +16,6 @@
 <script setup lang="ts">
 import { onMounted, onServerPrefetch, onUpdated, ref } from 'vue'
 
-import { renderToString } from 'katex'
-import 'katex/dist/katex.min.css'
-
 export interface ElmKatexProps {
   /**
    * The KaTex expression.
@@ -43,10 +40,26 @@ const isRendered = ref(false)
 
 const html = ref<string>(props.expression)
 
-const render = () => {
-  if (!isRendered.value) {
+let katexRenderToString:
+  | ((expression: string, options: { displayMode: boolean }) => string)
+  | null = null
+
+const loadKatex = async () => {
+  if (!katexRenderToString) {
+    const [{ renderToString }] = await Promise.all([
+      import('katex'),
+      import('katex/dist/katex.min.css')
+    ])
+    katexRenderToString = renderToString
+  }
+}
+
+const render = async () => {
+  await loadKatex()
+
+  if (!isRendered.value && katexRenderToString) {
     try {
-      html.value = renderToString(props.expression, {
+      html.value = katexRenderToString(props.expression, {
         displayMode: props.block
       })
       isRendered.value = true

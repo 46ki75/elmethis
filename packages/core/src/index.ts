@@ -145,10 +145,10 @@ export { default as ElmColorSample } from './components/others/ElmColorSample.vu
 export type { ElmColorTableProps } from './components/others/ElmColorTable.vue'
 export { default as ElmColorTable } from './components/others/ElmColorTable.vue'
 
-export type { ElmJsonRendererProps } from './components/renderer/ElmJsonRenderer.vue'
-export { default as ElmJsonRenderer } from './components/renderer/ElmJsonRenderer.vue'
+// export type { ElmJsonRendererProps } from './components/renderer/ElmJsonRenderer.vue'
+// export { default as ElmJsonRenderer } from './components/renderer/ElmJsonRenderer.vue'
 
-export { default as ElmJsonRendererAsync } from './components/renderer/ElmJsonRendererAsync.vue'
+// export { default as ElmJsonRendererAsync } from './components/renderer/ElmJsonRendererAsync.vue'
 
 export type { ElmTableProps } from './components/table/ElmTable.vue'
 export { default as ElmTable } from './components/table/ElmTable.vue'
@@ -188,5 +188,5 @@ export { default as ElmListItem } from './components/typography/ElmListItem.vue'
 
 // hooks
 
-export { useElmethisTheme } from './hooks/useElmethisTheme'
-export { useTyping } from './hooks/useTyping'
+// export { useElmethisTheme } from './hooks/useElmethisTheme'
+// export { useTyping } from './hooks/useTyping'
