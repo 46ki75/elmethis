@@ -28,6 +28,7 @@ pub enum Block {
     ElmTableRow(ElmTableRow),
     ElmTableCell(ElmTableCell),
     ElmInlineText(ElmInlineText),
+    ElmInlineLink(ElmInlineLink),
     ElmInlineIcon(ElmInlineIcon),
 }
 
@@ -135,7 +136,6 @@ pub struct ElmColumn {
 // Equation
 #[derive(Serialize, Clone)]
 pub struct ElmKatex {
-    pub id: String,
     pub props: ElmKatexProps,
 }
 
@@ -314,6 +314,18 @@ pub struct ElmInlineTextProps {
 
     #[serde(skip_serializing_if = "Option::is_none")]
     pub color: Option<String>,
+}
+
+// InlineLink
+#[derive(Serialize, Clone)]
+pub struct ElmInlineLink {
+    pub props: ElmInlineLinkProps,
+}
+
+#[derive(Serialize, Clone)]
+pub struct ElmInlineLinkProps {
+    pub text: String,
+    pub href: String,
 }
 
 // InlineIcon

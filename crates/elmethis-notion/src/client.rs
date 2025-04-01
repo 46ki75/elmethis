@@ -111,7 +111,8 @@ impl Client {
                 notionrs::object::block::Block::BulletedListItem { bulleted_list_item } => {
                     let mut list_item_children: Vec<crate::block::Block> = Vec::new();
 
-                    let rich_text_block = Client::convert_rich_text(bulleted_list_item.rich_text);
+                    let rich_text_block =
+                        Client::convert_rich_text(bulleted_list_item.rich_text).await?;
                     list_item_children.extend(rich_text_block);
 
                     if block.has_children {
@@ -144,7 +145,7 @@ impl Client {
                 }
                 notionrs::object::block::Block::Callout { callout } => {
                     let mut children: Vec<crate::block::Block> = Vec::new();
-                    let text_blocks = Client::convert_rich_text(callout.rich_text);
+                    let text_blocks = Client::convert_rich_text(callout.rich_text).await?;
                     let children_blocks = self.convert_block(&block.id).await?;
                     children.extend(text_blocks);
                     children.extend(children_blocks);
@@ -246,10 +247,7 @@ impl Client {
                         block: true,
                     };
 
-                    let block = crate::block::Block::ElmKatex(crate::block::ElmKatex {
-                        props,
-                        id: block.id,
-                    });
+                    let block = crate::block::Block::ElmKatex(crate::block::ElmKatex { props });
 
                     blocks.push(block);
                 }
@@ -426,7 +424,8 @@ impl Client {
                 notionrs::object::block::Block::NumberedListItem { numbered_list_item } => {
                     let mut list_item_children: Vec<crate::block::Block> = Vec::new();
 
-                    let rich_text_block = Client::convert_rich_text(numbered_list_item.rich_text);
+                    let rich_text_block =
+                        Client::convert_rich_text(numbered_list_item.rich_text).await?;
                     list_item_children.extend(rich_text_block);
 
                     if block.has_children {
@@ -459,7 +458,7 @@ impl Client {
                 }
                 notionrs::object::block::Block::Paragraph { paragraph } => {
                     let block = crate::block::Block::ElmParagraph(crate::block::ElmParagraph {
-                        children: Client::convert_rich_text(paragraph.rich_text),
+                        children: Client::convert_rich_text(paragraph.rich_text).await?,
                         id: block.id,
                     });
 
@@ -469,7 +468,7 @@ impl Client {
                 notionrs::object::block::Block::Quote { quote } => {
                     let mut children = Vec::new();
 
-                    let inline_text_block = Client::convert_rich_text(quote.rich_text);
+                    let inline_text_block = Client::convert_rich_text(quote.rich_text).await?;
 
                     let children_block = self.convert_block(&block.id).await?;
 
@@ -622,75 +621,126 @@ impl Client {
         Ok(blocks)
     }
 
-    pub fn convert_rich_text(
+    pub async fn convert_rich_text(
         rich_text: Vec<notionrs::object::rich_text::RichText>,
-    ) -> Vec<crate::block::Block> {
-        let blocks: Vec<crate::block::Block> = rich_text
-            .iter()
-            .map(|r| {
-                if let notionrs::object::rich_text::RichText::Mention { mention, .. } = r {
-                    if let notionrs::object::rich_text::mention::Mention::CustomEmoji {
-                        custom_emoji,
-                    } = mention
-                    {
-                        let props = crate::block::ElmInlineIconProps {
-                            src: custom_emoji.url.to_string(),
-                            alt: custom_emoji.name.to_string(),
+    ) -> Result<Vec<crate::block::Block>, crate::error::Error> {
+        let mut blocks: Vec<crate::block::Block> = Vec::new();
+
+        for r in rich_text {
+            let block: Result<crate::block::Block, crate::error::Error> = match r {
+                notionrs::object::rich_text::RichText::Mention { mention, .. } => match mention {
+                    notionrs::object::rich_text::mention::Mention::LinkMention { link_mention } => {
+                        let href = link_mention.href.as_str();
+
+                        let mut props = crate::block::ElmInlineLinkProps {
+                            href: link_mention.href.to_string(),
+                            text: link_mention.to_string(),
                         };
 
-                        let block =
-                            crate::block::Block::ElmInlineIcon(crate::block::ElmInlineIcon {
-                                id: custom_emoji.id.to_string(),
-                                props,
-                            });
+                        let response = reqwest::Client::new()
+                            .get(href)
+                            .header("user-agent", "Rust - reqwest")
+                            .send()
+                            .await?
+                            .text()
+                            .await?;
 
-                        return block;
+                        let document = scraper::Html::parse_document(&response);
+
+                        let title = document
+                            .select(&scraper::Selector::parse("title")?)
+                            .next()
+                            .map(|element| element.text().collect::<String>());
+
+                        let og_title_selector =
+                            scraper::Selector::parse("meta[property='og:title']")?;
+
+                        if let Some(element) = document.select(&og_title_selector).next() {
+                            if let Some(content) = element.value().attr("content") {
+                                props.text = content.to_string();
+                            }
+                        }
+
+                        if let Some(title) = title {
+                            props.text = title;
+                        }
+
+                        Ok(crate::block::Block::ElmInlineLink(
+                            crate::block::ElmInlineLink { props },
+                        ))
                     }
+                    notionrs::object::rich_text::mention::Mention::User { user: _ } => continue,
+                    notionrs::object::rich_text::mention::Mention::Date { date: _ } => continue,
+                    notionrs::object::rich_text::mention::Mention::LinkPreview {
+                        link_preview: _,
+                    } => {
+                        continue;
+                    }
+                    notionrs::object::rich_text::mention::Mention::TemplateMention {
+                        template_mention: _,
+                    } => continue,
+                    notionrs::object::rich_text::mention::Mention::Page { page: _ } => continue,
+                    notionrs::object::rich_text::mention::Mention::Database { database: _ } => {
+                        continue;
+                    }
+                    notionrs::object::rich_text::mention::Mention::CustomEmoji {
+                        custom_emoji: _,
+                    } => {
+                        continue;
+                    }
+                },
+                notionrs::object::rich_text::RichText::Text {
+                    text: _text,
+                    annotations,
+                    plain_text,
+                    href: _href,
+                } => {
+                    let props = crate::block::ElmInlineTextProps {
+                        text: plain_text.to_string(),
+                        bold: annotations.bold,
+                        italic: annotations.italic,
+                        underline: annotations.underline,
+                        strikethrough: annotations.strikethrough,
+                        code: annotations.code,
+                        color: match annotations.color {
+                            notionrs::object::color::Color::Default => None,
+                            notionrs::object::color::Color::Blue => Some(String::from("#6987b8")),
+                            notionrs::object::color::Color::Brown => Some(String::from("#8b4c3f")),
+                            notionrs::object::color::Color::Gray => Some(String::from("#868e9c")),
+                            notionrs::object::color::Color::Green => Some(String::from("#59b57c")),
+                            notionrs::object::color::Color::Orange => Some(String::from("#bf7e71")),
+                            notionrs::object::color::Color::Pink => Some(String::from("#c9699e")),
+                            notionrs::object::color::Color::Purple => Some(String::from("#9771bd")),
+                            notionrs::object::color::Color::Red => Some(String::from("#b36472")),
+                            notionrs::object::color::Color::Yellow => Some(String::from("#b8a36e")),
+                            _ => None,
+                        },
+                    };
+
+                    Ok(crate::block::Block::ElmInlineText(
+                        crate::block::ElmInlineText { props },
+                    ))
                 }
+                notionrs::object::rich_text::RichText::Equation {
+                    equation,
+                    annotations: _annotations,
+                    plain_text: _plain_text,
+                    href: _href,
+                } => {
+                    let props = crate::block::ElmKatexProps {
+                        block: false,
+                        expression: equation.expression,
+                    };
 
-                let annotations = match r {
-                    notionrs::object::rich_text::RichText::Text { annotations, .. } => annotations,
-                    notionrs::object::rich_text::RichText::Mention { annotations, .. } => {
-                        annotations
-                    }
-                    notionrs::object::rich_text::RichText::Equation { annotations, .. } => {
-                        annotations
-                    }
-                };
+                    let block = crate::block::Block::ElmKatex(crate::block::ElmKatex { props });
 
-                let plain_text = match r {
-                    notionrs::object::rich_text::RichText::Text { plain_text, .. } => plain_text,
-                    notionrs::object::rich_text::RichText::Mention { plain_text, .. } => plain_text,
-                    notionrs::object::rich_text::RichText::Equation { plain_text, .. } => {
-                        plain_text
-                    }
-                };
+                    Ok(block)
+                }
+            };
 
-                let props = crate::block::ElmInlineTextProps {
-                    text: plain_text.to_string(),
-                    bold: annotations.bold,
-                    italic: annotations.italic,
-                    underline: annotations.underline,
-                    strikethrough: annotations.strikethrough,
-                    code: annotations.code,
-                    color: match annotations.color {
-                        notionrs::object::color::Color::Default => None,
-                        notionrs::object::color::Color::Blue => Some(String::from("#6987b8")),
-                        notionrs::object::color::Color::Brown => Some(String::from("#8b4c3f")),
-                        notionrs::object::color::Color::Gray => Some(String::from("#868e9c")),
-                        notionrs::object::color::Color::Green => Some(String::from("#59b57c")),
-                        notionrs::object::color::Color::Orange => Some(String::from("#bf7e71")),
-                        notionrs::object::color::Color::Pink => Some(String::from("#c9699e")),
-                        notionrs::object::color::Color::Purple => Some(String::from("#9771bd")),
-                        notionrs::object::color::Color::Red => Some(String::from("#b36472")),
-                        notionrs::object::color::Color::Yellow => Some(String::from("#b8a36e")),
-                        _ => None,
-                    },
-                };
-                crate::block::Block::ElmInlineText(crate::block::ElmInlineText { props })
-            })
-            .collect();
+            blocks.push(block.unwrap());
+        }
 
-        blocks
+        Ok(blocks)
     }
 }
