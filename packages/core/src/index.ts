@@ -186,5 +186,5 @@ export { default as ElmListItem } from './components/typography/ElmListItem.vue'
 
 // hooks
 
-// export { useElmethisTheme } from './hooks/useElmethisTheme'
-// export { useTyping } from './hooks/useTyping'
+export { useElmethisTheme } from './hooks/useElmethisTheme'
+export { useTyping } from './hooks/useTyping'
