@@ -23,7 +23,6 @@
 </template>
 
 <script setup lang="ts">
-import { renderToString } from 'katex'
 import { onMounted, onServerPrefetch, ref } from 'vue'
 
 export interface ElmKatexProps {
@@ -48,10 +47,26 @@ const props = withDefaults(defineProps<ElmKatexProps>(), {
 
 const html = ref<string | undefined>()
 
+let katexRenderToString:
+  | ((expression: string, options: { displayMode: boolean }) => string)
+  | null = null
+
+const loadKatex = async () => {
+  if (!katexRenderToString) {
+    const [{ renderToString }] = await Promise.all([
+      import('katex'),
+      import('katex/dist/katex.min.css')
+    ])
+    katexRenderToString = renderToString
+  }
+}
+
 const render = async () => {
-  if (html.value == null) {
+  await loadKatex()
+
+  if (html.value == null && katexRenderToString) {
     try {
-      html.value = renderToString(props.expression, {
+      html.value = katexRenderToString(props.expression, {
         displayMode: props.block
       })
     } catch (err) {
