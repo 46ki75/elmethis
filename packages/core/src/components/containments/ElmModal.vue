@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { Property } from 'csstype'
+import type { Property } from 'csstype'
 
 export interface ElmModalProps {
   /**

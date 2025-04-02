@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import ElmInlineText from '../inline/ElmInlineText.vue'
-import { Property } from 'csstype'
+import type { Property } from 'csstype'
 
 export interface ElmFileProps {
   /**
