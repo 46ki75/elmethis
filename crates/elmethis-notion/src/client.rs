@@ -486,6 +486,9 @@ impl Client {
                     let children = self.convert_block(&block.id).await?;
                     blocks.extend(children);
                 }
+                notionrs::object::block::Block::TableOfContents {
+                    table_of_contents: _,
+                } => {}
                 notionrs::object::block::Block::Table { table: _ } => {
                     let rows = self
                         .notionrs_client
@@ -615,6 +618,9 @@ impl Client {
                 }
                 notionrs::object::block::Block::Video { video: _ } => {}
                 notionrs::object::block::Block::Unknown(_) => {}
+
+                #[allow(unreachable_patterns)]
+                _ => {}
             };
         }
 
