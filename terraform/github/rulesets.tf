@@ -36,11 +36,11 @@ resource "github_repository_ruleset" "branch_require_pr" {
   rules {
     required_status_checks {
       required_check {
-        context        = "Unit Test (notionrs)"
+        context        = "Build Test (@elmethis/notion-node)"
         integration_id = data.github_app.github_actions.id
       }
       required_check {
-        context        = "Unit Test (notionrs-macro)"
+        context        = "Build Test (@elmethis/core)"
         integration_id = data.github_app.github_actions.id
       }
     }

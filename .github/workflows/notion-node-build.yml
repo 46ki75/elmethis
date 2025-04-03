@@ -1,4 +1,4 @@
-name: Build Test (@elmethis/notion-node)
+name: Build Test
 
 on:
   push:
@@ -6,7 +6,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  build:
+    name: Build Test (@elmethis/notion-node)
     runs-on: ubuntu-latest
 
     strategy:

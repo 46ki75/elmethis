@@ -1,4 +1,4 @@
-name: Build Test (@elmethis/core)
+name: Build Test
 
 on:
   push:
@@ -6,7 +6,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  build:
+    name: Build Test (@elmethis/core)
     runs-on: ubuntu-latest
 
     strategy:
