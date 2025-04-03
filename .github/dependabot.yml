@@ -40,3 +40,15 @@ updates:
       - 'npm'
     reviewers:
       - '46ki75'
+
+  - package-ecosystem: 'terraform'
+    directories:
+      - '/'
+    schedule:
+      interval: 'daily'
+    target-branch: 'main'
+    labels:
+      - 'dependencies'
+      - 'Terraform'
+    reviewers:
+      - '46ki75'
