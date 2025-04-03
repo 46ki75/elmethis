@@ -43,6 +43,10 @@ resource "github_repository_ruleset" "branch_require_pr" {
         context        = "Build Test (@elmethis/core)"
         integration_id = data.github_app.github_actions.id
       }
+      required_check {
+        context        = "Unit Test (crates/elmethis-notion)"
+        integration_id = data.github_app.github_actions.id
+      }
     }
   }
 }
