@@ -10,7 +10,7 @@ updates:
       - '/packages/core'
     schedule:
       interval: 'daily'
-    target-branch: 'main'
+    target-branch: 'develop'
     groups:
       eslint-updates:
         patterns:
@@ -34,9 +34,21 @@ updates:
       - '/packages/notion-node'
     schedule:
       interval: 'daily'
-    target-branch: 'main'
+    target-branch: 'develop'
     labels:
       - 'dependencies'
       - 'npm'
+    reviewers:
+      - '46ki75'
+
+  - package-ecosystem: 'terraform'
+    directories:
+      - '/'
+    schedule:
+      interval: 'daily'
+    target-branch: 'develop'
+    labels:
+      - 'dependencies'
+      - 'Terraform'
     reviewers:
       - '46ki75'

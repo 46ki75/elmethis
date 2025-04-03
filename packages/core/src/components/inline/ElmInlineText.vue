@@ -116,7 +116,7 @@ const render = () => {
   padding: 0;
   margin: 0;
   color: var(--color, rgba(black, 0.7));
-  font-size: var(--font-size, 1rem);
+  font-size: var(--font-size, inherit);
   line-height: var(--font-size, 1rem);
   background-color: var(--background-color);
 
@@ -137,8 +137,10 @@ const render = () => {
 
 .code {
   margin-inline: 0.25rem;
-  padding: 0.25em 0.5em;
+  padding: 2px 0.5em;
+  font-size: calc(1rem - 2px);
   border-radius: 0.125rem;
   background-color: rgba(0, 0, 0, 0.075);
+  font-family: 'Source Code Pro' monospace;
 }
 </style>

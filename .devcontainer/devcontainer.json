@@ -1,5 +1,5 @@
 {
-  "name": "Dev Container",
+  "name": "elmethis",
   "build": {
     "dockerfile": "Dockerfile"
   },
@@ -7,27 +7,39 @@
     "vscode": {
       "settings": {},
       "extensions": [
+        "GitHub.vscode-pull-request-github",
+        "github.vscode-github-actions",
         "usernamehw.errorlens",
         "Gruntfuggly.todo-tree",
         "christian-kohler.path-intellisense",
+        "ms-azuretools.vscode-docker",
+        "DavidAnson.vscode-markdownlint",
+        "yzhang.markdown-all-in-one",
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
-        "ms-azuretools.vscode-docker",
-        "Vue.volar",
-        "GraphQL.vscode-graphql",
-        "rust-lang.rust-analyzer"
+
+        // Rust
+        "rust-lang.rust-analyzer",
+        "tamasfe.even-better-toml",
+        "fill-labs.dependi",
+
+        // Terraform
+        "HashiCorp.terraform"
       ]
     }
   },
-  "forwardPorts": [
-    6006
-  ],
   "features": {
-    "ghcr.io/devcontainers/features/github-cli": {},
     "ghcr.io/devcontainers-extra/features/starship": {},
+    "ghcr.io/devcontainers/features/github-cli": {},
+
+    // Node.js
+    "ghcr.io/devcontainers/features/node": {},
+
+    // Rust
     "ghcr.io/devcontainers/features/rust": {},
-    "ghcr.io/devcontainers/features/node": {
-      "version": "22"
-    }
-  }
+
+    // Terraform
+    "ghcr.io/devcontainers/features/terraform": {}
+  },
+  "postCreateCommand": "echo 'eval \"$(starship init bash)\"' >> ~/.bashrc"
 }
