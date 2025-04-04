@@ -18,6 +18,9 @@
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
 
+        // Vue
+        "Vue.volar",
+
         // Rust
         "rust-lang.rust-analyzer",
         "tamasfe.even-better-toml",

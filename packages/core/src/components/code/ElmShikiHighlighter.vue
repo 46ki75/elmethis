@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<ElmShikiHighlighterProps>(), {
   language: 'txt'
 })
 
-const isRendered = ref(false)
+const isRendered = defineModel<boolean>({ default: false })
 
 const html = ref(`<pre>${props.code}</pre>`)
 
