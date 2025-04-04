@@ -13,33 +13,47 @@
         <ElmInlineText :text="caption ?? language" />
       </div>
 
-      <ElmTooltip>
-        <template #original>
-          <Icon
-            :class="$style['copy-icon']"
-            @click="
-              () => {
-                copy(code)
-              }
-            "
-            :icon="
-              copied
-                ? 'mdi:clipboard-check-multiple-outline'
-                : 'mdi:clipboard-multiple-outline'
-            "
-          />
-        </template>
-        <template #tooltip>
-          <div>
-            <ElmInlineText
-              :text="copied ? 'Copied to Clipboard!' : 'Copy to Clipboard'"
+      <div :class="$style.header__right">
+        <ElmTooltip>
+          <template #original>
+            <Icon
+              :class="$style['copy-icon']"
+              @click="
+                () => {
+                  copy(code)
+                }
+              "
+              :icon="
+                copied
+                  ? 'mdi:clipboard-check-multiple-outline'
+                  : 'mdi:clipboard-multiple-outline'
+              "
             />
-          </div>
-        </template>
-      </ElmTooltip>
+          </template>
+          <template #tooltip>
+            <div>
+              <ElmInlineText
+                :text="copied ? 'Copied to Clipboard!' : 'Copy to Clipboard'"
+              />
+            </div>
+          </template>
+        </ElmTooltip>
+      </div>
     </div>
     <div :class="$style.code">
-      <AsyncElmShikiHighlighter :code="code" :language="language" />
+      <div
+        :class="$style['code-body']"
+        :style="{ opacity: isRendered ? 1 : 0 }"
+      >
+        <AsyncElmShikiHighlighter
+          v-model="isRendered"
+          :code="code"
+          :language="language"
+        />
+      </div>
+      <div :style="{ opacity: !isRendered ? 1 : 0 }" :class="$style.fallback">
+        <ElmDotLoadingIcon size="48px" />
+      </div>
     </div>
   </div>
 </template>
@@ -53,6 +67,7 @@ import ElmTooltip from '../containments/ElmTooltip.vue'
 import type { Property } from 'csstype'
 import { defineAsyncComponent, ref } from 'vue'
 import ElmBlockFallback from '../fallback/ElmBlockFallback.vue'
+import ElmDotLoadingIcon from '../icon/ElmDotLoadingIcon.vue'
 
 export interface ElmCodeBlockProps {
   /**
@@ -85,6 +100,8 @@ const AsyncElmShikiHighlighter = defineAsyncComponent({
   loader: () => import('./ElmShikiHighlighter.vue'),
   loadingComponent: ElmBlockFallback
 })
+
+const isRendered = ref(false)
 
 const { copy, copied } = useClipboard({ source: props.code })
 
@@ -162,10 +179,36 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   }
 }
 
+.header__right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .code {
+  position: relative;
   padding: 0.25rem 1rem 1rem 1rem;
   overflow-x: auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(#6987b8, 0.3) rgba(#6987b8, 0.15);
+}
+
+.code-body {
+  transition: opacity 200ms;
+}
+
+.fallback {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  padding: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 200ms;
 }
 </style>
