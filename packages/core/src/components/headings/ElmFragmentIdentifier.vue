@@ -50,9 +50,12 @@ const { copy } = useClipboard()
 
 onMounted(() => {
   nextTick(() => {
-    const element = document.querySelector(window.location.hash)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
+    const hash = window.location.hash
+    if (hash && hash.startsWith('#')) {
+      const element = document.querySelector(hash)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+      }
     }
   })
 })
