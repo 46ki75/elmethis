@@ -677,7 +677,19 @@ impl Client {
                         props.favicon = document
                             .select(&favicon_selector)
                             .next()
-                            .and_then(|f| f.value().attr("href").map(String::from));
+                            .and_then(|f| f.value().attr("href").map(String::from))
+                            .and_then(|favicon_href| {
+                                if favicon_href.starts_with("http://")
+                                    || favicon_href.starts_with("https://")
+                                {
+                                    Some(favicon_href)
+                                } else {
+                                    url::Url::parse(&href)
+                                        .and_then(|s| s.join(&favicon_href))
+                                        .map(|s| s.to_string())
+                                        .ok()
+                                }
+                            });
 
                         Ok(crate::block::Block::ElmInlineLink(
                             crate::block::ElmInlineLink { props },
