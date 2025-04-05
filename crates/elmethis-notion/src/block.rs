@@ -326,6 +326,9 @@ pub struct ElmInlineLink {
 pub struct ElmInlineLinkProps {
     pub text: String,
     pub href: String,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub favicon: Option<String>,
 }
 
 // InlineIcon
