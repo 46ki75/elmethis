@@ -641,6 +641,7 @@ impl Client {
                         let mut props = crate::block::ElmInlineLinkProps {
                             href: link_mention.href.to_string(),
                             text: link_mention.to_string(),
+                            favicon: None,
                         };
 
                         let response = reqwest::Client::new()
@@ -670,6 +671,13 @@ impl Client {
                         if let Some(title) = title {
                             props.text = title;
                         }
+
+                        let favicon_selector = scraper::Selector::parse(r#"link[rel="icon"]"#)?;
+
+                        props.favicon = document
+                            .select(&favicon_selector)
+                            .next()
+                            .and_then(|f| f.value().attr("href").map(String::from));
 
                         Ok(crate::block::Block::ElmInlineLink(
                             crate::block::ElmInlineLink { props },
