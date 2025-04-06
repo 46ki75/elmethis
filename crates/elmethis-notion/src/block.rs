@@ -16,7 +16,7 @@ pub enum Block {
     ElmHeading1(ElmHeading1),
     ElmHeading2(ElmHeading2),
     ElmHeading3(ElmHeading3),
-    ElmImage(ElmBlockImage),
+    ElmBlockImage(ElmBlockImage),
     ElmKatex(ElmKatex),
     ElmParagraph(ElmParagraph),
     ElmBlockQuote(ElmBlockQuote),
