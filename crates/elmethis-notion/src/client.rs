@@ -413,7 +413,7 @@ impl Client {
                         margin: "2rem".to_string(),
                     };
 
-                    let image_block = crate::block::Block::ElmImage(crate::block::ElmBlockImage {
+                    let image_block = crate::block::Block::ElmBlockImage(crate::block::ElmBlockImage {
                         props,
                         id: block.id.clone(),
                     });
