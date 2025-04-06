@@ -16,7 +16,7 @@ pub enum Block {
     ElmHeading1(ElmHeading1),
     ElmHeading2(ElmHeading2),
     ElmHeading3(ElmHeading3),
-    ElmImage(ElmImage),
+    ElmImage(ElmBlockImage),
     ElmKatex(ElmKatex),
     ElmParagraph(ElmParagraph),
     ElmBlockQuote(ElmBlockQuote),
@@ -186,13 +186,13 @@ pub struct ElmHeadingProps {
 
 // Image
 #[derive(Serialize, Clone)]
-pub struct ElmImage {
+pub struct ElmBlockImage {
     pub id: String,
-    pub props: ElmImageProps,
+    pub props: ElmBlockImageProps,
 }
 
 #[derive(Serialize, Clone)]
-pub struct ElmImageProps {
+pub struct ElmBlockImageProps {
     pub src: String,
 
     #[serde(skip_serializing_if = "Option::is_none")]

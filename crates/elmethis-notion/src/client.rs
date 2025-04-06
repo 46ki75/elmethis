@@ -406,14 +406,14 @@ impl Client {
                         ),
                     };
 
-                    let props = crate::block::ElmImageProps {
+                    let props = crate::block::ElmBlockImageProps {
                         src: src.clone(),
                         alt,
                         enable_modal: true,
                         margin: "2rem".to_string(),
                     };
 
-                    let image_block = crate::block::Block::ElmImage(crate::block::ElmImage {
+                    let image_block = crate::block::Block::ElmImage(crate::block::ElmBlockImage {
                         props,
                         id: block.id.clone(),
                     });
