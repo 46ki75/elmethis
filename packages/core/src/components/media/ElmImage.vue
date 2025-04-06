@@ -130,7 +130,7 @@ onKeyStroke('Escape', (e) => {
   display: flex;
   justify-content: center;
   align-items: center;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 1200 / 630;
 }
 
 .modal {
