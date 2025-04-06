@@ -127,6 +127,9 @@ export { default as ElmFile } from './components/media/ElmFile.vue'
 export type { ElmImageProps } from './components/media/ElmImage.vue'
 export { default as ElmImage } from './components/media/ElmImage.vue'
 
+export type { ElmBlockImageProps } from './components/media/ElmBlockImage.vue'
+export { default as ElmBlockImage } from './components/media/ElmImage.vue'
+
 export type { ElmBookmarkProps } from './components/navigation/ElmBookmark.vue'
 export { default as ElmBookmark } from './components/navigation/ElmBookmark.vue'
 

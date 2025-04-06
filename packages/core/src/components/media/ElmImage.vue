@@ -101,7 +101,7 @@ onKeyStroke('Escape', (e) => {
 .image {
   display: block;
   margin-block: var(--margin-block);
-  width: 100%;
+  max-width: 100%;
   height: var(--height);
   opacity: var(--opacity);
   transition: opacity 400ms;
