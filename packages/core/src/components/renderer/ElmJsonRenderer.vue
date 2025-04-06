@@ -29,6 +29,7 @@ import type { ElmTableRowProps } from '../table/ElmTableRow.vue'
 import type { ElmTableCellProps } from '../table/ElmTableCell.vue'
 import type { ElmKatexProps } from '../code/ElmKatex.vue'
 import type { ElmImageProps } from '../media/ElmImage.vue'
+import type { ElmBlockImageProps } from '../media/ElmBlockImage.vue'
 import type { ElmBookmarkProps } from '../navigation/ElmBookmark.vue'
 import type { ElmToggleProps } from '../containments/ElmToggle.vue'
 import type { ElmCheckboxProps } from '../form/ElmCheckbox.vue'
@@ -102,6 +103,9 @@ const ElmTableCell = defineAsyncComponent(
 )
 const ElmKatex = defineAsyncComponent(() => import('../code/ElmKatex.vue'))
 const ElmImage = defineAsyncComponent(() => import('../media/ElmImage.vue'))
+const ElmBlockImage = defineAsyncComponent(
+  () => import('../media/ElmBlockImage.vue')
+)
 const ElmBookmark = defineAsyncComponent(
   () => import('../navigation/ElmBookmark.vue')
 )
@@ -146,6 +150,7 @@ type ComponentType =
   | 'ElmTableCell'
   | 'ElmKatex'
   | 'ElmImage'
+  | 'ElmBlockImage'
   | 'ElmBookmark'
   | 'ElmToggle'
   | 'ElmCheckbox'
@@ -178,6 +183,7 @@ type ComponentProps =
   | ElmTableCellProps
   | ElmKatexProps
   | ElmImageProps
+  | ElmBlockImageProps
   | ElmBookmarkProps
   | ElmToggleProps
   | ElmCheckboxProps
@@ -336,6 +342,12 @@ interface ElmImageJsonComponent extends JsonComponentBase {
   props?: ElmImageProps
 }
 
+interface ElmBlockImageJsonComponent extends JsonComponentBase {
+  type: 'ElmBlockImage'
+  id?: string
+  props?: ElmBlockImageProps
+}
+
 interface ElmBookmarkJsonComponent extends JsonComponentBase {
   type: 'ElmBookmark'
   id?: string
@@ -397,6 +409,7 @@ type JsonComponent =
   | ElmTableCellJsonComponent
   | ElmKatexJsonComponent
   | ElmImageJsonComponent
+  | ElmBlockImageJsonComponent
   | ElmBookmarkJsonComponent
   | ElmToggleJsonComponent
   | ElmCheckboxJsonComponent
@@ -435,6 +448,7 @@ const componentMap: Record<ComponentType, any> = {
   ElmTableCell: markRaw(ElmTableCell),
   ElmKatex: markRaw(ElmKatex),
   ElmImage: markRaw(ElmImage),
+  ElmBlockImage: markRaw(ElmBlockImage),
   ElmBookmark: markRaw(ElmBookmark),
   ElmToggle: markRaw(ElmToggle),
   ElmCheckbox: markRaw(ElmCheckbox),
