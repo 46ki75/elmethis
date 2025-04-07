@@ -36,6 +36,15 @@
   </div>
 
   <transition>
+    <div v-if="!isLoading && alt != null" :class="$style['alt-container']">
+      <Icon icon="material-symbols:image-outline" />
+      <div :class="$style['alt-text']">
+        <ElmInlineText :text="alt" size="0.8rem" />
+      </div>
+    </div>
+  </transition>
+
+  <transition>
     <div :class="$style.modal" v-if="isModalOpen">
       <img
         :class="$style['modal-image']"
@@ -57,6 +66,7 @@ import ElmRectangleWave from '../fallback/ElmRectangleWave.vue'
 import ElmDotLoadingIcon from '../icon/ElmDotLoadingIcon.vue'
 import { onKeyStroke, useImage } from '@vueuse/core'
 import ElmInlineText from '../inline/ElmInlineText.vue'
+import { Icon } from '@iconify/vue'
 
 export interface ElmBlockImageProps {
   /**
@@ -83,7 +93,8 @@ onKeyStroke('Escape', (e) => {
 </script>
 
 <style module lang="scss">
-.container{
+.container {
+  margin-block: 1rem;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -93,13 +104,27 @@ onKeyStroke('Escape', (e) => {
 .image {
   overflow: hidden;
   border-radius: 0.25rem;
-  box-shadow: 0 0 0.25rem rgba(black, 0.3);
+  box-shadow: 0 0 0.125rem rgba(black, 0.3);
   display: block;
   max-width: 100%;
   height: var(--height);
   opacity: var(--opacity);
   transition: opacity 400ms;
   cursor: zoom-in;
+}
+
+.alt-container {
+  margin: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6987b8;
+  opacity: 0.8;
+}
+
+.alt-text {
+  width: fit-content;
 }
 
 .error {
