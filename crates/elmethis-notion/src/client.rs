@@ -394,15 +394,19 @@ impl Client {
                     let (src, alt) = match image {
                         notionrs::object::file::File::External(f) => (
                             f.external.url,
-                            f.caption.map(|rich_text| {
-                                rich_text.iter().map(|t| t.to_string()).collect::<String>()
-                            }),
+                            f.caption
+                                .map(|rich_text| {
+                                    rich_text.iter().map(|t| t.to_string()).collect::<String>()
+                                })
+                                .filter(|s| !s.trim().is_empty()),
                         ),
                         notionrs::object::file::File::Uploaded(f) => (
                             f.file.url,
-                            f.caption.map(|rich_text| {
-                                rich_text.iter().map(|t| t.to_string()).collect::<String>()
-                            }),
+                            f.caption
+                                .map(|rich_text| {
+                                    rich_text.iter().map(|t| t.to_string()).collect::<String>()
+                                })
+                                .filter(|s| !s.trim().is_empty()),
                         ),
                     };
 
@@ -412,10 +416,11 @@ impl Client {
                         enable_modal: true,
                     };
 
-                    let image_block = crate::block::Block::ElmBlockImage(crate::block::ElmBlockImage {
-                        props,
-                        id: block.id.clone(),
-                    });
+                    let image_block =
+                        crate::block::Block::ElmBlockImage(crate::block::ElmBlockImage {
+                            props,
+                            id: block.id.clone(),
+                        });
 
                     blocks.push(image_block);
                 }
