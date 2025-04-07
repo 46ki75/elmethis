@@ -36,7 +36,10 @@
   </div>
 
   <transition>
-    <div v-if="!isLoading && alt != null" :class="$style['alt-container']">
+    <div
+      v-if="!isLoading && alt != null && alt.trim() !== ''"
+      :class="$style['alt-container']"
+    >
       <Icon icon="material-symbols:image-outline" />
       <div :class="$style['alt-text']">
         <ElmInlineText :text="alt" size="0.8rem" />
