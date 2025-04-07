@@ -200,8 +200,6 @@ pub struct ElmBlockImageProps {
 
     #[serde(rename = "enableModal")]
     pub enable_modal: bool,
-
-    pub margin: String,
 }
 
 // Paragraph

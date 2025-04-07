@@ -410,7 +410,6 @@ impl Client {
                         src: src.clone(),
                         alt,
                         enable_modal: true,
-                        margin: "2rem".to_string(),
                     };
 
                     let image_block = crate::block::Block::ElmBlockImage(crate::block::ElmBlockImage {
