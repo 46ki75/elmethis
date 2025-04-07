@@ -1,5 +1,5 @@
 <template>
-  <div :style="{ marginBlock: '2rem' }">
+  <div :class="$style.container">
     <transition mode="out-in">
       <div v-if="error" :class="$style.error">
         <ElmInlineText
@@ -16,23 +16,22 @@
         </div>
       </div>
 
-      <div :class="$style.container" v-else>
-        <img
-          :class="$style.image"
-          :src="src"
-          :alt="alt"
-          @click="
-            () => {
-              isModalOpen = true
-            }
-          "
-          :style="{
-            '--height': isLoading ? '0' : 'auto',
-            '--opacity': isLoading ? 0 : 1,
-            display: isLoading ? 'none' : 'block'
-          }"
-        />
-      </div>
+      <img
+        v-else
+        :class="$style.image"
+        :src="src"
+        :alt="alt"
+        @click="
+          () => {
+            isModalOpen = true
+          }
+        "
+        :style="{
+          '--height': isLoading ? '0' : 'auto',
+          '--opacity': isLoading ? 0 : 1,
+          display: isLoading ? 'none' : 'block'
+        }"
+      />
     </transition>
   </div>
 
@@ -84,13 +83,17 @@ onKeyStroke('Escape', (e) => {
 </script>
 
 <style module lang="scss">
-.container {
-  overflow: hidden;
-  border-radius: 0.25rem;
-  box-shadow: 0 0 0.25rem rgba(black, 0.3);
+.container{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .image {
+  overflow: hidden;
+  border-radius: 0.25rem;
+  box-shadow: 0 0 0.25rem rgba(black, 0.3);
   display: block;
   max-width: 100%;
   height: var(--height);
