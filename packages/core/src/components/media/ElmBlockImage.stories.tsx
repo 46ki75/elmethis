@@ -21,12 +21,6 @@ export const Svg: Story = {
   }
 }
 
-export const Modal: Story = {
-  args: {
-    enableModal: true
-  }
-}
-
 export const Invalid: Story = {
   args: {
     src: 'invalid'
