@@ -36,7 +36,7 @@
     "lodash-es": "^4.17.21",
     "nanoid": "^5.1.5",
     "polished": "^4.3.1",
-    "shiki": "^3.2.1"
+    "shiki": "^3.2.2"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.6",
