@@ -621,7 +621,8 @@ impl Client {
                     blocks.push(block);
                 }
                 notionrs::object::block::Block::Video { video: _ } => {}
-                notionrs::object::block::Block::Unknown(_) => {}
+                
+                notionrs::object::block::Block::Unsupported => {}
 
                 #[allow(unreachable_patterns)]
                 _ => {}
