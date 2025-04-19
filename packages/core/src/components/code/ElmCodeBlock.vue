@@ -13,31 +13,31 @@
         <ElmInlineText :text="caption ?? language" />
       </div>
 
-      <div :class="$style.header__right">
-        <ElmTooltip>
-          <template #original>
-            <Icon
-              :class="$style['copy-icon']"
-              @click="
-                () => {
-                  copy(code)
-                }
-              "
-              :icon="
-                copied
-                  ? 'mdi:clipboard-check-multiple-outline'
-                  : 'mdi:clipboard-multiple-outline'
-              "
-            />
-          </template>
-          <template #tooltip>
-            <div>
-              <ElmInlineText
-                :text="copied ? 'Copied to Clipboard!' : 'Copy to Clipboard'"
-              />
-            </div>
-          </template>
-        </ElmTooltip>
+      <div ref="tooltipRef" :class="$style.header__right">
+        <Icon
+          :class="$style['copy-icon']"
+          @click="
+            () => {
+              copy(code)
+            }
+          "
+          :icon="
+            copied
+              ? 'mdi:clipboard-check-multiple-outline'
+              : 'mdi:clipboard-multiple-outline'
+          "
+        />
+
+        <div v-if="isHovered" :class="$style.tooltip">
+          <Icon
+            v-if="copied"
+            icon="mdi:check-circle-outline"
+            :class="$style['check-icon']"
+          />
+          <ElmInlineText
+            :text="copied ? 'Copied to Clipboard!' : 'Copy to Clipboard'"
+          />
+        </div>
       </div>
     </div>
     <div :class="$style.code">
@@ -62,12 +62,17 @@
 import { Icon } from '@iconify/vue'
 import ElmLanguageIcon from '../icon/ElmLanguageIcon.vue'
 import ElmInlineText from '../inline/ElmInlineText.vue'
-import { useClipboard, useIntersectionObserver } from '@vueuse/core'
-import ElmTooltip from '../containments/ElmTooltip.vue'
-import type { Property } from 'csstype'
-import { defineAsyncComponent, ref } from 'vue'
 import ElmBlockFallback from '../fallback/ElmBlockFallback.vue'
 import ElmDotLoadingIcon from '../icon/ElmDotLoadingIcon.vue'
+
+import {
+  useClipboard,
+  useIntersectionObserver,
+  useElementHover
+} from '@vueuse/core'
+
+import type { Property } from 'csstype'
+import { defineAsyncComponent, ref, useTemplateRef } from 'vue'
 
 export interface ElmCodeBlockProps {
   /**
@@ -111,6 +116,9 @@ const targetIsVisible = ref(false)
 useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   targetIsVisible.value = isIntersecting
 })
+
+const tooltipElement = useTemplateRef<HTMLButtonElement>('tooltipRef')
+const isHovered = useElementHover(tooltipElement)
 </script>
 
 <style module lang="scss">
@@ -210,5 +218,22 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   justify-content: center;
   align-items: center;
   transition: opacity 200ms;
+}
+
+.tooltip {
+  position: absolute;
+  top: 4rem;
+  right: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+  height: 20px;
+}
+
+.check-icon {
+  width: 20px;
+  height: 20px;
+  color: #59b57c;
 }
 </style>
