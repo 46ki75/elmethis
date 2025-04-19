@@ -47,6 +47,7 @@
         </transition>
       </div>
     </div>
+
     <div :class="$style.code">
       <div
         :class="$style['code-body']"
@@ -58,6 +59,7 @@
           :language="language"
         />
       </div>
+
       <div :style="{ opacity: !isRendered ? 1 : 0 }" :class="$style.fallback">
         <ElmDotLoadingIcon size="48px" />
       </div>
@@ -226,6 +228,7 @@ const isHovered = useElementHover(tooltipElement)
   justify-content: center;
   align-items: center;
   transition: opacity 200ms;
+  pointer-events: none;
 }
 
 .tooltip {
