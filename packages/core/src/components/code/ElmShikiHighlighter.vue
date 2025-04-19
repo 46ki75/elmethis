@@ -33,19 +33,23 @@ const render = async () => {
   if (!isRendered.value) {
     const highlighter = await getHighlighterSingleton()
 
-    html.value = highlighter.codeToHtml(props.code, {
-      lang: props.language,
-      themes: {
-        dark: 'vitesse-dark',
-        light: 'vitesse-light'
-      },
-      colorReplacements: {
-        '#ffffff': 'transparent',
-        '#121212': 'transparent'
-      }
-    })
-
-    isRendered.value = true
+    try {
+      html.value = highlighter.codeToHtml(props.code, {
+        lang: props.language,
+        themes: {
+          dark: 'vitesse-dark',
+          light: 'vitesse-light'
+        },
+        colorReplacements: {
+          '#ffffff': 'transparent',
+          '#121212': 'transparent'
+        }
+      })
+    } catch {
+      // do nothing
+    } finally {
+      isRendered.value = true
+    }
   }
 }
 
