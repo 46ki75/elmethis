@@ -1,6 +1,6 @@
 {
   "name": "@elmethis/core",
-  "version": "1.0.0-alpha.186",
+  "version": "1.0.0-alpha.187",
   "publishConfig": {
     "access": "public"
   },
