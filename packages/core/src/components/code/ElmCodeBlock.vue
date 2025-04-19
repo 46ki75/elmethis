@@ -28,16 +28,23 @@
           "
         />
 
-        <div v-if="isHovered" :class="$style.tooltip">
-          <Icon
-            v-if="copied"
-            icon="mdi:check-circle-outline"
-            :class="$style['check-icon']"
-          />
-          <ElmInlineText
-            :text="copied ? 'Copied to Clipboard!' : 'Copy to Clipboard'"
-          />
-        </div>
+        <transition>
+          <div v-if="copied" :class="$style.tooltip">
+            <Icon
+              icon="mdi:clipboard-check-multiple-outline"
+              :class="$style['tooltip-check-icon']"
+            />
+            <ElmInlineText text="Copied to Clipboard!" />
+          </div>
+
+          <div v-else-if="isHovered && !copied" :class="$style.tooltip">
+            <Icon
+              icon="mdi:clipboard-multiple-outline"
+              :class="$style['tooltip-copy-icon']"
+            />
+            <ElmInlineText text="Copy to Clipboard" />
+          </div>
+        </transition>
       </div>
     </div>
     <div :class="$style.code">
@@ -188,6 +195,7 @@ const isHovered = useElementHover(tooltipElement)
 }
 
 .header__right {
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -222,18 +230,43 @@ const isHovered = useElementHover(tooltipElement)
 
 .tooltip {
   position: absolute;
-  top: 4rem;
-  right: 1.5rem;
+  bottom: -2.5rem;
+  right: 0;
   display: flex;
+  flex-wrap: none;
   justify-content: center;
   align-items: center;
   gap: 0.25rem;
   height: 20px;
+  white-space: nowrap;
 }
 
-.check-icon {
+.tooltip-copy-icon {
   width: 20px;
   height: 20px;
-  color: #59b57c;
+  color: #4c6da2;
+}
+
+.tooltip-check-icon {
+  width: 20px;
+  height: 20px;
+  color: #449763;
+}
+</style>
+
+<style scoped lang="scss">
+.v-enter-to,
+.v-leave-from {
+  opacity: 1;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 150ms;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>
