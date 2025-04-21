@@ -45,36 +45,9 @@ importers:
         specifier: '>=3.4.0'
         version: 3.5.13(typescript@5.8.2)
     devDependencies:
-      '@chromatic-com/storybook':
-        specifier: ^3.2.6
-        version: 3.2.6(react@19.1.0)(storybook@8.6.12(prettier@3.3.3))
       '@notionhq/client':
         specifier: ^2.3.0
         version: 2.3.0
-      '@storybook/addon-essentials':
-        specifier: ^8.6.12
-        version: 8.6.12(@types/react@18.3.12)(storybook@8.6.12(prettier@3.3.3))
-      '@storybook/addon-interactions':
-        specifier: ^8.6.12
-        version: 8.6.12(storybook@8.6.12(prettier@3.3.3))
-      '@storybook/addon-links':
-        specifier: ^8.6.12
-        version: 8.6.12(react@19.1.0)(storybook@8.6.12(prettier@3.3.3))
-      '@storybook/addon-onboarding':
-        specifier: ^8.6.12
-        version: 8.6.12(storybook@8.6.12(prettier@3.3.3))
-      '@storybook/blocks':
-        specifier: ^8.6.12
-        version: 8.6.12(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(storybook@8.6.12(prettier@3.3.3))
-      '@storybook/test':
-        specifier: ^8.6.12
-        version: 8.6.12(storybook@8.6.12(prettier@3.3.3))
-      '@storybook/vue3':
-        specifier: ^8.6.12
-        version: 8.6.12(storybook@8.6.12(prettier@3.3.3))(vue@3.5.13(typescript@5.8.2))
-      '@storybook/vue3-vite':
-        specifier: ^8.6.12
-        version: 8.6.12(storybook@8.6.12(prettier@3.3.3))(vite@6.3.2(@types/node@22.14.0)(jiti@2.4.2)(sass@1.86.3)(terser@5.39.0)(tsx@4.19.3))(vue@3.5.13(typescript@5.8.2))
       '@types/json-schema':
         specifier: ^7.0.15
         version: 7.0.15
@@ -108,9 +81,6 @@ importers:
       sass:
         specifier: ^1.86.3
         version: 1.86.3
-      storybook:
-        specifier: ^8.6.12
-        version: 8.6.12(prettier@3.3.3)
       vite:
         specifier: ^6.3.2
         version: 6.3.2(@types/node@22.14.0)(jiti@2.4.2)(sass@1.86.3)(terser@5.39.0)(tsx@4.19.3)
@@ -167,6 +137,76 @@ importers:
       vitest:
         specifier: ^3.1.1
         version: 3.1.1(@types/node@22.14.0)(jiti@2.4.2)(sass@1.86.3)(terser@5.39.0)(tsx@4.19.3)
+
+  packages/storybook:
+    dependencies:
+      '@heroicons/vue':
+        specifier: ^2.2.0
+        version: 2.2.0(vue@3.5.13(typescript@5.8.2))
+      '@iconify/vue':
+        specifier: ^4.3.0
+        version: 4.3.0(vue@3.5.13(typescript@5.8.2))
+      '@vitejs/plugin-vue':
+        specifier: ^5.2.3
+        version: 5.2.3(vite@6.3.2(@types/node@22.14.0)(jiti@2.4.2)(sass@1.86.3)(terser@5.39.0)(tsx@4.19.3))(vue@3.5.13(typescript@5.8.2))
+      '@vueuse/core':
+        specifier: ^13.1.0
+        version: 13.1.0(vue@3.5.13(typescript@5.8.2))
+      katex:
+        specifier: ^0.16.22
+        version: 0.16.22
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
+      nanoid:
+        specifier: ^5.1.5
+        version: 5.1.5
+      polished:
+        specifier: ^4.3.1
+        version: 4.3.1
+      shiki:
+        specifier: ^3.2.2
+        version: 3.2.2
+      vite:
+        specifier: ^6.3.2
+        version: 6.3.2(@types/node@22.14.0)(jiti@2.4.2)(sass@1.86.3)(terser@5.39.0)(tsx@4.19.3)
+      vue:
+        specifier: '>=3.4.0'
+        version: 3.5.13(typescript@5.8.2)
+    devDependencies:
+      '@chromatic-com/storybook':
+        specifier: ^3.2.6
+        version: 3.2.6(react@19.1.0)(storybook@8.6.12(prettier@3.3.3))
+      '@storybook/addon-essentials':
+        specifier: ^8.6.12
+        version: 8.6.12(@types/react@18.3.12)(storybook@8.6.12(prettier@3.3.3))
+      '@storybook/addon-interactions':
+        specifier: ^8.6.12
+        version: 8.6.12(storybook@8.6.12(prettier@3.3.3))
+      '@storybook/addon-links':
+        specifier: ^8.6.12
+        version: 8.6.12(react@19.1.0)(storybook@8.6.12(prettier@3.3.3))
+      '@storybook/addon-onboarding':
+        specifier: ^8.6.12
+        version: 8.6.12(storybook@8.6.12(prettier@3.3.3))
+      '@storybook/blocks':
+        specifier: ^8.6.12
+        version: 8.6.12(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(storybook@8.6.12(prettier@3.3.3))
+      '@storybook/test':
+        specifier: ^8.6.12
+        version: 8.6.12(storybook@8.6.12(prettier@3.3.3))
+      '@storybook/vue3':
+        specifier: ^8.6.12
+        version: 8.6.12(storybook@8.6.12(prettier@3.3.3))(vue@3.5.13(typescript@5.8.2))
+      '@storybook/vue3-vite':
+        specifier: ^8.6.12
+        version: 8.6.12(storybook@8.6.12(prettier@3.3.3))(vite@6.3.2(@types/node@22.14.0)(jiti@2.4.2)(sass@1.86.3)(terser@5.39.0)(tsx@4.19.3))(vue@3.5.13(typescript@5.8.2))
+      sass:
+        specifier: ^1.86.3
+        version: 1.86.3
+      storybook:
+        specifier: ^8.6.12
+        version: 8.6.12(prettier@3.3.3)
 
 packages:
 
