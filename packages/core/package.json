@@ -24,9 +24,7 @@
   },
   "scripts": {
     "build": "vue-tsc && vite build",
-    "prepublishOnly": "pnpm run build",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "prepublishOnly": "pnpm run build"
   },
   "dependencies": {
     "@heroicons/vue": "^2.2.0",
