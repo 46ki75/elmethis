@@ -40,12 +40,12 @@ jobs:
 
       - name: Run Build
         run: pnpm run build-storybook
-        working-directory: packages/core
+        working-directory: packages/storybook
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './packages/core/storybook-static'
+          path: './packages/storybook/storybook-static'
 
       - name: Deploy to GitHub Pages
         id: deployment
