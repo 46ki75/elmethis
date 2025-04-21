@@ -1,17 +1,21 @@
 <template>
-  <button :class="[
-    $style.button,
-    {
-      [$style.enable]: !loading && !disabled,
-      [$style.normal]: !primary,
-      [$style.primary]: primary
-    }
-  ]" :style="{
-    display: block ? 'flex' : 'inline-flex',
-    width: block ? '100%' : 'auto',
-    cursor: disabled ? 'not-allowed' : loading ? 'progress' : 'pointer',
-    '--opacity': disabled ? 0.6 : undefined
-  }" @click="handleClick">
+  <button
+    :class="[
+      $style.button,
+      {
+        [$style.enable]: !loading && !disabled,
+        [$style.normal]: !primary,
+        [$style.primary]: primary
+      }
+    ]"
+    :style="{
+      display: block ? 'flex' : 'inline-flex',
+      width: block ? '100%' : 'auto',
+      cursor: disabled ? 'not-allowed' : loading ? 'progress' : 'pointer',
+      '--opacity': disabled ? 0.6 : undefined
+    }"
+    @click="handleClick"
+  >
     <transition mode="out-in">
       <ElmDotLoadingIcon v-if="loading" size="1.5rem" />
       <span v-else :class="$style.flex">
@@ -65,6 +69,7 @@ const handleClick = () => {
 <style module lang="scss">
 .button {
   all: unset;
+  min-height: 2.75rem;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
