@@ -62,10 +62,11 @@ const handleClick = (event: Event): void => {
 <style module lang="scss">
 .toggle {
   margin-block: var(--margin-block);
-  box-shadow: 0 0 0.25rem rgba(black, 0.25);
+  box-shadow: 0 0 0.125rem rgba(black, 0.3);
   border-radius: 0.25rem;
   overflow: hidden;
 }
+
 .summary {
   box-sizing: border-box;
   width: 100%;
@@ -77,10 +78,9 @@ const handleClick = (event: Event): void => {
   align-items: center;
   gap: 0.5rem;
 
-  background-color: rgba(black, 0.05);
+  background-color: rgba(black, 0.025);
   [data-theme='dark'] & {
-    border-color: rgba(white, 0.1);
-    background-color: rgba(white, 0.075);
+    background-color: rgba(white, 0.1);
   }
 }
 
@@ -97,13 +97,8 @@ const handleClick = (event: Event): void => {
   padding: 0.75rem;
   display: block;
 
-  border: solid 1px rgba(black, 0.1);
-  border-top: none;
-  background-color: rgba(white, 0.025);
-  [data-theme='dark'] & {
-    border-color: rgba(white, 0.1);
-    background-color: rgba(white, 0.025);
-  }
+  background-color: rgba(white, 0.05);
+  border-top: dashed 1px rgba(gray, 0.2);
 }
 </style>
 
