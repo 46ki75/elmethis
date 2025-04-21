@@ -14,7 +14,7 @@ const meta: Meta<typeof ElmButton> = {
   args: {},
   render: (args) => ({
     setup: () => ({
-      args: { ...args, onClick: () => window.alert('clicked') }
+      args: { ...args, onClick: () => console.log('clicked') }
     }),
     components: { ElmButton, ElmInlineText },
     template: '<ElmButton v-bind="args">elm-button</ElmButton>'
