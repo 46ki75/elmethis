@@ -1,17 +1,22 @@
 <template>
-  <button :class="[
-    $style.button,
-    {
-      [$style.enable]: !loading && !disabled,
-      [$style.normal]: !primary,
-      [$style.primary]: primary
-    }
-  ]" :style="{
-    display: block ? 'flex' : 'inline-flex',
-    width: block ? '100%' : 'auto',
-    cursor: disabled ? 'not-allowed' : loading ? 'progress' : 'pointer',
-    '--opacity': disabled ? 0.6 : undefined
-  }" @click="handleClick">
+  <button
+    :class="[
+      $style.button,
+      {
+        [$style.enable]: !loading && !disabled,
+        [$style.normal]: !primary,
+        [$style.primary]: primary
+      }
+    ]"
+    :style="{
+      display: block ? 'flex' : 'inline-flex',
+      width: block ? '100%' : 'auto',
+      cursor: disabled ? 'not-allowed' : loading ? 'progress' : 'pointer',
+      '--opacity': disabled ? 0.6 : undefined
+    }"
+    @click="handleClick"
+  >
+    <div v-if="clicked" :class="$style.ripple"></div>
     <transition mode="out-in">
       <ElmDotLoadingIcon v-if="loading" size="1.5rem" />
       <span v-else :class="$style.flex">
@@ -23,6 +28,7 @@
 
 <script setup lang="ts">
 import ElmDotLoadingIcon from '../icon/ElmDotLoadingIcon.vue'
+import { onUnmounted, ref } from 'vue'
 
 export interface ElmButtonProps {
   /**
@@ -55,16 +61,28 @@ const props = withDefaults(defineProps<ElmButtonProps>(), {
   primary: false
 })
 
+const clicked = ref(false)
+const id = ref<number | undefined>()
+
 const handleClick = () => {
   if (!props.loading && !props.disabled && props.onClick) {
+    clicked.value = true
+    id.value = window.setTimeout(() => (clicked.value = false), 300)
     props.onClick()
   }
 }
+
+onUnmounted(() => {
+  if (id.value) clearTimeout(id.value)
+})
 </script>
 
 <style module lang="scss">
 .button {
   all: unset;
+  position: relative;
+  overflow: hidden;
+  min-height: 2.75rem;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
@@ -141,6 +159,33 @@ const handleClick = () => {
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
+}
+
+@keyframes button-ripple {
+  from {
+    transform: scale(0);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+.ripple {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+  background-color: rgba(gray, 0.35);
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  transition: none;
+  opacity: 0;
+
+  animation-name: button-ripple;
+  animation-duration: 300ms;
+  animation-fill-mode: both;
+  animation-timing-function: ease-out;
 }
 </style>
 
