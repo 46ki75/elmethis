@@ -104,10 +104,9 @@ const renderSlots = (): VNode => {
   transition:
     color 400ms,
     opacity 800ms;
-}
 
-.h1 {
   color: rgba(black, 0.8);
+
   &::selection {
     color: rgba(white, 0.8);
     background-color: rgba(black, 0.8);
@@ -121,11 +120,13 @@ const renderSlots = (): VNode => {
       background-color: rgba(white, 0.8);
     }
   }
+}
 
+.h1 {
   &::after {
     position: absolute;
     content: '';
-    bottom: -6px;
+    bottom: -10px;
     left: 0;
     width: 100%;
     height: 0.25px;
@@ -142,7 +143,7 @@ const renderSlots = (): VNode => {
   &::before {
     position: absolute;
     content: '';
-    bottom: -8px;
+    bottom: -12px;
     left: 45%;
     width: 10%;
     height: 2px;
@@ -159,21 +160,6 @@ const renderSlots = (): VNode => {
 }
 
 .h2 {
-  color: rgba(black, 0.8);
-  &::selection {
-    color: rgba(white, 0.8);
-    background-color: rgba(black, 0.8);
-  }
-
-  [data-theme='dark'] & {
-    color: rgba(white, 0.8);
-
-    &::selection {
-      color: rgba(black, 0.8);
-      background-color: rgba(white, 0.8);
-    }
-  }
-
   &::after {
     position: absolute;
     content: '';
@@ -230,21 +216,6 @@ const renderSlots = (): VNode => {
   box-sizing: border-box;
   padding-left: 0.75rem;
 
-  color: rgba(black, 0.8);
-  &::selection {
-    color: rgba(white, 0.8);
-    background-color: rgba(black, 0.8);
-  }
-
-  [data-theme='dark'] & {
-    color: rgba(white, 0.8);
-
-    &::selection {
-      color: rgba(black, 0.8);
-      background-color: rgba(white, 0.8);
-    }
-  }
-
   &::after {
     position: absolute;
     content: '';
@@ -261,53 +232,14 @@ const renderSlots = (): VNode => {
 }
 
 .h4 {
-  color: rgba(0, 0, 0, 0.8);
-  &::selection {
-    color: rgba(255, 255, 255, 0.8);
-    background-color: rgba(0, 0, 0, 0.8);
-  }
-
-  [data-theme='dark'] & {
-    color: rgba(255, 255, 255, 0.8);
-
-    &::selection {
-      color: rgba(0, 0, 0, 0.8);
-      background-color: rgba(255, 255, 255, 0.8);
-    }
-  }
+  position: relative;
 }
 
 .h5 {
-  color: rgba(0, 0, 0, 0.8);
-  &::selection {
-    color: rgba(255, 255, 255, 0.8);
-    background-color: rgba(0, 0, 0, 0.8);
-  }
-
-  [data-theme='dark'] & {
-    color: rgba(255, 255, 255, 0.8);
-
-    &::selection {
-      color: rgba(0, 0, 0, 0.8);
-      background-color: rgba(255, 255, 255, 0.8);
-    }
-  }
+  position: relative;
 }
 
 .h6 {
-  color: rgba(0, 0, 0, 0.8);
-  &::selection {
-    color: rgba(255, 255, 255, 0.8);
-    background-color: rgba(0, 0, 0, 0.8);
-  }
-
-  [data-theme='dark'] & {
-    color: rgba(255, 255, 255, 0.8);
-
-    &::selection {
-      color: rgba(0, 0, 0, 0.8);
-      background-color: rgba(255, 255, 255, 0.8);
-    }
-  }
+  position: relative;
 }
 </style>
