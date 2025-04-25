@@ -6,8 +6,15 @@ const meta: Meta<typeof ElmHeading> = {
   title: 'Components/Headings/ElmHeading',
   component: ElmHeading,
   tags: ['autodocs'],
+  argTypes: {
+    level: {
+      options: [1, 2, 3, 4, 5, 6],
+      control: 'radio'
+    }
+  },
   args: {
-    text: 'Heading 1'
+    text: 'Heading',
+    level: 1
   }
 }
 

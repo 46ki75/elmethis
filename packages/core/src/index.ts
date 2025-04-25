@@ -70,23 +70,8 @@ export { default as ElmTextField } from './components/form/ElmTextField.vue'
 export type { ElmTotpProps } from './components/form/ElmTotp.vue'
 export { default as ElmTotp } from './components/form/ElmTotp.vue'
 
-export type { ElmHeading1Props } from './components/headings/ElmHeading1.vue'
-export { default as ElmHeading1 } from './components/headings/ElmHeading1.vue'
-
-export type { ElmHeading2Props } from './components/headings/ElmHeading2.vue'
-export { default as ElmHeading2 } from './components/headings/ElmHeading2.vue'
-
-export type { ElmHeading3Props } from './components/headings/ElmHeading3.vue'
-export { default as ElmHeading3 } from './components/headings/ElmHeading3.vue'
-
-export type { ElmHeading4Props } from './components/headings/ElmHeading4.vue'
-export { default as ElmHeading4 } from './components/headings/ElmHeading4.vue'
-
-export type { ElmHeading5Props } from './components/headings/ElmHeading5.vue'
-export { default as ElmHeading5 } from './components/headings/ElmHeading5.vue'
-
-export type { ElmHeading6Props } from './components/headings/ElmHeading6.vue'
-export { default as ElmHeading6 } from './components/headings/ElmHeading6.vue'
+export type { ElmHeadingProps } from './components/headings/ElmHeading.vue'
+export { default as ElmHeading } from './components/headings/ElmHeading.vue'
 
 export type { ElmFragmentIdentifierProps } from './components/headings/ElmFragmentIdentifier.vue'
 export { default as ElmFragmentIdentifier } from './components/headings/ElmFragmentIdentifier.vue'
