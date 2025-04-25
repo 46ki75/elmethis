@@ -9,7 +9,7 @@
       '--opacity': targetIsVisible ? 1 : 0
     }"
   >
-    {{ text }}
+    <component :is="() => render()" />
   </h1>
   <ElmFragmentIdentifier
     v-if="!disableFragmentIdentifier"
@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import type { Property } from 'csstype'
-import { ref } from 'vue'
+import { h, ref, useSlots, VNode } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { kebabCase } from 'lodash-es'
 import ElmFragmentIdentifier from './ElmFragmentIdentifier.vue'
@@ -48,7 +48,7 @@ export interface ElmHeading1Props {
   disableFragmentIdentifier?: boolean
 }
 
-withDefaults(defineProps<ElmHeading1Props>(), {
+const props = withDefaults(defineProps<ElmHeading1Props>(), {
   size: '1.5rem',
   disableFragmentIdentifier: false
 })
@@ -59,6 +59,16 @@ const targetIsVisible = ref(false)
 useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   targetIsVisible.value = isIntersecting
 })
+
+const slots = useSlots()
+
+const render = (): VNode => {
+  if (slots.default != null) {
+    return h('span', {}, slots.default())
+  } else {
+    return h('span', {}, props.text)
+  }
+}
 </script>
 
 <style module lang="scss">
