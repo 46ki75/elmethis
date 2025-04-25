@@ -2,11 +2,11 @@
   <component
     :is="`h${level}`"
     ref="target"
-    :class="$style[`h${level}`]"
+    :class="[$style[`h${level}`], $style['heading-common']]"
     :id="id ?? kebabCase(text)"
     :style="{
+      '--font-size': size ?? `${SIZE_MAP[level]}rem`,
       '--scale': targetIsVisible ? 1 : 0,
-      '--font-size': size,
       '--opacity': targetIsVisible ? 1 : 0
     }"
   >
@@ -31,6 +31,15 @@ import { h, ref, useSlots, VNode } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { kebabCase } from 'lodash-es'
 import ElmFragmentIdentifier from './ElmFragmentIdentifier.vue'
+
+const SIZE_MAP: Record<1 | 2 | 3 | 4 | 5 | 6, number> = Object.freeze({
+  1: 1.5,
+  2: 1.4,
+  3: 1.3,
+  4: 1.2,
+  5: 1.15,
+  6: 1.1
+})
 
 export interface ElmHeadingProps {
   /**
@@ -82,16 +91,18 @@ const renderSlots = (): VNode => {
 </script>
 
 <style module lang="scss">
-.h1 {
+.heading-common {
   position: relative;
-  font-size: var(--font-size, 1.5rem);
-  line-height: var(cacl(--font-size + 0.25rem));
+  font-size: var(--font-size);
+  line-height: var(--font-size);
   opacity: var(--opacity);
 
   transition:
     color 400ms,
     opacity 800ms;
+}
 
+.h1 {
   color: rgba(black, 0.8);
   &::selection {
     color: rgba(white, 0.8);
@@ -110,7 +121,7 @@ const renderSlots = (): VNode => {
   &::after {
     position: absolute;
     content: '';
-    bottom: -2px;
+    bottom: -6px;
     left: 0;
     width: 100%;
     height: 0.25px;
@@ -127,7 +138,7 @@ const renderSlots = (): VNode => {
   &::before {
     position: absolute;
     content: '';
-    bottom: -4px;
+    bottom: -8px;
     left: 45%;
     width: 10%;
     height: 2px;
@@ -145,14 +156,6 @@ const renderSlots = (): VNode => {
 
 .h2 {
   margin-block: 1rem;
-  position: relative;
-  font-size: var(--font-size, 1.4rem);
-  line-height: var(--font-size, 1.4rem);
-  opacity: var(--opacity);
-
-  transition:
-    color 400ms,
-    opacity 800ms;
 
   color: rgba(black, 0.8);
   &::selection {
@@ -223,15 +226,8 @@ const renderSlots = (): VNode => {
 
 .h3 {
   margin-block: 1rem;
-  position: relative;
   box-sizing: border-box;
   padding-left: 0.75rem;
-  font-size: var(--font-size, 1.3rem);
-  line-height: var(--font-size, 1.3rem);
-  opacity: var(--opacity);
-  transition:
-    color 400ms,
-    opacity 800ms;
 
   color: rgba(black, 0.8);
   &::selection {
@@ -265,10 +261,6 @@ const renderSlots = (): VNode => {
 
 .h4 {
   margin-block: 0.5rem;
-  font-size: var(--font-size, 1.2rem);
-  line-height: var(--font-size, 1.2rem);
-
-  transition: color 400ms;
 
   color: rgba(0, 0, 0, 0.8);
   &::selection {
@@ -288,10 +280,6 @@ const renderSlots = (): VNode => {
 
 .h5 {
   margin-block: 0.5rem;
-  font-size: var(--font-size, 1.15rem);
-  line-height: var(--font-size, 1.15rem);
-
-  transition: color 400ms;
 
   color: rgba(0, 0, 0, 0.8);
   &::selection {
@@ -311,10 +299,6 @@ const renderSlots = (): VNode => {
 
 .h6 {
   margin-block: 0.5rem;
-  font-size: var(--font-size, 1.1rem);
-  line-height: var(--font-size, 1.1rem);
-
-  transition: color 400ms;
 
   color: rgba(0, 0, 0, 0.8);
   &::selection {

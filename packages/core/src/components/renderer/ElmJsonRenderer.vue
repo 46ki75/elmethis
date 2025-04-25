@@ -14,12 +14,7 @@ import type { ElmNumberedListProps } from '../typography/ElmNumberedList.vue'
 import type { ElmListItemProps } from '../typography/ElmListItem.vue'
 import type { ElmBlockQuoteProps } from '../typography/ElmBlockQuote.vue'
 import type { ElmDividerProps } from '../typography/ElmDivider.vue'
-import type { ElmHeading1Props } from '../headings/ElmHeading1.vue'
-import type { ElmHeading2Props } from '../headings/ElmHeading2.vue'
-import type { ElmHeading3Props } from '../headings/ElmHeading3.vue'
-import type { ElmHeading4Props } from '../headings/ElmHeading4.vue'
-import type { ElmHeading5Props } from '../headings/ElmHeading5.vue'
-import type { ElmHeading6Props } from '../headings/ElmHeading6.vue'
+import type { ElmHeadingProps } from '../headings/ElmHeading.vue'
 import type { ElmCodeBlockProps } from '../code/ElmCodeBlock.vue'
 import type { ElmParagraphProps } from '../typography/ElmParagraph.vue'
 import type { ElmTableProps } from '../table/ElmTable.vue'
@@ -64,24 +59,10 @@ const ElmBlockQuote = defineAsyncComponent(
 const ElmDivider = defineAsyncComponent(
   () => import('../typography/ElmDivider.vue')
 )
-const ElmHeading1 = defineAsyncComponent(
-  () => import('../headings/ElmHeading1.vue')
+const ElmHeading = defineAsyncComponent(
+  () => import('../headings/ElmHeading.vue')
 )
-const ElmHeading2 = defineAsyncComponent(
-  () => import('../headings/ElmHeading2.vue')
-)
-const ElmHeading3 = defineAsyncComponent(
-  () => import('../headings/ElmHeading3.vue')
-)
-const ElmHeading4 = defineAsyncComponent(
-  () => import('../headings/ElmHeading4.vue')
-)
-const ElmHeading5 = defineAsyncComponent(
-  () => import('../headings/ElmHeading5.vue')
-)
-const ElmHeading6 = defineAsyncComponent(
-  () => import('../headings/ElmHeading6.vue')
-)
+
 const ElmCodeBlock = defineAsyncComponent(
   () => import('../code/ElmCodeBlock.vue')
 )
@@ -135,12 +116,7 @@ type ComponentType =
   | 'ElmListItem'
   | 'ElmBlockQuote'
   | 'ElmDivider'
-  | 'ElmHeading1'
-  | 'ElmHeading2'
-  | 'ElmHeading3'
-  | 'ElmHeading4'
-  | 'ElmHeading5'
-  | 'ElmHeading6'
+  | 'ElmHeading'
   | 'ElmCodeBlock'
   | 'ElmParagraph'
   | 'ElmTable'
@@ -168,12 +144,7 @@ type ComponentProps =
   | ElmListItemProps
   | ElmBlockQuoteProps
   | ElmDividerProps
-  | ElmHeading1Props
-  | ElmHeading2Props
-  | ElmHeading3Props
-  | ElmHeading4Props
-  | ElmHeading5Props
-  | ElmHeading6Props
+  | ElmHeadingProps
   | ElmCodeBlockProps
   | ElmParagraphProps
   | ElmTableProps
@@ -252,40 +223,10 @@ interface ElmDividerJsonComponent extends JsonComponentBase {
   props?: ElmDividerProps
 }
 
-interface ElmHeading1JsonComponent extends JsonComponentBase {
-  type: 'ElmHeading1'
+interface ElmHeadingJsonComponent extends JsonComponentBase {
+  type: 'ElmHeading'
   id?: string
-  props?: ElmHeading1Props
-}
-
-interface ElmHeading2JsonComponent extends JsonComponentBase {
-  type: 'ElmHeading2'
-  id?: string
-  props?: ElmHeading2Props
-}
-
-interface ElmHeading3JsonComponent extends JsonComponentBase {
-  type: 'ElmHeading3'
-  id?: string
-  props?: ElmHeading3Props
-}
-
-interface ElmHeading4JsonComponent extends JsonComponentBase {
-  type: 'ElmHeading4'
-  id?: string
-  props?: ElmHeading4Props
-}
-
-interface ElmHeading5JsonComponent extends JsonComponentBase {
-  type: 'ElmHeading5'
-  id?: string
-  props?: ElmHeading5Props
-}
-
-interface ElmHeading6JsonComponent extends JsonComponentBase {
-  type: 'ElmHeading6'
-  id?: string
-  props?: ElmHeading6Props
+  props?: ElmHeadingProps
 }
 
 interface ElmCodeBlockJsonComponent extends JsonComponentBase {
@@ -394,12 +335,7 @@ type JsonComponent =
   | ElmListItemJsonComponent
   | ElmBlockQuoteJsonComponent
   | ElmDividerJsonComponent
-  | ElmHeading1JsonComponent
-  | ElmHeading2JsonComponent
-  | ElmHeading3JsonComponent
-  | ElmHeading4JsonComponent
-  | ElmHeading5JsonComponent
-  | ElmHeading6JsonComponent
+  | ElmHeadingJsonComponent
   | ElmCodeBlockJsonComponent
   | ElmParagraphJsonComponent
   | ElmTableJsonComponent
@@ -433,12 +369,7 @@ const componentMap: Record<ComponentType, any> = {
   ElmListItem: markRaw(ElmListItem),
   ElmBlockQuote: markRaw(ElmBlockQuote),
   ElmDivider: markRaw(ElmDivider),
-  ElmHeading1: markRaw(ElmHeading1),
-  ElmHeading2: markRaw(ElmHeading2),
-  ElmHeading3: markRaw(ElmHeading3),
-  ElmHeading4: markRaw(ElmHeading4),
-  ElmHeading5: markRaw(ElmHeading5),
-  ElmHeading6: markRaw(ElmHeading6),
+  ElmHeading: markRaw(ElmHeading),
   ElmCodeBlock: markRaw(ElmCodeBlock),
   ElmParagraph: markRaw(ElmParagraph),
   ElmTable: markRaw(ElmTable),
