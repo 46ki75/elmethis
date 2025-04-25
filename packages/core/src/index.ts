@@ -70,11 +70,11 @@ export { default as ElmTextField } from './components/form/ElmTextField.vue'
 export type { ElmTotpProps } from './components/form/ElmTotp.vue'
 export { default as ElmTotp } from './components/form/ElmTotp.vue'
 
-export type { ElmHeadingProps } from './components/headings/ElmHeading.vue'
-export { default as ElmHeading } from './components/headings/ElmHeading.vue'
+export type { ElmHeadingProps } from './components/typography/ElmHeading.vue'
+export { default as ElmHeading } from './components/typography/ElmHeading.vue'
 
-export type { ElmFragmentIdentifierProps } from './components/headings/ElmFragmentIdentifier.vue'
-export { default as ElmFragmentIdentifier } from './components/headings/ElmFragmentIdentifier.vue'
+export type { ElmFragmentIdentifierProps } from './components/typography/ElmFragmentIdentifier.vue'
+export { default as ElmFragmentIdentifier } from './components/typography/ElmFragmentIdentifier.vue'
 
 export type { ElmArrowIconProps } from './components/icon/ElmArrowIcon.vue'
 export { default as ElmArrowIcon } from './components/icon/ElmArrowIcon.vue'

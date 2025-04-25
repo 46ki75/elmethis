@@ -14,7 +14,7 @@ import type { ElmNumberedListProps } from '../typography/ElmNumberedList.vue'
 import type { ElmListItemProps } from '../typography/ElmListItem.vue'
 import type { ElmBlockQuoteProps } from '../typography/ElmBlockQuote.vue'
 import type { ElmDividerProps } from '../typography/ElmDivider.vue'
-import type { ElmHeadingProps } from '../headings/ElmHeading.vue'
+import type { ElmHeadingProps } from '../typography/ElmHeading.vue'
 import type { ElmCodeBlockProps } from '../code/ElmCodeBlock.vue'
 import type { ElmParagraphProps } from '../typography/ElmParagraph.vue'
 import type { ElmTableProps } from '../table/ElmTable.vue'
@@ -60,7 +60,7 @@ const ElmDivider = defineAsyncComponent(
   () => import('../typography/ElmDivider.vue')
 )
 const ElmHeading = defineAsyncComponent(
-  () => import('../headings/ElmHeading.vue')
+  () => import('../typography/ElmHeading.vue')
 )
 
 const ElmCodeBlock = defineAsyncComponent(
