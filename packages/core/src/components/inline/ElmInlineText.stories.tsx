@@ -22,3 +22,7 @@ export const Colored: Story = {
 export const Background: Story = {
   args: { backgroundColor: opacify(-0.5, '#6987b8') }
 }
+
+export const Ruby: Story = {
+  args: { text: '国際連合', ruby: 'こくさいれんごう' }
+}

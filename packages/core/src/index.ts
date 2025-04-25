@@ -100,9 +100,6 @@ export { default as ElmToggleTheme } from './components/icon/ElmToggleTheme.vue'
 export type { ElmInlineLinkProps } from './components/inline/ElmInlineLink.vue'
 export { default as ElmInlineLink } from './components/inline/ElmInlineLink.vue'
 
-export type { ElmInlineRubyProps } from './components/inline/ElmInlineRuby.vue'
-export { default as ElmInlineRuby } from './components/inline/ElmInlineRuby.vue'
-
 export type { ElmInlineTextProps } from './components/inline/ElmInlineText.vue'
 export { default as ElmInlineText } from './components/inline/ElmInlineText.vue'
 

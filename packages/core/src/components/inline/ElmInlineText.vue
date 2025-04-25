@@ -54,6 +54,11 @@ export interface ElmInlineTextProps {
    * Specifies the background color of the text.
    */
   backgroundColor?: Property.BackgroundColor
+
+  /**
+   * The ruby text to display.
+   */
+  ruby?: string
 }
 
 const props = withDefaults(defineProps<ElmInlineTextProps>(), {
@@ -105,6 +110,21 @@ const render = () => {
 
   if (props.code) {
     vnode = h('code', { class: style.code }, vnode)
+  }
+
+  if (props.ruby) {
+    vnode = h(
+      'ruby',
+      {
+        class: style.text,
+        style: {
+          '--color': props.color ?? backgroundColor,
+          '--font-size': props.size,
+          '--background-color': props.backgroundColor
+        }
+      },
+      [h('span', {}, vnode), h('rt', {}, props.ruby)]
+    )
   }
 
   return vnode
