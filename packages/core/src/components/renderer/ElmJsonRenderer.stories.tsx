@@ -157,32 +157,10 @@ export const Divider: Story = {
 
 export const Headings: Story = {
   args: {
-    json: [
-      {
-        type: 'ElmHeading1',
-        props: { text: 'Hello, world!' }
-      },
-      {
-        type: 'ElmHeading2',
-        props: { text: 'Hello, world!' }
-      },
-      {
-        type: 'ElmHeading3',
-        props: { text: 'Hello, world!' }
-      },
-      {
-        type: 'ElmHeading4',
-        props: { text: 'Hello, world!' }
-      },
-      {
-        type: 'ElmHeading5',
-        props: { text: 'Hello, world!' }
-      },
-      {
-        type: 'ElmHeading6',
-        props: { text: 'Hello, world!' }
-      }
-    ]
+    json: [1, 2, 3, 4, 5, 6].map((level) => ({
+      type: 'ElmHeading',
+      props: { text: 'Hello, world!', level: level as 1 | 2 | 3 | 4 | 5 | 6 }
+    }))
   }
 }
 

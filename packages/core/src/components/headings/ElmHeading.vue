@@ -45,7 +45,7 @@ export interface ElmHeadingProps {
   /**
    * Text to display
    */
-  text: string
+  text?: string
 
   /**
    * Font size of the text. Default is `'1.5rem'`.
@@ -82,16 +82,20 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 const slots = useSlots()
 
 const renderSlots = (): VNode => {
-  if (slots.default != null) {
+  if (props.text != null) {
+    return h('span', {}, props.text)
+  } else if (slots.default != null) {
     return h('span', {}, slots.default())
   } else {
-    return h('span', {}, props.text)
+    return h('span')
   }
 }
 </script>
 
 <style module lang="scss">
 .heading-common {
+  margin-block: 0.5rem;
+
   position: relative;
   font-size: var(--font-size);
   line-height: var(--font-size);
@@ -155,8 +159,6 @@ const renderSlots = (): VNode => {
 }
 
 .h2 {
-  margin-block: 1rem;
-
   color: rgba(black, 0.8);
   &::selection {
     color: rgba(white, 0.8);
@@ -225,7 +227,6 @@ const renderSlots = (): VNode => {
 }
 
 .h3 {
-  margin-block: 1rem;
   box-sizing: border-box;
   padding-left: 0.75rem;
 
@@ -260,8 +261,6 @@ const renderSlots = (): VNode => {
 }
 
 .h4 {
-  margin-block: 0.5rem;
-
   color: rgba(0, 0, 0, 0.8);
   &::selection {
     color: rgba(255, 255, 255, 0.8);
@@ -279,8 +278,6 @@ const renderSlots = (): VNode => {
 }
 
 .h5 {
-  margin-block: 0.5rem;
-
   color: rgba(0, 0, 0, 0.8);
   &::selection {
     color: rgba(255, 255, 255, 0.8);
@@ -298,8 +295,6 @@ const renderSlots = (): VNode => {
 }
 
 .h6 {
-  margin-block: 0.5rem;
-
   color: rgba(0, 0, 0, 0.8);
   &::selection {
     color: rgba(255, 255, 255, 0.8);
