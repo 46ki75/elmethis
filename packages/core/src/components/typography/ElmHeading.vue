@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
 import type { Property } from 'csstype'
-import { h, ref, Slots, useSlots, VNode } from 'vue'
+import { h, ref, defineSlots, VNode } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { kebabCase } from 'lodash-es'
 import ElmFragmentIdentifier from './ElmFragmentIdentifier.vue'
@@ -79,13 +79,15 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   targetIsVisible.value = isIntersecting
 })
 
-const slots = useSlots() as Slots
+const slots = defineSlots<{
+  default?: () => VNode[]
+}>()
 
-const renderSlots = (): VNode => {
+const renderSlots = (): VNode | VNode[] => {
   if (props.text != null) {
     return h('span', {}, props.text)
-  } else if (typeof slots.default === 'function') {
-    return h('span', {}, slots.default())
+  } else if (slots.default != null) {
+    return slots.default()
   } else {
     return h('span')
   }

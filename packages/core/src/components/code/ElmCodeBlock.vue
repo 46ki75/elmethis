@@ -140,7 +140,7 @@ const slots = defineSlots<{
   default?: () => VNode[]
 }>()
 
-const renderCaption = () => {
+const renderCaption = (): VNode | VNode[] => {
   if (props.caption) {
     return h(ElmInlineText, { text: props.caption })
   } else if (slots.default != null) {
