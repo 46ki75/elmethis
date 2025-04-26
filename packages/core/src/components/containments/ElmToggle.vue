@@ -34,12 +34,13 @@
 import ElmInlineText from '../typography/ElmInlineText.vue'
 import { Icon } from '@iconify/vue'
 import type { Property } from 'csstype'
+import { VNode } from 'vue'
 
 export interface ElmToggleProps {
   /**
    * The summary of the toggle.
    */
-  summary: string
+  summary?: string
 
   /**
    * The margin of the toggle.
@@ -48,6 +49,11 @@ export interface ElmToggleProps {
 }
 
 withDefaults(defineProps<ElmToggleProps>(), {})
+
+defineSlots<{
+  default: () => VNode[]
+  summary?: () => VNode[]
+}>()
 
 const isOpen = defineModel<boolean>('isOpen', {
   default: false
