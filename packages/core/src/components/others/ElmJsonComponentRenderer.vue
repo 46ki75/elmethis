@@ -39,6 +39,11 @@ const AsyncElmParagraph = defineAsyncComponent({
   loadingComponent: ElmBlockFallback
 })
 
+const AsyncElmList = defineAsyncComponent({
+  loader: () => import('../typography/ElmList.vue'),
+  loadingComponent: ElmBlockFallback
+})
+
 type RenderFunctionMap<R> = {
   [K in keyof ComponentMap]: (args: ComponentMap[K]) => R
 }
@@ -78,8 +83,15 @@ const defaultRenderFunctionMap = (
       ),
     Paragraph: ({ slots }) =>
       h(AsyncElmParagraph, {}, { default: render(slots.default) }),
-    ListItem: (args) => h('span'),
-    List: (args) => h('span'),
+    ListItem: ({ slots }) => h('li', {}, render(slots.default)),
+    List: ({ props, slots }) =>
+      h(
+        AsyncElmList,
+        {
+          listStyle: props?.listStyle === 'unordered' ? 'unordered' : 'ordered'
+        },
+        render(slots.default)
+      ),
     BlockQuote: (args) => h('span'),
     Callout: (args) => h('span'),
     Divider: (args) => h('span'),
