@@ -11,4 +11,35 @@ const meta: Meta<typeof ElmJsonComponentRenderer> = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Primary: Story = {}
+export const Primary: Story = {
+  args: {
+    jsonComponents: [
+      {
+        type: 'Paragraph',
+        slots: {
+          default: [
+            {
+              type: 'Text',
+              props: {
+                text: 'Hello, '
+              }
+            },
+            {
+              type: 'Text',
+              props: {
+                text: 'world',
+                bold: true
+              }
+            },
+            {
+              type: 'Text',
+              props: {
+                text: ' !'
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
