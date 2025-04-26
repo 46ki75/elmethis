@@ -7,14 +7,6 @@
     target="_blank"
     rel="noopener noreferrer"
   >
-    <!-- <img
-      v-if="faviconSrc"
-      :src="faviconSrc"
-      alt="favicon"
-      @error="handleError"
-      :class="$style.icon"
-    /> -->
-
     <ElmInlineIcon v-if="favicon" :src="favicon" alt="favicon" />
 
     {{ text ?? href }}
@@ -29,7 +21,7 @@ import { Icon } from '@iconify/vue'
 import type { Property } from 'csstype'
 import { getLuminance } from 'polished'
 import { h, useCssModule } from 'vue'
-import ElmInlineIcon from './ElmInlineIcon.vue'
+import ElmInlineIcon from '../icon/ElmInlineIcon.vue'
 
 export interface ElmInlineTextProps {
   /**

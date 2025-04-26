@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3'
 import ElmInlineIcon from './ElmInlineIcon.vue'
 
 const meta: Meta<typeof ElmInlineIcon> = {
-  title: 'Components/Typography/ElmInlineIcon',
+  title: 'Components/Icon/ElmInlineIcon',
   component: ElmInlineIcon,
   tags: ['autodocs'],
   args: {}

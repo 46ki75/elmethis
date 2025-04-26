@@ -33,7 +33,7 @@ const handleError = () => {
   padding-inline: 0.125rem;
   display: inline-block;
   vertical-align: middle;
-  height: 1em;
+  height: 1.25em;
 
   &::selection {
     filter: brightness(1000%);
