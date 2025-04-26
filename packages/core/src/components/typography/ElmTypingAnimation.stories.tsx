@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3'
 import ElmTypingAnimation from './ElmTypingAnimation.vue'
 
 const meta: Meta<typeof ElmTypingAnimation> = {
-  title: 'Components/Inline/ElmTypingAnimation',
+  title: 'Components/Typography/ElmTypingAnimation',
   component: ElmTypingAnimation,
   tags: ['autodocs'],
   args: {}

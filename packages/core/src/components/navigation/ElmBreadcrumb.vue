@@ -44,7 +44,7 @@
 
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import ElmInlineText from '../inline/ElmInlineText.vue'
+import ElmInlineText from '../typography/ElmInlineText.vue'
 import { ref } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 

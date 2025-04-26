@@ -27,7 +27,7 @@
 import { type JSONSchema7TypeName } from 'json-schema'
 
 import { Icon } from '@iconify/vue'
-import ElmInlineText from '../inline/ElmInlineText.vue'
+import ElmInlineText from '../typography/ElmInlineText.vue'
 
 export interface ElmFieldTypeProps {
   type: JSONSchema7TypeName

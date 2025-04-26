@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import ElmToggle from './ElmToggle.vue'
-import ElmInlineText from '../inline/ElmInlineText.vue'
+import ElmInlineText from '../typography/ElmInlineText.vue'
 
 const meta: Meta<typeof ElmToggle> = {
   title: 'Components/Containments/ElmToggle',

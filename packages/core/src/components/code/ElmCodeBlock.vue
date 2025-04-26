@@ -10,7 +10,7 @@
     <div :class="$style.header">
       <div :class="$style.header__left">
         <ElmLanguageIcon :language="language" :size="20" />
-        <ElmInlineText :text="caption ?? language" />
+        <component :is="() => renderCaption()" />
       </div>
 
       <div ref="tooltipRef" :class="$style.header__right">
@@ -70,7 +70,7 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import ElmLanguageIcon from '../icon/ElmLanguageIcon.vue'
-import ElmInlineText from '../inline/ElmInlineText.vue'
+import ElmInlineText from '../typography/ElmInlineText.vue'
 import ElmBlockFallback from '../fallback/ElmBlockFallback.vue'
 import ElmDotLoadingIcon from '../icon/ElmDotLoadingIcon.vue'
 
@@ -81,7 +81,14 @@ import {
 } from '@vueuse/core'
 
 import type { Property } from 'csstype'
-import { defineAsyncComponent, ref, useTemplateRef } from 'vue'
+import {
+  defineAsyncComponent,
+  h,
+  ref,
+  defineSlots,
+  useTemplateRef,
+  VNode
+} from 'vue'
 
 export interface ElmCodeBlockProps {
   /**
@@ -128,6 +135,20 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 
 const tooltipElement = useTemplateRef<HTMLButtonElement>('tooltipRef')
 const isHovered = useElementHover(tooltipElement)
+
+const slots = defineSlots<{
+  default?: () => VNode[]
+}>()
+
+const renderCaption = (): VNode | VNode[] => {
+  if (props.caption) {
+    return h(ElmInlineText, { text: props.caption })
+  } else if (slots.default != null) {
+    return slots.default()
+  } else {
+    return h(ElmInlineText, { text: props.language })
+  }
+}
 </script>
 
 <style module lang="scss">

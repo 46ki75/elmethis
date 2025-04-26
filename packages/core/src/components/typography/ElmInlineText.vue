@@ -1,11 +1,27 @@
 <template>
-  <component :is="render()"></component>
+  <a
+    v-if="href"
+    :class="$style.link"
+    :href="href"
+    :style="{ '--font-size': size }"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <ElmInlineIcon v-if="favicon" :src="favicon" alt="favicon" />
+
+    {{ text ?? href }}
+    <Icon icon="mdi:external-link" :class="$style.icon" />
+  </a>
+
+  <component v-else :is="render()"></component>
 </template>
 
 <script setup lang="ts">
+import { Icon } from '@iconify/vue'
 import type { Property } from 'csstype'
 import { getLuminance } from 'polished'
 import { h, useCssModule } from 'vue'
+import ElmInlineIcon from '../icon/ElmInlineIcon.vue'
 
 export interface ElmInlineTextProps {
   /**
@@ -54,6 +70,20 @@ export interface ElmInlineTextProps {
    * Specifies the background color of the text.
    */
   backgroundColor?: Property.BackgroundColor
+
+  /**
+   * The ruby text to display.
+   */
+  ruby?: string
+
+  /**
+   * The URL to navigate to.
+   *
+   * e.g. `https://example.com`
+   */
+  href?: string
+
+  favicon?: string
 }
 
 const props = withDefaults(defineProps<ElmInlineTextProps>(), {
@@ -61,7 +91,8 @@ const props = withDefaults(defineProps<ElmInlineTextProps>(), {
   italic: false,
   underline: false,
   strikethrough: false,
-  code: false
+  code: false,
+  size: '1em'
 })
 
 const style = useCssModule()
@@ -107,6 +138,21 @@ const render = () => {
     vnode = h('code', { class: style.code }, vnode)
   }
 
+  if (props.ruby) {
+    vnode = h(
+      'ruby',
+      {
+        class: style.text,
+        style: {
+          '--color': props.color ?? backgroundColor,
+          '--font-size': props.size,
+          '--background-color': props.backgroundColor
+        }
+      },
+      [h('span', {}, vnode), h('rt', {}, props.ruby)]
+    )
+  }
+
   return vnode
 }
 </script>
@@ -116,8 +162,8 @@ const render = () => {
   padding: 0;
   margin: 0;
   color: var(--color, rgba(black, 0.7));
-  font-size: var(--font-size, inherit);
-  line-height: var(--font-size, 1rem);
+  font-size: var(--font-size, 1em);
+  line-height: var(--font-size, 1em);
   background-color: var(--background-color);
 
   &::selection {
@@ -138,9 +184,54 @@ const render = () => {
 .code {
   margin-inline: 0.25rem;
   padding: 2px 0.5em;
-  font-size: calc(1rem - 2px);
+  font-size: calc(1em - 2px);
   border-radius: 0.125rem;
   background-color: rgba(0, 0, 0, 0.075);
   font-family: 'Source Code Pro' monospace;
+}
+
+.link {
+  all: unset;
+  box-sizing: border-box;
+  padding: 0 0.25rem;
+  font-size: var(--font-size);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  color: #6987b8;
+  border-radius: 0.125rem 0.125rem 0 0;
+  border-bottom: dashed 1px #6987b8;
+  transition:
+    background-color 200ms,
+    color 200ms;
+
+  &:hover {
+    background-color: rgba($color: #6987b8, $alpha: 0.2);
+  }
+
+  &:active {
+    color: #59b57c;
+    background-color: rgba($color: #59b57c, $alpha: 0.2);
+  }
+
+  &:visited {
+    color: #9771bd;
+    border-bottom: dashed 1px #9771bd;
+
+    &:hover {
+      background-color: rgba($color: #9771bd, $alpha: 0.2);
+    }
+
+    &:active {
+      color: #59b57c;
+      background-color: rgba($color: #59b57c, $alpha: 0.2);
+    }
+  }
+
+  .icon {
+    width: var(--font-size);
+    height: var(--font-size);
+  }
 }
 </style>

@@ -70,26 +70,11 @@ export { default as ElmTextField } from './components/form/ElmTextField.vue'
 export type { ElmTotpProps } from './components/form/ElmTotp.vue'
 export { default as ElmTotp } from './components/form/ElmTotp.vue'
 
-export type { ElmHeading1Props } from './components/headings/ElmHeading1.vue'
-export { default as ElmHeading1 } from './components/headings/ElmHeading1.vue'
+export type { ElmHeadingProps } from './components/typography/ElmHeading.vue'
+export { default as ElmHeading } from './components/typography/ElmHeading.vue'
 
-export type { ElmHeading2Props } from './components/headings/ElmHeading2.vue'
-export { default as ElmHeading2 } from './components/headings/ElmHeading2.vue'
-
-export type { ElmHeading3Props } from './components/headings/ElmHeading3.vue'
-export { default as ElmHeading3 } from './components/headings/ElmHeading3.vue'
-
-export type { ElmHeading4Props } from './components/headings/ElmHeading4.vue'
-export { default as ElmHeading4 } from './components/headings/ElmHeading4.vue'
-
-export type { ElmHeading5Props } from './components/headings/ElmHeading5.vue'
-export { default as ElmHeading5 } from './components/headings/ElmHeading5.vue'
-
-export type { ElmHeading6Props } from './components/headings/ElmHeading6.vue'
-export { default as ElmHeading6 } from './components/headings/ElmHeading6.vue'
-
-export type { ElmFragmentIdentifierProps } from './components/headings/ElmFragmentIdentifier.vue'
-export { default as ElmFragmentIdentifier } from './components/headings/ElmFragmentIdentifier.vue'
+export type { ElmFragmentIdentifierProps } from './components/typography/ElmFragmentIdentifier.vue'
+export { default as ElmFragmentIdentifier } from './components/typography/ElmFragmentIdentifier.vue'
 
 export type { ElmArrowIconProps } from './components/icon/ElmArrowIcon.vue'
 export { default as ElmArrowIcon } from './components/icon/ElmArrowIcon.vue'
@@ -112,14 +97,8 @@ export { default as ElmLoginIcon } from './components/icon/ElmLoginIcon.vue'
 export type { ElmToggleThemeProps } from './components/icon/ElmToggleTheme.vue'
 export { default as ElmToggleTheme } from './components/icon/ElmToggleTheme.vue'
 
-export type { ElmInlineLinkProps } from './components/inline/ElmInlineLink.vue'
-export { default as ElmInlineLink } from './components/inline/ElmInlineLink.vue'
-
-export type { ElmInlineRubyProps } from './components/inline/ElmInlineRuby.vue'
-export { default as ElmInlineRuby } from './components/inline/ElmInlineRuby.vue'
-
-export type { ElmInlineTextProps } from './components/inline/ElmInlineText.vue'
-export { default as ElmInlineText } from './components/inline/ElmInlineText.vue'
+export type { ElmInlineTextProps } from './components/typography/ElmInlineText.vue'
+export { default as ElmInlineText } from './components/typography/ElmInlineText.vue'
 
 export type { ElmFileProps } from './components/media/ElmFile.vue'
 export { default as ElmFile } from './components/media/ElmFile.vue'

@@ -137,7 +137,7 @@
 </template>
 
 <script setup lang="ts">
-import ElmInlineText from '../inline/ElmInlineText.vue'
+import ElmInlineText from '../typography/ElmInlineText.vue'
 
 export interface ElmCheckboxProps {
   /**

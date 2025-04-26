@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import ElmModal from './ElmModal.vue'
 import { ref } from 'vue'
-import ElmInlineText from '../inline/ElmInlineText.vue'
+import ElmInlineText from '../typography/ElmInlineText.vue'
 
 const meta: Meta<typeof ElmModal> = {
   title: 'Components/Containments/ElmModal',
