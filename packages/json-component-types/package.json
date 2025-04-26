@@ -1,5 +1,5 @@
 {
-  "name": "@elmethis/json-component",
+  "name": "@elmethis/json-component-types",
   "version": "1.0.0-alpha.1",
   "publishConfig": {
     "access": "public"
