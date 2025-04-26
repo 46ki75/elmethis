@@ -22,6 +22,30 @@ export type BlockComponentType =
 
 export type ComponentType = InlineComponentType | BlockComponentType
 
+export type AllInlineComponents = Text | Icon
+
+export type AllBlockComponents =
+  | Heading
+  | Paragraph
+  | ListItem
+  | List
+  | BlockQuote
+  | Callout
+  | Divider
+  | Toggle
+  | Bookmark
+  | File
+  | Image
+  | CodeBlock
+  | Katex
+  | Table
+  | TableHeader
+  | TableBody
+  | TableRow
+  | TableCell
+
+export type AllComponents = AllInlineComponents | AllBlockComponents
+
 export interface Component<P = Record<any, any>> {
   type: ComponentType
   props?: P
