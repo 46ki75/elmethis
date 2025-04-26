@@ -1,22 +1,38 @@
 <template>
-  <ul
+  <component
     ref="target"
-    class="elmethis-bulleted-list"
+    :class="[
+      'elmethis-list-common',
+
+      listStyle === 'unordered'
+        ? 'elmethis-bulleted-list'
+        : 'elmethis-numbered-list'
+    ]"
+    :is="listStyle === 'unordered' ? 'ul' : 'ol'"
     :style="{
       '--opacity': targetIsVisible ? 1 : 0
     }"
   >
     <slot />
-  </ul>
+  </component>
 </template>
 
 <script setup lang="ts">
 import { useIntersectionObserver } from '@vueuse/core'
 import { ref } from 'vue'
 
-export interface ElmBulletedListProps {}
+export interface ElmListProps {
+  /**
+   * The type of list to render.
+   * - `unordered` `<ul/>` for a **bulleted** list
+   * - `ordered` `<ol/>`  for a **numbered** list
+   */
+  listStyle: 'unordered' | 'ordered'
+}
 
-withDefaults(defineProps<ElmBulletedListProps>(), {})
+withDefaults(defineProps<ElmListProps>(), {
+  listStyle: 'unordered'
+})
 
 const target = ref(null)
 const targetIsVisible = ref(false)
@@ -27,13 +43,15 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 </script>
 
 <style lang="scss">
-.elmethis-bulleted-list {
-  margin-block: 2rem;
+.elmethis-list-common {
+  margin-block: 1rem;
   opacity: var(--opacity);
   transition: opacity 800ms;
   box-sizing: border-box;
   padding-left: 1.25rem;
+}
 
+.elmethis-bulleted-list {
   li {
     box-sizing: border-box;
     padding-left: 0.5rem;
@@ -52,6 +70,38 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
           li {
             &::marker {
               content: url('data:image/svg+xml;base64,ICA8c3ZnCiAgICB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnCiAgICB2aWV3Qm94PScwIDAgMjAgMjAnCiAgICB3aWR0aD0nMTJweCcKICAgIGhlaWdodD0nMTJweCcKICAgIHN0cm9rZT0nIzQ0OTc2MycKICAgIGZpbGw9JyM0NDk3NjMnCiAgPgogICAgPHBhdGgKICAgICAgZmlsbFJ1bGU9J2V2ZW5vZGQnCiAgICAgIGQ9J004LjIyIDUuMjJhLjc1Ljc1IDAgMCAxIDEuMDYgMGw0LjI1IDQuMjVhLjc1Ljc1IDAgMCAxIDAgMS4wNmwtNC4yNSA0LjI1YS43NS43NSAwIDAgMS0xLjA2LTEuMDZMMTEuOTQgMTAgOC4yMiA2LjI4YS43NS43NSAwIDAgMSAwLTEuMDZaJwogICAgICBjbGlwUnVsZT0nZXZlbm9kZCcKICAgIC8+CiAgPC9zdmc+');
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.elmethis-numbered-list {
+  li {
+    box-sizing: border-box;
+    padding-left: 0.25rem;
+    margin-block: 0.75rem;
+    margin-left: 0.25rem;
+
+    list-style-type: decimal;
+
+    &::marker {
+      font-weight: bold;
+      color: #9771bd;
+    }
+
+    ol {
+      li {
+        list-style-type: lower-alpha;
+        ol {
+          li {
+            list-style-type: lower-roman;
+            ol {
+              li {
+                list-style-type: lower-greek;
+              }
             }
           }
         }

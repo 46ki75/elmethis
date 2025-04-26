@@ -1,0 +1,30 @@
+{
+  "name": "@elmethis/json-component-types",
+  "version": "1.0.0-alpha.1",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "author": "Chomolungma Shirayuki",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:46ki75/elmethis.git"
+  },
+  "homepage": "https://46ki75.github.io/elmethis",
+  "files": [
+    "dist"
+  ],
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}

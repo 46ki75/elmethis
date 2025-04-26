@@ -5,9 +5,17 @@
 </template>
 
 <script setup lang="ts">
+import ElmTableRow from './ElmTableRow.vue'
+
+import { defineSlots } from 'vue'
+
 export interface ElmTableHeaderProps {}
 
 withDefaults(defineProps<ElmTableHeaderProps>(), {})
+
+defineSlots<{
+  default: InstanceType<typeof ElmTableRow>
+}>()
 </script>
 
 <style lang="scss">

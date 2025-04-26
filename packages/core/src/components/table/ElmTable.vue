@@ -5,12 +5,17 @@
       '--margin-block': margin
     }"
   >
-    <slot />
+    <slot v-if="slots.header != null" name="header" />
+    <slot name="body" />
   </table>
 </template>
 
 <script setup lang="ts">
+import ElmTableHeader from './ElmTableHeader.vue'
+import ElmTableBody from './ElmTableBody.vue'
+
 import type { Property } from 'csstype'
+import { defineSlots } from 'vue'
 
 export interface ElmTableProps {
   /**
@@ -20,6 +25,18 @@ export interface ElmTableProps {
 }
 
 withDefaults(defineProps<ElmTableProps>(), {})
+
+const slots = defineSlots<{
+  /**
+   * (Optional) The header slot of the table.
+   */
+  header?: InstanceType<typeof ElmTableHeader>
+
+  /**
+   * The body slot of the table.
+   */
+  body: InstanceType<typeof ElmTableBody>
+}>()
 </script>
 
 <style scoped lang="scss">
