@@ -1,11 +1,13 @@
 <template>
   <component
     ref="target"
-    :class="
+    :class="[
+      'elmethis-list-common',
+
       listStyle === 'unordered'
         ? 'elmethis-bulleted-list'
         : 'elmethis-numbered-list'
-    "
+    ]"
     :is="listStyle === 'unordered' ? 'ul' : 'ol'"
     :style="{
       '--opacity': targetIsVisible ? 1 : 0
@@ -41,13 +43,15 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 </script>
 
 <style lang="scss">
-.elmethis-bulleted-list {
-  margin-block: 2rem;
+.elmethis-list-common {
+  margin-block: 1rem;
   opacity: var(--opacity);
   transition: opacity 800ms;
   box-sizing: border-box;
   padding-left: 1.25rem;
+}
 
+.elmethis-bulleted-list {
   li {
     box-sizing: border-box;
     padding-left: 0.5rem;
@@ -75,12 +79,6 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 }
 
 .elmethis-numbered-list {
-  margin-block: 2rem;
-  opacity: var(--opacity);
-  transition: opacity 800ms;
-  box-sizing: border-box;
-  padding-left: 1.25rem;
-
   li {
     box-sizing: border-box;
     padding-left: 0.25rem;
@@ -88,7 +86,9 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
     margin-left: 0.25rem;
 
     list-style-type: decimal;
+
     &::marker {
+      font-weight: bold;
       color: #9771bd;
     }
 
