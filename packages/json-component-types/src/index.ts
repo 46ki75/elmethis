@@ -1,157 +1,127 @@
-export type InlineComponentType = 'Text' | 'Icon'
+// Component Map
+export type InlineComponentMap = {
+  Text: Text
+  Icon: Icon
+}
 
-export type BlockComponentType =
-  | 'Heading'
-  | 'Paragraph'
-  | 'ListItem'
-  | 'List'
-  | 'BlockQuote'
-  | 'Callout'
-  | 'Divider'
-  | 'Toggle'
-  | 'Bookmark'
-  | 'File'
-  | 'Image'
-  | 'CodeBlock'
-  | 'Katex'
-  | 'Table'
-  | 'TableHeader'
-  | 'TableBody'
-  | 'TableRow'
-  | 'TableCell'
+export type BlockComponentMap = {
+  Heading: Heading
+  Paragraph: Paragraph
+  ListItem: ListItem
+  List: List
+  BlockQuote: BlockQuote
+  Callout: Callout
+  Divider: Divider
+  Toggle: Toggle
+  Bookmark: Bookmark
+  File: File
+  Image: Image
+  CodeBlock: CodeBlock
+  Katex: Katex
+  Table: Table
+  TableHeader: TableHeader
+  TableBody: TableBody
+  TableRow: TableRow
+  TableCell: TableCell
+}
 
-export type ComponentType = InlineComponentType | BlockComponentType
+export type ComponentMap = InlineComponentMap & BlockComponentMap
 
-export type AllInlineComponents = Text | Icon
+// Types
+export type InlineComponentType = keyof InlineComponentMap
+export type BlockComponentType = keyof BlockComponentMap
+export type ComponentType = keyof ComponentMap
 
-export type AllBlockComponents =
-  | Heading
-  | Paragraph
-  | ListItem
-  | List
-  | BlockQuote
-  | Callout
-  | Divider
-  | Toggle
-  | Bookmark
-  | File
-  | Image
-  | CodeBlock
-  | Katex
-  | Table
-  | TableHeader
-  | TableBody
-  | TableRow
-  | TableCell
+export type AllComponents = ComponentMap[keyof ComponentMap]
 
-export type AllComponents = AllInlineComponents | AllBlockComponents
-
-export interface Component<P = Record<any, any>> {
-  type: ComponentType
+// Base Interfaces
+export interface Component<
+  T extends ComponentType = ComponentType,
+  P = Record<any, any>
+> {
+  type: T
   props?: P
   slots?: Record<string, Component | Component[]>
 }
 
-export interface InlineComponent<P = Record<any, any>> extends Component {
-  type: ComponentType
-  props?: P
+export interface InlineComponent<
+  T extends InlineComponentType = InlineComponentType,
+  P = Record<any, any>
+> extends Component<T, P> {
   slots: undefined
 }
 
-export interface BlockComponent<P = Record<any, any>> extends Component {
-  type: ComponentType
-  props?: P
+export interface BlockComponent<
+  T extends BlockComponentType = BlockComponentType,
+  P = Record<any, any>
+> extends Component<T, P> {
   slots?: Record<string, Component | Component[]>
 }
 
-// Inline Components # -------------------------------------------------- #
-
-export interface Text extends InlineComponent {
-  type: 'Text'
+// Inline Components
+export interface Text extends InlineComponent<'Text'> {
   props: {
     text: string
-
     color?: string
     backgroundColor?: string
-
     bold?: boolean
     italic?: boolean
     underline?: boolean
     strikethrough?: boolean
     code?: boolean
-
     ruby?: string
-
     href?: string
     favicon?: string
-
-    /**
-     * KaTex expression.
-     */
     expression?: string
   }
 }
 
-export interface Icon extends InlineComponent {
-  type: 'Icon'
+export interface Icon extends InlineComponent<'Icon'> {
   props: {
     src: string
     alt?: string
   }
 }
 
-// Block Components # -------------------------------------------------- #
-
-export interface Heading extends BlockComponent {
-  type: 'Heading'
-  props: {
-    level: 1 | 2 | 3 | 4 | 5 | 6
-  }
+// Block Components
+export interface Heading extends BlockComponent<'Heading'> {
+  props: { level: 1 | 2 | 3 | 4 | 5 | 6 }
   slots: { default: InlineComponent[] }
 }
 
-export interface Paragraph extends BlockComponent {
-  type: 'Paragraph'
+export interface Paragraph extends BlockComponent<'Paragraph'> {
   slots: { default: Component[] }
 }
 
-export interface ListItem extends BlockComponent {
-  type: 'ListItem'
+export interface ListItem extends BlockComponent<'ListItem'> {
   slots: { default: Component[] }
 }
 
-export interface List extends BlockComponent {
-  type: 'List'
+export interface List extends BlockComponent<'List'> {
   props?: { listStyle?: 'unordered' | 'ordered' }
   slots: { default: Component[] }
 }
 
-export interface BlockQuote extends BlockComponent {
-  type: 'BlockQuote'
+export interface BlockQuote extends BlockComponent<'BlockQuote'> {
   props?: { cite?: string }
   slots: { default: Component[] }
 }
 
-export interface Callout extends BlockComponent {
-  type: 'Callout'
+export interface Callout extends BlockComponent<'Callout'> {
   props?: { type?: 'note' | 'tip' | 'important' | 'warning' | 'caution' }
   slots: { default: Component[] }
 }
 
-export interface Divider extends BlockComponent {
-  type: 'Divider'
-}
+export interface Divider extends BlockComponent<'Divider'> {}
 
-export interface Toggle extends BlockComponent {
-  type: 'Toggle'
+export interface Toggle extends BlockComponent<'Toggle'> {
   slots: {
     default: Component[]
     summary: InlineComponent[]
   }
 }
 
-export interface Bookmark extends BlockComponent {
-  type: 'Bookmark'
+export interface Bookmark extends BlockComponent<'Bookmark'> {
   props: {
     url: string
     title?: string
@@ -160,45 +130,37 @@ export interface Bookmark extends BlockComponent {
   }
 }
 
-export interface File extends BlockComponent {
-  type: 'File'
+export interface File extends BlockComponent<'File'> {
   props: {
     src: string
     name?: string
   }
 }
 
-export interface Image extends BlockComponent {
-  type: 'Image'
+export interface Image extends BlockComponent<'Image'> {
   props: {
     src: string
     alt?: string
   }
 }
 
-export interface CodeBlock extends BlockComponent {
-  type: 'CodeBlock'
+export interface CodeBlock extends BlockComponent<'CodeBlock'> {
   props: {
     code: string
     language: string
   }
   slots: {
-    /**
-     * Caption of the code.
-     */
     default: InlineComponent[]
   }
 }
 
-export interface Katex extends BlockComponent {
-  type: 'Katex'
+export interface Katex extends BlockComponent<'Katex'> {
   props: {
     expression: string
   }
 }
 
-export interface Table extends BlockComponent {
-  type: 'Table'
+export interface Table extends BlockComponent<'Table'> {
   props?: { hasColumnHeader?: boolean; hasRowHeader?: boolean }
   slots: {
     header?: TableHeader
@@ -206,23 +168,19 @@ export interface Table extends BlockComponent {
   }
 }
 
-export interface TableHeader extends BlockComponent {
-  type: 'TableHeader'
+export interface TableHeader extends BlockComponent<'TableHeader'> {
   slots: { default: TableRow }
 }
 
-export interface TableBody extends BlockComponent {
-  type: 'TableBody'
+export interface TableBody extends BlockComponent<'TableBody'> {
   slots: { default: TableRow[] }
 }
 
-export interface TableRow extends BlockComponent {
-  type: 'TableRow'
+export interface TableRow extends BlockComponent<'TableRow'> {
   slots: { default: TableCell[] }
 }
 
-export interface TableCell extends BlockComponent {
-  type: 'TableCell'
+export interface TableCell extends BlockComponent<'TableCell'> {
   props?: { isHeader?: boolean }
   slots: { default: InlineComponent }
 }
