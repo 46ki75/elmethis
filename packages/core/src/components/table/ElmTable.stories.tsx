@@ -25,7 +25,8 @@ export const Primary: Story = {
       ElmTableCell
     },
     template: `
-      <ElmTable>
+    <ElmTable>
+      <template #header>
         <ElmTableHeader>
           <ElmTableRow>
             <ElmTableCell hasHeader>Header 1</ElmTableCell>
@@ -33,6 +34,9 @@ export const Primary: Story = {
             <ElmTableCell hasHeader>Header 3</ElmTableCell>
           </ElmTableRow>
         </ElmTableHeader>
+      </template>
+
+      <template #body>
         <ElmTableBody>
           <ElmTableRow>
             <ElmTableCell>Row 1, Cell 1</ElmTableCell>
@@ -55,7 +59,9 @@ export const Primary: Story = {
             <ElmTableCell>Row 4, Cell 3</ElmTableCell>
           </ElmTableRow>
         </ElmTableBody>
-      </ElmTable>
+      </template>
+
+    </ElmTable>
     `
   })
 }

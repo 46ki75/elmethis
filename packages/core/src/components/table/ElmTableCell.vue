@@ -6,6 +6,8 @@
 </template>
 
 <script setup lang="ts">
+import { defineSlots, type VNodeChild } from 'vue'
+
 export interface ElmTableCellProps {
   /**
    * Whether the cell is a header cell.
@@ -22,6 +24,10 @@ export interface ElmTableCellProps {
 withDefaults(defineProps<ElmTableCellProps>(), {
   hasHeader: false
 })
+
+defineSlots<{
+  default: VNodeChild
+}>()
 </script>
 
 <style scoped lang="scss">
