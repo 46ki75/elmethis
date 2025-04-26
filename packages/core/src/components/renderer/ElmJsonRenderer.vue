@@ -6,7 +6,6 @@
 import { defineAsyncComponent } from 'vue'
 
 import type { ElmInlineTextProps } from '../inline/ElmInlineText.vue'
-import type { ElmInlineLinkProps } from '../inline/ElmInlineLink.vue'
 import type { ElmInlineIconProps } from '../inline/ElmInlineIcon.vue'
 import type { ElmCalloutProps } from '../typography/ElmCallout.vue'
 import type { ElmBulletedListProps } from '../typography/ElmBulletedList.vue'
@@ -34,9 +33,6 @@ import type { ElmColumnListProps } from '../containments/ElmColumnList.vue'
 
 const ElmInlineText = defineAsyncComponent(
   () => import('../inline/ElmInlineText.vue')
-)
-const ElmInlineLink = defineAsyncComponent(
-  () => import('../inline/ElmInlineLink.vue')
 )
 const ElmInlineIcon = defineAsyncComponent(
   () => import('../inline/ElmInlineIcon.vue')
@@ -108,7 +104,6 @@ import { h, markRaw, VNode } from 'vue'
 
 type ComponentType =
   | 'ElmInlineText'
-  | 'ElmInlineLink'
   | 'ElmInlineIcon'
   | 'ElmCallout'
   | 'ElmBulletedList'
@@ -136,7 +131,6 @@ type ComponentType =
 
 type ComponentProps =
   | ElmInlineTextProps
-  | ElmInlineLinkProps
   | ElmInlineIconProps
   | ElmCalloutProps
   | ElmBulletedListProps
@@ -173,12 +167,6 @@ interface ElmInlineTextJsonComponent extends JsonComponentBase {
   type: 'ElmInlineText'
   id?: string
   props?: ElmInlineTextProps
-}
-
-interface ElmInlineLinkJsonComponent extends JsonComponentBase {
-  type: 'ElmInlineLink'
-  id?: string
-  props?: ElmInlineLinkProps
 }
 
 interface ElmInlineIconJsonComponent extends JsonComponentBase {
@@ -327,7 +315,6 @@ interface ElmColumnListJsonComponent extends JsonComponentBase {
 
 type JsonComponent =
   | ElmInlineTextJsonComponent
-  | ElmInlineLinkJsonComponent
   | ElmInlineIconJsonComponent
   | ElmCalloutJsonComponent
   | ElmBulletedListJsonComponent
@@ -361,7 +348,6 @@ withDefaults(defineProps<ElmJsonRendererProps>(), {})
 
 const componentMap: Record<ComponentType, any> = {
   ElmInlineText: markRaw(ElmInlineText),
-  ElmInlineLink: markRaw(ElmInlineLink),
   ElmInlineIcon: markRaw(ElmInlineIcon),
   ElmCallout: markRaw(ElmCallout),
   ElmBulletedList: markRaw(ElmBulletedList),

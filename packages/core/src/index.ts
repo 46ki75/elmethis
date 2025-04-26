@@ -97,9 +97,6 @@ export { default as ElmLoginIcon } from './components/icon/ElmLoginIcon.vue'
 export type { ElmToggleThemeProps } from './components/icon/ElmToggleTheme.vue'
 export { default as ElmToggleTheme } from './components/icon/ElmToggleTheme.vue'
 
-export type { ElmInlineLinkProps } from './components/inline/ElmInlineLink.vue'
-export { default as ElmInlineLink } from './components/inline/ElmInlineLink.vue'
-
 export type { ElmInlineTextProps } from './components/inline/ElmInlineText.vue'
 export { default as ElmInlineText } from './components/inline/ElmInlineText.vue'
 
