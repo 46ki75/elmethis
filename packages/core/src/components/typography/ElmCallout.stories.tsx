@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import ElmCallout from './ElmCallout.vue'
-import ElmInlineText from '../inline/ElmInlineText.vue'
+import ElmInlineText from './ElmInlineText.vue'
 
 const lorem =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc tincidunt aliquam. Nullam nec purus nec nunc tincidunt aliquam.'

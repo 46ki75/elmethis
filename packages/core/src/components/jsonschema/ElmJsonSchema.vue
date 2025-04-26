@@ -241,7 +241,7 @@
 <script setup lang="ts">
 import { type JSONSchema7Definition } from 'json-schema'
 
-import ElmInlineText from '../inline/ElmInlineText.vue'
+import ElmInlineText from '../typography/ElmInlineText.vue'
 import ElmFieldType from './ElmFieldType.vue'
 import ElmFieldAttribute from './ElmFieldAttribute.vue'
 import ElmChildContainer from './ElmChildContainer.vue'

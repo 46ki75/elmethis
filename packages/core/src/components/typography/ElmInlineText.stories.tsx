@@ -3,7 +3,7 @@ import ElmInlineText from './ElmInlineText.vue'
 import { opacify } from 'polished'
 
 const meta: Meta<typeof ElmInlineText> = {
-  title: 'Components/Inline/ElmInlineText',
+  title: 'Components/Typography/ElmInlineText',
   component: ElmInlineText,
   tags: ['autodocs'],
   argTypes: { color: { control: 'color' } },

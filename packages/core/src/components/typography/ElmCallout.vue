@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import ElmInlineText from '../inline/ElmInlineText.vue'
+import ElmInlineText from './ElmInlineText.vue'
 import { ref } from 'vue'
 import { rgba } from 'polished'
 import { useIntersectionObserver } from '@vueuse/core'

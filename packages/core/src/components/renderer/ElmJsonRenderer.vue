@@ -5,8 +5,8 @@
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue'
 
-import type { ElmInlineTextProps } from '../inline/ElmInlineText.vue'
-import type { ElmInlineIconProps } from '../inline/ElmInlineIcon.vue'
+import type { ElmInlineTextProps } from '../typography/ElmInlineText.vue'
+import type { ElmInlineIconProps } from '../typography/ElmInlineIcon.vue'
 import type { ElmCalloutProps } from '../typography/ElmCallout.vue'
 import type { ElmBulletedListProps } from '../typography/ElmBulletedList.vue'
 import type { ElmNumberedListProps } from '../typography/ElmNumberedList.vue'
@@ -32,10 +32,10 @@ import type { ElmColumnProps } from '../containments/ElmColumn.vue'
 import type { ElmColumnListProps } from '../containments/ElmColumnList.vue'
 
 const ElmInlineText = defineAsyncComponent(
-  () => import('../inline/ElmInlineText.vue')
+  () => import('../typography/ElmInlineText.vue')
 )
 const ElmInlineIcon = defineAsyncComponent(
-  () => import('../inline/ElmInlineIcon.vue')
+  () => import('../typography/ElmInlineIcon.vue')
 )
 const ElmCallout = defineAsyncComponent(
   () => import('../typography/ElmCallout.vue')

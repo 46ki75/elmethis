@@ -70,7 +70,7 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import ElmLanguageIcon from '../icon/ElmLanguageIcon.vue'
-import ElmInlineText from '../inline/ElmInlineText.vue'
+import ElmInlineText from '../typography/ElmInlineText.vue'
 import ElmBlockFallback from '../fallback/ElmBlockFallback.vue'
 import ElmDotLoadingIcon from '../icon/ElmDotLoadingIcon.vue'
 

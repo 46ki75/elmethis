@@ -71,7 +71,7 @@
 
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import ElmInlineText from '../inline/ElmInlineText.vue'
+import ElmInlineText from '../typography/ElmInlineText.vue'
 import { ref, type VNode, type FunctionalComponent } from 'vue'
 import { nanoid } from 'nanoid'
 

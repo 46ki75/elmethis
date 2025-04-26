@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import ElmBlockQuote from './ElmBlockQuote.vue'
-import ElmInlineText from '../inline/ElmInlineText.vue'
+import ElmInlineText from './ElmInlineText.vue'
 
 const meta: Meta<typeof ElmBlockQuote> = {
   title: 'Components/Typography/ElmBlockQuote',

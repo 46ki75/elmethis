@@ -97,8 +97,8 @@ export { default as ElmLoginIcon } from './components/icon/ElmLoginIcon.vue'
 export type { ElmToggleThemeProps } from './components/icon/ElmToggleTheme.vue'
 export { default as ElmToggleTheme } from './components/icon/ElmToggleTheme.vue'
 
-export type { ElmInlineTextProps } from './components/inline/ElmInlineText.vue'
-export { default as ElmInlineText } from './components/inline/ElmInlineText.vue'
+export type { ElmInlineTextProps } from './components/typography/ElmInlineText.vue'
+export { default as ElmInlineText } from './components/typography/ElmInlineText.vue'
 
 export type { ElmFileProps } from './components/media/ElmFile.vue'
 export { default as ElmFile } from './components/media/ElmFile.vue'

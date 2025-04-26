@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import ElmInlineText from '../inline/ElmInlineText.vue'
+import ElmInlineText from '../typography/ElmInlineText.vue'
 
 export interface ElmBookmarkIconProps {
   name?: string

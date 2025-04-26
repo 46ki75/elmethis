@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import ElmNumberedList from './ElmNumberedList.vue'
-import ElmInlineText from '../inline/ElmInlineText.vue'
+import ElmInlineText from './ElmInlineText.vue'
 
 const meta: Meta<typeof ElmNumberedList> = {
   title: 'Components/Typography/ElmNumberedList',

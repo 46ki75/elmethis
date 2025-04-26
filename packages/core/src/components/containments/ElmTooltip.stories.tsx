@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import ElmTooltip from './ElmTooltip.vue'
-import ElmInlineText from '../inline/ElmInlineText.vue'
+import ElmInlineText from '../typography/ElmInlineText.vue'
 
 const meta: Meta<typeof ElmTooltip> = {
   title: 'Components/Containments/ElmTooltip',

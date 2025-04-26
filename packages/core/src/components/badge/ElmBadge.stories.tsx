@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import ElmBadge from './ElmBadge.vue'
-import ElmInlineText from '../inline/ElmInlineText.vue'
+import ElmInlineText from '../typography/ElmInlineText.vue'
 
 const meta: Meta<typeof ElmBadge> = {
   title: 'Components/Badge/ElmBadge',

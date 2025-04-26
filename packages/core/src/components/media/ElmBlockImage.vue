@@ -68,7 +68,7 @@ import { ref } from 'vue'
 import ElmRectangleWave from '../fallback/ElmRectangleWave.vue'
 import ElmDotLoadingIcon from '../icon/ElmDotLoadingIcon.vue'
 import { onKeyStroke, useImage } from '@vueuse/core'
-import ElmInlineText from '../inline/ElmInlineText.vue'
+import ElmInlineText from '../typography/ElmInlineText.vue'
 import { Icon } from '@iconify/vue'
 
 export interface ElmBlockImageProps {
