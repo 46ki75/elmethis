@@ -9,6 +9,10 @@
   >
     <slot />
 
+    <cite v-if="cite" :class="$style.cite">
+      <a :href="cite" target="_blank" rel="noopener noreferrer">{{ cite }}</a>
+    </cite>
+
     <svg
       :class="$style.icon"
       style="top: 0.25rem; left: 0.25rem"
@@ -65,6 +69,27 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 
   [data-theme='dark'] & {
     border-left-color: rgba(white, 0.2);
+  }
+}
+
+.cite {
+  position: absolute;
+  font-size: 0.75rem;
+  line-height: 0.75rem;
+  bottom: 0.5rem;
+  right: 2rem;
+
+  a {
+    all: unset;
+    color: #6987b8;
+    padding: 0 0.25rem;
+    border-radius: 0.125rem;
+    cursor: pointer;
+    transition: background-color 100ms;
+
+    &:hover {
+      background-color: rgba(#6987b8, 0.15);
+    }
   }
 }
 
