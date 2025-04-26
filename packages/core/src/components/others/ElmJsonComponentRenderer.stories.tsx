@@ -43,3 +43,39 @@ export const Primary: Story = {
     ]
   }
 }
+
+export const Heading: Story = {
+  args: {
+    jsonComponents: [
+      {
+        type: 'Heading',
+        props: {
+          level: 1
+        },
+        slots: {
+          default: [
+            {
+              type: 'Text',
+              props: {
+                text: 'Hello, '
+              }
+            },
+            {
+              type: 'Text',
+              props: {
+                text: 'world',
+                code: true
+              }
+            },
+            {
+              type: 'Text',
+              props: {
+                text: ' !'
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

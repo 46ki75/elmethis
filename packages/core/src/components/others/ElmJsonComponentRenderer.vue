@@ -29,6 +29,11 @@ const AsyncElmInlineIcon = defineAsyncComponent({
   loadingComponent: ElmBlockFallback
 })
 
+const AsyncElmHeading = defineAsyncComponent({
+  loader: () => import('../typography/ElmHeading.vue'),
+  loadingComponent: ElmBlockFallback
+})
+
 const AsyncElmParagraph = defineAsyncComponent({
   loader: () => import('../typography/ElmParagraph.vue'),
   loadingComponent: ElmBlockFallback
@@ -63,7 +68,14 @@ const defaultRenderFunctionMap = (
     },
     Icon: ({ props }) =>
       h(AsyncElmInlineIcon, { src: props.src, alt: props.alt }),
-    Heading: ({ props }) => h(AsyncElmParagraph),
+    Heading: ({ props, slots }) =>
+      h(
+        AsyncElmHeading,
+        {
+          level: props.level
+        },
+        { default: render(slots.default) }
+      ),
     Paragraph: ({ slots }) =>
       h(AsyncElmParagraph, {}, { default: render(slots.default) }),
     ListItem: (args) => h('span'),
