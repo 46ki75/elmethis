@@ -14,13 +14,18 @@ export type BlockComponentType =
   | 'Image'
   | 'CodeBlock'
   | 'Katex'
+  | 'Table'
+  | 'TableHeader'
+  | 'TableBody'
+  | 'TableRow'
+  | 'TableCell'
 
 export type ComponentType = InlineComponentType | BlockComponentType
 
 export interface Component<P = Record<any, any>> {
   type: ComponentType
   props?: P
-  slots?: Record<string, Component[]>
+  slots?: Record<string, Component | Component[]>
 }
 
 export interface InlineComponent<P = Record<any, any>> extends Component {
@@ -32,7 +37,7 @@ export interface InlineComponent<P = Record<any, any>> extends Component {
 export interface BlockComponent<P = Record<any, any>> extends Component {
   type: ComponentType
   props?: P
-  slots?: Record<string, Component[]>
+  slots?: Record<string, Component | Component[]>
 }
 
 // Inline Components # -------------------------------------------------- #
@@ -166,4 +171,34 @@ export interface Katex extends BlockComponent {
   props: {
     expression: string
   }
+}
+
+export interface Table extends BlockComponent {
+  type: 'Table'
+  props?: { hasColumnHeader?: boolean; hasRowHeader?: boolean }
+  slots: {
+    header?: TableHeader
+    body: TableBody
+  }
+}
+
+export interface TableHeader extends BlockComponent {
+  type: 'TableHeader'
+  slots: { default: TableRow }
+}
+
+export interface TableBody extends BlockComponent {
+  type: 'TableBody'
+  slots: { default: TableRow[] }
+}
+
+export interface TableRow extends BlockComponent {
+  type: 'TableRow'
+  slots: { default: TableCell[] }
+}
+
+export interface TableCell extends BlockComponent {
+  type: 'TableCell'
+  props?: { isHeader?: boolean }
+  slots: { default: InlineComponent }
 }
