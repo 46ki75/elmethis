@@ -1,6 +1,8 @@
 <template>
   <tr>
-    <slot />
+    <template v-for="cell in slots">
+      <component :is="cell" />
+    </template>
   </tr>
 </template>
 
@@ -11,8 +13,8 @@ export interface ElmTableRowProps {}
 
 withDefaults(defineProps<ElmTableRowProps>(), {})
 
-defineSlots<{
-  default: InstanceType<typeof ElmTableCell>
+const slots = defineSlots<{
+  default: InstanceType<typeof ElmTableCell>[]
 }>()
 </script>
 
