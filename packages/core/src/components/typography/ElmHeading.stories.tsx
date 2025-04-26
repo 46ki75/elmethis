@@ -3,7 +3,7 @@ import ElmHeading from './ElmHeading.vue'
 import ElmInlineText from './ElmInlineText.vue'
 
 const meta: Meta<typeof ElmHeading> = {
-  title: 'Components/Headings/ElmHeading',
+  title: 'Components/Typography/ElmHeading',
   component: ElmHeading,
   tags: ['autodocs'],
   argTypes: {

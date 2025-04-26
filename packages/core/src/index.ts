@@ -148,23 +148,17 @@ export { default as ElmTableCell } from './components/table/ElmTableCell.vue'
 export type { ElmBlockQuoteProps } from './components/typography/ElmBlockQuote.vue'
 export { default as ElmBlockQuote } from './components/typography/ElmBlockQuote.vue'
 
-export type { ElmBulletedListProps } from './components/typography/ElmBulletedList.vue'
-export { default as ElmBulletedList } from './components/typography/ElmBulletedList.vue'
-
 export type { ElmCalloutProps } from './components/typography/ElmCallout.vue'
 export { default as ElmCallout } from './components/typography/ElmCallout.vue'
 
 export type { ElmDividerProps } from './components/typography/ElmDivider.vue'
 export { default as ElmDivider } from './components/typography/ElmDivider.vue'
 
-export type { ElmNumberedListProps } from './components/typography/ElmNumberedList.vue'
-export { default as ElmNumberedList } from './components/typography/ElmNumberedList.vue'
-
 export type { ElmParagraphProps } from './components/typography/ElmParagraph.vue'
 export { default as ElmParagraph } from './components/typography/ElmParagraph.vue'
 
-export type { ElmListItemProps } from './components/typography/ElmListItem.vue'
-export { default as ElmListItem } from './components/typography/ElmListItem.vue'
+export type { ElmListProps } from './components/typography/ElmList.vue'
+export { default as ElmList } from './components/typography/ElmList.vue'
 
 // hooks
 
