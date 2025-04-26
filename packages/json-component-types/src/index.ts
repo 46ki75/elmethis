@@ -48,7 +48,7 @@ export interface InlineComponent<
   P = Record<any, any>
 > extends Component<T, P> {
   inline: true
-  slots: undefined
+  slots?: undefined
 }
 
 export interface BlockComponent<
@@ -61,6 +61,7 @@ export interface BlockComponent<
 
 // Inline Components
 export interface Text extends InlineComponent<'Text'> {
+  inline: true
   props: {
     text: string
     color?: string
@@ -75,40 +76,51 @@ export interface Text extends InlineComponent<'Text'> {
     favicon?: string
     expression?: string
   }
+  slots?: undefined
 }
 
 export interface Icon extends InlineComponent<'Icon'> {
+  inline: true
   props: {
     src: string
     alt?: string
   }
+  slots?: undefined
 }
 
 // Block Components
 export interface Heading extends BlockComponent<'Heading'> {
+  inline: false
   props: { level: 1 | 2 | 3 | 4 | 5 | 6 }
   slots: { default: InlineComponent[] }
 }
 
 export interface Paragraph extends BlockComponent<'Paragraph'> {
+  inline: false
+  props?: undefined
   slots: { default: Component[] }
 }
 
 export interface ListItem extends BlockComponent<'ListItem'> {
+  inline: false
+  props?: undefined
   slots: { default: Component[] }
 }
 
 export interface List extends BlockComponent<'List'> {
+  inline: false
   props?: { listStyle?: 'unordered' | 'ordered' }
   slots: { default: Component[] }
 }
 
 export interface BlockQuote extends BlockComponent<'BlockQuote'> {
+  inline: false
   props?: { cite?: string }
   slots: { default: Component[] }
 }
 
 export interface Callout extends BlockComponent<'Callout'> {
+  inline: false
   props?: { type?: 'note' | 'tip' | 'important' | 'warning' | 'caution' }
   slots: { default: Component[] }
 }
@@ -116,6 +128,8 @@ export interface Callout extends BlockComponent<'Callout'> {
 export interface Divider extends BlockComponent<'Divider'> {}
 
 export interface Toggle extends BlockComponent<'Toggle'> {
+  inline: false
+  props?: undefined
   slots: {
     default: Component[]
     summary: InlineComponent[]
@@ -123,29 +137,36 @@ export interface Toggle extends BlockComponent<'Toggle'> {
 }
 
 export interface Bookmark extends BlockComponent<'Bookmark'> {
+  inline: false
   props: {
     url: string
     title?: string
     description?: string
     image?: string
   }
+  slots?: undefined
 }
 
 export interface File extends BlockComponent<'File'> {
+  inline: false
   props: {
     src: string
     name?: string
   }
+  slots?: undefined
 }
 
 export interface Image extends BlockComponent<'Image'> {
+  inline: false
   props: {
     src: string
     alt?: string
   }
+  slots?: undefined
 }
 
 export interface CodeBlock extends BlockComponent<'CodeBlock'> {
+  inline: false
   props: {
     code: string
     language: string
@@ -156,12 +177,15 @@ export interface CodeBlock extends BlockComponent<'CodeBlock'> {
 }
 
 export interface Katex extends BlockComponent<'Katex'> {
+  inline: false
   props: {
     expression: string
   }
+  slots?: undefined
 }
 
 export interface Table extends BlockComponent<'Table'> {
+  inline: false
   props?: { hasColumnHeader?: boolean; hasRowHeader?: boolean }
   slots: {
     header?: TableHeader
@@ -170,18 +194,25 @@ export interface Table extends BlockComponent<'Table'> {
 }
 
 export interface TableHeader extends BlockComponent<'TableHeader'> {
+  inline: false
+  props?: undefined
   slots: { default: TableRow }
 }
 
 export interface TableBody extends BlockComponent<'TableBody'> {
+  inline: false
+  props?: undefined
   slots: { default: TableRow[] }
 }
 
 export interface TableRow extends BlockComponent<'TableRow'> {
+  inline: false
+  props?: undefined
   slots: { default: TableCell[] }
 }
 
 export interface TableCell extends BlockComponent<'TableCell'> {
+  inline: false
   props?: { isHeader?: boolean }
   slots: { default: InlineComponent }
 }

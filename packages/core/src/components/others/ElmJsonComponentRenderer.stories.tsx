@@ -16,16 +16,19 @@ export const Primary: Story = {
     jsonComponents: [
       {
         type: 'Paragraph',
+        inline: false,
         slots: {
           default: [
             {
               type: 'Text',
+              inline: true,
               props: {
                 text: 'Hello, '
               }
             },
             {
               type: 'Text',
+              inline: true,
               props: {
                 text: 'world',
                 bold: true
@@ -33,6 +36,7 @@ export const Primary: Story = {
             },
             {
               type: 'Text',
+              inline: true,
               props: {
                 text: ' !'
               }
@@ -49,6 +53,7 @@ export const Heading: Story = {
     jsonComponents: [
       {
         type: 'Heading',
+        inline: false,
         props: {
           level: 1
         },
@@ -56,12 +61,14 @@ export const Heading: Story = {
           default: [
             {
               type: 'Text',
+              inline: true,
               props: {
                 text: 'Hello, '
               }
             },
             {
               type: 'Text',
+              inline: true,
               props: {
                 text: 'world',
                 code: true
@@ -69,6 +76,7 @@ export const Heading: Story = {
             },
             {
               type: 'Text',
+              inline: true,
               props: {
                 text: ' !'
               }

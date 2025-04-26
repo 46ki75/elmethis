@@ -46,8 +46,8 @@ importers:
         version: 3.5.13(typescript@5.8.3)
     devDependencies:
       '@elmethis/json-component-types':
-        specifier: 1.0.0-alpha.4
-        version: 1.0.0-alpha.4
+        specifier: 1.0.0-alpha.5
+        version: 1.0.0-alpha.5
       '@notionhq/client':
         specifier: ^2.3.0
         version: 2.3.0
@@ -609,8 +609,8 @@ packages:
     peerDependencies:
       vue: '>=3.4.0'
 
-  '@elmethis/json-component-types@1.0.0-alpha.4':
-    resolution: {integrity: sha512-OgkXChNRV1B136dpvj/wYvVKKqAGcGznLa+GajtiCzMHFkUvTshDdGPa3rOQiplOCdN69QbiprWWJW67+dz9+A==}
+  '@elmethis/json-component-types@1.0.0-alpha.5':
+    resolution: {integrity: sha512-oXhk+mH5wUYBj5bbJpd9JsQ+vxctfsC2101aHbWQjvs/xYq/jEmblKkONofVv3iG6sIGLgsgqq5ibNcczC8vuQ==}
 
   '@emnapi/runtime@1.3.1':
     resolution: {integrity: sha512-kEBmG8KyqtxJZv+ygbEim+KCGtIq1fC22Ms3S4ziXmYKm8uyoLX0MHONVKwp+9opg390VaKRNt4a7A9NwmpNhw==}
@@ -3671,7 +3671,7 @@ snapshots:
       shiki: 3.3.0
       vue: 3.5.13(typescript@5.8.3)
 
-  '@elmethis/json-component-types@1.0.0-alpha.4': {}
+  '@elmethis/json-component-types@1.0.0-alpha.5': {}
 
   '@emnapi/runtime@1.3.1':
     dependencies:
