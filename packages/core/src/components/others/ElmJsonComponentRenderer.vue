@@ -44,6 +44,11 @@ const AsyncElmList = defineAsyncComponent({
   loadingComponent: ElmBlockFallback
 })
 
+const AsyncElmBlockQuote = defineAsyncComponent({
+  loader: () => import('../typography/ElmBlockQuote.vue'),
+  loadingComponent: ElmBlockFallback
+})
+
 type RenderFunctionMap<R> = {
   [K in keyof ComponentMap]: (args: ComponentMap[K]) => R
 }
@@ -92,7 +97,8 @@ const defaultRenderFunctionMap = (
         },
         render(slots.default)
       ),
-    BlockQuote: (args) => h('span'),
+    BlockQuote: ({ props, slots }) =>
+      h(AsyncElmBlockQuote, { cite: props?.cite }, render(slots.default)),
     Callout: (args) => h('span'),
     Divider: (args) => h('span'),
     Toggle: (args) => h('span'),

@@ -62,7 +62,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   transition: opacity 800ms;
   box-sizing: border-box;
   margin: 0;
-  padding: 0.75rem 0.5rem 0.75rem 1.5rem;
+  padding: 1.5rem 0.5rem 1.5rem 1.5rem;
   background-color: rgba(#868e9c, 0.05);
 
   border-left: 4px solid rgba(black, 0.2);
