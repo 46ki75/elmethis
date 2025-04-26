@@ -32,14 +32,13 @@ export type InlineComponentType = keyof InlineComponentMap
 export type BlockComponentType = keyof BlockComponentMap
 export type ComponentType = keyof ComponentMap
 
-export type AllComponents = ComponentMap[keyof ComponentMap]
-
 // Base Interfaces
 export interface Component<
   T extends ComponentType = ComponentType,
   P = Record<any, any>
 > {
   type: T
+  inline: boolean
   props?: P
   slots?: Record<string, Component | Component[]>
 }
@@ -48,6 +47,7 @@ export interface InlineComponent<
   T extends InlineComponentType = InlineComponentType,
   P = Record<any, any>
 > extends Component<T, P> {
+  inline: true
   slots: undefined
 }
 
@@ -55,6 +55,7 @@ export interface BlockComponent<
   T extends BlockComponentType = BlockComponentType,
   P = Record<any, any>
 > extends Component<T, P> {
+  inline: false
   slots?: Record<string, Component | Component[]>
 }
 
