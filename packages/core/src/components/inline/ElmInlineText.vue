@@ -7,13 +7,15 @@
     target="_blank"
     rel="noopener noreferrer"
   >
-    <img
+    <!-- <img
       v-if="faviconSrc"
       :src="faviconSrc"
       alt="favicon"
       @error="handleError"
       :class="$style.icon"
-    />
+    /> -->
+
+    <ElmInlineIcon v-if="favicon" :src="favicon" alt="favicon" />
 
     {{ text ?? href }}
     <Icon icon="mdi:external-link" :class="$style.icon" />
@@ -26,7 +28,8 @@
 import { Icon } from '@iconify/vue'
 import type { Property } from 'csstype'
 import { getLuminance } from 'polished'
-import { h, ref, useCssModule } from 'vue'
+import { h, useCssModule } from 'vue'
+import ElmInlineIcon from './ElmInlineIcon.vue'
 
 export interface ElmInlineTextProps {
   /**
@@ -99,12 +102,6 @@ const props = withDefaults(defineProps<ElmInlineTextProps>(), {
   code: false,
   size: '1em'
 })
-
-const faviconSrc = ref(props.favicon)
-
-const handleError = () => {
-  faviconSrc.value = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="gray" d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93c0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg>`
-}
 
 const style = useCssModule()
 
