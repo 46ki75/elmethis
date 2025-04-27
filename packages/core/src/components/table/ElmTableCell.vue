@@ -38,11 +38,11 @@ defineSlots<{
 td.cell {
   @include common-cell-styles;
 
-  border-bottom: solid 1px rgba(black, 0.15);
-  border-right: dotted 1px rgba(black, 0.1);
+  border-top: 1px solid rgba(black, 0.15);
+  border-right: 1px dotted rgba(black, 0.1);
 
   [data-theme='dark'] & {
-    border-bottom-color: rgba(white, 0.15);
+    border-top-color: rgba(white, 0.15);
     border-right-color: rgba(white, 0.1);
   }
 }
@@ -50,10 +50,10 @@ td.cell {
 th.cell {
   @include common-cell-styles;
 
-  border-right: dotted 1px rgba(white, 0.25);
+  border-right: 1px dotted rgba(black, 0.15);
 
   [data-theme='dark'] & {
-    border-right: dotted 1px rgba(black, 0.25);
+    border-right: 1px dotted rgba(white, 0.15);
   }
 }
 </style>

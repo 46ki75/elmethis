@@ -44,6 +44,8 @@ const slots = defineSlots<{
   margin-block: var(--margin-block);
   border-collapse: collapse;
   border-spacing: 0;
-  box-shadow: 0 0 0.125rem rgba(black, 0.1);
+  box-shadow: 0 0 0.125rem rgba(black, 0.2);
+  overflow: hidden;
+  border-radius: 0.125rem;
 }
 </style>

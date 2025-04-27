@@ -21,24 +21,15 @@ defineSlots<{
 <style lang="scss">
 .elmethis-table-header-thead {
   text-align: left;
-  background-color: rgba(black, 0.8);
-  color: rgba(white, 0.8);
   transition:
     background-color 400ms,
     color 400ms;
-  [data-theme='dark'] & {
-    background-color: rgba(white, 0.8);
-    color: rgba(black, 0.8);
-  }
+
+  border-bottom: 2px solid rgba(gray, 0.5);
 
   tr {
     td,
     th {
-      color: rgba(white, 0.7);
-      [data-theme='dark'] & {
-        color: rgba(black, 0.7);
-      }
-
       &::selection {
         color: rgba(0, 0, 0, 0.7);
         background-color: var(--color, rgba(255, 255, 255, 0.7));
