@@ -74,6 +74,11 @@ const AsyncElmFile = defineAsyncComponent({
   loadingComponent: ElmBlockFallback
 })
 
+const AsyncElmBlockImage = defineAsyncComponent({
+  loader: () => import('../media/ElmBlockImage.vue'),
+  loadingComponent: ElmBlockFallback
+})
+
 type RenderFunctionMap<R> = {
   [K in keyof ComponentMap]: (args: ComponentMap[K]) => R
 }
@@ -144,7 +149,12 @@ const defaultRenderFunctionMap = (
         image: props.image
       }),
     File: ({ props }) => h(AsyncElmFile, { src: props.src, name: props.name }),
-    Image: (args) => h('span'),
+    Image: ({ props }) =>
+      h(AsyncElmBlockImage, {
+        src: props.src,
+        alt: props.alt,
+        enableModal: true
+      }),
     CodeBlock: (args) => h('span'),
     Katex: (args) => h('span'),
     Table: (args) => h('span'),
