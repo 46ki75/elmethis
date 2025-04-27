@@ -79,11 +79,11 @@ export interface Text extends InlineComponentBase<'Text'> {
     italic?: boolean
     underline?: boolean
     strikethrough?: boolean
+    katex?: boolean
     code?: boolean
     ruby?: string
     href?: string
     favicon?: string
-    expression?: string
   }
   slots?: undefined
 }
