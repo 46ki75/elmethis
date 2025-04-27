@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Component, ComponentMap } from '@elmethis/json-component-types'
+import type { Component, ComponentMap } from 'jarkup-ts'
 import { defineAsyncComponent, h, VNode } from 'vue'
 
 import { ElmBlockFallback } from '../..'
