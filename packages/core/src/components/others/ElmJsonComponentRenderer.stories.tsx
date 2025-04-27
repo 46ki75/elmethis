@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from '@storybook/vue3'
 import ElmJsonComponentRenderer from './ElmJsonComponentRenderer.vue'
 import type { Component, InlineComponent } from '@elmethis/json-component-types'
 
+import file from '../../assets/vite.svg'
+
 const meta: Meta<typeof ElmJsonComponentRenderer> = {
   title: 'Components/others/ElmJsonComponentRenderer',
   component: ElmJsonComponentRenderer,
@@ -240,6 +242,21 @@ export const Bookmark: Story = {
           title: '	Fast, disk space efficient package manager | pnpm',
           description: 'Fast, disk space efficient package manager',
           image: 'https://pnpm.io/img/ogimage.png'
+        }
+      }
+    ]
+  }
+}
+
+export const File: Story = {
+  args: {
+    jsonComponents: [
+      {
+        type: 'File',
+        inline: false,
+        props: {
+          src: file,
+          name: 'Example File'
         }
       }
     ]

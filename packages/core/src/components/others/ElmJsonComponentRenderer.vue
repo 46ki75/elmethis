@@ -69,6 +69,11 @@ const AsyncElmBookmark = defineAsyncComponent({
   loadingComponent: ElmBlockFallback
 })
 
+const AsyncElmFile = defineAsyncComponent({
+  loader: () => import('../media/ElmFile.vue'),
+  loadingComponent: ElmBlockFallback
+})
+
 type RenderFunctionMap<R> = {
   [K in keyof ComponentMap]: (args: ComponentMap[K]) => R
 }
@@ -138,7 +143,7 @@ const defaultRenderFunctionMap = (
         description: props.description,
         image: props.image
       }),
-    File: (args) => h('span'),
+    File: ({ props }) => h(AsyncElmFile, { src: props.src, name: props.name }),
     Image: (args) => h('span'),
     CodeBlock: (args) => h('span'),
     Katex: (args) => h('span'),
