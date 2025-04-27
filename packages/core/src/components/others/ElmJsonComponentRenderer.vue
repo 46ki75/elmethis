@@ -49,6 +49,16 @@ const AsyncElmBlockQuote = defineAsyncComponent({
   loadingComponent: ElmBlockFallback
 })
 
+const AsyncElmCallout = defineAsyncComponent({
+  loader: () => import('../typography/ElmCallout.vue'),
+  loadingComponent: ElmBlockFallback
+})
+
+const AsyncElmDivider = defineAsyncComponent({
+  loader: () => import('../typography/ElmDivider.vue'),
+  loadingComponent: ElmBlockFallback
+})
+
 type RenderFunctionMap<R> = {
   [K in keyof ComponentMap]: (args: ComponentMap[K]) => R
 }
@@ -99,8 +109,9 @@ const defaultRenderFunctionMap = (
       ),
     BlockQuote: ({ props, slots }) =>
       h(AsyncElmBlockQuote, { cite: props?.cite }, render(slots.default)),
-    Callout: (args) => h('span'),
-    Divider: (args) => h('span'),
+    Callout: ({ props, slots }) =>
+      h(AsyncElmCallout, { type: props?.type }, render(slots.default)),
+    Divider: ({}) => h(AsyncElmDivider, {}),
     Toggle: (args) => h('span'),
     Bookmark: (args) => h('span'),
     File: (args) => h('span'),

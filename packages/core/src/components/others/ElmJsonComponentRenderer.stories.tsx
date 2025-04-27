@@ -153,3 +153,24 @@ export const BlockQuote: Story = {
     ]
   }
 }
+
+export const Callout: Story = {
+  args: {
+    jsonComponents: [
+      {
+        type: 'Callout',
+        inline: false,
+        props: { type: 'warning' },
+        slots: {
+          default: [
+            {
+              type: 'Text',
+              inline: true,
+              props: { text: LOREM_IPSUM }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
