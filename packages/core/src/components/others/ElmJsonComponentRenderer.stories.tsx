@@ -6,7 +6,7 @@ import file from '../../assets/vite.svg'
 import rustCode from '../code/seed/main.rs?raw'
 
 const meta: Meta<typeof ElmJsonComponentRenderer> = {
-  title: 'Components/others/ElmJsonComponentRenderer',
+  title: 'Components/Others/ElmJsonComponentRenderer',
   component: ElmJsonComponentRenderer,
   tags: ['autodocs'],
   args: {}
