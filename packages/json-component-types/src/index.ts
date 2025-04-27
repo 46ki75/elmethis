@@ -19,8 +19,6 @@ export type BlockComponentMap = {
   CodeBlock: CodeBlock
   Katex: Katex
   Table: Table
-  TableHeader: TableHeader
-  TableBody: TableBody
   TableRow: TableRow
   TableCell: TableCell
 }
@@ -216,23 +214,9 @@ export interface Table extends BlockComponentBase<'Table'> {
   inline: false
   props?: { hasColumnHeader?: boolean; hasRowHeader?: boolean }
   slots: {
-    header?: TableHeader
-    body: TableBody
+    header?: TableRow[]
+    body: TableRow[]
   }
-}
-
-export interface TableHeader extends BlockComponentBase<'TableHeader'> {
-  type: 'TableHeader'
-  inline: false
-  props?: undefined
-  slots: { default: TableRow }
-}
-
-export interface TableBody extends BlockComponentBase<'TableBody'> {
-  type: 'TableBody'
-  inline: false
-  props?: undefined
-  slots: { default: TableRow[] }
 }
 
 export interface TableRow extends BlockComponentBase<'TableRow'> {
