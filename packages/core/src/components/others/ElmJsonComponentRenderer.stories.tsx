@@ -174,3 +174,14 @@ export const Callout: Story = {
     ]
   }
 }
+
+export const Divider: Story = {
+  args: {
+    jsonComponents: [
+      {
+        type: 'Divider',
+        inline: false
+      }
+    ]
+  }
+}
