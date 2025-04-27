@@ -175,6 +175,7 @@ pub struct Paragraph {
     pub inline: bool,
 
     // Always `None`
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub props: Option<ParagraphProps>,
 
     pub slots: ParagraphSlots,
