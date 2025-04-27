@@ -66,6 +66,42 @@ export const Primary: Story = {
   }
 }
 
+export const InlineIcon: Story = {
+  args: {
+    jsonComponents: [
+      {
+        type: 'Paragraph',
+        inline: false,
+        slots: {
+          default: [
+            {
+              type: 'Text',
+              inline: true,
+              props: {
+                text: 'I love'
+              }
+            },
+            {
+              type: 'Icon',
+              inline: true,
+              props: {
+                src: 'https://www.rust-lang.org/static/images/rust-logo-blk.svg'
+              }
+            },
+            {
+              type: 'Text',
+              inline: true,
+              props: {
+                text: 'Rust'
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
+
 export const InlineKatex: Story = {
   args: {
     jsonComponents: [

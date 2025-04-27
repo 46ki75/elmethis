@@ -20,13 +20,11 @@ const AsyncElmInlineText = defineAsyncComponent({
 })
 
 const AsyncElmKatex = defineAsyncComponent({
-  loader: () => import('../code/ElmKatex.vue'),
-  loadingComponent: ElmBlockFallback
+  loader: () => import('../code/ElmKatex.vue')
 })
 
 const AsyncElmInlineIcon = defineAsyncComponent({
-  loader: () => import('../icon/ElmInlineIcon.vue'),
-  loadingComponent: ElmBlockFallback
+  loader: () => import('../icon/ElmInlineIcon.vue')
 })
 
 const AsyncElmHeading = defineAsyncComponent({
