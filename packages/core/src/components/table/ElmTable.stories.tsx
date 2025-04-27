@@ -9,14 +9,19 @@ const meta: Meta<typeof ElmTable> = {
   title: 'Components/Table/ElmTable',
   component: ElmTable,
   tags: ['autodocs'],
-  args: {}
+  args: {
+    caption: 'Example Table'
+  }
 }
 
 export default meta
 type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
-  render: () => ({
+  render: (args) => ({
+    setup() {
+      return { args }
+    },
     components: {
       ElmTable,
       ElmTableHeader,
@@ -25,7 +30,7 @@ export const Primary: Story = {
       ElmTableCell
     },
     template: `
-    <ElmTable>
+    <ElmTable v-bind="args">
       <template #header>
         <ElmTableHeader>
           <ElmTableRow>
