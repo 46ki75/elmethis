@@ -164,7 +164,8 @@ const defaultRenderFunctionMap = (
         { code: props.code, language: props.language },
         render(slots.default)
       ),
-    Katex: (args) => h('span'),
+    Katex: ({ props }) =>
+      h(AsyncElmKatex, { expression: props.expression, block: true }),
     Table: (args) => h('span'),
     TableHeader: (args) => h('span'),
     TableBody: (args) => h('span'),
