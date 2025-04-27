@@ -38,7 +38,7 @@
     "shiki": "^3.3.0"
   },
   "devDependencies": {
-    "@elmethis/json-component-types": "1.0.0-alpha.8",
+    "@elmethis/json-component-types": "1.0.0-alpha.9",
     "@notionhq/client": "^2.3.0",
     "@storybook/vue3": "^8.6.12",
     "@types/json-schema": "^7.0.15",

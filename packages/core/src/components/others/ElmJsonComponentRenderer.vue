@@ -93,8 +93,8 @@ const defaultRenderFunctionMap = (
 ): RenderFunctionMap<VNode> => {
   return {
     Text: ({ props }) => {
-      if (props.expression != null) {
-        return h(AsyncElmKatex, { expression: props.expression, block: false })
+      if (props.katex) {
+        return h(AsyncElmKatex, { expression: props.text, block: false })
       } else {
         return h(AsyncElmInlineText, {
           text: props.text,

@@ -66,6 +66,43 @@ export const Primary: Story = {
   }
 }
 
+export const InlineKatex: Story = {
+  args: {
+    jsonComponents: [
+      {
+        type: 'Paragraph',
+        inline: false,
+        slots: {
+          default: [
+            {
+              type: 'Text',
+              inline: true,
+              props: {
+                text: 'Hello, '
+              }
+            },
+            {
+              type: 'Text',
+              inline: true,
+              props: {
+                text: 'E = mc^2',
+                katex: true
+              }
+            },
+            {
+              type: 'Text',
+              inline: true,
+              props: {
+                text: ' !'
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
+
 export const Heading: Story = {
   args: {
     jsonComponents: [
