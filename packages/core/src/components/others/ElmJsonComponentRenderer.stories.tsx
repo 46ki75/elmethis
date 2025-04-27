@@ -228,3 +228,20 @@ export const Toggle: Story = {
     ]
   }
 }
+
+export const Bookmark: Story = {
+  args: {
+    jsonComponents: [
+      {
+        type: 'Bookmark',
+        inline: false,
+        props: {
+          url: 'https://pnpm.io/',
+          title: '	Fast, disk space efficient package manager | pnpm',
+          description: 'Fast, disk space efficient package manager',
+          image: 'https://pnpm.io/img/ogimage.png'
+        }
+      }
+    ]
+  }
+}

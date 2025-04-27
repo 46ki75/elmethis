@@ -64,6 +64,11 @@ const AsyncElmToggle = defineAsyncComponent({
   loadingComponent: ElmBlockFallback
 })
 
+const AsyncElmBookmark = defineAsyncComponent({
+  loader: () => import('../navigation/ElmBookmark.vue'),
+  loadingComponent: ElmBlockFallback
+})
+
 type RenderFunctionMap<R> = {
   [K in keyof ComponentMap]: (args: ComponentMap[K]) => R
 }
@@ -126,7 +131,13 @@ const defaultRenderFunctionMap = (
           summary: render(slots.summary)
         }
       ),
-    Bookmark: (args) => h('span'),
+    Bookmark: ({ props }) =>
+      h(AsyncElmBookmark, {
+        url: props.url,
+        title: props.title,
+        description: props.description,
+        image: props.image
+      }),
     File: (args) => h('span'),
     Image: (args) => h('span'),
     CodeBlock: (args) => h('span'),
