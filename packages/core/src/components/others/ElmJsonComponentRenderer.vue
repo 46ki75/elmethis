@@ -190,10 +190,10 @@ const defaultRenderFunctionMap = (
       ),
     Katex: ({ props }) =>
       h(AsyncElmKatex, { expression: props.expression, block: true }),
-    Table: ({ slots }) =>
+    Table: ({ props, slots }) =>
       h(
         AsyncElmTable,
-        {},
+        { caption: props?.caption },
         {
           body: h(AsyncElmTableBody, {}, render(slots.body)),
           header:

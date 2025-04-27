@@ -407,6 +407,7 @@ export const Table: Story = {
       {
         type: 'Table',
         inline: false,
+        props: { caption: 'Example Table' },
         slots: {
           header: [
             {
