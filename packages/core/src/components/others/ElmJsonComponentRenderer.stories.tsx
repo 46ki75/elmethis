@@ -368,7 +368,15 @@ export const CodeBlock: Story = {
               type: 'Text',
               inline: true,
               props: {
-                text: "'src/main.rs'"
+                text: 'File:'
+              }
+            },
+            {
+              type: 'Text',
+              inline: true,
+              props: {
+                text: 'src/main.rs',
+                code: true
               }
             }
           ]
