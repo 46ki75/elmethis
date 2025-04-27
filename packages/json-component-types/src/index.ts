@@ -212,7 +212,11 @@ export interface Katex extends BlockComponentBase<'Katex'> {
 export interface Table extends BlockComponentBase<'Table'> {
   type: 'Table'
   inline: false
-  props?: { hasColumnHeader?: boolean; hasRowHeader?: boolean }
+  props?: {
+    hasColumnHeader?: boolean
+    hasRowHeader?: boolean
+    caption?: string
+  }
   slots: {
     header?: TableRow[]
     body: TableRow[]
