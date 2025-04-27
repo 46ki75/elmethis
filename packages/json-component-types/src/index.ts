@@ -40,7 +40,6 @@ export interface ComponentBase<
   P = Record<any, any>
 > {
   type: T
-  inline: boolean
   props?: P
   slots?: Record<string, ComponentBase | ComponentBase[]>
 }
@@ -50,7 +49,6 @@ export interface InlineComponentBase<
   P = Record<any, any>
 > extends ComponentBase<T, P> {
   type: T
-  inline: true
   props?: P
   slots?: undefined
 }
@@ -60,7 +58,6 @@ export interface BlockComponentBase<
   P = Record<any, any>
 > extends ComponentBase<T, P> {
   type: T
-  inline: false
   props?: P
   slots?: Record<string, Component | Component[]>
 }
@@ -68,7 +65,6 @@ export interface BlockComponentBase<
 // Inline Components
 export interface Text extends InlineComponentBase<'Text'> {
   type: 'Text'
-  inline: true
   props: {
     text: string
     color?: string
@@ -88,7 +84,6 @@ export interface Text extends InlineComponentBase<'Text'> {
 
 export interface Icon extends InlineComponentBase<'Icon'> {
   type: 'Icon'
-  inline: true
   props: {
     src: string
     alt?: string
@@ -99,56 +94,48 @@ export interface Icon extends InlineComponentBase<'Icon'> {
 // Block Components
 export interface Heading extends BlockComponentBase<'Heading'> {
   type: 'Heading'
-  inline: false
   props: { level: 1 | 2 | 3 | 4 | 5 | 6 }
   slots: { default: InlineComponent[] }
 }
 
 export interface Paragraph extends BlockComponentBase<'Paragraph'> {
   type: 'Paragraph'
-  inline: false
   props?: undefined
   slots: { default: InlineComponent[] }
 }
 
 export interface ListItem extends BlockComponentBase<'ListItem'> {
   type: 'ListItem'
-  inline: false
   props?: undefined
   slots: { default: InlineComponent[] }
 }
 
 export interface List extends BlockComponentBase<'List'> {
   type: 'List'
-  inline: false
   props?: { listStyle?: 'unordered' | 'ordered' }
   slots: { default: ListItem[] }
 }
 
 export interface BlockQuote extends BlockComponentBase<'BlockQuote'> {
   type: 'BlockQuote'
-  inline: false
   props?: { cite?: string }
   slots: { default: Component[] }
 }
 
 export interface Callout extends BlockComponentBase<'Callout'> {
   type: 'Callout'
-  inline: false
   props?: { type?: 'note' | 'tip' | 'important' | 'warning' | 'caution' }
   slots: { default: Component[] }
 }
 
 export interface Divider extends BlockComponentBase<'Divider'> {
   type: 'Divider'
-  inline: false
   props?: undefined
   slots?: undefined
 }
 
 export interface Toggle extends BlockComponentBase<'Toggle'> {
   type: 'Toggle'
-  inline: false
   props?: undefined
   slots: {
     default: Component[]
@@ -158,7 +145,6 @@ export interface Toggle extends BlockComponentBase<'Toggle'> {
 
 export interface Bookmark extends BlockComponentBase<'Bookmark'> {
   type: 'Bookmark'
-  inline: false
   props: {
     url: string
     title?: string
@@ -170,7 +156,6 @@ export interface Bookmark extends BlockComponentBase<'Bookmark'> {
 
 export interface File extends BlockComponentBase<'File'> {
   type: 'File'
-  inline: false
   props: {
     src: string
     name?: string
@@ -180,7 +165,6 @@ export interface File extends BlockComponentBase<'File'> {
 
 export interface Image extends BlockComponentBase<'Image'> {
   type: 'Image'
-  inline: false
   props: {
     src: string
     alt?: string
@@ -190,7 +174,6 @@ export interface Image extends BlockComponentBase<'Image'> {
 
 export interface CodeBlock extends BlockComponentBase<'CodeBlock'> {
   type: 'CodeBlock'
-  inline: false
   props: {
     code: string
     language: string
@@ -202,7 +185,6 @@ export interface CodeBlock extends BlockComponentBase<'CodeBlock'> {
 
 export interface Katex extends BlockComponentBase<'Katex'> {
   type: 'Katex'
-  inline: false
   props: {
     expression: string
   }
@@ -211,7 +193,6 @@ export interface Katex extends BlockComponentBase<'Katex'> {
 
 export interface Table extends BlockComponentBase<'Table'> {
   type: 'Table'
-  inline: false
   props?: {
     hasColumnHeader?: boolean
     hasRowHeader?: boolean
@@ -225,14 +206,12 @@ export interface Table extends BlockComponentBase<'Table'> {
 
 export interface TableRow extends BlockComponentBase<'TableRow'> {
   type: 'TableRow'
-  inline: false
   props?: undefined
   slots: { default: TableCell[] }
 }
 
 export interface TableCell extends BlockComponentBase<'TableCell'> {
   type: 'TableCell'
-  inline: false
   props?: { isHeader?: boolean }
   slots: { default: InlineComponent[] }
 }

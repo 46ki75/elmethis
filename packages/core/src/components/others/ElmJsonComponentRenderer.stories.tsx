@@ -29,14 +29,12 @@ including versions of Lorem Ipsum.
 const INLINE_TEMPLATE: InlineComponent[] = [
   {
     type: 'Text',
-    inline: true,
     props: {
       text: 'Hello, '
     }
   },
   {
     type: 'Text',
-    inline: true,
     props: {
       text: 'world',
       bold: true,
@@ -45,7 +43,6 @@ const INLINE_TEMPLATE: InlineComponent[] = [
   },
   {
     type: 'Text',
-    inline: true,
     props: {
       text: ' !'
     }
@@ -57,7 +54,6 @@ export const Primary: Story = {
     jsonComponents: [
       {
         type: 'Paragraph',
-        inline: false,
         slots: {
           default: INLINE_TEMPLATE
         }
@@ -71,26 +67,22 @@ export const InlineIcon: Story = {
     jsonComponents: [
       {
         type: 'Paragraph',
-        inline: false,
         slots: {
           default: [
             {
               type: 'Text',
-              inline: true,
               props: {
                 text: 'I love'
               }
             },
             {
               type: 'Icon',
-              inline: true,
               props: {
                 src: 'https://www.rust-lang.org/static/images/rust-logo-blk.svg'
               }
             },
             {
               type: 'Text',
-              inline: true,
               props: {
                 text: 'Rust'
               }
@@ -107,19 +99,16 @@ export const InlineKatex: Story = {
     jsonComponents: [
       {
         type: 'Paragraph',
-        inline: false,
         slots: {
           default: [
             {
               type: 'Text',
-              inline: true,
               props: {
                 text: 'Hello, '
               }
             },
             {
               type: 'Text',
-              inline: true,
               props: {
                 text: 'E = mc^2',
                 katex: true
@@ -127,7 +116,6 @@ export const InlineKatex: Story = {
             },
             {
               type: 'Text',
-              inline: true,
               props: {
                 text: ' !'
               }
@@ -144,7 +132,6 @@ export const Heading: Story = {
     jsonComponents: [
       {
         type: 'Heading',
-        inline: false,
         props: {
           level: 1
         },
@@ -161,7 +148,6 @@ const LIST_TEMPLATE: (listStyle: 'unordered' | 'ordered') => Component[] = (
 ) => [
   {
     type: 'List',
-    inline: false,
     props: {
       listStyle
     },
@@ -169,13 +155,11 @@ const LIST_TEMPLATE: (listStyle: 'unordered' | 'ordered') => Component[] = (
       default: [
         ...new Array(3).fill({
           type: 'ListItem',
-          inline: false,
           slots: {
             default: [
               ...INLINE_TEMPLATE,
               {
                 type: 'List',
-                inline: false,
                 props: {
                   listStyle
                 },
@@ -183,7 +167,6 @@ const LIST_TEMPLATE: (listStyle: 'unordered' | 'ordered') => Component[] = (
                   default: [
                     ...new Array(3).fill({
                       type: 'ListItem',
-                      inline: false,
                       slots: { default: INLINE_TEMPLATE }
                     })
                   ]
@@ -214,13 +197,11 @@ export const BlockQuote: Story = {
     jsonComponents: [
       {
         type: 'BlockQuote',
-        inline: false,
         props: { cite: 'https://www.lipsum.com/' },
         slots: {
           default: [
             {
               type: 'Text',
-              inline: true,
               props: { text: LOREM_IPSUM }
             }
           ]
@@ -235,18 +216,15 @@ export const Callout: Story = {
     jsonComponents: [
       {
         type: 'Callout',
-        inline: false,
         props: { type: 'warning' },
         slots: {
           default: [
             {
               type: 'Paragraph',
-              inline: false,
               slots: {
                 default: [
                   {
                     type: 'Text',
-                    inline: true,
                     props: { text: LOREM_IPSUM }
                   }
                 ]
@@ -263,8 +241,7 @@ export const Divider: Story = {
   args: {
     jsonComponents: [
       {
-        type: 'Divider',
-        inline: false
+        type: 'Divider'
       }
     ]
   }
@@ -275,17 +252,14 @@ export const Toggle: Story = {
     jsonComponents: [
       {
         type: 'Toggle',
-        inline: false,
         slots: {
           default: [
             {
               type: 'Paragraph',
-              inline: false,
               slots: {
                 default: [
                   {
                     type: 'Text',
-                    inline: true,
                     props: { text: LOREM_IPSUM }
                   }
                 ]
@@ -295,7 +269,6 @@ export const Toggle: Story = {
           summary: [
             {
               type: 'Text',
-              inline: true,
               props: { text: 'Hello, world !' }
             }
           ]
@@ -310,7 +283,6 @@ export const Bookmark: Story = {
     jsonComponents: [
       {
         type: 'Bookmark',
-        inline: false,
         props: {
           url: 'https://pnpm.io/',
           title: '	Fast, disk space efficient package manager | pnpm',
@@ -327,7 +299,6 @@ export const File: Story = {
     jsonComponents: [
       {
         type: 'File',
-        inline: false,
         props: {
           src: file,
           name: 'Example File'
@@ -342,7 +313,6 @@ export const Image: Story = {
     jsonComponents: [
       {
         type: 'Image',
-        inline: false,
         props: {
           src: 'https://images.unsplash.com/photo-1556983703-27576e5afa24?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb',
           alt: 'Example Image'
@@ -357,7 +327,6 @@ export const CodeBlock: Story = {
     jsonComponents: [
       {
         type: 'CodeBlock',
-        inline: false,
         props: {
           code: rustCode,
           language: 'rust'
@@ -366,14 +335,12 @@ export const CodeBlock: Story = {
           default: [
             {
               type: 'Text',
-              inline: true,
               props: {
                 text: 'File:'
               }
             },
             {
               type: 'Text',
-              inline: true,
               props: {
                 text: 'src/main.rs',
                 code: true
@@ -391,7 +358,6 @@ export const Katex: Story = {
     jsonComponents: [
       {
         type: 'Katex',
-        inline: false,
         props: {
           expression:
             'i\\hbar \\frac{\\partial}{\\partial t} \\Psi(\\mathbf{r}, t) = \\left( -\\frac{\\hbar^2}{2m} \\nabla^2 + V(\\mathbf{r}, t) \\right) \\Psi(\\mathbf{r}, t)'
@@ -406,23 +372,19 @@ export const Table: Story = {
     jsonComponents: [
       {
         type: 'Table',
-        inline: false,
         props: { caption: 'Example Table' },
         slots: {
           header: [
             {
               type: 'TableRow',
-              inline: false,
               slots: {
                 default: [
                   {
                     type: 'TableCell',
-                    inline: false,
                     slots: {
                       default: [
                         {
                           type: 'Text',
-                          inline: true,
                           props: { text: 'Column A' }
                         }
                       ]
@@ -430,12 +392,10 @@ export const Table: Story = {
                   },
                   {
                     type: 'TableCell',
-                    inline: false,
                     slots: {
                       default: [
                         {
                           type: 'Text',
-                          inline: true,
                           props: { text: 'Column B' }
                         }
                       ]
@@ -448,17 +408,14 @@ export const Table: Story = {
           body: [
             {
               type: 'TableRow',
-              inline: false,
               slots: {
                 default: [
                   {
                     type: 'TableCell',
-                    inline: false,
                     slots: {
                       default: [
                         {
                           type: 'Text',
-                          inline: true,
                           props: { text: 'Column A Row 1' }
                         }
                       ]
@@ -466,12 +423,10 @@ export const Table: Story = {
                   },
                   {
                     type: 'TableCell',
-                    inline: false,
                     slots: {
                       default: [
                         {
                           type: 'Text',
-                          inline: true,
                           props: { text: 'Column B Row 1' }
                         }
                       ]
@@ -482,17 +437,14 @@ export const Table: Story = {
             },
             {
               type: 'TableRow',
-              inline: false,
               slots: {
                 default: [
                   {
                     type: 'TableCell',
-                    inline: false,
                     slots: {
                       default: [
                         {
                           type: 'Text',
-                          inline: true,
                           props: { text: 'Column A Row 2' }
                         }
                       ]
@@ -500,12 +452,10 @@ export const Table: Story = {
                   },
                   {
                     type: 'TableCell',
-                    inline: false,
                     slots: {
                       default: [
                         {
                           type: 'Text',
-                          inline: true,
                           props: { text: 'Column B Row 2' }
                         }
                       ]
