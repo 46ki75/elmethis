@@ -94,7 +94,8 @@ async function downloadFile(url: string, filename: string) {
   box-sizing: border-box;
   width: 100%;
   padding: 1rem;
-  box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.2);
+  border-radius: 0.25rem;
   display: flex;
   justify-content: space-between;
   align-items: center;

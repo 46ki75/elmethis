@@ -9,14 +9,19 @@ const meta: Meta<typeof ElmTable> = {
   title: 'Components/Table/ElmTable',
   component: ElmTable,
   tags: ['autodocs'],
-  args: {}
+  args: {
+    caption: 'Example Table'
+  }
 }
 
 export default meta
 type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
-  render: () => ({
+  render: (args) => ({
+    setup() {
+      return { args }
+    },
     components: {
       ElmTable,
       ElmTableHeader,
@@ -25,13 +30,15 @@ export const Primary: Story = {
       ElmTableCell
     },
     template: `
-    <ElmTable>
+    <ElmTable v-bind="args">
       <template #header>
         <ElmTableHeader>
           <ElmTableRow>
             <ElmTableCell hasHeader>Header 1</ElmTableCell>
             <ElmTableCell hasHeader>Header 2</ElmTableCell>
             <ElmTableCell hasHeader>Header 3</ElmTableCell>
+            <ElmTableCell hasHeader>Header 4</ElmTableCell>
+            <ElmTableCell hasHeader>Header 5</ElmTableCell>
           </ElmTableRow>
         </ElmTableHeader>
       </template>
@@ -42,21 +49,29 @@ export const Primary: Story = {
             <ElmTableCell>Row 1, Cell 1</ElmTableCell>
             <ElmTableCell>Row 1, Cell 2</ElmTableCell>
             <ElmTableCell>Row 1, Cell 3</ElmTableCell>
+            <ElmTableCell>Row 1, Cell 4</ElmTableCell>
+            <ElmTableCell>Row 1, Cell 5</ElmTableCell>
           </ElmTableRow>
           <ElmTableRow>
             <ElmTableCell>Row 2, Cell 1</ElmTableCell>
             <ElmTableCell>Row 2, Cell 2</ElmTableCell>
             <ElmTableCell>Row 2, Cell 3</ElmTableCell>
+            <ElmTableCell>Row 2, Cell 4</ElmTableCell>
+            <ElmTableCell>Row 2, Cell 5</ElmTableCell>
           </ElmTableRow>
           <ElmTableRow>
             <ElmTableCell>Row 3, Cell 1</ElmTableCell>
             <ElmTableCell>Row 3, Cell 2</ElmTableCell>
             <ElmTableCell>Row 3, Cell 3</ElmTableCell>
+            <ElmTableCell>Row 3, Cell 4</ElmTableCell>
+            <ElmTableCell>Row 3, Cell 5</ElmTableCell>
           </ElmTableRow>
           <ElmTableRow>
             <ElmTableCell>Row 4, Cell 1</ElmTableCell>
             <ElmTableCell>Row 4, Cell 2</ElmTableCell>
             <ElmTableCell>Row 4, Cell 3</ElmTableCell>
+            <ElmTableCell>Row 4, Cell 4</ElmTableCell>
+            <ElmTableCell>Row 4, Cell 5</ElmTableCell>
           </ElmTableRow>
         </ElmTableBody>
       </template>

@@ -40,7 +40,15 @@
       v-if="!isLoading && alt != null && alt.trim() !== ''"
       :class="$style['alt-container']"
     >
-      <Icon icon="material-symbols:image-outline" />
+      <svg
+        :class="$style['alt-icon']"
+        viewBox="0 0 24 24"
+        width="1rem"
+        height="1rem"
+        fill="currentColor"
+      >
+        <path :d="mdiMessageImageOutline" />
+      </svg>
       <div :class="$style['alt-text']">
         <ElmInlineText :text="alt" size="0.8rem" />
       </div>
@@ -69,7 +77,8 @@ import ElmRectangleWave from '../fallback/ElmRectangleWave.vue'
 import ElmDotLoadingIcon from '../icon/ElmDotLoadingIcon.vue'
 import { onKeyStroke, useImage } from '@vueuse/core'
 import ElmInlineText from '../typography/ElmInlineText.vue'
-import { Icon } from '@iconify/vue'
+
+import { mdiMessageImageOutline } from '@mdi/js'
 
 export interface ElmBlockImageProps {
   /**
@@ -120,10 +129,14 @@ onKeyStroke('Escape', (e) => {
   margin: 1rem;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
   gap: 0.5rem;
   color: #6987b8;
   opacity: 0.8;
+}
+
+.alt-icon {
+  fill: #6987b8;
 }
 
 .alt-text {

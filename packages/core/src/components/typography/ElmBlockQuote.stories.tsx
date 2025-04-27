@@ -16,8 +16,12 @@ const lorem =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
 
 export const Primary: Story = {
-  render: () => ({
+  args: { cite: 'https://www.lipsum.com/' },
+  render: (args) => ({
+    setup() {
+      return { args }
+    },
     components: { ElmBlockQuote, ElmInlineText },
-    template: `<ElmBlockQuote><p><ElmInlineText text="${lorem}" /></p></ElmBlockQuote>`
+    template: `<ElmBlockQuote v-bind="args"><p><ElmInlineText text="${lorem}" /></p></ElmBlockQuote>`
   })
 }
