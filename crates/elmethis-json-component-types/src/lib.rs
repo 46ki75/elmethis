@@ -1,3 +1,5 @@
+mod r#macro;
+
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
@@ -88,6 +90,8 @@ pub struct TextProps {
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct TextSlots;
 
+crate::to_inline_component!(Text);
+
 // Icon # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct Icon {
@@ -111,6 +115,8 @@ pub struct IconProps {
 
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct IconSlots;
+
+crate::to_inline_component!(Icon);
 
 // Heading # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
@@ -175,6 +181,8 @@ pub struct HeadingSlots {
     pub default: Vec<InlineComponent>,
 }
 
+crate::to_block_component!(Heading);
+
 // Paragraph # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct Paragraph {
@@ -196,6 +204,8 @@ pub struct ParagraphSlots {
     pub default: Vec<InlineComponent>,
 }
 
+crate::to_block_component!(Paragraph);
+
 // ListItem # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct ListItem {
@@ -212,6 +222,8 @@ pub struct ListItemProps;
 pub struct ListItemSlots {
     pub default: Vec<InlineComponent>,
 }
+
+crate::to_block_component!(ListItem);
 
 // List # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
@@ -241,6 +253,8 @@ pub struct ListSlots {
     pub default: Vec<ListItem>,
 }
 
+crate::to_block_component!(List);
+
 // BlockQuote # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct BlockQuote {
@@ -260,6 +274,8 @@ pub struct BlockQuoteProps {
 pub struct BlockQuoteSlots {
     pub default: Vec<Component>,
 }
+
+crate::to_block_component!(BlockQuote);
 
 // Callout # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
@@ -292,6 +308,8 @@ pub struct CalloutSlots {
     pub default: Vec<Component>,
 }
 
+crate::to_block_component!(Callout);
+
 // Divider # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct Divider {
@@ -307,6 +325,8 @@ pub struct DividerProps;
 
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct DividerSlots;
+
+crate::to_block_component!(Divider);
 
 // Toggle # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
@@ -325,6 +345,8 @@ pub struct ToggleSlots {
     pub default: Vec<Component>,
     pub summary: Vec<InlineComponent>,
 }
+
+crate::to_block_component!(Toggle);
 
 // Bookmark # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
@@ -349,6 +371,8 @@ pub struct BookmarkProps {
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct BookmarkSlots;
 
+crate::to_block_component!(Bookmark);
+
 // File # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct File {
@@ -367,6 +391,8 @@ pub struct FileProps {
 
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct FileSlots;
+
+crate::to_block_component!(File);
 
 // Image # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
@@ -387,6 +413,8 @@ pub struct ImageProps {
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct ImageSlots;
 
+crate::to_block_component!(Image);
+
 // CodeBlock # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct CodeBlock {
@@ -406,6 +434,8 @@ pub struct CodeBlockSlots {
     pub default: Vec<InlineComponent>,
 }
 
+crate::to_block_component!(CodeBlock);
+
 // Katex # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct Katex {
@@ -422,6 +452,8 @@ pub struct KatexProps {
 
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct KatexSlots;
+
+crate::to_block_component!(Katex);
 
 // Table # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
@@ -449,6 +481,8 @@ pub struct TableSlots {
     pub body: Vec<TableRow>,
 }
 
+crate::to_block_component!(Table);
+
 // TableRow # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct TableRow {
@@ -465,6 +499,8 @@ pub struct TableRowProps;
 pub struct TableRowSlots {
     pub default: Vec<TableCell>,
 }
+
+crate::to_block_component!(TableRow);
 
 // TableCell # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
@@ -485,3 +521,5 @@ pub struct TableCellProps {
 pub struct TableCellSlots {
     pub default: Vec<InlineComponent>,
 }
+
+crate::to_block_component!(TableCell);
