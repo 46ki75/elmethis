@@ -1,18 +1,21 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[serde(untagged)]
 pub enum Component {
     InlineComponent(InlineComponent),
     BlockComponent(BlockComponent),
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[serde(untagged)]
 pub enum InlineComponent {
     Text(Text),
     Icon(Icon),
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[serde(untagged)]
 pub enum BlockComponent {
     Heading(Heading),
     Paragraph(Paragraph),
