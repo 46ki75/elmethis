@@ -7,7 +7,6 @@ import type { Component, ComponentMap } from '@elmethis/json-component-types'
 import { defineAsyncComponent, h, VNode } from 'vue'
 
 import { ElmBlockFallback } from '../..'
-import { languages } from 'prismjs'
 
 export interface ElmJsonComponentRendererProps {
   jsonComponents: Component[]
@@ -79,6 +78,31 @@ const AsyncElmBlockImage = defineAsyncComponent({
 
 const AsyncElmCodeBlock = defineAsyncComponent({
   loader: () => import('../code/ElmCodeBlock.vue'),
+  loadingComponent: ElmBlockFallback
+})
+
+const AsyncElmTable = defineAsyncComponent({
+  loader: () => import('../table/ElmTable.vue'),
+  loadingComponent: ElmBlockFallback
+})
+
+const AsyncElmTableHeader = defineAsyncComponent({
+  loader: () => import('../table/ElmTableHeader.vue'),
+  loadingComponent: ElmBlockFallback
+})
+
+const AsyncElmTableBody = defineAsyncComponent({
+  loader: () => import('../table/ElmTableBody.vue'),
+  loadingComponent: ElmBlockFallback
+})
+
+const AsyncElmTableRow = defineAsyncComponent({
+  loader: () => import('../table/ElmTableRow.vue'),
+  loadingComponent: ElmBlockFallback
+})
+
+const AsyncElmTableCell = defineAsyncComponent({
+  loader: () => import('../table/ElmTableCell.vue'),
   loadingComponent: ElmBlockFallback
 })
 
@@ -166,11 +190,20 @@ const defaultRenderFunctionMap = (
       ),
     Katex: ({ props }) =>
       h(AsyncElmKatex, { expression: props.expression, block: true }),
-    Table: (args) => h('span'),
-    TableHeader: (args) => h('span'),
-    TableBody: (args) => h('span'),
-    TableRow: (args) => h('span'),
-    TableCell: (args) => h('span')
+    Table: ({ slots }) =>
+      h(
+        AsyncElmTable,
+        {},
+        {
+          body: h(AsyncElmTableBody, {}, render(slots.body)),
+          header:
+            slots.header != null
+              ? h(AsyncElmTableHeader, {}, render(slots.header))
+              : undefined
+        }
+      ),
+    TableRow: ({ slots }) => h(AsyncElmTableRow, {}, render(slots.default)),
+    TableCell: ({ slots }) => h(AsyncElmTableCell, {}, render(slots.default))
   }
 }
 

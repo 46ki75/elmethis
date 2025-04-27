@@ -392,3 +392,122 @@ export const Katex: Story = {
     ]
   }
 }
+
+export const Table: Story = {
+  args: {
+    jsonComponents: [
+      {
+        type: 'Table',
+        inline: false,
+        slots: {
+          header: [
+            {
+              type: 'TableRow',
+              inline: false,
+              slots: {
+                default: [
+                  {
+                    type: 'TableCell',
+                    inline: false,
+                    slots: {
+                      default: [
+                        {
+                          type: 'Text',
+                          inline: true,
+                          props: { text: 'Column A' }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    type: 'TableCell',
+                    inline: false,
+                    slots: {
+                      default: [
+                        {
+                          type: 'Text',
+                          inline: true,
+                          props: { text: 'Column B' }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          body: [
+            {
+              type: 'TableRow',
+              inline: false,
+              slots: {
+                default: [
+                  {
+                    type: 'TableCell',
+                    inline: false,
+                    slots: {
+                      default: [
+                        {
+                          type: 'Text',
+                          inline: true,
+                          props: { text: 'Column A Row 1' }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    type: 'TableCell',
+                    inline: false,
+                    slots: {
+                      default: [
+                        {
+                          type: 'Text',
+                          inline: true,
+                          props: { text: 'Column B Row 1' }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              type: 'TableRow',
+              inline: false,
+              slots: {
+                default: [
+                  {
+                    type: 'TableCell',
+                    inline: false,
+                    slots: {
+                      default: [
+                        {
+                          type: 'Text',
+                          inline: true,
+                          props: { text: 'Column A Row 2' }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    type: 'TableCell',
+                    inline: false,
+                    slots: {
+                      default: [
+                        {
+                          type: 'Text',
+                          inline: true,
+                          props: { text: 'Column B Row 2' }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
