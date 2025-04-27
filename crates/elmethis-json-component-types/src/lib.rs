@@ -16,10 +16,24 @@ pub enum InlineComponent {
 pub enum BlockComponent {
     Heading(Heading),
     Paragraph(Paragraph),
+    ListItem(ListItem),
+    List(List),
+    BlockQuote(BlockQuote),
+    Callout(Callout),
+    Divider(Divider),
+    Toggle(Toggle),
+    Bookmark(Bookmark),
+    File(File),
+    Image(Image),
+    CodeBlock(CodeBlock),
+    Katex(Katex),
+    Table(Table),
+    TableRow(TableRow),
+    TableCell(TableCell),
 }
 
 // Text # -------------------------------------------------- #
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct Text {
     /// Always "Text".
     pub r#type: String,
@@ -32,7 +46,7 @@ pub struct Text {
     pub slots: Option<TextSlots>,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct TextProps {
     pub text: String,
 
@@ -70,11 +84,11 @@ pub struct TextProps {
     pub favicon: Option<String>,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct TextSlots;
 
 // Icon # -------------------------------------------------- #
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct Icon {
     /// Always "Icon".
     pub r#type: String,
@@ -89,7 +103,7 @@ pub struct Icon {
     pub slots: Option<IconSlots>,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct IconProps {
     pub src: String,
 
@@ -97,11 +111,11 @@ pub struct IconProps {
     pub alt: Option<String>,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct IconSlots;
 
 // Heading # -------------------------------------------------- #
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct Heading {
     /// Always "Heading".
     pub r#type: String,
@@ -114,10 +128,11 @@ pub struct Heading {
     pub slots: HeadingSlots,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 #[serde(rename_all = "lowercase")]
 #[serde(try_from = "u8", into = "u8")]
 pub enum HeadingLevel {
+    #[default]
     H1,
     H2,
     H3,
@@ -155,18 +170,18 @@ impl TryFrom<u8> for HeadingLevel {
     }
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct HeadingProps {
     pub level: HeadingLevel,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct HeadingSlots {
     pub default: Vec<InlineComponent>,
 }
 
 // Paragraph # -------------------------------------------------- #
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct Paragraph {
     /// Always "Paragraph".
     pub r#type: String,
@@ -181,16 +196,16 @@ pub struct Paragraph {
     pub slots: ParagraphSlots,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct ParagraphProps;
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct ParagraphSlots {
     pub default: Vec<InlineComponent>,
 }
 
 // ListItem # -------------------------------------------------- #
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct ListItem {
     pub r#type: String,
     pub inline: bool,
@@ -199,16 +214,16 @@ pub struct ListItem {
     pub slots: ListItemSlots,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct ListItemProps;
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct ListItemSlots {
     pub default: Vec<InlineComponent>,
 }
 
 // List # -------------------------------------------------- #
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct List {
     pub r#type: String,
     pub inline: bool,
@@ -217,26 +232,27 @@ pub struct List {
     pub slots: ListSlots,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct ListProps {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub list_style: Option<ListStyle>,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 #[serde(rename_all = "lowercase")]
 pub enum ListStyle {
+    #[default]
     Unordered,
     Ordered,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct ListSlots {
     pub default: Vec<ListItem>,
 }
 
 // BlockQuote # -------------------------------------------------- #
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct BlockQuote {
     pub r#type: String,
     pub inline: bool,
@@ -245,19 +261,19 @@ pub struct BlockQuote {
     pub slots: BlockQuoteSlots,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct BlockQuoteProps {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub cite: Option<String>,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct BlockQuoteSlots {
     pub default: Vec<Component>,
 }
 
 // Callout # -------------------------------------------------- #
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct Callout {
     pub r#type: String,
     pub inline: bool,
@@ -266,9 +282,10 @@ pub struct Callout {
     pub slots: CalloutSlots,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 #[serde(rename_all = "lowercase")]
 pub enum CalloutType {
+    #[default]
     Note,
     Tip,
     Important,
@@ -276,19 +293,19 @@ pub enum CalloutType {
     Caution,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct CalloutProps {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub r#type: Option<CalloutType>,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct CalloutSlots {
     pub default: Vec<Component>,
 }
 
 // Divider # -------------------------------------------------- #
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct Divider {
     pub r#type: String,
     pub inline: bool,
@@ -298,14 +315,14 @@ pub struct Divider {
     pub slots: Option<DividerSlots>,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct DividerProps;
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct DividerSlots;
 
 // Toggle # -------------------------------------------------- #
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct Toggle {
     pub r#type: String,
     pub inline: bool,
@@ -314,17 +331,17 @@ pub struct Toggle {
     pub slots: ToggleSlots,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct ToggleProps;
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct ToggleSlots {
     pub default: Vec<Component>,
     pub summary: Vec<InlineComponent>,
 }
 
 // Bookmark # -------------------------------------------------- #
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct Bookmark {
     pub r#type: String,
     pub inline: bool,
@@ -333,7 +350,7 @@ pub struct Bookmark {
     pub slots: Option<BookmarkSlots>,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct BookmarkProps {
     pub url: String,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -344,11 +361,11 @@ pub struct BookmarkProps {
     pub image: Option<String>,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct BookmarkSlots;
 
 // File # -------------------------------------------------- #
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct File {
     pub r#type: String,
     pub inline: bool,
@@ -357,18 +374,18 @@ pub struct File {
     pub slots: Option<FileSlots>,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct FileProps {
     pub src: String,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct FileSlots;
 
 // Image # -------------------------------------------------- #
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct Image {
     pub r#type: String,
     pub inline: bool,
@@ -377,18 +394,18 @@ pub struct Image {
     pub slots: Option<ImageSlots>,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct ImageProps {
     pub src: String,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub alt: Option<String>,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct ImageSlots;
 
 // CodeBlock # -------------------------------------------------- #
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct CodeBlock {
     pub r#type: String,
     pub inline: bool,
@@ -396,19 +413,19 @@ pub struct CodeBlock {
     pub slots: CodeBlockSlots,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct CodeBlockProps {
     pub code: String,
     pub language: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct CodeBlockSlots {
     pub default: Vec<InlineComponent>,
 }
 
 // Katex # -------------------------------------------------- #
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct Katex {
     pub r#type: String,
     pub inline: bool,
@@ -417,16 +434,16 @@ pub struct Katex {
     pub slots: Option<KatexSlots>,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct KatexProps {
     pub expression: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct KatexSlots;
 
 // Table # -------------------------------------------------- #
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct Table {
     pub r#type: String,
     pub inline: bool,
@@ -435,7 +452,7 @@ pub struct Table {
     pub slots: TableSlots,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct TableProps {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub has_column_header: Option<bool>,
@@ -445,7 +462,7 @@ pub struct TableProps {
     pub caption: Option<String>,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct TableSlots {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub header: Option<Vec<TableRow>>,
@@ -453,7 +470,7 @@ pub struct TableSlots {
 }
 
 // TableRow # -------------------------------------------------- #
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct TableRow {
     pub r#type: String,
     pub inline: bool,
@@ -462,16 +479,16 @@ pub struct TableRow {
     pub slots: TableRowSlots,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct TableRowProps;
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct TableRowSlots {
     pub default: Vec<TableCell>,
 }
 
 // TableCell # -------------------------------------------------- #
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct TableCell {
     pub r#type: String,
     pub inline: bool,
@@ -480,13 +497,13 @@ pub struct TableCell {
     pub slots: TableCellSlots,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct TableCellProps {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub is_header: Option<bool>,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
+#[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct TableCellSlots {
     pub default: Vec<InlineComponent>,
 }
