@@ -3,6 +3,7 @@ import ElmJsonComponentRenderer from './ElmJsonComponentRenderer.vue'
 import type { Component, InlineComponent } from '@elmethis/json-component-types'
 
 import file from '../../assets/vite.svg'
+import rustCode from '../code/seed/main.rs?raw'
 
 const meta: Meta<typeof ElmJsonComponentRenderer> = {
   title: 'Components/others/ElmJsonComponentRenderer',
@@ -272,6 +273,32 @@ export const Image: Story = {
         props: {
           src: 'https://images.unsplash.com/photo-1556983703-27576e5afa24?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb',
           alt: 'Example Image'
+        }
+      }
+    ]
+  }
+}
+
+export const CodeBlock: Story = {
+  args: {
+    jsonComponents: [
+      {
+        type: 'CodeBlock',
+        inline: false,
+        props: {
+          code: rustCode,
+          language: 'rust'
+        },
+        slots: {
+          default: [
+            {
+              type: 'Text',
+              inline: true,
+              props: {
+                text: "'src/main.rs'"
+              }
+            }
+          ]
         }
       }
     ]

@@ -7,6 +7,7 @@ import type { Component, ComponentMap } from '@elmethis/json-component-types'
 import { defineAsyncComponent, h, VNode } from 'vue'
 
 import { ElmBlockFallback } from '../..'
+import { languages } from 'prismjs'
 
 export interface ElmJsonComponentRendererProps {
   jsonComponents: Component[]
@@ -15,8 +16,7 @@ export interface ElmJsonComponentRendererProps {
 const props = withDefaults(defineProps<ElmJsonComponentRendererProps>(), {})
 
 const AsyncElmInlineText = defineAsyncComponent({
-  loader: () => import('../typography/ElmInlineText.vue'),
-  loadingComponent: ElmBlockFallback
+  loader: () => import('../typography/ElmInlineText.vue')
 })
 
 const AsyncElmKatex = defineAsyncComponent({
@@ -76,6 +76,11 @@ const AsyncElmFile = defineAsyncComponent({
 
 const AsyncElmBlockImage = defineAsyncComponent({
   loader: () => import('../media/ElmBlockImage.vue'),
+  loadingComponent: ElmBlockFallback
+})
+
+const AsyncElmCodeBlock = defineAsyncComponent({
+  loader: () => import('../code/ElmCodeBlock.vue'),
   loadingComponent: ElmBlockFallback
 })
 
@@ -155,7 +160,12 @@ const defaultRenderFunctionMap = (
         alt: props.alt,
         enableModal: true
       }),
-    CodeBlock: (args) => h('span'),
+    CodeBlock: ({ props, slots }) =>
+      h(
+        AsyncElmCodeBlock,
+        { code: props.code, language: props.language },
+        render(slots.default)
+      ),
     Katex: (args) => h('span'),
     Table: (args) => h('span'),
     TableHeader: (args) => h('span'),
