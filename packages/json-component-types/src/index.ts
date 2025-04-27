@@ -246,5 +246,5 @@ export interface TableCell extends BlockComponentBase<'TableCell'> {
   type: 'TableCell'
   inline: false
   props?: { isHeader?: boolean }
-  slots: { default: InlineComponent }
+  slots: { default: InlineComponent[] }
 }
