@@ -8,14 +8,14 @@ pub enum Component {
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
-#[serde(untagged)]
+#[serde(tag = "type")]
 pub enum InlineComponent {
     Text(Text),
     Icon(Icon),
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq)]
-#[serde(untagged)]
+#[serde(tag = "type")]
 pub enum BlockComponent {
     Heading(Heading),
     Paragraph(Paragraph),
@@ -38,8 +38,6 @@ pub enum BlockComponent {
 // Text # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct Text {
-    /// Always "Text".
-    pub r#type: String,
     /// Always `true`
     pub inline: bool,
 
@@ -93,9 +91,6 @@ pub struct TextSlots;
 // Icon # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct Icon {
-    /// Always "Icon".
-    pub r#type: String,
-
     /// Always `true`
     pub inline: bool,
 
@@ -120,9 +115,6 @@ pub struct IconSlots;
 // Heading # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct Heading {
-    /// Always "Heading".
-    pub r#type: String,
-
     /// Always `false`
     pub inline: bool,
 
@@ -186,9 +178,6 @@ pub struct HeadingSlots {
 // Paragraph # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct Paragraph {
-    /// Always "Paragraph".
-    pub r#type: String,
-
     /// Always `false`
     pub inline: bool,
 
@@ -210,7 +199,6 @@ pub struct ParagraphSlots {
 // ListItem # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct ListItem {
-    pub r#type: String,
     pub inline: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub props: Option<ListItemProps>,
@@ -228,7 +216,6 @@ pub struct ListItemSlots {
 // List # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct List {
-    pub r#type: String,
     pub inline: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub props: Option<ListProps>,
@@ -257,7 +244,6 @@ pub struct ListSlots {
 // BlockQuote # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct BlockQuote {
-    pub r#type: String,
     pub inline: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub props: Option<BlockQuoteProps>,
@@ -278,7 +264,6 @@ pub struct BlockQuoteSlots {
 // Callout # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct Callout {
-    pub r#type: String,
     pub inline: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub props: Option<CalloutProps>,
@@ -310,7 +295,6 @@ pub struct CalloutSlots {
 // Divider # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct Divider {
-    pub r#type: String,
     pub inline: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub props: Option<DividerProps>,
@@ -327,7 +311,6 @@ pub struct DividerSlots;
 // Toggle # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct Toggle {
-    pub r#type: String,
     pub inline: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub props: Option<ToggleProps>,
@@ -346,7 +329,6 @@ pub struct ToggleSlots {
 // Bookmark # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct Bookmark {
-    pub r#type: String,
     pub inline: bool,
     pub props: BookmarkProps,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -370,7 +352,6 @@ pub struct BookmarkSlots;
 // File # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct File {
-    pub r#type: String,
     pub inline: bool,
     pub props: FileProps,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -390,7 +371,6 @@ pub struct FileSlots;
 // Image # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct Image {
-    pub r#type: String,
     pub inline: bool,
     pub props: ImageProps,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -410,7 +390,6 @@ pub struct ImageSlots;
 // CodeBlock # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct CodeBlock {
-    pub r#type: String,
     pub inline: bool,
     pub props: CodeBlockProps,
     pub slots: CodeBlockSlots,
@@ -430,7 +409,6 @@ pub struct CodeBlockSlots {
 // Katex # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct Katex {
-    pub r#type: String,
     pub inline: bool,
     pub props: KatexProps,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -448,7 +426,6 @@ pub struct KatexSlots;
 // Table # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct Table {
-    pub r#type: String,
     pub inline: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub props: Option<TableProps>,
@@ -475,7 +452,6 @@ pub struct TableSlots {
 // TableRow # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct TableRow {
-    pub r#type: String,
     pub inline: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub props: Option<TableRowProps>,
@@ -493,7 +469,6 @@ pub struct TableRowSlots {
 // TableCell # -------------------------------------------------- #
 #[derive(Debug, Deserialize, Serialize, Clone, PartialEq, Eq, Default)]
 pub struct TableCell {
-    pub r#type: String,
     pub inline: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub props: Option<TableCellProps>,
