@@ -28,3 +28,13 @@ fn serialize() {
 
     println!("{}", serde_json::to_string(&paragraph).unwrap());
 }
+
+#[test]
+fn deserialize() {
+    let slice = include_bytes!("./seed.json").as_slice();
+
+    let results =
+        serde_json::from_slice::<Vec<elmethis_json_component_types::Component>>(slice).unwrap();
+
+    println!("{}", serde_json::to_string(&results).unwrap());
+}
