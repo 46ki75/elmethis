@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import ElmJsonComponentRenderer from './ElmJsonComponentRenderer.vue'
-import type { Component, InlineComponent } from '@elmethis/json-component-types'
+import type { Component, InlineComponent } from 'jarkup-ts'
 
 import file from '../../assets/vite.svg'
 import rustCode from '../code/seed/main.rs?raw'
