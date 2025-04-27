@@ -59,6 +59,11 @@ const AsyncElmDivider = defineAsyncComponent({
   loadingComponent: ElmBlockFallback
 })
 
+const AsyncElmToggle = defineAsyncComponent({
+  loader: () => import('../containments/ElmToggle.vue'),
+  loadingComponent: ElmBlockFallback
+})
+
 type RenderFunctionMap<R> = {
   [K in keyof ComponentMap]: (args: ComponentMap[K]) => R
 }
@@ -112,7 +117,15 @@ const defaultRenderFunctionMap = (
     Callout: ({ props, slots }) =>
       h(AsyncElmCallout, { type: props?.type }, render(slots.default)),
     Divider: ({}) => h(AsyncElmDivider, {}),
-    Toggle: (args) => h('span'),
+    Toggle: ({ slots }) =>
+      h(
+        AsyncElmToggle,
+        {},
+        {
+          default: render(slots.default),
+          summary: render(slots.summary)
+        }
+      ),
     Bookmark: (args) => h('span'),
     File: (args) => h('span'),
     Image: (args) => h('span'),

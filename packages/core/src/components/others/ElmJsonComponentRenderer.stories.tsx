@@ -164,9 +164,17 @@ export const Callout: Story = {
         slots: {
           default: [
             {
-              type: 'Text',
-              inline: true,
-              props: { text: LOREM_IPSUM }
+              type: 'Paragraph',
+              inline: false,
+              slots: {
+                default: [
+                  {
+                    type: 'Text',
+                    inline: true,
+                    props: { text: LOREM_IPSUM }
+                  }
+                ]
+              }
             }
           ]
         }
@@ -181,6 +189,41 @@ export const Divider: Story = {
       {
         type: 'Divider',
         inline: false
+      }
+    ]
+  }
+}
+
+export const Toggle: Story = {
+  args: {
+    jsonComponents: [
+      {
+        type: 'Toggle',
+        inline: false,
+        slots: {
+          default: [
+            {
+              type: 'Paragraph',
+              inline: false,
+              slots: {
+                default: [
+                  {
+                    type: 'Text',
+                    inline: true,
+                    props: { text: LOREM_IPSUM }
+                  }
+                ]
+              }
+            }
+          ],
+          summary: [
+            {
+              type: 'Text',
+              inline: true,
+              props: { text: 'Hello, world !' }
+            }
+          ]
+        }
       }
     ]
   }
