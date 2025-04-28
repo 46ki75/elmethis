@@ -367,6 +367,10 @@ export const Katex: Story = {
   },
 };
 
+const COLUMNS: readonly string[] = ["A", "B", "C", "D", "E", "F"] as const;
+
+const ROW_COUNT = 10;
+
 export const Table: Story = {
   args: {
     jsonComponents: [
@@ -382,93 +386,36 @@ export const Table: Story = {
             {
               type: "TableRow",
               slots: {
-                default: [
-                  {
-                    type: "TableCell",
-                    slots: {
-                      default: [
-                        {
-                          type: "Text",
-                          props: { text: "Column A" },
-                        },
-                      ],
-                    },
+                default: COLUMNS.map((text) => ({
+                  type: "TableCell",
+                  slots: {
+                    default: [
+                      {
+                        type: "Text",
+                        props: { text: `Column ${text}` },
+                      },
+                    ],
                   },
-                  {
-                    type: "TableCell",
-                    slots: {
-                      default: [
-                        {
-                          type: "Text",
-                          props: { text: "Column B" },
-                        },
-                      ],
-                    },
-                  },
-                ],
+                })),
               },
             },
           ],
-          body: [
-            {
-              type: "TableRow",
-              slots: {
-                default: [
-                  {
-                    type: "TableCell",
-                    slots: {
-                      default: [
-                        {
-                          type: "Text",
-                          props: { text: "Column A Row 1" },
-                        },
-                      ],
+          body: Array.from({ length: ROW_COUNT }, (_, rowIndex) => ({
+            type: "TableRow",
+            slots: {
+              default: COLUMNS.map((col) => ({
+                type: "TableCell",
+                slots: {
+                  default: [
+                    {
+                      type: "Text",
+                      props: { text: `Column ${col} Row ${rowIndex + 1}` },
                     },
-                  },
-                  {
-                    type: "TableCell",
-                    slots: {
-                      default: [
-                        {
-                          type: "Text",
-                          props: { text: "Column B Row 1" },
-                        },
-                      ],
-                    },
-                  },
-                ],
-              },
+                  ],
+                },
+              })),
             },
-            {
-              type: "TableRow",
-              slots: {
-                default: [
-                  {
-                    type: "TableCell",
-                    slots: {
-                      default: [
-                        {
-                          type: "Text",
-                          props: { text: "Column A Row 2" },
-                        },
-                      ],
-                    },
-                  },
-                  {
-                    type: "TableCell",
-                    slots: {
-                      default: [
-                        {
-                          type: "Text",
-                          props: { text: "Column B Row 2" },
-                        },
-                      ],
-                    },
-                  },
-                ],
-              },
-            },
-          ],
+          })),
         },
       },
     ],
