@@ -202,7 +202,7 @@ const defaultRenderFunctionMap = (
     Table: ({ props, slots }) =>
       h(
         AsyncElmTable,
-        { caption: props?.caption },
+        { caption: props?.caption, hasRowHeader: props?.hasRowHeader },
         {
           body: h(AsyncElmTableBody, {}, render(slots.body)),
           header:
