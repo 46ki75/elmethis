@@ -3,7 +3,7 @@
     ref="target"
     :class="$style.blockquote"
     :style="{
-      '--opacity': targetIsVisible ? 1 : 0
+      '--opacity': targetIsVisible ? 1 : 0,
     }"
     :cite="cite"
   >
@@ -36,22 +36,22 @@
 </template>
 
 <script setup lang="ts">
-import { useIntersectionObserver } from '@vueuse/core'
-import { ref } from 'vue'
-import { mdiFormatQuoteOpen, mdiFormatQuoteClose } from '@mdi/js'
+import { useIntersectionObserver } from "@vueuse/core";
+import { ref } from "vue";
+import { mdiFormatQuoteOpen, mdiFormatQuoteClose } from "@mdi/js";
 
 export interface ElmBlockQuoteProps {
-  cite?: string
+  cite?: string;
 }
 
-withDefaults(defineProps<ElmBlockQuoteProps>(), {})
+withDefaults(defineProps<ElmBlockQuoteProps>(), {});
 
-const target = ref(null)
-const targetIsVisible = ref(false)
+const target = ref(null);
+const targetIsVisible = ref(false);
 
 useIntersectionObserver(target, ([{ isIntersecting }], _) => {
-  targetIsVisible.value = isIntersecting
-})
+  targetIsVisible.value = isIntersecting;
+});
 </script>
 
 <style module lang="scss">
@@ -67,7 +67,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 
   border-left: 4px solid rgba(black, 0.2);
 
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     border-left-color: rgba(white, 0.2);
   }
 }

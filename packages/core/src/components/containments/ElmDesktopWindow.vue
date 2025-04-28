@@ -10,19 +10,19 @@
 </template>
 
 <script setup lang="ts">
-import type { Property } from 'csstype'
+import type { Property } from "csstype";
 
 export interface ElmDesktopWindowProps {
   /**
    * The minimum height of the window.
    * @default '6rem'
    */
-  minHeight?: Property.MinHeight
+  minHeight?: Property.MinHeight;
 }
 
 withDefaults(defineProps<ElmDesktopWindowProps>(), {
-  minHeight: '6rem'
-})
+  minHeight: "6rem",
+});
 </script>
 
 <style module lang="scss">
@@ -32,7 +32,7 @@ withDefaults(defineProps<ElmDesktopWindowProps>(), {
   transition: background-color 400ms;
   box-shadow: 0 0 0.25rem rgba(black, 0.15);
   background-color: rgba(black, 0.05);
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     box-shadow: 0 0 0.25rem rgba(black, 0.35);
     background-color: rgba(white, 0.05);
   }

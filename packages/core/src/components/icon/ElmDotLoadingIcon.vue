@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Property } from 'csstype'
+import type { Property } from "csstype";
 
 export interface ElmDotLoadingIconProps {
   /**
@@ -19,18 +19,18 @@ export interface ElmDotLoadingIconProps {
    *
    * e.g.) `'red'`, `'#ff0000'`, `'rgba(255, 0, 0, 0.5)'`
    */
-  color?: Property.BackgroundColor
+  color?: Property.BackgroundColor;
 
   /**
    * Specifies the size of the dot.
    */
-  size?: Property.Width<string | number>
+  size?: Property.Width<string | number>;
 }
 
 withDefaults(defineProps<ElmDotLoadingIconProps>(), {
   color: undefined,
-  size: '64px'
-})
+  size: "64px",
+});
 </script>
 
 <style module lang="scss">
@@ -67,7 +67,7 @@ withDefaults(defineProps<ElmDotLoadingIconProps>(), {
     transition: background-color 400ms;
     background-color: rgba(0, 0, 0, 0.7);
 
-    [data-theme='dark'] & {
+    [data-theme="dark"] & {
       background-color: rgba(255, 255, 255, 0.7);
     }
 

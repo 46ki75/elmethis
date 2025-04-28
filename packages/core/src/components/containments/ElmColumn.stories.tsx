@@ -1,16 +1,16 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
-import ElmColumnList from './ElmColumnList.vue'
-import ElmColumn from './ElmColumn.vue'
+import type { Meta, StoryObj } from "@storybook/vue3";
+import ElmColumnList from "./ElmColumnList.vue";
+import ElmColumn from "./ElmColumn.vue";
 
 const meta: Meta<typeof ElmColumnList> = {
-  title: 'Components/Containments/ElmColumnList',
+  title: "Components/Containments/ElmColumnList",
   component: ElmColumnList,
-  tags: ['autodocs'],
-  args: {}
-}
+  tags: ["autodocs"],
+  args: {},
+};
 
-export default meta
-type Story = StoryObj<typeof meta>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   render: () => ({
@@ -27,6 +27,6 @@ export const Primary: Story = {
           <p>Column 3</p>
         </ElmColumn>
       </ElmColumnList>
-    `
-  })
-}
+    `,
+  }),
+};

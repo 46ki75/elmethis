@@ -3,7 +3,7 @@
     :class="$style.container"
     ref="target"
     :style="{
-      '--opacity': targetIsVisible ? 1 : 0
+      '--opacity': targetIsVisible ? 1 : 0,
     }"
   >
     <template v-for="(link, index) in links">
@@ -18,14 +18,14 @@
                 : 'mdi:folder-open-outline'
           "
           :style="{
-            '--delay': `${index * 100}ms`
+            '--delay': `${index * 100}ms`,
           }"
         />
         <ElmInlineText
           :text="link.text"
           :class="$style.fade"
           :style="{
-            '--delay': `${index * 100 + 50}ms`
+            '--delay': `${index * 100 + 50}ms`,
           }"
         />
       </div>
@@ -35,7 +35,7 @@
         v-if="links.length !== index + 1"
         :class="[$style.chevron, $style.fade]"
         :style="{
-          '--delay': `${index * 100 + 100}ms`
+          '--delay': `${index * 100 + 100}ms`,
         }"
       />
     </template>
@@ -43,10 +43,10 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
-import ElmInlineText from '../typography/ElmInlineText.vue'
-import { ref } from 'vue'
-import { useIntersectionObserver } from '@vueuse/core'
+import { Icon } from "@iconify/vue";
+import ElmInlineText from "../typography/ElmInlineText.vue";
+import { ref } from "vue";
+import { useIntersectionObserver } from "@vueuse/core";
 
 export interface ElmBreadcrumbProps {
   /**
@@ -56,23 +56,23 @@ export interface ElmBreadcrumbProps {
     /**
      * The text to display.
      */
-    text: string
+    text: string;
 
     /**
      * The action to perform when the link is clicked.
      */
-    onClick?: () => void
-  }>
+    onClick?: () => void;
+  }>;
 }
 
-withDefaults(defineProps<ElmBreadcrumbProps>(), {})
+withDefaults(defineProps<ElmBreadcrumbProps>(), {});
 
-const target = ref(null)
-const targetIsVisible = ref(false)
+const target = ref(null);
+const targetIsVisible = ref(false);
 
 useIntersectionObserver(target, ([{ isIntersecting }], _) => {
-  targetIsVisible.value = isIntersecting
-})
+  targetIsVisible.value = isIntersecting;
+});
 </script>
 
 <style module lang="scss">
@@ -87,7 +87,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
     width: 20px;
     height: 20px;
     color: rgba(black, 0.7);
-    [data-theme='dark'] & {
+    [data-theme="dark"] & {
       color: rgba(white, 0.7);
     }
   }

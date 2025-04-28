@@ -39,15 +39,15 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
-import ElmInlineText from '../typography/ElmInlineText.vue'
+import { Icon } from "@iconify/vue";
+import ElmInlineText from "../typography/ElmInlineText.vue";
 
 export interface ElmStatusMessageProps {
-  status: 'success' | 'error' | 'warning' | 'pending'
-  message: string
+  status: "success" | "error" | "warning" | "pending";
+  message: string;
 }
 
-withDefaults(defineProps<ElmStatusMessageProps>(), {})
+withDefaults(defineProps<ElmStatusMessageProps>(), {});
 </script>
 
 <style module lang="scss">

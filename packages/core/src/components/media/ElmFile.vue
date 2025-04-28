@@ -22,8 +22,8 @@
               src,
               name ??
                 getLastPathSegmentWithoutQueryOrHash(src) ??
-                'unknown file'
-            )
+                'unknown file',
+            );
           }
         "
       />
@@ -32,58 +32,58 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
-import ElmInlineText from '../typography/ElmInlineText.vue'
-import type { Property } from 'csstype'
+import { Icon } from "@iconify/vue";
+import ElmInlineText from "../typography/ElmInlineText.vue";
+import type { Property } from "csstype";
 
 export interface ElmFileProps {
   /**
    * The name of the file.
    */
-  name?: string
+  name?: string;
 
   /**
    * The source of the file.
    */
-  src: string
+  src: string;
 
   /**
    * The size of the file in bytes.
    */
-  filesize?: string
+  filesize?: string;
 
   /**
    * The margin of the file.
    */
-  margin?: Property.MarginBlock
+  margin?: Property.MarginBlock;
 }
 
-withDefaults(defineProps<ElmFileProps>(), {})
+withDefaults(defineProps<ElmFileProps>(), {});
 
 function getLastPathSegmentWithoutQueryOrHash(
-  urlString: string
+  urlString: string,
 ): string | null {
-  const cleanedUrl = urlString.split(/[?#]/)[0]
-  const pathSegments = cleanedUrl.split('/').filter(Boolean)
-  return pathSegments.length > 0 ? pathSegments[pathSegments.length - 1] : null
+  const cleanedUrl = urlString.split(/[?#]/)[0];
+  const pathSegments = cleanedUrl.split("/").filter(Boolean);
+  return pathSegments.length > 0 ? pathSegments[pathSegments.length - 1] : null;
 }
 
 async function downloadFile(url: string, filename: string) {
-  let link
+  let link;
   try {
-    const response = await fetch(url)
-    if (!response.ok) throw new Error('Failed to download file')
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Failed to download file");
 
-    const blob = await response.blob()
+    const blob = await response.blob();
 
-    link = document.createElement('a')
-    link.href = URL.createObjectURL(blob)
-    link.download = filename
-    link.click()
+    link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
   } catch (error) {
-    console.error('ERROR:', error)
+    console.error("ERROR:", error);
   } finally {
-    if (link) URL.revokeObjectURL(link.href)
+    if (link) URL.revokeObjectURL(link.href);
   }
 }
 </script>
@@ -101,7 +101,7 @@ async function downloadFile(url: string, filename: string) {
   align-items: center;
 
   background-color: rgba(white, 0.2);
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     background-color: rgba(black, 0.2);
   }
 
@@ -116,7 +116,7 @@ async function downloadFile(url: string, filename: string) {
       height: 20px;
       transition: color 200ms;
       color: rgba(black, 0.8);
-      [data-theme='dark'] & {
+      [data-theme="dark"] & {
         color: rgba(white, 0.8);
       }
     }
@@ -137,13 +137,13 @@ async function downloadFile(url: string, filename: string) {
         color 200ms,
         background-color 200ms;
       color: rgba(black, 0.8);
-      [data-theme='dark'] & {
+      [data-theme="dark"] & {
         color: rgba(white, 0.8);
       }
 
       &:hover {
         background-color: rgba(black, 0.1);
-        [data-theme='dark'] & {
+        [data-theme="dark"] & {
           background-color: rgba(white, 0.1);
         }
       }

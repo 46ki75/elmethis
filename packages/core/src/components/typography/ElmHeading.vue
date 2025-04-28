@@ -7,7 +7,7 @@
     :style="{
       '--font-size': size ?? `${SIZE_MAP[level]}rem`,
       '--scale': targetIsVisible ? 1 : 0,
-      '--opacity': targetIsVisible ? 1 : 0
+      '--opacity': targetIsVisible ? 1 : 0,
     }"
   >
     <component :is="() => renderSlots()" />
@@ -26,11 +26,11 @@
 </template>
 
 <script setup lang="ts">
-import type { Property } from 'csstype'
-import { h, ref, defineSlots, VNode } from 'vue'
-import { useIntersectionObserver } from '@vueuse/core'
-import { kebabCase } from 'lodash-es'
-import ElmFragmentIdentifier from './ElmFragmentIdentifier.vue'
+import type { Property } from "csstype";
+import { h, ref, defineSlots, VNode } from "vue";
+import { useIntersectionObserver } from "@vueuse/core";
+import { kebabCase } from "lodash-es";
+import ElmFragmentIdentifier from "./ElmFragmentIdentifier.vue";
 
 const SIZE_MAP: Record<1 | 2 | 3 | 4 | 5 | 6, number> = Object.freeze({
   1: 1.5,
@@ -38,60 +38,60 @@ const SIZE_MAP: Record<1 | 2 | 3 | 4 | 5 | 6, number> = Object.freeze({
   3: 1.3,
   4: 1.2,
   5: 1.15,
-  6: 1.1
-})
+  6: 1.1,
+});
 
 export interface ElmHeadingProps {
   /**
    * Text to display
    */
-  text?: string
+  text?: string;
 
   /**
    * Font size of the text. Default is `'1.5rem'`.
    */
-  size?: Property.FontSize
+  size?: Property.FontSize;
 
   /**
    * ID of the heading element.
    * Default is kebab-cased `text`. (using lodash)
    */
-  id?: string
+  id?: string;
 
   /**
    * Whether to disable fragment identifier.
    * Default is `false`.
    */
-  disableFragmentIdentifier?: boolean
+  disableFragmentIdentifier?: boolean;
 
-  level?: 1 | 2 | 3 | 4 | 5 | 6
+  level?: 1 | 2 | 3 | 4 | 5 | 6;
 }
 
 const props = withDefaults(defineProps<ElmHeadingProps>(), {
   disableFragmentIdentifier: false,
-  level: 1
-})
+  level: 1,
+});
 
-const target = ref(null)
-const targetIsVisible = ref(false)
+const target = ref(null);
+const targetIsVisible = ref(false);
 
 useIntersectionObserver(target, ([{ isIntersecting }], _) => {
-  targetIsVisible.value = isIntersecting
-})
+  targetIsVisible.value = isIntersecting;
+});
 
 const slots = defineSlots<{
-  default?: () => VNode[]
-}>()
+  default?: () => VNode[];
+}>();
 
 const renderSlots = (): VNode | VNode[] => {
   if (props.text != null) {
-    return h('span', {}, props.text)
+    return h("span", {}, props.text);
   } else if (slots.default != null) {
-    return slots.default()
+    return slots.default();
   } else {
-    return h('span')
+    return h("span");
   }
-}
+};
 </script>
 
 <style module lang="scss">
@@ -114,7 +114,7 @@ const renderSlots = (): VNode | VNode[] => {
     background-color: rgba(black, 0.8);
   }
 
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     color: rgba(white, 0.8);
 
     &::selection {
@@ -129,7 +129,7 @@ const renderSlots = (): VNode | VNode[] => {
 
   &::after {
     position: absolute;
-    content: '';
+    content: "";
     bottom: -10px;
     left: 0;
     width: 100%;
@@ -139,14 +139,14 @@ const renderSlots = (): VNode | VNode[] => {
     transition: transform 800ms;
     transform: scaleX(var(--scale));
 
-    [data-theme='dark'] & {
+    [data-theme="dark"] & {
       background-color: rgba(255, 255, 255, 0.5);
     }
   }
 
   &::before {
     position: absolute;
-    content: '';
+    content: "";
     bottom: -12px;
     left: 45%;
     width: 10%;
@@ -157,7 +157,7 @@ const renderSlots = (): VNode | VNode[] => {
     transform: scaleY(var(--scale));
     transform-origin: top;
 
-    [data-theme='dark'] & {
+    [data-theme="dark"] & {
       background-color: rgba(255, 255, 255, 0.6);
     }
   }
@@ -166,7 +166,7 @@ const renderSlots = (): VNode | VNode[] => {
 .h2 {
   &::after {
     position: absolute;
-    content: '';
+    content: "";
     right: 2px;
     bottom: -4px;
     width: 6px;
@@ -175,14 +175,14 @@ const renderSlots = (): VNode | VNode[] => {
     transform: skewX(-25deg);
 
     background-color: rgba(0, 0, 0, 0.8);
-    [data-theme='dark'] & {
+    [data-theme="dark"] & {
       background-color: rgba(255, 255, 255, 0.8);
     }
   }
 
   &::before {
     position: absolute;
-    content: '';
+    content: "";
     right: 10px;
     bottom: -4px;
     width: 6px;
@@ -191,7 +191,7 @@ const renderSlots = (): VNode | VNode[] => {
     transform: skewX(-25deg);
 
     background-color: rgba(0, 0, 0, 0.8);
-    [data-theme='dark'] & {
+    [data-theme="dark"] & {
       background-color: rgba(255, 255, 255, 0.8);
     }
   }
@@ -199,7 +199,7 @@ const renderSlots = (): VNode | VNode[] => {
   &__underline {
     overflow: hidden;
     position: absolute;
-    content: '';
+    content: "";
     bottom: -6px;
     left: 0;
     width: 100%;
@@ -210,7 +210,7 @@ const renderSlots = (): VNode | VNode[] => {
     transform: scaleX(var(--scale));
     transform-origin: left;
 
-    [data-theme='dark'] & {
+    [data-theme="dark"] & {
       background-color: rgba(255, 255, 255, 0.5);
     }
   }
@@ -222,14 +222,14 @@ const renderSlots = (): VNode | VNode[] => {
 
   &::after {
     position: absolute;
-    content: '';
+    content: "";
     width: 3px;
     height: 50%;
     top: 25%;
     left: 0;
 
     background-color: rgba(0, 0, 0, 0.8);
-    [data-theme='dark'] & {
+    [data-theme="dark"] & {
       background-color: rgba(255, 255, 255, 0.8);
     }
   }

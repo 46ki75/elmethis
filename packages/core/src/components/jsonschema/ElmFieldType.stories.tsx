@@ -1,41 +1,41 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
-import ElmFieldType from './ElmFieldType.vue'
+import type { Meta, StoryObj } from "@storybook/vue3";
+import ElmFieldType from "./ElmFieldType.vue";
 
 const meta: Meta<typeof ElmFieldType> = {
-  title: 'Components/JSONSchema/ElmFieldType',
+  title: "Components/JSONSchema/ElmFieldType",
   component: ElmFieldType,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   args: {},
   argTypes: {
     type: {
       options: [
-        'object',
-        'array',
-        'string',
-        'number',
-        'boolean',
-        'integer',
-        'null'
+        "object",
+        "array",
+        "string",
+        "number",
+        "boolean",
+        "integer",
+        "null",
       ],
-      control: { type: 'radio' }
-    }
-  }
-}
+      control: { type: "radio" },
+    },
+  },
+};
 
-export default meta
-type Story = StoryObj<typeof meta>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
-    type: 'object',
-    name: 'user'
-  }
-}
+    type: "object",
+    name: "user",
+  },
+};
 
 export const Maybe: Story = {
   args: {
-    type: 'object',
-    name: 'user',
-    nullable: true
-  }
-}
+    type: "object",
+    name: "user",
+    nullable: true,
+  },
+};

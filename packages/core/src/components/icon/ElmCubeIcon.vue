@@ -3,7 +3,7 @@
     :class="$style.cube"
     :style="{
       width: `${size}px`,
-      height: `${size}px`
+      height: `${size}px`,
     }"
   >
     <div
@@ -11,36 +11,36 @@
       :key="face.name"
       :class="$style.face"
       :style="{
-        transform: `${face.rotate} ${commonTranslateZ}`
+        transform: `${face.rotate} ${commonTranslateZ}`,
       }"
     ></div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed } from "vue";
 
 export interface ElmCubeIconProps {
   /**
    * The size of the cube [px]
    */
-  size?: number
+  size?: number;
 }
 
 const props = withDefaults(defineProps<ElmCubeIconProps>(), {
-  size: 128
-})
+  size: 128,
+});
 
-const commonTranslateZ = computed(() => `translateZ(${props.size / 2}px)`)
+const commonTranslateZ = computed(() => `translateZ(${props.size / 2}px)`);
 
 const faces = [
-  { name: 'front', rotate: '' },
-  { name: 'back', rotate: 'rotateY(180deg)' },
-  { name: 'left', rotate: 'rotateY(-90deg)' },
-  { name: 'right', rotate: 'rotateY(90deg)' },
-  { name: 'top', rotate: 'rotateX(90deg)' },
-  { name: 'bottom', rotate: 'rotateX(-90deg)' }
-]
+  { name: "front", rotate: "" },
+  { name: "back", rotate: "rotateY(180deg)" },
+  { name: "left", rotate: "rotateY(-90deg)" },
+  { name: "right", rotate: "rotateY(90deg)" },
+  { name: "top", rotate: "rotateX(90deg)" },
+  { name: "bottom", rotate: "rotateX(-90deg)" },
+];
 </script>
 
 <style module lang="scss">
@@ -69,7 +69,7 @@ const faces = [
   border-width: 1px;
   border-color: rgba(0, 0, 0, 0.7);
   background-color: rgba(255, 255, 255, 0.2);
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     border-color: rgba(255, 255, 255, 0.7);
     background-color: rgba(0, 0, 0, 0.2);
   }

@@ -1,27 +1,27 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
-import ElmChildContainer from './ElmChildContainer.vue'
+import type { Meta, StoryObj } from "@storybook/vue3";
+import ElmChildContainer from "./ElmChildContainer.vue";
 
 const meta: Meta<typeof ElmChildContainer> = {
-  title: 'Components/JSONSchema/ElmChildContainer',
+  title: "Components/JSONSchema/ElmChildContainer",
   component: ElmChildContainer,
-  tags: ['autodocs'],
-  args: {}
-}
+  tags: ["autodocs"],
+  args: {},
+};
 
-export default meta
-type Story = StoryObj<typeof meta>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
-    icon: 'uil:setting',
-    text: 'property'
+    icon: "uil:setting",
+    text: "property",
   },
   render: (args) => ({
     setup() {
-      return { args }
+      return { args };
     },
     components: { ElmChildContainer },
     template:
-      '<ElmChildContainer v-bind="args">SOME CONTENTS</ElmChildContainer>'
-  })
-}
+      '<ElmChildContainer v-bind="args">SOME CONTENTS</ElmChildContainer>',
+  }),
+};

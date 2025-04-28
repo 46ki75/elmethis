@@ -1,14 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
-import ElmBlockFallback from './ElmBlockFallback.vue'
+import type { Meta, StoryObj } from "@storybook/vue3";
+import ElmBlockFallback from "./ElmBlockFallback.vue";
 
 const meta: Meta<typeof ElmBlockFallback> = {
-  title: 'Components/Fallback/ElmBlockFallback',
+  title: "Components/Fallback/ElmBlockFallback",
   component: ElmBlockFallback,
-  tags: ['autodocs'],
-  args: {}
-}
+  tags: ["autodocs"],
+  args: {},
+};
 
-export default meta
-type Story = StoryObj<typeof meta>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {}
+export const Primary: Story = {};

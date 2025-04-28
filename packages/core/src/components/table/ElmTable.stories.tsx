@@ -1,33 +1,33 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
-import ElmTable from './ElmTable.vue'
-import ElmTableHeader from './ElmTableHeader.vue'
-import ElmTableBody from './ElmTableBody.vue'
-import ElmTableRow from './ElmTableRow.vue'
-import ElmTableCell from './ElmTableCell.vue'
+import type { Meta, StoryObj } from "@storybook/vue3";
+import ElmTable from "./ElmTable.vue";
+import ElmTableHeader from "./ElmTableHeader.vue";
+import ElmTableBody from "./ElmTableBody.vue";
+import ElmTableRow from "./ElmTableRow.vue";
+import ElmTableCell from "./ElmTableCell.vue";
 
 const meta: Meta<typeof ElmTable> = {
-  title: 'Components/Table/ElmTable',
+  title: "Components/Table/ElmTable",
   component: ElmTable,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   args: {
-    caption: 'Example Table'
-  }
-}
+    caption: "Example Table",
+  },
+};
 
-export default meta
-type Story = StoryObj<typeof meta>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   render: (args) => ({
     setup() {
-      return { args }
+      return { args };
     },
     components: {
       ElmTable,
       ElmTableHeader,
       ElmTableBody,
       ElmTableRow,
-      ElmTableCell
+      ElmTableCell,
     },
     template: `
     <ElmTable v-bind="args">
@@ -77,6 +77,6 @@ export const Primary: Story = {
       </template>
 
     </ElmTable>
-    `
-  })
-}
+    `,
+  }),
+};

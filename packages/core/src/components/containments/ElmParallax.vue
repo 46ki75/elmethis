@@ -4,7 +4,7 @@
     :style="{
       backgroundImage: `url(${imageUrl1})`,
       transform: `scale(1.2) translateY(${y / 400}%)`,
-      transformOrigin: 'bottom'
+      transformOrigin: 'bottom',
     }"
   ></div>
   <div
@@ -12,22 +12,22 @@
     :style="{
       backgroundImage: `url(${imageUrl2})`,
       transform: `scale(1.2) translateY(${y / 900}%)`,
-      transformOrigin: 'bottom'
+      transformOrigin: 'bottom',
     }"
   ></div>
 </template>
 
 <script setup lang="ts">
-import { useWindowScroll } from '@vueuse/core'
+import { useWindowScroll } from "@vueuse/core";
 
 export interface ElmParallaxProps {
-  imageUrl1: string
-  imageUrl2: string
+  imageUrl1: string;
+  imageUrl2: string;
 }
 
-withDefaults(defineProps<ElmParallaxProps>(), {})
+withDefaults(defineProps<ElmParallaxProps>(), {});
 
-const { y } = useWindowScroll()
+const { y } = useWindowScroll();
 </script>
 
 <style module lang="scss">
@@ -42,7 +42,7 @@ const { y } = useWindowScroll()
   background-size: auto;
 
   opacity: 0.2;
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     opacity: 0.1;
   }
 }

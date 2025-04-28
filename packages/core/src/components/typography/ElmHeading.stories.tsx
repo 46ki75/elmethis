@@ -1,27 +1,27 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
-import ElmHeading from './ElmHeading.vue'
-import ElmInlineText from './ElmInlineText.vue'
+import type { Meta, StoryObj } from "@storybook/vue3";
+import ElmHeading from "./ElmHeading.vue";
+import ElmInlineText from "./ElmInlineText.vue";
 
 const meta: Meta<typeof ElmHeading> = {
-  title: 'Components/Typography/ElmHeading',
+  title: "Components/Typography/ElmHeading",
   component: ElmHeading,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     level: {
       options: [1, 2, 3, 4, 5, 6],
-      control: 'radio'
-    }
+      control: "radio",
+    },
   },
   args: {
-    text: 'Heading',
-    level: 1
-  }
-}
+    text: "Heading",
+    level: 1,
+  },
+};
 
-export default meta
-type Story = StoryObj<typeof meta>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {}
+export const Primary: Story = {};
 
 export const Slot: Story = {
   render: (args) => {
@@ -32,7 +32,7 @@ export const Slot: Story = {
           <ElmHeading v-bind="args">
             <ElmInlineText text="This" color="crimson" /> is <ElmInlineText text="code" code /> !
           </ElmHeading>
-          `
-    }
-  }
-}
+          `,
+    };
+  },
+};

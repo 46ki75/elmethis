@@ -4,7 +4,7 @@
     :class="$style.wrapper"
     :style="{
       '--margin-block': margin,
-      '--opacity': targetIsVisible ? 1 : 0
+      '--opacity': targetIsVisible ? 1 : 0,
     }"
   >
     <div :class="$style.header">
@@ -18,7 +18,7 @@
           :class="$style['copy-icon']"
           @click="
             () => {
-              copy(code)
+              copy(code);
             }
           "
           :icon="
@@ -68,87 +68,87 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
-import ElmLanguageIcon from '../icon/ElmLanguageIcon.vue'
-import ElmInlineText from '../typography/ElmInlineText.vue'
-import ElmBlockFallback from '../fallback/ElmBlockFallback.vue'
-import ElmDotLoadingIcon from '../icon/ElmDotLoadingIcon.vue'
+import { Icon } from "@iconify/vue";
+import ElmLanguageIcon from "../icon/ElmLanguageIcon.vue";
+import ElmInlineText from "../typography/ElmInlineText.vue";
+import ElmBlockFallback from "../fallback/ElmBlockFallback.vue";
+import ElmDotLoadingIcon from "../icon/ElmDotLoadingIcon.vue";
 
 import {
   useClipboard,
   useIntersectionObserver,
-  useElementHover
-} from '@vueuse/core'
+  useElementHover,
+} from "@vueuse/core";
 
-import type { Property } from 'csstype'
+import type { Property } from "csstype";
 import {
   defineAsyncComponent,
   h,
   ref,
   defineSlots,
   useTemplateRef,
-  VNode
-} from 'vue'
+  VNode,
+} from "vue";
 
 export interface ElmCodeBlockProps {
   /**
    * The code to display.
    */
-  code: string
+  code: string;
 
   /**
    * The language of the code.
    */
-  language?: string
+  language?: string;
 
   /**
    * The caption of the code block.
    * If not provided, the language will be used.
    */
-  caption?: string
+  caption?: string;
 
   /**
    * The margin of the code block.
    */
-  margin?: Property.MarginBlock
+  margin?: Property.MarginBlock;
 }
 
 const props = withDefaults(defineProps<ElmCodeBlockProps>(), {
-  language: 'txt'
-})
+  language: "txt",
+});
 
 const AsyncElmShikiHighlighter = defineAsyncComponent({
-  loader: () => import('./ElmShikiHighlighter.vue'),
-  loadingComponent: ElmBlockFallback
-})
+  loader: () => import("./ElmShikiHighlighter.vue"),
+  loadingComponent: ElmBlockFallback,
+});
 
-const isRendered = ref(false)
+const isRendered = ref(false);
 
-const { copy, copied } = useClipboard({ source: props.code })
+const { copy, copied } = useClipboard({ source: props.code });
 
-const target = ref(null)
-const targetIsVisible = ref(false)
+const target = ref(null);
+const targetIsVisible = ref(false);
 
 useIntersectionObserver(target, ([{ isIntersecting }], _) => {
-  targetIsVisible.value = isIntersecting
-})
+  targetIsVisible.value = isIntersecting;
+});
 
-const tooltipElement = useTemplateRef<HTMLButtonElement>('tooltipRef')
-const isHovered = useElementHover(tooltipElement)
+const tooltipElement = useTemplateRef<HTMLButtonElement>("tooltipRef");
+const isHovered = useElementHover(tooltipElement);
 
 const slots = defineSlots<{
-  default?: () => VNode[]
-}>()
+  default?: () => VNode[];
+}>();
 
 const renderCaption = (): VNode | VNode[] => {
   if (props.caption) {
-    return h(ElmInlineText, { text: props.caption })
+    return h(ElmInlineText, { text: props.caption });
   } else if (slots.default != null) {
-    return slots.default()
+    return slots.default();
   } else {
-    return h(ElmInlineText, { text: props.language })
+    return h(ElmInlineText, { text: props.language });
   }
-}
+};
 </script>
 
 <style module lang="scss">
@@ -165,7 +165,7 @@ const renderCaption = (): VNode | VNode[] => {
 
   background-color: rgba(white, 0.4);
   box-shadow: 0 0 0.25rem rgba(black, 0.1);
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     background-color: rgba(white, 0.05);
     box-shadow: 0 0 0.25rem rgba(black, 0.3);
   }
@@ -178,10 +178,11 @@ const renderCaption = (): VNode | VNode[] => {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  font-family: 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+  font-family:
+    "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
 
   border-bottom: solid 1px rgba(black, 0.2);
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     border-color: rgba(white, 0.2);
   }
 }
@@ -205,13 +206,13 @@ const renderCaption = (): VNode | VNode[] => {
 
   color: rgba(black, 0.7);
 
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     color: rgba(white, 0.7);
   }
 
   &:hover {
     background-color: rgba(black, 0.1);
-    [data-theme='dark'] & {
+    [data-theme="dark"] & {
       background-color: rgba(white, 0.1);
     }
   }

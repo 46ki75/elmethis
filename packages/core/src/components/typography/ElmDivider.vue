@@ -4,44 +4,44 @@
     :class="$style.divider"
     :style="{
       '--scale': targetIsVisible ? 1 : 0,
-      '--margin-block': margin
+      '--margin-block': margin,
     }"
   />
 </template>
 
 <script setup lang="ts">
-import { useIntersectionObserver } from '@vueuse/core'
-import type { Property } from 'csstype'
-import { ref } from 'vue'
+import { useIntersectionObserver } from "@vueuse/core";
+import type { Property } from "csstype";
+import { ref } from "vue";
 
 export interface ElmDividerProps {
   /**
    * The margin of the divider.
    */
-  margin?: Property.MarginBlock
+  margin?: Property.MarginBlock;
 }
 
-withDefaults(defineProps<ElmDividerProps>(), {})
+withDefaults(defineProps<ElmDividerProps>(), {});
 
-const target = ref(null)
-const targetIsVisible = ref(false)
+const target = ref(null);
+const targetIsVisible = ref(false);
 
 useIntersectionObserver(target, ([{ isIntersecting }], _) => {
-  targetIsVisible.value = isIntersecting
-})
+  targetIsVisible.value = isIntersecting;
+});
 </script>
 
 <style module lang="scss">
 @mixin dot {
   position: absolute;
-  content: '';
+  content: "";
   height: 5px;
   width: 5px;
   top: -2px;
   border-radius: 50%;
   background-color: rgba(0, 0, 0, 0.6);
 
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     background-color: rgba(255, 255, 255, 0.6);
   }
 }
@@ -58,7 +58,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   transform: scaleX(var(--scale));
   transition: transform 1200ms;
 
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     border-bottom-color: rgba(255, 255, 255, 0.3);
   }
 

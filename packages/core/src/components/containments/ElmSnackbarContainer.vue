@@ -14,18 +14,18 @@
 </template>
 
 <script setup lang="ts">
-import ElmSnackbar from './ElmSnackbar.vue'
+import ElmSnackbar from "./ElmSnackbar.vue";
 
 export interface ElmSnackbarContainerProps {
   snackbars: {
-    id: string
-    label: string
-    timeout?: number
-    close: () => void
-  }[]
+    id: string;
+    label: string;
+    timeout?: number;
+    close: () => void;
+  }[];
 }
 
-withDefaults(defineProps<ElmSnackbarContainerProps>(), {})
+withDefaults(defineProps<ElmSnackbarContainerProps>(), {});
 </script>
 
 <style module lang="scss">

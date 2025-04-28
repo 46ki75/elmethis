@@ -9,15 +9,15 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
-import ElmInlineText from '../typography/ElmInlineText.vue'
+import { Icon } from "@iconify/vue";
+import ElmInlineText from "../typography/ElmInlineText.vue";
 
 export interface ElmChildContainerProps {
-  icon: string
-  text: string
+  icon: string;
+  text: string;
 }
 
-withDefaults(defineProps<ElmChildContainerProps>(), {})
+withDefaults(defineProps<ElmChildContainerProps>(), {});
 </script>
 
 <style module lang="scss">
@@ -40,7 +40,7 @@ withDefaults(defineProps<ElmChildContainerProps>(), {})
   height: 1rem;
   line-height: 1rem;
   color: rgba(black, 0.7);
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     color: rgba(white, 0.7);
   }
 }

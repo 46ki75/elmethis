@@ -8,7 +8,7 @@
         '--font-color':
           getLuminance(color) > 0.5
             ? 'rgba(0,0,0,0.7)'
-            : 'rgba(255,255,255,0.7)'
+            : 'rgba(255,255,255,0.7)',
       }"
     />
     <div :class="$style.text">
@@ -18,25 +18,25 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
-import ElmInlineText from '../typography/ElmInlineText.vue'
-import { getLuminance } from 'polished'
+import { Icon } from "@iconify/vue";
+import ElmInlineText from "../typography/ElmInlineText.vue";
+import { getLuminance } from "polished";
 
 export interface ElmTagProps {
   /**
    * The text to display in the tag.
    */
-  text: string
+  text: string;
 
   /**
    * The color of the tag.
    */
-  color?: string
+  color?: string;
 }
 
 withDefaults(defineProps<ElmTagProps>(), {
-  color: 'transparent'
-})
+  color: "transparent",
+});
 </script>
 
 <style module lang="scss">
@@ -53,7 +53,7 @@ withDefaults(defineProps<ElmTagProps>(), {
   border-color: var(--color);
 
   color: rgba(black, 0.7);
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     color: rgba(white, 0.7);
   }
 }

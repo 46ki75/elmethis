@@ -1,14 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
-import ElmTemplate from './ElmTemplate.vue'
+import type { Meta, StoryObj } from "@storybook/vue3";
+import ElmTemplate from "./ElmTemplate.vue";
 
 const meta: Meta<typeof ElmTemplate> = {
-  title: 'Template/Template/ElmTemplate',
+  title: "Template/Template/ElmTemplate",
   component: ElmTemplate,
-  tags: ['autodocs'],
-  args: {}
-}
+  tags: ["autodocs"],
+  args: {},
+};
 
-export default meta
-type Story = StoryObj<typeof meta>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {}
+export const Primary: Story = {};

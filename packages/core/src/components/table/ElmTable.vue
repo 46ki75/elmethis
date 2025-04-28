@@ -2,7 +2,7 @@
   <table
     :class="$style.table"
     :style="{
-      '--margin-block': margin
+      '--margin-block': margin,
     }"
   >
     <caption v-if="caption != null">
@@ -26,37 +26,37 @@
 </template>
 
 <script setup lang="ts">
-import ElmTableHeader from './ElmTableHeader.vue'
-import ElmTableBody from './ElmTableBody.vue'
+import ElmTableHeader from "./ElmTableHeader.vue";
+import ElmTableBody from "./ElmTableBody.vue";
 
-import type { Property } from 'csstype'
-import { defineSlots } from 'vue'
-import ElmInlineText from '../typography/ElmInlineText.vue'
+import type { Property } from "csstype";
+import { defineSlots } from "vue";
+import ElmInlineText from "../typography/ElmInlineText.vue";
 
-import { mdiTable } from '@mdi/js'
+import { mdiTable } from "@mdi/js";
 
 export interface ElmTableProps {
   /**
    * The margin of the table.
    */
-  margin?: Property.MarginBlock
+  margin?: Property.MarginBlock;
 
-  caption?: string
+  caption?: string;
 }
 
-withDefaults(defineProps<ElmTableProps>(), {})
+withDefaults(defineProps<ElmTableProps>(), {});
 
 const slots = defineSlots<{
   /**
    * (Optional) The header slot of the table.
    */
-  header?: InstanceType<typeof ElmTableHeader>
+  header?: InstanceType<typeof ElmTableHeader>;
 
   /**
    * The body slot of the table.
    */
-  body: InstanceType<typeof ElmTableBody>
-}>()
+  body: InstanceType<typeof ElmTableBody>;
+}>();
 </script>
 
 <style module lang="scss">
@@ -70,7 +70,7 @@ const slots = defineSlots<{
 
   color: rgba(black, 0.7);
 
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     color: rgba(white, 0.7);
   }
 }

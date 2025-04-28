@@ -3,7 +3,7 @@
     :class="$style.wrapper"
     :style="{
       '--border-color': isFocused ? '#59b57c' : 'transparent',
-      backgroundColor: disabled || loading ? 'rgba(0,0,0,0.15)' : undefined
+      backgroundColor: disabled || loading ? 'rgba(0,0,0,0.15)' : undefined,
     }"
   >
     <div :class="$style.header">
@@ -35,7 +35,7 @@
         @blur="isFocused = false"
         :disabled="disabled || loading"
         :style="{
-          cursor: disabled ? 'not-allowed' : loading ? 'progress' : 'auto'
+          cursor: disabled ? 'not-allowed' : loading ? 'progress' : 'auto',
         }"
         :aria-required="required"
       />
@@ -63,53 +63,53 @@
     <div
       :class="$style.loading"
       :style="{
-        opacity: loading ? 0.2 : 0
+        opacity: loading ? 0.2 : 0,
       }"
     ></div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
-import ElmInlineText from '../typography/ElmInlineText.vue'
-import { ref, type VNode, type FunctionalComponent } from 'vue'
-import { nanoid } from 'nanoid'
+import { Icon } from "@iconify/vue";
+import ElmInlineText from "../typography/ElmInlineText.vue";
+import { ref, type VNode, type FunctionalComponent } from "vue";
+import { nanoid } from "nanoid";
 
-const id = nanoid()
+const id = nanoid();
 
-const isFocused = ref<boolean>(false)
+const isFocused = ref<boolean>(false);
 
 export interface ElmTextFieldProps {
-  label: string
-  maxLength?: number
-  suffix?: string
-  placeholder?: string
-  disabled?: boolean
-  loading?: boolean
-  icon?: VNode | FunctionalComponent
-  isPassword?: boolean
-  required?: boolean
+  label: string;
+  maxLength?: number;
+  suffix?: string;
+  placeholder?: string;
+  disabled?: boolean;
+  loading?: boolean;
+  icon?: VNode | FunctionalComponent;
+  isPassword?: boolean;
+  required?: boolean;
 }
 
 const props = withDefaults(defineProps<ElmTextFieldProps>(), {
   disabled: false,
   loading: false,
   isPassword: false,
-  required: false
-})
+  required: false,
+});
 
-const input = defineModel({ default: '' })
+const input = defineModel({ default: "" });
 
-const type = ref(props.isPassword ? 'password' : 'text')
+const type = ref(props.isPassword ? "password" : "text");
 
 const handleDelete = () => {
-  if (!props.loading && !props.disabled) input.value = ''
-}
+  if (!props.loading && !props.disabled) input.value = "";
+};
 
 const handleVisibleSwitch = () => {
   if (!props.loading && !props.disabled)
-    type.value = type.value === 'text' ? 'password' : 'text'
-}
+    type.value = type.value === "text" ? "password" : "text";
+};
 </script>
 
 <style module lang="scss">
@@ -172,7 +172,7 @@ const handleVisibleSwitch = () => {
   background-color: rgba(white, 0.8);
   box-shadow: 0 0 0.25rem rgba(black, 0.15);
 
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     background-color: rgba(white, 0.15);
     box-shadow: 0 0 0.25rem rgba(black, 0.75);
   }
@@ -198,7 +198,7 @@ const handleVisibleSwitch = () => {
 
   color: var(--color, rgba(black, 0.65));
 
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     color: var(--color, rgba(white, 0.65));
   }
 }
@@ -225,7 +225,7 @@ const handleVisibleSwitch = () => {
   align-items: center;
   opacity: 0.7;
 
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     filter: invert(1);
   }
 }
@@ -241,7 +241,7 @@ const handleVisibleSwitch = () => {
   &::placeholder {
     opacity: 0.5;
 
-    [data-theme='dark'] & {
+    [data-theme="dark"] & {
       opacity: 0.7;
     }
   }
@@ -251,7 +251,7 @@ const handleVisibleSwitch = () => {
     color: rgba(white, 0.7);
   }
 
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     color: rgba(white, 0.7);
     caret-color: rgba(white, 0.7);
 

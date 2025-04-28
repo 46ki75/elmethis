@@ -5,8 +5,8 @@
       {
         [$style.normal]: !loading && !pending,
         [$style.loading]: loading,
-        [$style.pending]: !loading && pending
-      }
+        [$style.pending]: !loading && pending,
+      },
     ]"
     :style="{
       '--size': size,
@@ -17,42 +17,42 @@
             ? 'rotate(90deg)'
             : direction === 'left'
               ? 'rotate(180deg)'
-              : 'rotate(0deg)'
+              : 'rotate(0deg)',
     }"
   ></div>
 </template>
 
 <script setup lang="ts">
-import type { Property } from 'csstype'
+import type { Property } from "csstype";
 
 export interface ElmArrowIconProps {
   /**
    * Specifies the direction of the arrow.
    */
-  direction?: 'up' | 'down' | 'left' | 'right'
+  direction?: "up" | "down" | "left" | "right";
 
   /**
    * Specifies whether the arrow is in loading state.
    */
-  loading?: boolean
+  loading?: boolean;
 
   /**
    * Specifies whether the arrow is in pending state.
    */
-  pending?: boolean
+  pending?: boolean;
 
   /**
    * Specifies the size of the arrow.
    */
-  size?: Property.Height
+  size?: Property.Height;
 }
 
 withDefaults(defineProps<ElmArrowIconProps>(), {
-  direction: 'right',
+  direction: "right",
   loading: false,
   pending: false,
-  size: '2rem'
-})
+  size: "2rem",
+});
 </script>
 
 <style module lang="scss">
@@ -94,7 +94,7 @@ withDefaults(defineProps<ElmArrowIconProps>(), {
     50% 0%
   );
 
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     background: linear-gradient(
       to right,
       rgba(white, 0.7) 0 50%,
@@ -113,7 +113,7 @@ withDefaults(defineProps<ElmArrowIconProps>(), {
 .normal {
   background: rgba(black, 0.7);
   transition: background 400ms;
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     background: rgba(white, 0.7);
   }
 }
@@ -121,7 +121,7 @@ withDefaults(defineProps<ElmArrowIconProps>(), {
 .pending {
   background: rgba(black, 0.2);
   transition: background 400ms;
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     background: rgba(white, 0.2);
   }
 }

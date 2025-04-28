@@ -4,12 +4,12 @@
     :class="$style.original"
     @mouseover="
       () => {
-        isHover = true
+        isHover = true;
       }
     "
     @mouseleave="
       () => {
-        isHover = false
+        isHover = false;
       }
     "
   >
@@ -23,11 +23,11 @@
           x > windowSize.width.value / 2
             ? {
                 top: `${y + height}px`,
-                right: `${windowSize.width.value - x - width}px`
+                right: `${windowSize.width.value - x - width}px`,
               }
             : {
                 top: `${y + height}px`,
-                left: `${x}px`
+                left: `${x}px`,
               }
         "
       >
@@ -38,18 +38,18 @@
 </template>
 
 <script setup lang="ts">
-import { useElementBounding, useWindowSize } from '@vueuse/core'
-import { ref } from 'vue'
+import { useElementBounding, useWindowSize } from "@vueuse/core";
+import { ref } from "vue";
 
 export interface ElmTooltipProps {}
 
-withDefaults(defineProps<ElmTooltipProps>(), {})
+withDefaults(defineProps<ElmTooltipProps>(), {});
 
-const el = ref(null)
-const { x, y, width, height } = useElementBounding(el)
-const windowSize = useWindowSize()
+const el = ref(null);
+const { x, y, width, height } = useElementBounding(el);
+const windowSize = useWindowSize();
 
-const isHover = ref(false)
+const isHover = ref(false);
 </script>
 
 <style module lang="scss">
@@ -68,7 +68,7 @@ const isHover = ref(false)
 
   transform-origin: top;
 
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     color: rgba(255, 255, 255, 0.7);
     background-color: rgba(0, 0, 0, 0.9);
   }

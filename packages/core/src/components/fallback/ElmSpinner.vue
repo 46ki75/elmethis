@@ -13,14 +13,14 @@
 
 <script setup lang="ts">
 export interface ElmSpinnerProps {
-  radius?: number
-  weight?: number
+  radius?: number;
+  weight?: number;
 }
 
 withDefaults(defineProps<ElmSpinnerProps>(), {
   radius: 16,
-  weight: 2
-})
+  weight: 2,
+});
 </script>
 
 <style module lang="scss">
@@ -50,7 +50,7 @@ withDefaults(defineProps<ElmSpinnerProps>(), {
   transform-origin: center;
 
   stroke: rgba(black, 0.7);
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     stroke: rgba(white, 0.7);
   }
 }

@@ -2,31 +2,31 @@
   "folders": [
     {
       "path": ".",
-      "name": "root"
+      "name": "root",
     },
     {
       "path": "./packages/core",
-      "name": "core"
+      "name": "core",
     },
     {
       "path": "./packages/notion-node",
-      "name": "notion-node"
+      "name": "notion-node",
     },
     {
       "path": "./packages/nitro-app",
-      "name": "nitro-app"
+      "name": "nitro-app",
     },
     {
       "path": "./crates/elmethis-notion",
-      "name": "elmethis-notion (Rust)"
-    }
+      "name": "elmethis-notion (Rust)",
+    },
   ],
   "settings": {
     "terminal.integrated.env.linux": {},
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "[rust]": {
-      "editor.defaultFormatter": "rust-lang.rust-analyzer"
-    }
-  }
+      "editor.defaultFormatter": "rust-lang.rust-analyzer",
+    },
+  },
 }

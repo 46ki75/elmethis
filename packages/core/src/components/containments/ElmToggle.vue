@@ -17,7 +17,7 @@
         :class="$style.icon"
         :style="{
           '--rotate': isOpen ? '135deg' : '0deg',
-          '--color': isOpen ? '#b36472' : undefined
+          '--color': isOpen ? '#b36472' : undefined,
         }"
       />
     </div>
@@ -31,38 +31,38 @@
 </template>
 
 <script setup lang="ts">
-import ElmInlineText from '../typography/ElmInlineText.vue'
-import { Icon } from '@iconify/vue'
-import type { Property } from 'csstype'
-import { VNode } from 'vue'
+import ElmInlineText from "../typography/ElmInlineText.vue";
+import { Icon } from "@iconify/vue";
+import type { Property } from "csstype";
+import { VNode } from "vue";
 
 export interface ElmToggleProps {
   /**
    * The summary of the toggle.
    */
-  summary?: string
+  summary?: string;
 
   /**
    * The margin of the toggle.
    */
-  margin?: Property.MarginBlock
+  margin?: Property.MarginBlock;
 }
 
-withDefaults(defineProps<ElmToggleProps>(), {})
+withDefaults(defineProps<ElmToggleProps>(), {});
 
 defineSlots<{
-  default: () => VNode[]
-  summary?: () => VNode[]
-}>()
+  default: () => VNode[];
+  summary?: () => VNode[];
+}>();
 
-const isOpen = defineModel<boolean>('isOpen', {
-  default: false
-})
+const isOpen = defineModel<boolean>("isOpen", {
+  default: false,
+});
 
 const handleClick = (event: Event): void => {
-  event.preventDefault()
-  isOpen.value = !isOpen.value
-}
+  event.preventDefault();
+  isOpen.value = !isOpen.value;
+};
 </script>
 
 <style module lang="scss">
@@ -85,7 +85,7 @@ const handleClick = (event: Event): void => {
   gap: 0.5rem;
 
   background-color: rgba(black, 0.025);
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     background-color: rgba(white, 0.1);
   }
 }

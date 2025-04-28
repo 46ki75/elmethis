@@ -3,7 +3,7 @@
     ref="target"
     :class="$style.paragraph"
     :style="{
-      '--opacity': targetIsVisible ? 1 : 0
+      '--opacity': targetIsVisible ? 1 : 0,
     }"
   >
     <slot />
@@ -11,19 +11,19 @@
 </template>
 
 <script setup lang="ts">
-import { useIntersectionObserver } from '@vueuse/core'
-import { ref } from 'vue'
+import { useIntersectionObserver } from "@vueuse/core";
+import { ref } from "vue";
 
 export interface ElmParagraphProps {}
 
-withDefaults(defineProps<ElmParagraphProps>(), {})
+withDefaults(defineProps<ElmParagraphProps>(), {});
 
-const target = ref(null)
-const targetIsVisible = ref(false)
+const target = ref(null);
+const targetIsVisible = ref(false);
 
 useIntersectionObserver(target, ([{ isIntersecting }], _) => {
-  targetIsVisible.value = isIntersecting
-})
+  targetIsVisible.value = isIntersecting;
+});
 </script>
 
 <style module lang="scss">
@@ -38,7 +38,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
     background-color: rgba(0, 0, 0, 0.7);
   }
 
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     color: rgba(255, 255, 255, 0.7);
 
     &::selection {

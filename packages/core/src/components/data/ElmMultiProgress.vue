@@ -3,7 +3,7 @@
     :class="$style.container"
     :style="{
       '--weight': weight,
-      '--border-radius': round ? 'calc(var(--weight) / 2)' : undefined
+      '--border-radius': round ? 'calc(var(--weight) / 2)' : undefined,
     }"
   >
     <template v-for="p in computedProgress" :key="index">
@@ -11,7 +11,7 @@
         :class="$style.bar"
         :style="{
           '--transform': `translateX(${p.start}%) scaleX(${p.scale})`,
-          '--color': p.color
+          '--color': p.color,
         }"
       ></div>
     </template>
@@ -19,60 +19,60 @@
 </template>
 
 <script setup lang="ts">
-import type { Property } from 'csstype'
-import { computed } from 'vue'
+import type { Property } from "csstype";
+import { computed } from "vue";
 
 export interface ElmMultiProgressProps {
   progress: Array<{
     /**
      * The current value of the progress.
      */
-    value: number
+    value: number;
 
     /**
      * The buffer value of the progress.
      */
-    buffer?: number
+    buffer?: number;
 
     /**
      * The color of the progress.
      */
-    color: string
-  }>
+    color: string;
+  }>;
 
   /**
    * The weight of the progress.
    */
-  weight?: Property.Height<string | number>
+  weight?: Property.Height<string | number>;
 
   /**
    * Whether the progress should be round.
    */
-  round?: boolean
+  round?: boolean;
 }
 
 const props = withDefaults(defineProps<ElmMultiProgressProps>(), {
-  weight: '4px',
-  round: true
-})
+  weight: "4px",
+  round: true,
+});
 
-const max = computed(() => props.progress.reduce((p, n) => p + n.value, 0))
+const max = computed(() => props.progress.reduce((p, n) => p + n.value, 0));
 
 const computedProgress = computed(() => {
-  let cumulative = 0
+  let cumulative = 0;
   return props.progress.map((p) => {
-    const scale = (p.value / max.value) * 100
-    const start = cumulative
-    cumulative += scale
-    return { ...p, scale: scale / 100, start }
-  })
-})
+    const scale = (p.value / max.value) * 100;
+    const start = cumulative;
+    cumulative += scale;
+    return { ...p, scale: scale / 100, start };
+  });
+});
 </script>
 
 <style module lang="scss">
 @mixin bar($transition-duration: 800ms) {
   position: absolute;
-  content: '';
+  content: "";
   width: 100%;
   height: 100%;
   transition: transform $transition-duration;
@@ -88,7 +88,7 @@ const computedProgress = computed(() => {
   overflow: hidden;
 
   background-color: rgba(black, 0.1);
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     background-color: rgba(white, 0.1);
   }
 }

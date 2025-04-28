@@ -5,11 +5,11 @@
 </template>
 
 <script setup lang="ts">
-import ElmDotLoadingIcon from '../icon/ElmDotLoadingIcon.vue'
+import ElmDotLoadingIcon from "../icon/ElmDotLoadingIcon.vue";
 
 export interface ElmBlockFallbackProps {}
 
-withDefaults(defineProps<ElmBlockFallbackProps>(), {})
+withDefaults(defineProps<ElmBlockFallbackProps>(), {});
 </script>
 
 <style module lang="scss">

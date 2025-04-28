@@ -16,22 +16,22 @@
 </template>
 
 <script setup lang="ts">
-import type { Property } from 'csstype'
-import { useElmethisTheme } from '../../hooks/useElmethisTheme'
-import { Icon } from '@iconify/vue'
+import type { Property } from "csstype";
+import { useElmethisTheme } from "../../hooks/useElmethisTheme";
+import { Icon } from "@iconify/vue";
 
 export interface ElmToggleThemeProps {
   /**
    * Specifies the size of the dot.
    */
-  size?: Property.Width<string | number>
+  size?: Property.Width<string | number>;
 }
 
 withDefaults(defineProps<ElmToggleThemeProps>(), {
-  size: '2rem'
-})
+  size: "2rem",
+});
 
-const { isDarkTheme, toggleTheme } = useElmethisTheme()
+const { isDarkTheme, toggleTheme } = useElmethisTheme();
 </script>
 
 <style module lang="scss">
@@ -47,7 +47,7 @@ const { isDarkTheme, toggleTheme } = useElmethisTheme()
   @include icon(rgba(0, 0, 0, 0.8));
   box-shadow: 0 0 0.125rem rgba(black, 0.3);
   background-color: rgba(white, 0.2);
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     box-shadow: 0 0 0.125rem rgba(black, 0.6);
     background-color: rgba(black, 0.2);
     @include icon(rgba(255, 255, 255, 0.8));

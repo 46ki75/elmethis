@@ -57,82 +57,82 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
-import ElmInlineText from '../typography/ElmInlineText.vue'
-import ElmImage from '../media/ElmImage.vue'
-import type { Property } from 'csstype'
+import { Icon } from "@iconify/vue";
+import ElmInlineText from "../typography/ElmInlineText.vue";
+import ElmImage from "../media/ElmImage.vue";
+import type { Property } from "csstype";
 
 export interface ElmBookmarkProps {
   /**
    * Whether to hide the URL.
    */
-  hideUrl?: boolean
+  hideUrl?: boolean;
 
   /**
    * Whether to open the link in a new tab.
    * Defaults to `true`.
    */
-  openInNewTab?: boolean
+  openInNewTab?: boolean;
 
   /**
    * The title of the bookmark.
    */
-  title?: string
+  title?: string;
 
   /**
    * The description of the bookmark.
    */
-  description?: string
+  description?: string;
 
   /**
    * The image to display.
    * This can be a URL or a base64-encoded image.
    */
-  image?: string
+  image?: string;
 
   /**
    * The URL to navigate to.
    */
-  url?: string
+  url?: string;
 
   /**
    * The date the bookmark was created.
    */
-  createdAt?: string
+  createdAt?: string;
 
   /*
    * The date the bookmark was last updated.
    */
-  updatedAt?: string
+  updatedAt?: string;
 
   /**
    * The function to call when the link is clicked.
    * If provided, the default behavior (navigating to the URL) is prevented.
    */
-  onClick?: () => void
+  onClick?: () => void;
 
   /**
    * The margin of the bookmark.
    */
-  margin?: Property.MarginBlock
+  margin?: Property.MarginBlock;
 
   /**
    * The URL of the favicon.
    */
-  favicon?: string
+  favicon?: string;
 }
 
 const props = withDefaults(defineProps<ElmBookmarkProps>(), {
   isHorizontal: true,
   openInNewTab: true,
   hideUrl: false,
-  description: 'No description provided'
-})
+  description: "No description provided",
+});
 
 function handleClick(event: MouseEvent) {
   if (props.onClick) {
-    event.preventDefault()
-    props.onClick()
+    event.preventDefault();
+    props.onClick();
   }
 }
 </script>
@@ -166,7 +166,7 @@ function handleClick(event: MouseEvent) {
   cursor: pointer;
   background-color: rgba(white, 0.5);
 
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     background-color: rgba(black, 0.2);
   }
 
@@ -235,7 +235,7 @@ function handleClick(event: MouseEvent) {
     height: 16px;
 
     color: rgba(black, 0.7);
-    [data-theme='dark'] & {
+    [data-theme="dark"] & {
       color: rgba(white, 0.7);
     }
   }

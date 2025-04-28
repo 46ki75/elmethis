@@ -1,33 +1,33 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
-import ElmCodeBlock from './ElmCodeBlock.vue'
+import type { Meta, StoryObj } from "@storybook/vue3";
+import ElmCodeBlock from "./ElmCodeBlock.vue";
 
-import rustCode from './seed/main.rs?raw'
-import ElmInlineText from '../typography/ElmInlineText.vue'
+import rustCode from "./seed/main.rs?raw";
+import ElmInlineText from "../typography/ElmInlineText.vue";
 
 const meta: Meta<typeof ElmCodeBlock> = {
-  title: 'Components/Code/ElmCodeBlock',
+  title: "Components/Code/ElmCodeBlock",
   component: ElmCodeBlock,
-  tags: ['autodocs'],
-  args: {}
-}
+  tags: ["autodocs"],
+  args: {},
+};
 
-export default meta
-type Story = StoryObj<typeof meta>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  args: { code: "const foo = 'bar'", language: 'javascript' }
-}
+  args: { code: "const foo = 'bar'", language: "javascript" },
+};
 
 export const Rust: Story = {
-  args: { code: rustCode, language: 'rust' }
-}
+  args: { code: rustCode, language: "rust" },
+};
 
-export const Cpation: Story = {
-  args: { code: rustCode, language: 'rust', caption: 'src/main.rs' }
-}
+export const Caption: Story = {
+  args: { code: rustCode, language: "rust", caption: "src/main.rs" },
+};
 
-export const CpationSlot: Story = {
-  args: { code: rustCode, language: 'rust' },
+export const CaptionSlot: Story = {
+  args: { code: rustCode, language: "rust" },
   render: (args) => ({
     setup: () => ({ args }),
     components: { ElmCodeBlock, ElmInlineText },
@@ -36,6 +36,6 @@ export const CpationSlot: Story = {
         <ElmInlineText text="File:" />
         <ElmInlineText text="src/main.rs" code />
       </ElmCodeBlock>
-      `
-  })
-}
+      `,
+  }),
+};

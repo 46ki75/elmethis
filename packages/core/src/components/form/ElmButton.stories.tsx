@@ -1,38 +1,38 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
-import ElmButton from './ElmButton.vue'
-import ElmInlineText from '../typography/ElmInlineText.vue'
+import type { Meta, StoryObj } from "@storybook/vue3";
+import ElmButton from "./ElmButton.vue";
+import ElmInlineText from "../typography/ElmInlineText.vue";
 
-import { Icon } from '@iconify/vue'
-import { h } from 'vue'
+import { Icon } from "@iconify/vue";
+import { h } from "vue";
 
-const PencilSquareIcon = h(Icon, { icon: 'heroicons:pencil-square-16-solid' })
+const PencilSquareIcon = h(Icon, { icon: "heroicons:pencil-square-16-solid" });
 
 const meta: Meta<typeof ElmButton> = {
-  title: 'Components/Form/ElmButton',
+  title: "Components/Form/ElmButton",
   component: ElmButton,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   args: {},
   render: (args) => ({
     setup: () => ({
-      args: { ...args, onClick: () => console.log('clicked') }
+      args: { ...args, onClick: () => console.log("clicked") },
     }),
     components: { ElmButton, ElmInlineText },
-    template: '<ElmButton v-bind="args">elm-button</ElmButton>'
-  })
-}
+    template: '<ElmButton v-bind="args">elm-button</ElmButton>',
+  }),
+};
 
-export default meta
-type Story = StoryObj<typeof meta>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {}
+export const Primary: Story = {};
 
 export const Block: Story = {
-  args: { block: true }
-}
+  args: { block: true },
+};
 
 export const Loading: Story = {
-  args: { loading: true, block: true }
-}
+  args: { loading: true, block: true },
+};
 
 export const Flex: Story = {
   args: { block: true },
@@ -44,13 +44,13 @@ export const Flex: Story = {
           <ElmButton v-bind="args"><PencilSquareIcon style="width: 16px;" />elm-button</ElmButton>
           <ElmButton v-bind="args"><PencilSquareIcon style="width: 16px;" />elm-button</ElmButton>
         </div>
-      `
-  })
-}
+      `,
+  }),
+};
 
 export const Disabled: Story = {
-  args: { block: true, disabled: true }
-}
+  args: { block: true, disabled: true },
+};
 
 export const WithPrimary: Story = {
   args: { block: true },
@@ -62,6 +62,6 @@ export const WithPrimary: Story = {
           <ElmButton v-bind="args" primary><PencilSquareIcon style="width: 16px;" />elm-button</ElmButton>
           <ElmButton v-bind="args"><PencilSquareIcon style="width: 16px;" />elm-button</ElmButton>
         </div>
-      `
-  })
-}
+      `,
+  }),
+};

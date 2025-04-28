@@ -17,73 +17,73 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
-import type { Property } from 'csstype'
-import { getLuminance } from 'polished'
-import { h, useCssModule } from 'vue'
-import ElmInlineIcon from '../icon/ElmInlineIcon.vue'
+import { Icon } from "@iconify/vue";
+import type { Property } from "csstype";
+import { getLuminance } from "polished";
+import { h, useCssModule } from "vue";
+import ElmInlineIcon from "../icon/ElmInlineIcon.vue";
 
 export interface ElmInlineTextProps {
   /**
    * The text to display.
    */
-  text: string
+  text: string;
 
   /**
    * Specifies the color of the text.
    *
    * e.g.) `'red'`, `'#ff0000'`, `'rgba(255, 0, 0, 0.5)'`
    */
-  color?: Property.Color
+  color?: Property.Color;
 
   /**
    * Specifies the font size of the text.
    */
-  size?: Property.FontSize
+  size?: Property.FontSize;
 
   /**
    * Specifies whether the text should be bold.
    */
-  bold?: boolean
+  bold?: boolean;
 
   /**
    * Specifies whether the text should be italic.
    */
-  italic?: boolean
+  italic?: boolean;
 
   /**
    * Specifies whether the text should be underlined.
    */
-  underline?: boolean
+  underline?: boolean;
 
   /**
    * Specifies whether the text should be strikethrough.
    */
-  strikethrough?: boolean
+  strikethrough?: boolean;
 
   /**
    * Specifies whether the text should be displayed as code.
    */
-  code?: boolean
+  code?: boolean;
 
   /**
    * Specifies the background color of the text.
    */
-  backgroundColor?: Property.BackgroundColor
+  backgroundColor?: Property.BackgroundColor;
 
   /**
    * The ruby text to display.
    */
-  ruby?: string
+  ruby?: string;
 
   /**
    * The URL to navigate to.
    *
    * e.g. `https://example.com`
    */
-  href?: string
+  href?: string;
 
-  favicon?: string
+  favicon?: string;
 }
 
 const props = withDefaults(defineProps<ElmInlineTextProps>(), {
@@ -92,69 +92,69 @@ const props = withDefaults(defineProps<ElmInlineTextProps>(), {
   underline: false,
   strikethrough: false,
   code: false,
-  size: '1em'
-})
+  size: "1em",
+});
 
-const style = useCssModule()
+const style = useCssModule();
 
 const render = () => {
   const backgroundColor =
     props.backgroundColor != null
       ? getLuminance(props.backgroundColor) < 0.5
-        ? 'rgba(255, 255, 255, 0.7)'
-        : 'rgba(0, 0, 0, 0.7)'
-      : undefined
+        ? "rgba(255, 255, 255, 0.7)"
+        : "rgba(0, 0, 0, 0.7)"
+      : undefined;
 
   let vnode = h(
-    'span',
+    "span",
     {
       class: style.text,
       style: {
-        '--color': props.color ?? backgroundColor,
-        '--font-size': props.size,
-        '--background-color': props.backgroundColor
-      }
+        "--color": props.color ?? backgroundColor,
+        "--font-size": props.size,
+        "--background-color": props.backgroundColor,
+      },
     },
-    props.text
-  )
+    props.text,
+  );
 
   if (props.strikethrough) {
-    vnode = h('del', {}, vnode)
+    vnode = h("del", {}, vnode);
   }
 
   if (props.italic) {
-    vnode = h('em', {}, vnode)
+    vnode = h("em", {}, vnode);
   }
 
   if (props.underline) {
-    vnode = h('ins', {}, vnode)
+    vnode = h("ins", {}, vnode);
   }
 
   if (props.bold) {
-    vnode = h('strong', {}, vnode)
+    vnode = h("strong", {}, vnode);
   }
 
   if (props.code) {
-    vnode = h('code', { class: style.code }, vnode)
+    vnode = h("code", { class: style.code }, vnode);
   }
 
   if (props.ruby) {
     vnode = h(
-      'ruby',
+      "ruby",
       {
         class: style.text,
         style: {
-          '--color': props.color ?? backgroundColor,
-          '--font-size': props.size,
-          '--background-color': props.backgroundColor
-        }
+          "--color": props.color ?? backgroundColor,
+          "--font-size": props.size,
+          "--background-color": props.backgroundColor,
+        },
       },
-      [h('span', {}, vnode), h('rt', {}, props.ruby)]
-    )
+      [h("span", {}, vnode), h("rt", {}, props.ruby)],
+    );
   }
 
-  return vnode
-}
+  return vnode;
+};
 </script>
 
 <style module lang="scss">
@@ -171,7 +171,7 @@ const render = () => {
     background-color: var(--color, rgba(black, 0.7));
   }
 
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     color: var(--color, rgba(white, 0.7));
 
     &::selection {
@@ -187,7 +187,7 @@ const render = () => {
   font-size: calc(1em - 2px);
   border-radius: 0.125rem;
   background-color: rgba(0, 0, 0, 0.075);
-  font-family: 'Source Code Pro' monospace;
+  font-family: "Source Code Pro" monospace;
 }
 
 .link {

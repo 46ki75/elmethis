@@ -23,13 +23,13 @@
         :alt="alt"
         @click="
           () => {
-            isModalOpen = true
+            isModalOpen = true;
           }
         "
         :style="{
           '--height': isLoading ? '0' : 'auto',
           '--opacity': isLoading ? 0 : 1,
-          display: isLoading ? 'none' : 'block'
+          display: isLoading ? 'none' : 'block',
         }"
       />
     </transition>
@@ -63,7 +63,7 @@
         :alt="alt"
         @click="
           () => {
-            isModalOpen = false
+            isModalOpen = false;
           }
         "
       />
@@ -72,36 +72,36 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import ElmRectangleWave from '../fallback/ElmRectangleWave.vue'
-import ElmDotLoadingIcon from '../icon/ElmDotLoadingIcon.vue'
-import { onKeyStroke, useImage } from '@vueuse/core'
-import ElmInlineText from '../typography/ElmInlineText.vue'
+import { ref } from "vue";
+import ElmRectangleWave from "../fallback/ElmRectangleWave.vue";
+import ElmDotLoadingIcon from "../icon/ElmDotLoadingIcon.vue";
+import { onKeyStroke, useImage } from "@vueuse/core";
+import ElmInlineText from "../typography/ElmInlineText.vue";
 
-import { mdiMessageImageOutline } from '@mdi/js'
+import { mdiMessageImageOutline } from "@mdi/js";
 
 export interface ElmBlockImageProps {
   /**
    * Image source URL
    */
-  src: string
+  src: string;
 
   /**
    * Image alt text
    */
-  alt?: string
+  alt?: string;
 }
 
-const props = withDefaults(defineProps<ElmBlockImageProps>(), {})
+const props = withDefaults(defineProps<ElmBlockImageProps>(), {});
 
-const { isLoading, error } = useImage({ src: props.src })
+const { isLoading, error } = useImage({ src: props.src });
 
-const isModalOpen = ref(false)
+const isModalOpen = ref(false);
 
-onKeyStroke('Escape', (e) => {
-  e.preventDefault()
-  isModalOpen.value = false
-})
+onKeyStroke("Escape", (e) => {
+  e.preventDefault();
+  isModalOpen.value = false;
+});
 </script>
 
 <style module lang="scss">

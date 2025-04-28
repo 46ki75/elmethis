@@ -239,22 +239,22 @@
 </template>
 
 <script setup lang="ts">
-import { type JSONSchema7Definition } from 'json-schema'
+import { type JSONSchema7Definition } from "json-schema";
 
-import ElmInlineText from '../typography/ElmInlineText.vue'
-import ElmFieldType from './ElmFieldType.vue'
-import ElmFieldAttribute from './ElmFieldAttribute.vue'
-import ElmChildContainer from './ElmChildContainer.vue'
+import ElmInlineText from "../typography/ElmInlineText.vue";
+import ElmFieldType from "./ElmFieldType.vue";
+import ElmFieldAttribute from "./ElmFieldAttribute.vue";
+import ElmChildContainer from "./ElmChildContainer.vue";
 
 export interface ElmJsonSchemaProps {
-  name?: string
-  schema: JSONSchema7Definition
+  name?: string;
+  schema: JSONSchema7Definition;
 }
 
-withDefaults(defineProps<ElmJsonSchemaProps>(), {})
+withDefaults(defineProps<ElmJsonSchemaProps>(), {});
 
 function isBoolean(value: any): value is boolean {
-  return typeof value === 'boolean'
+  return typeof value === "boolean";
 }
 </script>
 
@@ -270,7 +270,7 @@ function isBoolean(value: any): value is boolean {
   border-left: solid 0.125rem rgba(black, 0.125);
   transition: background-color 200ms;
 
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     border-color: rgba(white, 0.125);
   }
 

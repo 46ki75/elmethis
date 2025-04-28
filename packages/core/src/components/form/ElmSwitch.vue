@@ -5,7 +5,7 @@
       '--color': color,
       '--padding': '2px',
       '--size': size,
-      '--width': 'calc(var(--size) * 2 + var(--padding) * 2)'
+      '--width': 'calc(var(--size) * 2 + var(--padding) * 2)',
     }"
   >
     <input
@@ -19,8 +19,8 @@
         $style.bar,
         {
           [$style['bar--checked']]: checked,
-          [$style['bar--disabled']]: disabled
-        }
+          [$style['bar--disabled']]: disabled,
+        },
       ]"
     >
       <div
@@ -28,8 +28,8 @@
           $style.circle,
           {
             [$style['circle--checked']]: checked,
-            [$style['circle--disabled']]: disabled
-          }
+            [$style['circle--disabled']]: disabled,
+          },
         ]"
       ></div>
     </div>
@@ -37,36 +37,36 @@
 </template>
 
 <script setup lang="ts">
-import type { Property } from 'csstype'
+import type { Property } from "csstype";
 
 export interface ElmSwitchProps {
   /**
    * The color of the switch when checked.
    */
-  color: string
+  color: string;
 
   /**
    * The size of the switch.
    */
-  size: Property.Width
+  size: Property.Width;
 
   /**
    * Whether the switch is disabled.
    */
-  disabled?: boolean
+  disabled?: boolean;
 }
 
 const props = withDefaults(defineProps<ElmSwitchProps>(), {
-  color: '#6987b8',
-  size: '18px',
-  disabled: false
-})
+  color: "#6987b8",
+  size: "18px",
+  disabled: false,
+});
 
-const checked = defineModel({ default: false })
+const checked = defineModel({ default: false });
 
 const handleClick = () => {
-  if (!props.disabled) checked.value = !checked.value
-}
+  if (!props.disabled) checked.value = !checked.value;
+};
 </script>
 
 <style module lang="scss">

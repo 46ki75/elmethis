@@ -4,7 +4,7 @@
     ref="targetRef"
     :class="$style.katex"
     :style="{
-      '--margin-block': props.block ? '3rem' : undefined
+      '--margin-block': props.block ? '3rem' : undefined,
     }"
   >
     <span v-if="html" v-html="html"></span>
@@ -15,7 +15,7 @@
     ref="targetRef"
     :class="$style.katex"
     :style="{
-      '--margin-block': props.block ? '3rem' : undefined
+      '--margin-block': props.block ? '3rem' : undefined,
     }"
   >
     <span v-if="html" v-html="html"></span
@@ -23,13 +23,13 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onServerPrefetch, onUpdated, ref } from 'vue'
+import { onMounted, onServerPrefetch, onUpdated, ref } from "vue";
 
 export interface ElmKatexProps {
   /**
    * The KaTex expression.
    */
-  expression: string
+  expression: string;
 
   /**
    * Whether to render the equation in block mode.
@@ -38,47 +38,47 @@ export interface ElmKatexProps {
    *
    * Default is `false`.
    */
-  block?: boolean
+  block?: boolean;
 }
 
 const props = withDefaults(defineProps<ElmKatexProps>(), {
-  block: false
-})
+  block: false,
+});
 
-const html = ref<string | undefined>()
+const html = ref<string | undefined>();
 
 let katexRenderToString:
   | ((
       expression: string,
-      options: { displayMode: boolean; output: 'mathml' }
+      options: { displayMode: boolean; output: "mathml" },
     ) => string)
-  | null = null
+  | null = null;
 
 const loadKatex = async () => {
   if (!katexRenderToString) {
-    const { renderToString } = await import('katex')
-    katexRenderToString = renderToString
+    const { renderToString } = await import("katex");
+    katexRenderToString = renderToString;
   }
-}
+};
 
 const render = async () => {
-  await loadKatex()
+  await loadKatex();
 
   if (html.value == null && katexRenderToString) {
     try {
       html.value = katexRenderToString(props.expression, {
         displayMode: props.block,
-        output: 'mathml'
-      })
+        output: "mathml",
+      });
     } catch (err) {
-      console.error('KaTeX rendering error:', err)
+      console.error("KaTeX rendering error:", err);
     }
   }
-}
+};
 
-onMounted(render)
-onUpdated(render)
-onServerPrefetch(render)
+onMounted(render);
+onUpdated(render);
+onServerPrefetch(render);
 </script>
 
 <style module lang="scss">
@@ -91,7 +91,7 @@ onServerPrefetch(render)
     background-color: var(--color, rgba(0, 0, 0, 0.7));
   }
 
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     color: var(--color, rgba(255, 255, 255, 0.7));
 
     &::selection {

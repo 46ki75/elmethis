@@ -15,7 +15,7 @@
 <style module lang="scss">
 .path {
   fill: #293138;
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     fill: #d2dbe3;
   }
 }

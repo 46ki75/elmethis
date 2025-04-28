@@ -7,15 +7,15 @@
 </template>
 
 <script setup lang="ts">
-import ElmTableCell from './ElmTableCell.vue'
+import ElmTableCell from "./ElmTableCell.vue";
 
 export interface ElmTableRowProps {}
 
-withDefaults(defineProps<ElmTableRowProps>(), {})
+withDefaults(defineProps<ElmTableRowProps>(), {});
 
 const slots = defineSlots<{
-  default: InstanceType<typeof ElmTableCell>[]
-}>()
+  default: InstanceType<typeof ElmTableCell>[];
+}>();
 </script>
 
 <style scoped lang="scss"></style>

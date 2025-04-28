@@ -7,7 +7,7 @@
         </div>
         <template
           v-for="darkness in [
-            -0.2, -0.15, -0.1, -0.05, 0, 0.05, 0.1, 0.15, 0.2
+            -0.2, -0.15, -0.1, -0.05, 0, 0.05, 0.1, 0.15, 0.2,
           ]"
         >
           <ElmColorSample :color="darken(darkness, color.code)" />
@@ -18,17 +18,17 @@
 </template>
 
 <script setup lang="ts">
-import { darken } from 'polished'
-import ElmColorSample from './ElmColorSample.vue'
+import { darken } from "polished";
+import ElmColorSample from "./ElmColorSample.vue";
 
 export interface ElmColorTableProps {
   /**
    * The colors to display.
    */
-  colors: { name: string; code: string }[]
+  colors: { name: string; code: string }[];
 }
 
-withDefaults(defineProps<ElmColorTableProps>(), {})
+withDefaults(defineProps<ElmColorTableProps>(), {});
 </script>
 
 <style module lang="scss">

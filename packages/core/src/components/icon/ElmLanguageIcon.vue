@@ -7,164 +7,164 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, h, ref, useCssModule } from 'vue'
-import { Icon as Iconify } from '@iconify/vue'
-import { watch } from 'vue'
+import { defineAsyncComponent, h, ref, useCssModule } from "vue";
+import { Icon as Iconify } from "@iconify/vue";
+import { watch } from "vue";
 
 export interface ElmLanguageIconProps {
   /**
    * The size of the icon.
    */
-  size?: number
+  size?: number;
 
   /**
    * The language of the icon.
    */
-  language: string
+  language: string;
 }
 
 const props = withDefaults(defineProps<ElmLanguageIconProps>(), {
-  size: 24
-})
+  size: 24,
+});
 
-const style = useCssModule()
-const Fallback = h(Iconify, { icon: 'mdi:terminal-line', class: style.icon })
+const style = useCssModule();
+const Fallback = h(Iconify, { icon: "mdi:terminal-line", class: style.icon });
 
 const render = () => {
   switch (props.language.toLowerCase()) {
-    case 'rust':
-    case 'rs':
+    case "rust":
+    case "rs":
       return defineAsyncComponent({
-        loader: () => import('./languages/Rust.vue'),
-        loadingComponent: Fallback
-      })
+        loader: () => import("./languages/Rust.vue"),
+        loadingComponent: Fallback,
+      });
 
-    case 'javascript':
-    case 'js':
+    case "javascript":
+    case "js":
       return h(Iconify, {
-        icon: 'devicon:javascript',
-        class: style.icon
-      })
+        icon: "devicon:javascript",
+        class: style.icon,
+      });
 
-    case 'typescript':
-    case 'ts':
+    case "typescript":
+    case "ts":
       return h(Iconify, {
-        icon: 'devicon:typescript',
-        class: style.icon
-      })
+        icon: "devicon:typescript",
+        class: style.icon,
+      });
 
-    case 'bash':
-    case 'sh':
-    case 'shell':
+    case "bash":
+    case "sh":
+    case "shell":
       return defineAsyncComponent({
-        loader: () => import('./languages/Bash.vue'),
-        loadingComponent: Fallback
-      })
+        loader: () => import("./languages/Bash.vue"),
+        loadingComponent: Fallback,
+      });
 
-    case 'tf':
-    case 'terraform':
-    case 'hcl':
+    case "tf":
+    case "terraform":
+    case "hcl":
       return h(Iconify, {
-        icon: 'devicon:terraform',
-        class: style.icon
-      })
+        icon: "devicon:terraform",
+        class: style.icon,
+      });
 
-    case 'html':
+    case "html":
       return h(Iconify, {
-        icon: 'devicon:html5',
-        class: style.icon
-      })
+        icon: "devicon:html5",
+        class: style.icon,
+      });
 
-    case 'css':
+    case "css":
       return defineAsyncComponent({
-        loader: () => import('./languages/Css.vue'),
-        loadingComponent: Fallback
-      })
+        loader: () => import("./languages/Css.vue"),
+        loadingComponent: Fallback,
+      });
 
-    case 'npm':
+    case "npm":
       return h(Iconify, {
-        icon: 'devicon:npm',
-        class: style.icon
-      })
+        icon: "devicon:npm",
+        class: style.icon,
+      });
 
-    case 'java':
+    case "java":
       return h(Iconify, {
-        icon: 'devicon:java',
-        class: style.icon
-      })
+        icon: "devicon:java",
+        class: style.icon,
+      });
 
-    case 'kotlin':
-    case 'kt':
+    case "kotlin":
+    case "kt":
       return h(Iconify, {
-        icon: 'devicon:kotlin',
-        class: style.icon
-      })
+        icon: "devicon:kotlin",
+        class: style.icon,
+      });
 
-    case 'go':
-    case 'golang':
+    case "go":
+    case "golang":
       return h(Iconify, {
-        icon: 'logos:go',
-        class: style.icon
-      })
+        icon: "logos:go",
+        class: style.icon,
+      });
 
-    case 'python':
-    case 'py':
+    case "python":
+    case "py":
       return h(Iconify, {
-        icon: 'devicon:python',
-        class: style.icon
-      })
+        icon: "devicon:python",
+        class: style.icon,
+      });
 
-    case 'sql':
+    case "sql":
       return h(Iconify, {
-        icon: 'vscode-icons:file-type-sql',
-        class: style.icon
-      })
+        icon: "vscode-icons:file-type-sql",
+        class: style.icon,
+      });
 
-    case 'json':
+    case "json":
       return h(Iconify, {
-        icon: 'devicon:json',
-        class: style.icon
-      })
+        icon: "devicon:json",
+        class: style.icon,
+      });
 
-    case 'lua':
+    case "lua":
       return h(Iconify, {
-        icon: 'devicon:lua',
-        class: style.icon
-      })
+        icon: "devicon:lua",
+        class: style.icon,
+      });
 
-    case 'cs':
-    case 'csharp':
+    case "cs":
+    case "csharp":
       return h(Iconify, {
-        icon: 'devicon:csharp',
-        class: style.icon
-      })
+        icon: "devicon:csharp",
+        class: style.icon,
+      });
 
-    case 'cpp':
-    case 'c++':
+    case "cpp":
+    case "c++":
       return h(Iconify, {
-        icon: 'devicon:cplusplus',
-        class: style.icon
-      })
+        icon: "devicon:cplusplus",
+        class: style.icon,
+      });
 
-    case 'c':
+    case "c":
       return h(Iconify, {
-        icon: 'devicon:c',
-        class: style.icon
-      })
+        icon: "devicon:c",
+        class: style.icon,
+      });
 
     default:
-      return Fallback
+      return Fallback;
   }
-}
+};
 
-const Icon = ref(render())
+const Icon = ref(render());
 
 watch(
   () => props.language,
   () => {
-    Icon.value = render()
-  }
-)
+    Icon.value = render();
+  },
+);
 </script>
 
 <style module lang="scss">
