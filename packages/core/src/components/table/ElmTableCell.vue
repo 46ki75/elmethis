@@ -1,5 +1,8 @@
 <template>
-  <component :is="hasHeader ? 'th' : 'td'" class="cell">
+  <component
+    :is="hasHeader ? 'th' : 'td'"
+    :class="[$style.common, hasHeader ? $style.th : $style.td]"
+  >
     <slot v-if="text == null" />
     {{ text }}
   </component>
@@ -30,8 +33,8 @@ defineSlots<{
 }>();
 </script>
 
-<style scoped lang="scss">
-@mixin common-cell-styles {
+<style module lang="scss">
+.common {
   padding: 0.75rem 1rem;
 
   color: rgba(black, 0.7);
@@ -51,9 +54,7 @@ defineSlots<{
   }
 }
 
-td.cell {
-  @include common-cell-styles;
-
+.td {
   border-top: 1px solid rgba(black, 0.15);
   border-right: 1px dotted rgba(black, 0.1);
 
@@ -63,9 +64,7 @@ td.cell {
   }
 }
 
-th.cell {
-  @include common-cell-styles;
-
+.th {
   border-right: 1px dotted rgba(black, 0.15);
 
   [data-theme="dark"] & {
