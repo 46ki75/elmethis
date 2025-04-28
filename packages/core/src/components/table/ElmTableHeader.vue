@@ -14,7 +14,9 @@ export interface ElmTableHeaderProps {}
 withDefaults(defineProps<ElmTableHeaderProps>(), {});
 
 defineSlots<{
-  default: InstanceType<typeof ElmTableRow>;
+  default:
+    | InstanceType<typeof ElmTableRow>
+    | InstanceType<typeof ElmTableRow>[];
 }>();
 </script>
 

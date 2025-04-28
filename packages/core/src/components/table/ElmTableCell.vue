@@ -52,23 +52,27 @@ defineSlots<{
       background-color: rgba(white, 0.7);
     }
   }
-}
 
-.td {
-  border-top: 1px solid rgba(black, 0.15);
-  border-right: 1px dotted rgba(black, 0.1);
-
-  [data-theme="dark"] & {
-    border-top-color: rgba(white, 0.15);
-    border-right-color: rgba(white, 0.1);
-  }
-}
-
-.th {
   border-right: 1px dotted rgba(black, 0.15);
 
   [data-theme="dark"] & {
     border-right: 1px dotted rgba(white, 0.15);
   }
+
+  &:last-child {
+    border-right: none;
+  }
+}
+
+.td {
+  border-top: 1px solid rgba(black, 0.15);
+
+  [data-theme="dark"] & {
+    border-top-color: rgba(white, 0.15);
+  }
+}
+
+.th {
+  background-color: rgba(gray, 0.15);
 }
 </style>
