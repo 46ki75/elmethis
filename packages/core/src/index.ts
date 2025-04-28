@@ -55,6 +55,9 @@ export { default as ElmBlockFallback } from "./components/fallback/ElmBlockFallb
 export type { ElmSpinnerProps } from "./components/fallback/ElmSpinner.vue";
 export { default as ElmSpinner } from "./components/fallback/ElmSpinner.vue";
 
+export type { ElmUnsupportedBlockProps } from "./components/fallback/ElmUnsupportedBlock.vue";
+export { default as ElmUnsupportedBlock } from "./components/fallback/ElmUnsupportedBlock.vue";
+
 export type { ElmButtonProps } from "./components/form/ElmButton.vue";
 export { default as ElmButton } from "./components/form/ElmButton.vue";
 

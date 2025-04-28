@@ -1,6 +1,12 @@
 <template>
   <div :class="$style.toggle" :style="{ '--margin-block': margin }">
-    <div :class="$style.summary" @click="handleClick">
+    <div
+      :class="$style.summary"
+      @click="handleClick"
+      :style="{
+        borderRadius: isOpen ? '0.25rem 0.25rem 0rem 0rem' : '0.25rem',
+      }"
+    >
       <div :style="{ display: 'flex', gap: '0.5rem' }">
         <Icon
           icon="mdi:chevron-right"
@@ -27,6 +33,17 @@
         <slot />
       </div>
     </transition>
+
+    <transition>
+      <div v-if="isOpen" :class="$style.close" @click="handleClick">
+        <div :class="$style['close-button']">
+          <svg viewBox="0 0 24 24" width="1.25rem" height="1.25rem">
+            <path :d="mdiChevronUp" />
+          </svg>
+          <ElmInlineText text="CLOSE" color="#8e3636" />
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -35,6 +52,8 @@ import ElmInlineText from "../typography/ElmInlineText.vue";
 import { Icon } from "@iconify/vue";
 import type { Property } from "csstype";
 import { VNode } from "vue";
+
+import { mdiChevronUp } from "@mdi/js";
 
 export interface ElmToggleProps {
   /**
@@ -68,9 +87,6 @@ const handleClick = (event: Event): void => {
 <style module lang="scss">
 .toggle {
   margin-block: var(--margin-block);
-  box-shadow: 0 0 0.125rem rgba(black, 0.3);
-  border-radius: 0.25rem;
-  overflow: hidden;
 }
 
 .summary {
@@ -83,6 +99,8 @@ const handleClick = (event: Event): void => {
   justify-content: space-between;
   align-items: center;
   gap: 0.5rem;
+
+  border: 1px solid rgba(gray, 0.25);
 
   background-color: rgba(black, 0.025);
   [data-theme="dark"] & {
@@ -104,7 +122,37 @@ const handleClick = (event: Event): void => {
   display: block;
 
   background-color: rgba(white, 0.05);
-  border-top: dashed 1px rgba(gray, 0.2);
+  border: 1px solid rgba(gray, 0.25);
+  border-radius: 0 0 0.25rem 0.25rem;
+}
+
+.close {
+  margin-block: 0.25rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.close-button {
+  padding: 0.25rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.25rem;
+
+  user-select: none;
+  cursor: pointer;
+  fill: #c56565;
+  opacity: 0.7;
+  transition: background-color 100ms;
+  border-radius: 0.25rem;
+
+  &:hover {
+    background-color: rgba(#c56565, 0.15);
+  }
 }
 </style>
 
