@@ -33,6 +33,22 @@ defineSlots<{
 <style scoped lang="scss">
 @mixin common-cell-styles {
   padding: 0.75rem 1rem;
+
+  color: rgba(black, 0.7);
+
+  &::selection {
+    color: rgba(white, 0.7);
+    background-color: rgba(black, 0.7);
+  }
+
+  [data-theme="dark"] & {
+    color: rgba(white, 0.7);
+
+    &::selection {
+      color: rgba(black, 0.7);
+      background-color: rgba(white, 0.7);
+    }
+  }
 }
 
 td.cell {

@@ -1,5 +1,5 @@
 <template>
-  <thead class="elmethis-table-header-thead">
+  <thead :class="$style.thead">
     <slot />
   </thead>
 </template>
@@ -18,30 +18,13 @@ defineSlots<{
 }>();
 </script>
 
-<style lang="scss">
-.elmethis-table-header-thead {
+<style module lang="scss">
+.thead {
   text-align: left;
   transition:
     background-color 400ms,
     color 400ms;
 
   border-bottom: 2px solid rgba(gray, 0.5);
-
-  tr {
-    td,
-    th {
-      &::selection {
-        color: rgba(0, 0, 0, 0.7);
-        background-color: var(--color, rgba(255, 255, 255, 0.7));
-      }
-
-      [data-theme="dark"] & {
-        &::selection {
-          color: rgba(255, 255, 255, 0.7);
-          background-color: var(--color, rgba(0, 0, 0, 0.7));
-        }
-      }
-    }
-  }
 }
 </style>

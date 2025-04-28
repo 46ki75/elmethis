@@ -30,7 +30,7 @@ import ElmTableHeader from "./ElmTableHeader.vue";
 import ElmTableBody from "./ElmTableBody.vue";
 
 import type { Property } from "csstype";
-import { defineSlots } from "vue";
+import { defineSlots, provide } from "vue";
 import ElmInlineText from "../typography/ElmInlineText.vue";
 
 import { mdiTable } from "@mdi/js";
@@ -42,9 +42,15 @@ export interface ElmTableProps {
   margin?: Property.MarginBlock;
 
   caption?: string;
+
+  hasRowHeader?: boolean;
 }
 
-withDefaults(defineProps<ElmTableProps>(), {});
+const props = withDefaults(defineProps<ElmTableProps>(), {
+  hasRowHeader: false,
+});
+
+provide("hasRowHeader", props.hasRowHeader);
 
 const slots = defineSlots<{
   /**
