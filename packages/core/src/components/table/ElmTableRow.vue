@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from "vue";
+import { inject, ComputedRef } from "vue";
 import ElmTableCell from "./ElmTableCell.vue";
 
 export interface ElmTableRowProps {}
@@ -18,7 +18,7 @@ const slots = defineSlots<{
   default: InstanceType<typeof ElmTableCell>[];
 }>();
 
-const hasRowHeader = inject<boolean>("hasRowHeader");
+const hasRowHeader = inject<ComputedRef<boolean>>("hasRowHeader");
 </script>
 
 <style module lang="scss">

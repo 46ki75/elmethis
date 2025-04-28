@@ -30,7 +30,7 @@ import ElmTableHeader from "./ElmTableHeader.vue";
 import ElmTableBody from "./ElmTableBody.vue";
 
 import type { Property } from "csstype";
-import { defineSlots, provide } from "vue";
+import { computed, defineSlots, provide, ComputedRef } from "vue";
 import ElmInlineText from "../typography/ElmInlineText.vue";
 
 import { mdiTable } from "@mdi/js";
@@ -50,7 +50,9 @@ const props = withDefaults(defineProps<ElmTableProps>(), {
   hasRowHeader: false,
 });
 
-provide("hasRowHeader", props.hasRowHeader);
+const hasRowHeader = computed(() => props.hasRowHeader);
+
+provide<ComputedRef<boolean>, string>("hasRowHeader", hasRowHeader);
 
 const slots = defineSlots<{
   /**

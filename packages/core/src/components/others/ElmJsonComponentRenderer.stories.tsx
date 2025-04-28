@@ -372,7 +372,11 @@ export const Table: Story = {
     jsonComponents: [
       {
         type: "Table",
-        props: { caption: "Example Table" },
+        props: {
+          caption: "Example Table",
+          hasRowHeader: true,
+          hasColumnHeader: true,
+        },
         slots: {
           header: [
             {
