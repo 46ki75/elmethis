@@ -7,8 +7,8 @@
           $style['char-box'],
           {
             [$style.focused]: focused && selectedIndex === index,
-            [$style.loading]: loading
-          }
+            [$style.loading]: loading,
+          },
         ]"
         @click="select(index)"
       >
@@ -34,68 +34,68 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
-import { useFocus } from '@vueuse/core'
-import { nextTick, onMounted, ref, computed } from 'vue'
+import { Icon } from "@iconify/vue";
+import { useFocus } from "@vueuse/core";
+import { nextTick, onMounted, ref, computed } from "vue";
 
 export interface ElmTotpProps {
-  length: number
-  focusOnMount?: boolean
-  loading?: boolean
+  length: number;
+  focusOnMount?: boolean;
+  loading?: boolean;
 }
 
 const props = withDefaults(defineProps<ElmTotpProps>(), {
   focusOnMount: true,
-  loading: false
-})
+  loading: false,
+});
 
-const inputModel = ref<string>('')
+const inputModel = ref<string>("");
 
 const paddedInputRef = computed(() => {
-  return inputModel.value.padEnd(props.length, ' ')
-})
+  return inputModel.value.padEnd(props.length, " ");
+});
 
-const targetRef = ref<HTMLInputElement | null>(null)
-const { focused } = useFocus(targetRef)
-const selectedIndex = ref<number | null>(0)
+const targetRef = ref<HTMLInputElement | null>(null);
+const { focused } = useFocus(targetRef);
+const selectedIndex = ref<number | null>(0);
 
 const select = (index: number) => {
-  selectText(index)
-  selectedIndex.value = index
-}
+  selectText(index);
+  selectedIndex.value = index;
+};
 
 const selectText = (index: number): void => {
   if (targetRef.value) {
-    targetRef.value.focus()
-    targetRef.value.setSelectionRange(index, index + 1)
+    targetRef.value.focus();
+    targetRef.value.setSelectionRange(index, index + 1);
   }
-}
+};
 
 const handleInput = () => {
   if (focused.value && selectedIndex.value !== null) {
     if (selectedIndex.value < props.length - 1) {
-      select(selectedIndex.value + 1)
+      select(selectedIndex.value + 1);
     } else {
-      select(0)
+      select(0);
     }
   }
-}
+};
 
 const onInputChange = () => {
-  const inputValue = targetRef.value?.value ?? ''
-  inputModel.value = inputValue.slice(0, props.length)
-  handleInput()
-}
+  const inputValue = targetRef.value?.value ?? "";
+  inputModel.value = inputValue.slice(0, props.length);
+  handleInput();
+};
 
 const reset = () => {
-  inputModel.value = ''
-  nextTick(() => select(0))
-}
+  inputModel.value = "";
+  nextTick(() => select(0));
+};
 
 onMounted(() => {
-  inputModel.value = ''
-  if (props.focusOnMount) nextTick(() => select(0))
-})
+  inputModel.value = "";
+  if (props.focusOnMount) nextTick(() => select(0));
+});
 </script>
 
 <style module lang="scss">
@@ -127,7 +127,7 @@ onMounted(() => {
     opacity 100ms;
 
   background-color: rgba(black, 0.025);
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     background-color: rgba(white, 0.025);
   }
 }
@@ -140,7 +140,7 @@ onMounted(() => {
 .loading {
   opacity: 0.5;
   background-color: rgba(black, 0.2);
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     background-color: rgba(white, 0.2);
   }
 }
@@ -149,7 +149,7 @@ onMounted(() => {
   font-size: 1.75rem;
   font-family: monospace;
   color: rgba(black, 0.7);
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     color: rgba(white, 0.7);
   }
 }
@@ -167,7 +167,7 @@ onMounted(() => {
     background-color: rgba(black, 0.05);
   }
 
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     color: rgba(white, 0.7);
     &:hover {
       background-color: rgba(white, 0.05);

@@ -7,8 +7,8 @@
         {
           [$style.typed]: target.status === 'typed',
           [$style.current]: target.status === 'current',
-          [$style.incorrect]: target.status === 'incorrect'
-        }
+          [$style.incorrect]: target.status === 'incorrect',
+        },
       ]"
       >{{ target.char }}</span
     >
@@ -18,18 +18,18 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import { useTyping } from '../../hooks/useTyping'
+import { onMounted } from "vue";
+import { useTyping } from "../../hooks/useTyping";
 
 export interface ElmTypingProps {}
 
-withDefaults(defineProps<ElmTypingProps>(), {})
+withDefaults(defineProps<ElmTypingProps>(), {});
 
-const { start, targetArray, isFinished, mistakes } = useTyping()
+const { start, targetArray, isFinished, mistakes } = useTyping();
 
 onMounted(() => {
-  start('Typing game')
-})
+  start("Typing game");
+});
 </script>
 
 <style module lang="scss">
@@ -42,7 +42,7 @@ onMounted(() => {
     background-color: rgba(black, 0.7);
   }
 
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     color: rgba(white, 0.7);
 
     &::selection {

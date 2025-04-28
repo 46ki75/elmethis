@@ -5,17 +5,17 @@
 </template>
 
 <script setup lang="ts">
-import ElmTableRow from './ElmTableRow.vue'
+import ElmTableRow from "./ElmTableRow.vue";
 
-import { defineSlots } from 'vue'
+import { defineSlots } from "vue";
 
 export interface ElmTableBodyProps {}
 
-withDefaults(defineProps<ElmTableBodyProps>(), {})
+withDefaults(defineProps<ElmTableBodyProps>(), {});
 
 defineSlots<{
-  default: InstanceType<typeof ElmTableRow>[]
-}>()
+  default: InstanceType<typeof ElmTableRow>[];
+}>();
 </script>
 
 <style lang="scss">
@@ -29,14 +29,14 @@ defineSlots<{
 
     &:nth-child(even) {
       background-color: rgba(black, 0.025);
-      [data-theme='dark'] & {
+      [data-theme="dark"] & {
         background-color: rgba(white, 0.025);
       }
     }
 
     &:hover {
       background-color: rgba(#6987b8, 0.15);
-      [data-theme='dark'] & {
+      [data-theme="dark"] & {
         background-color: rgba(#6987b8, 0.15);
       }
     }
@@ -44,7 +44,7 @@ defineSlots<{
     td,
     th {
       color: rgba(black, 0.7);
-      [data-theme='dark'] & {
+      [data-theme="dark"] & {
         color: rgba(white, 0.7);
       }
 
@@ -53,7 +53,7 @@ defineSlots<{
         background-color: var(--color, rgba(0, 0, 0, 0.7));
       }
 
-      [data-theme='dark'] & {
+      [data-theme="dark"] & {
         &::selection {
           color: rgba(0, 0, 0, 0.7);
           background-color: var(--color, rgba(255, 255, 255, 0.7));

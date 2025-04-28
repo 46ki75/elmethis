@@ -20,18 +20,18 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
-import ElmInlineText from '../typography/ElmInlineText.vue'
+import { Icon } from "@iconify/vue";
+import ElmInlineText from "../typography/ElmInlineText.vue";
 
 export interface ElmTableOfContentsProps {
   headings: Array<{
-    level: 1 | 2 | 3 | 4 | 5 | 6
-    text: string
-    id?: string
-  }>
+    level: 1 | 2 | 3 | 4 | 5 | 6;
+    text: string;
+    id?: string;
+  }>;
 }
 
-withDefaults(defineProps<ElmTableOfContentsProps>(), {})
+withDefaults(defineProps<ElmTableOfContentsProps>(), {});
 </script>
 
 <style module lang="scss">
@@ -43,7 +43,7 @@ withDefaults(defineProps<ElmTableOfContentsProps>(), {})
   border-left-style: solid;
   border-left-width: 0.25rem;
   border-left-color: rgba(black, 0.1);
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     border-left-color: rgba(white, 0.15);
   }
 

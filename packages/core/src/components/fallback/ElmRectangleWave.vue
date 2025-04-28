@@ -5,7 +5,7 @@
 <script setup lang="ts">
 export interface ElmRectangleWaveProps {}
 
-withDefaults(defineProps<ElmRectangleWaveProps>(), {})
+withDefaults(defineProps<ElmRectangleWaveProps>(), {});
 </script>
 
 <style module lang="scss">
@@ -46,7 +46,7 @@ withDefaults(defineProps<ElmRectangleWaveProps>(), {})
   border-width: 1px;
   border-color: rgba(0, 0, 0, 0.7);
 
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     border-color: rgba(255, 255, 255, 0.7);
   }
 }

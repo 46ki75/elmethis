@@ -5,7 +5,7 @@
         :class="$style.icon"
         :style="{
           '--width': size,
-          '--color': isLoading ? 'gray' : isLogin ? '#b36472' : '#6987b8'
+          '--color': isLoading ? 'gray' : isLogin ? '#b36472' : '#6987b8',
         }"
         :icon="
           isLoading
@@ -25,30 +25,30 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
-import ElmTooltip from '../containments/ElmTooltip.vue'
-import ElmInlineText from '../typography/ElmInlineText.vue'
+import { Icon } from "@iconify/vue";
+import ElmTooltip from "../containments/ElmTooltip.vue";
+import ElmInlineText from "../typography/ElmInlineText.vue";
 
 export interface ElmLoginIconProps {
   /**
    * Specifies the width of the icon.
    */
-  size?: string
+  size?: string;
 
   /**
    * Specifies whether the icon is for login or logout.
    */
-  isLogin?: boolean
+  isLogin?: boolean;
 
   /**
    * Specifies whether the icon is loading.
    */
-  isLoading?: boolean
+  isLoading?: boolean;
 }
 
 withDefaults(defineProps<ElmLoginIconProps>(), {
-  size: '2rem'
-})
+  size: "2rem",
+});
 </script>
 
 <style module lang="scss">
@@ -64,7 +64,7 @@ withDefaults(defineProps<ElmLoginIconProps>(), {
   transition: background-color 200ms;
   &:hover {
     background-color: rgba(black, 0.1);
-    [data-theme='dark'] & {
+    [data-theme="dark"] & {
       background-color: rgba(white, 0.1);
     }
   }

@@ -5,14 +5,14 @@
       {
         [$style.enable]: !loading && !disabled,
         [$style.normal]: !primary,
-        [$style.primary]: primary
-      }
+        [$style.primary]: primary,
+      },
     ]"
     :style="{
       display: block ? 'flex' : 'inline-flex',
       width: block ? '100%' : 'auto',
       cursor: disabled ? 'not-allowed' : loading ? 'progress' : 'pointer',
-      '--opacity': disabled ? 0.6 : undefined
+      '--opacity': disabled ? 0.6 : undefined,
     }"
     @click="handleClick"
   >
@@ -27,54 +27,54 @@
 </template>
 
 <script setup lang="ts">
-import ElmDotLoadingIcon from '../icon/ElmDotLoadingIcon.vue'
-import { onUnmounted, ref } from 'vue'
+import ElmDotLoadingIcon from "../icon/ElmDotLoadingIcon.vue";
+import { onUnmounted, ref } from "vue";
 
 export interface ElmButtonProps {
   /**
    * Whether the button is in loading state.
    */
-  loading?: boolean
+  loading?: boolean;
 
   /**
    * Whether the button is block.
    */
-  block?: boolean
+  block?: boolean;
 
   /**
    * Whether the button is disabled.
    */
-  disabled?: boolean
+  disabled?: boolean;
 
   /**
    * Whether the button is primary.
    */
-  primary?: boolean
+  primary?: boolean;
 
-  onClick: () => void
+  onClick: () => void;
 }
 
 const props = withDefaults(defineProps<ElmButtonProps>(), {
   loading: false,
   block: false,
   disabled: false,
-  primary: false
-})
+  primary: false,
+});
 
-const clicked = ref(false)
-const id = ref<number | undefined>()
+const clicked = ref(false);
+const id = ref<number | undefined>();
 
 const handleClick = () => {
   if (!props.loading && !props.disabled && props.onClick) {
-    clicked.value = true
-    id.value = window.setTimeout(() => (clicked.value = false), 300)
-    props.onClick()
+    clicked.value = true;
+    id.value = window.setTimeout(() => (clicked.value = false), 300);
+    props.onClick();
   }
-}
+};
 
 onUnmounted(() => {
-  if (id.value) clearTimeout(id.value)
-})
+  if (id.value) clearTimeout(id.value);
+});
 </script>
 
 <style module lang="scss">
@@ -107,7 +107,7 @@ onUnmounted(() => {
   color: rgba(black, 0.6);
   background-color: rgba(white, 0.8);
 
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     box-shadow: 0 0 0.25rem rgba(black, 0.6);
     color: rgba(white, 0.6);
     background-color: rgba(white, 0.1);
@@ -119,7 +119,7 @@ onUnmounted(() => {
   color: rgba(white, 0.6);
   background-color: rgba(black, 0.8);
 
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     box-shadow: 0 0 0.25rem rgba(black, 0.6);
     color: rgba(black, 0.6);
     background-color: rgba(white, 0.8);
@@ -131,7 +131,7 @@ onUnmounted(() => {
     opacity 200ms,
     transform 200ms;
 
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     &:hover {
       transform: translateX(-1px) translateY(-1px);
       opacity: var(--opacity, 0.7);

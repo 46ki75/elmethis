@@ -1,14 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
-import ElmSpinner from './ElmSpinner.vue'
+import type { Meta, StoryObj } from "@storybook/vue3";
+import ElmSpinner from "./ElmSpinner.vue";
 
 const meta: Meta<typeof ElmSpinner> = {
-  title: 'Components/Fallback/ElmSpinner',
+  title: "Components/Fallback/ElmSpinner",
   component: ElmSpinner,
-  tags: ['autodocs'],
-  args: {}
-}
+  tags: ["autodocs"],
+  args: {},
+};
 
-export default meta
-type Story = StoryObj<typeof meta>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {}
+export const Primary: Story = {};

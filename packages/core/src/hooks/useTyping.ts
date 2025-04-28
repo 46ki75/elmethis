@@ -1,30 +1,30 @@
-import { onKeyStroke } from '@vueuse/core'
-import { ref } from 'vue'
+import { onKeyStroke } from "@vueuse/core";
+import { ref } from "vue";
 
 interface Target {
-  char: string
-  status: 'typed' | 'incorrect' | 'current' | 'default'
+  char: string;
+  status: "typed" | "incorrect" | "current" | "default";
 }
 
 export function useTyping() {
-  const targetString = ref<string | null>(null)
-  const targetArray = ref<Target[]>([])
+  const targetString = ref<string | null>(null);
+  const targetArray = ref<Target[]>([]);
 
-  const currentCharIndex = ref(0)
+  const currentCharIndex = ref(0);
 
-  const mistakes = ref(0)
+  const mistakes = ref(0);
 
-  const isFinished = ref(false)
+  const isFinished = ref(false);
 
   const start = (target: string) => {
-    isFinished.value = false
-    currentCharIndex.value = 0
-    targetString.value = target
+    isFinished.value = false;
+    currentCharIndex.value = 0;
+    targetString.value = target;
     targetArray.value = target
-      .split('')
-      .map((char) => ({ char, status: 'default' }))
-    targetArray.value[0].status = 'current'
-  }
+      .split("")
+      .map((char) => ({ char, status: "default" }));
+    targetArray.value[0].status = "current";
+  };
 
   onKeyStroke((event) => {
     if (
@@ -33,21 +33,21 @@ export function useTyping() {
       event.key.length === 1 // ignore special keys
     ) {
       if (event.key === targetArray.value[currentCharIndex.value].char) {
-        targetArray.value[currentCharIndex.value].status = 'typed'
+        targetArray.value[currentCharIndex.value].status = "typed";
         if (currentCharIndex.value === targetArray.value.length - 1) {
-          isFinished.value = true
+          isFinished.value = true;
         } else {
-          currentCharIndex.value += 1
+          currentCharIndex.value += 1;
           targetArray.value[currentCharIndex.value] =
-            targetArray.value[currentCharIndex.value]
-          targetArray.value[currentCharIndex.value].status = 'current'
+            targetArray.value[currentCharIndex.value];
+          targetArray.value[currentCharIndex.value].status = "current";
         }
       } else {
-        mistakes.value += 1
-        targetArray.value[currentCharIndex.value].status = 'incorrect'
+        mistakes.value += 1;
+        targetArray.value[currentCharIndex.value].status = "incorrect";
       }
     }
-  })
+  });
 
-  return { start, targetArray, isFinished, mistakes }
+  return { start, targetArray, isFinished, mistakes };
 }

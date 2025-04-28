@@ -5,7 +5,7 @@
     :style="{
       '--border-color': colors[type].code,
       '--bg-color': rgba(colors[type].code, 0.1),
-      '--scale': targetIsVisible ? 1 : 0
+      '--scale': targetIsVisible ? 1 : 0,
     }"
   >
     <div :class="$style.header">
@@ -23,39 +23,39 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
-import ElmInlineText from './ElmInlineText.vue'
-import { ref } from 'vue'
-import { rgba } from 'polished'
-import { useIntersectionObserver } from '@vueuse/core'
+import { Icon } from "@iconify/vue";
+import ElmInlineText from "./ElmInlineText.vue";
+import { ref } from "vue";
+import { rgba } from "polished";
+import { useIntersectionObserver } from "@vueuse/core";
 
-export type AlertType = 'note' | 'tip' | 'important' | 'warning' | 'caution'
+export type AlertType = "note" | "tip" | "important" | "warning" | "caution";
 
 const colors: Record<AlertType, { code: string; icon: string }> = {
-  note: { code: '#6987b8', icon: 'mdi:information-slab-box-outline' },
-  tip: { code: '#59b57c', icon: 'heroicons:light-bulb' },
-  important: { code: '#9771bd', icon: 'heroicons:shield-exclamation' },
-  warning: { code: '#b8a36e', icon: 'heroicons:exclamation-triangle' },
-  caution: { code: '#b36472', icon: 'heroicons:x-circle' }
-}
+  note: { code: "#6987b8", icon: "mdi:information-slab-box-outline" },
+  tip: { code: "#59b57c", icon: "heroicons:light-bulb" },
+  important: { code: "#9771bd", icon: "heroicons:shield-exclamation" },
+  warning: { code: "#b8a36e", icon: "heroicons:exclamation-triangle" },
+  caution: { code: "#b36472", icon: "heroicons:x-circle" },
+};
 
 export interface ElmCalloutProps {
   /**
    * Type of alert
    */
-  type?: AlertType
+  type?: AlertType;
 }
 
 withDefaults(defineProps<ElmCalloutProps>(), {
-  type: 'note'
-})
+  type: "note",
+});
 
-const target = ref(null)
-const targetIsVisible = ref(false)
+const target = ref(null);
+const targetIsVisible = ref(false);
 
 useIntersectionObserver(target, ([{ isIntersecting }], _) => {
-  targetIsVisible.value = isIntersecting
-})
+  targetIsVisible.value = isIntersecting;
+});
 </script>
 
 <style module lang="scss">
@@ -72,7 +72,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 
   &::after {
     position: absolute;
-    content: '';
+    content: "";
     left: 0;
     top: 0;
     width: 100%;

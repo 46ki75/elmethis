@@ -6,13 +6,13 @@
     :style="{
       '--weight': weight,
       '--border-radius': round ? 'calc(var(--weight) / 2)' : undefined,
-      '--color': color
+      '--color': color,
     }"
   >
     <div
       :class="$style.value"
       :style="{
-        '--scale-x': `scaleX(${loading ? 0 : value / max})`
+        '--scale-x': `scaleX(${loading ? 0 : value / max})`,
       }"
     ></div>
 
@@ -21,71 +21,71 @@
     <div
       :class="$style.buffer"
       :style="{
-        '--scale-x': `scaleX(${loading ? 0 : buffer != null ? buffer / max : value / max})`
+        '--scale-x': `scaleX(${loading ? 0 : buffer != null ? buffer / max : value / max})`,
       }"
     ></div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Property } from 'csstype'
+import type { Property } from "csstype";
 
 export interface ElmProgressProps {
   /**
    * The current value of the progress.
    */
-  value: number
+  value: number;
 
   /**
    * The buffer value of the progress.
    */
-  buffer?: number
+  buffer?: number;
 
   /**
    * The maximum value of the progress.
    */
-  max?: number
+  max?: number;
 
   /**
    * The weight of the progress.
    */
-  weight?: Property.Height<string | number>
+  weight?: Property.Height<string | number>;
 
   /**
    * Whether the progress should be round.
    */
-  round?: boolean
+  round?: boolean;
 
   /**
    * The color of the progress.
    */
-  color?: string
+  color?: string;
 
   /**
    * Whether the progress is loading.
    */
-  loading?: boolean
+  loading?: boolean;
 }
 
 withDefaults(defineProps<ElmProgressProps>(), {
   max: 100,
-  weight: '4px',
+  weight: "4px",
   round: true,
-  loading: false
-})
+  loading: false,
+});
 </script>
 
 <style module lang="scss">
 @mixin bar($transition-duration: 800ms) {
   position: absolute;
-  content: '';
+  content: "";
   width: 100%;
   height: 100%;
   transition: transform $transition-duration;
   transform: var(--scale-x, scaleX(0));
   transform-origin: left;
   background-color: var(--color, rgba(black, 0.8));
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     background-color: var(--color, rgba(white, 0.8));
   }
 }
@@ -131,7 +131,7 @@ withDefaults(defineProps<ElmProgressProps>(), {
   overflow: hidden;
 
   background-color: rgba(black, 0.1);
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     background-color: rgba(white, 0.1);
   }
 

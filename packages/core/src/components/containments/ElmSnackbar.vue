@@ -6,27 +6,27 @@
     <div
       :class="$style.progress"
       :style="{
-        animationDuration: `${timeout}ms`
+        animationDuration: `${timeout}ms`,
       }"
     ></div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
-import { VNode } from 'vue'
-import ElmInlineText from '../typography/ElmInlineText.vue'
+import { Icon } from "@iconify/vue";
+import { VNode } from "vue";
+import ElmInlineText from "../typography/ElmInlineText.vue";
 
 export interface ElmSnackbarProps {
-  label?: string
-  children?: VNode
-  timeout?: number
-  close: () => void
+  label?: string;
+  children?: VNode;
+  timeout?: number;
+  close: () => void;
 }
 
 const props = withDefaults(defineProps<ElmSnackbarProps>(), {
-  timeout: 5000
-})
+  timeout: 5000,
+});
 </script>
 
 <style module lang="scss">
@@ -41,7 +41,7 @@ const props = withDefaults(defineProps<ElmSnackbarProps>(), {
   border-radius: 0.25rem;
   box-shadow: 0 0 0.25rem rgba(black, 0.25);
   background-color: rgba(white, 0.5);
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     box-shadow: 0 0 0.25rem rgba(black, 0.5);
     background-color: rgba(black, 0.2);
   }
@@ -56,13 +56,13 @@ const props = withDefaults(defineProps<ElmSnackbarProps>(), {
   transition: background-color 200ms;
 
   color: rgba(black, 0.75);
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     color: rgba(white, 0.75);
   }
 
   &:hover {
     background-color: rgba(black, 0.1);
-    [data-theme='dark'] & {
+    [data-theme="dark"] & {
       background-color: rgba(white, 0.1);
     }
   }

@@ -9,16 +9,16 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
-import ElmInlineText from '../typography/ElmInlineText.vue'
+import { Icon } from "@iconify/vue";
+import ElmInlineText from "../typography/ElmInlineText.vue";
 
 export interface ElmFieldAttributeProps {
-  icon: string
-  name: string
-  content: string
+  icon: string;
+  name: string;
+  content: string;
 }
 
-withDefaults(defineProps<ElmFieldAttributeProps>(), {})
+withDefaults(defineProps<ElmFieldAttributeProps>(), {});
 </script>
 
 <style module lang="scss">
@@ -44,7 +44,7 @@ withDefaults(defineProps<ElmFieldAttributeProps>(), {})
   height: 1rem;
   line-height: 1rem;
   color: rgba(black, 0.7);
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     color: rgba(white, 0.7);
   }
 }

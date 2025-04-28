@@ -8,8 +8,8 @@
         [$style.boolean]: type === 'boolean',
         [$style.null]: type === 'null',
         [$style.array]: type === 'array',
-        [$style.object]: type === 'object'
-      }
+        [$style.object]: type === 'object',
+      },
     ]"
   >
     <span :class="$style['column-type']">
@@ -24,36 +24,36 @@
 </template>
 
 <script setup lang="ts">
-import { type JSONSchema7TypeName } from 'json-schema'
+import { type JSONSchema7TypeName } from "json-schema";
 
-import { Icon } from '@iconify/vue'
-import ElmInlineText from '../typography/ElmInlineText.vue'
+import { Icon } from "@iconify/vue";
+import ElmInlineText from "../typography/ElmInlineText.vue";
 
 export interface ElmFieldTypeProps {
-  type: JSONSchema7TypeName
-  name?: string
-  nullable?: boolean
+  type: JSONSchema7TypeName;
+  name?: string;
+  nullable?: boolean;
 }
 
-withDefaults(defineProps<ElmFieldTypeProps>(), {})
+withDefaults(defineProps<ElmFieldTypeProps>(), {});
 
 function getIconForType(type: string) {
   switch (type) {
-    case 'boolean':
-      return 'carbon:boolean'
-    case 'string':
-      return 'icon-park-outline:text'
-    case 'number':
-    case 'integer':
-      return 'icon-park-outline:hashtag-key'
-    case 'null':
-      return 'ph:empty'
-    case 'array':
-      return 'ic:baseline-data-array'
-    case 'object':
-      return 'carbon:object'
+    case "boolean":
+      return "carbon:boolean";
+    case "string":
+      return "icon-park-outline:text";
+    case "number":
+    case "integer":
+      return "icon-park-outline:hashtag-key";
+    case "null":
+      return "ph:empty";
+    case "array":
+      return "ic:baseline-data-array";
+    case "object":
+      return "carbon:object";
     default:
-      return ''
+      return "";
   }
 }
 </script>
@@ -122,7 +122,7 @@ function getIconForType(type: string) {
       width: 20px;
       height: 20px;
       color: rgba(black, 0.7);
-      [data-theme='dark'] & {
+      [data-theme="dark"] & {
         color: rgba(white, 0.7);
       }
     }

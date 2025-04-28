@@ -5,17 +5,17 @@
 </template>
 
 <script setup lang="ts">
-import ElmTableRow from './ElmTableRow.vue'
+import ElmTableRow from "./ElmTableRow.vue";
 
-import { defineSlots } from 'vue'
+import { defineSlots } from "vue";
 
 export interface ElmTableHeaderProps {}
 
-withDefaults(defineProps<ElmTableHeaderProps>(), {})
+withDefaults(defineProps<ElmTableHeaderProps>(), {});
 
 defineSlots<{
-  default: InstanceType<typeof ElmTableRow>
-}>()
+  default: InstanceType<typeof ElmTableRow>;
+}>();
 </script>
 
 <style lang="scss">
@@ -35,7 +35,7 @@ defineSlots<{
         background-color: var(--color, rgba(255, 255, 255, 0.7));
       }
 
-      [data-theme='dark'] & {
+      [data-theme="dark"] & {
         &::selection {
           color: rgba(255, 255, 255, 0.7);
           background-color: var(--color, rgba(0, 0, 0, 0.7));

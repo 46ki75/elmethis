@@ -5,7 +5,7 @@
         <div
           :class="$style['color-bg']"
           :style="{
-            '--background-color': color
+            '--background-color': color,
           }"
           @click="copy(hex)"
         >
@@ -31,28 +31,28 @@
 </template>
 
 <script setup lang="ts">
-import { parseToHsl, parseToRgb, rgbToColorString } from 'polished'
-import ElmTooltip from '../containments/ElmTooltip.vue'
-import { useClipboard } from '@vueuse/core'
-import { Icon } from '@iconify/vue'
+import { parseToHsl, parseToRgb, rgbToColorString } from "polished";
+import ElmTooltip from "../containments/ElmTooltip.vue";
+import { useClipboard } from "@vueuse/core";
+import { Icon } from "@iconify/vue";
 
 export interface ElmColorSampleProps {
   /**
    * The color to display.
    */
-  color: string
+  color: string;
 }
 
-const props = withDefaults(defineProps<ElmColorSampleProps>(), {})
+const props = withDefaults(defineProps<ElmColorSampleProps>(), {});
 
-const { blue, green, red } = parseToRgb(props.color)
-const { hue, saturation, lightness } = parseToHsl(props.color)
+const { blue, green, red } = parseToRgb(props.color);
+const { hue, saturation, lightness } = parseToHsl(props.color);
 
-const hex = rgbToColorString(parseToRgb(props.color))
-const rgb = `rgb(${red}, ${green}, ${blue})`
-const hsl = `hsl(${Math.floor(hue)}, ${Math.floor(saturation * 100)}%, ${Math.floor(lightness * 100)}%)`
+const hex = rgbToColorString(parseToRgb(props.color));
+const rgb = `rgb(${red}, ${green}, ${blue})`;
+const hsl = `hsl(${Math.floor(hue)}, ${Math.floor(saturation * 100)}%, ${Math.floor(lightness * 100)}%)`;
 
-const { copy, copied } = useClipboard()
+const { copy, copied } = useClipboard();
 </script>
 
 <style module lang="scss">

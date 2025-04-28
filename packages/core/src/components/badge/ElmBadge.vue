@@ -6,7 +6,7 @@
         color:
           getLuminance(color) > 0.5
             ? 'rgba(0,0,0,0.7)'
-            : 'rgba(255,255,255,0.7)'
+            : 'rgba(255,255,255,0.7)',
       }"
     >
       <slot name="left" />
@@ -19,13 +19,13 @@
 </template>
 
 <script setup lang="ts">
-import { getLuminance } from 'polished'
+import { getLuminance } from "polished";
 
 export interface ElmBadgeProps {
-  color: string
+  color: string;
 }
 
-withDefaults(defineProps<ElmBadgeProps>(), {})
+withDefaults(defineProps<ElmBadgeProps>(), {});
 </script>
 
 <style module lang="scss">

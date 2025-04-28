@@ -21,18 +21,18 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
-import ElmInlineText from '../typography/ElmInlineText.vue'
+import { Icon } from "@iconify/vue";
+import ElmInlineText from "../typography/ElmInlineText.vue";
 
 export interface ElmBookmarkIconProps {
-  name?: string
+  name?: string;
 
-  href: string
+  href: string;
 
-  favicon?: string
+  favicon?: string;
 }
 
-withDefaults(defineProps<ElmBookmarkIconProps>(), {})
+withDefaults(defineProps<ElmBookmarkIconProps>(), {});
 </script>
 
 <style module lang="scss">
@@ -51,7 +51,7 @@ withDefaults(defineProps<ElmBookmarkIconProps>(), {})
   transition: background-color 100ms;
   &:hover {
     background-color: rgba(black, 0.1);
-    [data-theme='dark'] & {
+    [data-theme="dark"] & {
       background-color: rgba(white, 0.1);
     }
   }
@@ -66,7 +66,7 @@ withDefaults(defineProps<ElmBookmarkIconProps>(), {})
   width: 2.5rem;
   height: 2.5rem;
   color: rgba(black, 0.7);
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     color: rgba(white, 0.7);
   }
 }

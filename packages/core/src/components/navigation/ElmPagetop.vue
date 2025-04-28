@@ -4,7 +4,7 @@
     :style="{
       '--size': `${64}px`,
       left: position === 'left' ? '0' : 'auto',
-      right: position === 'right' ? '0' : 'auto'
+      right: position === 'right' ? '0' : 'auto',
     }"
     @click="toTop"
   >
@@ -16,34 +16,34 @@
 </template>
 
 <script setup lang="ts">
-import { useWindowScroll } from '@vueuse/core'
-import { ref, watch } from 'vue'
+import { useWindowScroll } from "@vueuse/core";
+import { ref, watch } from "vue";
 
 export interface ElmPagetopProps {
   /**
    * Specifies the position of the button.
    */
-  position?: 'left' | 'right'
+  position?: "left" | "right";
 }
 
 withDefaults(defineProps<ElmPagetopProps>(), {
-  position: 'right'
-})
+  position: "right",
+});
 
-const isVisible = ref<boolean>(false)
+const isVisible = ref<boolean>(false);
 
-const { y } = useWindowScroll()
+const { y } = useWindowScroll();
 
 watch(
   () => y.value,
   () => {
-    isVisible.value = y.value > 100
-  }
-)
+    isVisible.value = y.value > 100;
+  },
+);
 
 const toTop = () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' })
-}
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
 </script>
 
 <style module lang="scss">
@@ -129,13 +129,13 @@ const toTop = () => {
 
     &:before,
     &:after {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       height: 100%;
       width: 50%;
       background-color: rgba(black, 0.7);
-      [data-theme='dark'] & {
+      [data-theme="dark"] & {
         background-color: rgba(white, 0.7);
       }
     }
@@ -164,7 +164,7 @@ const toTop = () => {
     user-select: none;
 
     color: rgba(black, 0.7);
-    [data-theme='dark'] & {
+    [data-theme="dark"] & {
       color: rgba(white, 0.7);
     }
   }

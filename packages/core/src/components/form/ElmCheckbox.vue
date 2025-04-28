@@ -3,8 +3,8 @@
     :class="[
       $style.container,
       {
-        [$style['container--disable']]: props.disable
-      }
+        [$style['container--disable']]: props.disable,
+      },
     ]"
     @click="toggleCheck"
   >
@@ -12,7 +12,7 @@
       :style="{
         display: 'flex',
         alignItems: 'center',
-        gap: '0.5rem'
+        gap: '0.5rem',
       }"
     >
       <svg width="24" height="24" :class="$style.checkbox">
@@ -75,8 +75,8 @@
             $style.rect,
             {
               [$style['rect--checked']]: isChecked,
-              [$style['rect--loading']]: props.loading
-            }
+              [$style['rect--loading']]: props.loading,
+            },
           ]"
           strokeWidth="0.8"
         />
@@ -137,34 +137,34 @@
 </template>
 
 <script setup lang="ts">
-import ElmInlineText from '../typography/ElmInlineText.vue'
+import ElmInlineText from "../typography/ElmInlineText.vue";
 
 export interface ElmCheckboxProps {
   /**
    * The label displayed.
    */
-  label: string
+  label: string;
 
   /**
    * Whether the checkbox is in a loading state.
    */
-  loading?: boolean
+  loading?: boolean;
 
   /**
    * Whether the checkbox is disabled.
    */
-  disable?: boolean
+  disable?: boolean;
 }
 
 const props = withDefaults(defineProps<ElmCheckboxProps>(), {
-  loading: false
-})
+  loading: false,
+});
 
-const isChecked = defineModel<boolean>({})
+const isChecked = defineModel<boolean>({});
 
 function toggleCheck() {
   if (!props.loading && !props.disable) {
-    isChecked.value = !isChecked.value
+    isChecked.value = !isChecked.value;
   }
 }
 </script>
@@ -202,7 +202,7 @@ function toggleCheck() {
   stroke: rgba(0, 0, 0, 0.8);
   fill: transparent;
 
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     stroke: rgba(255, 255, 255, 0.8);
   }
 }
@@ -216,7 +216,7 @@ function toggleCheck() {
 
   &--checked {
     fill: rgba(0, 0, 0, 0.8);
-    [data-theme='dark'] & {
+    [data-theme="dark"] & {
       fill: rgba(255, 255, 255, 0.8);
     }
   }
@@ -226,7 +226,7 @@ function toggleCheck() {
   transition: opacity 200ms;
 
   fill: rgba(black, 0.7);
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     fill: rgba(white, 0.7);
   }
 }
@@ -252,7 +252,7 @@ function toggleCheck() {
   transform-origin: center;
 
   stroke: rgba(255, 255, 255, 0.9);
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     stroke: rgba(0, 0, 0, 0.9);
   }
 }

@@ -1,14 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
-import ElmDivider from './ElmDivider.vue'
+import type { Meta, StoryObj } from "@storybook/vue3";
+import ElmDivider from "./ElmDivider.vue";
 
 const meta: Meta<typeof ElmDivider> = {
-  title: 'Components/Typography/ElmDivider',
+  title: "Components/Typography/ElmDivider",
   component: ElmDivider,
-  tags: ['autodocs'],
-  args: {}
-}
+  tags: ["autodocs"],
+  args: {},
+};
 
-export default meta
-type Story = StoryObj<typeof meta>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {}
+export const Primary: Story = {};

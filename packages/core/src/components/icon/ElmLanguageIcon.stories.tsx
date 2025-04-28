@@ -1,41 +1,41 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
-import ElmLanguageIcon from './ElmLanguageIcon.vue'
+import type { Meta, StoryObj } from "@storybook/vue3";
+import ElmLanguageIcon from "./ElmLanguageIcon.vue";
 
 const meta: Meta<typeof ElmLanguageIcon> = {
-  title: 'Components/Icon/ElmLanguageIcon',
+  title: "Components/Icon/ElmLanguageIcon",
   component: ElmLanguageIcon,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   args: {},
   argTypes: {
     language: {
-      control: 'radio',
+      control: "radio",
       options: [
-        'rust',
-        'javascript',
-        'typescript',
-        'bash',
-        'terraform',
-        'css',
-        'html',
-        'npm',
-        'java',
-        'kotlin',
-        'go',
-        'python',
-        'sql',
-        'json',
-        'lua',
-        'csharp',
-        'cpp',
-        'c'
-      ]
-    }
-  }
-}
+        "rust",
+        "javascript",
+        "typescript",
+        "bash",
+        "terraform",
+        "css",
+        "html",
+        "npm",
+        "java",
+        "kotlin",
+        "go",
+        "python",
+        "sql",
+        "json",
+        "lua",
+        "csharp",
+        "cpp",
+        "c",
+      ],
+    },
+  },
+};
 
-export default meta
-type Story = StoryObj<typeof meta>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  args: { language: 'rust' }
-}
+  args: { language: "rust" },
+};

@@ -1,19 +1,19 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
-import ElmJsonComponentRenderer from './ElmJsonComponentRenderer.vue'
-import type { Component, InlineComponent } from 'jarkup-ts'
+import type { Meta, StoryObj } from "@storybook/vue3";
+import ElmJsonComponentRenderer from "./ElmJsonComponentRenderer.vue";
+import type { Component, InlineComponent } from "jarkup-ts";
 
-import file from '../../assets/vite.svg'
-import rustCode from '../code/seed/main.rs?raw'
+import file from "../../assets/vite.svg";
+import rustCode from "../code/seed/main.rs?raw";
 
 const meta: Meta<typeof ElmJsonComponentRenderer> = {
-  title: 'Components/Others/ElmJsonComponentRenderer',
+  title: "Components/Others/ElmJsonComponentRenderer",
   component: ElmJsonComponentRenderer,
-  tags: ['autodocs'],
-  args: {}
-}
+  tags: ["autodocs"],
+  args: {},
+};
 
-export default meta
-type Story = StoryObj<typeof meta>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
 const LOREM_IPSUM = `
 Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
@@ -24,449 +24,449 @@ into electronic typesetting, remaining essentially unchanged. It was popularised
 in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, 
 and more recently with desktop publishing software like Aldus PageMaker 
 including versions of Lorem Ipsum.
-`
+`;
 
 const INLINE_TEMPLATE: InlineComponent[] = [
   {
-    type: 'Text',
+    type: "Text",
     props: {
-      text: 'Hello, '
-    }
+      text: "Hello, ",
+    },
   },
   {
-    type: 'Text',
+    type: "Text",
     props: {
-      text: 'world',
+      text: "world",
       bold: true,
-      color: '#6987b8'
-    }
+      color: "#6987b8",
+    },
   },
   {
-    type: 'Text',
+    type: "Text",
     props: {
-      text: ' !'
-    }
-  }
-] as const
+      text: " !",
+    },
+  },
+] as const;
 
 export const Primary: Story = {
   args: {
     jsonComponents: [
       {
-        type: 'Paragraph',
+        type: "Paragraph",
         slots: {
-          default: INLINE_TEMPLATE
-        }
-      }
-    ]
-  }
-}
+          default: INLINE_TEMPLATE,
+        },
+      },
+    ],
+  },
+};
 
 export const InlineIcon: Story = {
   args: {
     jsonComponents: [
       {
-        type: 'Paragraph',
+        type: "Paragraph",
         slots: {
           default: [
             {
-              type: 'Text',
+              type: "Text",
               props: {
-                text: 'I love'
-              }
+                text: "I love",
+              },
             },
             {
-              type: 'Icon',
+              type: "Icon",
               props: {
-                src: 'https://www.rust-lang.org/static/images/rust-logo-blk.svg'
-              }
+                src: "https://www.rust-lang.org/static/images/rust-logo-blk.svg",
+              },
             },
             {
-              type: 'Text',
+              type: "Text",
               props: {
-                text: 'Rust'
-              }
-            }
-          ]
-        }
-      }
-    ]
-  }
-}
+                text: "Rust",
+              },
+            },
+          ],
+        },
+      },
+    ],
+  },
+};
 
 export const InlineKatex: Story = {
   args: {
     jsonComponents: [
       {
-        type: 'Paragraph',
+        type: "Paragraph",
         slots: {
           default: [
             {
-              type: 'Text',
+              type: "Text",
               props: {
-                text: 'Hello, '
-              }
+                text: "Hello, ",
+              },
             },
             {
-              type: 'Text',
+              type: "Text",
               props: {
-                text: 'E = mc^2',
-                katex: true
-              }
+                text: "E = mc^2",
+                katex: true,
+              },
             },
             {
-              type: 'Text',
+              type: "Text",
               props: {
-                text: ' !'
-              }
-            }
-          ]
-        }
-      }
-    ]
-  }
-}
+                text: " !",
+              },
+            },
+          ],
+        },
+      },
+    ],
+  },
+};
 
 export const Heading: Story = {
   args: {
     jsonComponents: [
       {
-        type: 'Heading',
+        type: "Heading",
         props: {
-          level: 1
+          level: 1,
         },
         slots: {
-          default: INLINE_TEMPLATE
-        }
-      }
-    ]
-  }
-}
+          default: INLINE_TEMPLATE,
+        },
+      },
+    ],
+  },
+};
 
-const LIST_TEMPLATE: (listStyle: 'unordered' | 'ordered') => Component[] = (
-  listStyle
+const LIST_TEMPLATE: (listStyle: "unordered" | "ordered") => Component[] = (
+  listStyle,
 ) => [
   {
-    type: 'List',
+    type: "List",
     props: {
-      listStyle
+      listStyle,
     },
     slots: {
       default: [
         ...new Array(3).fill({
-          type: 'ListItem',
+          type: "ListItem",
           slots: {
             default: [
               ...INLINE_TEMPLATE,
               {
-                type: 'List',
+                type: "List",
                 props: {
-                  listStyle
+                  listStyle,
                 },
                 slots: {
                   default: [
                     ...new Array(3).fill({
-                      type: 'ListItem',
-                      slots: { default: INLINE_TEMPLATE }
-                    })
-                  ]
-                }
-              }
-            ]
-          }
-        })
-      ]
-    }
-  }
-]
+                      type: "ListItem",
+                      slots: { default: INLINE_TEMPLATE },
+                    }),
+                  ],
+                },
+              },
+            ],
+          },
+        }),
+      ],
+    },
+  },
+];
 
 export const UnorderedList: Story = {
   args: {
-    jsonComponents: LIST_TEMPLATE('unordered')
-  }
-}
+    jsonComponents: LIST_TEMPLATE("unordered"),
+  },
+};
 
 export const OrderedList: Story = {
   args: {
-    jsonComponents: LIST_TEMPLATE('ordered')
-  }
-}
+    jsonComponents: LIST_TEMPLATE("ordered"),
+  },
+};
 
 export const BlockQuote: Story = {
   args: {
     jsonComponents: [
       {
-        type: 'BlockQuote',
-        props: { cite: 'https://www.lipsum.com/' },
+        type: "BlockQuote",
+        props: { cite: "https://www.lipsum.com/" },
         slots: {
           default: [
             {
-              type: 'Text',
-              props: { text: LOREM_IPSUM }
-            }
-          ]
-        }
-      }
-    ]
-  }
-}
+              type: "Text",
+              props: { text: LOREM_IPSUM },
+            },
+          ],
+        },
+      },
+    ],
+  },
+};
 
 export const Callout: Story = {
   args: {
     jsonComponents: [
       {
-        type: 'Callout',
-        props: { type: 'warning' },
+        type: "Callout",
+        props: { type: "warning" },
         slots: {
           default: [
             {
-              type: 'Paragraph',
+              type: "Paragraph",
               slots: {
                 default: [
                   {
-                    type: 'Text',
-                    props: { text: LOREM_IPSUM }
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      }
-    ]
-  }
-}
+                    type: "Text",
+                    props: { text: LOREM_IPSUM },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+    ],
+  },
+};
 
 export const Divider: Story = {
   args: {
     jsonComponents: [
       {
-        type: 'Divider'
-      }
-    ]
-  }
-}
+        type: "Divider",
+      },
+    ],
+  },
+};
 
 export const Toggle: Story = {
   args: {
     jsonComponents: [
       {
-        type: 'Toggle',
+        type: "Toggle",
         slots: {
           default: [
             {
-              type: 'Paragraph',
+              type: "Paragraph",
               slots: {
                 default: [
                   {
-                    type: 'Text',
-                    props: { text: LOREM_IPSUM }
-                  }
-                ]
-              }
-            }
+                    type: "Text",
+                    props: { text: LOREM_IPSUM },
+                  },
+                ],
+              },
+            },
           ],
           summary: [
             {
-              type: 'Text',
-              props: { text: 'Hello, world !' }
-            }
-          ]
-        }
-      }
-    ]
-  }
-}
+              type: "Text",
+              props: { text: "Hello, world !" },
+            },
+          ],
+        },
+      },
+    ],
+  },
+};
 
 export const Bookmark: Story = {
   args: {
     jsonComponents: [
       {
-        type: 'Bookmark',
+        type: "Bookmark",
         props: {
-          url: 'https://pnpm.io/',
-          title: '	Fast, disk space efficient package manager | pnpm',
-          description: 'Fast, disk space efficient package manager',
-          image: 'https://pnpm.io/img/ogimage.png'
-        }
-      }
-    ]
-  }
-}
+          url: "https://pnpm.io/",
+          title: "	Fast, disk space efficient package manager | pnpm",
+          description: "Fast, disk space efficient package manager",
+          image: "https://pnpm.io/img/ogimage.png",
+        },
+      },
+    ],
+  },
+};
 
 export const File: Story = {
   args: {
     jsonComponents: [
       {
-        type: 'File',
+        type: "File",
         props: {
           src: file,
-          name: 'Example File'
-        }
-      }
-    ]
-  }
-}
+          name: "Example File",
+        },
+      },
+    ],
+  },
+};
 
 export const Image: Story = {
   args: {
     jsonComponents: [
       {
-        type: 'Image',
+        type: "Image",
         props: {
-          src: 'https://images.unsplash.com/photo-1556983703-27576e5afa24?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb',
-          alt: 'Example Image'
-        }
-      }
-    ]
-  }
-}
+          src: "https://images.unsplash.com/photo-1556983703-27576e5afa24?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb",
+          alt: "Example Image",
+        },
+      },
+    ],
+  },
+};
 
 export const CodeBlock: Story = {
   args: {
     jsonComponents: [
       {
-        type: 'CodeBlock',
+        type: "CodeBlock",
         props: {
           code: rustCode,
-          language: 'rust'
+          language: "rust",
         },
         slots: {
           default: [
             {
-              type: 'Text',
+              type: "Text",
               props: {
-                text: 'File:'
-              }
+                text: "File:",
+              },
             },
             {
-              type: 'Text',
+              type: "Text",
               props: {
-                text: 'src/main.rs',
-                code: true
-              }
-            }
-          ]
-        }
-      }
-    ]
-  }
-}
+                text: "src/main.rs",
+                code: true,
+              },
+            },
+          ],
+        },
+      },
+    ],
+  },
+};
 
 export const Katex: Story = {
   args: {
     jsonComponents: [
       {
-        type: 'Katex',
+        type: "Katex",
         props: {
           expression:
-            'i\\hbar \\frac{\\partial}{\\partial t} \\Psi(\\mathbf{r}, t) = \\left( -\\frac{\\hbar^2}{2m} \\nabla^2 + V(\\mathbf{r}, t) \\right) \\Psi(\\mathbf{r}, t)'
-        }
-      }
-    ]
-  }
-}
+            "i\\hbar \\frac{\\partial}{\\partial t} \\Psi(\\mathbf{r}, t) = \\left( -\\frac{\\hbar^2}{2m} \\nabla^2 + V(\\mathbf{r}, t) \\right) \\Psi(\\mathbf{r}, t)",
+        },
+      },
+    ],
+  },
+};
 
 export const Table: Story = {
   args: {
     jsonComponents: [
       {
-        type: 'Table',
-        props: { caption: 'Example Table' },
+        type: "Table",
+        props: { caption: "Example Table" },
         slots: {
           header: [
             {
-              type: 'TableRow',
+              type: "TableRow",
               slots: {
                 default: [
                   {
-                    type: 'TableCell',
+                    type: "TableCell",
                     slots: {
                       default: [
                         {
-                          type: 'Text',
-                          props: { text: 'Column A' }
-                        }
-                      ]
-                    }
+                          type: "Text",
+                          props: { text: "Column A" },
+                        },
+                      ],
+                    },
                   },
                   {
-                    type: 'TableCell',
+                    type: "TableCell",
                     slots: {
                       default: [
                         {
-                          type: 'Text',
-                          props: { text: 'Column B' }
-                        }
-                      ]
-                    }
-                  }
-                ]
-              }
-            }
+                          type: "Text",
+                          props: { text: "Column B" },
+                        },
+                      ],
+                    },
+                  },
+                ],
+              },
+            },
           ],
           body: [
             {
-              type: 'TableRow',
+              type: "TableRow",
               slots: {
                 default: [
                   {
-                    type: 'TableCell',
+                    type: "TableCell",
                     slots: {
                       default: [
                         {
-                          type: 'Text',
-                          props: { text: 'Column A Row 1' }
-                        }
-                      ]
-                    }
+                          type: "Text",
+                          props: { text: "Column A Row 1" },
+                        },
+                      ],
+                    },
                   },
                   {
-                    type: 'TableCell',
+                    type: "TableCell",
                     slots: {
                       default: [
                         {
-                          type: 'Text',
-                          props: { text: 'Column B Row 1' }
-                        }
-                      ]
-                    }
-                  }
-                ]
-              }
+                          type: "Text",
+                          props: { text: "Column B Row 1" },
+                        },
+                      ],
+                    },
+                  },
+                ],
+              },
             },
             {
-              type: 'TableRow',
+              type: "TableRow",
               slots: {
                 default: [
                   {
-                    type: 'TableCell',
+                    type: "TableCell",
                     slots: {
                       default: [
                         {
-                          type: 'Text',
-                          props: { text: 'Column A Row 2' }
-                        }
-                      ]
-                    }
+                          type: "Text",
+                          props: { text: "Column A Row 2" },
+                        },
+                      ],
+                    },
                   },
                   {
-                    type: 'TableCell',
+                    type: "TableCell",
                     slots: {
                       default: [
                         {
-                          type: 'Text',
-                          props: { text: 'Column B Row 2' }
-                        }
-                      ]
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      }
-    ]
-  }
-}
+                          type: "Text",
+                          props: { text: "Column B Row 2" },
+                        },
+                      ],
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+    ],
+  },
+};

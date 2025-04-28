@@ -3,7 +3,7 @@
     :class="$style.provider"
     :style="{
       '--opacity': isOpen ? 1 : 0,
-      '--pointer-events': isOpen ? 'auto' : 'none'
+      '--pointer-events': isOpen ? 'auto' : 'none',
     }"
     @click="isOpen = false"
   >
@@ -12,7 +12,7 @@
         v-if="isOpen"
         :class="$style.modal"
         :style="{
-          '--width': width
+          '--width': width,
         }"
       >
         <slot />
@@ -22,23 +22,23 @@
 </template>
 
 <script setup lang="ts">
-import type { Property } from 'csstype'
+import type { Property } from "csstype";
 
 export interface ElmModalProps {
   /**
    * The width of the modal.
    * @default '90%'
    */
-  width: Property.Width
+  width: Property.Width;
 }
 
 withDefaults(defineProps<ElmModalProps>(), {
-  width: '90%'
-})
+  width: "90%",
+});
 
-const isOpen = defineModel<boolean>('isOpen', {
-  default: true
-})
+const isOpen = defineModel<boolean>("isOpen", {
+  default: true,
+});
 </script>
 
 <style module lang="scss">
@@ -59,7 +59,7 @@ const isOpen = defineModel<boolean>('isOpen', {
   transition: opacity 400ms;
 
   background-color: rgba(black, 0.7);
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     background-color: rgba(black, 0.1);
   }
 
@@ -70,7 +70,7 @@ const isOpen = defineModel<boolean>('isOpen', {
     box-shadow: 0 0 0.25rem rgba(black, 0.4);
     background-color: rgba(233, 233, 233, 0.8);
     box-shadow: 0 0 0.25rem rgba(black, 0.8);
-    [data-theme='dark'] & {
+    [data-theme="dark"] & {
       background-color: rgba(22, 22, 22, 0.8);
     }
   }

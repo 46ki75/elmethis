@@ -1,47 +1,47 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
-import ElmList from './ElmList.vue'
-import ElmInlineText from './ElmInlineText.vue'
+import type { Meta, StoryObj } from "@storybook/vue3";
+import ElmList from "./ElmList.vue";
+import ElmInlineText from "./ElmInlineText.vue";
 
 const meta: Meta<typeof ElmList> = {
-  title: 'Components/Typography/ElmList',
+  title: "Components/Typography/ElmList",
   component: ElmList,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   args: {},
   argTypes: {
     listStyle: {
-      options: ['unordered', 'ordered'],
-      control: 'radio'
-    }
+      options: ["unordered", "ordered"],
+      control: "radio",
+    },
   },
   render: (args) => ({
     setup() {
-      return { args }
+      return { args };
     },
     components: { ElmList, ElmInlineText },
     template: `<ElmList v-bind="args">
       <li><ElmInlineText text='Item 1'/></li>
       <li><ElmInlineText text='Item 2'/></li>
       <li><ElmInlineText text='Item 3'/></li>
-    </ElmList>`
-  })
-}
+    </ElmList>`,
+  }),
+};
 
-export default meta
-type Story = StoryObj<typeof meta>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
 export const Unordered: Story = {
-  args: { listStyle: 'unordered' }
-}
+  args: { listStyle: "unordered" },
+};
 
 export const Ordered: Story = {
-  args: { listStyle: 'ordered' }
-}
+  args: { listStyle: "ordered" },
+};
 
 export const Nested: Story = {
-  args: { listStyle: 'unordered' },
+  args: { listStyle: "unordered" },
   render: (args) => ({
     setup() {
-      return { args }
+      return { args };
     },
     components: { ElmList, ElmInlineText },
     template: `<ElmList v-bind="args">
@@ -60,6 +60,6 @@ export const Nested: Story = {
         </ElmList>
       </li>
       <li><ElmInlineText text='Item 3'/></li>
-    </ElmList>`
-  })
-}
+    </ElmList>`,
+  }),
+};

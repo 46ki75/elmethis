@@ -1,26 +1,26 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
-import ElmPagetop from './ElmPagetop.vue'
+import type { Meta, StoryObj } from "@storybook/vue3";
+import ElmPagetop from "./ElmPagetop.vue";
 
 const meta: Meta<typeof ElmPagetop> = {
-  title: 'Components/Navigation/ElmPagetop',
+  title: "Components/Navigation/ElmPagetop",
   component: ElmPagetop,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   args: {},
   argTypes: {
-    position: { control: 'radio', options: ['left', 'right'] }
-  }
-}
+    position: { control: "radio", options: ["left", "right"] },
+  },
+};
 
-export default meta
-type Story = StoryObj<typeof meta>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   render: (args) => ({
     components: { ElmPagetop },
     setup() {
-      return { args }
+      return { args };
     },
     template:
-      '<div :style="{ height: \'1000vh\' }"><ElmPagetop v-bind="args"/></div>'
-  })
-}
+      '<div :style="{ height: \'1000vh\' }"><ElmPagetop v-bind="args"/></div>',
+  }),
+};

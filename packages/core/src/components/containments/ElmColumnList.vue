@@ -7,7 +7,7 @@
 <script setup lang="ts">
 export interface ElmColumnListProps {}
 
-withDefaults(defineProps<ElmColumnListProps>(), {})
+withDefaults(defineProps<ElmColumnListProps>(), {});
 </script>
 
 <style module lang="scss">

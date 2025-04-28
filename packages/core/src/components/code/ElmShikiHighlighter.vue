@@ -6,55 +6,55 @@
 
 <script setup lang="ts">
 // import { createHighlighter } from 'shiki'
-import { onMounted, onServerPrefetch, ref } from 'vue'
-import { getHighlighterSingleton } from './shikiInstance'
+import { onMounted, onServerPrefetch, ref } from "vue";
+import { getHighlighterSingleton } from "./shikiInstance";
 
 export interface ElmShikiHighlighterProps {
   /**
    * The code to display.
    */
-  code: string
+  code: string;
 
   /**
    * The language of the code.
    */
-  language?: string
+  language?: string;
 }
 
 const props = withDefaults(defineProps<ElmShikiHighlighterProps>(), {
-  language: 'txt'
-})
+  language: "txt",
+});
 
-const isRendered = defineModel<boolean>({ default: false })
+const isRendered = defineModel<boolean>({ default: false });
 
-const html = ref(`<pre>${props.code}</pre>`)
+const html = ref(`<pre>${props.code}</pre>`);
 
 const render = async () => {
   if (!isRendered.value) {
-    const highlighter = await getHighlighterSingleton()
+    const highlighter = await getHighlighterSingleton();
 
     try {
       html.value = highlighter.codeToHtml(props.code, {
         lang: props.language,
         themes: {
-          dark: 'vitesse-dark',
-          light: 'vitesse-light'
+          dark: "vitesse-dark",
+          light: "vitesse-light",
         },
         colorReplacements: {
-          '#ffffff': 'transparent',
-          '#121212': 'transparent'
-        }
-      })
+          "#ffffff": "transparent",
+          "#121212": "transparent",
+        },
+      });
     } catch {
       // do nothing
     } finally {
-      isRendered.value = true
+      isRendered.value = true;
     }
   }
-}
+};
 
-onMounted(render)
-onServerPrefetch(render)
+onMounted(render);
+onServerPrefetch(render);
 </script>
 
 <style module lang="scss">
@@ -67,17 +67,18 @@ onServerPrefetch(render)
 <style lang="scss">
 .shiki,
 .shiki span {
-  font-family: 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace !important;
+  font-family:
+    "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace !important;
 
   *::selection {
     background-color: rgba(black, 0.1);
 
-    [data-theme='dark'] & {
+    [data-theme="dark"] & {
       background-color: rgba(white, 0.15);
     }
   }
 
-  [data-theme='dark'] & {
+  [data-theme="dark"] & {
     color: var(--shiki-dark) !important;
     background-color: var(--shiki-dark-bg) !important;
   }

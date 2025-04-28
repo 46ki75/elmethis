@@ -1,16 +1,16 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
-import ElmToggle from './ElmToggle.vue'
-import ElmInlineText from '../typography/ElmInlineText.vue'
+import type { Meta, StoryObj } from "@storybook/vue3";
+import ElmToggle from "./ElmToggle.vue";
+import ElmInlineText from "../typography/ElmInlineText.vue";
 
 const meta: Meta<typeof ElmToggle> = {
-  title: 'Components/Containments/ElmToggle',
+  title: "Components/Containments/ElmToggle",
   component: ElmToggle,
-  tags: ['autodocs'],
-  args: {}
-}
+  tags: ["autodocs"],
+  args: {},
+};
 
-export default meta
-type Story = StoryObj<typeof meta>
+export default meta;
+type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   render: (args) => ({
@@ -18,9 +18,9 @@ export const Primary: Story = {
     components: { ElmToggle, ElmInlineText },
     template:
       '<ElmToggle summary="Toggle Blocks" v-bind="args"><p><ElmInlineText text="Block Content" /></p></ElmToggle>',
-    data: () => ({ value: false })
-  })
-}
+    data: () => ({ value: false }),
+  }),
+};
 
 export const InlineSummary: Story = {
   render: (args) => ({
@@ -34,6 +34,6 @@ export const InlineSummary: Story = {
       </template>
       <p><ElmInlineText text="Block Content" /></p>
     </ElmToggle>`,
-    data: () => ({ value: false })
-  })
-}
+    data: () => ({ value: false }),
+  }),
+};
