@@ -35,7 +35,7 @@
     "@storybook/test": "^8.6.12",
     "@storybook/vue3": "^8.6.12",
     "@storybook/vue3-vite": "^8.6.12",
-    "sass": "^1.86.3",
+    "sass": "^1.87.0",
     "storybook": "^8.6.12"
   },
   "peerDependencies": {
