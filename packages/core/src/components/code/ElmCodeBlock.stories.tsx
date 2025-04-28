@@ -22,11 +22,11 @@ export const Rust: Story = {
   args: { code: rustCode, language: "rust" },
 };
 
-export const Cpation: Story = {
+export const Caption: Story = {
   args: { code: rustCode, language: "rust", caption: "src/main.rs" },
 };
 
-export const CpationSlot: Story = {
+export const CaptionSlot: Story = {
   args: { code: rustCode, language: "rust" },
   render: (args) => ({
     setup: () => ({ args }),
