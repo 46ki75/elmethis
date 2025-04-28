@@ -1,7 +1,10 @@
 <template>
   <component
-    :is="hasHeader ? 'th' : 'td'"
-    :class="[$style.common, hasHeader ? $style.th : $style.td]"
+    :is="hasHeader || hasHeaderInjected ? 'th' : 'td'"
+    :class="[
+      $style.common,
+      hasHeader || hasHeaderInjected ? $style.th : $style.td,
+    ]"
   >
     <slot v-if="text == null" />
     {{ text }}
@@ -9,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineSlots, type VNodeChild } from "vue";
+import { defineSlots, inject, type VNodeChild } from "vue";
 
 export interface ElmTableCellProps {
   /**
@@ -31,6 +34,8 @@ withDefaults(defineProps<ElmTableCellProps>(), {
 defineSlots<{
   default: VNodeChild;
 }>();
+
+const hasHeaderInjected = inject<boolean>("hasHeader");
 </script>
 
 <style module lang="scss">

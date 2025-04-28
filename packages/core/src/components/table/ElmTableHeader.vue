@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import ElmTableRow from "./ElmTableRow.vue";
 
-import { defineSlots } from "vue";
+import { defineSlots, provide } from "vue";
 
 export interface ElmTableHeaderProps {}
 
@@ -18,6 +18,8 @@ defineSlots<{
     | InstanceType<typeof ElmTableRow>
     | InstanceType<typeof ElmTableRow>[];
 }>();
+
+provide("hasHeader", true);
 </script>
 
 <style module lang="scss">
