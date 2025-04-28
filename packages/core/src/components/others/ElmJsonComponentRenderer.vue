@@ -238,11 +238,14 @@ const renderResult = render(props.jsonComponents);
 
 <style module lang="scss">
 .column-list {
+  box-sizing: content-box;
+  padding-block: 0.25rem;
   width: 100%;
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
   justify-content: space-around;
+  overflow: auto;
 }
 
 .column {
