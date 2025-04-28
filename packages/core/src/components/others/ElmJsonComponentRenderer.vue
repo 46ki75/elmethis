@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import type { Component, ComponentMap } from "jarkup-ts";
-import { defineAsyncComponent, h, VNode } from "vue";
+import { defineAsyncComponent, h, useCssModule, VNode } from "vue";
 
 import { ElmBlockFallback } from "../..";
 
@@ -13,6 +13,8 @@ export interface ElmJsonComponentRendererProps {
 }
 
 const props = withDefaults(defineProps<ElmJsonComponentRendererProps>(), {});
+
+const style = useCssModule();
 
 const AsyncElmInlineText = defineAsyncComponent({
   loader: () => import("../typography/ElmInlineText.vue"),
@@ -106,12 +108,17 @@ const AsyncElmTableCell = defineAsyncComponent({
   loadingComponent: ElmBlockFallback,
 });
 
+const AsyncElmUnsupportedBlock = defineAsyncComponent({
+  loader: () => import("../fallback/ElmUnsupportedBlock.vue"),
+  loadingComponent: ElmBlockFallback,
+});
+
 type RenderFunctionMap<R> = {
   [K in keyof ComponentMap]: (args: ComponentMap[K]) => R;
 };
 
 const defaultRenderFunctionMap = (
-  render: (jsonComponents: Component[]) => VNode[],
+  render: (jsonComponents: Component[]) => VNode[]
 ): RenderFunctionMap<VNode> => {
   return {
     Text: ({ props }) => {
@@ -141,7 +148,7 @@ const defaultRenderFunctionMap = (
         {
           level: props.level,
         },
-        { default: render(slots.default) },
+        { default: render(slots.default) }
       ),
     Paragraph: ({ slots }) =>
       h(AsyncElmParagraph, {}, { default: render(slots.default) }),
@@ -152,7 +159,7 @@ const defaultRenderFunctionMap = (
         {
           listStyle: props?.listStyle === "unordered" ? "unordered" : "ordered",
         },
-        render(slots.default),
+        render(slots.default)
       ),
     BlockQuote: ({ props, slots }) =>
       h(AsyncElmBlockQuote, { cite: props?.cite }, render(slots.default)),
@@ -166,7 +173,7 @@ const defaultRenderFunctionMap = (
         {
           default: render(slots.default),
           summary: render(slots.summary),
-        },
+        }
       ),
     Bookmark: ({ props }) =>
       h(AsyncElmBookmark, {
@@ -183,11 +190,13 @@ const defaultRenderFunctionMap = (
         enableModal: true,
       }),
     CodeBlock: ({ props, slots }) =>
-      h(
-        AsyncElmCodeBlock,
-        { code: props.code, language: props.language },
-        render(slots.default),
-      ),
+      slots != null
+        ? h(
+            AsyncElmCodeBlock,
+            { code: props.code, language: props.language },
+            render(slots.default)
+          )
+        : h(AsyncElmCodeBlock, { code: props.code, language: props.language }),
     Katex: ({ props }) =>
       h(AsyncElmKatex, { expression: props.expression, block: true }),
     Table: ({ props, slots }) =>
@@ -200,10 +209,16 @@ const defaultRenderFunctionMap = (
             slots.header != null
               ? h(AsyncElmTableHeader, {}, render(slots.header))
               : undefined,
-        },
+        }
       ),
     TableRow: ({ slots }) => h(AsyncElmTableRow, {}, render(slots.default)),
     TableCell: ({ slots }) => h(AsyncElmTableCell, {}, render(slots.default)),
+    ColumnList: ({ slots }) =>
+      h("div", { class: style["column-list"] }, render(slots.default)),
+    Column: ({ slots }) =>
+      h("div", { class: style.column }, render(slots.default)),
+    Unsupported: ({ props }) =>
+      h(AsyncElmUnsupportedBlock, { details: props?.details }),
   };
 };
 
@@ -221,4 +236,16 @@ const render = (jsonComponents: Component[]): VNode[] => {
 const renderResult = render(props.jsonComponents);
 </script>
 
-<style module lang="scss"></style>
+<style module lang="scss">
+.column-list {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  justify-content: space-around;
+}
+
+.column {
+  flex: 1;
+}
+</style>

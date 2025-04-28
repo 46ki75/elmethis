@@ -144,7 +144,7 @@ export const Heading: Story = {
 };
 
 const LIST_TEMPLATE: (listStyle: "unordered" | "ordered") => Component[] = (
-  listStyle,
+  listStyle
 ) => [
   {
     type: "List",
@@ -465,6 +465,62 @@ export const Table: Story = {
               },
             },
           ],
+        },
+      },
+    ],
+  },
+};
+
+export const ColumnList: Story = {
+  args: {
+    jsonComponents: [
+      {
+        type: "ColumnList",
+        slots: {
+          default: [
+            {
+              type: "Column",
+              slots: {
+                default: [
+                  {
+                    type: "CodeBlock",
+                    props: {
+                      code: rustCode,
+                      language: "rust",
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              type: "Column",
+              slots: {
+                default: [
+                  {
+                    type: "CodeBlock",
+                    props: {
+                      code: rustCode,
+                      language: "rust",
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+    ],
+  },
+};
+
+export const Unsupported: Story = {
+  args: {
+    jsonComponents: [
+      {
+        type: "Unsupported",
+        props: {
+          details:
+            "Reason: Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
         },
       },
     ],
