@@ -1,12 +1,16 @@
 <template>
   <div :class="$style.fragment">
-    <Icon
-      icon="material-symbols:anchor"
+    <ElmMdiIcon
+      size="1.25rem"
+      color="#6987b8"
+      :d="mdiAnchor"
       :class="$style.icon"
       @click="handleHashClick(id)"
     />
-    <Icon
-      icon="mingcute:link-line"
+    <ElmMdiIcon
+      size="1.25rem"
+      color="#6987b8"
+      :d="mdiLinkVariant"
       :class="$style.icon"
       @click="handleLinkClick(id)"
     />
@@ -14,9 +18,11 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
 import { useClipboard } from "@vueuse/core";
 import { nextTick, onMounted } from "vue";
+
+import ElmMdiIcon from "../icon/ElmMdiIcon.vue";
+import { mdiAnchor, mdiLinkVariant } from "@mdi/js";
 
 export interface ElmFragmentIdentifierProps {
   /**
@@ -71,9 +77,6 @@ onMounted(() => {
 .icon {
   padding: 0.25rem;
   border-radius: 0.25rem;
-  width: 20px;
-  height: 20px;
-  color: #6987b8;
   transition: background-color 200ms;
   cursor: pointer;
 
