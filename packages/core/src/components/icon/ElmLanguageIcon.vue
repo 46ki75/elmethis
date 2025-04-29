@@ -1,15 +1,14 @@
 <template>
   <div :class="$style.block" :style="{ '--size': `${size}px` }">
     <transition mode="out-in">
-      <Icon :class="$style.icon" :key="language" />
+      <component :is="render()" :class="$style.icon" :key="language" />
     </transition>
   </div>
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, h, ref, useCssModule } from "vue";
+import { type Component, defineAsyncComponent, h, useCssModule } from "vue";
 import { Icon as Iconify } from "@iconify/vue";
-import { watch } from "vue";
 
 export interface ElmLanguageIconProps {
   /**
@@ -30,7 +29,7 @@ const props = withDefaults(defineProps<ElmLanguageIconProps>(), {
 const style = useCssModule();
 const Fallback = h(Iconify, { icon: "mdi:terminal-line", class: style.icon });
 
-const render = () => {
+const render = (): Component => {
   switch (props.language.toLowerCase()) {
     case "rust":
     case "rs":
@@ -156,15 +155,6 @@ const render = () => {
       return Fallback;
   }
 };
-
-const Icon = ref(render());
-
-watch(
-  () => props.language,
-  () => {
-    Icon.value = render();
-  },
-);
 </script>
 
 <style module lang="scss">

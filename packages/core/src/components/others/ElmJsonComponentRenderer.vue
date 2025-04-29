@@ -148,31 +148,40 @@ const defaultRenderFunctionMap = (
         {
           level: props.level,
         },
-        { default: render(slots.default) }
+        { default: () => render(slots.default) }
       ),
     Paragraph: ({ slots }) =>
-      h(AsyncElmParagraph, {}, { default: render(slots.default) }),
-    ListItem: ({ slots }) => h("li", {}, render(slots.default)),
+      h(AsyncElmParagraph, {}, { default: () => render(slots.default) }),
+    ListItem: ({ slots }) =>
+      h("li", {}, { default: () => render(slots.default) }),
     List: ({ props, slots }) =>
       h(
         AsyncElmList,
         {
           listStyle: props?.listStyle === "unordered" ? "unordered" : "ordered",
         },
-        render(slots.default)
+        { default: () => render(slots.default) }
       ),
     BlockQuote: ({ props, slots }) =>
-      h(AsyncElmBlockQuote, { cite: props?.cite }, render(slots.default)),
+      h(
+        AsyncElmBlockQuote,
+        { cite: props?.cite },
+        { default: () => render(slots.default) }
+      ),
     Callout: ({ props, slots }) =>
-      h(AsyncElmCallout, { type: props?.type }, render(slots.default)),
+      h(
+        AsyncElmCallout,
+        { type: props?.type },
+        { default: () => render(slots.default) }
+      ),
     Divider: ({}) => h(AsyncElmDivider, {}),
     Toggle: ({ slots }) =>
       h(
         AsyncElmToggle,
         {},
         {
-          default: render(slots.default),
-          summary: render(slots.summary),
+          default: () => render(slots.default),
+          summary: () => render(slots.summary),
         }
       ),
     Bookmark: ({ props }) =>
@@ -187,36 +196,55 @@ const defaultRenderFunctionMap = (
       h(AsyncElmBlockImage, {
         src: props.src,
         alt: props.alt,
-        enableModal: true,
       }),
     CodeBlock: ({ props, slots }) =>
       slots != null
         ? h(
             AsyncElmCodeBlock,
             { code: props.code, language: props.language },
-            render(slots.default)
+            { default: () => render(slots.default) }
           )
         : h(AsyncElmCodeBlock, { code: props.code, language: props.language }),
     Katex: ({ props }) =>
       h(AsyncElmKatex, { expression: props.expression, block: true }),
-    Table: ({ props, slots }) =>
-      h(
+    Table: ({ props, slots }) => {
+      let header: ReturnType<typeof h> | undefined = undefined;
+
+      if (slots.header != null) {
+        const headerSlot = slots.header;
+        header = h(
+          AsyncElmTableHeader,
+          {},
+          { default: () => render(headerSlot) }
+        );
+      }
+
+      return h(
         AsyncElmTable,
         { caption: props?.caption, hasRowHeader: props?.hasRowHeader },
         {
-          body: h(AsyncElmTableBody, {}, render(slots.body)),
-          header:
-            slots.header != null
-              ? h(AsyncElmTableHeader, {}, render(slots.header))
-              : undefined,
+          body: () =>
+            h(AsyncElmTableBody, {}, { default: () => render(slots.body) }),
+          header: header ? () => header : undefined,
         }
-      ),
-    TableRow: ({ slots }) => h(AsyncElmTableRow, {}, render(slots.default)),
-    TableCell: ({ slots }) => h(AsyncElmTableCell, {}, render(slots.default)),
+      );
+    },
+    TableRow: ({ slots }) =>
+      h(AsyncElmTableRow, {}, { default: () => render(slots.default) }),
+    TableCell: ({ slots }) =>
+      h(AsyncElmTableCell, {}, { default: () => render(slots.default) }),
     ColumnList: ({ slots }) =>
-      h("div", { class: style["column-list"] }, render(slots.default)),
+      h(
+        "div",
+        { class: style["column-list"] },
+        { default: () => render(slots.default) }
+      ),
     Column: ({ slots }) =>
-      h("div", { class: style.column }, render(slots.default)),
+      h(
+        "div",
+        { class: style.column },
+        { default: () => render(slots.default) }
+      ),
     Unsupported: ({ props }) =>
       h(AsyncElmUnsupportedBlock, { details: props?.details }),
   };
