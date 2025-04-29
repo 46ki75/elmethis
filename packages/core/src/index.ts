@@ -64,9 +64,6 @@ export { default as ElmSwitch } from "./components/form/ElmSwitch.vue";
 export type { ElmTextFieldProps } from "./components/form/ElmTextField.vue";
 export { default as ElmTextField } from "./components/form/ElmTextField.vue";
 
-export type { ElmTotpProps } from "./components/form/ElmTotp.vue";
-export { default as ElmTotp } from "./components/form/ElmTotp.vue";
-
 export type { ElmHeadingProps } from "./components/typography/ElmHeading.vue";
 export { default as ElmHeading } from "./components/typography/ElmHeading.vue";
 
