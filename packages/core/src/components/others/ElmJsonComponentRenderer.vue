@@ -224,8 +224,9 @@ const defaultRenderFunctionMap = (
         AsyncElmTable,
         { caption: props?.caption, hasRowHeader: props?.hasRowHeader },
         {
-          body: h(AsyncElmTableBody, {}, { default: () => render(slots.body) }),
-          header,
+          body: () =>
+            h(AsyncElmTableBody, {}, { default: () => render(slots.body) }),
+          header: header ? () => header : undefined,
         }
       );
     },
