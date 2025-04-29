@@ -11,7 +11,7 @@ export interface ElmMdiIconProps {
 }
 
 withDefaults(defineProps<ElmMdiIconProps>(), {
-  size: "1.25em",
+  size: "1em",
 });
 </script>
 

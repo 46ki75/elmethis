@@ -1,9 +1,3 @@
-export type { ElmBadgeProps } from "./components/badge/ElmBadge.vue";
-export { default as ElmBadge } from "./components/badge/ElmBadge.vue";
-
-export type { ElmTagProps } from "./components/badge/ElmTag.vue";
-export { default as ElmTag } from "./components/badge/ElmTag.vue";
-
 export type { ElmCodeBlockProps } from "./components/code/ElmCodeBlock.vue";
 export { default as ElmCodeBlock } from "./components/code/ElmCodeBlock.vue";
 
