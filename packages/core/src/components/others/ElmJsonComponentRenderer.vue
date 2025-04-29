@@ -208,18 +208,27 @@ const defaultRenderFunctionMap = (
         : h(AsyncElmCodeBlock, { code: props.code, language: props.language }),
     Katex: ({ props }) =>
       h(AsyncElmKatex, { expression: props.expression, block: true }),
-    Table: ({ props, slots }) =>
-      h(
+    Table: ({ props, slots }) => {
+      let header: ReturnType<typeof h> | undefined = undefined;
+
+      if (slots.header != null) {
+        const headerSlot = slots.header;
+        header = h(
+          AsyncElmTableHeader,
+          {},
+          { default: () => render(headerSlot) }
+        );
+      }
+
+      return h(
         AsyncElmTable,
         { caption: props?.caption, hasRowHeader: props?.hasRowHeader },
         {
-          body: h(AsyncElmTableBody, {}, render(slots.body)),
-          header: () =>
-            slots.header != null
-              ? h(AsyncElmTableHeader, {}, render(slots.header))
-              : undefined,
+          body: h(AsyncElmTableBody, {}, { default: () => render(slots.body) }),
+          header,
         }
-      ),
+      );
+    },
     TableRow: ({ slots }) =>
       h(AsyncElmTableRow, {}, { default: () => render(slots.default) }),
     TableCell: ({ slots }) =>
