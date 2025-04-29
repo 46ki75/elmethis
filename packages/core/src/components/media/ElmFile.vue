@@ -1,7 +1,7 @@
 <template>
   <div :class="$style.file" :style="{ '--margin-block': margin }">
     <div :class="$style['left-container']">
-      <Icon icon="mdi:file-outline" :class="$style.icon" />
+      <ElmMdiIcon :d="mdiFileOutline" size="1.25em" />
       <ElmInlineText
         :text="
           name ?? getLastPathSegmentWithoutQueryOrHash(src) ?? 'unknown file'
@@ -13,16 +13,17 @@
       <span :style="{ opacity: 0.6 }"
         ><ElmInlineText v-if="filesize" :text="filesize"
       /></span>
-      <Icon
-        icon="mdi:download"
+      <ElmMdiIcon
+        :d="mdiDownload"
         :class="$style['download-icon']"
+        size="1.25em"
         @click="
           () => {
             downloadFile(
               src,
               name ??
                 getLastPathSegmentWithoutQueryOrHash(src) ??
-                'unknown file',
+                'unknown file'
             );
           }
         "
@@ -32,9 +33,11 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
 import ElmInlineText from "../typography/ElmInlineText.vue";
 import type { Property } from "csstype";
+
+import ElmMdiIcon from "../icon/ElmMdiIcon.vue";
+import { mdiDownload, mdiFileOutline } from "@mdi/js";
 
 export interface ElmFileProps {
   /**
@@ -61,7 +64,7 @@ export interface ElmFileProps {
 withDefaults(defineProps<ElmFileProps>(), {});
 
 function getLastPathSegmentWithoutQueryOrHash(
-  urlString: string,
+  urlString: string
 ): string | null {
   const cleanedUrl = urlString.split(/[?#]/)[0];
   const pathSegments = cleanedUrl.split("/").filter(Boolean);
@@ -110,16 +113,6 @@ async function downloadFile(url: string, filename: string) {
     justify-content: flex-start;
     align-items: center;
     gap: 0.75rem;
-
-    .icon {
-      width: 20px;
-      height: 20px;
-      transition: color 200ms;
-      color: rgba(black, 0.8);
-      [data-theme="dark"] & {
-        color: rgba(white, 0.8);
-      }
-    }
   }
 
   .right-container {
@@ -130,16 +123,10 @@ async function downloadFile(url: string, filename: string) {
 
     .download-icon {
       padding: 0.125rem;
-      width: 20px;
-      height: 20px;
       cursor: pointer;
       transition:
         color 200ms,
         background-color 200ms;
-      color: rgba(black, 0.8);
-      [data-theme="dark"] & {
-        color: rgba(white, 0.8);
-      }
 
       &:hover {
         background-color: rgba(black, 0.1);
