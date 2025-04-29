@@ -1,38 +1,22 @@
 <template>
   <transition mode="out-in">
     <div v-if="status === 'pending'" :class="$style.wrapper">
-      <Icon
-        icon="mdi:rotate-clockwise"
-        :class="$style.icon"
-        :style="{ color: '#6987b8' }"
-      />
+      <ElmMdiIcon :d="mdiReload" color="#6987b8" size="1em" />
       <ElmInlineText :text="message" color="#6987b8" />
     </div>
 
     <div v-else-if="status === 'error'" :class="$style.wrapper">
-      <Icon
-        icon="uis:exclamation-circle"
-        :class="$style.icon"
-        :style="{ color: '#c56565' }"
-      />
+      <ElmMdiIcon :d="mdiAlertCircle" color="#c56565" size="1em" />
       <ElmInlineText :text="message" color="#c56565" />
     </div>
 
     <div v-else-if="status === 'warning'" :class="$style.wrapper">
-      <Icon
-        icon="ic:baseline-warning"
-        :class="$style.icon"
-        :style="{ color: '#cdb57b' }"
-      />
+      <ElmMdiIcon :d="mdiAlert" color="#cdb57b" size="1em" />
       <ElmInlineText :text="message" color="#cdb57b" />
     </div>
 
     <div v-else :class="$style.wrapper">
-      <Icon
-        icon="material-symbols-light:check-circle"
-        :class="$style.icon"
-        :style="{ color: '#59b57c' }"
-      />
+      <ElmMdiIcon :d="mdiCheckCircle" color="#59b57c" size="1em" />
       <ElmInlineText :text="message" color="#59b57c" />
     </div>
   </transition>
@@ -41,6 +25,9 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
 import ElmInlineText from "../typography/ElmInlineText.vue";
+
+import ElmMdiIcon from "../icon/ElmMdiIcon.vue";
+import { mdiReload, mdiAlertCircle, mdiCheckCircle, mdiAlert } from "@mdi/js";
 
 export interface ElmStatusMessageProps {
   status: "success" | "error" | "warning" | "pending";
@@ -55,11 +42,6 @@ withDefaults(defineProps<ElmStatusMessageProps>(), {});
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-}
-
-.icon {
-  width: 20px;
-  height: 20px;
 }
 </style>
 
