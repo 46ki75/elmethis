@@ -7,24 +7,24 @@
         borderRadius: isOpen ? '0.25rem 0.25rem 0rem 0rem' : '0.25rem',
       }"
     >
-      <div :style="{ display: 'flex', gap: '0.5rem' }">
-        <Icon
-          icon="mdi:chevron-right"
+      <div :class="$style['summary-left']">
+        <ElmMdiIcon
           :class="$style.icon"
+          :d="mdiChevronRight"
           :style="{ '--rotate': isOpen ? '90deg' : '0deg' }"
+          color="#59b57c"
         />
         <div>
           <elm-inline-text v-if="summary != null" :text="summary" />
           <slot v-else name="summary" />
         </div>
       </div>
-      <Icon
-        icon="mdi:plus"
+
+      <ElmMdiIcon
         :class="$style.icon"
-        :style="{
-          '--rotate': isOpen ? '135deg' : '0deg',
-          '--color': isOpen ? '#b36472' : undefined,
-        }"
+        :d="mdiPlus"
+        :style="{ '--rotate': isOpen ? '135deg' : '0deg' }"
+        :color="isOpen ? '#b36472' : '#59b57c'"
       />
     </div>
 
@@ -37,9 +37,7 @@
     <transition>
       <div v-if="isOpen" :class="$style.close" @click="handleClick">
         <div :class="$style['close-button']">
-          <svg viewBox="0 0 24 24" width="1.25rem" height="1.25rem">
-            <path :d="mdiChevronUp" />
-          </svg>
+          <ElmMdiIcon :d="mdiChevronUp" size="1.25em" color="#c56565" />
           <ElmInlineText text="CLOSE" color="#8e3636" />
         </div>
       </div>
@@ -49,11 +47,11 @@
 
 <script setup lang="ts">
 import ElmInlineText from "../typography/ElmInlineText.vue";
-import { Icon } from "@iconify/vue";
 import type { Property } from "csstype";
 import { VNode } from "vue";
 
-import { mdiChevronUp } from "@mdi/js";
+import ElmMdiIcon from "../icon/ElmMdiIcon.vue";
+import { mdiChevronRight, mdiChevronUp, mdiPlus } from "@mdi/js";
 
 export interface ElmToggleProps {
   /**
@@ -108,10 +106,13 @@ const handleClick = (event: Event): void => {
   }
 }
 
+.summary-left {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
 .icon {
-  width: 1.25rem;
-  height: 1.25rem;
-  color: var(--color, #59b57c);
   transform: rotate(var(--rotate, 0deg));
   transition: transform 200ms;
 }
@@ -145,7 +146,6 @@ const handleClick = (event: Event): void => {
 
   user-select: none;
   cursor: pointer;
-  fill: #c56565;
   opacity: 0.7;
   transition: background-color 100ms;
   border-radius: 0.25rem;
