@@ -10,18 +10,24 @@
     <ElmInlineIcon v-if="favicon" :src="favicon" alt="favicon" />
 
     {{ text ?? href }}
-    <Icon icon="mdi:external-link" :class="$style.icon" />
+    <ElmMdiIcon
+      :d="mdiOpenInNew"
+      :size="size ? String(size) : undefined"
+      color="gray"
+      style="opacity: 0.75"
+    />
   </a>
 
   <component v-else :is="render()"></component>
 </template>
 
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
 import type { Property } from "csstype";
 import { getLuminance } from "polished";
 import { h, useCssModule } from "vue";
 import ElmInlineIcon from "../icon/ElmInlineIcon.vue";
+import ElmMdiIcon from "../icon/ElmMdiIcon.vue";
+import { mdiOpenInNew } from "@mdi/js";
 
 export interface ElmInlineTextProps {
   /**
@@ -115,7 +121,7 @@ const render = () => {
         "--background-color": props.backgroundColor,
       },
     },
-    props.text,
+    props.text
   );
 
   if (props.strikethrough) {
@@ -149,7 +155,7 @@ const render = () => {
           "--background-color": props.backgroundColor,
         },
       },
-      [h("span", {}, vnode), h("rt", {}, props.ruby)],
+      [h("span", {}, vnode), h("rt", {}, props.ruby)]
     );
   }
 
@@ -227,11 +233,6 @@ const render = () => {
       color: #59b57c;
       background-color: rgba($color: #59b57c, $alpha: 0.2);
     }
-  }
-
-  .icon {
-    width: var(--font-size);
-    height: var(--font-size);
   }
 }
 </style>
