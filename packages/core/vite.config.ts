@@ -29,8 +29,6 @@ export default defineConfig({
     rollupOptions: {
       external: [
         "vue",
-        "@iconify/vue",
-        "@heroicons/vue",
         "@vueuse/core",
         "katex",
         "lodash-es",

@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.block" :style="{ '--size': `${size}px` }">
+  <div :class="$style.block" :style="{ '--size': size }">
     <transition mode="out-in">
       <component :is="render()" :class="$style.icon" :key="language" />
     </transition>
@@ -7,8 +7,10 @@
 </template>
 
 <script setup lang="ts">
-import { type Component, defineAsyncComponent, h, useCssModule } from "vue";
-import { Icon as Iconify } from "@iconify/vue";
+import { type Component, defineAsyncComponent, h } from "vue";
+
+import ElmMdiIcon from "./ElmMdiIcon.vue";
+import { mdiCodeJson } from "@mdi/js";
 
 export interface ElmLanguageIconProps {
   /**
@@ -26,8 +28,10 @@ const props = withDefaults(defineProps<ElmLanguageIconProps>(), {
   size: 24,
 });
 
-const style = useCssModule();
-const Fallback = h(Iconify, { icon: "mdi:terminal-line", class: style.icon });
+const Fallback = h(ElmMdiIcon, {
+  d: mdiCodeJson,
+  size: props.size ? `${props.size}px` : undefined,
+});
 
 const render = (): Component => {
   switch (props.language.toLowerCase()) {
@@ -218,11 +222,6 @@ const render = (): Component => {
 <style module lang="scss">
 .block {
   display: inline-block;
-  height: var(--size);
-  width: var(--size);
-}
-
-.icon {
   height: var(--size);
   width: var(--size);
 }
