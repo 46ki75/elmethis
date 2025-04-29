@@ -23,7 +23,7 @@
       />
     </div>
     <div :class="$style.body">
-      <component :is="icon" :class="$style['left-icon']"></component>
+      <ElmMdiIcon :d="iconMap[icon]" size="1.5rem" color="gray" />
 
       <input
         :id="id"
@@ -45,15 +45,18 @@
           <ElmInlineText v-if="suffix != null" :text="suffix" />
         </span>
 
-        <Icon
-          v-if="isPassword"
-          :icon="type === 'text' ? 'heroicons:eye' : 'heroicons:eye-slash'"
+        <ElmMdiIcon
+          :d="type === 'text' ? mdiEyeOutline : mdiEyeOffOutline"
+          size="1.75em"
+          color="gray"
           :class="$style.icon"
           @click="handleVisibleSwitch"
         />
 
-        <Icon
-          icon="heroicons:backspace-16-solid"
+        <ElmMdiIcon
+          :d="mdiBackspaceOutline"
+          size="1.75em"
+          color="gray"
           :class="$style.icon"
           @click="handleDelete"
         />
@@ -70,10 +73,20 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
 import ElmInlineText from "../typography/ElmInlineText.vue";
-import { ref, type VNode, type FunctionalComponent } from "vue";
+import { ref } from "vue";
 import { nanoid } from "nanoid";
+
+import ElmMdiIcon from "../icon/ElmMdiIcon.vue";
+import {
+  mdiEyeOutline,
+  mdiEyeOffOutline,
+  mdiBackspaceOutline,
+  mdiCursorText,
+  mdiEmailOutline,
+  mdiAccount,
+  mdiLockOutline,
+} from "@mdi/js";
 
 const id = nanoid();
 
@@ -86,7 +99,7 @@ export interface ElmTextFieldProps {
   placeholder?: string;
   disabled?: boolean;
   loading?: boolean;
-  icon?: VNode | FunctionalComponent;
+  icon?: "default" | "mail" | "user" | "password";
   isPassword?: boolean;
   required?: boolean;
 }
@@ -94,6 +107,7 @@ export interface ElmTextFieldProps {
 const props = withDefaults(defineProps<ElmTextFieldProps>(), {
   disabled: false,
   loading: false,
+  icon: "default",
   isPassword: false,
   required: false,
 });
@@ -109,6 +123,13 @@ const handleDelete = () => {
 const handleVisibleSwitch = () => {
   if (!props.loading && !props.disabled)
     type.value = type.value === "text" ? "password" : "text";
+};
+
+const iconMap: Record<NonNullable<ElmTextFieldProps["icon"]>, string> = {
+  default: mdiCursorText,
+  mail: mdiEmailOutline,
+  user: mdiAccount,
+  password: mdiLockOutline,
 };
 </script>
 
@@ -213,7 +234,8 @@ const handleVisibleSwitch = () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-right: 0.5rem;
+  padding-right: 0.25rem;
+  padding-left: 0.25rem;
 }
 
 .left-icon {
@@ -270,12 +292,9 @@ const handleVisibleSwitch = () => {
 
 .icon {
   box-sizing: border-box;
-  border-radius: 50%;
+  border-radius: 0.125em;
   padding: 0.25rem;
-  width: 28px;
-  height: 28px;
   transition: background-color 200ms;
-  color: gray;
   cursor: pointer;
 
   &:hover {

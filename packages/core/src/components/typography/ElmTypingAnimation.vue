@@ -76,7 +76,7 @@ onMounted(async () => {
   }
 }
 
-.cursor {
+.default {
   margin-inline: 1px;
   user-select: none;
   background-color: rgba(black, 0.15);

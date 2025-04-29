@@ -23,7 +23,6 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
 import ElmInlineText from "../typography/ElmInlineText.vue";
 
 import ElmMdiIcon from "../icon/ElmMdiIcon.vue";
