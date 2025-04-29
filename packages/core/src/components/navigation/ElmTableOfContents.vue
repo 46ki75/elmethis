@@ -14,14 +14,16 @@
         />
       </sup>
       <ElmInlineText :text="heading.text" />
-      <Icon icon="heroicons:bars-arrow-down" :class="$style.icon" />
+      <ElmMdiIcon :d="mdiMenuDown" size="1em" color="#6987b8" />
     </a>
   </nav>
 </template>
 
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
 import ElmInlineText from "../typography/ElmInlineText.vue";
+
+import ElmMdiIcon from "../icon/ElmMdiIcon.vue";
+import { mdiMenuDown } from "@mdi/js";
 
 export interface ElmTableOfContentsProps {
   headings: Array<{
@@ -61,12 +63,6 @@ withDefaults(defineProps<ElmTableOfContentsProps>(), {});
 
     &:hover {
       background-color: rgba(#6987b8, 0.2);
-    }
-
-    .icon {
-      width: 12px;
-      height: 12px;
-      color: #6987b8;
     }
   }
 }
