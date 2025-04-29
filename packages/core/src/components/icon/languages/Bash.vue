@@ -1,5 +1,10 @@
 <template>
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 128 128"
+    :width="size"
+    :height="size"
+  >
     <path fill="none" d="M4.24 4.24h119.53v119.53H4.24z" />
     <path
       :class="$style.path"
@@ -11,6 +16,15 @@
     />
   </svg>
 </template>
+
+<script setup lang="ts">
+withDefaults(
+  defineProps<{
+    size?: number;
+  }>(),
+  { size: 24 }
+);
+</script>
 
 <style module lang="scss">
 .path {

@@ -33,123 +33,181 @@ const render = (): Component => {
   switch (props.language.toLowerCase()) {
     case "rust":
     case "rs":
-      return defineAsyncComponent({
-        loader: () => import("./languages/Rust.vue"),
-        loadingComponent: Fallback,
-      });
+      return h(
+        defineAsyncComponent({
+          loader: () => import("./languages/Rust.vue"),
+          loadingComponent: Fallback,
+        }),
+        { size: props.size }
+      );
 
     case "javascript":
     case "js":
-      return h(Iconify, {
-        icon: "devicon:javascript",
-        class: style.icon,
-      });
+      return h(
+        defineAsyncComponent({
+          loader: () => import("./languages/Javascript.vue"),
+          loadingComponent: Fallback,
+        }),
+        { size: props.size }
+      );
 
     case "typescript":
     case "ts":
-      return h(Iconify, {
-        icon: "devicon:typescript",
-        class: style.icon,
-      });
+      return h(
+        defineAsyncComponent({
+          loader: () => import("./languages/Typescript.vue"),
+          loadingComponent: Fallback,
+        }),
+        { size: props.size }
+      );
 
     case "bash":
     case "sh":
     case "shell":
-      return defineAsyncComponent({
-        loader: () => import("./languages/Bash.vue"),
-        loadingComponent: Fallback,
-      });
+      return h(
+        defineAsyncComponent({
+          loader: () => import("./languages/Bash.vue"),
+          loadingComponent: Fallback,
+        }),
+        { size: props.size }
+      );
 
     case "tf":
     case "terraform":
     case "hcl":
-      return h(Iconify, {
-        icon: "devicon:terraform",
-        class: style.icon,
-      });
+      return h(
+        defineAsyncComponent({
+          loader: () => import("./languages/Terraform.vue"),
+          loadingComponent: Fallback,
+        }),
+        { size: props.size }
+      );
 
     case "html":
-      return h(Iconify, {
-        icon: "devicon:html5",
-        class: style.icon,
-      });
+    case "html5":
+      return h(
+        defineAsyncComponent({
+          loader: () => import("./languages/Html.vue"),
+          loadingComponent: Fallback,
+        }),
+        { size: props.size }
+      );
 
     case "css":
-      return defineAsyncComponent({
-        loader: () => import("./languages/Css.vue"),
-        loadingComponent: Fallback,
-      });
+    case "css3":
+      return h(
+        defineAsyncComponent({
+          loader: () => import("./languages/Css.vue"),
+          loadingComponent: Fallback,
+        }),
+        { size: props.size }
+      );
 
     case "npm":
-      return h(Iconify, {
-        icon: "devicon:npm",
-        class: style.icon,
-      });
+      return h(
+        defineAsyncComponent({
+          loader: () => import("./languages/Npm.vue"),
+          loadingComponent: Fallback,
+        }),
+        { size: props.size }
+      );
 
     case "java":
-      return h(Iconify, {
-        icon: "devicon:java",
-        class: style.icon,
-      });
+      return h(
+        defineAsyncComponent({
+          loader: () => import("./languages/Java.vue"),
+          loadingComponent: Fallback,
+        }),
+        { size: props.size }
+      );
 
     case "kotlin":
     case "kt":
-      return h(Iconify, {
-        icon: "devicon:kotlin",
-        class: style.icon,
-      });
+      return h(
+        defineAsyncComponent({
+          loader: () => import("./languages/Kotlin.vue"),
+          loadingComponent: Fallback,
+        }),
+        { size: props.size }
+      );
 
     case "go":
     case "golang":
-      return h(Iconify, {
-        icon: "logos:go",
-        class: style.icon,
-      });
+      return h(
+        defineAsyncComponent({
+          loader: () => import("./languages/Go.vue"),
+          loadingComponent: Fallback,
+        }),
+        { size: props.size }
+      );
 
     case "python":
     case "py":
-      return h(Iconify, {
-        icon: "devicon:python",
-        class: style.icon,
-      });
+      return h(
+        defineAsyncComponent({
+          loader: () => import("./languages/Python.vue"),
+          loadingComponent: Fallback,
+        }),
+        { size: props.size }
+      );
 
     case "sql":
-      return h(Iconify, {
-        icon: "vscode-icons:file-type-sql",
-        class: style.icon,
-      });
+      return h(
+        defineAsyncComponent({
+          loader: () => import("./languages/Sql.vue"),
+          loadingComponent: Fallback,
+        }),
+        { size: props.size }
+      );
 
     case "json":
-      return h(Iconify, {
-        icon: "devicon:json",
-        class: style.icon,
-      });
+      return h(
+        defineAsyncComponent({
+          loader: () => import("./languages/Json.vue"),
+          loadingComponent: Fallback,
+        }),
+        { size: props.size }
+      );
 
     case "lua":
-      return h(Iconify, {
-        icon: "devicon:lua",
-        class: style.icon,
-      });
+      return h(
+        defineAsyncComponent({
+          loader: () => import("./languages/Lua.vue"),
+          loadingComponent: Fallback,
+        }),
+        { size: props.size }
+      );
 
     case "cs":
+    case "c#":
     case "csharp":
-      return h(Iconify, {
-        icon: "devicon:csharp",
-        class: style.icon,
-      });
+      return h(
+        defineAsyncComponent({
+          loader: () => import("./languages/Csharp.vue"),
+          loadingComponent: Fallback,
+        }),
+        { size: props.size }
+      );
 
     case "cpp":
     case "c++":
-      return h(Iconify, {
-        icon: "devicon:cplusplus",
-        class: style.icon,
-      });
+      return h(
+        defineAsyncComponent({
+          loader: () => import("./languages/Cplusplus.vue"),
+          loadingComponent: Fallback,
+        }),
+        { size: props.size }
+      );
 
     case "c":
-      return h(Iconify, {
-        icon: "devicon:c",
-        class: style.icon,
-      });
+    case "clang":
+      return h(
+        defineAsyncComponent({
+          loader: () => import("./languages/C.vue"),
+          loadingComponent: Fallback,
+        }),
+        { size: props.size }
+      );
 
     default:
       return Fallback;
