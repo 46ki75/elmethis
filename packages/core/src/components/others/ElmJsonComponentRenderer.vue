@@ -196,7 +196,6 @@ const defaultRenderFunctionMap = (
       h(AsyncElmBlockImage, {
         src: props.src,
         alt: props.alt,
-        enableModal: true,
       }),
     CodeBlock: ({ props, slots }) =>
       slots != null
