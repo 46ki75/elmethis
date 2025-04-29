@@ -32,12 +32,12 @@
 
         <div :class="$style.date" v-if="createdAt != null || updatedAt != null">
           <template v-if="createdAt != null">
-            <Icon icon="mdi:calendar-month" :class="$style.icon" />
+            <ElmMdiIcon :d="mdiCalendarMonth" size="1em" />
             <ElmInlineText :text="`${createdAt}`" size=".8rem" />
           </template>
 
           <template v-if="updatedAt != null">
-            <Icon icon="mdi:calendar-refresh" :class="$style.icon" />
+            <ElmMdiIcon :d="mdiCalendarRefresh" size="1em" />
             <ElmInlineText :text="`${updatedAt}`" size=".8rem" />
           </template>
         </div>
@@ -57,10 +57,11 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
 import ElmInlineText from "../typography/ElmInlineText.vue";
 import ElmImage from "../media/ElmImage.vue";
 import type { Property } from "csstype";
+import ElmMdiIcon from "../icon/ElmMdiIcon.vue";
+import { mdiCalendarMonth, mdiCalendarRefresh } from "@mdi/js";
 
 export interface ElmBookmarkProps {
   /**
@@ -227,16 +228,6 @@ function handleClick(event: MouseEvent) {
       gap: 0.5rem;
       white-space: nowrap;
       text-overflow: ellipsis;
-    }
-  }
-
-  .icon {
-    width: 16px;
-    height: 16px;
-
-    color: rgba(black, 0.7);
-    [data-theme="dark"] & {
-      color: rgba(white, 0.7);
     }
   }
 }

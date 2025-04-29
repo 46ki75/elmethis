@@ -2,10 +2,15 @@ import type { Meta, StoryObj } from "@storybook/vue3";
 import ElmButton from "./ElmButton.vue";
 import ElmInlineText from "../typography/ElmInlineText.vue";
 
-import { Icon } from "@iconify/vue";
 import { h } from "vue";
 
-const PencilSquareIcon = h(Icon, { icon: "heroicons:pencil-square-16-solid" });
+import ElmMdiIcon from "../icon/ElmMdiIcon.vue";
+import { mdiSquareEditOutline } from "@mdi/js";
+
+const PencilSquareIcon = h(ElmMdiIcon, {
+  d: mdiSquareEditOutline,
+  size: "1.25rem",
+});
 
 const meta: Meta<typeof ElmButton> = {
   title: "Components/Form/ElmButton",
@@ -41,8 +46,8 @@ export const Flex: Story = {
     components: { ElmButton, PencilSquareIcon },
     template: `
         <div style="display: flex; gap: 1rem;">
-          <ElmButton v-bind="args"><PencilSquareIcon style="width: 16px;" />elm-button</ElmButton>
-          <ElmButton v-bind="args"><PencilSquareIcon style="width: 16px;" />elm-button</ElmButton>
+          <ElmButton v-bind="args"><PencilSquareIcon />elm-button</ElmButton>
+          <ElmButton v-bind="args"><PencilSquareIcon />elm-button</ElmButton>
         </div>
       `,
   }),
@@ -59,8 +64,8 @@ export const WithPrimary: Story = {
     components: { ElmButton, PencilSquareIcon },
     template: `
         <div style="display: flex; gap: 1rem;">
-          <ElmButton v-bind="args" primary><PencilSquareIcon style="width: 16px;" />elm-button</ElmButton>
-          <ElmButton v-bind="args"><PencilSquareIcon style="width: 16px;" />elm-button</ElmButton>
+          <ElmButton v-bind="args" primary><PencilSquareIcon />elm-button</ElmButton>
+          <ElmButton v-bind="args"><PencilSquareIcon />elm-button</ElmButton>
         </div>
       `,
   }),

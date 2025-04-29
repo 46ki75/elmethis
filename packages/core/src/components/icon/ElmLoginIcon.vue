@@ -1,19 +1,13 @@
 <template>
   <ElmTooltip>
     <template #original>
-      <Icon
+      <ElmMdiIcon
         :class="$style.icon"
-        :style="{
-          '--width': size,
-          '--color': isLoading ? 'gray' : isLogin ? '#b36472' : '#6987b8',
-        }"
-        :icon="
-          isLoading
-            ? 'svg-spinners:ring-resize'
-            : isLogin
-              ? 'mdi:logout-variant'
-              : 'mdi:login-variant'
+        :d="
+          isLoading ? mdiLoading : isLogin ? mdiLogoutVariant : mdiLoginVariant
         "
+        :color="isLoading ? 'gray' : isLogin ? '#b36472' : '#6987b8'"
+        :size="size"
       />
     </template>
     <template #tooltip>
@@ -25,9 +19,11 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
 import ElmTooltip from "../containments/ElmTooltip.vue";
 import ElmInlineText from "../typography/ElmInlineText.vue";
+
+import ElmMdiIcon from "./ElmMdiIcon.vue";
+import { mdiLoading, mdiLoginVariant, mdiLogoutVariant } from "@mdi/js";
 
 export interface ElmLoginIconProps {
   /**
@@ -54,14 +50,12 @@ withDefaults(defineProps<ElmLoginIconProps>(), {
 <style module lang="scss">
 .icon {
   box-sizing: border-box;
-  width: var(--width);
-  height: var(--width);
   padding: 0.25rem;
   border-radius: 0.25rem;
-  color: var(--color);
   cursor: pointer;
 
   transition: background-color 200ms;
+
   &:hover {
     background-color: rgba(black, 0.1);
     [data-theme="dark"] & {

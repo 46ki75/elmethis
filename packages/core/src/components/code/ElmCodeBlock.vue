@@ -14,7 +14,13 @@
       </div>
 
       <div ref="tooltipRef" :class="$style.header__right">
-        <Icon
+        <ElmMdiIcon
+          size="1.25em"
+          :d="
+            copied
+              ? mdiClipboardCheckMultipleOutline
+              : mdiClipboardMultipleOutline
+          "
           :class="$style['copy-icon']"
           @click="
             () => {
@@ -30,17 +36,21 @@
 
         <transition>
           <div v-if="copied" :class="$style.tooltip">
-            <Icon
-              icon="mdi:clipboard-check-multiple-outline"
+            <ElmMdiIcon
+              size="1.25em"
+              :d="mdiClipboardCheckMultipleOutline"
               :class="$style['tooltip-check-icon']"
+              color="#449763"
             />
             <ElmInlineText text="Copied to Clipboard!" />
           </div>
 
           <div v-else-if="isHovered && !copied" :class="$style.tooltip">
-            <Icon
-              icon="mdi:clipboard-multiple-outline"
-              :class="$style['tooltip-copy-icon']"
+            <ElmMdiIcon
+              size="1.25em"
+              :d="mdiClipboardMultipleOutline"
+              :class="$style['tooltip-check-icon']"
+              color="#4c6da2"
             />
             <ElmInlineText text="Copy to Clipboard" />
           </div>
@@ -68,7 +78,6 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
 import ElmLanguageIcon from "../icon/ElmLanguageIcon.vue";
 import ElmInlineText from "../typography/ElmInlineText.vue";
 import ElmBlockFallback from "../fallback/ElmBlockFallback.vue";
@@ -89,6 +98,12 @@ import {
   useTemplateRef,
   VNode,
 } from "vue";
+
+import {
+  mdiClipboardMultipleOutline,
+  mdiClipboardCheckMultipleOutline,
+} from "@mdi/js";
+import ElmMdiIcon from "../icon/ElmMdiIcon.vue";
 
 export interface ElmCodeBlockProps {
   /**
@@ -178,8 +193,7 @@ const renderCaption = (): VNode | VNode[] => {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  font-family:
-    "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+  font-family: "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
 
   border-bottom: solid 1px rgba(black, 0.2);
   [data-theme="dark"] & {
@@ -264,18 +278,6 @@ const renderCaption = (): VNode | VNode[] => {
   gap: 0.25rem;
   height: 20px;
   white-space: nowrap;
-}
-
-.tooltip-copy-icon {
-  width: 20px;
-  height: 20px;
-  color: #4c6da2;
-}
-
-.tooltip-check-icon {
-  width: 20px;
-  height: 20px;
-  color: #449763;
 }
 </style>
 

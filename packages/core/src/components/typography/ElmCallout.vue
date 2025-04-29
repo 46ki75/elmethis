@@ -9,10 +9,10 @@
     }"
   >
     <div :class="$style.header">
-      <Icon
-        :icon="colors[type].icon"
-        :class="$style.icon"
-        :style="{ '--icon-color': colors[type].code }"
+      <ElmMdiIcon
+        :d="colors[type].icon"
+        size="1.25em"
+        :color="colors[type].code"
       />
       <elm-inline-text :text="type.toUpperCase()" :color="colors[type].code" />
     </div>
@@ -23,20 +23,28 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
 import ElmInlineText from "./ElmInlineText.vue";
 import { ref } from "vue";
 import { rgba } from "polished";
 import { useIntersectionObserver } from "@vueuse/core";
 
+import ElmMdiIcon from "../icon/ElmMdiIcon.vue";
+import {
+  mdiInformation,
+  mdiLightbulbOn,
+  mdiShieldAlert,
+  mdiAlert,
+  mdiAlertOctagram,
+} from "@mdi/js";
+
 export type AlertType = "note" | "tip" | "important" | "warning" | "caution";
 
 const colors: Record<AlertType, { code: string; icon: string }> = {
-  note: { code: "#6987b8", icon: "mdi:information-slab-box-outline" },
-  tip: { code: "#59b57c", icon: "heroicons:light-bulb" },
-  important: { code: "#9771bd", icon: "heroicons:shield-exclamation" },
-  warning: { code: "#b8a36e", icon: "heroicons:exclamation-triangle" },
-  caution: { code: "#b36472", icon: "heroicons:x-circle" },
+  note: { code: "#6987b8", icon: mdiInformation },
+  tip: { code: "#59b57c", icon: mdiLightbulbOn },
+  important: { code: "#9771bd", icon: mdiShieldAlert },
+  warning: { code: "#b8a36e", icon: mdiAlert },
+  caution: { code: "#b36472", icon: mdiAlertOctagram },
 };
 
 export interface ElmCalloutProps {
@@ -88,11 +96,5 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-}
-
-.icon {
-  width: 20px;
-  height: 20px;
-  color: var(--icon-color);
 }
 </style>

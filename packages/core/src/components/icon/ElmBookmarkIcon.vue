@@ -12,7 +12,7 @@
       :alt="`favicon of ${name ?? href}`"
     />
 
-    <Icon v-else icon="mdi:globe" :class="$style['favicon-svg']" />
+    <ElmMdiIcon v-else :d="mdiEarth" size="2.5rem" style="opacity: 0.7" />
 
     <div :class="$style.text">
       <ElmInlineText :text="name ?? href" size=".6rem" />
@@ -21,8 +21,10 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
 import ElmInlineText from "../typography/ElmInlineText.vue";
+import ElmMdiIcon from "./ElmMdiIcon.vue";
+
+import { mdiEarth } from "@mdi/js";
 
 export interface ElmBookmarkIconProps {
   name?: string;
@@ -60,15 +62,6 @@ withDefaults(defineProps<ElmBookmarkIconProps>(), {});
 .favicon {
   width: 2.5rem;
   height: 2.5rem;
-}
-
-.favicon-svg {
-  width: 2.5rem;
-  height: 2.5rem;
-  color: rgba(black, 0.7);
-  [data-theme="dark"] & {
-    color: rgba(white, 0.7);
-  }
 }
 
 .text {

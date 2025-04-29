@@ -2,7 +2,12 @@
   <div :class="$style.snackbar">
     <ElmInlineText v-if="props.label != null" :text="props.label" />
     <component v-else :is="() => props.children" />
-    <Icon icon="mdi:cross-circle-outline" :class="$style.icon" @click="close" />
+    <ElmMdiIcon
+      :d="mdiCloseCircleOutline"
+      size="1em"
+      :class="$style.icon"
+      @click="close"
+    />
     <div
       :class="$style.progress"
       :style="{
@@ -13,9 +18,10 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
 import { VNode } from "vue";
 import ElmInlineText from "../typography/ElmInlineText.vue";
+import { mdiCloseCircleOutline } from "@mdi/js";
+import ElmMdiIcon from "../icon/ElmMdiIcon.vue";
 
 export interface ElmSnackbarProps {
   label?: string;
@@ -50,15 +56,8 @@ const props = withDefaults(defineProps<ElmSnackbarProps>(), {
 .icon {
   padding: 0.25rem;
   border-radius: 50%;
-  width: 1rem;
-  height: 1rem;
   cursor: pointer;
   transition: background-color 200ms;
-
-  color: rgba(black, 0.75);
-  [data-theme="dark"] & {
-    color: rgba(white, 0.75);
-  }
 
   &:hover {
     background-color: rgba(black, 0.1);
