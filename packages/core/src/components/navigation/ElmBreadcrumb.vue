@@ -8,15 +8,16 @@
   >
     <template v-for="(link, index) in links">
       <div :class="$style['link-container']" @click="link.onClick">
-        <Icon
-          :class="[$style.icon, $style.fade]"
-          :icon="
+        <ElmMdiIcon
+          :d="
             index === 0
-              ? 'mdi:home'
+              ? mdiHome
               : index === links.length - 1
-                ? 'mdi:file-document-multiple-outline'
-                : 'mdi:folder-open-outline'
+                ? mdiFileDocument
+                : mdiFolderOpen
           "
+          size="1.25em"
+          :class="$style.fade"
           :style="{
             '--delay': `${index * 100}ms`,
           }"
@@ -30,23 +31,30 @@
         />
       </div>
 
-      <Icon
-        icon="mdi:chevron-right"
+      <ElmMdiIcon
         v-if="links.length !== index + 1"
-        :class="[$style.chevron, $style.fade]"
-        :style="{
-          '--delay': `${index * 100 + 100}ms`,
-        }"
+        :d="mdiChevronRight"
+        size="1em"
+        color="gray"
+        :class="$style.fade"
+        :style="{ '--delay': `${index * 100 + 100}ms` }"
       />
     </template>
   </nav>
 </template>
 
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
 import ElmInlineText from "../typography/ElmInlineText.vue";
 import { ref } from "vue";
 import { useIntersectionObserver } from "@vueuse/core";
+
+import ElmMdiIcon from "../icon/ElmMdiIcon.vue";
+import {
+  mdiChevronRight,
+  mdiFileDocument,
+  mdiFolderOpen,
+  mdiHome,
+} from "@mdi/js";
 
 export interface ElmBreadcrumbProps {
   /**
@@ -82,21 +90,6 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   align-items: center;
   gap: 0.5rem;
   user-select: none;
-
-  .icon {
-    width: 20px;
-    height: 20px;
-    color: rgba(black, 0.7);
-    [data-theme="dark"] & {
-      color: rgba(white, 0.7);
-    }
-  }
-
-  .chevron {
-    width: 16px;
-    height: 16px;
-    color: gray;
-  }
 
   .link-container {
     display: flex;
