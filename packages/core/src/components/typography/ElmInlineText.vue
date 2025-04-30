@@ -167,6 +167,7 @@ const render = () => {
 .text {
   padding: 0;
   margin: 0;
+  white-space: pre-line;
   color: var(--color, rgba(black, 0.7));
   font-size: var(--font-size, 1em);
   line-height: var(--font-size, 1em);
