@@ -88,6 +88,9 @@ export { default as ElmLanguageIcon } from "./components/icon/ElmLanguageIcon.vu
 export type { ElmLoginIconProps } from "./components/icon/ElmLoginIcon.vue";
 export { default as ElmLoginIcon } from "./components/icon/ElmLoginIcon.vue";
 
+export type { ElmMdiIconProps } from "./components/icon/ElmMdiIcon.vue";
+export { default as ElmMdiIcon } from "./components/icon/ElmMdiIcon.vue";
+
 export type { ElmToggleThemeProps } from "./components/icon/ElmToggleTheme.vue";
 export { default as ElmToggleTheme } from "./components/icon/ElmToggleTheme.vue";
 
