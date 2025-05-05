@@ -6,6 +6,24 @@ const meta: Meta<typeof ElmTextField> = {
   component: ElmTextField,
   tags: ["autodocs"],
   args: {},
+  argTypes: {
+    icon: {
+      control: "radio",
+      options: [
+        undefined,
+        "text",
+        "pen",
+        "email",
+        "user",
+        "lock",
+        "key",
+        "earth",
+        "tag",
+        "archive",
+        "link",
+      ],
+    },
+  },
 };
 
 export default meta;

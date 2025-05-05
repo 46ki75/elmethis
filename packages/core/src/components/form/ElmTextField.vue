@@ -23,7 +23,7 @@
       />
     </div>
     <div :class="$style.body">
-      <ElmMdiIcon :d="iconMap[icon]" size="1.5rem" color="gray" />
+      <ElmMdiIcon v-if="icon" :d="iconMap[icon]" size="1.5rem" color="gray" />
 
       <input
         :id="id"
@@ -82,10 +82,16 @@ import {
   mdiEyeOutline,
   mdiEyeOffOutline,
   mdiBackspaceOutline,
-  mdiCursorText,
-  mdiEmailOutline,
+  mdiText,
+  mdiPen,
+  mdiEmail,
   mdiAccount,
-  mdiLockOutline,
+  mdiLock,
+  mdiKey,
+  mdiEarth,
+  mdiTag,
+  mdiArchive,
+  mdiLinkVariant,
 } from "@mdi/js";
 
 const id = nanoid();
@@ -99,7 +105,17 @@ export interface ElmTextFieldProps {
   placeholder?: string;
   disabled?: boolean;
   loading?: boolean;
-  icon?: "default" | "mail" | "user" | "password";
+  icon?:
+    | "text"
+    | "pen"
+    | "email"
+    | "user"
+    | "lock"
+    | "key"
+    | "earth"
+    | "tag"
+    | "archive"
+    | "link";
   isPassword?: boolean;
   required?: boolean;
 }
@@ -107,7 +123,6 @@ export interface ElmTextFieldProps {
 const props = withDefaults(defineProps<ElmTextFieldProps>(), {
   disabled: false,
   loading: false,
-  icon: "default",
   isPassword: false,
   required: false,
 });
@@ -126,10 +141,16 @@ const handleVisibleSwitch = () => {
 };
 
 const iconMap: Record<NonNullable<ElmTextFieldProps["icon"]>, string> = {
-  default: mdiCursorText,
-  mail: mdiEmailOutline,
+  text: mdiText,
+  pen: mdiPen,
+  email: mdiEmail,
   user: mdiAccount,
-  password: mdiLockOutline,
+  lock: mdiLock,
+  key: mdiKey,
+  earth: mdiEarth,
+  tag: mdiTag,
+  archive: mdiArchive,
+  link: mdiLinkVariant,
 };
 </script>
 
