@@ -20,7 +20,7 @@ updates:
     labels:
       - "dependencies"
       - "npm"
-    reviewers:
+    assignees:
       - "46ki75"
 
   - package-ecosystem: "npm"
@@ -33,7 +33,7 @@ updates:
     labels:
       - "dependencies"
       - "npm"
-    reviewers:
+    assignees:
       - "46ki75"
 
   - package-ecosystem: "terraform"
@@ -45,5 +45,5 @@ updates:
     labels:
       - "dependencies"
       - "Terraform"
-    reviewers:
+    assignees:
       - "46ki75"
