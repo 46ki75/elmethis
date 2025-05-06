@@ -19,6 +19,10 @@ export const Colored: Story = {
   args: { color: "#b36472" },
 };
 
+export const Kbd: Story = {
+  args: { text: "Ctrl", kbd: true },
+};
+
 export const Background: Story = {
   args: { backgroundColor: opacify(-0.5, "#6987b8") },
 };

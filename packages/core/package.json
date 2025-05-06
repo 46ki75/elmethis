@@ -1,6 +1,6 @@
 {
   "name": "@elmethis/core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publishConfig": {
     "access": "public"
   },
@@ -56,6 +56,6 @@
     "vue-tsc": "^2.2.10"
   },
   "peerDependencies": {
-    "vue": ">=3.4.0"
+    "vue": "^3.4.0"
   }
 }

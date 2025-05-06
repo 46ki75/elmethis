@@ -72,6 +72,8 @@ export interface ElmInlineTextProps {
    */
   code?: boolean;
 
+  kbd?: boolean;
+
   /**
    * Specifies the background color of the text.
    */
@@ -123,6 +125,10 @@ const render = () => {
     },
     props.text
   );
+
+  if (props.kbd) {
+    vnode = h("kbd", { class: style.kbd }, vnode);
+  }
 
   if (props.strikethrough) {
     vnode = h("del", {}, vnode);
@@ -195,6 +201,35 @@ const render = () => {
   border-radius: 0.125rem;
   background-color: rgba(0, 0, 0, 0.075);
   font-family: "Source Code Pro" monospace;
+}
+
+.kbd {
+  padding: 0.125rem 0.25rem;
+  position: relative;
+  border-radius: 0.125rem;
+  background-color: #e6e6e6;
+
+  [data-theme="dark"] & {
+    background-color: #404040;
+  }
+
+  &::before {
+    z-index: -1;
+    position: absolute;
+    content: "";
+    bottom: -0.25em;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #ccc;
+    border-radius: 0 0 0.125rem 0.125rem;
+    box-shadow: 0 0 0.125em rgba(black, 0.5);
+
+    [data-theme="dark"] & {
+      background-color: #595959;
+      box-shadow: 0 0 0.125em rgba(white, 0.5);
+    }
+  }
 }
 
 .link {
