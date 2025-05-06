@@ -33,7 +33,7 @@
     "lodash-es": "^4.17.21",
     "nanoid": "^5.1.5",
     "polished": "^4.3.1",
-    "shiki": "^3.3.0"
+    "shiki": "^3.4.0"
   },
   "devDependencies": {
     "@notionhq/client": "^2.3.0",
