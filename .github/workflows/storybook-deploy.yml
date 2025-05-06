@@ -36,7 +36,7 @@ jobs:
           cache: "pnpm"
 
       - name: Install dependencies
-        run: pnpm install --recursive
+        run: pnpm install
 
       - name: Run Build
         run: pnpm run build-storybook
