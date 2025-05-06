@@ -29,6 +29,7 @@ export default defineConfig({
     rollupOptions: {
       external: [
         "vue",
+        "@mdi/js",
         "@vueuse/core",
         "katex",
         "lodash-es",
@@ -43,13 +44,7 @@ export default defineConfig({
       },
     },
   },
-  esbuild: {
-    jsx: "preserve",
-  },
   css: {
-    modules: {
-      scopeBehaviour: "local",
-    },
     preprocessorOptions: {
       scss: {
         api: "modern-compiler",
