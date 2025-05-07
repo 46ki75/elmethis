@@ -1,0 +1,25 @@
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 200ms;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/*
+import fadeStyle from "../../styles/transition-fade.module.scss";
+
+:enter-from-class="fadeStyle['fade-enter-from']"
+:enter-active-class="fadeStyle['fade-enter-active']"
+:enter-to-class="fadeStyle['fade-enter-to']"
+:leave-from-class="fadeStyle['fade-leave-from']"
+:leave-active-class="fadeStyle['fade-leave-active']"
+:leave-to-class="fadeStyle['fade-leave-to']"
+*/
