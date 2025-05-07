@@ -43,8 +43,8 @@ importers:
         version: 3.5.13(typescript@5.8.3)
     devDependencies:
       '@notionhq/client':
-        specifier: ^3.0.0
-        version: 3.0.0
+        specifier: ^3.0.1
+        version: 3.0.1
       '@storybook/vue3':
         specifier: ^8.6.12
         version: 8.6.12(storybook@8.6.12(prettier@3.3.3))(vue@3.5.13(typescript@5.8.3))
@@ -622,8 +622,8 @@ packages:
   '@microsoft/tsdoc@0.15.1':
     resolution: {integrity: sha512-4aErSrCR/On/e5G2hDP0wjooqDdauzEbIq8hIkIe5pXV0rtWJZvdCEKL0ykZxex+IxIwBp0eGeV48hQN07dXtw==}
 
-  '@notionhq/client@3.0.0':
-    resolution: {integrity: sha512-TlWxZT/rsrjGWJOrnVuiLAlWNPXDumHyRMcw81bJcy2RupSyfjjUCYRELDEyZog48sjVK69/hHLIAwOF3C+ECQ==}
+  '@notionhq/client@3.0.1':
+    resolution: {integrity: sha512-vHtFKrRKQg2PZSky1A9fTe+L9/WxNYRJWHmD6ZiBNgeN5jnFmv27ootRl9ROzEm/N+mOxfTo37EnuCHsaPgETg==}
     engines: {node: '>=18'}
 
   '@parcel/watcher-android-arm64@2.5.1':
@@ -2987,7 +2987,7 @@ snapshots:
 
   '@microsoft/tsdoc@0.15.1': {}
 
-  '@notionhq/client@3.0.0': {}
+  '@notionhq/client@3.0.1': {}
 
   '@parcel/watcher-android-arm64@2.5.1':
     optional: true
