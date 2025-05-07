@@ -110,14 +110,14 @@ onUnmounted(() => {
   [data-theme="dark"] & {
     box-shadow: 0 0 0.25rem rgba(black, 0.6);
     color: rgba(white, 0.6);
-    background-color: rgba(white, 0.1);
+    background-color: #3e434b;
   }
 }
 
 .primary {
   box-shadow: 0 0 0.25rem rgba(black, 0.2);
   color: rgba(white, 0.6);
-  background-color: rgba(black, 0.8);
+  background-color: #3e434b;
 
   [data-theme="dark"] & {
     box-shadow: 0 0 0.25rem rgba(black, 0.6);
@@ -167,7 +167,7 @@ onUnmounted(() => {
     opacity: 1;
   }
   to {
-    transform: scale(1);
+    transform: scale(1.2);
     opacity: 0;
   }
 }
