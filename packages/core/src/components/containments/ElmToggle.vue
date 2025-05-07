@@ -42,12 +42,12 @@
     </transition>
 
     <transition
-      :enter-from-class="$style['v-enter-from']"
-      :enter-active-class="$style['v-enter-active']"
-      :enter-to-class="$style['v-enter-to']"
-      :leave-from-class="$style['v-leave-from']"
-      :leave-active-class="$style['v-leave-active']"
-      :leave-to-class="$style['v-leave-to']"
+      :enter-from-class="fadeStyle['fade-enter-from']"
+      :enter-active-class="fadeStyle['fade-enter-active']"
+      :enter-to-class="fadeStyle['fade-enter-to']"
+      :leave-from-class="fadeStyle['fade-leave-from']"
+      :leave-active-class="fadeStyle['fade-leave-active']"
+      :leave-to-class="fadeStyle['fade-leave-to']"
     >
       <div v-if="isOpen" :class="$style.close" @click="handleClick">
         <div :class="$style['close-button']">
@@ -66,6 +66,8 @@ import { VNode } from "vue";
 
 import ElmMdiIcon from "../icon/ElmMdiIcon.vue";
 import { mdiChevronRight, mdiChevronUp, mdiPlus } from "@mdi/js";
+
+import fadeStyle from "../../styles/transition-fade.module.scss";
 
 export interface ElmToggleProps {
   /**
@@ -178,16 +180,20 @@ const handleClick = (event: Event): void => {
 .v-enter-to,
 .v-leave-from {
   opacity: 1;
+  transform: scaleY(1);
 }
 
 .v-enter-active,
 .v-leave-active {
-  transition: opacity 200ms;
+  transition:
+    opacity 200ms,
+    transform 200ms;
   transform-origin: top;
 }
 
 .v-enter-from,
 .v-leave-to {
   opacity: 0;
+  transform: scaleY(0);
 }
 </style>
