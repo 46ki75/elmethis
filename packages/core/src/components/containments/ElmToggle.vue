@@ -28,13 +28,27 @@
       />
     </div>
 
-    <transition>
+    <transition
+      :enter-from-class="$style['v-enter-from']"
+      :enter-active-class="$style['v-enter-active']"
+      :enter-to-class="$style['v-enter-to']"
+      :leave-from-class="$style['v-leave-from']"
+      :leave-active-class="$style['v-leave-active']"
+      :leave-to-class="$style['v-leave-to']"
+    >
       <div v-if="isOpen" :class="$style.content">
         <slot />
       </div>
     </transition>
 
-    <transition>
+    <transition
+      :enter-from-class="$style['v-enter-from']"
+      :enter-active-class="$style['v-enter-active']"
+      :enter-to-class="$style['v-enter-to']"
+      :leave-from-class="$style['v-leave-from']"
+      :leave-active-class="$style['v-leave-active']"
+      :leave-to-class="$style['v-leave-to']"
+    >
       <div v-if="isOpen" :class="$style.close" @click="handleClick">
         <div :class="$style['close-button']">
           <ElmMdiIcon :d="mdiChevronUp" size="1.25em" color="#c56565" />
@@ -98,11 +112,11 @@ const handleClick = (event: Event): void => {
   align-items: center;
   gap: 0.5rem;
 
-  border: 1px solid rgba(gray, 0.25);
-
-  background-color: rgba(black, 0.025);
+  border: 1px solid rgba(black, 0.125);
+  background-color: rgba(#3e434b, 0.05);
   [data-theme="dark"] & {
-    background-color: rgba(white, 0.1);
+    border: 1px solid rgba(white, 0.125);
+    background-color: rgba(#bec2ca, 0.1);
   }
 }
 
@@ -122,9 +136,15 @@ const handleClick = (event: Event): void => {
   padding: 0.75rem;
   display: block;
 
-  background-color: rgba(white, 0.05);
-  border: 1px solid rgba(gray, 0.25);
   border-radius: 0 0 0.25rem 0.25rem;
+
+  background-color: rgba(white, 0.1);
+  border: 1px solid rgba(black, 0.125);
+
+  [data-theme="dark"] & {
+    border: 1px solid rgba(white, 0.125);
+    background-color: rgba(#bec2ca, 0.05);
+  }
 }
 
 .close {
@@ -154,9 +174,7 @@ const handleClick = (event: Event): void => {
     background-color: rgba(#c56565, 0.15);
   }
 }
-</style>
 
-<style scoped lang="scss">
 .v-enter-to,
 .v-leave-from {
   opacity: 1;

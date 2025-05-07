@@ -412,13 +412,13 @@ const { isDarkTheme, toggleTheme } = useElmethisTheme();
 }
 
 .icon {
-  @include icon(rgba(0, 0, 0, 0.8));
+  @include icon(#555b67);
   box-shadow: 0 0 0.125rem rgba(black, 0.3);
   background-color: rgba(white, 0.2);
   [data-theme="dark"] & {
     box-shadow: 0 0 0.125rem rgba(black, 0.6);
     background-color: rgba(black, 0.2);
-    @include icon(rgba(255, 255, 255, 0.8));
+    @include icon(#b0b5be);
   }
 }
 </style>

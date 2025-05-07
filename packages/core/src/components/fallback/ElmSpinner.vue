@@ -49,9 +49,9 @@ withDefaults(defineProps<ElmSpinnerProps>(), {
     rotate 1200ms infinite linear;
   transform-origin: center;
 
-  stroke: rgba(black, 0.7);
+  stroke: #555b67;
   [data-theme="dark"] & {
-    stroke: rgba(white, 0.7);
+    stroke: #b0b5be;
   }
 }
 </style>

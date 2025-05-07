@@ -1,6 +1,6 @@
 <template>
   <table
-    :class="$style.table"
+    :class="[$style.table, textStyle.text]"
     :style="{
       '--margin-block': margin,
     }"
@@ -34,6 +34,8 @@ import { computed, defineSlots, provide, ComputedRef } from "vue";
 import ElmInlineText from "../typography/ElmInlineText.vue";
 
 import { mdiTable } from "@mdi/js";
+
+import textStyle from "../../styles/text.module.scss";
 
 export interface ElmTableProps {
   /**
@@ -73,12 +75,6 @@ const slots = defineSlots<{
   border-collapse: collapse;
   border-spacing: 0;
   box-shadow: 0 0 0.125rem rgba(black, 0.2);
-
-  color: rgba(black, 0.7);
-
-  [data-theme="dark"] & {
-    color: rgba(white, 0.7);
-  }
 }
 
 .caption {

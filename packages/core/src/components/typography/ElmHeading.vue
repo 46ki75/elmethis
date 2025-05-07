@@ -2,7 +2,7 @@
   <component
     :is="`h${level}`"
     ref="target"
-    :class="[$style[`h${level}`], $style['heading-common']]"
+    :class="[$style[`h${level}`], $style['heading-common'], textStyle.text]"
     :id="id ?? kebabCase(text)"
     :style="{
       '--font-size': size ?? `${SIZE_MAP[level]}rem`,
@@ -31,6 +31,9 @@ import { h, ref, defineSlots, VNode } from "vue";
 import { useIntersectionObserver } from "@vueuse/core";
 import { kebabCase } from "lodash-es";
 import ElmFragmentIdentifier from "./ElmFragmentIdentifier.vue";
+
+// CSS Modules
+import textStyle from "../../styles/text.module.scss";
 
 const SIZE_MAP: Record<1 | 2 | 3 | 4 | 5 | 6, number> = Object.freeze({
   1: 1.5,
@@ -106,22 +109,6 @@ const renderSlots = (): VNode | VNode[] => {
   transition:
     color 400ms,
     opacity 800ms;
-
-  color: rgba(black, 0.8);
-
-  &::selection {
-    color: rgba(white, 0.8);
-    background-color: rgba(black, 0.8);
-  }
-
-  [data-theme="dark"] & {
-    color: rgba(white, 0.8);
-
-    &::selection {
-      color: rgba(black, 0.8);
-      background-color: rgba(white, 0.8);
-    }
-  }
 }
 
 .h1 {

@@ -84,9 +84,9 @@ withDefaults(defineProps<ElmProgressProps>(), {
   transition: transform $transition-duration;
   transform: var(--scale-x, scaleX(0));
   transform-origin: left;
-  background-color: var(--color, rgba(black, 0.8));
+  background-color: var(--color, #555b67);
   [data-theme="dark"] & {
-    background-color: var(--color, rgba(white, 0.8));
+    background-color: var(--color, #b0b5be);
   }
 }
 

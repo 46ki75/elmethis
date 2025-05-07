@@ -179,10 +179,10 @@ const renderCaption = (): VNode | VNode[] => {
     opacity 800ms;
 
   background-color: rgba(white, 0.4);
-  box-shadow: 0 0 0.25rem rgba(black, 0.1);
+  box-shadow: 0 0 0.125rem rgba(#3e434b, 0.3);
   [data-theme="dark"] & {
-    background-color: rgba(white, 0.05);
-    box-shadow: 0 0 0.25rem rgba(black, 0.3);
+    background-color: rgba(#3e434b, 0.5);
+    box-shadow: 0 0 0.125rem rgba(black, 0.3);
   }
 }
 
@@ -195,9 +195,9 @@ const renderCaption = (): VNode | VNode[] => {
   justify-content: space-between;
   font-family: "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
 
-  border-bottom: solid 1px rgba(black, 0.2);
+  border-bottom: solid 1px rgba(#3e434b, 0.3);
   [data-theme="dark"] & {
-    border-color: rgba(white, 0.2);
+    border-color: rgba(#bec2ca, 0.3);
   }
 }
 

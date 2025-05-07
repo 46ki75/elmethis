@@ -29,6 +29,9 @@ import ElmInlineIcon from "../icon/ElmInlineIcon.vue";
 import ElmMdiIcon from "../icon/ElmMdiIcon.vue";
 import { mdiOpenInNew } from "@mdi/js";
 
+// CSS Modules
+import textStyle from "../../styles/text.module.scss";
+
 export interface ElmInlineTextProps {
   /**
    * The text to display.
@@ -116,7 +119,7 @@ const render = () => {
   let vnode = h(
     "span",
     {
-      class: style.text,
+      class: [style.text, textStyle.text],
       style: {
         "--color": props.color ?? backgroundColor,
         "--font-size": props.size,
@@ -174,24 +177,9 @@ const render = () => {
   padding: 0;
   margin: 0;
   white-space: pre-line;
-  color: var(--color, rgba(black, 0.7));
   font-size: var(--font-size, 1em);
   line-height: var(--font-size, 1em);
   background-color: var(--background-color);
-
-  &::selection {
-    color: rgba(white, 0.7);
-    background-color: var(--color, rgba(black, 0.7));
-  }
-
-  [data-theme="dark"] & {
-    color: var(--color, rgba(white, 0.7));
-
-    &::selection {
-      color: rgba(black, 0.7);
-      background-color: var(--color, rgba(white, 0.7));
-    }
-  }
 }
 
 .code {
