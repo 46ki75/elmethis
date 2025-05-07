@@ -181,8 +181,8 @@ const renderCaption = (): VNode | VNode[] => {
   background-color: rgba(white, 0.4);
   box-shadow: 0 0 0.125rem rgba(#3e434b, 0.3);
   [data-theme="dark"] & {
-    background-color: rgba(#3e434b, 0.5);
-    box-shadow: 0 0 0.125rem rgba(black, 0.3);
+    background-color: rgba(#2c3037, 0.9);
+    box-shadow: 0 0 0.125rem rgba(black, 0.4);
   }
 }
 
