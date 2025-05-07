@@ -65,10 +65,10 @@ withDefaults(defineProps<ElmDotLoadingIconProps>(), {
     animation-timing-function: ease-out;
 
     transition: background-color 400ms;
-    background-color: #555b67;
+    background-color: #606875;
 
     [data-theme="dark"] & {
-      background-color: #bec2ca;
+      background-color: #b0b5be;
     }
 
     &:nth-last-of-type(1) {
