@@ -31,10 +31,10 @@ withDefaults(defineProps<ElmMdiIconProps>(), {
 
 <style module lang="scss">
 .icon {
-  fill: var(--color, #333);
+  fill: var(--color, #555b67);
 
   [data-theme="dark"] & {
-    fill: var(--dark-color, #ccc);
+    fill: var(--dark-color, #b0b5be);
   }
 }
 </style>

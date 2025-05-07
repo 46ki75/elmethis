@@ -68,7 +68,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   border-left: 4px solid rgba(black, 0.2);
 
   [data-theme="dark"] & {
-    border-left-color: rgba(white, 0.2);
+    border-left-color: rgba(#bec2ca, 0.2);
   }
 }
 

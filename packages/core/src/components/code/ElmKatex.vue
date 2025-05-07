@@ -2,7 +2,7 @@
   <div
     v-if="props.block"
     ref="targetRef"
-    :class="$style.katex"
+    :class="[$style.katex, textStyle.text]"
     :style="{
       '--margin-block': props.block ? '3rem' : undefined,
     }"
@@ -24,6 +24,8 @@
 
 <script setup lang="ts">
 import { onMounted, onServerPrefetch, onUpdated, ref } from "vue";
+
+import textStyle from "../../styles/text.module.scss";
 
 export interface ElmKatexProps {
   /**
@@ -50,7 +52,7 @@ const html = ref<string | undefined>();
 let katexRenderToString:
   | ((
       expression: string,
-      options: { displayMode: boolean; output: "mathml" },
+      options: { displayMode: boolean; output: "mathml" }
     ) => string)
   | null = null;
 
@@ -84,20 +86,5 @@ onServerPrefetch(render);
 <style module lang="scss">
 .katex {
   margin-block: var(--margin-block);
-  color: rgba(0, 0, 0, 0.7);
-
-  &::selection {
-    color: rgba(255, 255, 255, 0.7);
-    background-color: var(--color, rgba(0, 0, 0, 0.7));
-  }
-
-  [data-theme="dark"] & {
-    color: var(--color, rgba(255, 255, 255, 0.7));
-
-    &::selection {
-      color: rgba(0, 0, 0, 0.7);
-      background-color: var(--color, rgba(255, 255, 255, 0.7));
-    }
-  }
 }
 </style>

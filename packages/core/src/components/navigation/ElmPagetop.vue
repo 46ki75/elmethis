@@ -11,13 +11,15 @@
     <div aria-hidden :class="$style.partial"></div>
     <div aria-hidden :class="$style.partial"></div>
     <div aria-hidden :class="$style.partial"></div>
-    <span :class="$style.text">Back to Top</span>
+    <span :class="[$style.text, textStyle.text]">Back to Top</span>
   </nav>
 </template>
 
 <script setup lang="ts">
 import { useWindowScroll } from "@vueuse/core";
 import { ref, watch } from "vue";
+
+import textStyle from "../../styles/text.module.scss";
 
 export interface ElmPagetopProps {
   /**
@@ -38,7 +40,7 @@ watch(
   () => y.value,
   () => {
     isVisible.value = y.value > 100;
-  },
+  }
 );
 
 const toTop = () => {
@@ -134,9 +136,9 @@ const toTop = () => {
       top: 0;
       height: 100%;
       width: 50%;
-      background-color: rgba(black, 0.7);
+      background-color: #494f59;
       [data-theme="dark"] & {
-        background-color: rgba(white, 0.7);
+        background-color: #bec2ca;
       }
     }
 
@@ -162,11 +164,6 @@ const toTop = () => {
     font-size: 12px;
     white-space: nowrap;
     user-select: none;
-
-    color: rgba(black, 0.7);
-    [data-theme="dark"] & {
-      color: rgba(white, 0.7);
-    }
   }
 }
 </style>
