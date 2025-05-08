@@ -2,16 +2,16 @@
   color: var(--color, #606875);
 
   &::selection {
-    color: #bec2ca;
-    background-color: var(--color, #606875);
+    color: #cccfd5;
+    background-color: var(--color, #3e434b);
   }
 
   [data-theme="dark"] & {
-    color: var(--color, #bec2ca);
+    color: var(--color, #b0b5be);
 
     &::selection {
-      color: #606875;
-      background-color: var(--color, #bec2ca);
+      color: #3e434b;
+      background-color: var(--color, #cccfd5);
     }
   }
 }
