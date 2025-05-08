@@ -2,7 +2,11 @@
   <component
     :is="`h${level}`"
     ref="target"
-    :class="[$style[`h${level}`], $style['heading-common'], headingStyle.text]"
+    :class="[
+      $style[`h${level}`],
+      $style['heading-common'],
+      headingStyle.heading,
+    ]"
     :id="id ?? kebabCase(text)"
     :style="{
       '--font-size': size ?? `${SIZE_MAP[level]}rem`,
