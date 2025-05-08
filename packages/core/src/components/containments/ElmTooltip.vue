@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
 import { useElementBounding, useWindowSize } from "@vueuse/core";
-import { ref } from "vue";
+import { ref, VNodeChild } from "vue";
 
 export interface ElmTooltipProps {}
 
@@ -57,14 +57,27 @@ const { x, y, width, height } = useElementBounding(el);
 const windowSize = useWindowSize();
 
 const isHover = ref(false);
+
+defineSlots<{
+  /**
+   * The original element that will be wrapped by the tooltip.
+   */
+  original: () => VNodeChild;
+
+  /**
+   * The tooltip content that will be displayed when the original element is hovered.
+   */
+  tooltip: () => VNodeChild;
+}>();
 </script>
 
 <style module lang="scss">
 .tooltip {
+  box-sizing: border-box;
   position: fixed;
   z-index: 1000;
+  max-width: min(32rem, calc(100vw - 2rem));
 
-  box-sizing: border-box;
   padding: 0.5rem 0;
 }
 
