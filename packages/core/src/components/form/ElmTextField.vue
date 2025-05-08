@@ -212,11 +212,11 @@ const iconMap: Record<NonNullable<ElmTextFieldProps["icon"]>, string> = {
   border-color: var(--border-color);
 
   background-color: rgba(white, 0.8);
-  box-shadow: 0 0 0.25rem rgba(black, 0.15);
+  box-shadow: 0 0 0.125rem rgba(black, 0.15);
 
   [data-theme="dark"] & {
     background-color: rgba(white, 0.15);
-    box-shadow: 0 0 0.25rem rgba(black, 0.75);
+    box-shadow: 0 0 0.125rem rgba(black, 0.75);
   }
 }
 
