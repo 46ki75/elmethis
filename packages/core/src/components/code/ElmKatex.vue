@@ -13,7 +13,7 @@
   <span
     v-else
     ref="targetRef"
-    :class="$style.katex"
+    :class="[$style.katex, textStyle.text]"
     :style="{
       '--margin-block': props.block ? '3rem' : undefined,
     }"
