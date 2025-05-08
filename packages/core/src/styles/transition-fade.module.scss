@@ -14,12 +14,20 @@
 }
 
 /*
-import fadeStyle from "../../styles/transition-fade.module.scss";
-
-:enter-from-class="fadeStyle['fade-enter-from']"
-:enter-active-class="fadeStyle['fade-enter-active']"
-:enter-to-class="fadeStyle['fade-enter-to']"
 :leave-from-class="fadeStyle['fade-leave-from']"
+:enter-to-class="fadeStyle['fade-enter-to']"
+:enter-active-class="fadeStyle['fade-enter-active']"
 :leave-active-class="fadeStyle['fade-leave-active']"
+:enter-from-class="fadeStyle['fade-enter-from']"
 :leave-to-class="fadeStyle['fade-leave-to']"
 */
+
+.fade-fast-enter-active,
+.fade-fast-leave-active {
+  transition: opacity 100ms;
+}
+
+.fade-slow-enter-active,
+.fade-slow-leave-active {
+  transition: opacity 500ms;
+}

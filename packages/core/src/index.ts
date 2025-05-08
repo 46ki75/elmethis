@@ -58,6 +58,9 @@ export { default as ElmButton } from "./components/form/ElmButton.vue";
 export type { ElmCheckboxProps } from "./components/form/ElmCheckbox.vue";
 export { default as ElmCheckbox } from "./components/form/ElmCheckbox.vue";
 
+export type { ElmSelectProps } from "./components/form/ElmSelect.vue";
+export { default as ElmSelect } from "./components/form/ElmSelect.vue";
+
 export type { ElmSwitchProps } from "./components/form/ElmSwitch.vue";
 export { default as ElmSwitch } from "./components/form/ElmSwitch.vue";
 
