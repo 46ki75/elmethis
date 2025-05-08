@@ -21,14 +21,14 @@
         <div :class="[$style.selected, textStyle.text]">
           <Transition
             mode="out-in"
-            :leave-from-class="fadeStyle['fade-leave-from']"
-            :enter-to-class="fadeStyle['fade-enter-to']"
-            :enter-active-class="fadeStyle['fade-fast-enter-active']"
-            :leave-active-class="fadeStyle['fade-fast-leave-active']"
-            :enter-from-class="fadeStyle['fade-enter-from']"
-            :leave-to-class="fadeStyle['fade-leave-to']"
+            :leave-from-class="$style['selected-leave-from']"
+            :enter-to-class="$style['selected-enter-to']"
+            :enter-active-class="$style['selected-enter-active']"
+            :leave-active-class="$style['selected-leave-active']"
+            :enter-from-class="$style['selected-enter-from']"
+            :leave-to-class="$style['selected-leave-to']"
           >
-            <span v-if="selectedOption" :key="selectedOption.label">
+            <div v-if="selectedOption" :key="selectedOption.id">
               <span>
                 {{ selectedOption.label }}
               </span>
@@ -38,12 +38,12 @@
               >
                 {{ selectedOption.description }}
               </span>
-            </span>
+            </div>
 
-            <span v-else :class="$style.fallback">
+            <div v-else :class="$style.fallback">
               <ElmMdiIcon :d="mdiArrowDownDropCircleOutline" />
               <span>{{ placeholder ?? "Select an option" }} </span>
-            </span>
+            </div>
           </Transition>
         </div>
 
@@ -262,5 +262,28 @@ onClickOutside(target, (_) => {
   font-size: 0.75em;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.selected-enter-from {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+
+.selected-enter-to,
+.selected-leave-from {
+  opacity: 1;
+  transform: translateY(0%);
+}
+
+.selected-leave-to {
+  opacity: 0;
+  transform: translateY(100%);
+}
+
+.selected-enter-active,
+.selected-leave-active {
+  transition:
+    opacity 200ms,
+    transform 100ms;
 }
 </style>
