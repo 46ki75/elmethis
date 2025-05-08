@@ -23,12 +23,12 @@ import ElmTooltip from "./ElmTooltip.vue";
 import headingStyle from "../../styles/heading.module.scss";
 import textStyle from "../../styles/text.module.scss";
 
-export interface ElmTemplateProps {
+export interface ElmSimpleTooltipProps {
   title?: string;
   text: string;
 }
 
-withDefaults(defineProps<ElmTemplateProps>(), {});
+withDefaults(defineProps<ElmSimpleTooltipProps>(), {});
 </script>
 
 <style module lang="scss">

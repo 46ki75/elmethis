@@ -19,6 +19,9 @@ export { default as ElmModal } from "./components/containments/ElmModal.vue";
 export type { ElmParallaxProps } from "./components/containments/ElmParallax.vue";
 export { default as ElmParallax } from "./components/containments/ElmParallax.vue";
 
+export type { ElmSimpleTooltipProps } from "./components/containments/ElmSimpleTooltip.vue";
+export { default as ElmSimpleTooltip } from "./components/containments/ElmSimpleTooltip.vue";
+
 export type { ElmSnackbarProps } from "./components/containments/ElmSnackbar.vue";
 export { default as ElmSnackbar } from "./components/containments/ElmSnackbar.vue";
 
