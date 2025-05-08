@@ -10,7 +10,7 @@
   >
     <div :class="$style.header">
       <span
-        :class="[$style.label, scss.text]"
+        :class="[$style.label, textStyle.text]"
         :style="{ color: isActive ? '#59b57c' : undefined }"
         >{{ label }}</span
       >
@@ -18,15 +18,15 @@
 
     <div :class="$style.body">
       <div :class="$style.select">
-        <div :class="[$style.selected, scss.text]">
+        <div :class="[$style.selected, textStyle.text]">
           <Transition
             mode="out-in"
-            :leave-from-class="scss['fade-leave-from']"
-            :enter-to-class="scss['fade-enter-to']"
-            :enter-active-class="scss['fade-fast-enter-active']"
-            :leave-active-class="scss['fade-fast-leave-active']"
-            :enter-from-class="scss['fade-enter-from']"
-            :leave-to-class="scss['fade-leave-to']"
+            :leave-from-class="fadeStyle['fade-leave-from']"
+            :enter-to-class="fadeStyle['fade-enter-to']"
+            :enter-active-class="fadeStyle['fade-fast-enter-active']"
+            :leave-active-class="fadeStyle['fade-fast-leave-active']"
+            :enter-from-class="fadeStyle['fade-enter-from']"
+            :leave-to-class="fadeStyle['fade-leave-to']"
           >
             <span v-if="selectedOption" :key="selectedOption.label">
               <span>
@@ -50,18 +50,18 @@
         <ElmMdiIcon :d="mdiMenuDown" size="1.5rem" />
 
         <Transition
-          :enter-from-class="scss['fade-enter-from']"
-          :enter-active-class="scss['fade-enter-active']"
-          :enter-to-class="scss['fade-enter-to']"
-          :leave-from-class="scss['fade-leave-from']"
-          :leave-active-class="scss['fade-leave-active']"
-          :leave-to-class="scss['fade-leave-to']"
+          :enter-from-class="fadeStyle['fade-enter-from']"
+          :enter-active-class="fadeStyle['fade-enter-active']"
+          :enter-to-class="fadeStyle['fade-enter-to']"
+          :leave-from-class="fadeStyle['fade-leave-from']"
+          :leave-active-class="fadeStyle['fade-leave-active']"
+          :leave-to-class="fadeStyle['fade-leave-to']"
         >
           <div v-if="isActive" :class="$style.pulldown">
             <div
               v-for="option in options"
               :key="option.id"
-              :class="[$style.option, scss.text]"
+              :class="[$style.option, textStyle.text]"
               @click="handleSelect(option.id)"
             >
               <ElmMdiIcon :d="mdiChevronRight" color="#868e9c" size="0.75em" />
@@ -89,7 +89,8 @@ import {
 } from "@mdi/js";
 import { onClickOutside } from "@vueuse/core";
 
-import scss from "../../styles/lib.module.scss";
+import textStyle from "../../styles/text.module.scss";
+import fadeStyle from "../../styles/transition-fade.module.scss";
 
 export interface ElmSelectProps {
   label: string;
