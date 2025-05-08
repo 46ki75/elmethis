@@ -1,8 +1,7 @@
 <template>
   <div
-    :class="$style.wrapper"
+    :class="[$style.wrapper, { [$style.active]: isFocused }]"
     :style="{
-      '--border-color': isFocused ? '#59b57c' : 'transparent',
       backgroundColor: disabled || loading ? 'rgba(0,0,0,0.15)' : undefined,
     }"
   >
@@ -209,7 +208,7 @@ const iconMap: Record<NonNullable<ElmTextFieldProps["icon"]>, string> = {
 
   border-style: solid;
   border-width: 1px;
-  border-color: var(--border-color);
+  border-color: transparent;
 
   background-color: rgba(white, 0.8);
   box-shadow: 0 0 0.125rem rgba(black, 0.15);
@@ -218,6 +217,10 @@ const iconMap: Record<NonNullable<ElmTextFieldProps["icon"]>, string> = {
     background-color: rgba(white, 0.15);
     box-shadow: 0 0 0.125rem rgba(black, 0.75);
   }
+}
+
+.active {
+  border-color: rgba(#59b57c, 0.5);
 }
 
 .header {

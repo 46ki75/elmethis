@@ -1,9 +1,8 @@
 <template>
   <div
     ref="target"
-    :class="$style.wrapper"
+    :class="[$style.wrapper, { [$style.active]: isActive }]"
     :style="{
-      '--border-color': isActive ? '#59b57c' : 'transparent',
       backgroundColor: disabled || loading ? 'rgba(0,0,0,0.15)' : undefined,
     }"
     @click="handleToggle"
@@ -149,7 +148,7 @@ onClickOutside(target, (_) => {
 
   border-style: solid;
   border-width: 1px;
-  border-color: var(--border-color);
+  border-color: transparent;
 
   transition:
     border-color 200ms,
@@ -162,6 +161,10 @@ onClickOutside(target, (_) => {
     background-color: rgba(white, 0.15);
     box-shadow: 0 0 0.125rem rgba(black, 0.75);
   }
+}
+
+.active {
+  border-color: rgba(#59b57c, 0.5);
 }
 
 .header {
