@@ -1,5 +1,5 @@
-.text {
-  color: var(--color, #606875);
+.heading {
+  color: var(--color, #555b67);
 
   &::selection {
     color: #cccfd5;
@@ -7,7 +7,7 @@
   }
 
   [data-theme="dark"] & {
-    color: var(--color, #b0b5be);
+    color: var(--color, #cccfd5);
 
     &::selection {
       color: #3e434b;

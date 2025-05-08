@@ -15,7 +15,14 @@
   >
     <slot name="original" />
 
-    <transition>
+    <transition
+      :leave-from-class="$style['v-leave-from']"
+      :enter-to-class="$style['v-enter-to']"
+      :enter-active-class="$style['v-enter-active']"
+      :leave-active-class="$style['v-leave-active']"
+      :enter-from-class="$style['v-enter-from']"
+      :leave-to-class="$style['v-leave-to']"
+    >
       <div
         v-if="isHover"
         :class="$style.tooltip"
@@ -39,7 +46,7 @@
 
 <script setup lang="ts">
 import { useElementBounding, useWindowSize } from "@vueuse/core";
-import { ref } from "vue";
+import { ref, VNodeChild } from "vue";
 
 export interface ElmTooltipProps {}
 
@@ -50,32 +57,30 @@ const { x, y, width, height } = useElementBounding(el);
 const windowSize = useWindowSize();
 
 const isHover = ref(false);
+
+defineSlots<{
+  /**
+   * The original element that will be wrapped by the tooltip.
+   */
+  original: () => VNodeChild;
+
+  /**
+   * The tooltip content that will be displayed when the original element is hovered.
+   */
+  tooltip: () => VNodeChild;
+}>();
 </script>
 
 <style module lang="scss">
 .tooltip {
+  box-sizing: border-box;
   position: fixed;
   z-index: 1000;
+  max-width: min(32rem, calc(100vw - 2rem));
 
-  box-sizing: border-box;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-
-  box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.1);
-
-  color: rgba(0, 0, 0, 0.7);
-  background-color: rgba(255, 255, 255, 0.9);
-
-  transform-origin: top;
-
-  [data-theme="dark"] & {
-    color: rgba(255, 255, 255, 0.7);
-    background-color: rgba(0, 0, 0, 0.9);
-  }
+  padding: 0.5rem 0;
 }
-</style>
 
-<style scoped lang="scss">
 .v-enter-to,
 .v-leave-from {
   transform: scale(1);
@@ -91,7 +96,7 @@ const isHover = ref(false);
 
 .v-enter-from,
 .v-leave-to {
-  transform: scale(0.5);
+  transform: scale(0.8);
   opacity: 0;
 }
 </style>

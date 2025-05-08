@@ -2,7 +2,11 @@
   <component
     :is="`h${level}`"
     ref="target"
-    :class="[$style[`h${level}`], $style['heading-common'], textStyle.text]"
+    :class="[
+      $style[`h${level}`],
+      $style['heading-common'],
+      headingStyle.heading,
+    ]"
     :id="id ?? kebabCase(text)"
     :style="{
       '--font-size': size ?? `${SIZE_MAP[level]}rem`,
@@ -33,7 +37,7 @@ import { kebabCase } from "lodash-es";
 import ElmFragmentIdentifier from "./ElmFragmentIdentifier.vue";
 
 // CSS Modules
-import textStyle from "../../styles/text.module.scss";
+import headingStyle from "../../styles/heading.module.scss";
 
 const SIZE_MAP: Record<1 | 2 | 3 | 4 | 5 | 6, number> = Object.freeze({
   1: 1.5,
