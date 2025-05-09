@@ -1,22 +1,28 @@
 <template>
-  <a
-    v-if="href"
-    :class="$style.link"
-    :href="href"
-    :style="{ '--font-size': size }"
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <ElmInlineIcon v-if="favicon" :src="favicon" alt="favicon" />
+  <ElmTooltip v-if="href && ogp">
+    <template #original>
+      <component :is="renderLink()" />
+    </template>
+    <template #tooltip>
+      <div v-if="ogp" :class="$style.ogp">
+        <div :class="$style['ogp-text']">
+          <div :class="[textStyle.text, $style['ogp-title']]">
+            {{ ogp.title }}
+          </div>
+          <div
+            v-if="ogp.description"
+            :class="[textStyle.text, $style['ogp-description']]"
+          >
+            {{ ogp.description }}
+          </div>
+        </div>
+        <ElmImage v-if="ogp.image" :src="ogp.image" />
+      </div>
+      <ElmInlineText v-else :text="href" />
+    </template>
+  </ElmTooltip>
 
-    {{ text ?? href }}
-    <ElmMdiIcon
-      :d="mdiOpenInNew"
-      :size="size ? String(size) : undefined"
-      color="gray"
-      style="opacity: 0.75"
-    />
-  </a>
+  <component v-else-if="href" :is="renderLink()" />
 
   <component v-else :is="render()"></component>
 </template>
@@ -24,13 +30,15 @@
 <script setup lang="ts">
 import type { Property } from "csstype";
 import { getLuminance } from "polished";
-import { h, useCssModule } from "vue";
+import { h, useCssModule, VNodeChild } from "vue";
 import ElmInlineIcon from "../icon/ElmInlineIcon.vue";
 import ElmMdiIcon from "../icon/ElmMdiIcon.vue";
 import { mdiOpenInNew } from "@mdi/js";
 
 // CSS Modules
 import textStyle from "../../styles/text.module.scss";
+import ElmTooltip from "../containments/ElmTooltip.vue";
+import ElmImage from "../media/ElmImage.vue";
 
 export interface ElmInlineTextProps {
   /**
@@ -95,6 +103,12 @@ export interface ElmInlineTextProps {
   href?: string;
 
   favicon?: string;
+
+  ogp?: {
+    title: string;
+    description?: string;
+    image?: string;
+  };
 }
 
 const props = withDefaults(defineProps<ElmInlineTextProps>(), {
@@ -107,6 +121,36 @@ const props = withDefaults(defineProps<ElmInlineTextProps>(), {
 });
 
 const style = useCssModule();
+
+const renderLink = () => {
+  const children: VNodeChild[] = [];
+
+  if (props.favicon) {
+    children.push(h(ElmInlineIcon, { src: props.favicon, alt: "favicon" }));
+  }
+
+  children.push(h("span", {}, props.text ?? props.href));
+  children.push(
+    h(ElmMdiIcon, {
+      d: mdiOpenInNew,
+      size: props.size ? String(props.size) : undefined,
+      color: "gray",
+      style: { opacity: 0.75 },
+    })
+  );
+
+  return h(
+    "a",
+    {
+      class: style.link,
+      href: props.href,
+      style: { "--font-size": props.size },
+      target: "_blank",
+      rel: "noopener noreferrer",
+    },
+    children
+  );
+};
 
 const render = () => {
   const backgroundColor =
@@ -258,5 +302,37 @@ const render = () => {
       background-color: rgba($color: #59b57c, $alpha: 0.2);
     }
   }
+}
+
+.ogp {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  overflow: hidden;
+
+  border-radius: 0.25rem;
+  box-shadow: 0 0 0.125rem rgba(black, 0.3);
+
+  background-color: rgba(white, 0.8);
+
+  [data-theme="dark"] & {
+    background-color: rgba(white, 0.1);
+  }
+}
+
+.ogp-text {
+  box-sizing: border-box;
+  padding: 0.5rem;
+}
+
+.ogp-title {
+  box-sizing: border-box;
+  font-weight: bold;
+  padding-block-end: 0.25rem;
+}
+
+.ogp-description {
+  opacity: 0.7;
+  padding: 0.25rem;
 }
 </style>
