@@ -38,3 +38,17 @@ export const Link: Story = {
     favicon: "https://www.google.com/favicon.ico",
   },
 };
+
+export const LinkWithOgp: Story = {
+  args: {
+    text: "Visual Studio Code - Code Editing. Redefined",
+    href: "https://code.visualstudio.com/",
+    favicon: "https://code.visualstudio.com/assets/favicon.ico",
+    ogp: {
+      title: "Visual Studio Code - Code Editing. Redefined",
+      description:
+        "Visual Studio Code redefines AI-powered coding with GitHub Copilot for building and debugging modern web and cloud applications. Visual Studio Code is free and available on your favorite platform - Linux, macOS, and Windows.",
+      image: "https://code.visualstudio.com/opengraphimg/opengraph-home.png",
+    },
+  },
+};

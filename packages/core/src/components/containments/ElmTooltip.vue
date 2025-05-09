@@ -90,13 +90,13 @@ defineSlots<{
 .v-enter-active,
 .v-leave-active {
   transition:
-    opacity 100ms,
+    opacity 200ms,
     transform 200ms;
 }
 
 .v-enter-from,
 .v-leave-to {
-  transform: scale(0.8);
+  transform: scale(0.95);
   opacity: 0;
 }
 </style>
