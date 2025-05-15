@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@mdi/js": "^7.4.47",
-    "@vueuse/core": "^13.1.0",
+    "@vueuse/core": "^13.2.0",
     "katex": "^0.16.22",
     "lodash-es": "^4.17.21",
     "nanoid": "^5.1.5",
