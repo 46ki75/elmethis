@@ -88,8 +88,8 @@ importers:
         specifier: ^3.5.2
         version: 3.5.2(vite@6.3.5(@types/node@22.14.0)(jiti@2.4.2)(sass@1.88.0)(terser@5.39.0)(tsx@4.19.3))
       vite-plugin-dts:
-        specifier: ^4.5.3
-        version: 4.5.3(@types/node@22.14.0)(rollup@4.40.1)(typescript@5.8.3)(vite@6.3.5(@types/node@22.14.0)(jiti@2.4.2)(sass@1.88.0)(terser@5.39.0)(tsx@4.19.3))
+        specifier: ^4.5.4
+        version: 4.5.4(@types/node@22.14.0)(rollup@4.40.1)(typescript@5.8.3)(vite@6.3.5(@types/node@22.14.0)(jiti@2.4.2)(sass@1.88.0)(terser@5.39.0)(tsx@4.19.3))
       vue-tsc:
         specifier: ^2.2.10
         version: 2.2.10(typescript@5.8.3)
@@ -1041,9 +1041,6 @@ packages:
   '@types/aria-query@5.0.4':
     resolution: {integrity: sha512-rfT93uj5s0PRL7EzccGMs3brplhcrghnDoV26NqKhCAS1hVo+WdNsPvE/yb6ilfr5hi2MEk6d5EWJTKdxg8jVw==}
 
-  '@types/estree@1.0.6':
-    resolution: {integrity: sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==}
-
   '@types/estree@1.0.7':
     resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==}
 
@@ -1135,9 +1132,6 @@ packages:
 
   '@volar/source-map@2.4.12':
     resolution: {integrity: sha512-bUFIKvn2U0AWojOaqf63ER0N/iHIBYZPpNGogfLPQ68F5Eet6FnLlyho7BS0y2HJ1jFhSif7AcuTx1TqsCzRzw==}
-
-  '@volar/typescript@2.4.11':
-    resolution: {integrity: sha512-2DT+Tdh88Spp5PyPbqhyoYavYCPDsqbHLFwcUI9K1NlY1YgUJvujGdrqUp0zWxnW7KWNTr3xSpMuv2WnaTKDAw==}
 
   '@volar/typescript@2.4.12':
     resolution: {integrity: sha512-HJB73OTJDgPc80K30wxi3if4fSsZZAOScbj2fcicMuOPoOkcf9NNAINb33o+DzhBdF9xTKC1gnPmIRDous5S0g==}
@@ -2390,8 +2384,8 @@ packages:
     peerDependencies:
       vite: '>2.0.0-0'
 
-  vite-plugin-dts@4.5.3:
-    resolution: {integrity: sha512-P64VnD00dR+e8S26ESoFELqc17+w7pKkwlBpgXteOljFyT0zDwD8hH4zXp49M/kciy//7ZbVXIwQCekBJjfWzA==}
+  vite-plugin-dts@4.5.4:
+    resolution: {integrity: sha512-d4sOM8M/8z7vRXHHq/ebbblfaxENjogAAekcfcDCCwAyvGqnPrc7f4NZbvItS+g4WTgerW0xDwSz5qz11JT3vg==}
     peerDependencies:
       typescript: '*'
       vite: '*'
@@ -3059,7 +3053,7 @@ snapshots:
 
   '@rollup/pluginutils@5.1.4(rollup@4.40.1)':
     dependencies:
-      '@types/estree': 1.0.6
+      '@types/estree': 1.0.7
       estree-walker: 2.0.2
       picomatch: 4.0.2
     optionalDependencies:
@@ -3437,8 +3431,6 @@ snapshots:
 
   '@types/aria-query@5.0.4': {}
 
-  '@types/estree@1.0.6': {}
-
   '@types/estree@1.0.7': {}
 
   '@types/hast@3.0.4':
@@ -3536,12 +3528,6 @@ snapshots:
 
   '@volar/source-map@2.4.12': {}
 
-  '@volar/typescript@2.4.11':
-    dependencies:
-      '@volar/language-core': 2.4.11
-      path-browserify: 1.0.1
-      vscode-uri: 3.1.0
-
   '@volar/typescript@2.4.12':
     dependencies:
       '@volar/language-core': 2.4.12
@@ -3585,7 +3571,7 @@ snapshots:
 
   '@vue/language-core@2.2.0(typescript@5.8.3)':
     dependencies:
-      '@volar/language-core': 2.4.11
+      '@volar/language-core': 2.4.12
       '@vue/compiler-dom': 3.5.13
       '@vue/compiler-vue2': 2.7.16
       '@vue/shared': 3.5.13
@@ -4910,11 +4896,11 @@ snapshots:
     dependencies:
       vite: 6.3.5(@types/node@22.14.0)(jiti@2.4.2)(sass@1.88.0)(terser@5.39.0)(tsx@4.19.3)
 
-  vite-plugin-dts@4.5.3(@types/node@22.14.0)(rollup@4.40.1)(typescript@5.8.3)(vite@6.3.5(@types/node@22.14.0)(jiti@2.4.2)(sass@1.88.0)(terser@5.39.0)(tsx@4.19.3)):
+  vite-plugin-dts@4.5.4(@types/node@22.14.0)(rollup@4.40.1)(typescript@5.8.3)(vite@6.3.5(@types/node@22.14.0)(jiti@2.4.2)(sass@1.88.0)(terser@5.39.0)(tsx@4.19.3)):
     dependencies:
       '@microsoft/api-extractor': 7.51.0(@types/node@22.14.0)
       '@rollup/pluginutils': 5.1.4(rollup@4.40.1)
-      '@volar/typescript': 2.4.11
+      '@volar/typescript': 2.4.12
       '@vue/language-core': 2.2.0(typescript@5.8.3)
       compare-versions: 6.1.1
       debug: 4.4.0
