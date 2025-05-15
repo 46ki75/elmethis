@@ -19,7 +19,11 @@ export const Primary: Story = {
 };
 
 export const Rust: Story = {
-  args: { code: rustCode, language: "rust" },
+  args: {
+    code: rustCode,
+    language: "rust",
+    caption: "/workspaces/elmethis/packages/storybook",
+  },
 };
 
 export const Caption: Story = {
