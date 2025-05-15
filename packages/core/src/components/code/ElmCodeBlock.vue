@@ -10,7 +10,9 @@
     <div :class="$style.header">
       <div :class="$style.header__left">
         <ElmLanguageIcon :language="language" :size="20" />
-        <component :is="() => renderCaption()" />
+        <span :class="$style.caption">
+          <component :is="() => renderCaption()" />
+        </span>
       </div>
 
       <div ref="tooltipRef" :class="$style.header__right">
@@ -188,10 +190,12 @@ const renderCaption = (): VNode | VNode[] => {
 
 .header {
   box-sizing: border-box;
+  width: calc(100% - 1rem);
   padding: 0.25rem 0.5rem 0.5rem 0.5rem;
   margin: 0.5rem;
   display: flex;
   flex-direction: row;
+  flex-wrap: nowrap;
   justify-content: space-between;
   font-family: "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
 
@@ -202,10 +206,17 @@ const renderCaption = (): VNode | VNode[] => {
 }
 
 .header__left {
+  width: calc(100% - 2rem);
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 0.5rem;
+}
+
+.caption {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .copy-icon {
