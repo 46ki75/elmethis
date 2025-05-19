@@ -33,7 +33,7 @@
         :class="block ? $style['image-block'] : $style.image"
         :src="src"
         :alt="alt"
-        @click="isModalOpen = true"
+        @click="if (enableModal) isModalOpen = true;"
         :style="{
           '--cursor': enableModal ? 'zoom-in' : 'inherit',
           '--margin-block': margin,
@@ -149,6 +149,7 @@ onKeyStroke("Escape", (e) => {
   display: block;
   margin-block: var(--margin-block);
   max-width: 100%;
+  max-height: 100vh;
   cursor: var(--cursor);
 }
 
@@ -183,6 +184,7 @@ onKeyStroke("Escape", (e) => {
   box-shadow: 0 0 0.125rem rgba(black, 0.3);
   display: block;
   max-width: 100%;
+  max-height: 100vh;
   cursor: zoom-in;
 }
 
@@ -208,11 +210,11 @@ onKeyStroke("Escape", (e) => {
   justify-content: center;
   align-items: center;
   background-color: rgba(#23262a, 0.8);
-  cursor: zoom-out;
 }
 
 .modal-image {
   display: block;
   max-width: 100%;
+  cursor: zoom-out;
 }
 </style>
