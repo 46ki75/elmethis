@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.fragment">
+  <span :class="$style.fragment">
     <ElmMdiIcon
       size="1.25rem"
       color="#6987b8"
@@ -14,7 +14,7 @@
       :class="$style.icon"
       @click="handleLinkClick(id)"
     />
-  </div>
+  </span>
 </template>
 
 <script setup lang="ts">
@@ -69,6 +69,9 @@ onMounted(() => {
 
 <style module lang="scss">
 .fragment {
+  position: absolute;
+  right: 0;
+  bottom: -2.5rem;
   display: flex;
   justify-content: flex-end;
   align-items: center;

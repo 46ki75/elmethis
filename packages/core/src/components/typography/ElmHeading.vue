@@ -21,12 +21,12 @@
       :class="$style['h2__underline']"
       aria-hidden
     ></span>
-  </component>
 
-  <ElmFragmentIdentifier
-    v-if="!disableFragmentIdentifier"
-    :id="id ?? kebabCase(text)"
-  />
+    <ElmFragmentIdentifier
+      v-if="!disableFragmentIdentifier"
+      :id="id ?? kebabCase(text)"
+    />
+  </component>
 </template>
 
 <script setup lang="ts">
