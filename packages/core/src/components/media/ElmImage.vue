@@ -72,12 +72,14 @@
       :leave-active-class="fadeStyle['fade-leave-active']"
       :leave-to-class="fadeStyle['fade-leave-to']"
     >
-      <ElmImageModal
-        v-if="isModalOpen"
-        :src="src"
-        :alt="alt"
-        @click="isModalOpen = false"
-      />
+      <div v-if="isModalOpen" :class="$style.modal">
+        <img
+          :class="$style['modal-image']"
+          :src="src"
+          :alt="alt"
+          @click="isModalOpen = false"
+        />
+      </div>
     </transition>
   </div>
 </template>
@@ -90,7 +92,6 @@ import ElmRectangleWave from "../fallback/ElmRectangleWave.vue";
 import ElmDotLoadingIcon from "../icon/ElmDotLoadingIcon.vue";
 import { onKeyStroke, useImage } from "@vueuse/core";
 import ElmInlineText from "../typography/ElmInlineText.vue";
-import ElmImageModal from "./ElmImageModal.vue";
 
 import fadeStyle from "../../styles/transition-fade.module.scss";
 
@@ -194,5 +195,24 @@ onKeyStroke("Escape", (e) => {
   gap: 1rem;
   color: #6987b8;
   opacity: 0.8;
+}
+
+.modal {
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(#23262a, 0.8);
+  cursor: zoom-out;
+}
+
+.modal-image {
+  display: block;
+  max-width: 100%;
 }
 </style>
