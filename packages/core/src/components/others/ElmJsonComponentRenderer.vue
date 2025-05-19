@@ -73,8 +73,8 @@ const AsyncElmFile = defineAsyncComponent({
   loadingComponent: ElmBlockFallback,
 });
 
-const AsyncElmBlockImage = defineAsyncComponent({
-  loader: () => import("../media/ElmBlockImage.vue"),
+const AsyncElmImage = defineAsyncComponent({
+  loader: () => import("../media/ElmImage.vue"),
   loadingComponent: ElmBlockFallback,
 });
 
@@ -193,9 +193,11 @@ const defaultRenderFunctionMap = (
       }),
     File: ({ props }) => h(AsyncElmFile, { src: props.src, name: props.name }),
     Image: ({ props }) =>
-      h(AsyncElmBlockImage, {
+      h(AsyncElmImage, {
         src: props.src,
         alt: props.alt,
+        block: true,
+        enableModal: true,
       }),
     CodeBlock: ({ props, slots }) =>
       slots != null

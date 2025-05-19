@@ -95,9 +95,6 @@ export type { ElmToggleThemeProps } from "./components/icon/ElmToggleTheme.vue";
 export { default as ElmToggleTheme } from "./components/icon/ElmToggleTheme.vue";
 
 // Media
-export type { ElmBlockImageProps } from "./components/media/ElmBlockImage.vue";
-export { default as ElmBlockImage } from "./components/media/ElmImage.vue";
-
 export type { ElmFileProps } from "./components/media/ElmFile.vue";
 export { default as ElmFile } from "./components/media/ElmFile.vue";
 
