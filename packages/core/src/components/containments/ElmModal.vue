@@ -13,7 +13,7 @@
         :class="$style.provider"
         @click="
           () => {
-            isOpen = false;
+            if (closeOnClickOutside) isOpen = false;
           }
         "
       >
@@ -37,9 +37,12 @@ import fadeStyle from "../../styles/transition-fade.module.scss";
 
 export interface ElmModalProps {
   width?: string;
+  closeOnClickOutside?: boolean;
 }
 
-withDefaults(defineProps<ElmModalProps>(), {});
+withDefaults(defineProps<ElmModalProps>(), {
+  closeOnClickOutside: true,
+});
 
 const slots = defineSlots<{
   default?: () => VNode;

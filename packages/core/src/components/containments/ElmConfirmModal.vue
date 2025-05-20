@@ -1,5 +1,5 @@
 <template>
-  <ElmModal v-model="isOpen">
+  <ElmModal v-model="isOpen" :close-on-click-outside="closeOnClickOutside">
     <div>
       <ElmHeading :level="2" disable-fragment-identifier>
         {{ title }}
@@ -35,12 +35,15 @@ import ElmModal from "./ElmModal.vue";
 
 export interface ElmConfirmModalProps {
   title: string;
+  closeOnClickOutside?: boolean;
   onConfirm: () => void | Promise<void>;
   onSuccess?: () => void;
   onError?: (error: unknown) => void;
 }
 
-const props = withDefaults(defineProps<ElmConfirmModalProps>(), {});
+const props = withDefaults(defineProps<ElmConfirmModalProps>(), {
+  closeOnClickOutside: true,
+});
 
 const isOpen = defineModel<boolean>({ default: false });
 const loading = ref(false);

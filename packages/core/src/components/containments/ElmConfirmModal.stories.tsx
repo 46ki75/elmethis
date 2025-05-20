@@ -17,6 +17,9 @@ const meta: Meta<typeof ElmConfirmModal> = {
       console.log("Hi");
     },
   },
+  argTypes: {
+    closeOnClickOutside: { control: "boolean" },
+  },
 };
 
 export default meta;
