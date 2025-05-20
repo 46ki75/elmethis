@@ -17,13 +17,13 @@ export const Primary: Story = {
   render: () => ({
     components: { ElmModal, ElmInlineText },
     setup() {
-      const isOpen = ref(true);
+      const isOpen = ref(false);
       return { isOpen };
     },
     template: `
       <div>
         <button @click="isOpen = !isOpen">Toggle Modal</button>
-        <ElmModal v-model:isOpen="isOpen">
+        <ElmModal v-model="isOpen">
           <ElmInlineText text="Hello world!" />
         </ElmModal>
       </div>
