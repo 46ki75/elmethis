@@ -1,32 +1,34 @@
 <template>
-  <transition
-    :leave-from-class="fadeStyle['fade-leave-from']"
-    :enter-to-class="fadeStyle['fade-enter-to']"
-    :enter-active-class="fadeStyle['fade-enter-active']"
-    :leave-active-class="fadeStyle['fade-leave-active']"
-    :enter-from-class="fadeStyle['fade-enter-from']"
-    :leave-to-class="fadeStyle['fade-leave-to']"
-  >
-    <div
-      v-if="isOpen"
-      :class="$style.provider"
-      @click="
-        () => {
-          isOpen = false;
-        }
-      "
+  <teleport to="body">
+    <transition
+      :leave-from-class="fadeStyle['fade-leave-from']"
+      :enter-to-class="fadeStyle['fade-enter-to']"
+      :enter-active-class="fadeStyle['fade-enter-active']"
+      :leave-active-class="fadeStyle['fade-leave-active']"
+      :enter-from-class="fadeStyle['fade-enter-from']"
+      :leave-to-class="fadeStyle['fade-leave-to']"
     >
       <div
-        :class="$style.modal"
-        :style="{
-          '--width': width,
-        }"
-        @click.stop
+        v-if="isOpen"
+        :class="$style.provider"
+        @click="
+          () => {
+            isOpen = false;
+          }
+        "
       >
-        <slot />
+        <div
+          :class="$style.modal"
+          :style="{
+            '--width': width,
+          }"
+          @click.stop
+        >
+          <slot />
+        </div>
       </div>
-    </div>
-  </transition>
+    </transition>
+  </teleport>
 </template>
 
 <script setup lang="ts">
