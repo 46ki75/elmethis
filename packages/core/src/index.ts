@@ -9,6 +9,9 @@ export { default as ElmKatex } from "./components/code/ElmKatex.vue";
 export type { ElmDesktopWindowProps } from "./components/containments/ElmDesktopWindow.vue";
 export { default as ElmDesktopWindow } from "./components/containments/ElmDesktopWindow.vue";
 
+export type { ElmConfirmModalProps } from "./components/containments/ElmConfirmModal.vue";
+export { default as ElmConfirmModal } from "./components/containments/ElmConfirmModal.vue";
+
 export type { ElmModalProps } from "./components/containments/ElmModal.vue";
 export { default as ElmModal } from "./components/containments/ElmModal.vue";
 

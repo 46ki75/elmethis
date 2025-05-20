@@ -1,50 +1,60 @@
 <template>
-  <div
-    :class="$style.provider"
-    :style="{
-      '--opacity': isOpen ? 1 : 0,
-      '--pointer-events': isOpen ? 'auto' : 'none',
-    }"
-    @click="isOpen = false"
-  >
-    <transition>
+  <teleport to="body">
+    <transition
+      :leave-from-class="fadeStyle['fade-leave-from']"
+      :enter-to-class="fadeStyle['fade-enter-to']"
+      :enter-active-class="fadeStyle['fade-enter-active']"
+      :leave-active-class="fadeStyle['fade-leave-active']"
+      :enter-from-class="fadeStyle['fade-enter-from']"
+      :leave-to-class="fadeStyle['fade-leave-to']"
+    >
       <div
         v-if="isOpen"
-        :class="$style.modal"
-        :style="{
-          '--width': width,
-        }"
+        :class="$style.provider"
+        @click="
+          () => {
+            if (closeOnClickOutside) isOpen = false;
+          }
+        "
       >
-        <slot />
+        <div
+          :class="$style.modal"
+          :style="{
+            '--width': width,
+          }"
+          @click.stop
+        >
+          <slot />
+        </div>
       </div>
     </transition>
-  </div>
+  </teleport>
 </template>
 
 <script setup lang="ts">
-import type { Property } from "csstype";
+import { VNode } from "vue";
+import fadeStyle from "../../styles/transition-fade.module.scss";
 
 export interface ElmModalProps {
-  /**
-   * The width of the modal.
-   * @default '90%'
-   */
-  width: Property.Width;
+  width?: string;
+  closeOnClickOutside?: boolean;
 }
 
 withDefaults(defineProps<ElmModalProps>(), {
-  width: "90%",
+  closeOnClickOutside: true,
 });
 
-const isOpen = defineModel<boolean>("isOpen", {
-  default: true,
+const slots = defineSlots<{
+  default?: () => VNode;
+}>();
+
+const isOpen = defineModel<boolean>({
+  default: false,
 });
 </script>
 
 <style module lang="scss">
 .provider {
-  opacity: var(--opacity, 0);
-  pointer-events: var(--pointer-events, none);
   margin: 0;
   padding: 0;
   position: fixed;
@@ -58,38 +68,15 @@ const isOpen = defineModel<boolean>("isOpen", {
   align-items: center;
   transition: opacity 400ms;
 
-  background-color: rgba(black, 0.7);
-  [data-theme="dark"] & {
-    background-color: rgba(black, 0.1);
-  }
+  background-color: rgba(#23262a, 0.8);
 
   .modal {
     box-sizing: border-box;
-    width: var(--width);
+    max-width: min(500px, calc(100vw - 1rem));
+    width: var(--width, 100%);
     padding: 0.5rem;
-    box-shadow: 0 0 0.25rem rgba(black, 0.4);
-    background-color: rgba(233, 233, 233, 0.8);
-    box-shadow: 0 0 0.25rem rgba(black, 0.8);
-    [data-theme="dark"] & {
-      background-color: rgba(22, 22, 22, 0.8);
-    }
+    border-radius: 0.25rem;
+    background-color: rgba(white, 0.8);
   }
-}
-</style>
-
-<style scoped lang="scss">
-.v-enter-to,
-.v-leave-from {
-  opacity: 1;
-}
-
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 200ms;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
 }
 </style>

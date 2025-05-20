@@ -4,8 +4,9 @@
       $style.button,
       {
         [$style.enable]: !loading && !disabled,
-        [$style.normal]: !primary,
-        [$style.primary]: primary,
+        [$style.colored]: color,
+        [$style.normal]: !color && !primary,
+        [$style.primary]: !color && primary,
       },
     ]"
     :style="{
@@ -13,6 +14,7 @@
       width: block ? '100%' : 'auto',
       cursor: disabled ? 'not-allowed' : loading ? 'progress' : 'pointer',
       '--opacity': disabled ? 0.6 : undefined,
+      '--color': color,
     }"
     @click="handleClick"
   >
@@ -45,6 +47,8 @@ export interface ElmButtonProps {
    * Whether the button is disabled.
    */
   disabled?: boolean;
+
+  color?: string;
 
   /**
    * Whether the button is primary.
@@ -100,30 +104,36 @@ onUnmounted(() => {
     transform 200ms;
 
   opacity: var(--opacity);
+
+  box-shadow: 0 0 0.25rem rgba(black, 0.2);
+
+  [data-theme="dark"] & {
+    box-shadow: 0 0 0.25rem rgba(black, 0.6);
+  }
 }
 
 .normal {
-  box-shadow: 0 0 0.25rem rgba(black, 0.2);
   color: rgba(black, 0.6);
   background-color: rgba(white, 0.8);
 
   [data-theme="dark"] & {
-    box-shadow: 0 0 0.25rem rgba(black, 0.6);
     color: rgba(white, 0.6);
     background-color: #3e434b;
   }
 }
 
 .primary {
-  box-shadow: 0 0 0.25rem rgba(black, 0.2);
   color: rgba(white, 0.6);
   background-color: #3e434b;
 
   [data-theme="dark"] & {
-    box-shadow: 0 0 0.25rem rgba(black, 0.6);
     color: rgba(black, 0.6);
     background-color: rgba(white, 0.8);
   }
+}
+
+.colored {
+  background-color: var(--color);
 }
 
 .enable {

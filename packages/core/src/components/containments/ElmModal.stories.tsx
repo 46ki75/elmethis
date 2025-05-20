@@ -7,23 +7,26 @@ const meta: Meta<typeof ElmModal> = {
   title: "Components/Containments/ElmModal",
   component: ElmModal,
   tags: ["autodocs"],
-  args: {},
+  args: { closeOnClickOutside: true },
+  argTypes: {
+    closeOnClickOutside: { control: "boolean" },
+  },
 };
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  render: () => ({
+  render: (args) => ({
     components: { ElmModal, ElmInlineText },
     setup() {
-      const isOpen = ref(true);
-      return { isOpen };
+      const isOpen = ref(false);
+      return { isOpen, args };
     },
     template: `
       <div>
         <button @click="isOpen = !isOpen">Toggle Modal</button>
-        <ElmModal v-model:isOpen="isOpen">
+        <ElmModal v-model="isOpen" v-bind="args">
           <ElmInlineText text="Hello world!" />
         </ElmModal>
       </div>
