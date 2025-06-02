@@ -17,30 +17,25 @@
         "yzhang.markdown-all-in-one",
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
-
         // Vue
         "Vue.volar",
-
         // Rust
         "rust-lang.rust-analyzer",
         "tamasfe.even-better-toml",
         "fill-labs.dependi",
-
         // Terraform
         "HashiCorp.terraform"
       ]
     }
   },
   "features": {
+    "ghcr.io/devcontainers-extra/features/gh-release": {},
     "ghcr.io/devcontainers-extra/features/starship": {},
     "ghcr.io/devcontainers/features/github-cli": {},
-
     // Node.js
     "ghcr.io/devcontainers/features/node": {},
-
     // Rust
     "ghcr.io/devcontainers/features/rust": {},
-
     // Terraform
     "ghcr.io/devcontainers/features/terraform": {}
   },
