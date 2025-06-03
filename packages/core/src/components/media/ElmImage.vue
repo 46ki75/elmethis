@@ -72,13 +72,12 @@
       :leave-active-class="fadeStyle['fade-leave-active']"
       :leave-to-class="fadeStyle['fade-leave-to']"
     >
-      <div v-if="isModalOpen" :class="$style.modal">
-        <img
-          :class="$style['modal-image']"
-          :src="src"
-          :alt="alt"
-          @click="isModalOpen = false"
-        />
+      <div
+        v-if="isModalOpen"
+        :class="$style.modal"
+        @click="isModalOpen = false"
+      >
+        <img :class="$style['modal-image']" :src="src" :alt="alt" />
       </div>
     </transition>
   </div>
@@ -210,6 +209,7 @@ onKeyStroke("Escape", (e) => {
   justify-content: center;
   align-items: center;
   background-color: rgba(#23262a, 0.8);
+  cursor: zoom-out;
 }
 
 .modal-image {
