@@ -3,10 +3,11 @@
 </template>
 
 <script setup lang="ts">
-import type { Component, ComponentMap } from "jarkup-ts";
+import type { Component, ComponentMap, InlineComponent } from "jarkup-ts";
 import { defineAsyncComponent, h, useCssModule, VNode } from "vue";
 
 import { ElmBlockFallback } from "../..";
+import { kebabCase } from "lodash-es";
 
 export interface ElmJsonComponentRendererProps {
   jsonComponents: Component[];
@@ -117,6 +118,20 @@ type RenderFunctionMap<R> = {
   [K in keyof ComponentMap]: (args: ComponentMap[K]) => R;
 };
 
+const convertInlineComponentsToPlainText = (
+  inlineComponents: InlineComponent[]
+): string => {
+  return inlineComponents
+    .map((component) => {
+      if (component.type === "Text") {
+        return component.props.text;
+      } else {
+        return "";
+      }
+    })
+    .join("");
+};
+
 const defaultRenderFunctionMap = (
   render: (jsonComponents: Component[]) => VNode[]
 ): RenderFunctionMap<VNode> => {
@@ -147,6 +162,7 @@ const defaultRenderFunctionMap = (
         AsyncElmHeading,
         {
           level: props.level,
+          id: kebabCase(convertInlineComponentsToPlainText(slots.default)),
         },
         { default: () => render(slots.default) }
       ),
