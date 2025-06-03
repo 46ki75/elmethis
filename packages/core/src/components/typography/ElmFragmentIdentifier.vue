@@ -24,18 +24,6 @@ const handleHashClick = (id: string) => {
     target.scrollIntoView({ behavior: "smooth" });
   }
 };
-
-onMounted(() => {
-  nextTick(() => {
-    const hash = window.location.hash;
-    if (hash && hash.startsWith("#")) {
-      const element = document.querySelector(hash);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
-    }
-  });
-});
 </script>
 
 <style module lang="scss">
