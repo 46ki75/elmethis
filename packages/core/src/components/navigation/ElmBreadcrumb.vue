@@ -13,18 +13,18 @@
             index === 0
               ? mdiHome
               : index === links.length - 1
-                ? mdiFileDocument
+                ? mdiApplicationOutline
                 : mdiFolderOpen
           "
           size="1.25em"
-          :class="$style.fade"
+          :class="$style.text"
           :style="{
             '--delay': `${index * 100}ms`,
           }"
         />
         <ElmInlineText
           :text="link.text"
-          :class="$style.fade"
+          :class="$style.text"
           :style="{
             '--delay': `${index * 100 + 50}ms`,
           }"
@@ -35,8 +35,8 @@
         v-if="links.length !== index + 1"
         :d="mdiChevronRight"
         size="1em"
-        color="gray"
-        :class="$style.fade"
+        color="#b69545"
+        :class="$style.text"
         :style="{ '--delay': `${index * 100 + 100}ms` }"
       />
     </template>
@@ -51,7 +51,7 @@ import { useIntersectionObserver } from "@vueuse/core";
 import ElmMdiIcon from "../icon/ElmMdiIcon.vue";
 import {
   mdiChevronRight,
-  mdiFileDocument,
+  mdiApplicationOutline,
   mdiFolderOpen,
   mdiHome,
 } from "@mdi/js";
@@ -87,39 +87,42 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 .container {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0;
   user-select: none;
+}
 
-  .link-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 0.5rem;
-    box-sizing: border-box;
-    padding: 0.25rem;
-    border-radius: 0.25rem;
-    cursor: pointer;
+.link-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0;
+  box-sizing: border-box;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
 
-    transition:
-      background-color 200ms,
-      transform 200ms;
+  transition:
+    background-color 100ms,
+    opacity 100ms,
+    transform 100ms;
 
-    &:hover {
-      background-color: rgba(#6987b8, 0.2);
-      transform: translateX(-1px) translateY(-1px);
-    }
+  &:hover {
+    background-color: rgba(#868e9c, 0.2);
+    transform: translateX(-1px) translateY(-1px);
+  }
 
-    &:active {
-      background-color: rgba(#59b57c, 0.2);
-      transform: translateX(1px) translateY(1px);
-    }
+  &:active {
+    opacity: 0.5;
+    transform: translateX(1px) translateY(1px);
   }
 }
 
-.fade {
+.text {
   opacity: var(--opacity);
   transition: opacity 200ms;
   transition-delay: var(--delay);
+  padding: 0 0.25rem;
 }
 </style>
