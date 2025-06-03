@@ -133,7 +133,7 @@ const renderLink = () => {
   children.push(
     h(ElmMdiIcon, {
       d: mdiOpenInNew,
-      size: props.size ? String(props.size) : undefined,
+      size: "0.8em",
       color: "gray",
       style: { opacity: 0.75 },
     })
@@ -274,19 +274,18 @@ const render = () => {
   gap: 0.25rem;
   cursor: pointer;
   color: #6987b8;
-  border-radius: 0.125rem 0.125rem 0 0;
-  border-bottom: dashed 1px #6987b8;
+  border-radius: 0.125rem;
   transition:
     background-color 200ms,
-    color 200ms;
+    color 200ms,
+    opacity 200ms;
 
   &:hover {
     background-color: rgba($color: #6987b8, $alpha: 0.2);
   }
 
   &:active {
-    color: #59b57c;
-    background-color: rgba($color: #59b57c, $alpha: 0.2);
+    opacity: 0.5;
   }
 
   &:visited {
@@ -295,11 +294,6 @@ const render = () => {
 
     &:hover {
       background-color: rgba($color: #9771bd, $alpha: 0.2);
-    }
-
-    &:active {
-      color: #59b57c;
-      background-color: rgba($color: #59b57c, $alpha: 0.2);
     }
   }
 }
