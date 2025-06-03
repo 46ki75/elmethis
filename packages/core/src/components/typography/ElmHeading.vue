@@ -91,10 +91,10 @@ const slots = defineSlots<{
 }>();
 
 const renderSlots = (): VNode | VNode[] => {
-  if (props.text != null) {
-    return h("span", {}, props.text);
-  } else if (slots.default != null) {
+  if (slots.default != null) {
     return slots.default();
+  } else if (props.text != null) {
+    return h("span", {}, props.text);
   } else {
     return h("span");
   }
