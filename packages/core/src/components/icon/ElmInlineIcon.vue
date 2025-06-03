@@ -30,10 +30,9 @@ const handleError = () => {
 .icon {
   margin: 0;
   padding: 0;
-  padding-inline: 0.125rem;
   display: inline-block;
   vertical-align: middle;
-  height: 1.25em;
+  height: 1em;
 
   &::selection {
     filter: brightness(1000%);
