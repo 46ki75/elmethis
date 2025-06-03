@@ -1,28 +1,9 @@
 <template>
-  <div :class="$style.fragment">
-    <ElmMdiIcon
-      size="1.25rem"
-      color="#6987b8"
-      :d="mdiAnchor"
-      :class="$style.icon"
-      @click="handleHashClick(id)"
-    />
-    <ElmMdiIcon
-      size="1.25rem"
-      color="#6987b8"
-      :d="mdiLinkVariant"
-      :class="$style.icon"
-      @click="handleLinkClick(id)"
-    />
-  </div>
+  <span :class="$style.fragment" @click="handleHashClick(id)">#</span>
 </template>
 
 <script setup lang="ts">
-import { useClipboard } from "@vueuse/core";
 import { nextTick, onMounted } from "vue";
-
-import ElmMdiIcon from "../icon/ElmMdiIcon.vue";
-import { mdiAnchor, mdiLinkVariant } from "@mdi/js";
 
 export interface ElmFragmentIdentifierProps {
   /**
@@ -44,16 +25,6 @@ const handleHashClick = (id: string) => {
   }
 };
 
-const handleLinkClick = (id: string) => {
-  const url = new URL(window.location.href);
-  url.hash = id;
-  window.history.replaceState(null, "", url.toString());
-
-  copy(window.location.href);
-};
-
-const { copy } = useClipboard();
-
 onMounted(() => {
   nextTick(() => {
     const hash = window.location.hash;
@@ -69,22 +40,31 @@ onMounted(() => {
 
 <style module lang="scss">
 .fragment {
-  display: flex;
-  justify-content: flex-end;
+  font-size: 1rem;
+  width: 1rem;
+  height: 1rem;
+  padding: 0.125rem;
+  margin-inline-start: 0.5rem;
+  border-radius: 0.125rem;
+  display: inline-flex;
+  justify-content: center;
   align-items: center;
-}
-
-.icon {
-  padding: 0.25rem;
-  border-radius: 0.25rem;
-  transition: background-color 200ms;
+  color: #b69545;
   cursor: pointer;
+  user-select: none;
+  opacity: 1;
+  transition:
+    background-color 200ms,
+    opacity 100ms,
+    transform 100ms;
 
   &:hover {
-    background-color: rgba(black, 0.1);
-    [data-theme="dark"] & {
-      background-color: rgba(white, 0.1);
-    }
+    background-color: rgba(#868e9c, 0.2);
+  }
+
+  &:active {
+    opacity: 0.5;
+    transform: translateX(1px) translateY(1px);
   }
 }
 </style>

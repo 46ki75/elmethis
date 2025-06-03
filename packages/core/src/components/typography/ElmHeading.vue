@@ -16,17 +16,17 @@
   >
     <component :is="() => renderSlots()" />
 
+    <ElmFragmentIdentifier
+      v-if="!disableFragmentIdentifier"
+      :id="id ?? kebabCase(text)"
+    />
+
     <span
       v-if="level === 2"
       :class="$style['h2__underline']"
       aria-hidden
     ></span>
   </component>
-
-  <ElmFragmentIdentifier
-    v-if="!disableFragmentIdentifier"
-    :id="id ?? kebabCase(text)"
-  />
 </template>
 
 <script setup lang="ts">
@@ -103,7 +103,7 @@ const renderSlots = (): VNode | VNode[] => {
 
 <style module lang="scss">
 .heading-common {
-  margin-block-start: 1.5rem;
+  margin-block: 1.5rem;
 
   position: relative;
   font-size: var(--font-size);
@@ -116,8 +116,6 @@ const renderSlots = (): VNode | VNode[] => {
 }
 
 .h1 {
-  margin-block-start: 0.5rem;
-
   &::after {
     position: absolute;
     content: "";
