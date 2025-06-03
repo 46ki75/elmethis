@@ -3,8 +3,6 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, onMounted } from "vue";
-
 export interface ElmFragmentIdentifierProps {
   /**
    * ID of the heading element.
@@ -24,18 +22,6 @@ const handleHashClick = (id: string) => {
     target.scrollIntoView({ behavior: "smooth" });
   }
 };
-
-onMounted(() => {
-  nextTick(() => {
-    const hash = window.location.hash;
-    if (hash && hash.startsWith("#")) {
-      const element = document.querySelector(hash);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
-    }
-  });
-});
 </script>
 
 <style module lang="scss">

@@ -18,7 +18,7 @@
 
     <ElmFragmentIdentifier
       v-if="!disableFragmentIdentifier"
-      :id="id ?? kebabCase(text)"
+      :id="extractId()"
     />
 
     <span
@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import type { Property } from "csstype";
-import { h, ref, defineSlots, VNode } from "vue";
+import { h, isVNode, ref, VNode } from "vue";
 import { useIntersectionObserver } from "@vueuse/core";
 import { kebabCase } from "lodash-es";
 import ElmFragmentIdentifier from "./ElmFragmentIdentifier.vue";
@@ -98,6 +98,40 @@ const renderSlots = (): VNode | VNode[] => {
   } else {
     return h("span");
   }
+};
+
+const extractTextFromVNode = (vnodes: VNode[] | VNode): string => {
+  const nodes = Array.isArray(vnodes) ? vnodes : [vnodes];
+
+  const extract = (node: VNode): string => {
+    if (typeof node.children === "string") {
+      return node.children;
+    }
+
+    if (Array.isArray(node.children)) {
+      return node.children
+        .map((child) => {
+          return isVNode(child)
+            ? extract(child)
+            : typeof child === "string"
+              ? child
+              : "";
+        })
+        .join("");
+    }
+
+    return "";
+  };
+
+  return nodes.map(extract).join("");
+};
+
+const extractId = (): string => {
+  if (props.id) return props.id;
+
+  if (slots.default) return kebabCase(extractTextFromVNode(slots.default()));
+
+  return kebabCase(props.text);
 };
 </script>
 
