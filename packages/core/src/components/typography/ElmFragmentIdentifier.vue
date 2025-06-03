@@ -3,8 +3,6 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, onMounted } from "vue";
-
 export interface ElmFragmentIdentifierProps {
   /**
    * ID of the heading element.
