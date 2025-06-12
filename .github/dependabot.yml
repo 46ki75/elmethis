@@ -2,7 +2,7 @@ version: 2
 updates:
   - package-ecosystem: "npm"
     directories:
-      - "/packages/core"
+      - "/"
     schedule:
       interval: "daily"
     target-branch: "main"
@@ -17,19 +17,6 @@ updates:
       postcss-updates:
         patterns:
           - "*postcss*"
-    labels:
-      - "dependencies"
-      - "npm"
-    assignees:
-      - "46ki75"
-
-  - package-ecosystem: "npm"
-    directories:
-      - "/"
-      - "/packages/notion-node"
-    schedule:
-      interval: "daily"
-    target-branch: "main"
     labels:
       - "dependencies"
       - "npm"
