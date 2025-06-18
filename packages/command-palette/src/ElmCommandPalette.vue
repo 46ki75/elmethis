@@ -80,7 +80,7 @@ interface Command {
 
 export interface ElmCommandPaletteProps {
   commands: Command[];
-  onCommandInvoked?: () => void;
+  onCommandInvoked?: (command: Command) => void;
 }
 
 const props = withDefaults(defineProps<ElmCommandPaletteProps>(), {});
@@ -135,6 +135,7 @@ const invoke = () => {
     const command = searchResults.value[selectedCommandIndex.value];
     if (command != null && command.onInvoke != null) {
       command.onInvoke();
+      if (props.onCommandInvoked) props.onCommandInvoked(command);
     }
   }
 };
