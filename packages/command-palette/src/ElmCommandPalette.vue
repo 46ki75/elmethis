@@ -19,7 +19,7 @@
 
     <div :class="$style.body">
       <div v-if="searchResults.length === 0" :class="$style['empty-result']">
-        <ElmInlineText text="EMPTY" />
+        <ElmInlineText text="search anything..." />
       </div>
 
       <div
@@ -91,7 +91,7 @@ const fuse = ref<Fuse<ElmCommandPaletteProps["commands"][number]> | null>(null);
 const searchResults = ref<ElmCommandPaletteProps["commands"]>([]);
 const selectedCommandIndex = ref<number | null>(null);
 
-const FUSE_OPTION = Object.freeze({ keys: ["label"] });
+const FUSE_OPTION = Object.freeze({ keys: ["label", "keywords"] });
 
 onMounted(() => {
   inputTarget.value?.focus();
