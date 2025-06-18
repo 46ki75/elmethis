@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/vue3";
+import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import ElmLoginIcon from "./ElmLoginIcon.vue";
 
 const meta: Meta<typeof ElmLoginIcon> = {

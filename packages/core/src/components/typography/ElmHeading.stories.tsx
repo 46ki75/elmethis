@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/vue3";
+import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import ElmHeading from "./ElmHeading.vue";
 import ElmInlineText from "./ElmInlineText.vue";
 

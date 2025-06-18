@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/vue3";
+import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import ElmSnackbarContainer from "./ElmSnackbarContainer.vue";
 import { useSnackbarState } from "./useSnackbarState";
 import { h } from "vue";

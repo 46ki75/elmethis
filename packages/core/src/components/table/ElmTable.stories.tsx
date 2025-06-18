@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/vue3";
+import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import ElmTable from "./ElmTable.vue";
 import ElmTableHeader from "./ElmTableHeader.vue";
 import ElmTableBody from "./ElmTableBody.vue";

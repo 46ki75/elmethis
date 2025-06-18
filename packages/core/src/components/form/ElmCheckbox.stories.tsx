@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/vue3";
+import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import ElmCheckbox from "./ElmCheckbox.vue";
 
 const meta: Meta<typeof ElmCheckbox> = {

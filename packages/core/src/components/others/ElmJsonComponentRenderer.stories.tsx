@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/vue3";
+import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import ElmJsonComponentRenderer from "./ElmJsonComponentRenderer.vue";
 import type { Component, InlineComponent } from "jarkup-ts";
 
