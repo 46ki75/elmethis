@@ -161,6 +161,10 @@ watch(input, (_, input) => {
 </script>
 
 <style module lang="scss">
+:root {
+  --command-height: 3rem;
+}
+
 .palette {
   max-height: calc(100vh - 2rem);
   max-width: calc(100vw - 1rem);
@@ -231,12 +235,13 @@ watch(input, (_, input) => {
 
 .command {
   box-sizing: border-box;
-  padding: 1rem;
+  padding: 0 0.75rem;
+  height: var(--command-height);
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
   border-bottom: 1px solid rgba(#cccfd5, 0.5);
   transition: background-color 100ms;
   cursor: pointer;
