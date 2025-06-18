@@ -18,7 +18,20 @@
     </header>
 
     <div :class="$style.body">
-      <div v-for="command in commands" :class="$style.command">
+      <div v-if="input.trim() === ''" :class="$style['empty-result']">
+        <ElmInlineText text="EMPTY" />
+      </div>
+
+      <div
+        v-else
+        v-for="(command, index) in searchResults"
+        :class="[
+          $style.command,
+          {
+            [$style['command-selected']]: index === selectedCommandIndex,
+          },
+        ]"
+      >
         <img
           v-if="command.icon"
           :class="$style['command-icon']"
@@ -38,26 +51,96 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, useTemplateRef } from "vue";
+import { watch, onMounted, ref, useTemplateRef } from "vue";
 import { ElmMdiIcon, ElmInlineText } from "@elmethis/core";
 import { mdiConsoleLine } from "@mdi/js";
+
+import Fuse from "fuse.js";
+import { onKeyStroke } from "@vueuse/core";
 
 export interface ElmCommandPaletteProps {
   commands: Array<{
     id: string;
     icon?: string;
     label: string;
-    execute?: () => void;
+    keywords?: string[];
+    invokeCommand?: () => void;
   }>;
 }
 
-withDefaults(defineProps<ElmCommandPaletteProps>(), {});
+const props = withDefaults(defineProps<ElmCommandPaletteProps>(), {});
 
 const input = defineModel({ default: "" });
 const inputTarget = useTemplateRef<HTMLInputElement>("inputRef");
 
+const fuse = ref<Fuse<ElmCommandPaletteProps["commands"][number]> | null>(null);
+const searchResults = ref<ElmCommandPaletteProps["commands"]>([]);
+const selectedCommandIndex = ref<number | null>(null);
+
+const FUSE_OPTION = Object.freeze({ keys: ["label"] });
+
 onMounted(() => {
   inputTarget.value?.focus();
+
+  if (fuse.value == null) {
+    fuse.value = new Fuse(props.commands, FUSE_OPTION);
+  }
+});
+
+const search = (input: string): void => {
+  if (fuse.value == null) {
+    fuse.value = new Fuse(props.commands, FUSE_OPTION);
+  }
+
+  const results = fuse.value.search(input).map((result) => result.item);
+
+  searchResults.value = results;
+
+  selectedCommandIndex.value = 0;
+};
+
+const next = () => {
+  if (selectedCommandIndex.value == null) {
+    selectedCommandIndex.value = 0;
+  } else if (searchResults.value.length - 1 > selectedCommandIndex.value) {
+    selectedCommandIndex.value = selectedCommandIndex.value + 1;
+  }
+};
+
+const prev = () => {
+  if (selectedCommandIndex.value == null) {
+    selectedCommandIndex.value = 0;
+  } else if (selectedCommandIndex.value > 0) {
+    selectedCommandIndex.value = selectedCommandIndex.value - 1;
+  }
+};
+
+const invoke = () => {
+  if (selectedCommandIndex.value !== null) {
+    const command = searchResults.value[selectedCommandIndex.value];
+    if (command != null && command.invokeCommand != null) {
+      command.invokeCommand();
+    }
+  }
+};
+
+onKeyStroke("ArrowDown", (e) => {
+  e.preventDefault();
+  next();
+});
+
+onKeyStroke("ArrowUp", (e) => {
+  e.preventDefault();
+  prev();
+});
+
+onKeyStroke("Enter", (e) => {
+  e.preventDefault();
+  invoke();
+});
+
+watch(input, (_, input) => {
+  search(input);
 });
 </script>
 
@@ -103,6 +186,15 @@ onMounted(() => {
   flex-direction: column;
   gap: 0;
   overflow-y: scroll;
+  user-select: none;
+}
+
+.empty-result {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .command {
@@ -113,6 +205,11 @@ onMounted(() => {
   align-items: center;
   gap: 1rem;
   border-bottom: 1px solid rgba(#cccfd5, 0.5);
+  transition: background-color 100ms;
+}
+
+.command-selected {
+  background-color: rgba(#cccfd5, 0.5);
 }
 
 .command-icon {
@@ -128,5 +225,6 @@ onMounted(() => {
   gap: 0.5rem;
   background-color: rgba(#cccfd5, 0.4);
   border-top: 1px solid rgba(#cccfd5, 0.75);
+  user-select: none;
 }
 </style>
