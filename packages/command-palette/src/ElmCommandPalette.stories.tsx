@@ -18,6 +18,7 @@ const meta: Meta<typeof ElmCommandPalette> = {
       {
         id: "7e3a53b9-c486-4b67-8216-5686517b99b7",
         label: "GitHub",
+        description: "https://github.com",
         icon: "https://github.githubassets.com/favicons/favicon.svg",
         onInvoke: open("https://github.com"),
       },
@@ -36,12 +37,14 @@ const meta: Meta<typeof ElmCommandPalette> = {
       {
         id: "2209085f-9e63-49bc-abd5-8659c7261814",
         label: "GitLab",
+        description: "https://about.gitlab.com",
         icon: "https://about.gitlab.com/images/ico/favicon.ico",
         onInvoke: open("https://about.gitlab.com/"),
       },
       {
         id: "4d74f753-4727-46cd-9e0f-a9a6d7a6d1fc",
         label: "Fuse.js",
+        description: "https://www.fusejs.io",
         icon: "https://www.fusejs.io/icons/favicon-32x32.png",
         onInvoke: open("https://www.fusejs.io"),
       },
