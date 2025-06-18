@@ -79,7 +79,6 @@ interface Command {
 
 export interface ElmCommandPaletteProps {
   commands: Command[];
-  histories?: Command[];
   onCommandInvoked?: () => void;
 }
 
@@ -87,10 +86,11 @@ const props = withDefaults(defineProps<ElmCommandPaletteProps>(), {});
 
 const input = defineModel({ default: "" });
 const inputTarget = useTemplateRef<HTMLInputElement>("inputRef");
+const histories = defineModel<Command[]>("histories", { default: [] });
 
 const fuse = ref<Fuse<ElmCommandPaletteProps["commands"][number]> | null>(null);
 const searchResults = ref<ElmCommandPaletteProps["commands"]>(
-  props.histories ?? []
+  histories.value ?? []
 );
 const selectedCommandIndex = ref<number | null>(null);
 
@@ -196,6 +196,7 @@ watch(input, (_, input) => {
 
 .input {
   all: unset;
+  width: 100%;
   caret-color: #788191;
   font-family: monospace;
 
