@@ -18,7 +18,7 @@
     </header>
 
     <div :class="$style.body">
-      <div v-if="input.trim() === ''" :class="$style['empty-result']">
+      <div v-if="searchResults.length === 0" :class="$style['empty-result']">
         <ElmInlineText text="EMPTY" />
       </div>
 
@@ -69,14 +69,17 @@ import { mdiConsoleLine, mdiKeyboardReturn } from "@mdi/js";
 import Fuse from "fuse.js";
 import { onKeyStroke } from "@vueuse/core";
 
+interface Command {
+  id: string;
+  icon?: string;
+  label: string;
+  keywords?: string[];
+  onInvoke?: () => void;
+}
+
 export interface ElmCommandPaletteProps {
-  commands: Array<{
-    id: string;
-    icon?: string;
-    label: string;
-    keywords?: string[];
-    onInvoke?: () => void;
-  }>;
+  commands: Command[];
+  histories?: Command[];
   onCommandInvoked?: () => void;
 }
 
@@ -86,7 +89,9 @@ const input = defineModel({ default: "" });
 const inputTarget = useTemplateRef<HTMLInputElement>("inputRef");
 
 const fuse = ref<Fuse<ElmCommandPaletteProps["commands"][number]> | null>(null);
-const searchResults = ref<ElmCommandPaletteProps["commands"]>([]);
+const searchResults = ref<ElmCommandPaletteProps["commands"]>(
+  props.histories ?? []
+);
 const selectedCommandIndex = ref<number | null>(null);
 
 const FUSE_OPTION = Object.freeze({ keys: ["label"] });
@@ -136,7 +141,7 @@ const invoke = () => {
   }
 };
 
-onKeyStroke("ArrowDown", (e) => {
+onKeyStroke(["ArrowDown", "Tab"], (e) => {
   e.preventDefault();
   next();
 });
@@ -182,12 +187,23 @@ watch(input, (_, input) => {
   color: #3e434b;
   font-size: 1.1rem;
   border-bottom: 1px solid rgba(#cccfd5, 0.75);
+
+  [data-theme="dark"] & {
+    border-color: rgba(#cccfd5, 0.3);
+    background-color: #33373e;
+  }
 }
 
 .input {
   all: unset;
   caret-color: #788191;
   font-family: monospace;
+
+  color: #3e434b;
+
+  [data-theme="dark"] & {
+    color: #cccfd5;
+  }
 }
 
 .body {
@@ -199,6 +215,10 @@ watch(input, (_, input) => {
   gap: 0;
   overflow-y: scroll;
   user-select: none;
+
+  [data-theme="dark"] & {
+    background-color: #3e434b;
+  }
 }
 
 .empty-result {
@@ -222,12 +242,16 @@ watch(input, (_, input) => {
   cursor: pointer;
 
   &:hover {
-    background-color: rgba(#cccfd5, 0.5);
+    border-color: rgba(#6987b8, 0.2);
+  }
+
+  [data-theme="dark"] & {
+    border-bottom: 1px solid rgba(#cccfd5, 0.2);
   }
 }
 
 .command-selected {
-  background-color: rgba(#cccfd5, 0.3);
+  background-color: rgba(#6987b8, 0.2);
 }
 
 .command-inner-flex {
@@ -251,5 +275,10 @@ watch(input, (_, input) => {
   background-color: rgba(#cccfd5, 0.4);
   border-top: 1px solid rgba(#cccfd5, 0.75);
   user-select: none;
+
+  [data-theme="dark"] & {
+    border-color: rgba(#cccfd5, 0.3);
+    background-color: #33373e;
+  }
 }
 </style>
