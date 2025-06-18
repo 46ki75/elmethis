@@ -73,6 +73,7 @@ interface Command {
   id: string;
   icon?: string;
   label: string;
+  description?: string;
   keywords?: string[];
   onInvoke?: () => void;
 }
@@ -240,7 +241,7 @@ watch(input, (_, input) => {
   cursor: pointer;
 
   &:hover {
-    border-color: rgba(#6987b8, 0.2);
+    background-color: rgba(#6987b8, 0.2);
   }
 
   [data-theme="dark"] & {
@@ -249,7 +250,7 @@ watch(input, (_, input) => {
 }
 
 .command-selected {
-  background-color: rgba(#6987b8, 0.2);
+  background-color: rgba(#6987b8, 0.1);
 }
 
 .command-inner-flex {
