@@ -38,14 +38,19 @@
           }
         "
       >
-        <img
-          v-if="command.icon"
-          :class="$style['command-icon']"
-          :src="command.icon"
-        />
-        <ElmMdiIcon v-else :d="mdiConsoleLine" size="1rem" />
+        <div :class="$style['command-inner-flex']">
+          <img
+            v-if="command.icon"
+            :class="$style['command-icon']"
+            :src="command.icon"
+          />
+          <ElmMdiIcon v-else :d="mdiConsoleLine" size="1rem" />
+          <ElmInlineText :text="command.label" />
+        </div>
 
-        <ElmInlineText :text="command.label" />
+        <div :class="$style['command-inner-flex']">
+          <ElmMdiIcon :d="mdiKeyboardReturn" />
+        </div>
       </div>
     </div>
 
@@ -59,7 +64,7 @@
 <script setup lang="ts">
 import { watch, onMounted, ref, useTemplateRef } from "vue";
 import { ElmMdiIcon, ElmInlineText } from "@elmethis/core";
-import { mdiConsoleLine } from "@mdi/js";
+import { mdiConsoleLine, mdiKeyboardReturn } from "@mdi/js";
 
 import Fuse from "fuse.js";
 import { onKeyStroke } from "@vueuse/core";
@@ -209,6 +214,7 @@ watch(input, (_, input) => {
   padding: 1rem;
   width: 100%;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 1rem;
   border-bottom: 1px solid rgba(#cccfd5, 0.5);
@@ -222,6 +228,13 @@ watch(input, (_, input) => {
 
 .command-selected {
   background-color: rgba(#cccfd5, 0.3);
+}
+
+.command-inner-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .command-icon {
