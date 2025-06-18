@@ -85,7 +85,7 @@ interface Command {
 
 export interface ElmCommandPaletteProps {
   commands: Command[];
-  onCommandInvoked?: (command: Command) => void;
+  onCommandInvoked?: (command?: Command) => void;
 }
 
 const props = withDefaults(defineProps<ElmCommandPaletteProps>(), {});
