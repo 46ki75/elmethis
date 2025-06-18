@@ -31,6 +31,12 @@
             [$style['command-selected']]: index === selectedCommandIndex,
           },
         ]"
+        @click="
+          () => {
+            selectedCommandIndex = index;
+            invoke();
+          }
+        "
       >
         <img
           v-if="command.icon"
@@ -64,8 +70,9 @@ export interface ElmCommandPaletteProps {
     icon?: string;
     label: string;
     keywords?: string[];
-    invokeCommand?: () => void;
+    onInvoke?: () => void;
   }>;
+  onCommandInvoked?: () => void;
 }
 
 const props = withDefaults(defineProps<ElmCommandPaletteProps>(), {});
@@ -118,8 +125,8 @@ const prev = () => {
 const invoke = () => {
   if (selectedCommandIndex.value !== null) {
     const command = searchResults.value[selectedCommandIndex.value];
-    if (command != null && command.invokeCommand != null) {
-      command.invokeCommand();
+    if (command != null && command.onInvoke != null) {
+      command.onInvoke();
     }
   }
 };
@@ -206,10 +213,15 @@ watch(input, (_, input) => {
   gap: 1rem;
   border-bottom: 1px solid rgba(#cccfd5, 0.5);
   transition: background-color 100ms;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(#cccfd5, 0.5);
+  }
 }
 
 .command-selected {
-  background-color: rgba(#cccfd5, 0.5);
+  background-color: rgba(#cccfd5, 0.3);
 }
 
 .command-icon {
