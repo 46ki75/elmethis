@@ -179,7 +179,7 @@ watch(input, (_, input) => {
   flex-direction: column;
   border-radius: 0.25rem;
   overflow: hidden;
-  box-shadow: 0 0 0.125rem rgba(#3e434b, 0.25);
+  box-shadow: 0 0 0.125rem rgba(#3e434b, 0.5);
 }
 
 .header {
@@ -191,7 +191,7 @@ watch(input, (_, input) => {
   align-items: center;
   gap: 0.5rem;
   width: 100%;
-  background-color: rgba(#cccfd5, 0.4);
+  background-color: #e1e3e6;
   color: #3e434b;
   font-size: 1.1rem;
   border-bottom: 1px solid rgba(#cccfd5, 0.75);
@@ -218,7 +218,7 @@ watch(input, (_, input) => {
 .body {
   width: 100%;
   height: 100%;
-  background-color: rgba(#cccfd5, 0.1);
+  background-color: #ecedef;
   display: flex;
   flex-direction: column;
   gap: 0;
@@ -282,7 +282,7 @@ watch(input, (_, input) => {
   justify-content: flex-end;
   align-items: center;
   gap: 0.5rem;
-  background-color: rgba(#cccfd5, 0.4);
+  background-color: #e1e3e6;
   border-top: 1px solid rgba(#cccfd5, 0.75);
   user-select: none;
 
