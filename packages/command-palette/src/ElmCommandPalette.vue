@@ -46,6 +46,11 @@
           />
           <ElmMdiIcon v-else :d="mdiConsoleLine" size="1rem" />
           <ElmInlineText :text="command.label" />
+          <ElmInlineText
+            v-if="command.description"
+            :text="command.description"
+            style="opacity: 0.4"
+          />
         </div>
 
         <div :class="$style['command-inner-flex']">
@@ -217,7 +222,7 @@ watch(input, (_, input) => {
   display: flex;
   flex-direction: column;
   gap: 0;
-  overflow-y: scroll;
+  overflow-y: hidden;
   user-select: none;
 
   [data-theme="dark"] & {
