@@ -25,7 +25,7 @@ export default defineConfig({
       formats: ["es"],
     },
     rollupOptions: {
-      external: ["vue", "@elmethis/core", "@mdi/js", "@vueuse/core"],
+      external: ["vue", "@elmethis/core", "@mdi/js", "@vueuse/core", "fuse.js"],
       output: {
         preserveModules: true,
         preserveModulesRoot: "src",
