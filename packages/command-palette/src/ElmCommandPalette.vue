@@ -86,12 +86,9 @@ const props = withDefaults(defineProps<ElmCommandPaletteProps>(), {});
 
 const input = defineModel({ default: "" });
 const inputTarget = useTemplateRef<HTMLInputElement>("inputRef");
-const histories = defineModel<Command[]>("histories", { default: [] });
 
 const fuse = ref<Fuse<ElmCommandPaletteProps["commands"][number]> | null>(null);
-const searchResults = ref<ElmCommandPaletteProps["commands"]>(
-  histories.value ?? []
-);
+const searchResults = ref<ElmCommandPaletteProps["commands"]>([]);
 const selectedCommandIndex = ref<number | null>(null);
 
 const FUSE_OPTION = Object.freeze({ keys: ["label"] });
