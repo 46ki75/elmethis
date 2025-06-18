@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/vue3";
+import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import ElmConfirmModal from "./ElmConfirmModal.vue";
 import ElmButton from "../form/ElmButton.vue";
 import { ref } from "vue";

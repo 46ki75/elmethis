@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/vue3";
+import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import ElmParallax from "./ElmParallax.vue";
 
 import img1 from "../../assets/bg1.webp";

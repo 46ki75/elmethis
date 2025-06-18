@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/vue3";
+import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import ElmFile from "./ElmFile.vue";
 
 import file from "../../assets/vite.svg";
