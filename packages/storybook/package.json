@@ -14,8 +14,8 @@
     "vue": "^3.5.17"
   },
   "devDependencies": {
-    "@storybook/addon-docs": "^9.0.15",
-    "@storybook/vue3-vite": "9.0.15",
+    "@storybook/addon-docs": "^9.0.16",
+    "@storybook/vue3-vite": "9.0.16",
     "@vitejs/plugin-vue": "^6.0.0",
     "@vue/tsconfig": "^0.7.0",
     "storybook": "^9.0.12",
