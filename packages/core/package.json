@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@notionhq/client": "^4.0.1",
-    "@storybook/vue3-vite": "9.0.16",
+    "@storybook/vue3-vite": "9.0.17",
     "@types/json-schema": "^7.0.15",
     "@types/katex": "^0.16.7",
     "@types/lodash-es": "^4.17.12",
