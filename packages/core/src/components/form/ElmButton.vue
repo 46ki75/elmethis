@@ -105,10 +105,10 @@ onUnmounted(() => {
 
   opacity: var(--opacity);
 
-  box-shadow: 0 0 0.25rem rgba(black, 0.2);
+  box-shadow: 0 0 0.125rem rgba(black, 0.2);
 
   [data-theme="dark"] & {
-    box-shadow: 0 0 0.25rem rgba(black, 0.6);
+    box-shadow: 0 0 0.125rem rgba(black, 0.6);
   }
 }
 
