@@ -56,7 +56,7 @@ export { default as ElmSpinner } from "./components/fallback/ElmSpinner.vue";
 export type { ElmUnsupportedBlockProps } from "./components/fallback/ElmUnsupportedBlock.vue";
 export { default as ElmUnsupportedBlock } from "./components/fallback/ElmUnsupportedBlock.vue";
 
-// Button
+// Form
 export type { ElmButtonProps } from "./components/form/ElmButton.vue";
 export { default as ElmButton } from "./components/form/ElmButton.vue";
 
@@ -71,6 +71,9 @@ export { default as ElmSwitch } from "./components/form/ElmSwitch.vue";
 
 export type { ElmTextFieldProps } from "./components/form/ElmTextField.vue";
 export { default as ElmTextField } from "./components/form/ElmTextField.vue";
+
+export type { ElmValidationProps } from "./components/form/ElmValidation.vue";
+export { default as ElmValidation } from "./components/form/ElmValidation.vue";
 
 // Icon
 export type { ElmArrowIconProps } from "./components/icon/ElmArrowIcon.vue";

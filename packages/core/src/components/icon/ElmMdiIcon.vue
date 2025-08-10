@@ -32,6 +32,7 @@ withDefaults(defineProps<ElmMdiIconProps>(), {
 <style module lang="scss">
 .icon {
   fill: var(--color, #555b67);
+  transition: fill 200ms;
 
   [data-theme="dark"] & {
     fill: var(--dark-color, #b0b5be);

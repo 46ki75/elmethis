@@ -224,6 +224,7 @@ const render = () => {
   font-size: var(--font-size, 1em);
   line-height: var(--font-size, 1em);
   background-color: var(--background-color);
+  transition: color 200ms;
 }
 
 .code {
