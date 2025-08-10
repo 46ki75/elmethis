@@ -57,7 +57,7 @@ export interface ElmSwitchProps {
 }
 
 const props = withDefaults(defineProps<ElmSwitchProps>(), {
-  color: "#6987b8",
+  color: "#bfa056",
   size: "18px",
   disabled: false,
 });
@@ -91,6 +91,7 @@ const handleClick = () => {
 
   &--checked {
     background-color: var(--color);
+    opacity: 0.9;
   }
 
   &--disabled {

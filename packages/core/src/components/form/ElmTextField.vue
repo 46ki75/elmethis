@@ -3,14 +3,11 @@
     :class="[$style.wrapper, { [$style.active]: isFocused }]"
     :style="{
       backgroundColor: disabled || loading ? 'rgba(0,0,0,0.15)' : undefined,
+      '--highlight-color': isFocused ? '#bfa056' : undefined,
     }"
   >
     <div :class="$style.header">
-      <label
-        :for="id"
-        :class="$style.label"
-        :style="{ '--color': isFocused ? '#59b57c' : undefined }"
-      >
+      <label :for="id" :class="$style.label">
         <span>{{ label }}</span>
         <span v-if="required" :class="$style.requierd">*</span>
       </label>
@@ -220,7 +217,7 @@ const iconMap: Record<NonNullable<ElmTextFieldProps["icon"]>, string> = {
 }
 
 .active {
-  border-color: rgba(#59b57c, 0.5);
+  border-color: var(--highlight-color);
 }
 
 .header {
@@ -241,10 +238,10 @@ const iconMap: Record<NonNullable<ElmTextFieldProps["icon"]>, string> = {
   vertical-align: top;
   transition: color 200ms;
 
-  color: var(--color, rgba(black, 0.65));
+  color: var(--highlight-color, rgba(black, 0.65));
 
   [data-theme="dark"] & {
-    color: var(--color, rgba(white, 0.65));
+    color: var(--highlight-color, rgba(white, 0.65));
   }
 }
 
@@ -330,5 +327,12 @@ const iconMap: Record<NonNullable<ElmTextFieldProps["icon"]>, string> = {
   opacity: 0.6;
   padding: 0 0.5rem;
   user-select: none;
+  transition: color 200ms;
+
+  color: rgba(black, 0.65);
+
+  [data-theme="dark"] & {
+    color: rgba(white, 0.65);
+  }
 }
 </style>

@@ -4,15 +4,14 @@
     :class="[$style.wrapper, { [$style.active]: isActive }]"
     :style="{
       backgroundColor: disabled || loading ? 'rgba(0,0,0,0.15)' : undefined,
+      '--highlight-color': isActive ? '#bfa056' : undefined,
     }"
     @click="handleToggle"
   >
     <div :class="$style.header">
-      <span
-        :class="[$style.label, textStyle.text]"
-        :style="{ color: isActive ? '#59b57c' : undefined }"
-        >{{ label }}</span
-      >
+      <span :class="[$style.label, textStyle.text]">
+        {{ label }}
+      </span>
     </div>
 
     <div :class="$style.body">
@@ -164,7 +163,7 @@ onClickOutside(target, (_) => {
 }
 
 .active {
-  border-color: rgba(#59b57c, 0.5);
+  border-color: var(--highlight-color);
 }
 
 .header {
@@ -185,6 +184,7 @@ onClickOutside(target, (_) => {
   vertical-align: top;
   transition: color 200ms;
   user-select: none;
+  color: var(--highlight-color);
 }
 
 .body {
