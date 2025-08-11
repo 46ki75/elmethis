@@ -22,7 +22,7 @@ import {
 } from "@elmethis/core";
 import { State } from "../ElmCognito.vue";
 import { mdiChevronRightCircle } from "@mdi/js";
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 
 export interface ElmAuthSignInEmailProps {
   title?: string;
@@ -41,9 +41,15 @@ const email = defineModel<string>("email", { default: "" });
 
 const isValidEmail = ref(false);
 
+const validate = (email: string): boolean =>
+  (isValidEmail.value = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
+
 watch(email, (v) => {
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  isValidEmail.value = regex.test(v);
+  validate(v);
+});
+
+onMounted(() => {
+  isValidEmail.value = validate(email.value);
 });
 
 const next = () => {

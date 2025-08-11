@@ -16,9 +16,12 @@
       />
       <ElmAuthSignInPassword
         v-else-if="state === 'SIGN_IN_PASSWORD'"
+        :signInFunction="signInFunction"
         v-model:state="state"
         v-model:email="email"
         v-model:password="password"
+        v-model:error="error"
+        v-model:loading="loading"
       />
     </Transition>
   </div>
@@ -28,7 +31,9 @@
 import ElmAuthSignIn from "./components/ElmAuthSignIn.vue";
 import ElmAuthSignInPassword from "./components/ElmAuthSignInPassword.vue";
 
-export interface ElmCognitoProps {}
+export interface ElmCognitoProps {
+  signInFunction: () => Promise<void>;
+}
 
 withDefaults(defineProps<ElmCognitoProps>(), {});
 
@@ -37,6 +42,8 @@ export type State = "SIGN_IN" | "SIGN_UP" | "SIGN_IN_PASSWORD";
 const state = defineModel<State>({ default: "SIGN_IN" });
 const email = defineModel<string>("email", { default: "" });
 const password = defineModel<string>("password", { default: "" });
+const error = defineModel<string | null>("error", { default: null });
+const loading = defineModel<boolean>("loading", { default: false });
 </script>
 
 <style module lang="scss">
