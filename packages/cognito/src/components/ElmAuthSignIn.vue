@@ -5,7 +5,7 @@
     <ElmTextField :label="label" v-model="email" icon="email" />
 
     <div :class="$style['button-container']">
-      <ElmButton block primary @click="next">
+      <ElmButton block primary @click="next" :disabled="!isValidEmail">
         <ElmMdiIcon :d="mdiChevronRightCircle" color="gray" />
         <span>Next</span>
       </ElmButton>
@@ -22,6 +22,7 @@ import {
 } from "@elmethis/core";
 import { State } from "../ElmCognito.vue";
 import { mdiChevronRightCircle } from "@mdi/js";
+import { ref, watch } from "vue";
 
 export interface ElmAuthSignInEmailProps {
   title?: string;
@@ -37,6 +38,13 @@ withDefaults(defineProps<ElmAuthSignInEmailProps>(), {
 
 const state = defineModel<State>("state");
 const email = defineModel<string>("email", { default: "" });
+
+const isValidEmail = ref(false);
+
+watch(email, (v) => {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  isValidEmail.value = regex.test(v);
+});
 
 const next = () => {
   state.value = "SIGN_IN_PASSWORD";

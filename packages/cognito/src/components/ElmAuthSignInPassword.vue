@@ -8,7 +8,7 @@
     <ElmTextField :label="label" v-model="password" is-password icon="lock" />
 
     <div :class="$style['button-container']">
-      <ElmButton block primary @click="">
+      <ElmButton block primary @click="" :disabled="!isValidPassword">
         <ElmMdiIcon :d="mdiSend" color="gray" />
         <span>Submit</span>
       </ElmButton>
@@ -29,6 +29,7 @@ import {
 } from "@elmethis/core";
 import { State } from "../ElmCognito.vue";
 import { mdiEmail, mdiSend, mdiChevronLeftCircle } from "@mdi/js";
+import { ref, watch } from "vue";
 
 export interface ElmAuthSignInPasswordProps {
   title?: string;
@@ -43,6 +44,12 @@ withDefaults(defineProps<ElmAuthSignInPasswordProps>(), {
 const state = defineModel<State>("state");
 const email = defineModel<string>("email", { default: "" });
 const password = defineModel<string>("password", { default: "" });
+
+const isValidPassword = ref(false);
+
+watch(password, () => {
+  isValidPassword.value = password.value.trim() !== "";
+});
 </script>
 
 <style module lang="scss">
