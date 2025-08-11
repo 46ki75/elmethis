@@ -12,12 +12,12 @@
       <ElmAuthSignIn
         v-if="state === 'SIGN_IN'"
         v-model:state="state"
-        v-model:username="username"
+        v-model:email="email"
       />
       <ElmAuthSignInPassword
         v-else-if="state === 'SIGN_IN_PASSWORD'"
         v-model:state="state"
-        v-model:username="username"
+        v-model:email="email"
         v-model:password="password"
       />
     </Transition>
@@ -35,7 +35,7 @@ withDefaults(defineProps<ElmCognitoProps>(), {});
 export type State = "SIGN_IN" | "SIGN_UP" | "SIGN_IN_PASSWORD";
 
 const state = defineModel<State>({ default: "SIGN_IN" });
-const username = defineModel<string>("username", { default: "" });
+const email = defineModel<string>("email", { default: "" });
 const password = defineModel<string>("password", { default: "" });
 </script>
 

@@ -2,18 +2,21 @@
   <div :class="$style.wrapper">
     <ElmInlineText :text="title" size="1.3rem" bold />
     <div :class="$style.center">
-      <ElmMdiIcon :d="mdiAccount" color="gray" />
-      <ElmInlineText :text="username" />
+      <ElmMdiIcon :d="mdiEmail" color="gray" />
+      <ElmInlineText :text="email" />
     </div>
-    <ElmTextField :label="label" v-model="password" icon="user" />
-    <ElmButton block primary @click="">
-      <ElmMdiIcon :d="mdiSend" color="gray" />
-      <span>Submit</span>
-    </ElmButton>
-    <ElmButton block @click="() => (state = 'SIGN_IN')">
-      <ElmMdiIcon :d="mdiChevronLeftCircle" color="gray" />
-      <span>Back</span>
-    </ElmButton>
+    <ElmTextField :label="label" v-model="password" is-password icon="lock" />
+
+    <div :class="$style['button-container']">
+      <ElmButton block primary @click="">
+        <ElmMdiIcon :d="mdiSend" color="gray" />
+        <span>Submit</span>
+      </ElmButton>
+      <ElmButton block @click="() => (state = 'SIGN_IN')">
+        <ElmMdiIcon :d="mdiChevronLeftCircle" color="gray" />
+        <span>Back</span>
+      </ElmButton>
+    </div>
   </div>
 </template>
 
@@ -25,7 +28,7 @@ import {
   ElmMdiIcon,
 } from "@elmethis/core";
 import { State } from "../ElmCognito.vue";
-import { mdiAccount, mdiSend, mdiChevronLeftCircle } from "@mdi/js";
+import { mdiEmail, mdiSend, mdiChevronLeftCircle } from "@mdi/js";
 
 export interface ElmAuthSignInPasswordProps {
   title?: string;
@@ -38,7 +41,7 @@ withDefaults(defineProps<ElmAuthSignInPasswordProps>(), {
 });
 
 const state = defineModel<State>("state");
-const username = defineModel<string>("username", { default: "" });
+const email = defineModel<string>("email", { default: "" });
 const password = defineModel<string>("password", { default: "" });
 </script>
 
@@ -52,6 +55,12 @@ const password = defineModel<string>("password", { default: "" });
 .center {
   display: flex;
   align-items: center;
+  gap: 0.5rem;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
   gap: 0.5rem;
 }
 </style>

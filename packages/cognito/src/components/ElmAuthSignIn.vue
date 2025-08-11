@@ -2,11 +2,14 @@
   <div :class="$style.wrapper">
     <ElmInlineText :text="title" size="1.3rem" bold />
     <ElmInlineText :text="description" />
-    <ElmTextField :label="label" v-model="username" icon="lock" />
-    <ElmButton block primary @click="next">
-      <ElmMdiIcon :d="mdiChevronRightCircle" color="gray" />
-      <span>Next</span>
-    </ElmButton>
+    <ElmTextField :label="label" v-model="email" icon="email" />
+
+    <div :class="$style['button-container']">
+      <ElmButton block primary @click="next">
+        <ElmMdiIcon :d="mdiChevronRightCircle" color="gray" />
+        <span>Next</span>
+      </ElmButton>
+    </div>
   </div>
 </template>
 
@@ -29,11 +32,11 @@ export interface ElmAuthSignInEmailProps {
 withDefaults(defineProps<ElmAuthSignInEmailProps>(), {
   title: "Sign in",
   description: "Sign in to your account.",
-  label: "Username",
+  label: "email",
 });
 
 const state = defineModel<State>("state");
-const username = defineModel<string>("username", { default: "" });
+const email = defineModel<string>("email", { default: "" });
 
 const next = () => {
   state.value = "SIGN_IN_PASSWORD";
@@ -45,5 +48,11 @@ const next = () => {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 </style>
