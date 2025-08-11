@@ -28,8 +28,8 @@ importers:
         version: 3.5.18(typescript@5.9.2)
     devDependencies:
       '@elmethis/core':
-        specifier: ^0.2.10
-        version: 0.2.10(vue@3.5.18(typescript@5.9.2))
+        specifier: ^0.3.0
+        version: 0.3.0(vue@3.5.18(typescript@5.9.2))
       '@mdi/js':
         specifier: ^7.4.47
         version: 7.4.47
@@ -511,6 +511,11 @@ packages:
 
   '@elmethis/core@0.2.10':
     resolution: {integrity: sha512-BJcVbkmBa5hqvHCoe8pmMOmYyGI9Ya0tb4Dy5c9v2jI2ACbNuvahSl4iZH+o6ny3g5+5chzLnfEG3qrPVXjb7w==}
+    peerDependencies:
+      vue: ^3.4.0
+
+  '@elmethis/core@0.3.0':
+    resolution: {integrity: sha512-G0h4/ESMiGyLmWMToArlt17sK89k/Q0DNxLuKj3Gd8dr7idMr/TXiR0R5MOBqG+6Kg+EPQ00Do3NV2ek0kOtUg==}
     peerDependencies:
       vue: ^3.4.0
 
@@ -2742,6 +2747,17 @@ snapshots:
       nanoid: 5.1.5
       polished: 4.3.1
       shiki: 3.6.0
+      vue: 3.5.18(typescript@5.9.2)
+
+  '@elmethis/core@0.3.0(vue@3.5.18(typescript@5.9.2))':
+    dependencies:
+      '@mdi/js': 7.4.47
+      '@vueuse/core': 13.6.0(vue@3.5.18(typescript@5.9.2))
+      katex: 0.16.22
+      lodash-es: 4.17.21
+      nanoid: 5.1.5
+      polished: 4.3.1
+      shiki: 3.9.2
       vue: 3.5.18(typescript@5.9.2)
 
   '@esbuild/aix-ppc64@0.25.8':
