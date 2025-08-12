@@ -33,6 +33,11 @@ export const Primary: Story = {
       const signUpError = ref<string | null>(null);
       const signUpLoading = ref<boolean>(false);
 
+      const changePasswordPassword = ref<string>("");
+      const changePasswordPasswordRepeat = ref<string>("");
+      const changePasswordError = ref<string | null>(null);
+      const changePasswordLoading = ref<boolean>(false);
+
       const signInFunction = async () => {
         signInLoading.value = true;
         const rand = Math.random() * 2;
@@ -57,6 +62,18 @@ export const Primary: Story = {
         signUpLoading.value = false;
       };
 
+      const changePasswordFunction = async () => {
+        changePasswordLoading.value = true;
+        const rand = Math.random() * 2;
+        await sleep(1500);
+
+        if (rand > 1) {
+          changePasswordError.value = "Invalid Password";
+        }
+
+        changePasswordLoading.value = false;
+      };
+
       return {
         state,
 
@@ -72,6 +89,12 @@ export const Primary: Story = {
         signUpError,
         signUpLoading,
         signUpFunction,
+
+        changePasswordPassword,
+        changePasswordPasswordRepeat,
+        changePasswordError,
+        changePasswordLoading,
+        changePasswordFunction,
       };
     },
 
@@ -92,6 +115,12 @@ export const Primary: Story = {
         v-model:signUpPasswordRepeat="signUpPasswordRepeat"
         v-model:signUpError="signUpError"
         v-model:signUpLoading="signUpLoading"
+        
+        v-model:changePasswordEmail="changePasswordEmail"
+        v-model:changePasswordPassword="changePasswordPassword"
+        v-model:changePasswordPasswordRepeat="changePasswordPasswordRepeat"
+        v-model:changePasswordLoading="changePasswordLoading"
+        v-model:changePasswordError="changePasswordError"
         />
     `,
   }),
