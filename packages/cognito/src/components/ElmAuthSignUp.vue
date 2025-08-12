@@ -2,8 +2,18 @@
   <div :class="$style.wrapper">
     <ElmInlineText :text="title" size="1.3rem" bold />
     <ElmInlineText :text="description" />
-    <ElmTextField label="Email" v-model="signUpEmail" icon="email" />
-    <ElmTextField label="Password" v-model="signUpPassword" icon="lock" />
+    <ElmTextField
+      label="Email"
+      v-model="signUpEmail"
+      icon="email"
+      is-password
+    />
+    <ElmTextField
+      label="Password"
+      v-model="signUpPassword"
+      icon="lock"
+      is-password
+    />
 
     <div>
       <ElmValidation
