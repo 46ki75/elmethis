@@ -34,11 +34,23 @@
         v-model:signUpLoading="signUpLoading"
         v-model:signUpError="signUpError"
       />
+      <ElmAuthChangePassword
+        v-else-if="state === 'CHANGE_PASSWORD'"
+        :change-password-function="changePasswordFunction"
+        :validators="validators"
+        v-model:state="state"
+        v-model:changePasswordEmail="changePasswordEmail"
+        v-model:changePasswordPassword="changePasswordPassword"
+        v-model:changePasswordPasswordRepeat="changePasswordPasswordRepeat"
+        v-model:changePasswordLoading="changePasswordLoading"
+        v-model:changePasswordError="changePasswordError"
+      />
     </Transition>
   </div>
 </template>
 
 <script setup lang="ts">
+import ElmAuthChangePassword from "./components/ElmAuthChangePassword.vue";
 import ElmAuthSignIn from "./components/ElmAuthSignIn.vue";
 import ElmAuthSignInPassword from "./components/ElmAuthSignInPassword.vue";
 import ElmAuthSignUp from "./components/ElmAuthSignUp.vue";
@@ -46,11 +58,16 @@ import ElmAuthSignUp from "./components/ElmAuthSignUp.vue";
 export interface ElmCognitoProps {
   signInFunction: () => Promise<void>;
   signUpFunction: () => Promise<void>;
+  changePasswordFunction: () => Promise<void>;
 }
 
 withDefaults(defineProps<ElmCognitoProps>(), {});
 
-export type State = "SIGN_IN" | "SIGN_UP" | "SIGN_IN_PASSWORD";
+export type State =
+  | "SIGN_IN"
+  | "SIGN_UP"
+  | "SIGN_IN_PASSWORD"
+  | "CHANGE_PASSWORD";
 
 const state = defineModel<State>({ default: "SIGN_IN" });
 
@@ -70,6 +87,25 @@ const signUpLoading = defineModel<boolean>("signUpLoading", {
   default: false,
 });
 const signUpError = defineModel<string | null>("signUpError", {
+  default: "",
+});
+
+const changePasswordEmail = defineModel<string>("changePasswordEmail", {
+  default: "",
+});
+const changePasswordPassword = defineModel<string>("changePasswordPassword", {
+  default: "",
+});
+const changePasswordPasswordRepeat = defineModel<string>(
+  "changePasswordPasswordRepeat",
+  {
+    default: "",
+  }
+);
+const changePasswordLoading = defineModel<boolean>("changePasswordLoading", {
+  default: false,
+});
+const changePasswordError = defineModel<string | null>("changePasswordError", {
   default: "",
 });
 
