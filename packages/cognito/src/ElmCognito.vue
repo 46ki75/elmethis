@@ -31,6 +31,8 @@
         v-model:signUpEmail="signUpEmail"
         v-model:signUpPassword="signUpPassword"
         v-model:signUpPasswordRepeat="signUpPasswordRepeat"
+        v-model:signUpLoading="signUpLoading"
+        v-model:signUpError="signUpError"
       />
     </Transition>
   </div>
@@ -61,6 +63,12 @@ const signInLoading = defineModel<boolean>("signInLoading", { default: false });
 const signUpEmail = defineModel<string>("signUpEmail", { default: "" });
 const signUpPassword = defineModel<string>("signUpPassword", { default: "" });
 const signUpPasswordRepeat = defineModel<string>("signUpPasswordRepeat", {
+  default: "",
+});
+const signUpLoading = defineModel<boolean>("signUpLoading", {
+  default: false,
+});
+const signUpError = defineModel<string | null>("signUpError", {
   default: "",
 });
 

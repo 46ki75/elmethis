@@ -21,9 +21,13 @@
     />
 
     <div :class="$style['button-container']">
-      <ElmButton block primary @click="next" :disabled="!isValidEmail">
+      <ElmButton block primary @click="next" :disabled="!isValidAll">
         <ElmMdiIcon :d="mdiChevronRightCircle" color="gray" />
         <span>Next</span>
+      </ElmButton>
+      <ElmButton block @click="back" :disabled="signUpLoading">
+        <ElmMdiIcon :d="mdiChevronLeftCircle" color="gray" />
+        <span>Back</span>
       </ElmButton>
     </div>
   </div>
@@ -38,7 +42,7 @@ import {
   ElmValidation,
 } from "@elmethis/core";
 import { State } from "../ElmCognito.vue";
-import { mdiChevronRightCircle } from "@mdi/js";
+import { mdiChevronRightCircle, mdiChevronLeftCircle } from "@mdi/js";
 import { onMounted, ref, watch } from "vue";
 
 export interface ElmAuthSignUpProps {
@@ -50,7 +54,7 @@ export interface ElmAuthSignUpProps {
   }>;
 }
 
-withDefaults(defineProps<ElmAuthSignUpProps>(), {
+const props = withDefaults(defineProps<ElmAuthSignUpProps>(), {
   title: "Sign up",
   description: "Create a new account.",
 });
@@ -59,6 +63,12 @@ const state = defineModel<State>("state");
 const signUpEmail = defineModel<string>("signUpEmail", { default: "" });
 const signUpPassword = defineModel<string>("signUpPassword", { default: "" });
 const signUpPasswordRepeat = defineModel<string>("signUpPasswordRepeat", {
+  default: "",
+});
+const signUpLoading = defineModel<boolean>("signUpLoading", {
+  default: false,
+});
+const signUpError = defineModel<string | null>("signUpError", {
   default: "",
 });
 
@@ -78,6 +88,29 @@ onMounted(() => {
 const next = () => {
   state.value = "SIGN_IN_PASSWORD";
 };
+
+const back = () => {
+  state.value = "SIGN_IN";
+  signUpError.value = null;
+};
+
+const validatePasswordMatch = (_input: string): boolean =>
+  signUpPassword.value === signUpPasswordRepeat.value;
+
+const isValidAll = ref(false);
+
+watch(
+  [signUpEmail, signUpPassword, signUpPasswordRepeat],
+  ([signUpEmail, signUpPassword, signUpPasswordRepeat]) => {
+    const isValidPassword = props.validators.every(({ fn }) =>
+      fn(signUpPassword)
+    );
+    isValidAll.value =
+      validateEmail(signUpEmail) &&
+      isValidPassword &&
+      validatePasswordMatch(signUpPasswordRepeat);
+  }
+);
 </script>
 
 <style module lang="scss">
