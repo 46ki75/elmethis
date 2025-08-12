@@ -17,27 +17,16 @@
 import { mdiCheckCircle, mdiCheckCircleOutline } from "@mdi/js";
 import ElmMdiIcon from "../icon/ElmMdiIcon.vue";
 import ElmInlineText from "../typography/ElmInlineText.vue";
-import { ref, watch } from "vue";
 
-export interface ElmValidationProps<T = string> {
+export interface ElmValidationProps {
   text: string;
   validColor?: string;
-  input: T;
-  validateFunction: (input: T) => boolean;
+  isValid: boolean;
 }
 
-const props = withDefaults(defineProps<ElmValidationProps>(), {
+withDefaults(defineProps<ElmValidationProps>(), {
   validColor: "#449763",
 });
-
-const isValid = ref(false);
-
-watch(
-  () => props.input,
-  (input) => {
-    isValid.value = props.validateFunction(input);
-  }
-);
 </script>
 
 <style module lang="scss">
