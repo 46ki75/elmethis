@@ -21,6 +21,7 @@ const meta: Meta<typeof ElmTextField> = {
         "tag",
         "archive",
         "link",
+        "search",
       ],
     },
   },
