@@ -22,8 +22,8 @@
 
     <div :class="$style['button-container']">
       <ElmButton block primary @click="next" :disabled="!isValidAll">
-        <ElmMdiIcon :d="mdiChevronRightCircle" color="gray" />
-        <span>Next</span>
+        <ElmMdiIcon :d="mdiAccountPlus" color="gray" />
+        <span>Sign up</span>
       </ElmButton>
       <ElmButton block @click="back" :disabled="signUpLoading">
         <ElmMdiIcon :d="mdiChevronLeftCircle" color="gray" />
@@ -42,7 +42,7 @@ import {
   ElmValidation,
 } from "@elmethis/core";
 import { State } from "../ElmCognito.vue";
-import { mdiChevronRightCircle, mdiChevronLeftCircle } from "@mdi/js";
+import { mdiAccountPlus, mdiChevronLeftCircle } from "@mdi/js";
 import { onMounted, ref, watch } from "vue";
 
 export interface ElmAuthSignUpProps {
