@@ -25,8 +25,8 @@ importers:
         version: 3.5.18(typescript@5.9.2)
     devDependencies:
       '@elmethis/core':
-        specifier: ^0.3.0
-        version: 0.3.0(vue@3.5.18(typescript@5.9.2))
+        specifier: ^0.4.0
+        version: 0.4.0(vue@3.5.18(typescript@5.9.2))
       '@mdi/js':
         specifier: ^7.4.47
         version: 7.4.47
@@ -511,8 +511,8 @@ packages:
     peerDependencies:
       vue: ^3.4.0
 
-  '@elmethis/core@0.3.0':
-    resolution: {integrity: sha512-G0h4/ESMiGyLmWMToArlt17sK89k/Q0DNxLuKj3Gd8dr7idMr/TXiR0R5MOBqG+6Kg+EPQ00Do3NV2ek0kOtUg==}
+  '@elmethis/core@0.4.0':
+    resolution: {integrity: sha512-i3gHVJXXjcjwiXctVa7aHx20SDvkBMDnvwO1AAvmS2T7DNeFMuXlmtDrFH856B/iApQOS1oJZIYYVhvIPh2eYQ==}
     peerDependencies:
       vue: ^3.4.0
 
@@ -2746,7 +2746,7 @@ snapshots:
       shiki: 3.6.0
       vue: 3.5.18(typescript@5.9.2)
 
-  '@elmethis/core@0.3.0(vue@3.5.18(typescript@5.9.2))':
+  '@elmethis/core@0.4.0(vue@3.5.18(typescript@5.9.2))':
     dependencies:
       '@mdi/js': 7.4.47
       '@vueuse/core': 13.6.0(vue@3.5.18(typescript@5.9.2))

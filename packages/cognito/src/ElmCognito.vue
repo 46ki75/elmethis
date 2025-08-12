@@ -25,7 +25,7 @@
       />
       <ElmAuthSignUp
         v-else-if="state === 'SIGN_UP'"
-        :signInFunction="signInFunction"
+        :sign-up-function="signUpFunction"
         :validators="validators"
         v-model:state="state"
         v-model:signUpEmail="signUpEmail"
@@ -45,6 +45,7 @@ import ElmAuthSignUp from "./components/ElmAuthSignUp.vue";
 
 export interface ElmCognitoProps {
   signInFunction: () => Promise<void>;
+  signUpFunction: () => Promise<void>;
 }
 
 withDefaults(defineProps<ElmCognitoProps>(), {});
