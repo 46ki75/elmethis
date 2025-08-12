@@ -23,6 +23,15 @@
         v-model:signInError="signInError"
         v-model:signInLoading="signInLoading"
       />
+      <ElmAuthSignUp
+        v-else-if="state === 'SIGN_UP'"
+        :signInFunction="signInFunction"
+        :validators="validators"
+        v-model:state="state"
+        v-model:signUpEmail="signUpEmail"
+        v-model:signUpPassword="signUpPassword"
+        v-model:signUpPasswordRepeat="signUpPasswordRepeat"
+      />
     </Transition>
   </div>
 </template>
@@ -30,6 +39,7 @@
 <script setup lang="ts">
 import ElmAuthSignIn from "./components/ElmAuthSignIn.vue";
 import ElmAuthSignInPassword from "./components/ElmAuthSignInPassword.vue";
+import ElmAuthSignUp from "./components/ElmAuthSignUp.vue";
 
 export interface ElmCognitoProps {
   signInFunction: () => Promise<void>;
@@ -40,12 +50,38 @@ withDefaults(defineProps<ElmCognitoProps>(), {});
 export type State = "SIGN_IN" | "SIGN_UP" | "SIGN_IN_PASSWORD";
 
 const state = defineModel<State>({ default: "SIGN_IN" });
+
 const signInEmail = defineModel<string>("signInEmail", { default: "" });
 const signInPassword = defineModel<string>("signInPassword", { default: "" });
 const signInError = defineModel<string | null>("signInError", {
   default: null,
 });
 const signInLoading = defineModel<boolean>("signInLoading", { default: false });
+
+const signUpEmail = defineModel<string>("signUpEmail", { default: "" });
+const signUpPassword = defineModel<string>("signUpPassword", { default: "" });
+const signUpPasswordRepeat = defineModel<string>("signUpPasswordRepeat", {
+  default: "",
+});
+
+const validators = [
+  {
+    label: "Password must be at least 8 characters",
+    fn: (input: string) => input.length >= 8,
+  },
+  {
+    label: "Password must contain a number",
+    fn: (input: string) => /.*\d+.*/.test(input),
+  },
+  {
+    label: "Password must contain an lower letter",
+    fn: (input: string) => /.*[a-z]+.*/.test(input),
+  },
+  {
+    label: "Password must contain an uppercase letter",
+    fn: (input: string) => /.*[A-Z]+.*/.test(input),
+  },
+];
 </script>
 
 <style module lang="scss">
