@@ -37,7 +37,7 @@ withDefaults(defineProps<ElmAuthSignInEmailProps>(), {
 });
 
 const state = defineModel<State>("state");
-const email = defineModel<string>("email", { default: "" });
+const email = defineModel<string>("signInEmail", { default: "" });
 
 const isValidEmail = ref(false);
 

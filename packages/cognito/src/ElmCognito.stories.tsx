@@ -21,29 +21,29 @@ export const Primary: Story = {
 
     setup(_args) {
       const state = ref<State>("SIGN_IN");
-      const email = ref<string>("");
-      const password = ref<string>("");
-      const error = ref<string | null>(null);
-      const loading = ref<boolean>(false);
+      const signInEmail = ref<string>("");
+      const signInPassword = ref<string>("");
+      const signInError = ref<string | null>(null);
+      const signInLoading = ref<boolean>(false);
 
       const signInFunction = async () => {
-        loading.value = true;
+        signInLoading.value = true;
         const rand = Math.random() * 2;
-        await sleep(3000);
+        await sleep(1500);
 
         if (rand > 1) {
-          error.value = "Invalid Password";
+          signInError.value = "Invalid Password";
         }
 
-        loading.value = false;
+        signInLoading.value = false;
       };
 
       return {
         state,
-        email,
-        password,
-        error,
-        loading,
+        signInEmail,
+        signInPassword,
+        signInError,
+        signInLoading,
         signInFunction,
       };
     },
@@ -52,10 +52,10 @@ export const Primary: Story = {
       <ElmCognito
         :signInFunction="signInFunction"
         v-model:state="state"
-        v-model:email="email"
-        v-model:password="password"
-        v-model:error="error"
-        v-model:loading="loading"
+        v-model:signInEmail="signInEmail"
+        v-model:signInPassword="signInPassword"
+        v-model:signInError="signInError"
+        v-model:signInLoading="signInLoading"
         />
     `,
   }),

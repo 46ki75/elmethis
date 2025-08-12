@@ -3,9 +3,14 @@
     <ElmInlineText :text="title" size="1.3rem" bold />
     <div :class="$style.flex">
       <ElmMdiIcon :d="mdiEmail" color="gray" />
-      <ElmInlineText :text="email" />
+      <ElmInlineText :text="signInEmail" />
     </div>
-    <ElmTextField :label="label" v-model="password" is-password icon="lock" />
+    <ElmTextField
+      :label="label"
+      v-model="signInPassword"
+      is-password
+      icon="lock"
+    />
 
     <div :class="$style['button-container']">
       <ElmButton
@@ -13,20 +18,20 @@
         primary
         @click="signInFunction"
         :disabled="!isValidPassword"
-        :loading="loading"
+        :loading="signInLoading"
       >
         <ElmMdiIcon :d="mdiSend" color="gray" />
         <span>Submit</span>
       </ElmButton>
-      <ElmButton block @click="back" :disabled="loading">
+      <ElmButton block @click="back" :disabled="signInLoading">
         <ElmMdiIcon :d="mdiChevronLeftCircle" color="gray" />
         <span>Back</span>
       </ElmButton>
     </div>
 
-    <div v-if="error" :class="$style.error">
+    <div v-if="signInError" :class="$style.error">
       <ElmMdiIcon :d="mdiAlert" color="#c56565" />
-      <ElmInlineText :text="error" color="#c56565" />
+      <ElmInlineText :text="signInError" color="#c56565" />
     </div>
   </div>
 </template>
@@ -54,25 +59,27 @@ withDefaults(defineProps<ElmAuthSignInPasswordProps>(), {
 });
 
 const state = defineModel<State>("state");
-const email = defineModel<string>("email", { default: "" });
-const password = defineModel<string>("password", { default: "" });
-const error = defineModel<string | null>("error", { default: null });
-const loading = defineModel<boolean>("loading", { default: false });
+const signInEmail = defineModel<string>("signInEmail", { default: "" });
+const signInPassword = defineModel<string>("signInPassword", { default: "" });
+const signInError = defineModel<string | null>("signInError", {
+  default: null,
+});
+const signInLoading = defineModel<boolean>("signInLoading", { default: false });
 
 const isValidPassword = ref(false);
 
-watch(password, () => {
-  isValidPassword.value = password.value.trim() !== "";
+watch(signInPassword, () => {
+  isValidPassword.value = signInPassword.value.trim() !== "";
 });
 
 onMounted(() => {
-  error.value = null;
-  isValidPassword.value = password.value.trim() !== "";
+  signInError.value = null;
+  isValidPassword.value = signInPassword.value.trim() !== "";
 });
 
 const back = () => {
   state.value = "SIGN_IN";
-  error.value = null;
+  signInError.value = null;
 };
 </script>
 
