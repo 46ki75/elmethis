@@ -10,6 +10,16 @@
         <span>Next</span>
       </ElmButton>
     </div>
+
+    <div :class="$style['link-container']">
+      <ElmInlineText text="New user ? " />
+      <ElmInlineText
+        :class="$style.link"
+        text="Create an account"
+        @click="state = 'SIGN_UP'"
+        color="#bfa056"
+      />
+    </div>
   </div>
 </template>
 
@@ -68,5 +78,22 @@ const next = () => {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+.link-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.link {
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 200ms;
+
+  &:hover {
+    opacity: 0.5;
+  }
 }
 </style>
