@@ -88,6 +88,7 @@ import {
   mdiTag,
   mdiArchive,
   mdiLinkVariant,
+  mdiMagnify,
 } from "@mdi/js";
 
 const id = nanoid();
@@ -111,7 +112,8 @@ export interface ElmTextFieldProps {
     | "earth"
     | "tag"
     | "archive"
-    | "link";
+    | "link"
+    | "search";
   isPassword?: boolean;
   required?: boolean;
 }
@@ -147,6 +149,7 @@ const iconMap: Record<NonNullable<ElmTextFieldProps["icon"]>, string> = {
   tag: mdiTag,
   archive: mdiArchive,
   link: mdiLinkVariant,
+  search: mdiMagnify,
 };
 </script>
 
