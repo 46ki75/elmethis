@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import ElmCallout from "./ElmCallout.vue";
 import ElmInlineText from "./ElmInlineText.vue";
+import ElmImage from "../media/ElmImage.vue";
 
 const lorem =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc tincidunt aliquam. Nullam nec purus nec nunc tincidunt aliquam.";
@@ -46,4 +47,21 @@ export const Warning: Story = {
 
 export const Caution: Story = {
   args: { type: "caution" },
+};
+
+export const Nested: Story = {
+  args: { type: "caution" },
+  render(args) {
+    return {
+      components: { ElmCallout, ElmImage },
+      setup() {
+        return { args };
+      },
+      template: `
+        <ElmCallout v-bind="args">
+          <ElmImage src="https://www.pulumi.com/logos/brand/og-default.png" block enableModal />
+        </ElmCallout>
+      `,
+    };
+  },
 };

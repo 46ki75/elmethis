@@ -68,7 +68,6 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 
 <style module lang="scss">
 .callout {
-  z-index: 1;
   margin-block: 2rem;
   position: relative;
   box-sizing: border-box;
@@ -78,7 +77,8 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   padding: 0.75rem 1rem;
   border-left: solid 4px var(--border-color);
 
-  &::after {
+  &::before {
+    z-index: -1;
     position: absolute;
     content: "";
     left: 0;
@@ -89,6 +89,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
     transition: transform 800ms;
     transform: scaleX(var(--scale));
     transform-origin: left;
+    pointer-events: none;
   }
 }
 
