@@ -35,7 +35,7 @@
         :alt="alt"
         @click="if (enableModal) isModalOpen = true;"
         :style="{
-          '--cursor': enableModal ? 'zoom-in' : 'inherit',
+          '--cursor': enableModal ? 'zoom-in' : 'default',
           '--margin-block': margin,
         }"
       />
@@ -149,7 +149,7 @@ onKeyStroke("Escape", (e) => {
   margin-block: var(--margin-block);
   max-width: 100%;
   max-height: 100vh;
-  cursor: var(--cursor);
+  cursor: var(--cursor, default);
 }
 
 .error {
@@ -184,7 +184,7 @@ onKeyStroke("Escape", (e) => {
   display: block;
   max-width: 100%;
   max-height: 100vh;
-  cursor: zoom-in;
+  cursor: var(--cursor, default);
 }
 
 .alt-container {
