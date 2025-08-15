@@ -35,7 +35,7 @@
         :alt="alt"
         @click="if (enableModal) isModalOpen = true;"
         :style="{
-          '--cursor': enableModal ? 'zoom-in' : 'default',
+          '--cursor': enableModal ? 'zoom-in' : 'inherit',
           '--margin-block': margin,
         }"
       />
@@ -149,7 +149,7 @@ onKeyStroke("Escape", (e) => {
   margin-block: var(--margin-block);
   max-width: 100%;
   max-height: 100vh;
-  cursor: var(--cursor, default);
+  cursor: var(--cursor, inherit);
 }
 
 .error {
