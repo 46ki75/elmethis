@@ -35,7 +35,7 @@
         :alt="alt"
         @click="if (enableModal) isModalOpen = true;"
         :style="{
-          '--cursor': enableModal ? 'zoom-in' : 'inherit',
+          '--cursor': enableModal ? 'zoom-in' : 'default',
           '--margin-block': margin,
         }"
       />
@@ -86,7 +86,7 @@
 <script setup lang="ts">
 import type { Property } from "csstype";
 
-import { popScopeId, ref } from "vue";
+import { ref } from "vue";
 import ElmRectangleWave from "../fallback/ElmRectangleWave.vue";
 import ElmDotLoadingIcon from "../icon/ElmDotLoadingIcon.vue";
 import { onKeyStroke, useImage, useIntersectionObserver } from "@vueuse/core";
@@ -158,7 +158,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   margin-block: var(--margin-block);
   max-width: 100%;
   max-height: 100vh;
-  cursor: var(--cursor, inherit);
+  cursor: var(--cursor, default);
 }
 
 .error {
