@@ -86,7 +86,7 @@
 <script setup lang="ts">
 import type { Property } from "csstype";
 
-import { popScopeId, ref } from "vue";
+import { ref } from "vue";
 import ElmRectangleWave from "../fallback/ElmRectangleWave.vue";
 import ElmDotLoadingIcon from "../icon/ElmDotLoadingIcon.vue";
 import { onKeyStroke, useImage, useIntersectionObserver } from "@vueuse/core";
