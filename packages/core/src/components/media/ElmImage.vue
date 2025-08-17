@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.wrapper">
+  <div :class="$style.wrapper" ref="target">
     <transition
       mode="out-in"
       :enter-from-class="fadeStyle['fade-enter-from']"
@@ -86,10 +86,10 @@
 <script setup lang="ts">
 import type { Property } from "csstype";
 
-import { ref } from "vue";
+import { popScopeId, ref } from "vue";
 import ElmRectangleWave from "../fallback/ElmRectangleWave.vue";
 import ElmDotLoadingIcon from "../icon/ElmDotLoadingIcon.vue";
-import { onKeyStroke, useImage } from "@vueuse/core";
+import { onKeyStroke, useImage, useIntersectionObserver } from "@vueuse/core";
 import ElmInlineText from "../typography/ElmInlineText.vue";
 
 import fadeStyle from "../../styles/transition-fade.module.scss";
@@ -134,6 +134,13 @@ onKeyStroke("Escape", (e) => {
   e.preventDefault();
   isModalOpen.value = false;
 });
+
+const target = ref(null);
+const targetIsVisible = ref(false);
+
+useIntersectionObserver(target, ([{ isIntersecting }], _) => {
+  if (props.block) targetIsVisible.value = isIntersecting;
+});
 </script>
 
 <style module lang="scss">
@@ -142,6 +149,8 @@ onKeyStroke("Escape", (e) => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  opacity: var(--opacity);
+  transition: opacity 400ms;
 }
 
 .image {
