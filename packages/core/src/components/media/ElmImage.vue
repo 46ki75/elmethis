@@ -86,7 +86,7 @@
 <script setup lang="ts">
 import type { Property } from "csstype";
 
-import { ref } from "vue";
+import { popScopeId, ref } from "vue";
 import ElmRectangleWave from "../fallback/ElmRectangleWave.vue";
 import ElmDotLoadingIcon from "../icon/ElmDotLoadingIcon.vue";
 import { onKeyStroke, useImage, useIntersectionObserver } from "@vueuse/core";
@@ -139,7 +139,7 @@ const target = ref(null);
 const targetIsVisible = ref(false);
 
 useIntersectionObserver(target, ([{ isIntersecting }], _) => {
-  targetIsVisible.value = isIntersecting;
+  if (props.block) targetIsVisible.value = isIntersecting;
 });
 </script>
 
@@ -150,7 +150,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   flex-direction: column;
   align-items: center;
   opacity: var(--opacity);
-  transition: opacity 800ms;
+  transition: opacity 400ms;
 }
 
 .image {
