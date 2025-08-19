@@ -27,7 +27,7 @@
         "prepublishOnly": "pnpm run build"
     },
     "dependencies": {
-        "@vueuse/core": "^13.6.0"
+        "@vueuse/core": "^13.7.0"
     },
     "devDependencies": {
         "@elmethis/core": "^0.4.0",
