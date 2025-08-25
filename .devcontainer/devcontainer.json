@@ -29,7 +29,6 @@
     }
   },
   "features": {
-    "ghcr.io/devcontainers-extra/features/gh-release": {},
     "ghcr.io/devcontainers-extra/features/starship": {},
     "ghcr.io/devcontainers/features/github-cli": {},
     // Node.js
