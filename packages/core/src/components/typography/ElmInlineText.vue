@@ -44,7 +44,7 @@ export interface ElmInlineTextProps {
   /**
    * The text to display.
    */
-  text: string;
+  text?: string;
 
   /**
    * Specifies the color of the text.
@@ -122,6 +122,10 @@ const props = withDefaults(defineProps<ElmInlineTextProps>(), {
 
 const style = useCssModule();
 
+const slots = defineSlots<{
+  default?: () => VNodeChild;
+}>();
+
 const renderLink = () => {
   const children: VNodeChild[] = [];
 
@@ -129,7 +133,12 @@ const renderLink = () => {
     children.push(h(ElmInlineIcon, { src: props.favicon, alt: "favicon" }));
   }
 
-  children.push(h("span", {}, props.text ?? props.href));
+  if (slots.default) {
+    children.push(h(slots.default));
+  } else {
+    children.push(h("span", {}, props.text ?? props.href));
+  }
+
   children.push(
     h(ElmMdiIcon, {
       d: mdiOpenInNew,
@@ -160,18 +169,31 @@ const render = () => {
         : "rgba(0, 0, 0, 0.7)"
       : undefined;
 
-  let vnode = h(
-    "span",
-    {
-      class: [style.text, textStyle.text],
-      style: {
-        "--color": props.color ?? backgroundColor,
-        "--font-size": props.size,
-        "--background-color": props.backgroundColor,
-      },
-    },
-    props.text
-  );
+  let vnode = slots.default
+    ? h(
+        "span",
+        {
+          class: [style.text, textStyle.text],
+          style: {
+            "--color": props.color ?? backgroundColor,
+            "--font-size": props.size,
+            "--background-color": props.backgroundColor,
+          },
+        },
+        { default: slots.default }
+      )
+    : h(
+        "span",
+        {
+          class: [style.text, textStyle.text],
+          style: {
+            "--color": props.color ?? backgroundColor,
+            "--font-size": props.size,
+            "--background-color": props.backgroundColor,
+          },
+        },
+        props.text
+      );
 
   if (props.kbd) {
     vnode = h("kbd", { class: style.kbd }, vnode);
