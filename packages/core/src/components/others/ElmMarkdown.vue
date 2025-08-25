@@ -47,11 +47,6 @@ const AsyncElmBlockQuote = defineAsyncComponent({
   loadingComponent: ElmBlockFallback,
 });
 
-const AsyncElmCallout = defineAsyncComponent({
-  loader: () => import("../typography/ElmCallout.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
 const AsyncElmDivider = defineAsyncComponent({
   loader: () => import("../typography/ElmDivider.vue"),
   loadingComponent: ElmBlockFallback,
@@ -143,7 +138,8 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
         results.push(h(AsyncElmInlineText, { text: token.text, code: true }));
         break;
       case "def":
-        // Definition token
+        h("span", "aaa");
+        // Link reference definitions
         break;
       case "del":
         results.push(
@@ -245,7 +241,6 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
         }
         break;
       case "space":
-        // Space token
         break;
       case "strong":
         results.push(
@@ -315,7 +310,7 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
 };
 
 const render = ({ markdown }: { markdown: string }): VNode[] => {
-  const tokens = marked.lexer(markdown);
+  const tokens = marked.setOptions({ gfm: true }).lexer(markdown);
 
   return renderByToken({ tokens });
 };

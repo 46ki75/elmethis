@@ -12,6 +12,12 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const MARKDOWN = `
+[google]: https://www.google.com "Google検索"
+[github]: https://github.com
+
+- [Google][google]
+- [GitHub][github]
+
 # Main Heading (heading)
 
 This is a **bold text** (strong) and this is *italic text* (em). You can also have ~~strikethrough text~~ (del) and \`inline code\` (codespan).
@@ -89,18 +95,6 @@ This line has a manual line break here
 <div>This is raw HTML</div> (html)
 
 You can escape characters like \* and \_ (escape) to prevent markdown formatting.
-
-### Definition Lists (def)
-
-Term 1
-: Definition for term 1
-
-Term 2
-: Definition for term 2
-
-### Spaces (space)
-
-Multiple    spaces    between    words    are    handled    by    space    tokens.
 `;
 
 export const Primary: Story = {
