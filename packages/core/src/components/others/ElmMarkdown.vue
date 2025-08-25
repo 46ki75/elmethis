@@ -19,14 +19,6 @@ const AsyncElmInlineText = defineAsyncComponent({
   loader: () => import("../typography/ElmInlineText.vue"),
 });
 
-const AsyncElmKatex = defineAsyncComponent({
-  loader: () => import("../code/ElmKatex.vue"),
-});
-
-const AsyncElmInlineIcon = defineAsyncComponent({
-  loader: () => import("../icon/ElmInlineIcon.vue"),
-});
-
 const AsyncElmHeading = defineAsyncComponent({
   loader: () => import("../typography/ElmHeading.vue"),
   loadingComponent: ElmBlockFallback,
@@ -49,21 +41,6 @@ const AsyncElmBlockQuote = defineAsyncComponent({
 
 const AsyncElmDivider = defineAsyncComponent({
   loader: () => import("../typography/ElmDivider.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmToggle = defineAsyncComponent({
-  loader: () => import("../containments/ElmToggle.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmBookmark = defineAsyncComponent({
-  loader: () => import("../navigation/ElmBookmark.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmFile = defineAsyncComponent({
-  loader: () => import("../media/ElmFile.vue"),
   loadingComponent: ElmBlockFallback,
 });
 
@@ -99,11 +76,6 @@ const AsyncElmTableRow = defineAsyncComponent({
 
 const AsyncElmTableCell = defineAsyncComponent({
   loader: () => import("../table/ElmTableCell.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmUnsupportedBlock = defineAsyncComponent({
-  loader: () => import("../fallback/ElmUnsupportedBlock.vue"),
   loadingComponent: ElmBlockFallback,
 });
 
