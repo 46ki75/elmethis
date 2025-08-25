@@ -1,5 +1,7 @@
 <template>
-  <component :is="() => renderResult"></component>
+  <div>
+    <component :is="() => renderResult"></component>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -9,12 +11,9 @@ import { ElmBlockFallback } from "../..";
 
 export interface ElmMarkdownProps {
   markdown: string;
-  tag?: keyof HTMLElementTagNameMap;
 }
 
-const props = withDefaults(defineProps<ElmMarkdownProps>(), {
-  tag: "div",
-});
+const props = withDefaults(defineProps<ElmMarkdownProps>(), {});
 
 const AsyncElmInlineText = defineAsyncComponent({
   loader: () => import("../typography/ElmInlineText.vue"),
