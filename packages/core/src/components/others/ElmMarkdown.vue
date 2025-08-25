@@ -90,7 +90,10 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
             h(
               AsyncElmBlockQuote,
               {},
-              { default: renderByToken({ tokens: token.tokens }) }
+              {
+                default: () =>
+                  renderByToken({ tokens: token.tokens as Token[] }),
+              }
             )
           );
         }
@@ -119,7 +122,10 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
             ? h(
                 AsyncElmInlineText,
                 { strikethrough: true },
-                { default: renderByToken({ tokens: token.tokens }) }
+                {
+                  default: () =>
+                    renderByToken({ tokens: token.tokens as Token[] }),
+                }
               )
             : h(AsyncElmInlineText, { text: token.text, strikethrough: true })
         );
@@ -130,7 +136,10 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
             ? h(
                 AsyncElmInlineText,
                 { italic: true },
-                { default: renderByToken({ tokens: token.tokens }) }
+                {
+                  default: () =>
+                    renderByToken({ tokens: token.tokens as Token[] }),
+                }
               )
             : h(AsyncElmInlineText, { text: token.text, italic: true })
         );
@@ -144,7 +153,10 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
             h(
               AsyncElmHeading,
               { level: token.depth },
-              { default: renderByToken({ tokens: token.tokens }) }
+              {
+                default: () =>
+                  renderByToken({ tokens: token.tokens as Token[] }),
+              }
             )
           );
         } else {
@@ -175,7 +187,10 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
             ? h(
                 AsyncElmInlineText,
                 { href: token.href },
-                { default: renderByToken({ tokens: token.tokens }) }
+                {
+                  default: () =>
+                    renderByToken({ tokens: token.tokens as Token[] }),
+                }
               )
             : h(AsyncElmInlineText, { text: token.text, href: token.href })
         );
@@ -190,14 +205,21 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
             {
               listStyle: token.ordered ? "ordered" : "unordered",
             },
-            { default: listItems }
+            { default: () => listItems }
           )
         );
         break;
       case "list_item":
         results.push(
           token.tokens != null && token.tokens.length !== 0
-            ? h("li", {}, { default: renderByToken({ tokens: token.tokens }) })
+            ? h(
+                "li",
+                {},
+                {
+                  default: () =>
+                    renderByToken({ tokens: token.tokens as Token[] }),
+                }
+              )
             : h("li", { text: token.text })
         );
         break;
@@ -207,7 +229,10 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
             h(
               AsyncElmParagraph,
               {},
-              { default: renderByToken({ tokens: token.tokens }) }
+              {
+                default: () =>
+                  renderByToken({ tokens: token.tokens as Token[] }),
+              }
             )
           );
         }
@@ -220,7 +245,10 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
             ? h(
                 AsyncElmInlineText,
                 { bold: true },
-                { default: renderByToken({ tokens: token.tokens }) }
+                {
+                  default: () =>
+                    renderByToken({ tokens: token.tokens as Token[] }),
+                }
               )
             : h(AsyncElmInlineText, { text: token.text, bold: true })
         );
@@ -235,26 +263,31 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
             h(
               AsyncElmTableCell,
               {},
-              { default: renderByToken({ tokens: cell.tokens }) }
+              { default: () => renderByToken({ tokens: cell.tokens }) }
             )
           );
 
         const headerRow = h(
           AsyncElmTableRow,
           {},
-          { default: renderTableCells({ cells: token.header }) }
+          { default: () => renderTableCells({ cells: token.header }) }
         );
 
         const bodyRows = token.rows.map((row: Tokens.TableCell[]) =>
-          h(AsyncElmTableRow, {}, { default: renderTableCells({ cells: row }) })
+          h(
+            AsyncElmTableRow,
+            {},
+            { default: () => renderTableCells({ cells: row }) }
+          )
         );
 
         const table = h(
           AsyncElmTable,
           {},
           {
-            header: h(AsyncElmTableHeader, {}, { default: headerRow }),
-            body: h(AsyncElmTableBody, {}, { default: bodyRows }),
+            header: () =>
+              h(AsyncElmTableHeader, {}, { default: () => headerRow }),
+            body: () => h(AsyncElmTableBody, {}, { default: () => bodyRows }),
           }
         );
 
@@ -267,7 +300,10 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
             ? h(
                 AsyncElmInlineText,
                 {},
-                { default: renderByToken({ tokens: token.tokens }) }
+                {
+                  default: () =>
+                    renderByToken({ tokens: token.tokens as Token[] }),
+                }
               )
             : h(AsyncElmInlineText, { text: token.text })
         );
