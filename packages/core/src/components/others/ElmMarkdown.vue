@@ -1,12 +1,10 @@
 <template>
-  <div>
-    <component :is="() => renderResult"></component>
-  </div>
+  <component :is="() => renderResult"></component>
 </template>
 
 <script setup lang="ts">
 import { marked, type Token, type Tokens } from "marked";
-import { defineAsyncComponent, h, type VNode } from "vue";
+import { defineAsyncComponent, h, watch, ref, type VNode } from "vue";
 import { ElmBlockFallback } from "../..";
 
 export interface ElmMarkdownProps {
@@ -323,7 +321,14 @@ const render = ({ markdown }: { markdown: string }): VNode[] => {
   return renderByToken({ tokens });
 };
 
-const renderResult = render({ markdown: props.markdown });
+const renderResult = ref<VNode[]>(render({ markdown: props.markdown }));
+
+watch(
+  () => props.markdown,
+  (md) => {
+    if (md != null) renderResult.value = render({ markdown: md });
+  }
+);
 </script>
 
 <style module lang="scss"></style>
