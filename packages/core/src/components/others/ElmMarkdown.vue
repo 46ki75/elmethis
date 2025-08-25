@@ -1,7 +1,5 @@
 <template>
-  <component :is="">
-    <component :is="() => renderResult" />
-  </component>
+  <component :is="() => renderResult"></component>
 </template>
 
 <script setup lang="ts">
