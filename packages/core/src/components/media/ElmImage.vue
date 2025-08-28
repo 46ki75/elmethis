@@ -35,7 +35,7 @@
         :alt="alt"
         @click="if (enableModal) isModalOpen = true;"
         :style="{
-          '--cursor': enableModal ? 'zoom-in' : 'default',
+          '--cursor': enableModal ? 'zoom-in' : undefined,
           '--margin-block': margin,
         }"
       />
@@ -158,7 +158,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   margin-block: var(--margin-block);
   max-width: 100%;
   max-height: 100vh;
-  cursor: var(--cursor, default);
+  cursor: var(--cursor);
 }
 
 .error {
@@ -193,7 +193,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   display: block;
   max-width: 100%;
   max-height: 100vh;
-  cursor: var(--cursor, default);
+  cursor: var(--cursor);
 }
 
 .alt-container {
