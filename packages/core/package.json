@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@mdi/js": "^7.4.47",
-    "@vueuse/core": "^13.7.0",
+    "@vueuse/core": "^13.8.0",
     "katex": "^0.16.22",
     "lodash-es": "^4.17.21",
     "marked": "^16.2.0",
