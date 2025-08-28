@@ -77,9 +77,6 @@ const AsyncElmTableCell = defineAsyncComponent({
   loadingComponent: ElmBlockFallback,
 });
 
-const tokensToText = ({ tokens }: { tokens: Token[] }): string =>
-  tokens.map((token) => ("text" in token ? token.text : token.raw)).join("");
-
 const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
   const results: VNode[] = [];
 
@@ -186,7 +183,7 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
         results.push(
           token.tokens != null && token.tokens.length !== 0
             ? h(AsyncElmInlineText, {
-                text: tokensToText({ tokens }),
+                text: token.text,
                 href: token.href,
               })
             : h(AsyncElmInlineText, { text: token.text, href: token.href })
