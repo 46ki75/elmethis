@@ -62,6 +62,8 @@ onMounted(async () => {
 .text {
   font-family: monospace;
   color: rgba(black, 0.8);
+  user-select: none;
+
   &::selection {
     color: rgba(white, 0.8);
     background-color: rgba(black, 0.8);
@@ -76,13 +78,22 @@ onMounted(async () => {
   }
 }
 
-.default {
+@keyframes blink {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.cursor {
   margin-inline: 1px;
   user-select: none;
-  background-color: rgba(black, 0.15);
+  background-color: rgba(#3e434b, 0.5);
 
   [data-theme="dark"] & {
-    background-color: rgba(white, 0.25);
+    background-color: rgba(#cccfd5, 0.25);
   }
 }
 </style>
