@@ -174,6 +174,9 @@ export { default as ElmParagraph } from "./components/typography/ElmParagraph.vu
 export type { ElmListProps } from "./components/typography/ElmList.vue";
 export { default as ElmList } from "./components/typography/ElmList.vue";
 
+export type { ElmTypingAnimationProps } from "./components/typography/ElmTypingAnimation.vue";
+export { default as ElmTypingAnimation } from "./components/typography/ElmTypingAnimation.vue";
+
 // hooks
 
 export { useElmethisTheme } from "./hooks/useElmethisTheme";
