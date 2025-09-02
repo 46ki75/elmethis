@@ -27,7 +27,7 @@
         "prepublishOnly": "pnpm run build"
     },
     "dependencies": {
-        "@vueuse/core": "^13.8.0",
+        "@vueuse/core": "^13.9.0",
         "fuse.js": "^7.1.0"
     },
     "devDependencies": {
