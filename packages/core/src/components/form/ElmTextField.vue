@@ -34,6 +34,7 @@
           cursor: disabled ? 'not-allowed' : loading ? 'progress' : 'auto',
         }"
         :aria-required="required"
+        ref="target"
       />
 
       <div :class="$style['icon-box']">
@@ -70,7 +71,7 @@
 
 <script setup lang="ts">
 import ElmInlineText from "../typography/ElmInlineText.vue";
-import { ref } from "vue";
+import { ref, useTemplateRef } from "vue";
 import { nanoid } from "nanoid";
 
 import ElmMdiIcon from "../icon/ElmMdiIcon.vue";
@@ -151,6 +152,14 @@ const iconMap: Record<NonNullable<ElmTextFieldProps["icon"]>, string> = {
   link: mdiLinkVariant,
   search: mdiMagnify,
 };
+
+const t = useTemplateRef("target");
+
+defineExpose({
+  focus: () => {
+    void t.value?.focus();
+  },
+});
 </script>
 
 <style module lang="scss">
