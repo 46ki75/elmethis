@@ -1,5 +1,8 @@
 <template>
-  <div :class="$style.toggle" :style="{ '--margin-block': margin }">
+  <div
+    :class="[$style.toggle, { [$style.open]: isOpen }]"
+    :style="{ '--margin-block': margin }"
+  >
     <div
       :class="$style.summary"
       @click="handleClick"
@@ -28,18 +31,16 @@
       />
     </div>
 
-    <transition
-      :enter-from-class="$style['v-enter-from']"
-      :enter-active-class="$style['v-enter-active']"
-      :enter-to-class="$style['v-enter-to']"
-      :leave-from-class="$style['v-leave-from']"
-      :leave-active-class="$style['v-leave-active']"
-      :leave-to-class="$style['v-leave-to']"
+    <div
+      :class="[
+        $style.content,
+        {
+          [$style['content-open']]: isOpen,
+        },
+      ]"
     >
-      <div v-if="isOpen" :class="$style.content">
-        <slot />
-      </div>
-    </transition>
+      <slot />
+    </div>
 
     <transition
       :enter-from-class="fadeStyle['fade-enter-from']"
@@ -101,6 +102,13 @@ const handleClick = (event: Event): void => {
 <style module lang="scss">
 .toggle {
   margin-block: var(--margin-block);
+  display: grid;
+  grid-template-rows: 3rem 0fr;
+  transition: grid 200ms;
+}
+
+.open {
+  grid-template-rows: 3rem 1fr;
 }
 
 .summary {
@@ -137,16 +145,28 @@ const handleClick = (event: Event): void => {
   margin: 0;
   padding: 0.75rem;
   display: block;
+  overflow: hidden;
 
   border-radius: 0 0 0.25rem 0.25rem;
 
   background-color: rgba(white, 0.1);
-  border: 1px solid rgba(black, 0.125);
+  border-style: solid;
+  border-width: 0px;
+  border-color: rgba(black, 0.125);
+  opacity: 0;
+  transition: opacity 150ms;
 
   [data-theme="dark"] & {
-    border: 1px solid rgba(white, 0.125);
+    border-style: solid;
+    border-width: 0px;
+    border-color: rgba(white, 0.125);
     background-color: rgba(#bec2ca, 0.05);
   }
+}
+
+.content-open {
+  border-width: 1px;
+  opacity: 1;
 }
 
 .close {
