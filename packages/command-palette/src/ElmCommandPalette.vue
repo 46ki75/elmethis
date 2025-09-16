@@ -45,7 +45,15 @@
             :src="command.icon"
           />
           <ElmMdiIcon v-else :d="mdiConsoleLine" size="1rem" />
-          <ElmInlineText :text="command.label" />
+          <ElmInlineText
+            :text="command.label"
+            style="
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              max-width: 24rem;
+            "
+          />
 
           <ElmInlineText
             :text="command.description ?? '-'"
