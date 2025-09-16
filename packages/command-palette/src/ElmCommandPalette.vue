@@ -45,7 +45,28 @@
             :src="command.icon"
           />
           <ElmMdiIcon v-else :d="mdiConsoleLine" size="1rem" />
-          <ElmInlineText :text="command.label" />
+
+          <div
+            :class="$style.tag"
+            :style="{
+              '--tag-color':
+                command.tag != null
+                  ? opacify(-0.3, TAG_COLOR_MAP[command.tag?.color])
+                  : undefined,
+            }"
+          >
+            {{ command.tag?.name }}
+          </div>
+
+          <ElmInlineText
+            :text="command.label"
+            style="
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              max-width: 24rem;
+            "
+          />
 
           <ElmInlineText
             :text="command.description ?? '-'"
@@ -72,6 +93,7 @@
 </template>
 
 <script setup lang="ts">
+import { opacify } from "polished";
 import { watch, onMounted, ref, useTemplateRef } from "vue";
 import { ElmMdiIcon, ElmInlineText } from "@elmethis/core";
 import { mdiConsoleLine, mdiKeyboardReturn } from "@mdi/js";
@@ -79,10 +101,26 @@ import { mdiConsoleLine, mdiKeyboardReturn } from "@mdi/js";
 import Fuse from "fuse.js";
 import { onKeyStroke } from "@vueuse/core";
 
+const TAG_COLOR_MAP = {
+  brown: "#a17c5b",
+  crimson: "#c56565",
+  amber: "#d48b70",
+  gold: "#cdb57b",
+  emerald: "#59b57c",
+  cyan: "#59a7b5",
+  blue: "#6987b8",
+  purple: "#9771bd",
+  pink: "#c9699e",
+};
+
 export interface Command {
   id: string;
   icon?: string;
   label: string;
+  tag?: {
+    name: string;
+    color: keyof typeof TAG_COLOR_MAP;
+  };
   description?: string;
   keywords?: string[];
   onInvoke?: () => void;
@@ -252,7 +290,7 @@ watch(input, (_, input) => {
   min-height: 3rem;
   width: 100%;
   display: grid;
-  grid-template-columns: 2rem minmax(min-content, 1fr) 50fr 2rem;
+  grid-template-columns: 2rem minmax(min-content, 1fr) minmax(min-content, 1fr) 50fr 2rem;
   align-items: center;
   gap: 0.5rem;
   border-bottom: 1px solid rgba(#cccfd5, 0.5);
@@ -278,6 +316,15 @@ watch(input, (_, input) => {
 
 .command-icon {
   height: 1.5rem;
+}
+
+.tag {
+  box-sizing: border-box;
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.125rem;
+  background-color: var(--tag-color);
+  color: white;
+  opacity: 0.7;
 }
 
 .footer {

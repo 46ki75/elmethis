@@ -20,6 +20,12 @@ const bookmarks: Bookmark[] = [
     icon: "https://github.githubassets.com/favicons/favicon.svg",
   },
   {
+    id: "4551b9e6-0fb0-4df0-8a1b-26c6e99a7a56",
+    label: "Rapid API Hub Rapid API Hub Rapid API Hub Rapid API Hub ",
+    description: "https://rapidapi.com/hub",
+    icon: "https://rapidapi.com/static-assets/default/favicon-8e7d522e-653f-4edd-ac27-3f6ed950e45d.png",
+  },
+  {
     id: "0e02fda3-0460-4bd5-839f-9f0d251ce83e",
     label: "VueUse",
     description: "https://vueuse.org",
@@ -262,6 +268,10 @@ const meta: Meta<typeof ElmCommandPalette> = {
   args: {
     commands: bookmarks.map((bookmark) => ({
       ...bookmark,
+      tag: {
+        name: "URL",
+        color: "blue",
+      },
       onInvoke: open(bookmark.description),
     })),
   },
