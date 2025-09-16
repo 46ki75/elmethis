@@ -1,6 +1,6 @@
 {
     "name": "@elmethis/command-palette",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "publishConfig": {
         "access": "public"
     },
@@ -28,7 +28,8 @@
     },
     "dependencies": {
         "@vueuse/core": "^13.9.0",
-        "fuse.js": "^7.1.0"
+        "fuse.js": "^7.1.0",
+        "polished": "^4.3.1"
     },
     "devDependencies": {
         "@elmethis/core": "^0.2.10",

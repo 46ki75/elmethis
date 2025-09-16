@@ -268,6 +268,10 @@ const meta: Meta<typeof ElmCommandPalette> = {
   args: {
     commands: bookmarks.map((bookmark) => ({
       ...bookmark,
+      tag: {
+        name: "URL",
+        color: "blue",
+      },
       onInvoke: open(bookmark.description),
     })),
   },
