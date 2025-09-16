@@ -2,7 +2,7 @@
   <div
     :class="$style.palette"
     :style="{
-      '--height': '400px',
+      '--height': '500px',
       '--width': '800px',
     }"
   >
@@ -18,27 +18,27 @@
     </header>
 
     <div :class="$style.body">
-      <div v-if="searchResults.length === 0" :class="$style['empty-result']">
-        <ElmInlineText text="search anything..." />
-      </div>
+      <transition-group name="fade">
+        <div v-if="searchResults.length === 0" :class="$style['empty-result']">
+          <ElmInlineText text="search anything..." />
+        </div>
 
-      <div
-        v-else
-        v-for="(command, index) in searchResults"
-        :class="[
-          $style.command,
-          {
-            [$style['command-selected']]: index === selectedCommandIndex,
-          },
-        ]"
-        @click="
-          () => {
-            selectedCommandIndex = index;
-            invoke();
-          }
-        "
-      >
-        <div :class="$style['command-inner-flex']">
+        <button
+          v-else
+          v-for="(command, index) in searchResults"
+          :class="[
+            $style.command,
+            {
+              [$style['command-selected']]: index === selectedCommandIndex,
+            },
+          ]"
+          @click="
+            () => {
+              selectedCommandIndex = index;
+              invoke();
+            }
+          "
+        >
           <img
             v-if="command.icon"
             :class="$style['command-icon']"
@@ -46,17 +46,22 @@
           />
           <ElmMdiIcon v-else :d="mdiConsoleLine" size="1rem" />
           <ElmInlineText :text="command.label" />
-          <ElmInlineText
-            v-if="command.description"
-            :text="command.description"
-            style="opacity: 0.4"
-          />
-        </div>
 
-        <div :class="$style['command-inner-flex']">
-          <ElmMdiIcon :d="mdiKeyboardReturn" />
-        </div>
-      </div>
+          <ElmInlineText
+            :text="command.description ?? '-'"
+            style="
+              opacity: 0.4;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            "
+          />
+
+          <div>
+            <ElmMdiIcon :d="mdiKeyboardReturn" />
+          </div>
+        </button>
+      </transition-group>
     </div>
 
     <footer :class="$style.footer">
@@ -74,7 +79,7 @@ import { mdiConsoleLine, mdiKeyboardReturn } from "@mdi/js";
 import Fuse from "fuse.js";
 import { onKeyStroke } from "@vueuse/core";
 
-interface Command {
+export interface Command {
   id: string;
   icon?: string;
   label: string;
@@ -95,7 +100,10 @@ const inputTarget = useTemplateRef<HTMLInputElement>("inputRef");
 
 const fuse = ref<Fuse<ElmCommandPaletteProps["commands"][number]> | null>(null);
 const searchResults = ref<ElmCommandPaletteProps["commands"]>([]);
-const selectedCommandIndex = ref<number | null>(null);
+const selectedCommandIndex = defineModel<number | null>(
+  "selectedCommandIndex",
+  { default: null }
+);
 
 const FUSE_OPTION = Object.freeze({ keys: ["label", "keywords"] });
 
@@ -166,15 +174,9 @@ watch(input, (_, input) => {
 </script>
 
 <style module lang="scss">
-:root {
-  --command-height: 3rem;
-}
-
 .palette {
-  max-height: calc(100vh - 2rem);
-  max-width: calc(100vw - 1rem);
-  height: var(--height);
-  width: var(--width);
+  height: clamp(300px, var(--height), calc(100vh - 2rem));
+  width: clamp(300px, var(--width), calc(100vw - 1rem));
   display: flex;
   flex-direction: column;
   border-radius: 0.25rem;
@@ -216,12 +218,14 @@ watch(input, (_, input) => {
 }
 
 .body {
+  position: relative;
   width: 100%;
   height: 100%;
   background-color: #ecedef;
   display: flex;
   flex-direction: column;
   gap: 0;
+  overflow-x: hidden;
   overflow-y: hidden;
   user-select: none;
 
@@ -231,6 +235,9 @@ watch(input, (_, input) => {
 }
 
 .empty-result {
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 100%;
   width: 100%;
   display: flex;
@@ -239,17 +246,21 @@ watch(input, (_, input) => {
 }
 
 .command {
+  all: unset;
   box-sizing: border-box;
   padding: 0 0.75rem;
-  height: var(--command-height);
+  min-height: 3rem;
   width: 100%;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 2rem minmax(min-content, 1fr) 50fr 2rem;
   align-items: center;
-  gap: 1.5rem;
+  gap: 0.5rem;
   border-bottom: 1px solid rgba(#cccfd5, 0.5);
   transition: background-color 100ms;
   cursor: pointer;
+  overflow: hidden;
+
+  border-left: solid 4px transparent;
 
   &:hover {
     background-color: rgba(#6987b8, 0.2);
@@ -262,13 +273,7 @@ watch(input, (_, input) => {
 
 .command-selected {
   background-color: rgba(#6987b8, 0.1);
-}
-
-.command-inner-flex {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
+  border-color: rgba(#868e9c, 0.5);
 }
 
 .command-icon {
@@ -290,5 +295,17 @@ watch(input, (_, input) => {
     border-color: rgba(#cccfd5, 0.3);
     background-color: #33373e;
   }
+}
+</style>
+
+<style lang="scss" scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 100ms ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateX(0.5rem);
 }
 </style>
