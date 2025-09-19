@@ -34,7 +34,7 @@
     "marked": "^16.3.0",
     "nanoid": "^5.1.5",
     "polished": "^4.3.1",
-    "shiki": "^3.12.2"
+    "shiki": "^3.13.0"
   },
   "devDependencies": {
     "@notionhq/client": "^5.1.0",
