@@ -11,7 +11,7 @@ const meta: Meta<typeof ElmMermaid> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const TD = `
+const flowchart = `
 flowchart LR
     %% Node definitions
     Start([Start])
@@ -103,8 +103,8 @@ sequenceDiagram
     end
 `;
 
-export const Primary: Story = {
-  args: { code: TD },
+export const Flowchart: Story = {
+  args: { code: flowchart },
 };
 
 export const SequenceDiagram: Story = {
