@@ -43,6 +43,9 @@ const renderMermaid = async () => {
         actorTextColor: "#917737",
         actorBorder: "#917737",
         secondaryColor: "#e9dec5",
+        tertiaryColor: "#fbfcff",
+        tertiaryBorderColor: "#f0e9d7",
+        tertiaryTextColor: "#b69545",
 
         // Sequence Diagram
         signalColor: "#949ba7", // default: textColor
