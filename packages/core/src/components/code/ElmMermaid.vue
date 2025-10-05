@@ -68,6 +68,11 @@ onMounted(renderMermaid);
 <style module lang="scss">
 .mermaid {
   display: block;
+
+  &::selection {
+    color: #cccfd5;
+    background-color: #494f59;
+  }
 }
 
 .raw {
