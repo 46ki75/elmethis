@@ -21,6 +21,35 @@ graph TD
     F --> G(File 3.txt)
 `;
 
+const sequenceDiagram = `
+sequenceDiagram
+  participant Slack
+  participant APIGW as Amazon API Gateway
+  participant L1 as AWS Lambda Function (sync)
+  participant L2 as AWS Lambda Function (async)
+
+  Slack->>APIGW: Slash command
+  activate APIGW
+  APIGW->>L1: Invoke
+  activate L1
+  L1->>L1: Signature verification
+  L1->>L2: Asynchronous invocation
+  activate L2
+  L2-->>L1: Invocation accepted
+  L1-->>APIGW: Response
+  deactivate L1
+  APIGW-->>Slack: Response
+  deactivate APIGW
+  L2->>L2: Long-running task
+  L2->>Slack: Return result (actually a request)<br/>POST \${response_url}
+  Slack-->>L2: 
+  deactivate L2
+`;
+
 export const Primary: Story = {
   args: { code: TD },
+};
+
+export const SequenceDiagram: Story = {
+  args: { code: sequenceDiagram },
 };
