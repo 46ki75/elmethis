@@ -34,6 +34,7 @@ export default defineConfig({
         "nanoid",
         "polished",
         "shiki",
+        "mermaid",
       ],
       output: {
         preserveModules: true,
@@ -44,9 +45,7 @@ export default defineConfig({
   },
   css: {
     preprocessorOptions: {
-      scss: {
-        api: "modern-compiler",
-      },
+      scss: {},
     },
     postcss: "./postcss.config.js",
   },
