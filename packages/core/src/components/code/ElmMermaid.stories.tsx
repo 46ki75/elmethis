@@ -12,13 +12,57 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const TD = `
-graph TD
-    A(Root Directory) --> B(Folder 1)
-    A --> C(Folder 2)
-    B --> D(File 1.txt)
-    B --> E(File 2.txt)
-    C --> F(Subfolder)
-    F --> G(File 3.txt)
+flowchart LR
+    %% Node definitions
+    Start([Start])
+    Process1[Process Step]
+    Decision{Decision Point}
+    SubProcess[[Subroutine]]
+    Database[(Database)]
+    Document[/Document/]
+    End([End])
+    
+    %% Subgraphs
+    subgraph SG1["Main Flow"]
+        direction TB
+        Process1
+        Decision
+    end
+    
+    subgraph SG2["Data Layer"]
+        direction LR
+        Database
+        Document
+    end
+    
+    %% Links - Various styles
+    Start --> Process1
+    
+    %% Normal arrow with label
+    Process1 -->|Normal| Decision
+    
+    %% Thick link
+    Decision ==>|YES| SubProcess
+    
+    %% Dotted link
+    Decision -.->|NO| Database
+    
+    %% Bidirectional arrow
+    SubProcess <-->|Sync| Database
+    
+    %% Chain connection
+    Database --> Document --> End
+    
+    %% Connection to subgraph
+    Process1 -.-> SG2
+    
+    %% Markdown text
+    Note["\`**Note:**
+    *Important information*
+    Multi-line text support\`"]
+    
+    Document --> Note
+    Note -.-> End
 `;
 
 const sequenceDiagram = `
