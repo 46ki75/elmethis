@@ -32,7 +32,16 @@ const renderMermaid = async () => {
   const { default: mermaid } = await import("mermaid");
 
   try {
-    mermaid.initialize({ startOnLoad: false, theme: "default" });
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: "base",
+      themeVariables: {
+        mainBkg: "#eff0f2",
+        lineColor: "#606875",
+        primaryBorderColor: "#a2a8b3",
+        primaryTextColor: "#555b67",
+      },
+    });
     const { svg } = await mermaid.render(classes.mermaid, props.code);
     elementRef.value.innerHTML = svg;
     isRendered.value = true;
