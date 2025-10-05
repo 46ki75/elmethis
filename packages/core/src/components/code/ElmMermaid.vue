@@ -40,6 +40,12 @@ const renderMermaid = async () => {
         lineColor: "#606875",
         primaryBorderColor: "#a2a8b3",
         primaryTextColor: "#555b67",
+        actorTextColor: "#917737",
+        actorBorder: "#917737",
+        secondaryColor: "#e9dec5",
+
+        // Sequence Diagram
+        signalColor: "#949ba7", // default: textColor
       },
     });
     const { svg } = await mermaid.render(classes.mermaid, props.code);

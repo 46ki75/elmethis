@@ -23,27 +23,40 @@ graph TD
 
 const sequenceDiagram = `
 sequenceDiagram
-  participant Slack
-  participant APIGW as Amazon API Gateway
-  participant L1 as AWS Lambda Function (sync)
-  participant L2 as AWS Lambda Function (async)
+    participant User
+    participant Client
+    participant AuthServer
+    participant ResourceServer
 
-  Slack->>APIGW: Slash command
-  activate APIGW
-  APIGW->>L1: Invoke
-  activate L1
-  L1->>L1: Signature verification
-  L1->>L2: Asynchronous invocation
-  activate L2
-  L2-->>L1: Invocation accepted
-  L1-->>APIGW: Response
-  deactivate L1
-  APIGW-->>Slack: Response
-  deactivate APIGW
-  L2->>L2: Long-running task
-  L2->>Slack: Return result (actually a request)<br/>POST \${response_url}
-  Slack-->>L2: 
-  deactivate L2
+    User->>Client: Initiate authorization
+    activate Client
+    Client->>AuthServer: Redirect to /authorize
+    activate AuthServer
+    AuthServer->>User: Show login page
+    deactivate AuthServer
+    User->>AuthServer: Login and consent
+    activate AuthServer
+    AuthServer->>Client: Redirect with authorization code
+    deactivate AuthServer
+    deactivate Client
+    Client->>AuthServer: POST /token (exchange code)
+    activate AuthServer
+    AuthServer->>Client: access_token, refresh_token
+    deactivate AuthServer
+
+    loop Access protected resources
+        Client->>ResourceServer: API request with access_token
+        activate ResourceServer
+        ResourceServer->>Client: Protected data
+        deactivate ResourceServer
+    end
+
+    alt Access token expired
+        Client->>AuthServer: POST /token (refresh_token)
+        activate AuthServer
+        AuthServer->>Client: new access_token
+        deactivate AuthServer
+    end
 `;
 
 export const Primary: Story = {
