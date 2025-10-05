@@ -36,15 +36,15 @@ const renderMermaid = async () => {
       startOnLoad: false,
       theme: "base",
       themeVariables: {
-        mainBkg: "#eff0f2",
+        mainBkg: "#fbfcff",
         lineColor: "#606875",
-        primaryBorderColor: "#a2a8b3",
-        primaryTextColor: "#555b67",
-        actorTextColor: "#917737",
-        actorBorder: "#917737",
+
+        primaryColor: "#6c7483",
+
         secondaryColor: "#e9dec5",
-        tertiaryColor: "#fbfcff",
-        tertiaryBorderColor: "#f0e9d7",
+
+        tertiaryColor: "#f5f6f8",
+        tertiaryBorderColor: "#e2d4b2",
         tertiaryTextColor: "#b69545",
 
         // Sequence Diagram
