@@ -21,6 +21,6 @@
     "storybook": "^9.1.1",
     "typescript": "^5.9.3",
     "vite": "^7.1.9",
-    "vue-tsc": "^3.1.0"
+    "vue-tsc": "^3.1.1"
   }
 }
