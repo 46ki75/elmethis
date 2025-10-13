@@ -1,10 +1,20 @@
 <template>
-  <component :is="() => renderResult"></component>
+  <div>
+    <component :is="component" />
+  </div>
 </template>
 
 <script setup lang="ts">
 import type { Component, ComponentMap, InlineComponent } from "jarkup-ts";
-import { defineAsyncComponent, h, useCssModule, VNode } from "vue";
+import {
+  defineAsyncComponent,
+  h,
+  useCssModule,
+  VNode,
+  ref,
+  watch,
+  computed,
+} from "vue";
 
 import { ElmBlockFallback } from "../..";
 import { kebabCase } from "lodash-es";
@@ -23,6 +33,10 @@ const AsyncElmInlineText = defineAsyncComponent({
 
 const AsyncElmKatex = defineAsyncComponent({
   loader: () => import("../code/ElmKatex.vue"),
+});
+
+const AsyncElmMermaid = defineAsyncComponent({
+  loader: () => import("../code/ElmMermaid.vue"),
 });
 
 const AsyncElmInlineIcon = defineAsyncComponent({
@@ -225,6 +239,7 @@ const defaultRenderFunctionMap = (
         : h(AsyncElmCodeBlock, { code: props.code, language: props.language }),
     Katex: ({ props }) =>
       h(AsyncElmKatex, { expression: props.expression, block: true }),
+    Mermaid: ({ props }) => h(AsyncElmMermaid, { code: props.code }),
     Table: ({ props, slots }) => {
       let header: ReturnType<typeof h> | undefined = undefined;
 
@@ -279,7 +294,18 @@ const render = (jsonComponents: Component[]): VNode[] => {
   return results;
 };
 
-const renderResult = render(props.jsonComponents);
+const renderResult = ref<VNode[]>(render(props.jsonComponents));
+
+const component = computed(() => ({
+  render: () => renderResult.value,
+}));
+
+watch(
+  () => props.jsonComponents,
+  (newComponents) => {
+    renderResult.value = render(newComponents);
+  }
+);
 </script>
 
 <style module lang="scss">
