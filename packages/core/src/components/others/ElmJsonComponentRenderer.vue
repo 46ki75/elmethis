@@ -1,5 +1,7 @@
 <template>
-  <component :is="() => renderResult"></component>
+  <div>
+    <component :is="() => renderResult"></component>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -23,6 +25,10 @@ const AsyncElmInlineText = defineAsyncComponent({
 
 const AsyncElmKatex = defineAsyncComponent({
   loader: () => import("../code/ElmKatex.vue"),
+});
+
+const AsyncElmMermaid = defineAsyncComponent({
+  loader: () => import("../code/ElmMermaid.vue"),
 });
 
 const AsyncElmInlineIcon = defineAsyncComponent({
@@ -225,6 +231,7 @@ const defaultRenderFunctionMap = (
         : h(AsyncElmCodeBlock, { code: props.code, language: props.language }),
     Katex: ({ props }) =>
       h(AsyncElmKatex, { expression: props.expression, block: true }),
+    Mermaid: ({ props }) => h(AsyncElmMermaid, { code: props.code }),
     Table: ({ props, slots }) => {
       let header: ReturnType<typeof h> | undefined = undefined;
 
