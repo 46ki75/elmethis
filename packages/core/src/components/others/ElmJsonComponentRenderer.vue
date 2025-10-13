@@ -1,12 +1,20 @@
 <template>
   <div>
-    <component :is="() => renderResult"></component>
+    <component :is="component" />
   </div>
 </template>
 
 <script setup lang="ts">
 import type { Component, ComponentMap, InlineComponent } from "jarkup-ts";
-import { defineAsyncComponent, h, useCssModule, VNode } from "vue";
+import {
+  defineAsyncComponent,
+  h,
+  useCssModule,
+  VNode,
+  ref,
+  watch,
+  computed,
+} from "vue";
 
 import { ElmBlockFallback } from "../..";
 import { kebabCase } from "lodash-es";
@@ -286,7 +294,18 @@ const render = (jsonComponents: Component[]): VNode[] => {
   return results;
 };
 
-const renderResult = render(props.jsonComponents);
+const renderResult = ref<VNode[]>(render(props.jsonComponents));
+
+const component = computed(() => ({
+  render: () => renderResult.value,
+}));
+
+watch(
+  () => props.jsonComponents,
+  (newComponents) => {
+    renderResult.value = render(newComponents);
+  }
+);
 </script>
 
 <style module lang="scss">
