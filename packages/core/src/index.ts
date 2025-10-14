@@ -5,6 +5,9 @@ export { default as ElmCodeBlock } from "./components/code/ElmCodeBlock.vue";
 export type { ElmKatexProps } from "./components/code/ElmKatex.vue";
 export { default as ElmKatex } from "./components/code/ElmKatex.vue";
 
+export type { ElmMermaidProps } from "./components/code/ElmMermaid.vue";
+export { default as ElmMermaid } from "./components/code/ElmMermaid.vue";
+
 // Containments
 export type { ElmDesktopWindowProps } from "./components/containments/ElmDesktopWindow.vue";
 export { default as ElmDesktopWindow } from "./components/containments/ElmDesktopWindow.vue";
@@ -87,6 +90,9 @@ export { default as ElmCubeIcon } from "./components/icon/ElmCubeIcon.vue";
 
 export type { ElmDotLoadingIconProps } from "./components/icon/ElmDotLoadingIcon.vue";
 export { default as ElmDotLoadingIcon } from "./components/icon/ElmDotLoadingIcon.vue";
+
+export type { ElmInlineIconProps } from "./components/icon/ElmInlineIcon.vue";
+export { default as ElmInlineIcon } from "./components/icon/ElmInlineIcon.vue";
 
 export type { ElmLanguageIconProps } from "./components/icon/ElmLanguageIcon.vue";
 export { default as ElmLanguageIcon } from "./components/icon/ElmLanguageIcon.vue";
