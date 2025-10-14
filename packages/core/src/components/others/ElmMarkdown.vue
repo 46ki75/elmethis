@@ -1,83 +1,31 @@
 <template>
   <div>
-    <component :is="component" />
+    <component v-for="component in components" :is="component" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { marked, type Token, type Tokens } from "marked";
-import { defineAsyncComponent, h, watch, ref, type VNode, computed } from "vue";
-import { ElmBlockFallback } from "../..";
+import { h, watch, ref, type VNode, computed } from "vue";
+import ElmInlineText from "../typography/ElmInlineText.vue";
+import ElmHeading from "../typography/ElmHeading.vue";
+import ElmParagraph from "../typography/ElmParagraph.vue";
+import ElmList from "../typography/ElmList.vue";
+import ElmBlockQuote from "../typography/ElmBlockQuote.vue";
+import ElmDivider from "../typography/ElmDivider.vue";
+import ElmImage from "../media/ElmImage.vue";
+import ElmCodeBlock from "../code/ElmCodeBlock.vue";
+import ElmTable from "../table/ElmTable.vue";
+import ElmTableHeader from "../table/ElmTableHeader.vue";
+import ElmTableBody from "../table/ElmTableBody.vue";
+import ElmTableRow from "../table/ElmTableRow.vue";
+import ElmTableCell from "../table/ElmTableCell.vue";
 
 export interface ElmMarkdownProps {
   markdown: string;
 }
 
 const props = withDefaults(defineProps<ElmMarkdownProps>(), {});
-
-const AsyncElmInlineText = defineAsyncComponent({
-  loader: () => import("../typography/ElmInlineText.vue"),
-});
-
-const AsyncElmHeading = defineAsyncComponent({
-  loader: () => import("../typography/ElmHeading.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmParagraph = defineAsyncComponent({
-  loader: () => import("../typography/ElmParagraph.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmList = defineAsyncComponent({
-  loader: () => import("../typography/ElmList.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmBlockQuote = defineAsyncComponent({
-  loader: () => import("../typography/ElmBlockQuote.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmDivider = defineAsyncComponent({
-  loader: () => import("../typography/ElmDivider.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmImage = defineAsyncComponent({
-  loader: () => import("../media/ElmImage.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmCodeBlock = defineAsyncComponent({
-  loader: () => import("../code/ElmCodeBlock.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmTable = defineAsyncComponent({
-  loader: () => import("../table/ElmTable.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmTableHeader = defineAsyncComponent({
-  loader: () => import("../table/ElmTableHeader.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmTableBody = defineAsyncComponent({
-  loader: () => import("../table/ElmTableBody.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmTableRow = defineAsyncComponent({
-  loader: () => import("../table/ElmTableRow.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmTableCell = defineAsyncComponent({
-  loader: () => import("../table/ElmTableCell.vue"),
-  loadingComponent: ElmBlockFallback,
-});
 
 const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
   const results: VNode[] = [];
@@ -88,7 +36,7 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
         if (token.tokens != null && token.tokens.length !== 0) {
           results.push(
             h(
-              AsyncElmBlockQuote,
+              ElmBlockQuote,
               {},
               {
                 default: () =>
@@ -103,14 +51,14 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
         break;
       case "code":
         results.push(
-          h(AsyncElmCodeBlock, {
+          h(ElmCodeBlock, {
             code: token.text.trim(),
             language: token.lang,
           })
         );
         break;
       case "codespan":
-        results.push(h(AsyncElmInlineText, { text: token.text, code: true }));
+        results.push(h(ElmInlineText, { text: token.text, code: true }));
         break;
       case "def":
         h("span", "aaa");
@@ -120,28 +68,28 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
         results.push(
           token.tokens != null && token.tokens.length !== 0
             ? h(
-                AsyncElmInlineText,
+                ElmInlineText,
                 { strikethrough: true },
                 {
                   default: () =>
                     renderByToken({ tokens: token.tokens as Token[] }),
                 }
               )
-            : h(AsyncElmInlineText, { text: token.text, strikethrough: true })
+            : h(ElmInlineText, { text: token.text, strikethrough: true })
         );
         break;
       case "em":
         results.push(
           token.tokens != null && token.tokens.length !== 0
             ? h(
-                AsyncElmInlineText,
+                ElmInlineText,
                 { italic: true },
                 {
                   default: () =>
                     renderByToken({ tokens: token.tokens as Token[] }),
                 }
               )
-            : h(AsyncElmInlineText, { text: token.text, italic: true })
+            : h(ElmInlineText, { text: token.text, italic: true })
         );
         break;
       case "escape":
@@ -151,7 +99,7 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
         if (token.tokens && token.tokens.length !== 0) {
           results.push(
             h(
-              AsyncElmHeading,
+              ElmHeading,
               { level: token.depth },
               {
                 default: () =>
@@ -160,20 +108,18 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
             )
           );
         } else {
-          results.push(
-            h(AsyncElmHeading, { level: token.depth, text: token.text })
-          );
+          results.push(h(ElmHeading, { level: token.depth, text: token.text }));
         }
         break;
       case "hr":
-        results.push(h(AsyncElmDivider));
+        results.push(h(ElmDivider));
         break;
       case "html":
         // HTML token
         break;
       case "image":
         results.push(
-          h(AsyncElmImage, {
+          h(ElmImage, {
             block: true,
             enableModal: true,
             src: token.href,
@@ -184,11 +130,11 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
       case "link":
         results.push(
           token.tokens != null && token.tokens.length !== 0
-            ? h(AsyncElmInlineText, {
+            ? h(ElmInlineText, {
                 text: token.text,
                 href: token.href,
               })
-            : h(AsyncElmInlineText, { text: token.text, href: token.href })
+            : h(ElmInlineText, { text: token.text, href: token.href })
         );
         break;
       case "list":
@@ -197,7 +143,7 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
         );
         results.push(
           h(
-            AsyncElmList,
+            ElmList,
             {
               listStyle: token.ordered ? "ordered" : "unordered",
             },
@@ -223,7 +169,7 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
         if (token.tokens && token.tokens.length !== 0) {
           results.push(
             h(
-              AsyncElmParagraph,
+              ElmParagraph,
               {},
               {
                 default: () =>
@@ -239,14 +185,14 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
         results.push(
           token.tokens != null && token.tokens.length !== 0
             ? h(
-                AsyncElmInlineText,
+                ElmInlineText,
                 { bold: true },
                 {
                   default: () =>
                     renderByToken({ tokens: token.tokens as Token[] }),
                 }
               )
-            : h(AsyncElmInlineText, { text: token.text, bold: true })
+            : h(ElmInlineText, { text: token.text, bold: true })
         );
         break;
       case "table":
@@ -257,33 +203,32 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
         }): VNode[] =>
           cells.map((cell: Tokens.TableCell) =>
             h(
-              AsyncElmTableCell,
+              ElmTableCell,
               {},
               { default: () => renderByToken({ tokens: cell.tokens }) }
             )
           );
 
         const headerRow = h(
-          AsyncElmTableRow,
+          ElmTableRow,
           {},
           { default: () => renderTableCells({ cells: token.header }) }
         );
 
         const bodyRows = token.rows.map((row: Tokens.TableCell[]) =>
           h(
-            AsyncElmTableRow,
+            ElmTableRow,
             {},
             { default: () => renderTableCells({ cells: row }) }
           )
         );
 
         const table = h(
-          AsyncElmTable,
+          ElmTable,
           {},
           {
-            header: () =>
-              h(AsyncElmTableHeader, {}, { default: () => headerRow }),
-            body: () => h(AsyncElmTableBody, {}, { default: () => bodyRows }),
+            header: () => h(ElmTableHeader, {}, { default: () => headerRow }),
+            body: () => h(ElmTableBody, {}, { default: () => bodyRows }),
           }
         );
 
@@ -294,14 +239,14 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
         results.push(
           token.tokens != null && token.tokens.length !== 0
             ? h(
-                AsyncElmInlineText,
+                ElmInlineText,
                 {},
                 {
                   default: () =>
                     renderByToken({ tokens: token.tokens as Token[] }),
                 }
               )
-            : h(AsyncElmInlineText, { text: token.text })
+            : h(ElmInlineText, { text: token.text })
         );
         break;
       default:
@@ -320,7 +265,7 @@ const renderMarkdown = ({ markdown }: { markdown: string }): VNode[] => {
 
 const renderResult = ref<VNode[]>(renderMarkdown({ markdown: props.markdown }));
 
-const component = computed(() => ({
+const components = computed(() => ({
   render: () => renderResult.value,
 }));
 
@@ -331,5 +276,3 @@ watch(
   }
 );
 </script>
-
-<style module lang="scss"></style>

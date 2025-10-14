@@ -15,12 +15,31 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, h, VNode } from "vue";
+import { h, VNode } from "vue";
 
 import ElmMdiIcon from "./ElmMdiIcon.vue";
 import { mdiCodeJson } from "@mdi/js";
 
 import fadeStyle from "../../styles/transition-fade.module.scss";
+
+import Rust from "./languages/Rust.vue";
+import Javascript from "./languages/Javascript.vue";
+import Typescript from "./languages/Typescript.vue";
+import Bash from "./languages/Bash.vue";
+import Terraform from "./languages/Terraform.vue";
+import Html from "./languages/Html.vue";
+import Css from "./languages/Css.vue";
+import Npm from "./languages/Npm.vue";
+import Java from "./languages/Java.vue";
+import Kotlin from "./languages/Kotlin.vue";
+import Go from "./languages/Go.vue";
+import Python from "./languages/Python.vue";
+import Sql from "./languages/Sql.vue";
+import Json from "./languages/Json.vue";
+import Lua from "./languages/Lua.vue";
+import Csharp from "./languages/Csharp.vue";
+import Cplusplus from "./languages/Cplusplus.vue";
+import C from "./languages/C.vue";
 
 export interface ElmLanguageIconProps {
   /**
@@ -141,34 +160,27 @@ const Fallback = h(ElmMdiIcon, {
   size: props.size ? `${props.size}px` : undefined,
 });
 
-const defineIcon = (path: string): VNode =>
-  h(
-    defineAsyncComponent({
-      loader: () => import(`./languages/${path}.vue`),
-      loadingComponent: Fallback,
-    }),
-    props
-  );
+const defineIcon = (component: any): VNode => h(component, props);
 
 const ICON_MAP: Record<Language, VNode> = {
-  rust: defineIcon("Rust"),
-  javascript: defineIcon("Javascript"),
-  typescript: defineIcon("Typescript"),
-  shell: defineIcon("Bash"),
-  terraform: defineIcon("Terraform"),
-  html: defineIcon("Html"),
-  css: defineIcon("Css"),
-  npm: defineIcon("Npm"),
-  java: defineIcon("Java"),
-  kotlin: defineIcon("Kotlin"),
-  go: defineIcon("Go"),
-  python: defineIcon("Python"),
-  sql: defineIcon("Sql"),
-  json: defineIcon("Json"),
-  lua: defineIcon("Lua"),
-  csharp: defineIcon("Csharp"),
-  cpp: defineIcon("Cplusplus"),
-  c: defineIcon("C"),
+  rust: defineIcon(Rust),
+  javascript: defineIcon(Javascript),
+  typescript: defineIcon(Typescript),
+  shell: defineIcon(Bash),
+  terraform: defineIcon(Terraform),
+  html: defineIcon(Html),
+  css: defineIcon(Css),
+  npm: defineIcon(Npm),
+  java: defineIcon(Java),
+  kotlin: defineIcon(Kotlin),
+  go: defineIcon(Go),
+  python: defineIcon(Python),
+  sql: defineIcon(Sql),
+  json: defineIcon(Json),
+  lua: defineIcon(Lua),
+  csharp: defineIcon(Csharp),
+  cpp: defineIcon(Cplusplus),
+  c: defineIcon(C),
   file: h(Fallback),
 };
 

@@ -1,22 +1,34 @@
 <template>
   <div>
-    <component :is="component" />
+    <component :is="components" />
   </div>
 </template>
 
 <script setup lang="ts">
 import type { Component, ComponentMap, InlineComponent } from "jarkup-ts";
-import {
-  defineAsyncComponent,
-  h,
-  useCssModule,
-  VNode,
-  ref,
-  watch,
-  computed,
-} from "vue";
+import { h, useCssModule, VNode, ref, watch, computed } from "vue";
 
-import { ElmBlockFallback } from "../..";
+import ElmInlineText from "../typography/ElmInlineText.vue";
+import ElmKatex from "../code/ElmKatex.vue";
+import ElmMermaid from "../code/ElmMermaid.vue";
+import ElmInlineIcon from "../icon/ElmInlineIcon.vue";
+import ElmHeading from "../typography/ElmHeading.vue";
+import ElmParagraph from "../typography/ElmParagraph.vue";
+import ElmList from "../typography/ElmList.vue";
+import ElmBlockQuote from "../typography/ElmBlockQuote.vue";
+import ElmCallout from "../typography/ElmCallout.vue";
+import ElmDivider from "../typography/ElmDivider.vue";
+import ElmToggle from "../containments/ElmToggle.vue";
+import ElmBookmark from "../navigation/ElmBookmark.vue";
+import ElmFile from "../media/ElmFile.vue";
+import ElmImage from "../media/ElmImage.vue";
+import ElmCodeBlock from "../code/ElmCodeBlock.vue";
+import ElmTable from "../table/ElmTable.vue";
+import ElmTableHeader from "../table/ElmTableHeader.vue";
+import ElmTableBody from "../table/ElmTableBody.vue";
+import ElmTableRow from "../table/ElmTableRow.vue";
+import ElmTableCell from "../table/ElmTableCell.vue";
+import ElmUnsupportedBlock from "../fallback/ElmUnsupportedBlock.vue";
 import { kebabCase } from "lodash-es";
 
 export interface ElmJsonComponentRendererProps {
@@ -26,107 +38,6 @@ export interface ElmJsonComponentRendererProps {
 const props = withDefaults(defineProps<ElmJsonComponentRendererProps>(), {});
 
 const style = useCssModule();
-
-const AsyncElmInlineText = defineAsyncComponent({
-  loader: () => import("../typography/ElmInlineText.vue"),
-});
-
-const AsyncElmKatex = defineAsyncComponent({
-  loader: () => import("../code/ElmKatex.vue"),
-});
-
-const AsyncElmMermaid = defineAsyncComponent({
-  loader: () => import("../code/ElmMermaid.vue"),
-});
-
-const AsyncElmInlineIcon = defineAsyncComponent({
-  loader: () => import("../icon/ElmInlineIcon.vue"),
-});
-
-const AsyncElmHeading = defineAsyncComponent({
-  loader: () => import("../typography/ElmHeading.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmParagraph = defineAsyncComponent({
-  loader: () => import("../typography/ElmParagraph.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmList = defineAsyncComponent({
-  loader: () => import("../typography/ElmList.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmBlockQuote = defineAsyncComponent({
-  loader: () => import("../typography/ElmBlockQuote.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmCallout = defineAsyncComponent({
-  loader: () => import("../typography/ElmCallout.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmDivider = defineAsyncComponent({
-  loader: () => import("../typography/ElmDivider.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmToggle = defineAsyncComponent({
-  loader: () => import("../containments/ElmToggle.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmBookmark = defineAsyncComponent({
-  loader: () => import("../navigation/ElmBookmark.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmFile = defineAsyncComponent({
-  loader: () => import("../media/ElmFile.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmImage = defineAsyncComponent({
-  loader: () => import("../media/ElmImage.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmCodeBlock = defineAsyncComponent({
-  loader: () => import("../code/ElmCodeBlock.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmTable = defineAsyncComponent({
-  loader: () => import("../table/ElmTable.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmTableHeader = defineAsyncComponent({
-  loader: () => import("../table/ElmTableHeader.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmTableBody = defineAsyncComponent({
-  loader: () => import("../table/ElmTableBody.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmTableRow = defineAsyncComponent({
-  loader: () => import("../table/ElmTableRow.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmTableCell = defineAsyncComponent({
-  loader: () => import("../table/ElmTableCell.vue"),
-  loadingComponent: ElmBlockFallback,
-});
-
-const AsyncElmUnsupportedBlock = defineAsyncComponent({
-  loader: () => import("../fallback/ElmUnsupportedBlock.vue"),
-  loadingComponent: ElmBlockFallback,
-});
 
 type RenderFunctionMap<R> = {
   [K in keyof ComponentMap]: (args: ComponentMap[K]) => R;
@@ -152,9 +63,9 @@ const defaultRenderFunctionMap = (
   return {
     Text: ({ props }) => {
       if (props.katex) {
-        return h(AsyncElmKatex, { expression: props.text, block: false });
+        return h(ElmKatex, { expression: props.text, block: false });
       } else {
-        return h(AsyncElmInlineText, {
+        return h(ElmInlineText, {
           text: props.text,
           color: props.color,
           backgroundColor: props.backgroundColor,
@@ -169,11 +80,10 @@ const defaultRenderFunctionMap = (
         });
       }
     },
-    Icon: ({ props }) =>
-      h(AsyncElmInlineIcon, { src: props.src, alt: props.alt }),
+    Icon: ({ props }) => h(ElmInlineIcon, { src: props.src, alt: props.alt }),
     Heading: ({ props, slots }) =>
       h(
-        AsyncElmHeading,
+        ElmHeading,
         {
           level: props.level,
           id: kebabCase(convertInlineComponentsToPlainText(slots.default)),
@@ -181,12 +91,12 @@ const defaultRenderFunctionMap = (
         { default: () => render(slots.default) }
       ),
     Paragraph: ({ slots }) =>
-      h(AsyncElmParagraph, {}, { default: () => render(slots.default) }),
+      h(ElmParagraph, {}, { default: () => render(slots.default) }),
     ListItem: ({ slots }) =>
       h("li", {}, { default: () => render(slots.default) }),
     List: ({ props, slots }) =>
       h(
-        AsyncElmList,
+        ElmList,
         {
           listStyle: props?.listStyle === "unordered" ? "unordered" : "ordered",
         },
@@ -194,20 +104,20 @@ const defaultRenderFunctionMap = (
       ),
     BlockQuote: ({ props, slots }) =>
       h(
-        AsyncElmBlockQuote,
+        ElmBlockQuote,
         { cite: props?.cite },
         { default: () => render(slots.default) }
       ),
     Callout: ({ props, slots }) =>
       h(
-        AsyncElmCallout,
+        ElmCallout,
         { type: props?.type },
         { default: () => render(slots.default) }
       ),
-    Divider: ({}) => h(AsyncElmDivider, {}),
+    Divider: ({}) => h(ElmDivider, {}),
     Toggle: ({ slots }) =>
       h(
-        AsyncElmToggle,
+        ElmToggle,
         {},
         {
           default: () => render(slots.default),
@@ -215,15 +125,15 @@ const defaultRenderFunctionMap = (
         }
       ),
     Bookmark: ({ props }) =>
-      h(AsyncElmBookmark, {
+      h(ElmBookmark, {
         url: props.url,
         title: props.title,
         description: props.description,
         image: props.image,
       }),
-    File: ({ props }) => h(AsyncElmFile, { src: props.src, name: props.name }),
+    File: ({ props }) => h(ElmFile, { src: props.src, name: props.name }),
     Image: ({ props }) =>
-      h(AsyncElmImage, {
+      h(ElmImage, {
         src: props.src,
         alt: props.alt,
         block: true,
@@ -232,40 +142,36 @@ const defaultRenderFunctionMap = (
     CodeBlock: ({ props, slots }) =>
       slots != null
         ? h(
-            AsyncElmCodeBlock,
+            ElmCodeBlock,
             { code: props.code, language: props.language },
             { default: () => render(slots.default) }
           )
-        : h(AsyncElmCodeBlock, { code: props.code, language: props.language }),
+        : h(ElmCodeBlock, { code: props.code, language: props.language }),
     Katex: ({ props }) =>
-      h(AsyncElmKatex, { expression: props.expression, block: true }),
-    Mermaid: ({ props }) => h(AsyncElmMermaid, { code: props.code }),
+      h(ElmKatex, { expression: props.expression, block: true }),
+    Mermaid: ({ props }) => h(ElmMermaid, { code: props.code }),
     Table: ({ props, slots }) => {
       let header: ReturnType<typeof h> | undefined = undefined;
 
       if (slots.header != null) {
         const headerSlot = slots.header;
-        header = h(
-          AsyncElmTableHeader,
-          {},
-          { default: () => render(headerSlot) }
-        );
+        header = h(ElmTableHeader, {}, { default: () => render(headerSlot) });
       }
 
       return h(
-        AsyncElmTable,
+        ElmTable,
         { caption: props?.caption, hasRowHeader: props?.hasRowHeader },
         {
           body: () =>
-            h(AsyncElmTableBody, {}, { default: () => render(slots.body) }),
+            h(ElmTableBody, {}, { default: () => render(slots.body) }),
           header: header ? () => header : undefined,
         }
       );
     },
     TableRow: ({ slots }) =>
-      h(AsyncElmTableRow, {}, { default: () => render(slots.default) }),
+      h(ElmTableRow, {}, { default: () => render(slots.default) }),
     TableCell: ({ slots }) =>
-      h(AsyncElmTableCell, {}, { default: () => render(slots.default) }),
+      h(ElmTableCell, {}, { default: () => render(slots.default) }),
     ColumnList: ({ slots }) =>
       h(
         "div",
@@ -279,7 +185,7 @@ const defaultRenderFunctionMap = (
         { default: () => render(slots.default) }
       ),
     Unsupported: ({ props }) =>
-      h(AsyncElmUnsupportedBlock, { details: props?.details }),
+      h(ElmUnsupportedBlock, { details: props?.details }),
   };
 };
 
@@ -296,7 +202,7 @@ const render = (jsonComponents: Component[]): VNode[] => {
 
 const renderResult = ref<VNode[]>(render(props.jsonComponents));
 
-const component = computed(() => ({
+const components = computed(() => ({
   render: () => renderResult.value,
 }));
 

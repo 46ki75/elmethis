@@ -65,7 +65,7 @@
         :class="$style['code-body']"
         :style="{ opacity: isRendered ? 1 : 0 }"
       >
-        <AsyncElmShikiHighlighter
+        <ElmShikiHighlighter
           v-model="isRendered"
           :code="code"
           :language="language"
@@ -82,7 +82,6 @@
 <script setup lang="ts">
 import ElmLanguageIcon from "../icon/ElmLanguageIcon.vue";
 import ElmInlineText from "../typography/ElmInlineText.vue";
-import ElmBlockFallback from "../fallback/ElmBlockFallback.vue";
 import ElmDotLoadingIcon from "../icon/ElmDotLoadingIcon.vue";
 
 import {
@@ -92,20 +91,14 @@ import {
 } from "@vueuse/core";
 
 import type { Property } from "csstype";
-import {
-  defineAsyncComponent,
-  h,
-  ref,
-  defineSlots,
-  useTemplateRef,
-  VNode,
-} from "vue";
+import { h, ref, defineSlots, useTemplateRef, VNode } from "vue";
 
 import {
   mdiClipboardMultipleOutline,
   mdiClipboardCheckMultipleOutline,
 } from "@mdi/js";
 import ElmMdiIcon from "../icon/ElmMdiIcon.vue";
+import ElmShikiHighlighter from "./ElmShikiHighlighter.vue";
 
 export interface ElmCodeBlockProps {
   /**
@@ -132,11 +125,6 @@ export interface ElmCodeBlockProps {
 
 const props = withDefaults(defineProps<ElmCodeBlockProps>(), {
   language: "txt",
-});
-
-const AsyncElmShikiHighlighter = defineAsyncComponent({
-  loader: () => import("./ElmShikiHighlighter.vue"),
-  loadingComponent: ElmBlockFallback,
 });
 
 const isRendered = ref(false);
