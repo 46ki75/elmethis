@@ -141,8 +141,8 @@ importers:
         version: 3.5.22(typescript@5.9.3)
     devDependencies:
       '@notionhq/client':
-        specifier: ^5.2.0
-        version: 5.2.0
+        specifier: ^5.2.1
+        version: 5.2.1
       '@storybook/vue3-vite':
         specifier: 9.1.12
         version: 9.1.12(storybook@9.1.1(@testing-library/dom@10.4.0)(prettier@3.3.3)(vite@7.1.10(@types/node@24.8.0)(jiti@2.4.2)(sass@1.93.2)(terser@5.39.0)(tsx@4.19.3)))(vite@7.1.10(@types/node@24.8.0)(jiti@2.4.2)(sass@1.93.2)(terser@5.39.0)(tsx@4.19.3))(vue@3.5.22(typescript@5.9.3))
@@ -1078,8 +1078,8 @@ packages:
   '@microsoft/tsdoc@0.15.1':
     resolution: {integrity: sha512-4aErSrCR/On/e5G2hDP0wjooqDdauzEbIq8hIkIe5pXV0rtWJZvdCEKL0ykZxex+IxIwBp0eGeV48hQN07dXtw==}
 
-  '@notionhq/client@5.2.0':
-    resolution: {integrity: sha512-eRtjbwZ9sIZIHMZuJQMmq/dw4+8PI2lGfo0yu0XC65LFEPpQ75by4ZFZ8RlCxBbN2OJG8xCpP2hbCA8j+Sj3Jw==}
+  '@notionhq/client@5.2.1':
+    resolution: {integrity: sha512-6h3PQTvzBg5UVyC09Z3ZBc+kBVRAXVuwWGb0okZLJyTwzQX8uYiZOK9JJ8cnmr9vDs5C5dFXxb/d9/X6IUew1A==}
     engines: {node: '>=18'}
 
   '@parcel/watcher-android-arm64@2.5.1':
@@ -3939,7 +3939,7 @@ snapshots:
 
   '@microsoft/tsdoc@0.15.1': {}
 
-  '@notionhq/client@5.2.0': {}
+  '@notionhq/client@5.2.1': {}
 
   '@parcel/watcher-android-arm64@2.5.1':
     optional: true
