@@ -14,6 +14,9 @@ const meta: Meta<typeof ElmInlineText> = {
     underline: false,
     code: false,
   },
+  argTypes: {
+    color: { control: "color" },
+  },
 };
 
 export default meta;

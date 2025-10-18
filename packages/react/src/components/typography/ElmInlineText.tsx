@@ -1,5 +1,4 @@
-import { type ComponentProps } from "react";
-import type { Property } from "csstype";
+import { type ComponentProps, type CSSProperties } from "react";
 
 import textStyle from "../../styles/text.module.scss";
 import style from "./ElmInlineText.module.scss";
@@ -16,12 +15,12 @@ export interface ElmTextProps extends ComponentProps<"span"> {
    *
    * e.g.) `'red'`, `'#ff0000'`, `'rgba(255, 0, 0, 0.5)'`
    */
-  color?: Property.Color;
+  color?: CSSProperties["color"];
 
   /**
    * Specifies the font size of the text.
    */
-  size?: Property.FontSize;
+  size?: CSSProperties["fontSize"];
 
   /**
    * Specifies whether the text should be bold.
@@ -53,7 +52,7 @@ export interface ElmTextProps extends ComponentProps<"span"> {
   /**
    * Specifies the background color of the text.
    */
-  backgroundColor?: Property.BackgroundColor;
+  backgroundColor?: CSSProperties["backgroundColor"];
 
   /**
    * The ruby text to display.
@@ -80,7 +79,10 @@ const ElmInlineText = (props: ElmTextProps) => {
       if (props.underline) classes.push(style.underline);
 
       let component = (
-        <span className={clsx([textStyle.text].concat(classes))}>
+        <span
+          className={clsx([textStyle.text].concat(classes))}
+          style={{ "--color": props.color } as CSSProperties}
+        >
           {props.text || props.children}
         </span>
       );
