@@ -5,7 +5,9 @@ const meta: Meta<typeof ElmTemplate> = {
   title: "Template/Template/ElmTemplate",
   component: ElmTemplate,
   tags: ["autodocs"],
-  args: {},
+  args: {
+    message: "Hello, world!",
+  },
 };
 
 export default meta;
