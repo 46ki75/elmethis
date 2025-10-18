@@ -11,8 +11,8 @@ env:
   NODE_VERSION: 22.x
 
 jobs:
-  core:
-    name: Build Test (@elmethis/core)
+  vue:
+    name: Build Test (@elmethis/vue)
     runs-on: ubuntu-latest
 
     steps:
@@ -35,7 +35,7 @@ jobs:
 
       - name: Run Build Test
         run: pnpm run build
-        working-directory: packages/core
+        working-directory: packages/vue
 
   storybook:
     name: Build Test (@elmethis/storybook)
