@@ -3,6 +3,7 @@ import { type ComponentProps, type CSSProperties } from "react";
 import textStyle from "../../styles/text.module.scss";
 import style from "./ElmInlineText.module.scss";
 import { clsx } from "clsx";
+import { ElmInlineIcon } from "../icon/ElmInlineIcon";
 
 export interface ElmTextProps extends ComponentProps<"span"> {
   /**
@@ -79,7 +80,8 @@ export const ElmInlineText = (props: ElmTextProps) => {
           target="blank"
           rel="noopener noreferrer"
         >
-          {props.text || props.children}
+          {props.favicon && <ElmInlineIcon src={props.favicon} />}
+          <span>{props.text || props.children}</span>
         </a>
       );
     } else {
