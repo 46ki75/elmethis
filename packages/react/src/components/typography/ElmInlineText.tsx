@@ -101,7 +101,8 @@ export const ElmInlineText = (props: ElmTextProps) => {
       if (props.bold) component = <strong>{component}</strong>;
       if (props.italic) component = <em>{component}</em>;
       if (props.strikethrough) component = <del>{component}</del>;
-      if (props.code) component = <code>{component}</code>;
+      if (props.code)
+        component = <code className={style.code}>{component}</code>;
 
       return component;
     }
