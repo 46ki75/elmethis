@@ -4,6 +4,7 @@ import textStyle from "../../styles/text.module.scss";
 import style from "./ElmInlineText.module.scss";
 import { clsx } from "clsx";
 import { ElmInlineIcon } from "../icon/ElmInlineIcon";
+import { getLuminance } from "polished";
 
 export interface ElmTextProps extends ComponentProps<"span"> {
   /**
@@ -72,6 +73,13 @@ export interface ElmTextProps extends ComponentProps<"span"> {
 
 export const ElmInlineText = (props: ElmTextProps) => {
   const render = () => {
+    const color =
+      props.backgroundColor != null
+        ? getLuminance(props.backgroundColor) < 0.5
+          ? "rgba(255, 255, 255, 0.7)"
+          : "rgba(0, 0, 0, 0.7)"
+        : undefined;
+
     if (props.href) {
       return (
         <a
@@ -97,11 +105,12 @@ export const ElmInlineText = (props: ElmTextProps) => {
 
       let component = (
         <span
-          className={clsx([textStyle.text].concat(classes))}
+          className={clsx([textStyle.text, style.base].concat(classes))}
           style={
             {
-              "--color": props.color,
+              "--color": props.color ?? color,
               "--font-size": props.size,
+              "--background-color": props.backgroundColor,
             } as CSSProperties
           }
         >
