@@ -92,7 +92,12 @@ export const ElmInlineText = (props: ElmTextProps) => {
       let component = (
         <span
           className={clsx([textStyle.text].concat(classes))}
-          style={{ "--color": props.color } as CSSProperties}
+          style={
+            {
+              "--color": props.color,
+              "--font-size": props.size,
+            } as CSSProperties
+          }
         >
           {props.text || props.children}
         </span>

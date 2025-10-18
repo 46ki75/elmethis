@@ -1,5 +1,6 @@
 .text {
   color: var(--color, #606875);
+  font-size: var(--font-size, normal);
 
   &::selection {
     color: #cccfd5;
