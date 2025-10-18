@@ -11,4 +11,6 @@ const meta: Meta<typeof ElmParagraph> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {};
+export const Primary: Story = {
+  args: { children: <span>Hello, world!</span> },
+};
