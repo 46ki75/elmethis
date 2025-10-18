@@ -6,7 +6,7 @@ import { clsx } from "clsx";
 import { ElmInlineIcon } from "../icon/ElmInlineIcon";
 import { getLuminance } from "polished";
 
-export interface ElmTextProps extends ComponentProps<"span"> {
+export interface ElmInlineTextProps extends ComponentProps<"span"> {
   /**
    * The text to display.
    */
@@ -71,7 +71,7 @@ export interface ElmTextProps extends ComponentProps<"span"> {
   favicon?: string;
 }
 
-export const ElmInlineText = (props: ElmTextProps) => {
+export const ElmInlineText = (props: ElmInlineTextProps) => {
   const render = () => {
     const color =
       props.backgroundColor != null
