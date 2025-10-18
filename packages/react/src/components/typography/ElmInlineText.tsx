@@ -115,6 +115,14 @@ export const ElmInlineText = (props: ElmTextProps) => {
       if (props.code)
         component = <code className={style.code}>{component}</code>;
 
+      if (props.ruby)
+        component = (
+          <ruby className={textStyle.text}>
+            {component}
+            <rt>{props.ruby}</rt>
+          </ruby>
+        );
+
       return component;
     }
   };
