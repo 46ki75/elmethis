@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import ElmParagraph from "./ElmParagraph";
+import { ElmParagraph } from "./ElmParagraph";
 
 const meta: Meta<typeof ElmParagraph> = {
   title: "Components/Typography/ElmParagraph",

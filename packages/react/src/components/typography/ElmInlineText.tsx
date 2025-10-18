@@ -69,7 +69,7 @@ export interface ElmTextProps extends ComponentProps<"span"> {
   favicon?: string;
 }
 
-const ElmInlineText = (props: ElmTextProps) => {
+export const ElmInlineText = (props: ElmTextProps) => {
   const render = () => {
     if (props.href) {
       return (
@@ -107,5 +107,3 @@ const ElmInlineText = (props: ElmTextProps) => {
 
   return render();
 };
-
-export default ElmInlineText;

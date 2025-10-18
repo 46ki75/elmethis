@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import ElmInlineText from "./ElmInlineText";
+import { ElmInlineText } from "./ElmInlineText";
 import { opacify } from "polished";
 
 const meta: Meta<typeof ElmInlineText> = {
