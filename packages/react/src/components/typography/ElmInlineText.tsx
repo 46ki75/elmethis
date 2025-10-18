@@ -84,6 +84,12 @@ export const ElmInlineText = (props: ElmTextProps) => {
           <span>{props.text || props.children}</span>
         </a>
       );
+    } else if (props.kbd) {
+      return (
+        <kbd className={clsx([textStyle.text, style.kbd])}>
+          {props.text || props.children}
+        </kbd>
+      );
     } else {
       const classes = [];
 
