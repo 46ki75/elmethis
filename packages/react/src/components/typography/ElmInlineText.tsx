@@ -72,7 +72,16 @@ export interface ElmTextProps extends ComponentProps<"span"> {
 const ElmInlineText = (props: ElmTextProps) => {
   const render = () => {
     if (props.href) {
-      return <></>;
+      return (
+        <a
+          className={style.link}
+          href={props.href}
+          target="blank"
+          rel="noopener noreferrer"
+        >
+          {props.text || props.children}
+        </a>
+      );
     } else {
       const classes = [];
 
