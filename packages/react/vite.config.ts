@@ -29,7 +29,7 @@ export default defineConfig({
       external: [
         "react",
         "react-dom",
-        // "@mdi/js",
+        "@mdi/js",
         // "katex",
         // "lodash-es",
         // "nanoid",

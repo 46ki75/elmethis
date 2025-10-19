@@ -109,6 +109,9 @@ importers:
 
   packages/react:
     dependencies:
+      '@mdi/js':
+        specifier: ^7.4.47
+        version: 7.4.47
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
