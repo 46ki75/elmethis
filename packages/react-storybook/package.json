@@ -1,5 +1,5 @@
 {
-  "name": "storybook",
+  "name": "react-storybook",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -11,13 +11,15 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
-    "vue": "^3.5.22"
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
   },
   "devDependencies": {
     "@storybook/addon-docs": "^9.1.12",
-    "@storybook/vue3-vite": "9.1.12",
-    "@vitejs/plugin-vue": "^6.0.1",
-    "@vue/tsconfig": "^0.8.1",
+    "@storybook/react-vite": "^9.1.13",
+    "@types/react": "^19.1.16",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.4",
     "storybook": "^9.1.1",
     "typescript": "^5.9.3",
     "vite": "^7.1.10",

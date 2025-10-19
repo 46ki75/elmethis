@@ -1,0 +1,9 @@
+.icon {
+  fill: var(--color, #555b67);
+  transition: fill 200ms;
+  flex-shrink: 0;
+
+  [data-theme="dark"] & {
+    fill: var(--dark-color, #b0b5be);
+  }
+}

@@ -1,11 +1,11 @@
 {
-  "name": "@elmethis/core",
-  "version": "0.8.0",
+  "name": "@elmethis/vue",
+  "version": "0.1.0",
   "publishConfig": {
     "access": "public"
   },
   "type": "module",
-  "author": "Chomolungma Shirayuki",
+  "author": "Ikuma Yamashita",
   "repository": {
     "type": "git",
     "url": "git@github.com:46ki75/elmethis.git"

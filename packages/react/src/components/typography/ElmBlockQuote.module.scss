@@ -1,0 +1,26 @@
+.blockquote {
+  box-sizing: border-box;
+  padding: 0.5rem 2rem;
+  background-color: #e3e5e7;
+  border-left: 4px solid #606875;
+
+  [data-theme="dark"] & {
+    background-color: #3e434b;
+    border-color: #b0b5be;
+  }
+
+  a {
+    all: unset;
+    cursor: pointer;
+    transition: color 100ms;
+    &:hover {
+      color: #5879b0;
+    }
+  }
+
+  cite {
+    display: block;
+    margin-block: 1rem;
+    text-align: right;
+  }
+}

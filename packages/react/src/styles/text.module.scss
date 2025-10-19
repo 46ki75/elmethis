@@ -1,0 +1,18 @@
+.text {
+  color: var(--color, #606875);
+  font-size: var(--font-size, normal);
+
+  &::selection {
+    color: #cccfd5;
+    background-color: var(--color, #3e434b);
+  }
+
+  [data-theme="dark"] & {
+    color: var(--color, #b0b5be);
+
+    &::selection {
+      color: #3e434b;
+      background-color: var(--color, #cccfd5);
+    }
+  }
+}

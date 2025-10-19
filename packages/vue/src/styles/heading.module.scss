@@ -1,0 +1,17 @@
+.heading {
+  color: var(--color, #555b67);
+
+  &::selection {
+    color: #cccfd5;
+    background-color: var(--color, #3e434b);
+  }
+
+  [data-theme="dark"] & {
+    color: var(--color, #cccfd5);
+
+    &::selection {
+      color: #3e434b;
+      background-color: var(--color, #cccfd5);
+    }
+  }
+}
