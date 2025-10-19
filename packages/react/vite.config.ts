@@ -14,12 +14,10 @@ export default defineConfig({
       },
     }),
     dts({ tsconfigPath: "./tsconfig.app.json" }),
-    cssInjectedByJsPlugin({
-      relativeCSSInjection: true,
-    }),
     preserveDirectives({
       exclude: ["**/*.scss", "**/*.css", "**/*.sass"],
     }),
+    cssInjectedByJsPlugin(),
   ],
   build: {
     cssCodeSplit: true,
