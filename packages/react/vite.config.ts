@@ -36,6 +36,7 @@ export default defineConfig({
         "polished",
         // "shiki",
         // "mermaid",
+        "react-transition-group",
       ],
       output: {
         preserveModules: true,
