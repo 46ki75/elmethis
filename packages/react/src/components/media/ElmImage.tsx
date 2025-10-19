@@ -1,8 +1,17 @@
-import { useState, type ComponentProps, type CSSProperties } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ComponentProps,
+  type CSSProperties,
+} from "react";
 import style from "./ElmImage.module.scss";
 import { ElmInlineText } from "../typography/ElmInlineText";
 import { mdiTooltipImage } from "@mdi/js";
 import { ElmMdiIcon } from "../icon/ElmMdiIcon";
+import { CSSTransition } from "react-transition-group";
+
+import "../../styles/transition.scss";
 
 export interface ElmImageProps extends ComponentProps<"img"> {
   /**
@@ -39,7 +48,13 @@ export const ElmImage = ({
   margin,
   ...args
 }: ElmImageProps) => {
+  const nodeRef = useRef(null);
   const [isShowModal, setIsShowModal] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handleClick = () => {
     if (enableModal) setIsShowModal(!isShowModal);
@@ -55,11 +70,6 @@ export const ElmImage = ({
       onClick={handleClick}
     />
   );
-  const modal = (
-    <div className={style.modal} onClick={handleClick}>
-      {image}
-    </div>
-  );
 
   return (
     <div style={{ marginBlock: margin }} {...args}>
@@ -70,7 +80,20 @@ export const ElmImage = ({
           <ElmInlineText text={alt} />
         </div>
       )}
-      {isShowModal && modal}
+
+      {isMounted && enableModal && (
+        <CSSTransition
+          classNames="fade"
+          in={isShowModal}
+          timeout={300}
+          unmountOnExit
+          nodeRef={nodeRef}
+        >
+          <div className={style.modal} onClick={handleClick} ref={nodeRef}>
+            {image}
+          </div>
+        </CSSTransition>
+      )}
     </div>
   );
 };
