@@ -11,7 +11,7 @@ import style from "./ElmImage.module.scss";
 import { ElmInlineText } from "../typography/ElmInlineText";
 import { mdiTooltipImage } from "@mdi/js";
 import { ElmMdiIcon } from "../icon/ElmMdiIcon";
-import { CSSTransition } from "react-transition-group";
+import { config, CSSTransition } from "react-transition-group";
 
 import "../../styles/transition.scss";
 
@@ -42,6 +42,10 @@ export interface ElmImageProps extends ComponentProps<"img"> {
   margin?: CSSProperties["marginBlock"];
 }
 
+if (typeof window === "undefined") {
+  config.disabled = true;
+}
+
 export const ElmImage = ({
   src,
   alt,
@@ -52,10 +56,11 @@ export const ElmImage = ({
 }: ElmImageProps) => {
   const nodeRef = useRef(null);
   const [isShowModal, setIsShowModal] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
+    if (typeof window === "undefined") {
+      config.disabled = false;
+    }
   }, []);
 
   const handleClick = () => {
@@ -83,7 +88,7 @@ export const ElmImage = ({
         </div>
       )}
 
-      {isMounted && enableModal && (
+      {enableModal && (
         <CSSTransition
           classNames="fade"
           in={isShowModal}
