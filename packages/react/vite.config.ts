@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 import { resolve } from "node:path";
 import dts from "vite-plugin-dts";
 import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
+import preserveDirectives from "rollup-plugin-preserve-directives";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -15,6 +16,9 @@ export default defineConfig({
     dts({ tsconfigPath: "./tsconfig.app.json" }),
     cssInjectedByJsPlugin({
       relativeCSSInjection: true,
+    }),
+    preserveDirectives({
+      exclude: ["**/*.scss", "**/*.css", "**/*.sass"],
     }),
   ],
   build: {

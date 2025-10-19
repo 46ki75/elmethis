@@ -170,6 +170,9 @@ importers:
       postcss-preset-env:
         specifier: ^10.4.0
         version: 10.4.0(postcss@8.5.6)
+      rollup-plugin-preserve-directives:
+        specifier: ^0.4.0
+        version: 0.4.0(rollup@4.52.4)
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
@@ -3493,6 +3496,11 @@ packages:
 
   robust-predicates@3.0.2:
     resolution: {integrity: sha512-IXgzBWvWQwE6PrDI05OvmXUIruQTcoMDzRsOd5CDvHCVLcLHMTSYvOK5Cm46kWqlV3yAbuSpBZdJ5oP5OUoStg==}
+
+  rollup-plugin-preserve-directives@0.4.0:
+    resolution: {integrity: sha512-gx4nBxYm5BysmEQS+e2tAMrtFxrGvk+Pe5ppafRibQi0zlW7VYAbEGk6IKDw9sJGPdFWgVTE0o4BU4cdG0Fylg==}
+    peerDependencies:
+      rollup: 2.x || 3.x || 4.x
 
   rollup@4.52.4:
     resolution: {integrity: sha512-CLEVl+MnPAiKh5pl4dEWSyMTpuflgNQiLGhMv8ezD5W/qP8AKvmYpCOKRRNOh7oRKnauBZ4SyeYkMS+1VSyKwQ==}
@@ -7293,6 +7301,12 @@ snapshots:
   reusify@1.1.0: {}
 
   robust-predicates@3.0.2: {}
+
+  rollup-plugin-preserve-directives@0.4.0(rollup@4.52.4):
+    dependencies:
+      '@rollup/pluginutils': 5.1.4(rollup@4.52.4)
+      magic-string: 0.30.19
+      rollup: 4.52.4
 
   rollup@4.52.4:
     dependencies:
