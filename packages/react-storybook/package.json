@@ -22,7 +22,7 @@
     "@vitejs/plugin-react": "^5.0.4",
     "storybook": "^9.1.13",
     "typescript": "^5.9.3",
-    "vite": "^7.1.10",
+    "vite": "^7.1.11",
     "vue-tsc": "^3.1.1"
   }
 }
