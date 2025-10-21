@@ -38,7 +38,7 @@
     "shiki": "^3.13.0"
   },
   "devDependencies": {
-    "@notionhq/client": "^5.2.1",
+    "@notionhq/client": "^5.3.0",
     "@storybook/vue3-vite": "9.1.13",
     "@types/json-schema": "^7.0.15",
     "@types/katex": "^0.16.7",
