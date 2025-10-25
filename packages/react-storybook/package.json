@@ -19,7 +19,7 @@
     "@storybook/react-vite": "^9.1.13",
     "@types/react": "^19.1.16",
     "@types/react-dom": "^19.1.9",
-    "@vitejs/plugin-react": "^5.0.4",
+    "@vitejs/plugin-react": "^5.1.0",
     "storybook": "^9.1.13",
     "typescript": "^5.9.3",
     "vite": "^7.1.12",
