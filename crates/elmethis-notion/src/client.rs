@@ -191,14 +191,14 @@ impl Client {
                     let caption = code
                         .caption
                         .iter()
-                        .map(|t| t.to_string())
+                        .map(|text_item| text_item.to_string())
                         .collect::<String>();
 
                     let props = crate::block::ElmCodeBlockProps {
                         code: code
                             .rich_text
                             .iter()
-                            .map(|t| t.to_string())
+                            .map(|text_item| text_item.to_string())
                             .collect::<String>(),
                         language: language.to_string(),
                         caption: if caption.is_empty() {
@@ -253,8 +253,8 @@ impl Client {
                 }
                 notionrs::object::block::Block::File { file } => {
                     let (name, src) = match file {
-                        notionrs::object::file::File::External(f) => (f.name, f.external.url),
-                        notionrs::object::file::File::Uploaded(f) => (f.name, f.file.url),
+                        notionrs::object::file::File::External(external_file) => (external_file.name, external_file.external.url),
+                        notionrs::object::file::File::Uploaded(uploaded_file) => (uploaded_file.name, uploaded_file.file.url),
                     };
 
                     let props = crate::block::ElmFileProps {
@@ -276,7 +276,7 @@ impl Client {
                         let summary = heading
                             .rich_text
                             .iter()
-                            .map(|t| t.to_string())
+                            .map(|text_item| text_item.to_string())
                             .collect::<String>();
 
                         let props = crate::block::ElmToggleProps {
@@ -298,7 +298,7 @@ impl Client {
                             text: heading
                                 .rich_text
                                 .iter()
-                                .map(|t| t.to_string())
+                                .map(|text_item| text_item.to_string())
                                 .collect::<String>(),
                         };
 
@@ -316,7 +316,7 @@ impl Client {
                         let summary = heading
                             .rich_text
                             .iter()
-                            .map(|t| t.to_string())
+                            .map(|text_item| text_item.to_string())
                             .collect::<String>();
 
                         let props = crate::block::ElmToggleProps {
@@ -338,7 +338,7 @@ impl Client {
                             text: heading
                                 .rich_text
                                 .iter()
-                                .map(|t| t.to_string())
+                                .map(|text_item| text_item.to_string())
                                 .collect::<String>(),
                         };
 
@@ -356,7 +356,7 @@ impl Client {
                         let summary = heading
                             .rich_text
                             .iter()
-                            .map(|t| t.to_string())
+                            .map(|text_item| text_item.to_string())
                             .collect::<String>();
 
                         let props = crate::block::ElmToggleProps {
@@ -378,7 +378,7 @@ impl Client {
                             text: heading
                                 .rich_text
                                 .iter()
-                                .map(|t| t.to_string())
+                                .map(|text_item| text_item.to_string())
                                 .collect::<String>(),
                         };
 
@@ -392,21 +392,21 @@ impl Client {
                 }
                 notionrs::object::block::Block::Image { image } => {
                     let (src, alt) = match image {
-                        notionrs::object::file::File::External(f) => (
-                            f.external.url,
-                            f.caption
+                        notionrs::object::file::File::External(external_image) => (
+                            external_image.external.url,
+                            external_image.caption
                                 .map(|rich_text| {
-                                    rich_text.iter().map(|t| t.to_string()).collect::<String>()
+                                    rich_text.iter().map(|text_item| text_item.to_string()).collect::<String>()
                                 })
-                                .filter(|s| !s.trim().is_empty()),
+                                .filter(|caption_text| !caption_text.trim().is_empty()),
                         ),
-                        notionrs::object::file::File::Uploaded(f) => (
-                            f.file.url,
-                            f.caption
+                        notionrs::object::file::File::Uploaded(uploaded_image) => (
+                            uploaded_image.file.url,
+                            uploaded_image.caption
                                 .map(|rich_text| {
-                                    rich_text.iter().map(|t| t.to_string()).collect::<String>()
+                                    rich_text.iter().map(|text_item| text_item.to_string()).collect::<String>()
                                 })
-                                .filter(|s| !s.trim().is_empty()),
+                                .filter(|caption_text| !caption_text.trim().is_empty()),
                         ),
                     };
 
@@ -516,7 +516,7 @@ impl Client {
                                                     has_header: true,
                                                     text: cell
                                                         .iter()
-                                                        .map(|t| t.to_string())
+                                                        .map(|text_item| text_item.to_string())
                                                         .collect::<String>(),
                                                 },
                                             },
@@ -551,7 +551,7 @@ impl Client {
                                                         has_header: false,
                                                         text: cell
                                                             .iter()
-                                                            .map(|t| t.to_string())
+                                                            .map(|text_item| text_item.to_string())
                                                             .collect::<String>(),
                                                     },
                                                 },
@@ -587,7 +587,7 @@ impl Client {
                         label: to_do
                             .rich_text
                             .iter()
-                            .map(|t| t.to_string())
+                            .map(|text_item| text_item.to_string())
                             .collect::<String>(),
                     };
 
@@ -602,7 +602,7 @@ impl Client {
                     let summary = toggle
                         .rich_text
                         .iter()
-                        .map(|t| t.to_string())
+                        .map(|text_item| text_item.to_string())
                         .collect::<String>();
 
                     let props = crate::block::ElmToggleProps {
@@ -637,8 +637,8 @@ impl Client {
     ) -> Result<Vec<crate::block::Block>, crate::error::Error> {
         let mut blocks: Vec<crate::block::Block> = Vec::new();
 
-        for r in rich_text {
-            let block: Result<crate::block::Block, crate::error::Error> = match r {
+        for rich_text_item in rich_text {
+            let block: Result<crate::block::Block, crate::error::Error> = match rich_text_item {
                 notionrs::object::rich_text::RichText::Mention { mention, .. } => match mention {
                     notionrs::object::rich_text::mention::Mention::LinkMention { link_mention } => {
                         let href = link_mention.href.as_str();
@@ -682,7 +682,7 @@ impl Client {
                         props.favicon = document
                             .select(&favicon_selector)
                             .next()
-                            .and_then(|f| f.value().attr("href").map(String::from))
+                            .and_then(|favicon_element| favicon_element.value().attr("href").map(String::from))
                             .and_then(|favicon_href| {
                                 if favicon_href.starts_with("http://")
                                     || favicon_href.starts_with("https://")
@@ -690,8 +690,8 @@ impl Client {
                                     Some(favicon_href)
                                 } else {
                                     url::Url::parse(&href)
-                                        .and_then(|s| s.join(&favicon_href))
-                                        .map(|s| s.to_string())
+                                        .and_then(|base_url| base_url.join(&favicon_href))
+                                        .map(|absolute_url| absolute_url.to_string())
                                         .ok()
                                 }
                             });
