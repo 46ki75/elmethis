@@ -37,7 +37,7 @@
   "devDependencies": {
     "@eslint/js": "^9.36.0",
     "@storybook/react-vite": "^10.0.2",
-    "@types/node": "^24.9.2",
+    "@types/node": "^24.10.0",
     "@types/react": "^19.1.16",
     "@types/react-dom": "^19.1.9",
     "@types/react-transition-group": "^4.4.12",
