@@ -260,8 +260,8 @@ importers:
         version: 3.5.22(typescript@5.9.3)
     devDependencies:
       '@ag-ui/core':
-        specifier: ^0.0.40
-        version: 0.0.40
+        specifier: ^0.0.41
+        version: 0.0.41
       '@notionhq/client':
         specifier: ^5.3.0
         version: 5.3.0
@@ -350,8 +350,8 @@ packages:
   '@adobe/css-tools@4.4.4':
     resolution: {integrity: sha512-Elp+iwUx5rN5+Y8xLt5/GRoG20WGoDCQ/1Fb+1LiGtvwbDavuSk0jhD/eZdckHAuzcDzccnkv+rEjyWfRx18gg==}
 
-  '@ag-ui/core@0.0.40':
-    resolution: {integrity: sha512-3HFpBzDp9SX4qmSdwYNug95l2XtWTaLIlBZ4Xk7wPES4y59BNSCPLtXQDvdnBi7ns+GqYyR8fRbv52vgN4SGhA==}
+  '@ag-ui/core@0.0.41':
+    resolution: {integrity: sha512-yRSh7fweajRGAJxm2IBpC+hfkXleqq0mQOXntMk/UMEgPKWfSRMt7qHL+3mtrGEaeL4fA/rcE41cVSjFDnYSoQ==}
 
   '@antfu/install-pkg@1.1.0':
     resolution: {integrity: sha512-MGQsmw10ZyI+EJo45CdSER4zEb+p31LpDAFp2Z3gkSd1yqVZGi0Ebx++YTEMonJy4oChEMLsxZ64j8FH6sSqtQ==}
@@ -3822,7 +3822,7 @@ snapshots:
 
   '@adobe/css-tools@4.4.4': {}
 
-  '@ag-ui/core@0.0.40':
+  '@ag-ui/core@0.0.41':
     dependencies:
       rxjs: 7.8.1
       zod: 3.25.76
