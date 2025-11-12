@@ -17,7 +17,7 @@
   "devDependencies": {
     "@storybook/addon-docs": "^10.0.7",
     "@storybook/react-vite": "^10.0.7",
-    "@types/react": "^19.2.3",
+    "@types/react": "^19.2.4",
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react": "^5.1.0",
     "storybook": "^10.0.7",
