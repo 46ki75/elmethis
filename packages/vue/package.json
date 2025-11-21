@@ -31,7 +31,7 @@
     "@vueuse/core": "^14.0.0",
     "katex": "^0.16.25",
     "lodash-es": "^4.17.21",
-    "marked": "^17.0.0",
+    "marked": "^17.0.1",
     "mermaid": "^11.12.1",
     "nanoid": "^5.1.6",
     "polished": "^4.3.1",
