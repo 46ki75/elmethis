@@ -24,7 +24,8 @@
   },
   "scripts": {
     "build": "vue-tsc && vite build",
-    "prepublishOnly": "pnpm run build"
+    "prepublishOnly": "pnpm run build",
+    "check": "vue-tsc -p tsconfig.app.json"
   },
   "dependencies": {
     "@mdi/js": "^7.4.47",

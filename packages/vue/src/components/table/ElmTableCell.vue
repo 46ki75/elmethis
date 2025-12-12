@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineSlots, inject, type VNodeChild } from "vue";
+import { inject, type VNodeChild } from "vue";
 
 export interface ElmTableCellProps {
   /**

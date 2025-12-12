@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import ElmTableRow from "./ElmTableRow.vue";
 
-import { defineSlots, provide } from "vue";
+import { provide } from "vue";
 
 export interface ElmTableBodyProps {}
 

@@ -91,7 +91,7 @@ import {
 } from "@vueuse/core";
 
 import type { Property } from "csstype";
-import { h, ref, defineSlots, useTemplateRef, VNode } from "vue";
+import { h, ref, useTemplateRef, VNode } from "vue";
 
 import {
   mdiClipboardMultipleOutline,
