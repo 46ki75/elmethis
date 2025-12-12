@@ -6,7 +6,7 @@
       '--border-radius': round ? 'calc(var(--weight) / 2)' : undefined,
     }"
   >
-    <template v-for="(p, index) in computedProgress" :key="index">
+    <template v-for="p in computedProgress">
       <div
         :class="$style.bar"
         :style="{
