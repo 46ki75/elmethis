@@ -5,7 +5,7 @@
       <ElmInlineText :text="message?.name ?? 'User'" bold />
     </header>
     <div>
-      <ElmMarkdown :markdown="message.content" />
+      <ElmMarkdown :markdown="typeof message.content === 'string' ? message.content : message.content.filter(c => c.type === 'text').map(c => c.text).join('')" />
     </div>
   </div>
 </template>

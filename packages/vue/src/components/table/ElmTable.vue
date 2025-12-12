@@ -30,7 +30,7 @@ import ElmTableHeader from "./ElmTableHeader.vue";
 import ElmTableBody from "./ElmTableBody.vue";
 
 import type { Property } from "csstype";
-import { computed, defineSlots, provide, ComputedRef } from "vue";
+import { computed, provide, ComputedRef } from "vue";
 import ElmInlineText from "../typography/ElmInlineText.vue";
 
 import { mdiTable } from "@mdi/js";
