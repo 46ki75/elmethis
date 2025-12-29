@@ -26,7 +26,24 @@ const elementRef = useTemplateRef<HTMLDivElement>("svgRef");
 // Generate unique ID for this component instance
 const componentId = `mermaid-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 let renderCount = 0;
-let mermaidInstance: any = null;
+
+// Global cache shared across all component instances
+const globalMermaidCache = {
+  instance: null as any,
+  svgCache: new Map<string, string>(), // Cache rendered SVGs by code hash
+};
+
+// Generate cache key from code and config
+const getCacheKey = (code: string): string => {
+  // Simple hash function for cache key
+  let hash = 0;
+  for (let i = 0; i < code.length; i++) {
+    const char = code.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  return `mermaid-${hash}`;
+};
 
 const renderMermaid = async () => {
   if (!elementRef.value) return;
@@ -34,11 +51,21 @@ const renderMermaid = async () => {
   isRendered.value = false;
 
   try {
-    // Import mermaid only once per component
-    if (!mermaidInstance) {
+    const cacheKey = getCacheKey(props.code);
+
+    // Check if SVG is already cached
+    if (globalMermaidCache.svgCache.has(cacheKey)) {
+      console.log("Using cached SVG for:", cacheKey);
+      elementRef.value.innerHTML = globalMermaidCache.svgCache.get(cacheKey)!;
+      isRendered.value = true;
+      return;
+    }
+
+    // Import and initialize mermaid only once globally
+    if (!globalMermaidCache.instance) {
+      console.log("Initializing mermaid for the first time");
       const { default: mermaid } = await import("mermaid");
 
-      // Initialize only once per component instance
       mermaid.initialize({
         startOnLoad: false,
         theme: "base",
@@ -54,19 +81,26 @@ const renderMermaid = async () => {
         },
       });
 
-      mermaidInstance = mermaid;
+      globalMermaidCache.instance = mermaid;
     }
 
-    // Use unique ID for each render to avoid collisions
+    // Render with unique ID
     const renderId = `${componentId}-${renderCount++}`;
-    const { svg } = await mermaidInstance.render(renderId, props.code);
+    const { svg } = await globalMermaidCache.instance.render(
+      renderId,
+      props.code
+    );
+
+    // Cache the rendered SVG
+    globalMermaidCache.svgCache.set(cacheKey, svg);
+    console.log("Cached new SVG for:", cacheKey);
 
     elementRef.value.innerHTML = svg;
     isRendered.value = true;
   } catch (error) {
     console.error("Mermaid render error:", error);
     elementRef.value.innerHTML = `<pre>${props.code}</pre>`;
-    isRendered.value = true; // Still mark as rendered to show error
+    isRendered.value = true;
   }
 };
 
@@ -75,11 +109,9 @@ watch(() => props.code, renderMermaid);
 onMounted(renderMermaid);
 
 onUnmounted(() => {
-  // Cleanup
   if (elementRef.value) {
     elementRef.value.innerHTML = "";
   }
-  mermaidInstance = null;
 });
 </script>
 
