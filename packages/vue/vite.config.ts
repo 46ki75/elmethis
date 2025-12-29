@@ -35,6 +35,7 @@ export default defineConfig({
         "polished",
         "shiki",
         "mermaid",
+        "marked",
       ],
       output: {
         preserveModules: true,
