@@ -1,7 +1,6 @@
 <template>
   <div :class="$style.wrapper" ref="target">
     <transition
-      mode="out-in"
       :enter-from-class="fadeStyle['fade-enter-from']"
       :enter-active-class="fadeStyle['fade-enter-active']"
       :enter-to-class="fadeStyle['fade-fast-enter-to']"
@@ -9,37 +8,63 @@
       :leave-active-class="fadeStyle['fade-fast-leave-active']"
       :leave-to-class="fadeStyle['fade-fast-leave-to']"
     >
-      <div v-if="error" :class="$style.error">
+      <div v-show="error" :class="$style.error">
         <ElmInlineText
           text="Error loading image"
           color="#c56565"
           size="1.5rem"
         />
       </div>
-
-      <div
-        :class="$style.fallback"
-        v-else-if="isLoading"
-        :style="{ '--margin-block': margin }"
-      >
-        <elm-rectangle-wave />
-        <div>
-          <elm-dot-loading-icon />
-        </div>
-      </div>
-
-      <img
-        v-else
-        :class="block ? $style['image-block'] : $style.image"
-        :src="src"
-        :alt="alt"
-        @click="if (enableModal) isModalOpen = true;"
-        :style="{
-          '--cursor': enableModal ? 'zoom-in' : undefined,
-          '--margin-block': margin,
-        }"
-      />
     </transition>
+
+    <div
+      :class="$style['image-frame']"
+      :style="{
+        '--margin-block': margin,
+        aspectRatio: block ? '1200 / 630' : undefined,
+      }"
+    >
+      <transition
+        :enter-from-class="fadeStyle['fade-enter-from']"
+        :enter-active-class="fadeStyle['fade-enter-active']"
+        :enter-to-class="fadeStyle['fade-fast-enter-to']"
+        :leave-from-class="fadeStyle['fade-fast-leave-from']"
+        :leave-active-class="fadeStyle['fade-fast-leave-active']"
+        :leave-to-class="fadeStyle['fade-fast-leave-to']"
+      >
+        <div v-show="isLoading" :class="$style.fallback">
+          <elm-rectangle-wave />
+          <div>
+            <elm-dot-loading-icon />
+          </div>
+        </div>
+      </transition>
+
+      <transition
+        :enter-from-class="fadeStyle['fade-enter-from']"
+        :enter-active-class="fadeStyle['fade-enter-active']"
+        :enter-to-class="fadeStyle['fade-fast-enter-to']"
+        :leave-from-class="fadeStyle['fade-fast-leave-from']"
+        :leave-active-class="fadeStyle['fade-fast-leave-active']"
+        :leave-to-class="fadeStyle['fade-fast-leave-to']"
+      >
+        <img
+          :class="block ? $style['image-block'] : $style.image"
+          :src="src"
+          :alt="alt"
+          @click="if (enableModal) isModalOpen = true;"
+          @load="isLoaded = true"
+          @error="isLoaded = false"
+          :style="{
+            cursor: enableModal ? 'zoom-in' : undefined,
+            '--margin-block': margin,
+            opacity: isLoaded && !error ? 1 : 0,
+            transition: 'opacity 220ms ease',
+            pointerEvents: isLoaded && !error ? undefined : 'none',
+          }"
+        />
+      </transition>
+    </div>
 
     <transition
       :enter-from-class="fadeStyle['fade-enter-from']"
@@ -86,7 +111,7 @@
 <script setup lang="ts">
 import type { Property } from "csstype";
 
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import ElmRectangleWave from "../fallback/ElmRectangleWave.vue";
 import ElmDotLoadingIcon from "../icon/ElmDotLoadingIcon.vue";
 import { onKeyStroke, useImage, useIntersectionObserver } from "@vueuse/core";
@@ -128,6 +153,15 @@ const props = withDefaults(defineProps<ElmImageProps>(), {
 
 const { isLoading, error } = useImage({ src: props.src });
 
+const isLoaded = ref(false);
+// Reset loaded state when source changes
+watch(
+  () => props.src,
+  () => {
+    isLoaded.value = false;
+  }
+);
+
 const isModalOpen = ref(false);
 
 onKeyStroke("Escape", (e) => {
@@ -153,14 +187,6 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   transition: opacity 400ms;
 }
 
-.image {
-  display: block;
-  margin-block: var(--margin-block);
-  max-width: 100%;
-  max-height: 100vh;
-  cursor: var(--cursor);
-}
-
 .error {
   display: flex;
   justify-content: center;
@@ -173,27 +199,44 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   color: #c56565;
 }
 
-.fallback {
-  margin-block: var(--margin-block);
-  margin: 0;
-  padding: 0;
+.image-frame {
   position: relative;
   width: 100%;
-  z-index: 1;
+}
+
+.fallback {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
   display: flex;
   justify-content: center;
   align-items: center;
   aspect-ratio: 1200 / 630;
 }
 
+.image {
+  display: block;
+  margin-block: var(--margin-block);
+  max-width: 100%;
+  max-height: 100vh;
+  transition: opacity 220ms ease;
+  z-index: 0;
+}
+
 .image-block {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   overflow: hidden;
   border-radius: 0.25rem;
   box-shadow: 0 0 0.125rem rgba(black, 0.3);
-  display: block;
-  max-width: 100%;
-  max-height: 100vh;
-  cursor: var(--cursor);
+  z-index: 0;
+  transition: opacity 220ms ease;
 }
 
 .alt-container {
