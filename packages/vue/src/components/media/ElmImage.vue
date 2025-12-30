@@ -56,7 +56,7 @@
           @load="isLoaded = true"
           @error="isLoaded = false"
           :style="{
-            '--cursor': enableModal ? 'zoom-in' : undefined,
+            cursor: enableModal ? 'zoom-in' : undefined,
             '--margin-block': margin,
             opacity: isLoaded && !error ? 1 : 0,
             transition: 'opacity 220ms ease',
@@ -187,14 +187,6 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   transition: opacity 400ms;
 }
 
-.image {
-  display: block;
-  margin-block: var(--margin-block);
-  max-width: 100%;
-  max-height: 100vh;
-  cursor: var(--cursor);
-}
-
 .error {
   display: flex;
   justify-content: center;
@@ -213,7 +205,6 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 }
 
 .fallback {
-  /* overlay fallback that covers the frame while loading */
   position: absolute;
   top: 0;
   left: 0;
@@ -226,19 +217,16 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   aspect-ratio: 1200 / 630;
 }
 
-/* Ensure images are underneath the fallback while loading and animate opacity */
 .image {
   display: block;
   margin-block: var(--margin-block);
   max-width: 100%;
   max-height: 100vh;
-  cursor: var(--cursor);
   transition: opacity 220ms ease;
   z-index: 0;
 }
 
 .image-block {
-  /* fill the frame for block images so fallback can overlay it */
   position: absolute;
   inset: 0;
   width: 100%;
