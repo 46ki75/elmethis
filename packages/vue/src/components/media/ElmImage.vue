@@ -21,7 +21,6 @@
       :class="$style['image-frame']"
       :style="{
         '--margin-block': margin,
-        aspectRatio: block ? '1200 / 630' : undefined,
       }"
     >
       <transition
@@ -202,6 +201,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 .image-frame {
   position: relative;
   width: 100%;
+  aspect-ratio: 1200 / 630;
 }
 
 .fallback {

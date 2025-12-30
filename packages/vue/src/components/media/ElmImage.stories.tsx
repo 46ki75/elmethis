@@ -15,7 +15,16 @@ const meta: Meta<typeof ElmImage> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {};
+export const Primary: Story = {
+  render: (args) => ({
+    components: { ElmImage },
+    setup() {
+      return { args };
+    },
+    template:
+      '<ElmImage v-bind="args" /><div>Some text below the image to demonstrate block display.</div>',
+  }),
+};
 
 export const Svg: Story = {
   args: {
