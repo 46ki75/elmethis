@@ -52,14 +52,12 @@
           :src="src"
           :alt="alt"
           @click="if (enableModal) isModalOpen = true;"
-          @load="isLoaded = true"
-          @error="isLoaded = false"
           :style="{
             cursor: enableModal ? 'zoom-in' : undefined,
             '--margin-block': margin,
-            opacity: isLoaded && !error ? 1 : 0,
+            opacity: !isLoading && !error ? 1 : 0,
             transition: 'opacity 220ms ease',
-            pointerEvents: isLoaded && !error ? undefined : 'none',
+            pointerEvents: !isLoading && !error ? undefined : 'none',
           }"
         />
       </transition>
@@ -110,7 +108,7 @@
 <script setup lang="ts">
 import type { Property } from "csstype";
 
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import ElmRectangleWave from "../fallback/ElmRectangleWave.vue";
 import ElmDotLoadingIcon from "../icon/ElmDotLoadingIcon.vue";
 import { onKeyStroke, useImage, useIntersectionObserver } from "@vueuse/core";
@@ -151,15 +149,6 @@ const props = withDefaults(defineProps<ElmImageProps>(), {
 });
 
 const { isLoading, error } = useImage({ src: props.src });
-
-const isLoaded = ref(false);
-// Reset loaded state when source changes
-watch(
-  () => props.src,
-  () => {
-    isLoaded.value = false;
-  }
-);
 
 const isModalOpen = ref(false);
 
