@@ -36,7 +36,7 @@
     "mermaid": "^11.12.2",
     "nanoid": "^5.1.6",
     "polished": "^4.3.1",
-    "shiki": "^3.20.0"
+    "shiki": "^3.21.0"
   },
   "devDependencies": {
     "@ag-ui/core": "^0.0.42",
