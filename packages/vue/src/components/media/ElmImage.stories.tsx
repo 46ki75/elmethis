@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import ElmImage from "./ElmImage.vue";
 
+import landscape from "../../assets/images/lamdscape.svg?url";
+import portrait from "../../assets/images/portrait.svg?url";
+import square from "../../assets/images/square.svg?url";
+
 const meta: Meta<typeof ElmImage> = {
   title: "Components/Media/ElmImage",
   component: ElmImage,
@@ -43,5 +47,23 @@ export const LongAlt: Story = {
 export const Invalid: Story = {
   args: {
     src: "invalid",
+  },
+};
+
+export const Landscape: Story = {
+  args: {
+    src: landscape,
+  },
+};
+
+export const Portrait: Story = {
+  args: {
+    src: portrait,
+  },
+};
+
+export const Square: Story = {
+  args: {
+    src: square,
   },
 };
