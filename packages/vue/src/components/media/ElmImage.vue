@@ -183,7 +183,6 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 .wrapper {
   width: 100%;
   opacity: var(--opacity);
-  transition: opacity 400ms;
 }
 
 .error {
@@ -203,7 +202,9 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   width: 100%;
   display: grid;
   place-items: center;
-  transition: grid 200ms;
+  transition:
+    grid 200ms,
+    opacity 200ms;
 }
 
 .fallback {
