@@ -83,7 +83,7 @@
       >
         <ElmMdiIcon
           :d="mdiMessageImageOutline"
-          color="#6987b8"
+          color="#b69545"
           style="flex-shrink: 0"
         />
         <div :class="$style['alt-text']">
