@@ -234,6 +234,9 @@ importers:
       '@vueuse/core':
         specifier: ^14.1.0
         version: 14.1.0(vue@3.5.26(typescript@5.9.3))
+      fuse.js:
+        specifier: ^7.1.0
+        version: 7.1.0
       katex:
         specifier: ^0.16.27
         version: 0.16.27
