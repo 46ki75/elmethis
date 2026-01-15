@@ -213,6 +213,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 }
 
 .fallback {
+  min-height: 8rem;
   max-width: 100%;
   z-index: 2;
   display: flex;
@@ -226,8 +227,9 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   grid-area: 1 / 1;
   transition: opacity 200ms ease 100ms;
   z-index: 0;
-  width: clamp(auto, var(--width, auto), 100%);
-  height: clamp(auto, var(--height, auto), 100vh);
+  width: var(--width, auto);
+  max-width: 100%;
+  height: var(--height, auto);
 }
 
 .image-inline {
