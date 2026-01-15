@@ -136,6 +136,9 @@ export { default as ElmColorSample } from "./components/others/ElmColorSample.vu
 export type { ElmColorTableProps } from "./components/others/ElmColorTable.vue";
 export { default as ElmColorTable } from "./components/others/ElmColorTable.vue";
 
+export type { ElmCommandPaletteProps } from "./components/others/ElmCommandPalette.vue";
+export { default as ElmCommandPalette } from "./components/others/ElmCommandPalette.vue";
+
 export type { ElmJsonComponentRendererProps } from "./components/others/ElmJsonComponentRenderer.vue";
 export { default as ElmJsonComponentRenderer } from "./components/others/ElmJsonComponentRenderer.vue";
 

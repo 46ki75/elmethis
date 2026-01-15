@@ -36,6 +36,7 @@ export default defineConfig({
         "shiki",
         "mermaid",
         "marked",
+        "fuse.js",
       ],
       output: {
         preserveModules: true,
