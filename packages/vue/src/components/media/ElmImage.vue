@@ -56,8 +56,10 @@
         :height="height"
         @click="if (enableModal) isModalOpen = true;"
         :style="{
-          cursor: enableModal ? 'zoom-in' : undefined,
           '--margin-block': margin,
+          '--width': width && `${width}px`,
+          '--height': width && `${height}px`,
+          cursor: enableModal ? 'zoom-in' : undefined,
           opacity: !isLoading && !error ? 1 : 0,
           transition: 'opacity 220ms ease',
           pointerEvents: !isLoading && !error ? undefined : 'none',
@@ -224,10 +226,8 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   grid-area: 1 / 1;
   transition: opacity 220ms ease;
   z-index: 0;
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: 100vh;
+  width: clamp(auto, var(--width, auto), 100%);
+  height: clamp(auto, var(--height, auto), 100vh);
 }
 
 .image-inline {
