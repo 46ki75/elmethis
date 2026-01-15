@@ -53,6 +53,7 @@ export const Invalid: Story = {
 export const Landscape: Story = {
   args: {
     src: landscape,
+    alt: "A landscape image",
     width: 400,
     height: 100,
   },
@@ -61,6 +62,7 @@ export const Landscape: Story = {
 export const Portrait: Story = {
   args: {
     src: portrait,
+    alt: "A portrait image",
     width: 200,
     height: 100,
   },
@@ -69,6 +71,7 @@ export const Portrait: Story = {
 export const Square: Story = {
   args: {
     src: square,
+    alt: "A square image",
     width: 200,
     height: 200,
   },
