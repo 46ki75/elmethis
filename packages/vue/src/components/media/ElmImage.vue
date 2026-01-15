@@ -1,6 +1,7 @@
 <template>
   <div :class="$style.wrapper" ref="target">
     <transition
+      mode="out-in"
       :enter-from-class="fadeStyle['fade-enter-from']"
       :enter-active-class="fadeStyle['fade-enter-active']"
       :enter-to-class="fadeStyle['fade-fast-enter-to']"
@@ -8,7 +9,7 @@
       :leave-active-class="fadeStyle['fade-fast-leave-active']"
       :leave-to-class="fadeStyle['fade-fast-leave-to']"
     >
-      <div v-show="error" :class="$style.error">
+      <div v-if="error" :class="$style.error">
         <ElmInlineText
           text="Error loading image"
           color="#c56565"
@@ -24,6 +25,7 @@
       }"
     >
       <transition
+        mode="out-in"
         :enter-from-class="fadeStyle['fade-enter-from']"
         :enter-active-class="fadeStyle['fade-enter-active']"
         :enter-to-class="fadeStyle['fade-fast-enter-to']"
@@ -31,7 +33,16 @@
         :leave-active-class="fadeStyle['fade-fast-leave-active']"
         :leave-to-class="fadeStyle['fade-fast-leave-to']"
       >
-        <div v-show="isLoading" :class="$style.fallback">
+        <div
+          v-if="isLoading"
+          :class="$style.fallback"
+          :style="{
+            'aspect-ratio':
+              width && height ? `${width} / ${height}` : '1200 / 630',
+            width: width && `${width}px`,
+            height: height && `${height}px`,
+          }"
+        >
           <elm-rectangle-wave />
           <div>
             <elm-dot-loading-icon />
@@ -39,31 +50,26 @@
         </div>
       </transition>
 
-      <transition
-        :enter-from-class="fadeStyle['fade-enter-from']"
-        :enter-active-class="fadeStyle['fade-enter-active']"
-        :enter-to-class="fadeStyle['fade-fast-enter-to']"
-        :leave-from-class="fadeStyle['fade-fast-leave-from']"
-        :leave-active-class="fadeStyle['fade-fast-leave-active']"
-        :leave-to-class="fadeStyle['fade-fast-leave-to']"
-      >
-        <img
-          :class="block ? $style['image-block'] : $style.image"
-          :src="src"
-          :alt="alt"
-          @click="if (enableModal) isModalOpen = true;"
-          :style="{
-            cursor: enableModal ? 'zoom-in' : undefined,
-            '--margin-block': margin,
-            opacity: !isLoading && !error ? 1 : 0,
-            transition: 'opacity 220ms ease',
-            pointerEvents: !isLoading && !error ? undefined : 'none',
-          }"
-        />
-      </transition>
+      <img
+        :class="block ? $style['image-block'] : $style['image-inline']"
+        :src="src"
+        :alt="alt"
+        :width="width"
+        :height="height"
+        @click="if (enableModal) isModalOpen = true;"
+        :style="{
+          '--margin-block': margin,
+          '--width': width && `${width}px`,
+          '--height': width && `${height}px`,
+          cursor: enableModal ? 'zoom-in' : undefined,
+          opacity: !isLoading && !error ? 1 : 0,
+          pointerEvents: !isLoading && !error ? undefined : 'none',
+        }"
+      />
     </div>
 
     <transition
+      mode="out-in"
       :enter-from-class="fadeStyle['fade-enter-from']"
       :enter-active-class="fadeStyle['fade-enter-active']"
       :enter-to-class="fadeStyle['fade-enter-to']"
@@ -77,7 +83,7 @@
       >
         <ElmMdiIcon
           :d="mdiMessageImageOutline"
-          color="#6987b8"
+          color="#b69545"
           style="flex-shrink: 0"
         />
         <div :class="$style['alt-text']">
@@ -87,6 +93,7 @@
     </transition>
 
     <transition
+      mode="out-in"
       :enter-from-class="fadeStyle['fade-enter-from']"
       :enter-active-class="fadeStyle['fade-enter-active']"
       :enter-to-class="fadeStyle['fade-enter-to']"
@@ -99,7 +106,13 @@
         :class="$style.modal"
         @click="isModalOpen = false"
       >
-        <img :class="$style['modal-image']" :src="src" :alt="alt" />
+        <img
+          :class="$style['modal-image']"
+          :src="src"
+          :alt="alt"
+          :width="width"
+          :height="height"
+        />
       </div>
     </transition>
   </div>
@@ -141,6 +154,10 @@ export interface ElmImageProps {
    * The margin of the image.
    */
   margin?: Property.MarginBlock;
+
+  width?: number;
+
+  height?: number;
 }
 
 const props = withDefaults(defineProps<ElmImageProps>(), {
@@ -167,12 +184,12 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 
 <style module lang="scss">
 .wrapper {
-  width: 100%;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
+  flex-direction: column;
+  width: 100%;
   opacity: var(--opacity);
-  transition: opacity 400ms;
 }
 
 .error {
@@ -190,42 +207,42 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 .image-frame {
   position: relative;
   width: 100%;
-  aspect-ratio: 1200 / 630;
+  display: grid;
+  place-items: center;
+  transition: opacity 200ms;
 }
 
 .fallback {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  min-height: 8rem;
+  max-width: 100%;
   z-index: 2;
   display: flex;
   justify-content: center;
   align-items: center;
-  aspect-ratio: 1200 / 630;
+  grid-area: 1 / 1;
 }
 
-.image {
+%image {
   display: block;
-  margin-block: var(--margin-block);
-  max-width: 100%;
-  max-height: 100vh;
-  transition: opacity 220ms ease;
+  grid-area: 1 / 1;
+  transition: opacity 200ms ease 100ms;
   z-index: 0;
+  width: var(--width, auto);
+  max-width: 100%;
+  height: var(--height, auto);
+}
+
+.image-inline {
+  @extend %image;
+
+  margin-block: var(--margin-block, 0);
 }
 
 .image-block {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  overflow: hidden;
+  @extend %image;
+
   border-radius: 0.25rem;
   box-shadow: 0 0 0.125rem rgba(black, 0.3);
-  z-index: 0;
-  transition: opacity 220ms ease;
 }
 
 .alt-container {
