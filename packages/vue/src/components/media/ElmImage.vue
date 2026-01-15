@@ -224,21 +224,21 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   grid-area: 1 / 1;
   transition: opacity 220ms ease;
   z-index: 0;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100vh;
 }
 
 .image-inline {
   @extend %image;
 
   margin-block: var(--margin-block, 0);
-  max-width: 100%;
-  max-height: 100vh;
 }
 
 .image-block {
   @extend %image;
 
-  width: 100%;
-  height: 100%;
   border-radius: 0.25rem;
   box-shadow: 0 0 0.125rem rgba(black, 0.3);
 }

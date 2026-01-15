@@ -53,17 +53,23 @@ export const Invalid: Story = {
 export const Landscape: Story = {
   args: {
     src: landscape,
+    width: 2000,
+    height: 500,
   },
 };
 
 export const Portrait: Story = {
   args: {
     src: portrait,
+    width: 500,
+    height: 1000,
   },
 };
 
 export const Square: Story = {
   args: {
     src: square,
+    width: 500,
+    height: 500,
   },
 };
