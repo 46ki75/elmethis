@@ -199,25 +199,28 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   grid-area: 1 / 1;
 }
 
-.image {
+@mixin image {
   display: block;
-  margin-block: var(--margin-block);
-  max-width: 100%;
-  max-height: 100vh;
+  grid-area: 1 / 1;
   transition: opacity 220ms ease;
   z-index: 0;
-  grid-area: 1 / 1;
+}
+
+.image {
+  @include image;
+
+  margin-block: var(--margin-block, 0);
+  max-width: 100%;
+  max-height: 100vh;
 }
 
 .image-block {
-  display: block;
+  @include image;
+
   width: 100%;
   height: 100%;
   border-radius: 0.25rem;
   box-shadow: 0 0 0.125rem rgba(black, 0.3);
-  z-index: 0;
-  transition: opacity 220ms ease;
-  grid-area: 1 / 1;
 }
 
 .alt-container {
