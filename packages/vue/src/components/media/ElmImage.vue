@@ -39,6 +39,8 @@
           :style="{
             'aspect-ratio':
               width && height ? `${width} / ${height}` : '1200 / 630',
+            width: width && `${width}px`,
+            height: height && `${height}px`,
           }"
         >
           <elm-rectangle-wave />
@@ -61,7 +63,6 @@
           '--height': width && `${height}px`,
           cursor: enableModal ? 'zoom-in' : undefined,
           opacity: !isLoading && !error ? 1 : 0,
-          transition: 'opacity 220ms ease',
           pointerEvents: !isLoading && !error ? undefined : 'none',
         }"
       />
@@ -208,10 +209,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 }
 
 .fallback {
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  max-width: 100%;
   z-index: 2;
   display: flex;
   justify-content: center;
@@ -222,7 +220,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 %image {
   display: block;
   grid-area: 1 / 1;
-  transition: opacity 220ms ease;
+  transition: opacity 200ms ease 100ms;
   z-index: 0;
   width: clamp(auto, var(--width, auto), 100%);
   height: clamp(auto, var(--height, auto), 100vh);
