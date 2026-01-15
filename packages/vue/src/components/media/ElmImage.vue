@@ -33,7 +33,14 @@
         :leave-active-class="fadeStyle['fade-fast-leave-active']"
         :leave-to-class="fadeStyle['fade-fast-leave-to']"
       >
-        <div v-if="isLoading" :class="$style.fallback">
+        <div
+          v-if="isLoading"
+          :class="$style.fallback"
+          :style="{
+            'aspect-ratio':
+              width && height ? `${width} / ${height}` : '1200 / 630',
+          }"
+        >
           <elm-rectangle-wave />
           <div>
             <elm-dot-loading-icon />
@@ -45,6 +52,8 @@
         :class="block ? $style['image-block'] : $style['image-inline']"
         :src="src"
         :alt="alt"
+        :width="width"
+        :height="height"
         @click="if (enableModal) isModalOpen = true;"
         :style="{
           cursor: enableModal ? 'zoom-in' : undefined,
@@ -94,7 +103,13 @@
         :class="$style.modal"
         @click="isModalOpen = false"
       >
-        <img :class="$style['modal-image']" :src="src" :alt="alt" />
+        <img
+          :class="$style['modal-image']"
+          :src="src"
+          :alt="alt"
+          :width="width"
+          :height="height"
+        />
       </div>
     </transition>
   </div>
@@ -136,6 +151,10 @@ export interface ElmImageProps {
    * The margin of the image.
    */
   margin?: Property.MarginBlock;
+
+  width?: number;
+
+  height?: number;
 }
 
 const props = withDefaults(defineProps<ElmImageProps>(), {
@@ -196,7 +215,6 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   display: flex;
   justify-content: center;
   align-items: center;
-  aspect-ratio: 1200 / 630;
   grid-area: 1 / 1;
 }
 
