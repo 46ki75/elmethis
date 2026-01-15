@@ -42,7 +42,7 @@
       </transition>
 
       <img
-        :class="block ? $style['image-block'] : $style.image"
+        :class="block ? $style['image-block'] : $style['image-inline']"
         :src="src"
         :alt="alt"
         @click="if (enableModal) isModalOpen = true;"
@@ -206,7 +206,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   z-index: 0;
 }
 
-.image {
+.image-inline {
   @include image;
 
   margin-block: var(--margin-block, 0);
