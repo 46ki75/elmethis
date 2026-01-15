@@ -199,7 +199,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   grid-area: 1 / 1;
 }
 
-@mixin image {
+%image {
   display: block;
   grid-area: 1 / 1;
   transition: opacity 220ms ease;
@@ -207,7 +207,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 }
 
 .image-inline {
-  @include image;
+  @extend %image;
 
   margin-block: var(--margin-block, 0);
   max-width: 100%;
@@ -215,7 +215,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
 }
 
 .image-block {
-  @include image;
+  @extend %image;
 
   width: 100%;
   height: 100%;
