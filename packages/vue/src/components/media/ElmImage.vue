@@ -204,9 +204,7 @@ useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   width: 100%;
   display: grid;
   place-items: center;
-  transition:
-    grid 200ms,
-    opacity 200ms;
+  transition: opacity 200ms;
 }
 
 .fallback {
