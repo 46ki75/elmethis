@@ -73,7 +73,7 @@ const id = ref<number | undefined>();
 const handleClick = () => {
   if (!props.loading && !props.disabled && props.onClick) {
     clicked.value = true;
-    id.value = window.setTimeout(() => (clicked.value = false), 500);
+    id.value = window.setTimeout(() => (clicked.value = false), 300);
     props.onClick();
   }
 };
@@ -148,7 +148,8 @@ onUnmounted(() => {
 .enable {
   transition:
     opacity 200ms,
-    transform 200ms;
+    transform 100ms,
+    box-shadow 200ms;
 
   [data-theme="dark"] & {
     &:hover {
@@ -165,11 +166,13 @@ onUnmounted(() => {
   &:hover {
     transform: translateX(-1px) translateY(-1px);
     opacity: var(--opacity, 0.7);
+    box-shadow: 0.125rem 0.125rem 0.125rem rgba(gray, 0.25);
   }
 
   &:active {
     transform: translateX(1px) translateY(1px);
     opacity: var(--opacity, 0.5);
+    box-shadow: -1px -1px 0.125rem rgba(gray, 0.25);
   }
 }
 
@@ -206,7 +209,7 @@ onUnmounted(() => {
   opacity: 0;
 
   animation-name: button-ripple;
-  animation-duration: 500ms;
+  animation-duration: 300ms;
   animation-fill-mode: both;
   animation-timing-function: ease-out;
 }
