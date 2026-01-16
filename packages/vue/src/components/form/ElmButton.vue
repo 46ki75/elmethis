@@ -25,6 +25,8 @@
         <slot />
       </span>
     </transition>
+
+    <div :class="$style['button-ornament']"></div>
   </button>
 </template>
 
@@ -96,6 +98,8 @@ onUnmounted(() => {
   padding: 0.5rem 1.5rem;
   line-height: 1.5rem;
 
+  border: solid 2px rgba(#cdb57b, 0.5);
+
   user-select: none;
   cursor: pointer;
 
@@ -104,12 +108,17 @@ onUnmounted(() => {
     transform 200ms;
 
   opacity: var(--opacity);
+}
 
-  box-shadow: 0 0 0.125rem rgba(black, 0.2);
-
-  [data-theme="dark"] & {
-    box-shadow: 0 0 0.125rem rgba(black, 0.6);
-  }
+.button-ornament {
+  position: absolute;
+  content: "";
+  bottom: -1px;
+  right: -1px;
+  height: 1rem;
+  width: 1rem;
+  background-color: rgba(#cdb57b, 0.5);
+  clip-path: polygon(100% 0%, 1000% 100%, 0% 100%);
 }
 
 .normal {
