@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import ElmAgUiMessageUser from "./ElmAgUiMessageUser.vue";
 
 const meta: Meta<typeof ElmAgUiMessageUser> = {
-  title: "AG-UI/Message/ElmAgUiMessageUser",
+  title: "Components/AG-UI/Message/ElmAgUiMessageUser",
   component: ElmAgUiMessageUser,
   tags: ["autodocs"],
   args: {},
