@@ -16,7 +16,9 @@ const meta: Meta<typeof ElmButton> = {
   title: "Components/Form/ElmButton",
   component: ElmButton,
   tags: ["autodocs"],
-  args: {},
+  args: {
+    onClick: () => {},
+  },
   render: (args) => ({
     setup: () => ({
       args: { ...args, onClick: () => console.log("clicked") },
