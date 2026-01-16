@@ -98,7 +98,7 @@ onUnmounted(() => {
   padding: 0.5rem 1.5rem;
   line-height: 1.5rem;
 
-  border: solid 2px rgba(#cdb57b, 0.5);
+  border: solid 2px rgba(#dbcaa0, 0.6);
 
   user-select: none;
   cursor: pointer;
@@ -117,7 +117,7 @@ onUnmounted(() => {
   right: -1px;
   height: 1rem;
   width: 1rem;
-  background-color: rgba(#cdb57b, 0.5);
+  background-color: rgba(#dbcaa0, 0.6);
   clip-path: polygon(100% 0%, 1000% 100%, 0% 100%);
 }
 
