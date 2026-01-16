@@ -73,7 +73,7 @@ const id = ref<number | undefined>();
 const handleClick = () => {
   if (!props.loading && !props.disabled && props.onClick) {
     clicked.value = true;
-    id.value = window.setTimeout(() => (clicked.value = false), 300);
+    id.value = window.setTimeout(() => (clicked.value = false), 500);
     props.onClick();
   }
 };
@@ -181,12 +181,16 @@ onUnmounted(() => {
 }
 
 @keyframes button-ripple {
-  from {
+  0% {
     transform: scale(0);
     opacity: 1;
   }
-  to {
-    transform: scale(1.2);
+  50% {
+    transform: scale(1.5);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5);
     opacity: 0;
   }
 }
@@ -195,14 +199,14 @@ onUnmounted(() => {
   position: absolute;
   pointer-events: none;
   border-radius: 50%;
-  background-color: rgba(gray, 0.35);
+  background-color: rgba(#cdb57b, 0.15);
   width: 100%;
   aspect-ratio: 1 / 1;
   transition: none;
   opacity: 0;
 
   animation-name: button-ripple;
-  animation-duration: 300ms;
+  animation-duration: 500ms;
   animation-fill-mode: both;
   animation-timing-function: ease-out;
 }
