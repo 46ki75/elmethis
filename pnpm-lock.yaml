@@ -58,55 +58,6 @@ importers:
         specifier: ^3.2.2
         version: 3.2.2(typescript@5.9.3)
 
-  packages/command-palette:
-    dependencies:
-      '@vueuse/core':
-        specifier: ^14.1.0
-        version: 14.1.0(vue@3.5.26(typescript@5.9.3))
-      fuse.js:
-        specifier: ^7.1.0
-        version: 7.1.0
-      polished:
-        specifier: ^4.3.1
-        version: 4.3.1
-      vue:
-        specifier: ^3.4.0
-        version: 3.5.26(typescript@5.9.3)
-    devDependencies:
-      '@elmethis/core':
-        specifier: ^0.8.0
-        version: 0.8.0(vue@3.5.26(typescript@5.9.3))
-      '@mdi/js':
-        specifier: ^7.4.47
-        version: 7.4.47
-      '@storybook/vue3-vite':
-        specifier: 10.1.11
-        version: 10.1.11(esbuild@0.27.2)(rollup@4.55.1)(storybook@10.1.11(@testing-library/dom@10.4.0)(prettier@3.3.3)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(vite@7.3.1(@types/node@25.0.8)(jiti@2.4.2)(sass@1.97.2)(terser@5.39.0)(tsx@4.19.3))(vue@3.5.26(typescript@5.9.3))
-      '@vitejs/plugin-vue':
-        specifier: ^6.0.3
-        version: 6.0.3(vite@7.3.1(@types/node@25.0.8)(jiti@2.4.2)(sass@1.97.2)(terser@5.39.0)(tsx@4.19.3))(vue@3.5.26(typescript@5.9.3))
-      postcss:
-        specifier: ^8.5.6
-        version: 8.5.6
-      postcss-preset-env:
-        specifier: ^11.1.1
-        version: 11.1.1(postcss@8.5.6)
-      sass:
-        specifier: ^1.97.2
-        version: 1.97.2
-      vite:
-        specifier: ^7.3.1
-        version: 7.3.1(@types/node@25.0.8)(jiti@2.4.2)(sass@1.97.2)(terser@5.39.0)(tsx@4.19.3)
-      vite-plugin-css-injected-by-js:
-        specifier: ^3.5.2
-        version: 3.5.2(vite@7.3.1(@types/node@25.0.8)(jiti@2.4.2)(sass@1.97.2)(terser@5.39.0)(tsx@4.19.3))
-      vite-plugin-dts:
-        specifier: ^4.5.4
-        version: 4.5.4(@types/node@25.0.8)(rollup@4.55.1)(typescript@5.9.3)(vite@7.3.1(@types/node@25.0.8)(jiti@2.4.2)(sass@1.97.2)(terser@5.39.0)(tsx@4.19.3))
-      vue-tsc:
-        specifier: ^3.2.2
-        version: 3.2.2(typescript@5.9.3)
-
   packages/react:
     dependencies:
       '@mdi/js':
@@ -268,6 +219,9 @@ importers:
       '@notionhq/client':
         specifier: ^5.6.0
         version: 5.6.0
+      '@storybook/addon-docs':
+        specifier: ^10.1.11
+        version: 10.1.11(@types/react@19.2.8)(esbuild@0.27.2)(rollup@4.55.1)(storybook@10.1.11(@testing-library/dom@10.4.0)(prettier@3.3.3)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(vite@7.3.1(@types/node@25.0.8)(jiti@2.4.2)(sass@1.97.2)(terser@5.39.0)(tsx@4.19.3))
       '@storybook/vue3-vite':
         specifier: 10.1.11
         version: 10.1.11(esbuild@0.27.2)(rollup@4.55.1)(storybook@10.1.11(@testing-library/dom@10.4.0)(prettier@3.3.3)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(vite@7.3.1(@types/node@25.0.8)(jiti@2.4.2)(sass@1.97.2)(terser@5.39.0)(tsx@4.19.3))(vue@3.5.26(typescript@5.9.3))
@@ -286,6 +240,9 @@ importers:
       '@vitejs/plugin-vue':
         specifier: ^6.0.3
         version: 6.0.3(vite@7.3.1(@types/node@25.0.8)(jiti@2.4.2)(sass@1.97.2)(terser@5.39.0)(tsx@4.19.3))(vue@3.5.26(typescript@5.9.3))
+      '@vue/tsconfig':
+        specifier: ^0.8.1
+        version: 0.8.1(typescript@5.9.3)(vue@3.5.26(typescript@5.9.3))
       csstype:
         specifier: ^3.2.3
         version: 3.2.3
@@ -304,6 +261,12 @@ importers:
       sass:
         specifier: ^1.97.2
         version: 1.97.2
+      storybook:
+        specifier: ^10.1.11
+        version: 10.1.11(@testing-library/dom@10.4.0)(prettier@3.3.3)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
       vite:
         specifier: ^7.3.1
         version: 7.3.1(@types/node@25.0.8)(jiti@2.4.2)(sass@1.97.2)(terser@5.39.0)(tsx@4.19.3)
