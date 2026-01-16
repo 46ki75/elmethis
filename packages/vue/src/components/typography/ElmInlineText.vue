@@ -200,11 +200,29 @@ const render = () => {
   }
 
   if (props.strikethrough) {
-    vnode = h("del", {}, vnode);
+    vnode = h(
+      "del",
+      {
+        class: style.del,
+        style: {
+          "--color": props.color ?? backgroundColor,
+        },
+      },
+      vnode
+    );
   }
 
   if (props.italic) {
-    vnode = h("em", {}, vnode);
+    vnode = h(
+      "em",
+      {
+        class: style.em,
+        style: {
+          "--color": props.color ?? backgroundColor,
+        },
+      },
+      vnode
+    );
   }
 
   if (props.underline) {
@@ -247,6 +265,14 @@ const render = () => {
   line-height: var(--font-size, 1em);
   background-color: var(--background-color);
   transition: color 200ms;
+}
+
+.del {
+  text-decoration-color: var(--color);
+}
+
+.em {
+  text-decoration-color: var(--color);
 }
 
 .code {
