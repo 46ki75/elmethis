@@ -13,7 +13,7 @@
       display: block ? 'flex' : 'inline-flex',
       width: block ? '100%' : 'auto',
       cursor: disabled ? 'not-allowed' : loading ? 'progress' : 'pointer',
-      '--opacity': disabled ? 0.6 : undefined,
+      '--opacity': disabled || loading ? 0.6 : undefined,
       '--color': color,
     }"
     @click="handleClick"
