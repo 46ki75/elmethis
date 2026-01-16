@@ -189,11 +189,11 @@ onUnmounted(() => {
     opacity: 1;
   }
   50% {
-    transform: scale(1.5);
+    transform: scale(1.2);
     opacity: 1;
   }
   100% {
-    transform: scale(1.5);
+    transform: scale(1.2);
     opacity: 0;
   }
 }
