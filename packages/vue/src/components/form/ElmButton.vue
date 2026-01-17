@@ -13,7 +13,7 @@
       display: block ? 'flex' : 'inline-flex',
       width: block ? '100%' : 'auto',
       cursor: disabled ? 'not-allowed' : loading ? 'progress' : 'pointer',
-      '--opacity': disabled ? 0.6 : undefined,
+      '--opacity': disabled || loading ? 0.6 : undefined,
       '--color': color,
     }"
     @click="handleClick"
@@ -25,6 +25,8 @@
         <slot />
       </span>
     </transition>
+
+    <div :class="$style['button-ornament']"></div>
   </button>
 </template>
 
@@ -96,6 +98,8 @@ onUnmounted(() => {
   padding: 0.5rem 1.5rem;
   line-height: 1.5rem;
 
+  border: solid 2px rgba(#dbcaa0, 0.6);
+
   user-select: none;
   cursor: pointer;
 
@@ -104,12 +108,17 @@ onUnmounted(() => {
     transform 200ms;
 
   opacity: var(--opacity);
+}
 
-  box-shadow: 0 0 0.125rem rgba(black, 0.2);
-
-  [data-theme="dark"] & {
-    box-shadow: 0 0 0.125rem rgba(black, 0.6);
-  }
+.button-ornament {
+  position: absolute;
+  content: "";
+  bottom: -1px;
+  right: -1px;
+  height: 1rem;
+  width: 1rem;
+  background-color: rgba(#dbcaa0, 0.6);
+  clip-path: polygon(100% 0%, 1000% 100%, 0% 100%);
 }
 
 .normal {
@@ -139,7 +148,8 @@ onUnmounted(() => {
 .enable {
   transition:
     opacity 200ms,
-    transform 200ms;
+    transform 100ms,
+    box-shadow 200ms;
 
   [data-theme="dark"] & {
     &:hover {
@@ -156,11 +166,13 @@ onUnmounted(() => {
   &:hover {
     transform: translateX(-1px) translateY(-1px);
     opacity: var(--opacity, 0.7);
+    box-shadow: 0.125rem 0.125rem 0.125rem rgba(gray, 0.25);
   }
 
   &:active {
     transform: translateX(1px) translateY(1px);
     opacity: var(--opacity, 0.5);
+    box-shadow: -1px -1px 0.125rem rgba(gray, 0.25);
   }
 }
 
@@ -172,11 +184,15 @@ onUnmounted(() => {
 }
 
 @keyframes button-ripple {
-  from {
+  0% {
     transform: scale(0);
     opacity: 1;
   }
-  to {
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
     transform: scale(1.2);
     opacity: 0;
   }
@@ -186,7 +202,7 @@ onUnmounted(() => {
   position: absolute;
   pointer-events: none;
   border-radius: 50%;
-  background-color: rgba(gray, 0.35);
+  background-color: rgba(#cdb57b, 0.15);
   width: 100%;
   aspect-ratio: 1 / 1;
   transition: none;
