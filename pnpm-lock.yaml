@@ -217,8 +217,8 @@ importers:
         specifier: ^0.0.43
         version: 0.0.43
       '@notionhq/client':
-        specifier: ^5.7.0
-        version: 5.7.0
+        specifier: ^5.8.0
+        version: 5.8.0
       '@storybook/addon-docs':
         specifier: ^10.2.0
         version: 10.2.0(@types/react@19.2.9)(esbuild@0.27.2)(rollup@4.55.1)(storybook@10.2.0(@testing-library/dom@10.4.0)(prettier@3.3.3)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(vite@7.3.1(@types/node@25.0.10)(jiti@2.4.2)(sass@1.97.3)(terser@5.39.0)(tsx@4.19.3))
@@ -1222,8 +1222,8 @@ packages:
   '@microsoft/tsdoc@0.15.1':
     resolution: {integrity: sha512-4aErSrCR/On/e5G2hDP0wjooqDdauzEbIq8hIkIe5pXV0rtWJZvdCEKL0ykZxex+IxIwBp0eGeV48hQN07dXtw==}
 
-  '@notionhq/client@5.7.0':
-    resolution: {integrity: sha512-On/GI10lJRLSrzU3h/cDl1Oe15qywYrEvyV3KlE4UgtzqMjlPzXG31B7zHjGc/tTgoY8eD3JS4CWlcD64NBmaQ==}
+  '@notionhq/client@5.8.0':
+    resolution: {integrity: sha512-CcmZ+wVDYVFmfCIjoU50x/9j8uhRPF8u23FbEQJhT1ACwn3dbCl6GRN+JMMyQmuVLJlMF7ckpPehDgmprbFtDw==}
     engines: {node: '>=18'}
 
   '@parcel/watcher-android-arm64@2.5.4':
@@ -3908,8 +3908,8 @@ packages:
   vue-component-type-helpers@2.2.12:
     resolution: {integrity: sha512-YbGqHZ5/eW4SnkPNR44mKVc6ZKQoRs/Rux1sxC6rdwXb4qpbOSYfDr9DsTHolOTGmIKgM9j141mZbBeg05R1pw==}
 
-  vue-component-type-helpers@3.2.3:
-    resolution: {integrity: sha512-lpJTa8a+12Cgy/n5OdlQTzQhSWOCu+6zQoNFbl3KYxwAoB95mYIgMLKEYMvQykPJ2ucBDjJJISdIBHc1d9Hd3w==}
+  vue-component-type-helpers@3.2.4:
+    resolution: {integrity: sha512-05lR16HeZDcDpB23ku5b5f1fBOoHqFnMiKRr2CiEvbG5Ux4Yi0McmQBOET0dR0nxDXosxyVqv67q6CzS3AK8rw==}
 
   vue-docgen-api@4.79.2:
     resolution: {integrity: sha512-n9ENAcs+40awPZMsas7STqjkZiVlIjxIKgiJr5rSohDP0/JCrD9VtlzNojafsA1MChm/hz2h3PDtUedx3lbgfA==}
@@ -4918,7 +4918,7 @@ snapshots:
 
   '@microsoft/tsdoc@0.15.1': {}
 
-  '@notionhq/client@5.7.0': {}
+  '@notionhq/client@5.8.0': {}
 
   '@parcel/watcher-android-arm64@2.5.4':
     optional: true
@@ -5283,7 +5283,7 @@ snapshots:
       storybook: 10.2.0(@testing-library/dom@10.4.0)(prettier@3.3.3)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       type-fest: 2.19.0
       vue: 3.5.26(typescript@5.9.3)
-      vue-component-type-helpers: 3.2.3
+      vue-component-type-helpers: 3.2.4
 
   '@testing-library/dom@10.4.0':
     dependencies:
@@ -7928,7 +7928,7 @@ snapshots:
 
   vue-component-type-helpers@2.2.12: {}
 
-  vue-component-type-helpers@3.2.3: {}
+  vue-component-type-helpers@3.2.4: {}
 
   vue-docgen-api@4.79.2(vue@3.5.26(typescript@5.9.3)):
     dependencies:
