@@ -217,8 +217,8 @@ importers:
         specifier: ^0.0.43
         version: 0.0.43
       '@notionhq/client':
-        specifier: ^5.7.0
-        version: 5.7.0
+        specifier: ^5.8.0
+        version: 5.8.0
       '@storybook/addon-docs':
         specifier: ^10.2.0
         version: 10.2.0(@types/react@19.2.9)(esbuild@0.27.2)(rollup@4.55.1)(storybook@10.2.0(@testing-library/dom@10.4.0)(prettier@3.3.3)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(vite@7.3.1(@types/node@25.0.10)(jiti@2.4.2)(sass@1.97.3)(terser@5.39.0)(tsx@4.19.3))
@@ -1222,8 +1222,8 @@ packages:
   '@microsoft/tsdoc@0.15.1':
     resolution: {integrity: sha512-4aErSrCR/On/e5G2hDP0wjooqDdauzEbIq8hIkIe5pXV0rtWJZvdCEKL0ykZxex+IxIwBp0eGeV48hQN07dXtw==}
 
-  '@notionhq/client@5.7.0':
-    resolution: {integrity: sha512-On/GI10lJRLSrzU3h/cDl1Oe15qywYrEvyV3KlE4UgtzqMjlPzXG31B7zHjGc/tTgoY8eD3JS4CWlcD64NBmaQ==}
+  '@notionhq/client@5.8.0':
+    resolution: {integrity: sha512-CcmZ+wVDYVFmfCIjoU50x/9j8uhRPF8u23FbEQJhT1ACwn3dbCl6GRN+JMMyQmuVLJlMF7ckpPehDgmprbFtDw==}
     engines: {node: '>=18'}
 
   '@parcel/watcher-android-arm64@2.5.4':
@@ -4918,7 +4918,7 @@ snapshots:
 
   '@microsoft/tsdoc@0.15.1': {}
 
-  '@notionhq/client@5.7.0': {}
+  '@notionhq/client@5.8.0': {}
 
   '@parcel/watcher-android-arm64@2.5.4':
     optional: true
