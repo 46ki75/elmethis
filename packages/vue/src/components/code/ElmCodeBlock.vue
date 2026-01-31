@@ -15,7 +15,7 @@
         </span>
       </div>
 
-      <div ref="tooltipRef" :class="$style.header__right">
+      <div :class="$style.header__right">
         <ElmMdiIcon
           size="1.25em"
           :d="
@@ -34,29 +34,8 @@
               ? 'mdi:clipboard-check-multiple-outline'
               : 'mdi:clipboard-multiple-outline'
           "
+          :color="copied ? '#b69545' : undefined"
         />
-
-        <transition>
-          <div v-if="copied" :class="$style.tooltip">
-            <ElmMdiIcon
-              size="1.25em"
-              :d="mdiClipboardCheckMultipleOutline"
-              :class="$style['tooltip-check-icon']"
-              color="#449763"
-            />
-            <ElmInlineText text="Copied to Clipboard!" />
-          </div>
-
-          <div v-else-if="isHovered && !copied" :class="$style.tooltip">
-            <ElmMdiIcon
-              size="1.25em"
-              :d="mdiClipboardMultipleOutline"
-              :class="$style['tooltip-check-icon']"
-              color="#4c6da2"
-            />
-            <ElmInlineText text="Copy to Clipboard" />
-          </div>
-        </transition>
       </div>
     </div>
 
@@ -84,14 +63,10 @@ import ElmLanguageIcon from "../icon/ElmLanguageIcon.vue";
 import ElmInlineText from "../typography/ElmInlineText.vue";
 import ElmDotLoadingIcon from "../icon/ElmDotLoadingIcon.vue";
 
-import {
-  useClipboard,
-  useIntersectionObserver,
-  useElementHover,
-} from "@vueuse/core";
+import { useClipboard, useIntersectionObserver } from "@vueuse/core";
 
 import type { Property } from "csstype";
-import { h, ref, useTemplateRef, VNode } from "vue";
+import { h, ref, VNode } from "vue";
 
 import {
   mdiClipboardMultipleOutline,
@@ -137,9 +112,6 @@ const targetIsVisible = ref(false);
 useIntersectionObserver(target, ([{ isIntersecting }], _) => {
   targetIsVisible.value = isIntersecting;
 });
-
-const tooltipElement = useTemplateRef<HTMLButtonElement>("tooltipRef");
-const isHovered = useElementHover(tooltipElement);
 
 const slots = defineSlots<{
   default?: () => VNode[];
@@ -264,19 +236,6 @@ const renderCaption = (): VNode | VNode[] => {
   align-items: center;
   transition: opacity 200ms;
   pointer-events: none;
-}
-
-.tooltip {
-  position: absolute;
-  bottom: -2.5rem;
-  right: 0;
-  display: flex;
-  flex-wrap: none;
-  justify-content: center;
-  align-items: center;
-  gap: 0.25rem;
-  height: 20px;
-  white-space: nowrap;
 }
 </style>
 
