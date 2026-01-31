@@ -98,7 +98,7 @@ onUnmounted(() => {
   padding: 0.5rem 1.5rem;
   line-height: 1.5rem;
 
-  border: solid 2px rgba(#dbcaa0, 0.6);
+  border: solid 1px rgba(#cdb57b, 0.6);
 
   user-select: none;
   cursor: pointer;
@@ -108,6 +108,8 @@ onUnmounted(() => {
     transform 200ms;
 
   opacity: var(--opacity);
+
+  box-shadow: 0 0 0.125rem rgba(gray, 0.25);
 }
 
 .button-ornament {
