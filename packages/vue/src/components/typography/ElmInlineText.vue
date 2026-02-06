@@ -174,11 +174,6 @@ const render = () => {
         "span",
         {
           class: [style.text, textStyle.text],
-          style: {
-            "--color": props.color ?? backgroundColor,
-            "--font-size": props.size,
-            "--background-color": props.backgroundColor,
-          },
         },
         { default: slots.default },
       )
@@ -186,11 +181,6 @@ const render = () => {
         "span",
         {
           class: [style.text, textStyle.text],
-          style: {
-            "--color": props.color ?? backgroundColor,
-            "--font-size": props.size,
-            "--background-color": props.backgroundColor,
-          },
         },
         props.text,
       );
@@ -200,42 +190,15 @@ const render = () => {
   }
 
   if (props.strikethrough) {
-    vnode = h(
-      "del",
-      {
-        class: style.del,
-        style: {
-          "--color": props.color ?? backgroundColor,
-        },
-      },
-      vnode,
-    );
+    vnode = h("del", {}, vnode);
   }
 
   if (props.italic) {
-    vnode = h(
-      "em",
-      {
-        class: style.em,
-        style: {
-          "--color": props.color ?? backgroundColor,
-        },
-      },
-      vnode,
-    );
+    vnode = h("em", {}, vnode);
   }
 
   if (props.underline) {
-    vnode = h(
-      "ins",
-      {
-        class: style.ins,
-        style: {
-          "--color": props.color ?? backgroundColor,
-        },
-      },
-      vnode,
-    );
+    vnode = h("ins", {}, vnode);
   }
 
   if (props.bold) {
@@ -251,17 +214,26 @@ const render = () => {
       "ruby",
       {
         class: style.text,
-        style: {
-          "--color": props.color ?? backgroundColor,
-          "--font-size": props.size,
-          "--background-color": props.backgroundColor,
-        },
       },
       [h("span", {}, vnode), h("rt", {}, props.ruby)],
     );
   }
 
-  return vnode;
+  const wrappedVnode = h(
+    "span",
+
+    {
+      class: [style.text, textStyle.text],
+      style: {
+        "--color": props.color ?? backgroundColor,
+        "--font-size": props.size,
+        "--background-color": props.backgroundColor,
+      },
+    },
+    [vnode],
+  );
+
+  return wrappedVnode;
 };
 </script>
 
@@ -274,17 +246,6 @@ const render = () => {
   line-height: var(--font-size, 1em);
   background-color: var(--background-color);
   transition: color 200ms;
-}
-
-.del {
-  text-decoration-color: var(--color);
-}
-
-.em {
-  text-decoration-color: var(--color);
-}
-
-.ins {
   text-decoration-color: var(--color);
 }
 
