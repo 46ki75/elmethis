@@ -145,7 +145,7 @@ const renderLink = () => {
       size: "0.8em",
       color: "gray",
       style: { opacity: 0.75 },
-    })
+    }),
   );
 
   return h(
@@ -157,7 +157,7 @@ const renderLink = () => {
       target: "_blank",
       rel: "noopener noreferrer",
     },
-    children
+    children,
   );
 };
 
@@ -180,7 +180,7 @@ const render = () => {
             "--background-color": props.backgroundColor,
           },
         },
-        { default: slots.default }
+        { default: slots.default },
       )
     : h(
         "span",
@@ -192,7 +192,7 @@ const render = () => {
             "--background-color": props.backgroundColor,
           },
         },
-        props.text
+        props.text,
       );
 
   if (props.kbd) {
@@ -208,7 +208,7 @@ const render = () => {
           "--color": props.color ?? backgroundColor,
         },
       },
-      vnode
+      vnode,
     );
   }
 
@@ -221,12 +221,21 @@ const render = () => {
           "--color": props.color ?? backgroundColor,
         },
       },
-      vnode
+      vnode,
     );
   }
 
   if (props.underline) {
-    vnode = h("ins", {}, vnode);
+    vnode = h(
+      "ins",
+      {
+        class: style.ins,
+        style: {
+          "--color": props.color ?? backgroundColor,
+        },
+      },
+      vnode,
+    );
   }
 
   if (props.bold) {
@@ -248,7 +257,7 @@ const render = () => {
           "--background-color": props.backgroundColor,
         },
       },
-      [h("span", {}, vnode), h("rt", {}, props.ruby)]
+      [h("span", {}, vnode), h("rt", {}, props.ruby)],
     );
   }
 
@@ -272,6 +281,10 @@ const render = () => {
 }
 
 .em {
+  text-decoration-color: var(--color);
+}
+
+.ins {
   text-decoration-color: var(--color);
 }
 
