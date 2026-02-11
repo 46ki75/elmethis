@@ -38,7 +38,7 @@
     "@eslint/js": "^10.0.1",
     "@storybook/react-vite": "^10.2.8",
     "@types/node": "^25.2.3",
-    "@types/react": "^19.2.13",
+    "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/react-transition-group": "^4.4.12",
     "@vitejs/plugin-react": "^5.1.4",
