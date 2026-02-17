@@ -44,9 +44,9 @@
   "devDependencies": {
     "@ag-ui/core": "^0.0.45",
     "@notionhq/client": "^5.9.0",
-    "storybook": "^10.2.8",
-    "@storybook/addon-docs": "^10.2.8",
-    "@storybook/vue3-vite": "10.2.8",
+    "storybook": "^10.2.9",
+    "@storybook/addon-docs": "^10.2.9",
+    "@storybook/vue3-vite": "10.2.9",
     "@types/json-schema": "^7.0.15",
     "@types/katex": "^0.16.8",
     "@types/lodash-es": "^4.17.12",
