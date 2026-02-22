@@ -178,10 +178,15 @@ const defaultRenderFunctionMap = (
         { class: style["column-list"] },
         { default: () => render(slots.default) },
       ),
-    Column: ({ slots }) =>
+    Column: ({ props, slots }) =>
       h(
         "div",
-        { class: style.column },
+        {
+          class: style.column,
+          style: {
+            "--width-ratio": props?.widthRatio ? props.widthRatio : 1,
+          },
+        },
         { default: () => render(slots.default) },
       ),
     Unsupported: ({ props }) =>
@@ -231,6 +236,6 @@ watch(
 }
 
 .column {
-  flex: 1;
+  flex: var(--width-ratio, 1);
 }
 </style>

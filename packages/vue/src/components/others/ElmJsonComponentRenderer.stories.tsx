@@ -466,6 +466,50 @@ export const ColumnList: Story = {
   },
 };
 
+export const ColumnListWithRatio: Story = {
+  args: {
+    jsonComponents: [
+      {
+        type: "ColumnList",
+        slots: {
+          default: [
+            {
+              type: "Column",
+              props: { widthRatio: 0.25 },
+              slots: {
+                default: [
+                  {
+                    type: "CodeBlock",
+                    props: {
+                      code: rustCode,
+                      language: "rust",
+                    },
+                  },
+                ],
+              },
+            },
+            {
+              type: "Column",
+              props: { widthRatio: 0.75 },
+              slots: {
+                default: [
+                  {
+                    type: "CodeBlock",
+                    props: {
+                      code: rustCode,
+                      language: "rust",
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+    ],
+  },
+};
+
 export const Unsupported: Story = {
   args: {
     jsonComponents: [
