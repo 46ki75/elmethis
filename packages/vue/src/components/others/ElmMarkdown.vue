@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="$style['markdown-body']">
     <component v-for="component in components" :is="component" />
   </div>
 </template>
@@ -276,3 +276,9 @@ watch(
   },
 );
 </script>
+
+<style module lang="scss">
+.markdown-body > * + * {
+  margin-block-start: 2em;
+}
+</style>
