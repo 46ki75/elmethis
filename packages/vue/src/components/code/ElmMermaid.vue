@@ -88,7 +88,7 @@ const renderMermaid = async () => {
     const renderId = `${componentId}-${renderCount++}`;
     const { svg } = await globalMermaidCache.instance.render(
       renderId,
-      props.code
+      props.code,
     );
 
     // Cache the rendered SVG

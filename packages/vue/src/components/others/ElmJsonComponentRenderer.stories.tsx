@@ -144,7 +144,7 @@ export const Heading: Story = {
 };
 
 const LIST_TEMPLATE: (listStyle: "unordered" | "ordered") => Component[] = (
-  listStyle
+  listStyle,
 ) => [
   {
     type: "List",

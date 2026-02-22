@@ -157,7 +157,8 @@ const renderCaption = (): VNode | VNode[] => {
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
-  font-family: "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+  font-family:
+    "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
 
   border-bottom: solid 1px rgba(#3e434b, 0.3);
   [data-theme="dark"] & {

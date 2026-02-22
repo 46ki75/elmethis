@@ -142,7 +142,7 @@ const fuse = ref<Fuse<ElmCommandPaletteProps["commands"][number]> | null>(null);
 const searchResults = ref<ElmCommandPaletteProps["commands"]>([]);
 const selectedCommandIndex = defineModel<number | null>(
   "selectedCommandIndex",
-  { default: null }
+  { default: null },
 );
 
 const FUSE_OPTION = Object.freeze({ keys: ["label", "keywords"] });
@@ -292,7 +292,10 @@ watch(input, (_, input) => {
   min-height: 3rem;
   width: 100%;
   display: grid;
-  grid-template-columns: 2rem minmax(min-content, 1fr) minmax(min-content, 1fr) 50fr 2rem;
+  grid-template-columns: 2rem minmax(min-content, 1fr) minmax(
+      min-content,
+      1fr
+    ) 50fr 2rem;
   align-items: center;
   gap: 0.5rem;
   border-bottom: 1px solid rgba(#cccfd5, 0.5);

@@ -104,7 +104,7 @@ withDefaults(defineProps<ElmSelectProps>(), {
 
 const options =
   defineModel<Array<{ id: string; label: string; description?: string }>>(
-    "options"
+    "options",
   );
 
 const selectedOption = defineModel<{
