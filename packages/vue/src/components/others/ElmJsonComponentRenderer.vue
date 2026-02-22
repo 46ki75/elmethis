@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="$style['jarkup-body']">
     <component :is="components" />
   </div>
 </template>
@@ -44,7 +44,7 @@ type RenderFunctionMap<R> = {
 };
 
 const convertInlineComponentsToPlainText = (
-  inlineComponents: InlineComponent[]
+  inlineComponents: InlineComponent[],
 ): string => {
   return inlineComponents
     .map((component) => {
@@ -58,7 +58,7 @@ const convertInlineComponentsToPlainText = (
 };
 
 const defaultRenderFunctionMap = (
-  render: (jsonComponents: Component[]) => VNode[]
+  render: (jsonComponents: Component[]) => VNode[],
 ): RenderFunctionMap<VNode> => {
   return {
     Text: ({ props }) => {
@@ -88,7 +88,7 @@ const defaultRenderFunctionMap = (
           level: props.level,
           id: kebabCase(convertInlineComponentsToPlainText(slots.default)),
         },
-        { default: () => render(slots.default) }
+        { default: () => render(slots.default) },
       ),
     Paragraph: ({ slots }) =>
       h(ElmParagraph, {}, { default: () => render(slots.default) }),
@@ -100,19 +100,19 @@ const defaultRenderFunctionMap = (
         {
           listStyle: props?.listStyle === "unordered" ? "unordered" : "ordered",
         },
-        { default: () => render(slots.default) }
+        { default: () => render(slots.default) },
       ),
     BlockQuote: ({ props, slots }) =>
       h(
         ElmBlockQuote,
         { cite: props?.cite },
-        { default: () => render(slots.default) }
+        { default: () => render(slots.default) },
       ),
     Callout: ({ props, slots }) =>
       h(
         ElmCallout,
         { type: props?.type },
-        { default: () => render(slots.default) }
+        { default: () => render(slots.default) },
       ),
     Divider: ({}) => h(ElmDivider, {}),
     Toggle: ({ slots }) =>
@@ -122,7 +122,7 @@ const defaultRenderFunctionMap = (
         {
           default: () => render(slots.default),
           summary: () => render(slots.summary),
-        }
+        },
       ),
     Bookmark: ({ props }) =>
       h(ElmBookmark, {
@@ -144,7 +144,7 @@ const defaultRenderFunctionMap = (
         ? h(
             ElmCodeBlock,
             { code: props.code, language: props.language },
-            { default: () => render(slots.default) }
+            { default: () => render(slots.default) },
           )
         : h(ElmCodeBlock, { code: props.code, language: props.language }),
     Katex: ({ props }) =>
@@ -165,7 +165,7 @@ const defaultRenderFunctionMap = (
           body: () =>
             h(ElmTableBody, {}, { default: () => render(slots.body) }),
           header: header ? () => header : undefined,
-        }
+        },
       );
     },
     TableRow: ({ slots }) =>
@@ -176,13 +176,13 @@ const defaultRenderFunctionMap = (
       h(
         "div",
         { class: style["column-list"] },
-        { default: () => render(slots.default) }
+        { default: () => render(slots.default) },
       ),
     Column: ({ slots }) =>
       h(
         "div",
         { class: style.column },
-        { default: () => render(slots.default) }
+        { default: () => render(slots.default) },
       ),
     Unsupported: ({ props }) =>
       h(ElmUnsupportedBlock, { details: props?.details }),
@@ -210,11 +210,15 @@ watch(
   () => props.jsonComponents,
   (newComponents) => {
     renderResult.value = render(newComponents);
-  }
+  },
 );
 </script>
 
 <style module lang="scss">
+.jarkup-body > * + * {
+  margin-block-start: 2em;
+}
+
 .column-list {
   box-sizing: content-box;
   padding-block: 0.25rem;

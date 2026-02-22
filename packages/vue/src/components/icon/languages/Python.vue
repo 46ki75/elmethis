@@ -63,6 +63,6 @@ withDefaults(
   defineProps<{
     size?: number;
   }>(),
-  { size: 24 }
+  { size: 24 },
 );
 </script>

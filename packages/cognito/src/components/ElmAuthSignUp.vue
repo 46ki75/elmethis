@@ -109,7 +109,7 @@ const validatePasswordMatch = (_input: string): boolean =>
 
 const isValidAll = computed<boolean>(() => {
   const isValidPassword = props.validators.every(({ fn }) =>
-    fn(signUpPassword.value)
+    fn(signUpPassword.value),
   );
   return (
     validateEmail(signUpEmail.value) &&

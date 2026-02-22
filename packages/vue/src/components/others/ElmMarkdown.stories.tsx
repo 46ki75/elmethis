@@ -100,3 +100,24 @@ You can escape characters like \* and \_ (escape) to prevent markdown formatting
 export const Primary: Story = {
   args: { markdown: MARKDOWN },
 };
+
+const codeMarkdown = `\`\`\`ts
+function greet(name) {
+    return "Hello, " + name + "!";
+}
+\`\`\`
+\`\`\` rust
+#[tokio::main]
+async fn main() {
+    println!("Hello, world!");
+}
+\`\`\`
+\`\`\`python
+def greet(name):
+    return f"Hello, {name}!"
+\`\`\`
+`;
+
+export const CodeBlock: Story = {
+  args: { markdown: codeMarkdown },
+};

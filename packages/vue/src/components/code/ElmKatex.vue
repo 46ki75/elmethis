@@ -52,7 +52,7 @@ const html = ref<string | undefined>();
 let katexRenderToString:
   | ((
       expression: string,
-      options: { displayMode: boolean; output: "mathml" }
+      options: { displayMode: boolean; output: "mathml" },
     ) => string)
   | null = null;
 

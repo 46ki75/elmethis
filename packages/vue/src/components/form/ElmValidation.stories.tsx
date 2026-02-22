@@ -25,7 +25,7 @@ export const Primary: Story = {
 
         textA: "Password must be at least 8 characters",
         isValidA: computed(
-          () => input.value != null && input.value.length >= 8
+          () => input.value != null && input.value.length >= 8,
         ),
 
         textB: "Password must contain a number",

@@ -40,7 +40,7 @@ watch(
   () => y.value,
   () => {
     isVisible.value = y.value > 100;
-  }
+  },
 );
 
 const toTop = () => {

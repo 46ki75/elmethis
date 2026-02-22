@@ -77,7 +77,7 @@ const changePasswordPassword = defineModel<string>("changePasswordPassword", {
 });
 const changePasswordPasswordRepeat = defineModel<string>(
   "changePasswordPasswordRepeat",
-  { default: "" }
+  { default: "" },
 );
 const changePasswordLoading = defineModel<boolean>("changePasswordLoading", {
   default: false,
@@ -88,7 +88,7 @@ const changePasswordError = defineModel<string | null>("changePasswordError", {
 
 const isValidAll = computed<boolean>(() => {
   const isValidPassword = props.validators.every(({ fn }) =>
-    fn(changePasswordPassword.value)
+    fn(changePasswordPassword.value),
   );
   return (
     isValidPassword &&

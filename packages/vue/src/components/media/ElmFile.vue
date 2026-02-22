@@ -23,7 +23,7 @@
               src,
               name ??
                 getLastPathSegmentWithoutQueryOrHash(src) ??
-                'unknown file'
+                'unknown file',
             );
           }
         "
@@ -64,7 +64,7 @@ export interface ElmFileProps {
 withDefaults(defineProps<ElmFileProps>(), {});
 
 function getLastPathSegmentWithoutQueryOrHash(
-  urlString: string
+  urlString: string,
 ): string | null {
   const cleanedUrl = urlString.split(/[?#]/)[0];
   const pathSegments = cleanedUrl.split("/").filter(Boolean);

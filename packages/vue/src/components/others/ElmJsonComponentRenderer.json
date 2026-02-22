@@ -1,0 +1,1098 @@
+[
+    {
+        "id": "2a434608-d5c9-8057-975c-cb530ee27e2d",
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "Leather materials commonly seen in Mary Janes (strap shoes) and similar footwear have distinctive light reflections, making them one of those elements that require careful thought in how you paint them. Simply painting the lit areas and shadowed areas won't capture the texture."
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Paragraph"
+    },
+    {
+        "id": "2a434608-d5c9-8005-a442-d3d448fb4f16",
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "Let's break down how to draw these tricky leather shoes, step by step through the actual painting process!"
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Paragraph"
+    },
+    {
+        "id": "2a434608-d5c9-802d-9095-c5592d2511a2",
+        "props": {
+            "level": 2
+        },
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "Materials Used in This Example"
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Heading"
+    },
+    {
+        "id": "2a434608-d5c9-803b-b3d1-c0c16a11b3d0",
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "For this tutorial, I've prepared the base line art and flat colors in advance."
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Paragraph"
+    },
+    {
+        "id": "bfd423bc-65ef-4c28-a3c7-92b08902eab6",
+        "props": {
+            "alt": "",
+            "src": "https://www.ikuma.cloud/api/v2/blog/leather-shoes-painting/block-image/bfd423bc-65ef-4c28-a3c7-92b08902eab6"
+        },
+        "type": "Image"
+    },
+    {
+        "id": "2a434608-d5c9-8027-ba84-dee1b3f31552",
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "This shows only the flat colors and line art."
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Paragraph"
+    },
+    {
+        "id": "f1622c54-67da-41ff-8091-98c9b206aec3",
+        "props": {
+            "alt": "",
+            "src": "https://www.ikuma.cloud/api/v2/blog/leather-shoes-painting/block-image/f1622c54-67da-41ff-8091-98c9b206aec3"
+        },
+        "type": "Image"
+    },
+    {
+        "id": "2a434608-d5c9-803c-ab0b-d9767dbd4cce",
+        "props": {
+            "level": 2
+        },
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "1. Add the Strongest Highlights"
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Heading"
+    },
+    {
+        "id": "2a434608-d5c9-80ed-b781-e6a333684672",
+        "props": {
+            "level": 3
+        },
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "1.1. Establish the Highlight Anchor"
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Heading"
+    },
+    {
+        "id": "2a434608-d5c9-8018-8559-c61a14737d3e",
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "Using the Add (Glow) blending mode, determine where the light reflects most strongly."
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Paragraph"
+    },
+    {
+        "id": "ab8df2c9-1ddb-4db8-bd15-83527ec92ed2",
+        "props": {
+            "alt": "",
+            "src": "https://www.ikuma.cloud/api/v2/blog/leather-shoes-painting/block-image/ab8df2c9-1ddb-4db8-bd15-83527ec92ed2"
+        },
+        "type": "Image"
+    },
+    {
+        "id": "2a434608-d5c9-805b-8a0a-fccd4e02f91d",
+        "props": {
+            "level": 3
+        },
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "1.2. Add Light Around the Strongest Highlight"
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Heading"
+    },
+    {
+        "id": "2a434608-d5c9-8032-b096-ff9def8f0a1e",
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "Add a subtle glow around the light you just placed."
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Paragraph"
+    },
+    {
+        "id": null,
+        "props": {
+            "listStyle": "unordered"
+        },
+        "slots": {
+            "default": [
+                {
+                    "id": "2a434608-d5c9-80cf-a7e2-fef287297f8b",
+                    "slots": {
+                        "default": [
+                            {
+                                "id": null,
+                                "props": {
+                                    "bold": true,
+                                    "text": "Blending Mode"
+                                },
+                                "type": "Text"
+                            },
+                            {
+                                "id": null,
+                                "props": {
+                                    "text": ": "
+                                },
+                                "type": "Text"
+                            },
+                            {
+                                "id": null,
+                                "props": {
+                                    "code": true,
+                                    "text": "Add (Glow)"
+                                },
+                                "type": "Text"
+                            }
+                        ]
+                    },
+                    "type": "ListItem"
+                }
+            ]
+        },
+        "type": "List"
+    },
+    {
+        "id": "60969ffb-e08e-4e7e-8705-c03d69c90b10",
+        "props": {
+            "alt": "",
+            "src": "https://www.ikuma.cloud/api/v2/blog/leather-shoes-painting/block-image/60969ffb-e08e-4e7e-8705-c03d69c90b10"
+        },
+        "type": "Image"
+    },
+    {
+        "id": "2a434608-d5c9-8047-8626-e895a8165956",
+        "props": {
+            "level": 3
+        },
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "1.3. Blur"
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Heading"
+    },
+    {
+        "id": "2a434608-d5c9-8048-8e90-ca70b64cfa33",
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "Blur the light you added in step 1.2."
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Paragraph"
+    },
+    {
+        "id": "8ecc2f7c-5f3c-4779-b58d-f2cfef3bcf8b",
+        "props": {
+            "alt": "",
+            "src": "https://www.ikuma.cloud/api/v2/blog/leather-shoes-painting/block-image/8ecc2f7c-5f3c-4779-b58d-f2cfef3bcf8b"
+        },
+        "type": "Image"
+    },
+    {
+        "id": "2a434608-d5c9-80d9-9cd1-d0183af8b077",
+        "props": {
+            "level": 2
+        },
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "2. Bounce Light Highlights from the Ground"
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Heading"
+    },
+    {
+        "id": "2a434608-d5c9-8041-8704-f489a9a79619",
+        "props": {
+            "level": 3
+        },
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "2.1. Add Bounce Light Highlights from the Ground"
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Heading"
+    },
+    {
+        "id": "2a434608-d5c9-807f-804e-e744f4f78580",
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "Paint in the areas where light from the sky or room reflects off the ground and hits the shoes."
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Paragraph"
+    },
+    {
+        "id": "2a434608-d5c9-80c3-8885-d8cf60997f65",
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "I recommend using a color around the complementary color of the shoe."
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Paragraph"
+    },
+    {
+        "id": null,
+        "props": {
+            "listStyle": "unordered"
+        },
+        "slots": {
+            "default": [
+                {
+                    "id": "2a434608-d5c9-8070-90e0-e00dec09f741",
+                    "slots": {
+                        "default": [
+                            {
+                                "id": null,
+                                "props": {
+                                    "bold": true,
+                                    "text": "Blending Mode"
+                                },
+                                "type": "Text"
+                            },
+                            {
+                                "id": null,
+                                "props": {
+                                    "text": ": "
+                                },
+                                "type": "Text"
+                            },
+                            {
+                                "id": null,
+                                "props": {
+                                    "code": true,
+                                    "text": "Add (Glow)"
+                                },
+                                "type": "Text"
+                            }
+                        ]
+                    },
+                    "type": "ListItem"
+                }
+            ]
+        },
+        "type": "List"
+    },
+    {
+        "id": "11f18fcb-e8c4-4369-9374-23efdf686610",
+        "props": {
+            "alt": "",
+            "src": "https://www.ikuma.cloud/api/v2/blog/leather-shoes-painting/block-image/11f18fcb-e8c4-4369-9374-23efdf686610"
+        },
+        "type": "Image"
+    },
+    {
+        "id": "2a434608-d5c9-8079-8ba7-ee7ee3f72f95",
+        "props": {
+            "level": 3
+        },
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "2.2. Blur"
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Heading"
+    },
+    {
+        "id": "2a434608-d5c9-8011-ae78-e7af40b05926",
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "Blur the highlights from step 2.1."
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Paragraph"
+    },
+    {
+        "id": "788777e2-6ae4-4259-b516-3383e3c7d380",
+        "props": {
+            "alt": "",
+            "src": "https://www.ikuma.cloud/api/v2/blog/leather-shoes-painting/block-image/788777e2-6ae4-4259-b516-3383e3c7d380"
+        },
+        "type": "Image"
+    },
+    {
+        "id": "2a434608-d5c9-8089-a44a-df137f19f731",
+        "props": {
+            "level": 2
+        },
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "3. Add Shadows"
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Heading"
+    },
+    {
+        "id": "2a434608-d5c9-805f-a885-c0d4b9fe081b",
+        "props": {
+            "level": 3
+        },
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "3.1. Add Overall Shadows"
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Heading"
+    },
+    {
+        "id": "2a434608-d5c9-8083-930b-d053645db39a",
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "Add shadows to fill in the areas where highlights haven't been placed. Soften the edges."
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Paragraph"
+    },
+    {
+        "id": "2a434608-d5c9-80d2-8350-c22540d141c1",
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "The layer blending mode is Multiply."
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Paragraph"
+    },
+    {
+        "id": "fafd5b71-f8c1-4328-8bea-086006304a64",
+        "props": {
+            "alt": "",
+            "src": "https://www.ikuma.cloud/api/v2/blog/leather-shoes-painting/block-image/fafd5b71-f8c1-4328-8bea-086006304a64"
+        },
+        "type": "Image"
+    },
+    {
+        "id": "2a434608-d5c9-8083-ab22-ce8299ee080a",
+        "props": {
+            "level": 3
+        },
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "3.2. Add Diffuse Reflection Light"
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Heading"
+    },
+    {
+        "id": "2a434608-d5c9-80ea-aa6b-c893aa678a1f",
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "Add light within the shadows."
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Paragraph"
+    },
+    {
+        "id": null,
+        "props": {
+            "listStyle": "unordered"
+        },
+        "slots": {
+            "default": [
+                {
+                    "id": "2a434608-d5c9-807a-958a-c8f1a3ac1e00",
+                    "slots": {
+                        "default": [
+                            {
+                                "id": null,
+                                "props": {
+                                    "bold": true,
+                                    "text": "Blending Mode"
+                                },
+                                "type": "Text"
+                            },
+                            {
+                                "id": null,
+                                "props": {
+                                    "text": ": "
+                                },
+                                "type": "Text"
+                            },
+                            {
+                                "id": null,
+                                "props": {
+                                    "code": true,
+                                    "text": "Add (Glow)"
+                                },
+                                "type": "Text"
+                            }
+                        ]
+                    },
+                    "type": "ListItem"
+                }
+            ]
+        },
+        "type": "List"
+    },
+    {
+        "id": "86505792-b077-4d9d-8369-1aa1eab5c01c",
+        "props": {
+            "alt": "",
+            "src": "https://www.ikuma.cloud/api/v2/blog/leather-shoes-painting/block-image/86505792-b077-4d9d-8369-1aa1eab5c01c"
+        },
+        "type": "Image"
+    },
+    {
+        "id": "2a434608-d5c9-803d-b1bb-e88ab2bea051",
+        "props": {
+            "level": 3
+        },
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "3.3. Add Deeper Shadows"
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Heading"
+    },
+    {
+        "id": "2a434608-d5c9-804d-a619-f0698d4149e7",
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "Areas that haven't received highlights so far will have even darker shadows. Add shadows to fill in the areas without highlights."
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Paragraph"
+    },
+    {
+        "id": null,
+        "props": {
+            "listStyle": "unordered"
+        },
+        "slots": {
+            "default": [
+                {
+                    "id": "2a434608-d5c9-80d1-8cff-d6bc134650ea",
+                    "slots": {
+                        "default": [
+                            {
+                                "id": null,
+                                "props": {
+                                    "bold": true,
+                                    "text": "Blending Mode"
+                                },
+                                "type": "Text"
+                            },
+                            {
+                                "id": null,
+                                "props": {
+                                    "text": ": "
+                                },
+                                "type": "Text"
+                            },
+                            {
+                                "id": null,
+                                "props": {
+                                    "code": true,
+                                    "text": "Multiply"
+                                },
+                                "type": "Text"
+                            }
+                        ]
+                    },
+                    "type": "ListItem"
+                }
+            ]
+        },
+        "type": "List"
+    },
+    {
+        "id": "f42d7e87-79fc-45ff-bd48-269e683346be",
+        "props": {
+            "alt": "",
+            "src": "https://www.ikuma.cloud/api/v2/blog/leather-shoes-painting/block-image/f42d7e87-79fc-45ff-bd48-269e683346be"
+        },
+        "type": "Image"
+    },
+    {
+        "id": "2a434608-d5c9-806b-8600-c6f350d5b689",
+        "props": {
+            "level": 3
+        },
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "3.4. Emphasize Diffuse Reflection Highlights"
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Heading"
+    },
+    {
+        "id": "2a434608-d5c9-8076-8276-c8c07e6300d4",
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "Add highlights to the areas that shine more brightly within the diffuse reflection highlights you painted in step 3.2."
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Paragraph"
+    },
+    {
+        "id": null,
+        "props": {
+            "listStyle": "unordered"
+        },
+        "slots": {
+            "default": [
+                {
+                    "id": "2a434608-d5c9-80f3-970c-c8b14e74ce85",
+                    "slots": {
+                        "default": [
+                            {
+                                "id": null,
+                                "props": {
+                                    "bold": true,
+                                    "text": "Blending Mode"
+                                },
+                                "type": "Text"
+                            },
+                            {
+                                "id": null,
+                                "props": {
+                                    "text": ": "
+                                },
+                                "type": "Text"
+                            },
+                            {
+                                "id": null,
+                                "props": {
+                                    "code": true,
+                                    "text": "Add (Glow)"
+                                },
+                                "type": "Text"
+                            }
+                        ]
+                    },
+                    "type": "ListItem"
+                }
+            ]
+        },
+        "type": "List"
+    },
+    {
+        "id": "f3708e9d-c4a8-4ac7-a6b6-bd59dfc89910",
+        "props": {
+            "alt": "",
+            "src": "https://www.ikuma.cloud/api/v2/blog/leather-shoes-painting/block-image/f3708e9d-c4a8-4ac7-a6b6-bd59dfc89910"
+        },
+        "type": "Image"
+    },
+    {
+        "id": "2a434608-d5c9-802b-ae1b-c0b05c79595a",
+        "props": {
+            "level": 2
+        },
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "4. Finishing Touches"
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Heading"
+    },
+    {
+        "id": "2a434608-d5c9-8078-bde7-cd8357da24a0",
+        "props": {
+            "level": 3
+        },
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "4.1. Add Shadows to the Bounce Light Areas"
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Heading"
+    },
+    {
+        "id": "2a434608-d5c9-80e8-8074-e4eb0558531c",
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "Fine-tune by adding shadows over the bounce light highlights in areas close to the bottom of the shoe."
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Paragraph"
+    },
+    {
+        "id": null,
+        "props": {
+            "listStyle": "unordered"
+        },
+        "slots": {
+            "default": [
+                {
+                    "id": "2a434608-d5c9-80ef-9ca4-dce714dcca8e",
+                    "slots": {
+                        "default": [
+                            {
+                                "id": null,
+                                "props": {
+                                    "bold": true,
+                                    "text": "Blending Mode"
+                                },
+                                "type": "Text"
+                            },
+                            {
+                                "id": null,
+                                "props": {
+                                    "text": ": "
+                                },
+                                "type": "Text"
+                            },
+                            {
+                                "id": null,
+                                "props": {
+                                    "code": true,
+                                    "text": "Multiply"
+                                },
+                                "type": "Text"
+                            }
+                        ]
+                    },
+                    "type": "ListItem"
+                }
+            ]
+        },
+        "type": "List"
+    },
+    {
+        "id": "5fef46b2-c42e-47c2-8789-b27642628a0c",
+        "props": {
+            "alt": "",
+            "src": "https://www.ikuma.cloud/api/v2/blog/leather-shoes-painting/block-image/5fef46b2-c42e-47c2-8789-b27642628a0c"
+        },
+        "type": "Image"
+    },
+    {
+        "id": "2a434608-d5c9-805d-8b60-eea32676cbf9",
+        "props": {
+            "level": 3
+        },
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "4.2. Adjust the Overall Colors"
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Heading"
+    },
+    {
+        "id": "2a434608-d5c9-806f-ad61-d8ac7d688076",
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "This step is done after you've finished painting the other parts."
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Paragraph"
+    },
+    {
+        "id": "2a434608-d5c9-805a-b29b-f4688dddeafa",
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "Since color is relative, the colors you painted first may not match up well with the surrounding areas. Shoes in particular have extreme variations in light and dark, so adjustment is crucial."
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Paragraph"
+    },
+    {
+        "id": "2a434608-d5c9-80fc-8949-ef198470d078",
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "This time, as a simple method, I'm lightly layering the base color of the shoe over the entire area using Multiply mode."
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Paragraph"
+    },
+    {
+        "id": "0b02007d-59c7-4e4e-bff3-469b4f80af04",
+        "props": {
+            "alt": "",
+            "src": "https://www.ikuma.cloud/api/v2/blog/leather-shoes-painting/block-image/0b02007d-59c7-4e4e-bff3-469b4f80af04"
+        },
+        "type": "Image"
+    },
+    {
+        "id": "2a434608-d5c9-80ae-9c3c-da56053f7410",
+        "props": {
+            "level": 2
+        },
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "Completed Example"
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Heading"
+    },
+    {
+        "id": "857b0a3a-ed11-482a-820b-0d3b4e80c7d3",
+        "props": {
+            "alt": "",
+            "src": "https://www.ikuma.cloud/api/v2/blog/leather-shoes-painting/block-image/857b0a3a-ed11-482a-820b-0d3b4e80c7d3"
+        },
+        "type": "Image"
+    },
+    {
+        "id": "2a434608-d5c9-804f-adad-c22c42548c8d",
+        "props": {
+            "level": 2
+        },
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "Notes"
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Heading"
+    },
+    {
+        "id": "2a434608-d5c9-8056-882e-c66bef389b8c",
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "The level of detail in painting shoes can be adjusted to match your art style."
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Paragraph"
+    },
+    {
+        "id": "2a434608-d5c9-80c2-98a3-fae7fbd356a2",
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "By breaking down step 3 into finer increments and layering shadows and highlights from weakest to strongest, you can create more depth."
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Paragraph"
+    },
+    {
+        "id": "2a434608-d5c9-804e-bc5a-c68954fa826b",
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "My art style is anime-style painting rather than realistic, so if I add too much detail and push it toward realism, it creates a disjointed impression. For the shoes in this piece, I've kept the fine details restrained, showing just enough three-dimensionality through subtlety."
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Paragraph"
+    },
+    {
+        "id": "61c24cc4-fb38-4f8b-8c04-576d520d8f19",
+        "props": {
+            "alt": "",
+            "src": "https://www.ikuma.cloud/api/v2/blog/leather-shoes-painting/block-image/61c24cc4-fb38-4f8b-8c04-576d520d8f19"
+        },
+        "type": "Image"
+    },
+    {
+        "id": "2a434608-d5c9-80dd-8f4c-c28eb3c45ab6",
+        "props": {
+            "level": 2
+        },
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "Summary"
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Heading"
+    },
+    {
+        "id": "2a434608-d5c9-804d-afa5-f33272aba82f",
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "I believe that painting, unlike line art, often requires research more than practice."
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Paragraph"
+    },
+    {
+        "id": "2a434608-d5c9-803e-b522-c069663c6f2a",
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "This article is the result of breaking down techniques I'd been using intuitively into steps, then redrawing and refining them multiple times using the same process."
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Paragraph"
+    },
+    {
+        "id": "2a434608-d5c9-807a-8489-ed1db3fb5cd6",
+        "slots": {
+            "default": [
+                {
+                    "id": null,
+                    "props": {
+                        "text": "I hope you'll start by following these steps and adapting them to your own art style! For those who struggle with painting leather and similar materials, I hope you can develop your own painting techniques and enjoy drawing!"
+                    },
+                    "type": "Text"
+                }
+            ]
+        },
+        "type": "Paragraph"
+    },
+    {
+        "id": "2a634608-d5c9-80d4-a5fb-c8c2f29211fe",
+        "slots": {
+            "default": []
+        },
+        "type": "Paragraph"
+    }
+]

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="$style['markdown-body']">
     <component v-for="component in components" :is="component" />
   </div>
 </template>
@@ -41,8 +41,8 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
               {
                 default: () =>
                   renderByToken({ tokens: token.tokens as Token[] }),
-              }
-            )
+              },
+            ),
           );
         }
         break;
@@ -54,7 +54,7 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
           h(ElmCodeBlock, {
             code: token.text.trim(),
             language: token.lang,
-          })
+          }),
         );
         break;
       case "codespan":
@@ -73,9 +73,9 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
                 {
                   default: () =>
                     renderByToken({ tokens: token.tokens as Token[] }),
-                }
+                },
               )
-            : h(ElmInlineText, { text: token.text, strikethrough: true })
+            : h(ElmInlineText, { text: token.text, strikethrough: true }),
         );
         break;
       case "em":
@@ -87,9 +87,9 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
                 {
                   default: () =>
                     renderByToken({ tokens: token.tokens as Token[] }),
-                }
+                },
               )
-            : h(ElmInlineText, { text: token.text, italic: true })
+            : h(ElmInlineText, { text: token.text, italic: true }),
         );
         break;
       case "escape":
@@ -104,8 +104,8 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
               {
                 default: () =>
                   renderByToken({ tokens: token.tokens as Token[] }),
-              }
-            )
+              },
+            ),
           );
         } else {
           results.push(h(ElmHeading, { level: token.depth, text: token.text }));
@@ -124,7 +124,7 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
             enableModal: true,
             src: token.href,
             alt: token.text,
-          })
+          }),
         );
         break;
       case "link":
@@ -134,12 +134,12 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
                 text: token.text,
                 href: token.href,
               })
-            : h(ElmInlineText, { text: token.text, href: token.href })
+            : h(ElmInlineText, { text: token.text, href: token.href }),
         );
         break;
       case "list":
         const listItems = token.items.map((item: any) =>
-          h("li", {}, renderByToken({ tokens: item.tokens }))
+          h("li", {}, renderByToken({ tokens: item.tokens })),
         );
         results.push(
           h(
@@ -147,8 +147,8 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
             {
               listStyle: token.ordered ? "ordered" : "unordered",
             },
-            { default: () => listItems }
-          )
+            { default: () => listItems },
+          ),
         );
         break;
       case "list_item":
@@ -160,9 +160,9 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
                 {
                   default: () =>
                     renderByToken({ tokens: token.tokens as Token[] }),
-                }
+                },
               )
-            : h("li", { text: token.text })
+            : h("li", { text: token.text }),
         );
         break;
       case "paragraph":
@@ -174,8 +174,8 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
               {
                 default: () =>
                   renderByToken({ tokens: token.tokens as Token[] }),
-              }
-            )
+              },
+            ),
           );
         }
         break;
@@ -190,9 +190,9 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
                 {
                   default: () =>
                     renderByToken({ tokens: token.tokens as Token[] }),
-                }
+                },
               )
-            : h(ElmInlineText, { text: token.text, bold: true })
+            : h(ElmInlineText, { text: token.text, bold: true }),
         );
         break;
       case "table":
@@ -205,22 +205,22 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
             h(
               ElmTableCell,
               {},
-              { default: () => renderByToken({ tokens: cell.tokens }) }
-            )
+              { default: () => renderByToken({ tokens: cell.tokens }) },
+            ),
           );
 
         const headerRow = h(
           ElmTableRow,
           {},
-          { default: () => renderTableCells({ cells: token.header }) }
+          { default: () => renderTableCells({ cells: token.header }) },
         );
 
         const bodyRows = token.rows.map((row: Tokens.TableCell[]) =>
           h(
             ElmTableRow,
             {},
-            { default: () => renderTableCells({ cells: row }) }
-          )
+            { default: () => renderTableCells({ cells: row }) },
+          ),
         );
 
         const table = h(
@@ -229,7 +229,7 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
           {
             header: () => h(ElmTableHeader, {}, { default: () => headerRow }),
             body: () => h(ElmTableBody, {}, { default: () => bodyRows }),
-          }
+          },
         );
 
         results.push(table);
@@ -244,9 +244,9 @@ const renderByToken = ({ tokens }: { tokens: Token[] }): VNode[] => {
                 {
                   default: () =>
                     renderByToken({ tokens: token.tokens as Token[] }),
-                }
+                },
               )
-            : h(ElmInlineText, { text: token.text })
+            : h(ElmInlineText, { text: token.text }),
         );
         break;
       default:
@@ -273,6 +273,12 @@ watch(
   () => props.markdown,
   (md) => {
     if (md != null) renderResult.value = renderMarkdown({ markdown: md });
-  }
+  },
 );
 </script>
+
+<style module lang="scss">
+.markdown-body > * + * {
+  margin-block-start: 2em;
+}
+</style>

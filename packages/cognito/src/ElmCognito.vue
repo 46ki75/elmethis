@@ -100,7 +100,7 @@ const changePasswordPasswordRepeat = defineModel<string>(
   "changePasswordPasswordRepeat",
   {
     default: "",
-  }
+  },
 );
 const changePasswordLoading = defineModel<boolean>("changePasswordLoading", {
   default: false,
