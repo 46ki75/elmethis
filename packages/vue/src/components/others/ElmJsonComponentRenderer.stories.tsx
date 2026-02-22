@@ -5,6 +5,8 @@ import type { Component, InlineComponent } from "jarkup-ts";
 import file from "../../assets/vite.svg";
 import rustCode from "../code/seed/main.rs?raw";
 
+import seed from "./ElmJsonComponentRenderer.json";
+
 const meta: Meta<typeof ElmJsonComponentRenderer> = {
   title: "Components/Others/ElmJsonComponentRenderer",
   component: ElmJsonComponentRenderer,
@@ -475,5 +477,11 @@ export const Unsupported: Story = {
         },
       },
     ],
+  },
+};
+
+export const Unified: Story = {
+  args: {
+    jsonComponents: seed as Component[],
   },
 };

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="$style['jarkup-body']">
     <component :is="components" />
   </div>
 </template>
@@ -215,6 +215,10 @@ watch(
 </script>
 
 <style module lang="scss">
+.jarkup-body > * + * {
+  margin-block-start: 2em;
+}
+
 .column-list {
   box-sizing: content-box;
   padding-block: 0.25rem;
