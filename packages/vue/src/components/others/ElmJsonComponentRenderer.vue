@@ -185,6 +185,7 @@ const defaultRenderFunctionMap = (
           class: style.column,
           style: {
             "--width-ratio": props?.widthRatio ? props.widthRatio : 1,
+            width: props?.widthRatio ? `${props.widthRatio * 100}%` : undefined,
           },
         },
         { default: () => render(slots.default) },
@@ -230,12 +231,18 @@ watch(
   width: 100%;
   display: flex;
   flex-direction: row;
-  gap: 0.5rem;
+  gap: 0.25rem;
   justify-content: space-around;
   overflow: auto;
 }
 
 .column {
+  box-sizing: border-box;
+  padding: 0.125rem;
   flex: var(--width-ratio, 1);
+
+  & > * + * {
+    margin-block-start: 2em;
+  }
 }
 </style>
