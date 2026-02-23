@@ -61,3 +61,14 @@ export const Video: Story = {
     },
   },
 };
+
+export const Link: Story = {
+  args: {
+    oEmbed: {
+      type: "link",
+      version: "1.0",
+      title: "Example Domain",
+      url: "https://www.example.com/",
+    },
+  },
+};

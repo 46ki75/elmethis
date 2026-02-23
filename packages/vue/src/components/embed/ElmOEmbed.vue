@@ -29,12 +29,19 @@
       <div v-html="oEmbed.html" />
     </div>
 
-    <div v-else-if="oEmbed.type === 'link'"></div>
+    <div v-else-if="oEmbed.type === 'link'">
+      <ElmInlineText :href="oEmbed.author_url || oEmbed.provider_url || '#'">
+        {{
+          oEmbed.title || oEmbed.author_name || oEmbed.provider_name || "Link"
+        }}
+      </ElmInlineText>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import ElmImage from "../media/ElmImage.vue";
+import ElmInlineText from "../typography/ElmInlineText.vue";
 
 interface OEmbedBase {
   type: "photo" | "video" | "link" | "rich";
