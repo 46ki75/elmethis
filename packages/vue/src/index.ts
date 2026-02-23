@@ -49,6 +49,10 @@ export { default as ElmStatusMessage } from "./components/data/ElmStatusMessage.
 export type { ElmRectangleWaveProps } from "./components/fallback/ElmRectangleWave.vue";
 export { default as ElmRectangleWave } from "./components/fallback/ElmRectangleWave.vue";
 
+// Embed
+export type { ElmOEmbedProps } from "./components/embed/ElmOEmbed.vue";
+export { default as ElmOEmbed } from "./components/embed/ElmOEmbed.vue";
+
 // Fallback
 export type { ElmBlockFallbackProps } from "./components/fallback/ElmBlockFallback.vue";
 export { default as ElmBlockFallback } from "./components/fallback/ElmBlockFallback.vue";
