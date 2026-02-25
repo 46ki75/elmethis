@@ -247,8 +247,8 @@ importers:
         specifier: ^3.2.3
         version: 3.2.3
       jarkup-ts:
-        specifier: ^0.7.0
-        version: 0.7.0
+        specifier: ^0.8.0
+        version: 0.8.0
       openapi-types:
         specifier: ^12.1.3
         version: 12.1.3
@@ -3017,8 +3017,8 @@ packages:
   isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
 
-  jarkup-ts@0.7.0:
-    resolution: {integrity: sha512-y94fy6o0Xg5/xDhhSAkmeM8+oanQ4S4UB8mmj9hXw+oRCSi+n9sqzkgyhP4xS7tiRN+XzxwtyW9D+ZAZMN13aA==}
+  jarkup-ts@0.8.0:
+    resolution: {integrity: sha512-CUmm5qN7UtxHuHnlfyB3IrZJ5I488GV+DTM5iDkb35TqfCwI7g5WehgcyRKSTzspUnaynKi0glgk0VNnVrtGXw==}
 
   jiti@2.4.2:
     resolution: {integrity: sha512-rg9zJN+G4n2nfJl5MW3BMygZX56zKPNVEYYqq7adpmMh4Jn2QNEwhvQlFy6jPVdcod7txZtKHWnyZiA3a0zP7A==}
@@ -6910,7 +6910,7 @@ snapshots:
 
   isexe@2.0.0: {}
 
-  jarkup-ts@0.7.0: {}
+  jarkup-ts@0.8.0: {}
 
   jiti@2.4.2:
     optional: true
