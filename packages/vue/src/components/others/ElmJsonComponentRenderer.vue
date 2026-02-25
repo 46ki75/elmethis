@@ -90,8 +90,15 @@ const defaultRenderFunctionMap = (
         },
         { default: () => render(slots.default) },
       ),
-    Paragraph: ({ slots }) =>
-      h(ElmParagraph, {}, { default: () => render(slots.default) }),
+    Paragraph: ({ props, slots }) =>
+      h(
+        ElmParagraph,
+        {
+          color: props?.color,
+          backgroundColor: props?.backgroundColor,
+        },
+        { default: () => render(slots.default) },
+      ),
     ListItem: ({ slots }) =>
       h("li", {}, { default: () => render(slots.default) }),
     List: ({ props, slots }) =>
