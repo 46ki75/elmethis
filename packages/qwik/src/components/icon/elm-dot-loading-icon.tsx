@@ -16,18 +16,20 @@ export interface ElmDotLoadingIconProps {
   size?: CSSProperties["width"];
 }
 
-export const ElmDotLoadingIcon = component$<ElmDotLoadingIconProps>((props) => {
-  return (
-    <div
-      class={styles.wrapper}
-      style={{
-        "--size": props.size ?? "4em",
-        "--color": props.color ?? "currentColor",
-      }}
-    >
-      <div class={styles.dot}>&nbsp;</div>
-      <div class={styles.dot}>&nbsp;</div>
-      <div class={styles.dot}>&nbsp;</div>
-    </div>
-  );
-});
+export const ElmDotLoadingIcon = component$<ElmDotLoadingIconProps>(
+  ({ size = "4em", color = "#606875" }) => {
+    return (
+      <div
+        class={styles.wrapper}
+        style={{
+          "--size": size,
+          "--color": color,
+        }}
+      >
+        <div class={styles.dot}>&nbsp;</div>
+        <div class={styles.dot}>&nbsp;</div>
+        <div class={styles.dot}>&nbsp;</div>
+      </div>
+    );
+  },
+);
