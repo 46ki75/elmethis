@@ -4,6 +4,17 @@ import tseslint from "typescript-eslint";
 import { globalIgnores } from "eslint/config";
 import { qwikEslint9Plugin } from "eslint-plugin-qwik";
 
+const jsRecommended = {
+  ...js.configs.recommended,
+  rules: {
+    ...js.configs.recommended.rules,
+  },
+};
+// Temporary workaround for missing "preserve-caught-error" rule in current ESLint installation
+if (jsRecommended.rules["preserve-caught-error"]) {
+  delete jsRecommended.rules["preserve-caught-error"];
+}
+
 const ignores = [
   "**/*.log",
   "**/.DS_Store",
@@ -48,7 +59,7 @@ const ignores = [
 
 export default tseslint.config(
   globalIgnores(ignores),
-  js.configs.recommended,
+  jsRecommended,
   tseslint.configs.recommended,
   qwikEslint9Plugin.configs.recommended,
   {
