@@ -6,7 +6,7 @@ const meta: Meta<typeof ElmDotLoadingIcon> = {
   component: ElmDotLoadingIcon,
   tags: ["autodocs"],
   argTypes: { color: { control: "color" } },
-  args: {},
+  args: { size: "4em" },
 };
 
 export default meta;
