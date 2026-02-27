@@ -1,2 +1,4 @@
-export { Logo } from "./components/logo/logo";
-export { Counter } from "./components/counter/counter";
+export {
+  ElmDotLoadingIcon,
+  type ElmDotLoadingIconProps,
+} from "./components/icon/elm-dot-loading-icon";
