@@ -31,5 +31,10 @@ export default defineConfig(() => {
       },
     },
     plugins: [qwikVite(), tsconfigPaths({ root: "." })],
+    css: {
+      preprocessorOptions: {
+        scss: {},
+      },
+    },
   };
 });
