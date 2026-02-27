@@ -4,8 +4,9 @@ import { qwikVite } from "@builder.io/qwik/optimizer";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 const { dependencies = {}, peerDependencies = {} } = pkg as any;
-const makeRegex = (dep) => new RegExp(`^${dep}(/.*)?$`);
-const excludeAll = (obj) => Object.keys(obj).map(makeRegex);
+const makeRegex = (dep: string) => new RegExp(`^${dep}(/.*)?$`);
+const excludeAll = (obj: Record<string, any>) =>
+  Object.keys(obj).map(makeRegex);
 
 export default defineConfig(() => {
   return {
@@ -13,9 +14,9 @@ export default defineConfig(() => {
       target: "es2020",
       lib: {
         entry: "./src/index.ts",
-        formats: ["es", "cjs"],
-        fileName: (format, entryName) =>
-          `${entryName}.qwik.${format === "es" ? "mjs" : "cjs"}`,
+        name: "elmethis",
+        fileName: "elmethis",
+        formats: ["es" as const],
       },
       rollupOptions: {
         output: {
