@@ -26,9 +26,15 @@ export const ElmDotLoadingIcon = component$<ElmDotLoadingIconProps>(
           "--color": color,
         }}
       >
-        <div class={styles.dot}>&nbsp;</div>
-        <div class={styles.dot}>&nbsp;</div>
-        <div class={styles.dot}>&nbsp;</div>
+        <div class={styles.dot} aria-hidden="true">
+          &nbsp;
+        </div>
+        <div class={styles.dot} aria-hidden="true">
+          &nbsp;
+        </div>
+        <div class={styles.dot} aria-hidden="true">
+          &nbsp;
+        </div>
       </div>
     );
   },
