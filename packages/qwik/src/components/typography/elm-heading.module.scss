@@ -1,0 +1,120 @@
+.heading-common {
+  margin: 0;
+
+  position: relative;
+  font-size: var(--font-size);
+  line-height: var(--font-size);
+  opacity: var(--opacity);
+
+  transition:
+    color 400ms,
+    opacity 800ms;
+}
+
+.h1 {
+  &::after {
+    position: absolute;
+    content: "";
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 0.25px;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    transition: transform 800ms;
+    transform: scaleX(var(--scale));
+
+    [data-theme="dark"] & {
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+  }
+
+  &::before {
+    position: absolute;
+    content: "";
+    bottom: -6px;
+    left: 45%;
+    width: 10%;
+    height: 2px;
+    background-color: rgba(0, 0, 0, 0.6);
+
+    transition: transform 800ms;
+    transform: scaleY(var(--scale));
+    transform-origin: top;
+
+    [data-theme="dark"] & {
+      background-color: rgba(255, 255, 255, 0.6);
+    }
+  }
+}
+
+.h2 {
+  border-bottom: solid 1px rgba(0, 0, 0, 0.5);
+
+  [data-theme="dark"] & {
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  &::after {
+    position: absolute;
+    content: "";
+    right: 2px;
+    bottom: -4px;
+    width: 6px;
+    height: 8px;
+    opacity: 0.8;
+    transform: skewX(-25deg);
+
+    background-color: rgba(0, 0, 0, 0.8);
+    [data-theme="dark"] & {
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+  }
+
+  &::before {
+    position: absolute;
+    content: "";
+    right: 10px;
+    bottom: -4px;
+    width: 6px;
+    height: 8px;
+    opacity: 0.8;
+    transform: skewX(-25deg);
+
+    background-color: rgba(0, 0, 0, 0.8);
+    [data-theme="dark"] & {
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+  }
+}
+
+.h3 {
+  box-sizing: border-box;
+  padding-left: 0.75rem;
+
+  &::after {
+    position: absolute;
+    content: "";
+    width: 3px;
+    height: 50%;
+    top: 25%;
+    left: 0;
+
+    background-color: rgba(0, 0, 0, 0.8);
+    [data-theme="dark"] & {
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+  }
+}
+
+.h4 {
+  position: relative;
+}
+
+.h5 {
+  position: relative;
+}
+
+.h6 {
+  position: relative;
+}

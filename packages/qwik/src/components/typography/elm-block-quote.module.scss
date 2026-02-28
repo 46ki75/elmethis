@@ -1,0 +1,29 @@
+.blockquote {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  background-color: rgba(#868e9c, 0.1);
+  position: relative;
+
+  &::after {
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background-color: #868e9c;
+  }
+}
+
+.body {
+  box-sizing: border-box;
+  padding: 2rem 1.5rem;
+}
+
+.icon {
+  position: absolute;
+  content: "";
+  inset: var(--inset);
+  opacity: 0.5;
+}

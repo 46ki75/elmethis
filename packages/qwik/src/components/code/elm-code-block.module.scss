@@ -1,0 +1,67 @@
+.code-block {
+  display: grid;
+  grid-template-rows: 2.75rem 1px 1fr;
+  grid-template-columns: 2rem 1fr 2.5rem;
+  grid-template-areas:
+    "language-icon caption copy-icon"
+    "divider divider divider"
+    "code code code";
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+
+  background-color: rgba(white, 0.4);
+  box-shadow: 0 0 0.125rem rgba(#3e434b, 0.3);
+  [data-theme="dark"] & {
+    background-color: rgba(#2c3037, 0.9);
+    box-shadow: 0 0 0.125rem rgba(black, 0.4);
+  }
+}
+
+.language-icon {
+  grid-area: language-icon;
+  padding-inline-start: 0.75rem;
+}
+
+.caption {
+  grid-area: caption;
+  padding: 1rem;
+  font-family: monospace;
+}
+
+.copy-icon {
+  grid-area: copy-icon;
+  padding: 0.25rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 0.125rem;
+
+  transition: background-color 100ms;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(black, 0.1);
+    [data-theme="dark"] & {
+      background-color: rgba(white, 0.1);
+    }
+  }
+}
+
+.divider {
+  grid-area: divider;
+  width: calc(100% - 1rem);
+  border: none;
+  border-bottom: solid 1px rgba(gray, 0.5);
+}
+
+.code {
+  grid-area: code;
+  box-sizing: border-box;
+  padding: 0 1rem;
+}

@@ -1,0 +1,22 @@
+.paragraph {
+  opacity: var(--opacity, 0);
+  margin-block: 2rem;
+  opacity: var(--opacity);
+  transition: opacity 800ms;
+  color: var(--color, #606875);
+  background-color: var(--background-color, inherit);
+
+  &::selection {
+    color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+
+  [data-theme="dark"] & {
+    color: rgba(255, 255, 255, 0.7);
+
+    &::selection {
+      color: rgba(0, 0, 0, 0.7);
+      background-color: rgba(255, 255, 255, 0.7);
+    }
+  }
+}

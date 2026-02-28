@@ -1,0 +1,13 @@
+html {
+  font-family: sans-serif;
+}
+
+body,
+.docs-story {
+  transition: background-color 200ms;
+
+  background-color: #eff0f2;
+  [data-theme="dark"] & {
+    background-color: #25282e;
+  }
+}
