@@ -1,6 +1,8 @@
 import { component$, Slot, type CSSProperties } from "@builder.io/qwik";
 
 import styles from "./elm-inline-text.module.scss";
+import textStyles from "../../styles/text.module.scss";
+
 import { ElmInlineIcon } from "../icon/elm-inline-icon";
 
 export interface ElmInlineTextProps {
@@ -66,12 +68,6 @@ export interface ElmInlineTextProps {
   href?: string;
 
   favicon?: string;
-
-  ogp?: {
-    title: string;
-    description?: string;
-    image?: string;
-  };
 }
 
 export const ElmInlineText = component$<ElmInlineTextProps>((props) => {
@@ -121,7 +117,7 @@ export const ElmInlineText = component$<ElmInlineTextProps>((props) => {
 
   const wrappedVnode = (
     <span
-      class={styles.text}
+      class={[styles.text, textStyles.text]}
       style={{
         "--color": props.color,
         "--font-size": size,
