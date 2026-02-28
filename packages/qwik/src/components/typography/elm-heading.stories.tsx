@@ -22,12 +22,14 @@ export const Primary: Story = {
   args: {
     level: 1,
     text: "Heading",
+    id: "heading-id",
   },
 };
 
 export const Slot: Story = {
   args: {
     level: 1,
+    id: "heading-id",
   },
   render() {
     return (
