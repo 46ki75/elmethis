@@ -1,9 +1,9 @@
-import { Parameters, StoryContext } from "storybook-framework-qwik";
+import type { Preview, StoryContext } from "storybook-framework-qwik";
+import type { Component } from "@builder.io/qwik";
 
 import "./sb.scss";
-import { Component } from "@builder.io/qwik";
 
-export const parameters: Parameters = {
+export const preview: Preview = {
   a11y: {
     config: {},
     options: {
@@ -47,3 +47,5 @@ export const parameters: Parameters = {
     },
   ],
 };
+
+export default preview;
