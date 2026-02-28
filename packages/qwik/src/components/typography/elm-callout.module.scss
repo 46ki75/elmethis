@@ -1,0 +1,29 @@
+.callout {
+  position: relative;
+  padding: 1rem;
+
+  &::after {
+    position: absolute;
+    content: "";
+    inset: 0 auto auto 0;
+    height: 100%;
+    width: 0.25rem;
+    background-color: var(--color);
+  }
+
+  &::before {
+    position: absolute;
+    content: "";
+    inset: 0 0 auto auto;
+    height: 100%;
+    width: 100%;
+    background-color: var(--color);
+    opacity: 0.2;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
