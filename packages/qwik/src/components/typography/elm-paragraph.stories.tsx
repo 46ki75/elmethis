@@ -35,3 +35,13 @@ export const BackgroundColor: Story = {
     backgroundColor: "#b1d6dc",
   },
 };
+
+export const Many: Story = {
+  render() {
+    return Array.from({ length: 50 }, (_, i) => (
+      <ElmParagraph key={i} {...this.args}>
+        This is a paragraph with an inline text component.
+      </ElmParagraph>
+    ));
+  },
+};

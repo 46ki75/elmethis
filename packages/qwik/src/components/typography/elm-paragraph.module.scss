@@ -1,4 +1,5 @@
 .paragraph {
+  opacity: var(--opacity, 0);
   margin-block: 2rem;
   opacity: var(--opacity);
   transition: opacity 800ms;
