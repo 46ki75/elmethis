@@ -6,6 +6,12 @@ import { ElmLanguageIcon } from "../icon/elm-language-icon";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { ElmShikiHighlighter } from "./elm-shiki-highlighter";
 
+import {
+  mdiClipboardMultipleOutline,
+  mdiClipboardCheckMultipleOutline,
+} from "@mdi/js";
+import { ElmMdiIcon } from "../icon/elm-mdi-icon";
+
 export interface ElmCodeBlockProps {
   /**
    * The code to display.
@@ -44,7 +50,9 @@ export const ElmCodeBlock = component$<ElmCodeBlockProps>(
           </ElmInlineText>
         </span>
 
-        <div class={styles["copy-icon"]}></div>
+        <div class={styles["copy-icon"]}>
+          <ElmMdiIcon d={mdiClipboardMultipleOutline} size="1.25rem" />
+        </div>
 
         <hr class={styles["divider"]} />
 

@@ -1,7 +1,7 @@
 .code-block {
   display: grid;
   grid-template-rows: 2.75rem 1px 1fr;
-  grid-template-columns: 2rem 1fr 2rem;
+  grid-template-columns: 2rem 1fr 2.5rem;
   grid-template-areas:
     "language-icon caption copy-icon"
     "divider divider divider"
@@ -38,6 +38,19 @@
 .copy-icon {
   grid-area: copy-icon;
   padding: 0.25rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 0.125rem;
+
+  transition: background-color 100ms;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(black, 0.1);
+    [data-theme="dark"] & {
+      background-color: rgba(white, 0.1);
+    }
+  }
 }
 
 .divider {
