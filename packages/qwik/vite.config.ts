@@ -10,6 +10,7 @@ const excludeAll = (obj: Record<string, any>) =>
 
 export default defineConfig(() => {
   return {
+    plugins: [qwikVite(), tsconfigPaths({ root: "." })],
     build: {
       target: "es2020",
       lib: {
@@ -31,7 +32,6 @@ export default defineConfig(() => {
         ],
       },
     },
-    plugins: [qwikVite(), tsconfigPaths({ root: "." })],
     css: {
       preprocessorOptions: {
         scss: {},
