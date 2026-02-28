@@ -1,0 +1,114 @@
+.text {
+  padding: 0;
+  margin: 0;
+  white-space: pre-line;
+  font-size: var(--font-size, 1em);
+  line-height: var(--font-size, 1em);
+  background-color: var(--background-color);
+  transition: color 200ms;
+  text-decoration-color: var(--color);
+}
+
+.code {
+  margin-inline: 0.25rem;
+  padding: 2px 0.5em;
+  font-size: calc(1em - 2px);
+  border-radius: 0.125rem;
+  background-color: rgba(0, 0, 0, 0.075);
+  font-family: "Source Code Pro" monospace;
+}
+
+.kbd {
+  padding: 0.125rem 0.25rem;
+  position: relative;
+  border-radius: 0.125rem;
+  background-color: #e6e6e6;
+
+  [data-theme="dark"] & {
+    background-color: #404040;
+  }
+
+  &::before {
+    z-index: -1;
+    position: absolute;
+    content: "";
+    bottom: -0.25em;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #ccc;
+    border-radius: 0 0 0.125rem 0.125rem;
+    box-shadow: 0 0 0.125em rgba(black, 0.5);
+
+    [data-theme="dark"] & {
+      background-color: #595959;
+      box-shadow: 0 0 0.125em rgba(white, 0.5);
+    }
+  }
+}
+
+.link {
+  all: unset;
+  box-sizing: border-box;
+  padding: 0 0.25rem;
+  font-size: var(--font-size);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  color: #6987b8;
+  border-radius: 0.125rem;
+  transition:
+    background-color 200ms,
+    color 200ms,
+    opacity 200ms;
+
+  &:hover {
+    background-color: rgba($color: #6987b8, $alpha: 0.2);
+  }
+
+  &:active {
+    opacity: 0.5;
+  }
+
+  &:visited {
+    color: #9771bd;
+    border-bottom: dashed 1px #9771bd;
+
+    &:hover {
+      background-color: rgba($color: #9771bd, $alpha: 0.2);
+    }
+  }
+}
+
+.ogp {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  overflow: hidden;
+
+  border-radius: 0.25rem;
+  box-shadow: 0 0 0.125rem rgba(black, 0.3);
+
+  background-color: rgba(white, 0.8);
+
+  [data-theme="dark"] & {
+    background-color: rgba(white, 0.1);
+  }
+}
+
+.ogp-text {
+  box-sizing: border-box;
+  padding: 0.5rem;
+}
+
+.ogp-title {
+  box-sizing: border-box;
+  font-weight: bold;
+  padding-block-end: 0.25rem;
+}
+
+.ogp-description {
+  opacity: 0.7;
+  padding: 0.25rem;
+}

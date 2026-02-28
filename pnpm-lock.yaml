@@ -59,6 +59,10 @@ importers:
         version: 3.2.5(typescript@5.9.3)
 
   packages/qwik:
+    dependencies:
+      polished:
+        specifier: ^4.3.1
+        version: 4.3.1
     devDependencies:
       '@builder.io/qwik':
         specifier: 1.19.0
