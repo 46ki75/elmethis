@@ -19,6 +19,10 @@ export const Colored: Story = {
   args: { color: "#b36472" },
 };
 
+export const Code: Story = {
+  args: { code: true, text: "const x = 10;" },
+};
+
 export const Kbd: Story = {
   args: { text: "Ctrl", kbd: true },
 };
