@@ -66,6 +66,9 @@ importers:
       polished:
         specifier: ^4.3.1
         version: 4.3.1
+      shiki:
+        specifier: ^4.0.0
+        version: 4.0.0
     devDependencies:
       '@builder.io/qwik':
         specifier: 1.19.0
