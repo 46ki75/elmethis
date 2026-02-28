@@ -6,11 +6,18 @@
 
 <script setup lang="ts">
 import type { Component, ComponentMap, InlineComponent } from "jarkup-ts";
-import { h, useCssModule, VNode, ref, watch, computed } from "vue";
+import {
+  h,
+  useCssModule,
+  VNode,
+  ref,
+  watch,
+  computed,
+  defineAsyncComponent,
+} from "vue";
 
 import ElmInlineText from "../typography/ElmInlineText.vue";
 import ElmKatex from "../code/ElmKatex.vue";
-import ElmMermaid from "../code/ElmMermaid.vue";
 import ElmInlineIcon from "../icon/ElmInlineIcon.vue";
 import ElmHeading from "../typography/ElmHeading.vue";
 import ElmParagraph from "../typography/ElmParagraph.vue";
@@ -29,7 +36,14 @@ import ElmTableBody from "../table/ElmTableBody.vue";
 import ElmTableRow from "../table/ElmTableRow.vue";
 import ElmTableCell from "../table/ElmTableCell.vue";
 import ElmUnsupportedBlock from "../fallback/ElmUnsupportedBlock.vue";
+import ElmBlockFallback from "../fallback/ElmBlockFallback.vue";
+
 import { kebabCase } from "lodash-es";
+
+const ElmMermaid = defineAsyncComponent({
+  loader: async () => (await import("../code/ElmMermaid.vue")).default,
+  loadingComponent: ElmBlockFallback,
+});
 
 export interface ElmJsonComponentRendererProps {
   jsonComponents: Component[];
