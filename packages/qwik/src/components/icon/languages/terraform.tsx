@@ -11,7 +11,7 @@ export const Terraform = component$<CommonLanguageProps>(
         viewBox="0 0 128 128"
         {...props}
       >
-        <g fillRule="evenodd">
+        <g fill-rule="evenodd">
           <path
             fill="#5c4ee5"
             d="M77.941 44.5v36.836L46.324 62.918V26.082zm0 0"

@@ -21,9 +21,9 @@ export const Kotlin = component$<CommonLanguageProps>(
             gradientTransform="translate(15.534 -96.774)scale(.1939)"
             gradientUnits="userSpaceOnUse"
           >
-            <stop offset=".003" stopColor="#e44857" />
-            <stop offset=".469" stopColor="#c711e1" />
-            <stop offset="1" stopColor="#7f52ff" />
+            <stop offset=".003" stop-color="#e44857" />
+            <stop offset=".469" stop-color="#c711e1" />
+            <stop offset="1" stop-color="#7f52ff" />
           </linearGradient>
         </defs>
         <path

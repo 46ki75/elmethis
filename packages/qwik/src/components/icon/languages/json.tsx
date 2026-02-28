@@ -21,13 +21,13 @@ export const Json = component$<CommonLanguageProps>(
           gradientUnits="userSpaceOnUse"
         >
           <stop offset="0" />
-          <stop offset="1" stopColor="#fff" />
+          <stop offset="1" stop-color="#fff" />
         </linearGradient>
         <path
           fill="url(#deviconJson0)"
-          fillRule="evenodd"
+          fill-rule="evenodd"
           d="M63.895 94.303c27.433 37.398 54.281-10.438 54.241-39.205c-.046-34.012-34.518-53.021-54.263-53.021C32.182 2.077 2 28.269 2 64.105C2 103.937 36.596 126 63.873 126c-6.172-.889-26.742-5.296-27.019-52.674c-.186-32.044 10.453-44.846 26.974-39.214c.37.137 18.223 7.18 18.223 30.187c0 22.908-18.156 30.004-18.156 30.004"
-          clipRule="evenodd"
+          clip-rule="evenodd"
         />
         <linearGradient
           id="deviconJson1"
@@ -39,13 +39,13 @@ export const Json = component$<CommonLanguageProps>(
           gradientUnits="userSpaceOnUse"
         >
           <stop offset="0" />
-          <stop offset="1" stopColor="#fff" />
+          <stop offset="1" stop-color="#fff" />
         </linearGradient>
         <path
           fill="url(#deviconJson1)"
-          fillRule="evenodd"
+          fill-rule="evenodd"
           d="M63.895 94.303c27.433 37.398 54.281-10.438 54.241-39.205c-.046-34.012-34.518-53.021-54.263-53.021C32.182 2.077 2 28.269 2 64.105C2 103.937 36.596 126 63.873 126c-6.172-.889-26.742-5.296-27.019-52.674c-.186-32.044 10.453-44.846 26.974-39.214c.37.137 18.223 7.18 18.223 30.187c0 22.908-18.156 30.004-18.156 30.004"
-          clipRule="evenodd"
+          clip-rule="evenodd"
         />
       </svg>
     );
