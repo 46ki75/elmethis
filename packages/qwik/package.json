@@ -8,8 +8,7 @@
   "exports": {
     ".": {
       "types": "./lib-types/index.d.ts",
-      "import": "./lib/elmethis.js",
-      "require": "./lib/elmethis.cjs"
+      "import": "./lib/elmethis.js"
     }
   },
   "files": [
@@ -26,7 +25,7 @@
     "build": "qwik build",
     "build-storybook": "storybook build",
     "build.lib": "vite build --mode lib",
-    "build.types": "tsc --emitDeclarationOnly",
+    "build.types": "tsc --emitDeclarationOnly --incremental false",
     "dev": "vite --mode ssr",
     "dev.debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
     "fmt": "prettier --write .",
