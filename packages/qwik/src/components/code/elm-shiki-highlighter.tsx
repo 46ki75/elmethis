@@ -41,7 +41,7 @@ const render = async (
 
 export const ElmShikiHighlighter = component$<ElmShikiHighlighterProps>(
   ({ code, language = "txt" }) => {
-    const rawHtml = useSignal(code);
+    const rawHtml = useSignal("");
 
     useTask$(async ({ track }) => {
       const currentCode = track(() => code);
