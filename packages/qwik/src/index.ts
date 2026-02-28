@@ -1,3 +1,13 @@
+// | Code |
+export {
+  ElmCodeBlock,
+  type ElmCodeBlockProps,
+} from "./components/code/elm-code-block";
+export {
+  ElmShikiHighlighter,
+  type ElmShikiHighlighterProps,
+} from "./components/code/elm-shiki-highlighter";
+
 // | Icon |
 export {
   ElmDotLoadingIcon,
