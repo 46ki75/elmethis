@@ -60,6 +60,9 @@ importers:
 
   packages/qwik:
     dependencies:
+      '@mdi/js':
+        specifier: ^7.4.47
+        version: 7.4.47
       polished:
         specifier: ^4.3.1
         version: 4.3.1

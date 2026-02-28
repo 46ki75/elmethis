@@ -59,6 +59,7 @@
     "vite-tsconfig-paths": "^4.2.1"
   },
   "dependencies": {
+    "@mdi/js": "^7.4.47",
     "polished": "^4.3.1"
   }
 }
