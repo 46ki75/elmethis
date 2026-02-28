@@ -14,31 +14,6 @@ export interface ElmShikiHighlighterProps {
   language?: string;
 }
 
-const render = async (
-  props: Required<ElmShikiHighlighterProps>,
-): Promise<string | undefined> => {
-  const { getHighlighterSingleton } = await import("./shikiInstance");
-  const highlighter = await getHighlighterSingleton();
-
-  try {
-    return highlighter.codeToHtml(props.code, {
-      lang: props.language,
-      themes: {
-        dark: "vitesse-dark",
-        light: "vitesse-light",
-      },
-      colorReplacements: {
-        "#ffffff": "transparent",
-        "#121212": "transparent",
-      },
-    });
-  } catch {
-    // do nothing
-  } finally {
-    // do nothing
-  }
-};
-
 export const ElmShikiHighlighter = component$<ElmShikiHighlighterProps>(
   ({ code, language = "txt" }) => {
     const rawHtml = useSignal("");
@@ -47,12 +22,21 @@ export const ElmShikiHighlighter = component$<ElmShikiHighlighterProps>(
       const currentCode = track(() => code);
       const currentLang = track(() => language);
 
-      const html = await render({
-        code: currentCode,
-        language: currentLang,
-      });
+      const { getHighlighterSingleton } = await import("./shikiInstance");
+      const highlighter = await getHighlighterSingleton();
 
-      if (html) rawHtml.value = html;
+      try {
+        rawHtml.value = highlighter.codeToHtml(currentCode, {
+          lang: currentLang,
+          themes: { dark: "vitesse-dark", light: "vitesse-light" },
+          colorReplacements: {
+            "#ffffff": "transparent",
+            "#121212": "transparent",
+          },
+        });
+      } catch {
+        rawHtml.value = `<pre>${currentCode.replace(/</g, "&lt;")}</pre>`;
+      }
     });
 
     return <pre dangerouslySetInnerHTML={rawHtml.value} />;
