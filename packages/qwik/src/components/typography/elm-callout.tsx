@@ -1,4 +1,4 @@
-import { component$ } from "@builder.io/qwik";
+import { component$, Slot } from "@builder.io/qwik";
 
 import styles from "./elm-callout.module.scss";
 import {
@@ -31,7 +31,10 @@ export interface ElmCalloutProps {
 
 export const ElmCallout = component$<ElmCalloutProps>(({ type = "note" }) => {
   return (
-    <aside class={styles.callout} style={{ "--color": COLOR_MAP[type].code }}>
+    <aside
+      class={styles.callout}
+      style={{ "--callout-color": COLOR_MAP[type].code }}
+    >
       <div class={styles.header}>
         <ElmMdiIcon
           d={COLOR_MAP[type].icon}
@@ -39,6 +42,10 @@ export const ElmCallout = component$<ElmCalloutProps>(({ type = "note" }) => {
           size="1.25rem"
         />
         <ElmInlineText>{type.toLocaleUpperCase()}</ElmInlineText>
+      </div>
+
+      <div class={styles.content}>
+        <Slot />
       </div>
     </aside>
   );
