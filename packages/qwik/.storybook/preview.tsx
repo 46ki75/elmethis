@@ -1,4 +1,6 @@
-import { Parameters } from "storybook-framework-qwik";
+import { Parameters, StoryContext } from "storybook-framework-qwik";
+
+import "./sb.scss";
 
 export const parameters: Parameters = {
   a11y: {
@@ -14,4 +16,36 @@ export const parameters: Parameters = {
   docs: {
     iframeHeight: "200px",
   },
+
+  parameters: {
+    controls: {
+      matchers: {
+        color: /(background|color)$/i,
+        date: /Date$/i,
+      },
+    },
+  },
+  globalTypes: {
+    theme: {
+      description: "Global theme for components",
+      toolbar: {
+        title: "Theme",
+        icon: "circlehollow",
+        items: ["light", "dark"],
+        dynamicTitle: true,
+      },
+    },
+  },
+  initialGlobals: { theme: "light" },
+  decorators: [
+    (story: () => unknown, context: StoryContext) => {
+      const theme = context.globals.theme || "light";
+      document.documentElement.setAttribute("data-theme", theme);
+
+      return {
+        components: { story },
+        template: `<story />`,
+      };
+    },
+  ],
 };

@@ -1,7 +1,8 @@
 import { StorybookConfig } from "storybook-framework-qwik";
+import type { InlineConfig } from "vite";
 
 const config: StorybookConfig = {
-  addons: ["@storybook/addon-links", "@storybook/addon-essentials"],
+  addons: ["@storybook/addon-docs"],
   framework: {
     name: "storybook-framework-qwik",
   },
@@ -14,7 +15,7 @@ const config: StorybookConfig = {
     "../src/components/**/*.stories.@(js|jsx|ts|tsx)",
   ],
 
-  viteFinal: async (config: any) => {
+  viteFinal: async (config: InlineConfig) => {
     return config;
   },
 };
