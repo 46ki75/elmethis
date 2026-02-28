@@ -6,8 +6,26 @@ const meta: Meta<typeof ElmInlineText> = {
   title: "Components/Typography/elm-inline-text",
   component: ElmInlineText,
   tags: ["autodocs"],
-  argTypes: { color: { control: "color" } },
-  args: { text: "Inline Text" },
+  argTypes: {
+    color: { control: "color" },
+    backgroundColor: { control: "color" },
+    bold: { control: "boolean" },
+    italic: { control: "boolean" },
+    underline: { control: "boolean" },
+    strikethrough: { control: "boolean" },
+    code: { control: "boolean" },
+    kbd: { control: "boolean" },
+  },
+
+  args: {
+    text: "Inline Text",
+    bold: false,
+    italic: false,
+    underline: false,
+    strikethrough: false,
+    code: false,
+    kbd: false,
+  },
 };
 
 export default meta;
