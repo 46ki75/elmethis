@@ -1,4 +1,10 @@
-import { component$, CSSProperties, Slot } from "@builder.io/qwik";
+import {
+  $,
+  component$,
+  CSSProperties,
+  Slot,
+  useSignal,
+} from "@builder.io/qwik";
 
 import styles from "./elm-code-block.module.scss";
 
@@ -37,6 +43,22 @@ export interface ElmCodeBlockProps {
 
 export const ElmCodeBlock = component$<ElmCodeBlockProps>(
   ({ code, language = "txt", caption, margin }) => {
+    const timerId = useSignal<number | null>(null);
+
+    const copyToClipboard = $(async () => {
+      if (timerId.value !== null) {
+        window.clearTimeout(timerId.value);
+        timerId.value = null;
+      }
+
+      try {
+        await navigator.clipboard.writeText(code);
+        timerId.value = window.setTimeout(() => (timerId.value = null), 1500);
+      } catch (err) {
+        console.error("Failed to copy: ", err);
+      }
+    });
+
     return (
       <figure class={styles["code-block"]} style={{ margin }}>
         <span class={styles["language-icon"]}>
@@ -50,8 +72,16 @@ export const ElmCodeBlock = component$<ElmCodeBlockProps>(
           </ElmInlineText>
         </span>
 
-        <div class={styles["copy-icon"]}>
-          <ElmMdiIcon d={mdiClipboardMultipleOutline} size="1.25rem" />
+        <div class={styles["copy-icon"]} onClick$={copyToClipboard}>
+          <ElmMdiIcon
+            size="1.25rem"
+            d={
+              timerId.value !== null
+                ? mdiClipboardCheckMultipleOutline
+                : mdiClipboardMultipleOutline
+            }
+            color={timerId.value !== null ? "#59b57c" : undefined}
+          />
         </div>
 
         <hr class={styles["divider"]} />
