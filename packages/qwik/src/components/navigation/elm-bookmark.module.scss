@@ -1,0 +1,100 @@
+.bookmark {
+  all: unset;
+  display: block;
+  container-type: inline-size;
+  border-radius: 0.25rem;
+  box-shadow: 0 0 0.125rem rgba(black, 0.1);
+  overflow: hidden;
+
+  transition:
+    background-color 200ms,
+    transform 200ms;
+
+  &:hover {
+    background-color: rgba(#6987b8, 0.1);
+    transform: translateX(-0.125rem) translateY(-0.125rem);
+  }
+
+  &:active {
+    background-color: rgba(#59b57c, 0.1);
+    transform: translateX(0) translateY(0);
+  }
+}
+
+.container {
+  all: unset;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+
+  @container (max-width: 700px) {
+    & {
+      flex-direction: column;
+    }
+  }
+}
+
+.image {
+  overflow: hidden;
+  height: 100%;
+  opacity: 0.9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  object-fit: cover;
+  object-position: center;
+  aspect-ratio: 2 / 1;
+  width: min-content;
+  max-width: 35%;
+
+  @container (max-width: 700px) {
+    & {
+      min-width: unset;
+      max-width: unset;
+      width: 100%;
+    }
+  }
+}
+
+.content {
+  flex: 1;
+  width: 75%;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: space-between;
+
+  transition: background-color 200ms;
+  background-color: rgba(white, 0.4);
+
+  @container (max-width: 700px) {
+    & {
+      width: 100%;
+    }
+  }
+
+  [data-theme="dark"] & {
+    background-color: rgba(black, 0.2);
+  }
+
+  .title {
+    box-sizing: border-box;
+  }
+
+  .description {
+    box-sizing: border-box;
+    opacity: 0.7;
+  }
+
+  .link {
+    line-height: 0.75rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.25rem;
+    opacity: 0.7;
+  }
+}
