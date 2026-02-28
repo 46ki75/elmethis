@@ -6,11 +6,11 @@
 }
 
 .toggle-closed {
-  grid-template-rows: 3.5rem 0fr 2rem;
+  grid-template-rows: 3.5rem 0fr 0rem;
 }
 
 .toggle-open {
-  grid-template-rows: 3.5rem 1fr 2rem;
+  grid-template-rows: 3.5rem 1fr 3rem;
 }
 
 .summary {
@@ -90,4 +90,43 @@
 
 .content-closed {
   opacity: 0;
+}
+
+.footer {
+  box-sizing: border-box;
+  margin: 0.25rem 0rem;
+  padding: 0.5rem;
+  color: #c56565;
+  font-family: monospace;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  user-select: none;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  transition:
+    opacity 200ms,
+    background-color 200ms;
+
+  &:hover {
+    opacity: 0.5;
+    background-color: rgba(#606875, 0.1);
+  }
+}
+
+.footer-line {
+  box-sizing: border-box;
+  margin: 0 0.25rem;
+  flex-grow: 1;
+  border: none;
+  border-bottom: solid 1px rgba(gray, 0.3);
+}
+
+.footer-cross-icon {
+  transform: rotate(45deg);
+}
+
+.footer-chevron-icon {
+  transform: rotate(-90deg);
 }

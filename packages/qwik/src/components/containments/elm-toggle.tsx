@@ -3,6 +3,7 @@ import { $, component$, Slot, useSignal } from "@builder.io/qwik";
 import styles from "./elm-toggle.module.scss";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { mdiChevronRight, mdiPlus } from "@mdi/js";
+import { ElmInlineText } from "../typography/elm-inline-text";
 
 export interface ElmToggleProps {
   /**
@@ -81,6 +82,24 @@ export const ElmToggle = component$<ElmToggleProps>(({ summary }) => {
         ]}
       >
         <Slot />
+      </div>
+
+      <div class={styles.footer} onClick$={toggle}>
+        <span class={styles["footer-chevron-icon"]}>
+          <ElmMdiIcon d={mdiChevronRight} color="gray" />
+        </span>
+        <hr class={styles["footer-line"]} />
+        <span class={styles["footer-cross-icon"]}>
+          <ElmMdiIcon d={mdiPlus} color="#c56565" />
+        </span>
+        <ElmInlineText>CLOSE</ElmInlineText>
+        <span class={styles["footer-cross-icon"]}>
+          <ElmMdiIcon d={mdiPlus} color="#c56565" />
+        </span>
+        <hr class={styles["footer-line"]} />
+        <span class={styles["footer-chevron-icon"]}>
+          <ElmMdiIcon d={mdiChevronRight} color="gray" />
+        </span>
       </div>
     </div>
   );
