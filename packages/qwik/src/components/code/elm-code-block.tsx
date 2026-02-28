@@ -1,0 +1,57 @@
+import { component$, CSSProperties, Slot } from "@builder.io/qwik";
+
+import styles from "./elm-code-block.module.scss";
+
+import { ElmLanguageIcon } from "../icon/elm-language-icon";
+import { ElmInlineText } from "../typography/elm-inline-text";
+import { ElmShikiHighlighter } from "./elm-shiki-highlighter";
+
+export interface ElmCodeBlockProps {
+  /**
+   * The code to display.
+   */
+  code: string;
+
+  /**
+   * The language of the code.
+   */
+  language?: string;
+
+  /**
+   * The caption of the code block.
+   * If not provided, the language will be used.
+   */
+  caption?: string;
+
+  /**
+   * The margin of the code block.
+   */
+  margin?: CSSProperties["margin"];
+}
+
+export const ElmCodeBlock = component$<ElmCodeBlockProps>(
+  ({ code, language = "txt", caption, margin }) => {
+    return (
+      <figure class={styles["code-block"]} style={{ margin }}>
+        <span class={styles["language-icon"]}>
+          <ElmLanguageIcon language={language} />
+        </span>
+
+        <span class={styles["caption"]}>
+          <ElmInlineText>
+            {caption || language}
+            <Slot />
+          </ElmInlineText>
+        </span>
+
+        <div class={styles["copy-icon"]}></div>
+
+        <hr class={styles["divider"]} />
+
+        <div class={styles["code"]}>
+          <ElmShikiHighlighter code={code} language={language} />
+        </div>
+      </figure>
+    );
+  },
+);
