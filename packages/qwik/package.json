@@ -2,14 +2,14 @@
   "name": "@elmethis/qwik",
   "version": "0.0.1",
   "description": "Create a Qwik library",
-  "main": "./lib/index.qwik.mjs",
-  "qwik": "./lib/index.qwik.mjs",
+  "main": "./lib/elmethis.js",
+  "qwik": "./lib/elmethis.js",
   "types": "./lib-types/index.d.ts",
   "exports": {
     ".": {
       "types": "./lib-types/index.d.ts",
-      "import": "./lib/index.qwik.mjs",
-      "require": "./lib/index.qwik.cjs"
+      "import": "./lib/elmethis.js",
+      "require": "./lib/elmethis.cjs"
     }
   },
   "files": [
