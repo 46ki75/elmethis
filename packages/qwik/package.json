@@ -59,6 +59,7 @@
   },
   "dependencies": {
     "@mdi/js": "^7.4.47",
+    "katex": "^0.16.33",
     "polished": "^4.3.1",
     "shiki": "^4.0.0"
   }
