@@ -24,7 +24,6 @@
   box-shadow: 0 0 0.125rem rgba(black, 0.1);
   transition: opacity 400ms;
   opacity: var(--opacity, 1);
-  pointer-events: all;
   user-select: none;
 
   cursor: var(--cursor);
@@ -48,7 +47,6 @@
   align-items: center;
   gap: 1rem;
   opacity: 0.75;
-  pointer-events: all;
   opacity: var(--opacity, 1);
   transition: opacity 400ms;
 }

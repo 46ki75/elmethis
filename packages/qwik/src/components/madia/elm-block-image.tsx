@@ -49,7 +49,6 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
         width={width}
         height={height}
         onLoad$={handleImageLoad}
-        onClick$={handleToggleModal}
         style={{
           "--opacity": isLoading.value ? 0 : 1,
           "--cursor": enableModal
@@ -68,6 +67,7 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
           pointerEvents: isShowModal.value ? "auto" : "none",
           "--opacity": isShowModal.value ? 1 : 0,
         }}
+        onClick$={handleToggleModal}
       >
         {ImageComponent}
       </div>
@@ -78,6 +78,7 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
         <div
           class={styles["image-container"]}
           style={{ "--opacity": isLoading.value ? 1 : 0 }}
+          onClick$={handleToggleModal}
         >
           {ImageComponent}
 
