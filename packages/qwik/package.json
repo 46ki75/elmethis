@@ -25,6 +25,7 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
+    "prepublishOnly": "pnpm run build",
     "build": "qwik build",
     "build-storybook": "storybook build",
     "build.lib": "vite build --mode lib",
