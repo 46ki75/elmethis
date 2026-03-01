@@ -53,7 +53,7 @@ export const ElmFile = component$<ElmFileProps>(({ name, src, filesize }) => {
 
   return (
     <div class={styles.file}>
-      <div class={styles["file-icon"]}>
+      <div>
         <ElmMdiIcon d={mdiFile} size="1.25rem" />
       </div>
 
@@ -63,7 +63,7 @@ export const ElmFile = component$<ElmFileProps>(({ name, src, filesize }) => {
         </ElmInlineText>
       </div>
 
-      <div>
+      <div class={styles["file-size"]}>
         <ElmInlineText>{filesize}</ElmInlineText>
       </div>
 
