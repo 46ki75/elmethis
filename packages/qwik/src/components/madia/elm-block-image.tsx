@@ -3,6 +3,7 @@ import { $, component$, useSignal, type Numberish } from "@builder.io/qwik";
 import styles from "./elm-block-image.module.scss";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
+import { ElmRectangleWave } from "../fallback/elm-rectangle-wave";
 import { mdiMessageImageOutline } from "@mdi/js";
 
 export interface ElmBlockImageProps {
@@ -46,7 +47,9 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
       <figure class={styles["block-image"]}>
         {ImageComponent}
 
-        <div class={styles["fallback"]}></div>
+        <div class={styles["fallback"]}>
+          <ElmRectangleWave />
+        </div>
 
         {caption && (
           <figcaption class={styles["caption-box"]}>

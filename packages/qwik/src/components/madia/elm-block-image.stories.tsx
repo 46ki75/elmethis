@@ -6,7 +6,7 @@ import portrait from "../../assets/images/portrait.svg?url";
 import square from "../../assets/images/square.svg?url";
 
 const meta: Meta<typeof ElmBlockImage> = {
-  title: "Components/Media/ElmBlockImage",
+  title: "Components/Media/elm-block-image",
   component: ElmBlockImage,
   tags: ["autodocs"],
   args: {
