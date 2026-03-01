@@ -61,7 +61,17 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
       />
     );
 
-    const Modal = <div class={styles["modal-container"]}>{ImageComponent}</div>;
+    const Modal = (
+      <div
+        class={styles["modal-container"]}
+        style={{
+          pointerEvents: isShowModal.value ? "auto" : "none",
+          "--opacity": isShowModal.value ? 1 : 0,
+        }}
+      >
+        {ImageComponent}
+      </div>
+    );
 
     return (
       <figure class={styles["block-image"]}>
@@ -92,7 +102,7 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
           </figcaption>
         )}
 
-        {isShowModal.value && Modal}
+        {Modal}
       </figure>
     );
   },

@@ -64,4 +64,6 @@
   z-index: 100;
   background-color: rgba(#23262a, 0.8);
   cursor: zoom-out;
+  opacity: var(--opacity, 1);
+  transition: opacity 200ms;
 }
