@@ -1,0 +1,28 @@
+.block-image {
+  margin: 0;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.image {
+  border-radius: 0.25rem;
+  box-shadow: 0 0 0.125rem rgba(black, 0.1);
+}
+
+.fallback {
+  width: 100%;
+}
+
+.caption-box {
+  box-sizing: border-box;
+  padding: 0rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
