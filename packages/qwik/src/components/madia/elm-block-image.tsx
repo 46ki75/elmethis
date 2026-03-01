@@ -29,9 +29,16 @@ export interface ElmBlockImageProps {
 export const ElmBlockImage = component$<ElmBlockImageProps>(
   ({ src, alt, caption, width, height, enableModal = true }) => {
     const isLoading = useSignal(true);
+    const isShowModal = useSignal(false);
 
     const handleImageLoad = $(() => {
       isLoading.value = false;
+    });
+
+    const handleToggleModal = $(() => {
+      if (enableModal) {
+        isShowModal.value = !isShowModal.value;
+      }
     });
 
     const ImageComponent = (
@@ -42,9 +49,12 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
         width={width}
         height={height}
         onLoad$={handleImageLoad}
+        onClick$={handleToggleModal}
         style={{ "--opacity": isLoading.value ? 0 : 1 }}
       />
     );
+
+    const Modal = <div class={styles["modal-container"]}>{ImageComponent}</div>;
 
     return (
       <figure class={styles["block-image"]}>
@@ -74,6 +84,8 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
             <ElmInlineText size="1rem">{caption}</ElmInlineText>
           </figcaption>
         )}
+
+        {isShowModal.value && Modal}
       </figure>
     );
   },
