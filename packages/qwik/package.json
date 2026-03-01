@@ -5,19 +5,16 @@
     "access": "public"
   },
   "description": "Create a Qwik library",
-  "main": "./lib/qwik.js",
-  "qwik": "./lib/qwik.js",
+  "main": "./lib/index.qwik.mjs",
+  "qwik": "./lib/index.qwik.mjs",
   "types": "./lib-types/index.d.ts",
   "exports": {
     ".": {
-      "types": "./lib-types/index.d.ts",
-      "import": "./lib/qwik.js"
+      "import": "./lib/index.qwik.mjs",
+      "require": "./lib/index.qwik.cjs",
+      "types": "./lib-types/index.d.ts"
     }
   },
-  "files": [
-    "lib",
-    "lib-types"
-  ],
   "engines": {
     "node": "^18.17.0 || ^20.3.0 || >=21.0.0"
   },

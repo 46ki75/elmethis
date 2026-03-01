@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import pkg from "./package.json";
 import { qwikVite } from "@builder.io/qwik/optimizer";
 import tsconfigPaths from "vite-tsconfig-paths";
+import { join } from "node:path";
 
 const { dependencies = {}, peerDependencies = {} } = pkg as any;
 const makeRegex = (dep: string) => new RegExp(`^${dep}(/.*)?$`);
@@ -15,13 +16,10 @@ export default defineConfig(() => {
       target: "es2020",
       lib: {
         entry: "./src/index.ts",
-        formats: ["es" as const],
+        formats: ["es", "cjs"],
+        fileName: (format) => `index.qwik.${format === "es" ? "mjs" : "cjs"}`,
       },
       rollupOptions: {
-        output: {
-          preserveModules: true,
-          preserveModulesRoot: "src",
-        },
         // externalize deps that shouldn't be bundled into the library
         external: [
           /^node:.*/,
