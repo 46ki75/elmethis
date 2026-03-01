@@ -48,17 +48,22 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
 
     return (
       <figure class={styles["block-image"]}>
-        {ImageComponent}
-
         <div
-          class={styles["fallback"]}
+          class={styles["image-container"]}
           style={{ "--opacity": isLoading.value ? 1 : 0 }}
         >
-          <ElmRectangleWave />
+          {ImageComponent}
+
+          <div class={styles["fallback"]}>
+            <ElmRectangleWave />
+          </div>
         </div>
 
         {caption && (
-          <figcaption class={styles["caption-box"]}>
+          <figcaption
+            class={styles["caption-box"]}
+            style={{ "--opacity": isLoading.value ? 0 : 1 }}
+          >
             <span style={{ flex: "1" }}>
               <ElmMdiIcon
                 d={mdiMessageImageOutline}
