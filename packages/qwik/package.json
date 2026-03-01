@@ -1,6 +1,6 @@
 {
   "name": "@elmethis/qwik",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "publishConfig": {
     "access": "public"
   },
@@ -12,8 +12,14 @@
   "exports": {
     ".": {
       "types": "./lib-types/index.d.ts",
-      "import": "./lib/index.qwik.mjs",
-      "require": "./lib/index.qwik.cjs"
+      "import": {
+        "types": "./lib-types/index.d.ts",
+        "default": "./lib/index.qwik.mjs"
+      },
+      "require": {
+        "types": "./lib-types/index.d.ts",
+        "default": "./lib/index.qwik.cjs"
+      }
     }
   },
   "engines": {
