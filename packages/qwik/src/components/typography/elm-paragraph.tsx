@@ -1,7 +1,7 @@
-import { component$, Slot } from "@builder.io/qwik";
+import { component$, Slot, useStylesScoped$ } from "@builder.io/qwik";
 
-import styles from "./elm-paragraph.module.scss";
-import textStyles from "../../styles/text.module.scss";
+import styles from "./elm-paragraph.scoped.scss?inline";
+import textStyles from "../../styles/text.scoped.scss?inline";
 import { useInView } from "../../hooks/useInView";
 
 export interface ElmParagraphProps {
@@ -12,12 +12,15 @@ export interface ElmParagraphProps {
 
 export const ElmParagraph = component$<ElmParagraphProps>(
   ({ color, backgroundColor }) => {
+    useStylesScoped$(styles);
+    useStylesScoped$(textStyles);
+
     const { ref, isVisible } = useInView();
 
     return (
       <p
         ref={ref}
-        class={[styles.paragraph, textStyles.text]}
+        class={["paragraph", "text"]}
         style={{
           "--color": color,
           "--background-color": backgroundColor,

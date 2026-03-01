@@ -1,6 +1,6 @@
-import { $, component$ } from "@builder.io/qwik";
+import { $, component$, useStylesScoped$ } from "@builder.io/qwik";
 
-import styles from "./elm-fragment-identifier.module.scss";
+import styles from "./elm-fragment-identifier.scoped.scss?inline";
 
 export interface ElmFragmentIdentifierProps {
   /**
@@ -11,6 +11,8 @@ export interface ElmFragmentIdentifierProps {
 
 export const ElmFragmentIdentifier = component$<ElmFragmentIdentifierProps>(
   ({ id }) => {
+    useStylesScoped$(styles);
+
     const handleHashClick = $((id: string) => {
       const url = new URL(window.location.href);
       url.hash = id;
@@ -23,7 +25,7 @@ export const ElmFragmentIdentifier = component$<ElmFragmentIdentifierProps>(
     });
 
     return (
-      <span class={styles.fragment} onClick$={() => handleHashClick(id)}>
+      <span class="fragment" onClick$={() => handleHashClick(id)}>
         #
       </span>
     );

@@ -4,9 +4,10 @@ import {
   CSSProperties,
   Slot,
   useSignal,
+  useStylesScoped$,
 } from "@builder.io/qwik";
 
-import styles from "./elm-code-block.module.scss";
+import styles from "./elm-code-block.scoped.scss?inline";
 
 import { ElmLanguageIcon } from "../icon/elm-language-icon";
 import { ElmInlineText } from "../typography/elm-inline-text";
@@ -43,6 +44,7 @@ export interface ElmCodeBlockProps {
 
 export const ElmCodeBlock = component$<ElmCodeBlockProps>(
   ({ code, language = "txt", caption, margin }) => {
+    useStylesScoped$(styles);
     const timerId = useSignal<number | null>(null);
 
     const copyToClipboard = $(async () => {
@@ -60,19 +62,19 @@ export const ElmCodeBlock = component$<ElmCodeBlockProps>(
     });
 
     return (
-      <figure class={styles["code-block"]} style={{ margin }}>
-        <span class={styles["language-icon"]}>
+      <figure class="code-block" style={{ margin }}>
+        <span class="language-icon">
           <ElmLanguageIcon language={language} />
         </span>
 
-        <span class={styles["caption"]}>
+        <span class="caption">
           <ElmInlineText>
             {caption || language}
             <Slot />
           </ElmInlineText>
         </span>
 
-        <div class={styles["copy-icon"]} onClick$={copyToClipboard}>
+        <div class="copy-icon" onClick$={copyToClipboard}>
           <ElmMdiIcon
             size="1.25rem"
             d={
@@ -84,9 +86,9 @@ export const ElmCodeBlock = component$<ElmCodeBlockProps>(
           />
         </div>
 
-        <hr class={styles["divider"]} />
+        <hr class="divider" />
 
-        <div class={styles["code"]}>
+        <div class="code">
           <ElmShikiHighlighter code={code} language={language} />
         </div>
       </figure>

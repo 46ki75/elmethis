@@ -1,8 +1,8 @@
 /* eslint-disable qwik/jsx-img */
 
-import { component$ } from "@builder.io/qwik";
+import { component$, useStylesScoped$ } from "@builder.io/qwik";
 
-import styles from "./elm-inline-icon.module.scss";
+import styles from "./elm-inline-icon.scoped.scss?inline";
 
 export interface ElmInlineIconProps {
   /**
@@ -17,9 +17,10 @@ export interface ElmInlineIconProps {
 }
 
 export const ElmInlineIcon = component$<ElmInlineIconProps>(({ src, alt }) => {
+  useStylesScoped$(styles);
   return (
-    <div class={styles.icon}>
-      <img src={src} alt={alt} class={styles.icon} />
+    <div class="icon">
+      <img src={src} alt={alt} class="icon" />
     </div>
   );
 });

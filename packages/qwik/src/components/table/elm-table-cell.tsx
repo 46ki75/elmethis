@@ -1,5 +1,10 @@
-import { component$, Slot, useContext } from "@builder.io/qwik";
-import styles from "./elm-table-cell.module.scss";
+import {
+  component$,
+  Slot,
+  useContext,
+  useStylesScoped$,
+} from "@builder.io/qwik";
+import styles from "./elm-table-cell.scoped.scss?inline";
 import { HasHeaderContext } from "./elm-table-header";
 
 export interface ElmTableCellProps {
@@ -16,6 +21,7 @@ export interface ElmTableCellProps {
 }
 
 export const ElmTableCell = component$<ElmTableCellProps>((props) => {
+  useStylesScoped$(styles);
   const { hasHeader = false, text } = props;
   const hasHeaderInjected = useContext(HasHeaderContext, false);
 
@@ -24,9 +30,9 @@ export const ElmTableCell = component$<ElmTableCellProps>((props) => {
   return (
     <>
       {isHeader ? (
-        <th class={[styles.common, styles.th]}>{text ? text : <Slot />}</th>
+        <th class={["common", "th"]}>{text ? text : <Slot />}</th>
       ) : (
-        <td class={[styles.common, styles.td]}>{text ? text : <Slot />}</td>
+        <td class={["common", "td"]}>{text ? text : <Slot />}</td>
       )}
     </>
   );

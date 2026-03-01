@@ -1,6 +1,6 @@
 import { Component, component$ } from "@builder.io/qwik";
 
-// import styles from "./elm-language-icon.module.scss";
+// import styles from "./elm-language-icon.scoped.scss?inline";
 
 import { type CommonLanguageProps } from "./languages/language-interface";
 

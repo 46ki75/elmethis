@@ -1,7 +1,7 @@
 /* eslint-disable qwik/jsx-img */
-import { component$ } from "@builder.io/qwik";
+import { component$, useStylesScoped$ } from "@builder.io/qwik";
 
-import styles from "./elm-bookmark.module.scss";
+import styles from "./elm-bookmark.scoped.scss?inline";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { mdiLinkVariant } from "@mdi/js";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
@@ -37,26 +37,27 @@ export interface ElmBookmarkProps {
 
 export const ElmBookmark = component$<ElmBookmarkProps>(
   ({ url, image, title, description, favicon }) => {
+    useStylesScoped$(styles);
     return (
-      <div class={styles.bookmark}>
+      <div class="bookmark">
         <a
-          class={styles.container}
+          class="container"
           href={url}
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img class={styles.image} src={image} alt="OGP Image" />
+          <img class="image" src={image} alt="OGP Image" />
 
-          <div class={styles.content}>
-            <div class={styles.title}>
+          <div class="content">
+            <div class="title">
               <ElmInlineText bold>{title}</ElmInlineText>
             </div>
 
-            <div class={styles.description}>
+            <div class="description">
               <ElmInlineText size="0.75rem">{description}</ElmInlineText>
             </div>
 
-            <div class={styles.link}>
+            <div class="link">
               {favicon ? (
                 <ElmInlineIcon src={favicon} />
               ) : (

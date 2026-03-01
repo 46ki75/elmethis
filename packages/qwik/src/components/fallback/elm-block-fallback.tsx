@@ -1,6 +1,6 @@
-import { component$, CSSProperties } from "@builder.io/qwik";
+import { component$, CSSProperties, useStylesScoped$ } from "@builder.io/qwik";
 
-import styles from "./elm-block-fallback.module.scss";
+import styles from "./elm-block-fallback.scoped.scss?inline";
 import { ElmDotLoadingIcon } from "../icon/elm-dot-loading-icon";
 import { ElmRectangleWave } from "./elm-rectangle-wave";
 
@@ -10,8 +10,9 @@ export interface ElmBlockFallbackProps {
 
 export const ElmBlockFallback = component$<ElmBlockFallbackProps>(
   ({ height = "16rem" }) => {
+    useStylesScoped$(styles);
     return (
-      <div class={styles["block-fallback"]} style={{ "--height": height }}>
+      <div class="block-fallback" style={{ "--height": height }}>
         <ElmDotLoadingIcon />
         <ElmRectangleWave />
       </div>

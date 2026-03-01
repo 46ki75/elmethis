@@ -1,6 +1,12 @@
-import { $, component$, Slot, useSignal } from "@builder.io/qwik";
+import {
+  $,
+  component$,
+  Slot,
+  useSignal,
+  useStylesScoped$,
+} from "@builder.io/qwik";
 
-import styles from "./elm-toggle.module.scss";
+import styles from "./elm-toggle.scoped.scss?inline";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { mdiChevronRight, mdiPlus } from "@mdi/js";
 import { ElmInlineText } from "../typography/elm-inline-text";
@@ -13,6 +19,7 @@ export interface ElmToggleProps {
 }
 
 export const ElmToggle = component$<ElmToggleProps>(({ summary }) => {
+  useStylesScoped$(styles);
   const isOpen = useSignal(false);
 
   const toggle = $(() => {
@@ -22,45 +29,45 @@ export const ElmToggle = component$<ElmToggleProps>(({ summary }) => {
   return (
     <div
       class={[
-        styles["toggle"],
+        "toggle",
         {
-          [styles["toggle-open"]]: isOpen.value,
-          [styles["toggle-closed"]]: !isOpen.value,
+          "toggle-open": isOpen.value,
+          "toggle-closed": !isOpen.value,
         },
       ]}
     >
       <div
         class={[
-          styles["summary"],
+          "summary",
           {
-            [styles["summary-open"]]: isOpen.value,
-            [styles["summary-closed"]]: !isOpen.value,
+            "summary-open": isOpen.value,
+            "summary-closed": !isOpen.value,
           },
         ]}
         onClick$={toggle}
       >
         <span
           class={[
-            styles["chevron-icon"],
+            "chevron-icon",
             {
-              [styles["chevron-icon-open"]]: isOpen.value,
-              [styles["chevron-icon-closed"]]: !isOpen.value,
+              "chevron-icon-open": isOpen.value,
+              "chevron-icon-closed": !isOpen.value,
             },
           ]}
         >
           <ElmMdiIcon d={mdiChevronRight} />
         </span>
 
-        <span class={styles["summary-text"]}>
+        <span class="summary-text">
           {summary ? summary : <Slot name="summary" />}
         </span>
 
         <span
           class={[
-            styles["plus-icon"],
+            "plus-icon",
             {
-              [styles["plus-icon-open"]]: isOpen.value,
-              [styles["plus-icon-closed"]]: !isOpen.value,
+              "plus-icon-open": isOpen.value,
+              "plus-icon-closed": !isOpen.value,
             },
           ]}
         >
@@ -74,30 +81,30 @@ export const ElmToggle = component$<ElmToggleProps>(({ summary }) => {
 
       <div
         class={[
-          styles["content"],
+          "content",
           {
-            [styles["content-open"]]: isOpen.value,
-            [styles["content-closed"]]: !isOpen.value,
+            "content-open": isOpen.value,
+            "content-closed": !isOpen.value,
           },
         ]}
       >
         <Slot />
       </div>
 
-      <div class={styles.footer} onClick$={toggle}>
-        <span class={styles["footer-chevron-icon"]}>
+      <div class="footer" onClick$={toggle}>
+        <span class="footer-chevron-icon">
           <ElmMdiIcon d={mdiChevronRight} color="gray" />
         </span>
-        <hr class={styles["footer-line"]} />
-        <span class={styles["footer-cross-icon"]}>
+        <hr class="footer-line" />
+        <span class="footer-cross-icon">
           <ElmMdiIcon d={mdiPlus} color="#c56565" />
         </span>
         <ElmInlineText>CLOSE</ElmInlineText>
-        <span class={styles["footer-cross-icon"]}>
+        <span class="footer-cross-icon">
           <ElmMdiIcon d={mdiPlus} color="#c56565" />
         </span>
-        <hr class={styles["footer-line"]} />
-        <span class={styles["footer-chevron-icon"]}>
+        <hr class="footer-line" />
+        <span class="footer-chevron-icon">
           <ElmMdiIcon d={mdiChevronRight} color="gray" />
         </span>
       </div>
