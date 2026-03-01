@@ -19,8 +19,8 @@ export interface ElmInlineIconProps {
 export const ElmInlineIcon = component$<ElmInlineIconProps>(({ src, alt }) => {
   useStylesScoped$(styles);
   return (
-    <div class="icon">
+    <span class="icon">
       <img src={src} alt={alt} class="icon" />
-    </div>
+    </span>
   );
 });
