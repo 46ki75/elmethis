@@ -19,13 +19,15 @@ export const ElmTableCell = component$<ElmTableCellProps>((props) => {
   const { hasHeader = false, text } = props;
   const hasHeaderInjected = useContext(HasHeaderContext, false);
 
-  const isHeader = hasHeader || hasHeaderInjected;
-
-  const CellTag = isHeader ? "th" : ("td" as any);
+  const isHeader = hasHeader || (hasHeaderInjected as boolean | undefined);
 
   return (
-    <CellTag class={[styles.common, isHeader ? styles.th : styles.td]}>
-      {text ? text : <Slot />}
-    </CellTag>
+    <>
+      {isHeader ? (
+        <th class={[styles.common, styles.th]}>{text ? text : <Slot />}</th>
+      ) : (
+        <td class={[styles.common, styles.td]}>{text ? text : <Slot />}</td>
+      )}
+    </>
   );
 });
