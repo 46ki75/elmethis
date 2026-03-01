@@ -8,7 +8,7 @@ import styles from "./elm-table-header.module.scss";
 
 export const HasHeaderContext = createContextId<boolean>("HasHeaderContext");
 
-export interface ElmTableHeaderProps {}
+export type ElmTableHeaderProps = object;
 
 export const ElmTableHeader = component$<ElmTableHeaderProps>(() => {
   useContextProvider(HasHeaderContext, true);

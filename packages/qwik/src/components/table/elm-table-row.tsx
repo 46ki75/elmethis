@@ -2,7 +2,7 @@ import { component$, Slot, useContext } from "@builder.io/qwik";
 import styles from "./elm-table-row.module.scss";
 import { HasRowHeaderContext } from "./elm-table";
 
-export interface ElmTableRowProps {}
+export type ElmTableRowProps = object;
 
 export const ElmTableRow = component$<ElmTableRowProps>(() => {
   const hasRowHeader = useContext(HasRowHeaderContext);
