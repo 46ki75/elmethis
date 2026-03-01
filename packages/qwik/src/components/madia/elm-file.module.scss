@@ -1,0 +1,48 @@
+.file {
+  margin: 0;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: 1.5rem 1fr 1fr 1.5rem;
+  gap: 1rem;
+  align-items: center;
+
+  box-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.2);
+  border-radius: 0.25rem;
+
+  background-color: rgba(white, 0.2);
+  [data-theme="dark"] & {
+    background-color: rgba(black, 0.2);
+  }
+}
+
+.file-icon {
+}
+
+.file-name {
+}
+
+.file-size {
+  text-align: right;
+}
+
+.download-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 1.5rem;
+  width: 1.5rem;
+
+  padding: 0.125rem;
+  border-radius: 0.125rem;
+  cursor: pointer;
+  transition:
+    color 200ms,
+    background-color 200ms;
+
+  &:hover {
+    background-color: rgba(black, 0.1);
+    [data-theme="dark"] & {
+      background-color: rgba(white, 0.1);
+    }
+  }
+}
