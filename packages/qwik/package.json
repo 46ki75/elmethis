@@ -1,6 +1,6 @@
 {
   "name": "@elmethis/qwik",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "publishConfig": {
     "access": "public"
   },
@@ -8,6 +8,7 @@
   "main": "./lib/index.qwik.mjs",
   "qwik": "./lib/index.qwik.mjs",
   "types": "./lib-types/index.d.ts",
+  "module": "./lib/index.qwik.mjs",
   "exports": {
     ".": {
       "types": "./lib-types/index.d.ts",
