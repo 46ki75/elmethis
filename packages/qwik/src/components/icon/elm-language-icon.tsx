@@ -22,6 +22,8 @@ import { Lua } from "./languages/lua";
 import { Csharp } from "./languages/c-sharp";
 import { Cplusplus } from "./languages/c-plus-plus";
 import { C } from "./languages/c";
+import { ElmMdiIcon } from "./elm-mdi-icon";
+import { mdiCodeTags } from "@mdi/js";
 
 export const LANGUAGES = [
   "rust",
@@ -155,7 +157,7 @@ const renderMap: Record<Language, Component<CommonLanguageProps>> = {
   csharp: Csharp,
   cpp: Cplusplus,
   c: C,
-  file: () => null,
+  file: ({ size }) => <ElmMdiIcon d={mdiCodeTags} size={String(size)} />,
 };
 
 export const ElmLanguageIcon = component$<ElmLanguageIconProps>(
