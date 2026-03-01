@@ -1,6 +1,9 @@
 {
   "name": "@elmethis/qwik",
   "version": "0.0.1",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Create a Qwik library",
   "main": "./lib/elmethis.js",
   "qwik": "./lib/elmethis.js",
