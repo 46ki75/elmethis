@@ -26,6 +26,7 @@ export default defineConfig(() => {
         external: [
           /^node:.*/,
           "@builder.io/qwik",
+          "@builder.io/qwik/jsx-runtime",
           "@builder.io/qwik/build",
           ...excludeAll(dependencies),
           ...excludeAll(peerDependencies),
