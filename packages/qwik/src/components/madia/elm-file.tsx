@@ -57,13 +57,13 @@ export const ElmFile = component$<ElmFileProps>(({ name, src, filesize }) => {
         <ElmMdiIcon d={mdiFile} size="1.25rem" />
       </div>
 
-      <div class={styles["file-name"]}>
+      <div>
         <ElmInlineText>
           {name ?? getLastPathSegmentWithoutQueryOrHash(src)}
         </ElmInlineText>
       </div>
 
-      <div class={styles["file-size"]}>
+      <div>
         <ElmInlineText>{filesize}</ElmInlineText>
       </div>
 
