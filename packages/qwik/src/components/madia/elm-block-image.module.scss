@@ -6,7 +6,6 @@
   flex-direction: column;
   gap: 0.5rem;
   width: 100%;
-  pointer-events: none;
 }
 
 .image-container {
@@ -27,9 +26,7 @@
   opacity: var(--opacity, 1);
   pointer-events: all;
 
-  &.image-enable-modal {
-    cursor: zoom-in;
-  }
+  cursor: var(--cursor);
 }
 
 .fallback {
@@ -65,4 +62,5 @@
   inset: 0 0 auto auto;
   z-index: 100;
   background-color: rgba(#23262a, 0.8);
+  cursor: zoom-out;
 }

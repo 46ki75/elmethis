@@ -43,14 +43,21 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
 
     const ImageComponent = (
       <img
-        class={[styles.image, { [styles["image-enable-modal"]]: enableModal }]}
+        class={[styles.image]}
         src={src}
         alt={alt ?? caption ?? "Image"}
         width={width}
         height={height}
         onLoad$={handleImageLoad}
         onClick$={handleToggleModal}
-        style={{ "--opacity": isLoading.value ? 0 : 1 }}
+        style={{
+          "--opacity": isLoading.value ? 0 : 1,
+          "--cursor": enableModal
+            ? isShowModal.value
+              ? "zoom-out"
+              : "zoom-in"
+            : "default",
+        }}
       />
     );
 
