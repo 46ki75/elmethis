@@ -40,6 +40,7 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
         width={width}
         height={height}
         onLoad$={handleImageLoad}
+        style={{ "--opacity": isLoading.value ? 0 : 1 }}
       />
     );
 
@@ -47,7 +48,10 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
       <figure class={styles["block-image"]}>
         {ImageComponent}
 
-        <div class={styles["fallback"]}>
+        <div
+          class={styles["fallback"]}
+          style={{ "--opacity": isLoading.value ? 1 : 0 }}
+        >
           <ElmRectangleWave />
         </div>
 
@@ -58,7 +62,7 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
               color="#cdb57b"
               size="1.25rem"
             />
-            <ElmInlineText>{caption}</ElmInlineText>
+            <ElmInlineText size="1rem">{caption}</ElmInlineText>
           </figcaption>
         )}
       </figure>

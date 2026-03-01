@@ -7,12 +7,16 @@
   flex-direction: column;
   gap: 0.5rem;
   width: 100%;
+  pointer-events: none;
 }
 
 .image {
   max-width: 100%;
   border-radius: 0.25rem;
   box-shadow: 0 0 0.125rem rgba(black, 0.1);
+  transition: opacity 400ms;
+  opacity: var(--opacity, 1);
+  pointer-events: all;
 }
 
 .fallback {
@@ -20,7 +24,9 @@
   height: 100%;
   position: absolute;
   inset: 0 0 auto auto;
-  z-index: 6;
+  transition: opacity 400ms;
+  opacity: var(--opacity, 1);
+  pointer-events: none;
 }
 
 .caption-box {
@@ -30,4 +36,6 @@
   justify-content: center;
   align-items: center;
   gap: 1rem;
+  opacity: 0.75;
+  pointer-events: all;
 }
