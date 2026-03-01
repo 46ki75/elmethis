@@ -1,4 +1,10 @@
-import { component$, useSignal, useStyles$, useTask$ } from "@builder.io/qwik";
+import {
+  component$,
+  useSignal,
+  useStyles$,
+  useStylesScoped$,
+  useTask$,
+} from "@builder.io/qwik";
 
 import styles from "./elm-shiki-highlighter.global.scss?inline";
 
@@ -17,6 +23,11 @@ export interface ElmShikiHighlighterProps {
 export const ElmShikiHighlighter = component$<ElmShikiHighlighterProps>(
   ({ code, language = "txt" }) => {
     useStyles$(styles);
+    useStylesScoped$(`
+    .code {
+      font-size: 1rem;
+      line-height: 1.5rem;
+    }`);
     const rawHtml = useSignal("");
 
     useTask$(async ({ track }) => {
@@ -40,6 +51,6 @@ export const ElmShikiHighlighter = component$<ElmShikiHighlighterProps>(
       }
     });
 
-    return <pre dangerouslySetInnerHTML={rawHtml.value} />;
+    return <pre class="code" dangerouslySetInnerHTML={rawHtml.value} />;
   },
 );
