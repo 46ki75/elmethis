@@ -64,4 +64,6 @@
   grid-area: code;
   box-sizing: border-box;
   padding: 0 1rem;
+  overflow-x: auto;
+  scrollbar-width: thin;
 }
