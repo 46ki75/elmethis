@@ -17,6 +17,8 @@ export interface ElmBlockImageProps {
    */
   alt?: string;
 
+  enableModal?: boolean;
+
   caption?: string;
 
   width?: Numberish;
@@ -25,7 +27,7 @@ export interface ElmBlockImageProps {
 }
 
 export const ElmBlockImage = component$<ElmBlockImageProps>(
-  ({ src, alt, caption, width, height }) => {
+  ({ src, alt, caption, width, height, enableModal = true }) => {
     const isLoading = useSignal(true);
 
     const handleImageLoad = $(() => {
@@ -34,7 +36,7 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
 
     const ImageComponent = (
       <img
-        class={styles.image}
+        class={[styles.image, { [styles["image-enable-modal"]]: enableModal }]}
         src={src}
         alt={alt ?? caption ?? "Image"}
         width={width}
@@ -57,11 +59,13 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
 
         {caption && (
           <figcaption class={styles["caption-box"]}>
-            <ElmMdiIcon
-              d={mdiMessageImageOutline}
-              color="#cdb57b"
-              size="1.25rem"
-            />
+            <span style={{ flex: "1" }}>
+              <ElmMdiIcon
+                d={mdiMessageImageOutline}
+                color="#cdb57b"
+                size="1.25rem"
+              />
+            </span>
             <ElmInlineText size="1rem">{caption}</ElmInlineText>
           </figcaption>
         )}

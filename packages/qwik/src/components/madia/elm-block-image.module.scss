@@ -17,6 +17,10 @@
   transition: opacity 400ms;
   opacity: var(--opacity, 1);
   pointer-events: all;
+
+  &.image-enable-modal {
+    cursor: zoom-in;
+  }
 }
 
 .fallback {
