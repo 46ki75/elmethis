@@ -1,17 +1,17 @@
 {
   "name": "@elmethis/qwik",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publishConfig": {
     "access": "public"
   },
   "description": "Create a Qwik library",
-  "main": "./lib/elmethis.js",
-  "qwik": "./lib/elmethis.js",
+  "main": "./lib/qwik.js",
+  "qwik": "./lib/qwik.js",
   "types": "./lib-types/index.d.ts",
   "exports": {
     ".": {
       "types": "./lib-types/index.d.ts",
-      "import": "./lib/elmethis.js"
+      "import": "./lib/qwik.js"
     }
   },
   "files": [

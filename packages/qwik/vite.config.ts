@@ -15,8 +15,6 @@ export default defineConfig(() => {
       target: "es2020",
       lib: {
         entry: "./src/index.ts",
-        name: "elmethis",
-        fileName: "elmethis",
         formats: ["es" as const],
       },
       rollupOptions: {
@@ -27,6 +25,8 @@ export default defineConfig(() => {
         // externalize deps that shouldn't be bundled into the library
         external: [
           /^node:.*/,
+          "@builder.io/qwik",
+          "@builder.io/qwik/build",
           ...excludeAll(dependencies),
           ...excludeAll(peerDependencies),
         ],
