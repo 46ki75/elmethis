@@ -1,6 +1,6 @@
-import { component$, useSignal, useTask$ } from "@builder.io/qwik";
+import { component$, useSignal, useStyles$, useTask$ } from "@builder.io/qwik";
 
-import "./elm-shiki-highlighter.global.scss";
+import styles from "./elm-shiki-highlighter.global.scss?inline";
 
 export interface ElmShikiHighlighterProps {
   /**
@@ -16,6 +16,7 @@ export interface ElmShikiHighlighterProps {
 
 export const ElmShikiHighlighter = component$<ElmShikiHighlighterProps>(
   ({ code, language = "txt" }) => {
+    useStyles$(styles);
     const rawHtml = useSignal("");
 
     useTask$(async ({ track }) => {
