@@ -34,3 +34,22 @@ export {
   ElmInlineText,
   type ElmInlineTextProps,
 } from "./components/typography/elm-inline-text";
+
+// | Table |
+export { ElmTable, type ElmTableProps } from "./components/table/elm-table";
+export {
+  ElmTableHeader,
+  type ElmTableHeaderProps,
+} from "./components/table/elm-table-header";
+export {
+  ElmTableBody,
+  type ElmTableBodyProps,
+} from "./components/table/elm-table-body";
+export {
+  ElmTableRow,
+  type ElmTableRowProps,
+} from "./components/table/elm-table-row";
+export {
+  ElmTableCell,
+  type ElmTableCellProps,
+} from "./components/table/elm-table-cell";

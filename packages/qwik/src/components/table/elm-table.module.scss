@@ -1,0 +1,29 @@
+.table {
+  margin-block: var(--margin-block);
+  border-collapse: collapse;
+  border-spacing: 0;
+  box-shadow: 0 0 0.125rem rgba(black, 0.2);
+}
+
+.caption {
+  position: relative;
+  width: 100%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-block-end: 1rem;
+}
+
+.caption-inner {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.spacing {
+  flex-grow: 1;
+  height: 1px;
+  background-color: rgba(gray, 0.2);
+}
