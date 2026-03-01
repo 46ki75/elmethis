@@ -1,5 +1,7 @@
-.jarkup-body > * + * {
-  margin-block-start: 2em;
+.jarkup-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .column-list {

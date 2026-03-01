@@ -262,6 +262,6 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
   };
 
   return (
-    <div class={[styles["jarkup-body"]]}>{render(props.jsonComponents)}</div>
+    <div class={styles["jarkup-body"]}>{render(props.jsonComponents)}</div>
   );
 });

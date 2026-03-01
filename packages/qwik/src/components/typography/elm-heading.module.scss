@@ -96,13 +96,13 @@
     position: absolute;
     content: "";
     width: 3px;
-    height: 50%;
-    top: 25%;
+    height: 12px;
+    top: calc(50% - 8px);
     left: 0;
 
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.5);
     [data-theme="dark"] & {
-      background-color: rgba(255, 255, 255, 0.8);
+      background-color: rgba(255, 255, 255, 0.5);
     }
   }
 }
