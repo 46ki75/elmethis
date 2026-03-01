@@ -53,3 +53,6 @@ export {
   ElmTableCell,
   type ElmTableCellProps,
 } from "./components/table/elm-table-cell";
+
+// | Others |
+export { ElmJarkup, type ElmJarkupProps } from "./components/others/elm-jarkup";

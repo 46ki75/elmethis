@@ -42,6 +42,7 @@
     "@eslint/js": "latest",
     "@storybook/addon-docs": "^8.6.17",
     "@storybook/addon-essentials": "^8.6.17",
+    "@types/lodash-es": "^4.17.12",
     "@types/node": "20.19.0",
     "eslint": "9.32.0",
     "eslint-plugin-qwik": "1.19.0",
@@ -61,6 +62,7 @@
   "dependencies": {
     "@mdi/js": "^7.4.47",
     "katex": "^0.16.33",
+    "lodash-es": "^4.17.23",
     "polished": "^4.3.1",
     "shiki": "^4.0.0"
   }

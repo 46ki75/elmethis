@@ -1,0 +1,24 @@
+.jarkup-body > * + * {
+  margin-block-start: 2em;
+}
+
+.column-list {
+  box-sizing: content-box;
+  padding-block: 0.25rem;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+  justify-content: space-around;
+  overflow: auto;
+}
+
+.column {
+  box-sizing: border-box;
+  padding: 0.125rem;
+  flex: var(--width-ratio, 1);
+
+  & > * + * {
+    margin-block-start: 2em;
+  }
+}
