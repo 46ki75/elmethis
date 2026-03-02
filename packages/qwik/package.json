@@ -60,6 +60,6 @@
   "dependencies": {
     "@mdi/js": "^7.4.47",
     "polished": "^4.3.1",
-    "shiki": "^4.0.0"
+    "shiki": "^4.0.1"
   }
 }
