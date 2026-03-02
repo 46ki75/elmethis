@@ -11,6 +11,10 @@ export {
 
 // | Containments |
 export {
+  ElmParallax,
+  type ElmParallaxProps,
+} from "./components/containments/elm-parallax";
+export {
   ElmToggle,
   type ElmToggleProps,
 } from "./components/containments/elm-toggle";
@@ -58,6 +62,10 @@ export {
   ElmBookmark,
   type ElmBookmarkProps,
 } from "./components/navigation/elm-bookmark";
+export {
+  ElmBreadcrumb,
+  type ElmBreadcrumbProps,
+} from "./components/navigation/elm-breadcrumb";
 
 // | Typography |
 export {
