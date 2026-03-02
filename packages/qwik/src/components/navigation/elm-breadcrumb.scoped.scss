@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0;
+  user-select: none;
+}
+
+.link-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0;
+  box-sizing: border-box;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+
+  transition:
+    background-color 100ms,
+    opacity 100ms,
+    transform 100ms;
+
+  &:hover {
+    background-color: rgba(#868e9c, 0.2);
+    transform: translateX(-1px) translateY(-1px);
+  }
+
+  &:active {
+    opacity: 0.5;
+    transform: translateX(1px) translateY(1px);
+  }
+}
+
+.text {
+  opacity: var(--opacity);
+  transition: opacity 200ms;
+  transition-delay: var(--delay);
+  padding: 0 0.25rem;
+}
