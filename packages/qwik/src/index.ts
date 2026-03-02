@@ -66,6 +66,10 @@ export {
   ElmBreadcrumb,
   type ElmBreadcrumbProps,
 } from "./components/navigation/elm-breadcrumb";
+export {
+  ElmPageTop,
+  type ElmPageTopProps,
+} from "./components/navigation/elm-page-top";
 
 // | Typography |
 export {
