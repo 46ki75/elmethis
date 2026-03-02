@@ -3,38 +3,34 @@ import { component$, useSignal, useStylesScoped$ } from "@builder.io/qwik";
 import styles from "./elm-parallax.scoped.scss?inline";
 
 export interface ElmParallaxProps {
-  imageUrl1?: string;
-  imageUrl2?: string;
+  images: string[];
 }
 
-export const ElmParallax = component$<ElmParallaxProps>(
-  ({ imageUrl1, imageUrl2 }) => {
-    useStylesScoped$(styles);
+export const ElmParallax = component$<ElmParallaxProps>(({ images }) => {
+  useStylesScoped$(styles);
 
-    const y = useSignal(0);
+  const y = useSignal(0);
 
-    return (
-      <>
+  return (
+    <>
+      <div
+        class="parallax-watcher"
+        window:onScroll$={() => {
+          y.value = window.scrollY;
+        }}
+      ></div>
+
+      {images.map((image, index) => (
         <div
-          window:onScroll$={() => {
-            y.value = window.scrollY;
-          }}
+          key={index}
           class="parallax"
           style={{
-            backgroundImage: `url(${imageUrl1})`,
-            transform: `scale(1.2) translateY(${y.value / 400}%)`,
+            backgroundImage: `url(${image})`,
+            transform: `scale(1.2) translateY(${y.value / (1000 * (index + 1))}%)`,
             transformOrigin: "bottom",
           }}
         ></div>
-        <div
-          class="parallax"
-          style={{
-            backgroundImage: `url(${imageUrl2})`,
-            transform: `scale(1.2) translateY(${y.value / 900}%)`,
-            transformOrigin: "bottom",
-          }}
-        ></div>
-      </>
-    );
-  },
-);
+      ))}
+    </>
+  );
+});

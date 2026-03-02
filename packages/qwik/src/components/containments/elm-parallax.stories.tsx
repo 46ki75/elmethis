@@ -15,10 +15,13 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
+  args: {
+    images: [img1, img2],
+  },
   render() {
     return (
       <div style={{ height: "1000vh" }}>
-        <ElmParallax imageUrl1={img1} imageUrl2={img2} />
+        <ElmParallax {...this.args} />
       </div>
     );
   },

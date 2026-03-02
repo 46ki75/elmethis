@@ -1,3 +1,9 @@
+.parallax-watcher {
+  display: none;
+  z-index: -1;
+  position: fixed;
+}
+
 .parallax {
   position: fixed;
   height: 2000vh;
