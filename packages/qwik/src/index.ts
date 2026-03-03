@@ -50,6 +50,11 @@ export {
   type ElmMdiIconProps,
 } from "./components/icon/elm-mdi-icon";
 
+export {
+  ElmToggleTheme,
+  type ElmToggleThemeProps,
+} from "./components/icon/elm-toggle-theme";
+
 // | Media |
 export {
   ElmBlockImage,
