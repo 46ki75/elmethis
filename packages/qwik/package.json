@@ -53,7 +53,7 @@
     "qwik": "qwik"
   },
   "devDependencies": {
-    "@builder.io/qwik": "1.19.0",
+    "@builder.io/qwik": "1.19.1",
     "@eslint/js": "latest",
     "@storybook/addon-docs": "^10.2.14",
     "@storybook/addon-essentials": "^8.6.17",
