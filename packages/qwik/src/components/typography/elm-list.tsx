@@ -1,6 +1,6 @@
 import { component$, Slot } from "@builder.io/qwik";
 
-import "./elm-list.global.scss";
+import styles from "./elm-list.module.scss";
 
 import textStyle from "../../styles/text.module.scss";
 
@@ -15,8 +15,8 @@ export const ElmList = component$<ElmListProps>(
         <ol
           class={[
             textStyle.text,
-            "elmethis-list-common",
-            "elmethis-numbered-list",
+            styles["elmethis-list-common"],
+            styles["elmethis-numbered-list"],
           ]}
         >
           <Slot />
@@ -27,8 +27,8 @@ export const ElmList = component$<ElmListProps>(
         <ul
           class={[
             textStyle.text,
-            "elmethis-list-common",
-            "elmethis-bulleted-list",
+            styles["elmethis-list-common"],
+            styles["elmethis-bulleted-list"],
           ]}
         >
           <Slot />

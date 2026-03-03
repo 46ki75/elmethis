@@ -18,8 +18,8 @@ export interface ElmInlineIconProps {
 
 export const ElmInlineIcon = component$<ElmInlineIconProps>(({ src, alt }) => {
   return (
-    <div class={styles.icon}>
+    <span class={styles.icon}>
       <img src={src} alt={alt} class={styles.icon} />
-    </div>
+    </span>
   );
 });

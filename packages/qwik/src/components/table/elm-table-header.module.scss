@@ -1,0 +1,8 @@
+.thead {
+  text-align: left;
+  transition:
+    background-color 400ms,
+    color 400ms;
+
+  border-bottom: 2px solid rgba(gray, 0.5);
+}

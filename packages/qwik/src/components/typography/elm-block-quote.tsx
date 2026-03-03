@@ -19,7 +19,7 @@ export const ElmBlockQuote = component$<ElmBlockQuoteProps>(({ cite }) => {
         <ElmMdiIcon d={mdiFormatQuoteOpen} />
       </div>
 
-      <div class={[styles.body]}>
+      <div class={styles.body}>
         <Slot />
       </div>
 

@@ -28,12 +28,16 @@ export const ElmHeading = component$<ElmHeadingProps>(({ level, text, id }) => {
       class={[styles["heading-common"], textStyles.text, styles[`h${level}`]]}
       style={{ "--font-size": `${SIZE_MAP[level]}em` }}
     >
-      {text}
+      <span>{text}</span>
       <Slot />
       {id && (
         <span style={{ padding: "0.5rem" }}>
           <ElmFragmentIdentifier id={id} />
         </span>
+      )}
+
+      {level === 2 && (
+        <span class={styles["h2__underline"]} aria-hidden="true"></span>
       )}
     </Tag>
   );

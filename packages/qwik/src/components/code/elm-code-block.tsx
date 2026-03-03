@@ -65,7 +65,7 @@ export const ElmCodeBlock = component$<ElmCodeBlockProps>(
           <ElmLanguageIcon language={language} />
         </span>
 
-        <span class={styles["caption"]}>
+        <span class={styles.caption}>
           <ElmInlineText>
             {caption || language}
             <Slot />
@@ -84,9 +84,9 @@ export const ElmCodeBlock = component$<ElmCodeBlockProps>(
           />
         </div>
 
-        <hr class={styles["divider"]} />
+        <hr class={styles.divider} />
 
-        <div class={styles["code"]}>
+        <div class={styles.code}>
           <ElmShikiHighlighter code={code} language={language} />
         </div>
       </figure>

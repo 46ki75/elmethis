@@ -1,6 +1,6 @@
 import { component$, useSignal, useTask$ } from "@builder.io/qwik";
 
-import "./elm-shiki-highlighter.global.scss";
+import styles from "./elm-shiki-highlighter.module.scss";
 
 export interface ElmShikiHighlighterProps {
   /**
@@ -39,6 +39,6 @@ export const ElmShikiHighlighter = component$<ElmShikiHighlighterProps>(
       }
     });
 
-    return <pre dangerouslySetInnerHTML={rawHtml.value} />;
+    return <pre class={styles.code} dangerouslySetInnerHTML={rawHtml.value} />;
   },
 );
