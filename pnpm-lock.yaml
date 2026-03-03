@@ -69,6 +69,9 @@ importers:
       lodash-es:
         specifier: ^4.17.23
         version: 4.17.23
+      marked:
+        specifier: ^17.0.3
+        version: 17.0.3
       polished:
         specifier: ^4.3.1
         version: 4.3.1
@@ -91,6 +94,9 @@ importers:
       '@types/lodash-es':
         specifier: ^4.17.12
         version: 4.17.12
+      '@types/marked':
+        specifier: ^6.0.0
+        version: 6.0.0
       '@types/node':
         specifier: 20.19.0
         version: 20.19.0
@@ -2349,6 +2355,10 @@ packages:
 
   '@types/lodash@4.17.13':
     resolution: {integrity: sha512-lfx+dftrEZcdBPczf9d0Qv0x+j/rfNCMuC6OcfXmO8gkfeNAY88PgKUbvG56whcN23gc27yenwF6oJZXGFpYxg==}
+
+  '@types/marked@6.0.0':
+    resolution: {integrity: sha512-jmjpa4BwUsmhxcfsgUit/7A9KbrC48Q0q8KvnY107ogcjGgTFDlIL3RpihNpx2Mu1hM4mdFQjoVc4O6JoGKHsA==}
+    deprecated: This is a stub types definition. marked provides its own type definitions, so you do not need this installed.
 
   '@types/mdast@4.0.4':
     resolution: {integrity: sha512-kGaNbPh1k7AFzgpud/gMdvIm5xuECykRR+JnWKQno9TAXVa6WIVCGTPvYGekIDL4uwCZQSYbUxNBSb1aUo79oA==}
@@ -4641,11 +4651,6 @@ packages:
   markdown-extensions@2.0.0:
     resolution: {integrity: sha512-o5vL7aDWatOTX8LzaS1WMoaoxIiLRQJuIKKe2wAw6IeULDHaqbiqiggmx+pKvZDb1Sj+pE46Sn1T7lCqfFtg1Q==}
     engines: {node: '>=16'}
-
-  marked@16.4.1:
-    resolution: {integrity: sha512-ntROs7RaN3EvWfy3EZi14H4YxmT6A5YvywfhO+0pm+cH/dnSQRmdAmoFIc3B9aiwTehyk7pESH4ofyBY+V5hZg==}
-    engines: {node: '>= 20'}
-    hasBin: true
 
   marked@16.4.2:
     resolution: {integrity: sha512-TI3V8YYWvkVf3KJe1dRkpnjs68JUPyEa5vjKrp1XEEJUAOaQc+Qj+L1qWbPd0SJuAdQkFU0h73sXXqwDYxsiDA==}
@@ -7130,7 +7135,7 @@ snapshots:
       '@vueuse/core': 13.9.0(vue@3.5.26(typescript@5.9.3))
       katex: 0.16.33
       lodash-es: 4.17.23
-      marked: 16.4.1
+      marked: 16.4.2
       mermaid: 11.12.0
       nanoid: 5.1.6
       polished: 4.3.1
@@ -8441,6 +8446,10 @@ snapshots:
       '@types/lodash': 4.17.13
 
   '@types/lodash@4.17.13': {}
+
+  '@types/marked@6.0.0':
+    dependencies:
+      marked: 17.0.3
 
   '@types/mdast@4.0.4':
     dependencies:
@@ -11212,8 +11221,6 @@ snapshots:
 
   markdown-extensions@2.0.0:
     optional: true
-
-  marked@16.4.1: {}
 
   marked@16.4.2: {}
 

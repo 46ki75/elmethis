@@ -128,3 +128,7 @@ export {
 
 // | Others |
 export { ElmJarkup, type ElmJarkupProps } from "./components/others/elm-jarkup";
+export {
+  ElmMarkdown,
+  type ElmMarkdownProps,
+} from "./components/others/elm-markdown";
