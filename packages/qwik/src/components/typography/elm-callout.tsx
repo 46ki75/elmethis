@@ -1,6 +1,6 @@
-import { component$, Slot, useStylesScoped$ } from "@builder.io/qwik";
+import { component$, Slot } from "@builder.io/qwik";
 
-import styles from "./elm-callout.scoped.scss?inline";
+import styles from "./elm-callout.module.scss";
 import {
   mdiAlert,
   mdiAlertOctagram,
@@ -30,10 +30,12 @@ export interface ElmCalloutProps {
 }
 
 export const ElmCallout = component$<ElmCalloutProps>(({ type = "note" }) => {
-  useStylesScoped$(styles);
   return (
-    <aside class="callout" style={{ "--callout-color": COLOR_MAP[type].code }}>
-      <div class="header">
+    <aside
+      class={styles.callout}
+      style={{ "--callout-color": COLOR_MAP[type].code }}
+    >
+      <div class={styles.header}>
         <ElmMdiIcon
           d={COLOR_MAP[type].icon}
           color={COLOR_MAP[type].code}
@@ -42,7 +44,7 @@ export const ElmCallout = component$<ElmCalloutProps>(({ type = "note" }) => {
         <ElmInlineText>{type.toLocaleUpperCase()}</ElmInlineText>
       </div>
 
-      <div class="content">
+      <div class={styles.content}>
         <Slot />
       </div>
     </aside>

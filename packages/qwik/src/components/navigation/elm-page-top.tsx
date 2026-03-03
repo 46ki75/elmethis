@@ -1,12 +1,6 @@
-import {
-  component$,
-  useSignal,
-  useVisibleTask$,
-  useStylesScoped$,
-  $,
-} from "@builder.io/qwik";
+import { component$, useSignal, useVisibleTask$, $ } from "@builder.io/qwik";
 
-import styles from "./elm-page-top.scoped.scss?inline";
+import styles from "./elm-page-top.module.scss";
 
 export interface ElmPageTopProps {
   /**
@@ -17,7 +11,6 @@ export interface ElmPageTopProps {
 
 export const ElmPageTop = component$<ElmPageTopProps>(
   ({ position = "right" }) => {
-    useStylesScoped$(styles);
     const isVisible = useSignal(false);
 
     // Initial check and scroll listener
@@ -39,7 +32,10 @@ export const ElmPageTop = component$<ElmPageTopProps>(
 
     return (
       <nav
-        class={`wrapper ${isVisible.value ? "wrapper--visible" : ""}`}
+        class={[
+          styles.wrapper,
+          { [styles["wrapper--visible"]]: isVisible.value },
+        ]}
         style={{
           "--size": `${64}px`,
           left: position === "left" ? "0" : "auto",
@@ -47,10 +43,10 @@ export const ElmPageTop = component$<ElmPageTopProps>(
         }}
         onClick$={toTop}
       >
-        <div aria-hidden="true" class="partial"></div>
-        <div aria-hidden="true" class="partial"></div>
-        <div aria-hidden="true" class="partial"></div>
-        <span class="text">Back to Top</span>
+        <div aria-hidden="true" class={styles.partial}></div>
+        <div aria-hidden="true" class={styles.partial}></div>
+        <div aria-hidden="true" class={styles.partial}></div>
+        <span class={styles.text}>Back to Top</span>
       </nav>
     );
   },

@@ -1,12 +1,6 @@
-import {
-  $,
-  component$,
-  useSignal,
-  type Numberish,
-  useStylesScoped$,
-} from "@builder.io/qwik";
+import { $, component$, useSignal, type Numberish } from "@builder.io/qwik";
 
-import styles from "./elm-block-image.scoped.scss?inline";
+import styles from "./elm-block-image.module.scss";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { ElmRectangleWave } from "../fallback/elm-rectangle-wave";
@@ -34,7 +28,6 @@ export interface ElmBlockImageProps {
 
 export const ElmBlockImage = component$<ElmBlockImageProps>(
   ({ src, alt, caption, width, height, enableModal = true }) => {
-    useStylesScoped$(styles);
     const isLoading = useSignal(true);
     const isShowModal = useSignal(false);
 
@@ -50,7 +43,7 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
 
     const ImageComponent = (
       <img
-        class={["image"]}
+        class={styles.image}
         src={src}
         alt={alt ?? caption ?? "Image"}
         width={width}
@@ -69,7 +62,7 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
 
     const Modal = (
       <div
-        class="modal-container"
+        class={styles["modal-container"]}
         style={{
           pointerEvents: isShowModal.value ? "auto" : "none",
           "--opacity": isShowModal.value ? 1 : 0,
@@ -81,22 +74,22 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
     );
 
     return (
-      <figure class="block-image">
+      <figure class={styles["block-image"]}>
         <div
-          class="image-container"
+          class={styles["image-container"]}
           style={{ "--opacity": isLoading.value ? 1 : 0 }}
           onClick$={handleToggleModal}
         >
           {ImageComponent}
 
-          <div class="fallback">
+          <div class={styles.fallback}>
             <ElmRectangleWave />
           </div>
         </div>
 
         {caption && (
           <figcaption
-            class="caption-box"
+            class={styles["caption-box"]}
             style={{ "--opacity": isLoading.value ? 0 : 1 }}
           >
             <span style={{ flex: "1" }}>

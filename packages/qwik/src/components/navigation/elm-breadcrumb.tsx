@@ -1,10 +1,6 @@
-import {
-  component$,
-  type QRLEventHandlerMulti,
-  useStylesScoped$,
-} from "@builder.io/qwik";
+import { component$, type QRLEventHandlerMulti } from "@builder.io/qwik";
 
-import styles from "./elm-breadcrumb.scoped.scss?inline";
+import styles from "./elm-breadcrumb.module.scss";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import {
   mdiApplicationOutline,
@@ -29,14 +25,13 @@ export interface ElmBreadcrumbProps {
 }
 
 export const ElmBreadcrumb = component$<ElmBreadcrumbProps>(({ links }) => {
-  useStylesScoped$(styles);
   return (
-    <nav class="container">
+    <nav class={styles.container}>
       {links.map((link, index) => (
         <>
-          <span class="link-container" onClick$={link.onClick$}>
+          <span class={styles["link-container"]} onClick$={link.onClick$}>
             <span
-              class="icon"
+              class={styles.icon}
               style={{
                 "--delay": `${index * 100}ms`,
               }}
@@ -54,7 +49,7 @@ export const ElmBreadcrumb = component$<ElmBreadcrumbProps>(({ links }) => {
             </span>
 
             <span
-              class="text"
+              class={styles.text}
               style={{
                 "--delay": `${index * 100 + 50}ms`,
               }}
@@ -64,7 +59,10 @@ export const ElmBreadcrumb = component$<ElmBreadcrumbProps>(({ links }) => {
           </span>
 
           {links.length !== index + 1 && (
-            <span class="text" style={{ "--delay": `${index * 100 + 100}ms` }}>
+            <span
+              class={styles.text}
+              style={{ "--delay": `${index * 100 + 100}ms` }}
+            >
               <ElmMdiIcon d={mdiChevronRight} size="1em" color="#b69545" />
             </span>
           )}

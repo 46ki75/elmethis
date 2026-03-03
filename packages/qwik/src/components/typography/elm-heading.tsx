@@ -1,7 +1,7 @@
-import { component$, Slot, useStylesScoped$ } from "@builder.io/qwik";
+import { component$, Slot } from "@builder.io/qwik";
 
-import styles from "./elm-heading.scoped.scss?inline";
-import textStyles from "../../styles/text.scoped.scss?inline";
+import styles from "./elm-heading.module.scss";
+import textStyles from "../../styles/text.module.scss";
 import { ElmFragmentIdentifier } from "./elm-fragment-identifier";
 
 export interface ElmHeadingProps {
@@ -22,13 +22,10 @@ const SIZE_MAP: Record<1 | 2 | 3 | 4 | 5 | 6, number> = Object.freeze({
 } as const);
 
 export const ElmHeading = component$<ElmHeadingProps>(({ level, text, id }) => {
-  useStylesScoped$(styles);
-  useStylesScoped$(textStyles);
-
   const Tag = `h${level}` as "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
   return (
     <Tag
-      class={["heading-common", "text", `h${level}`]}
+      class={[styles["heading-common"], textStyles.text, styles[`h${level}`]]}
       style={{ "--font-size": `${SIZE_MAP[level]}em` }}
     >
       <span>{text}</span>
@@ -39,7 +36,9 @@ export const ElmHeading = component$<ElmHeadingProps>(({ level, text, id }) => {
         </span>
       )}
 
-      {level === 2 && <span class="h2__underline" aria-hidden="true"></span>}
+      {level === 2 && (
+        <span class={styles["h2__underline"]} aria-hidden="true"></span>
+      )}
     </Tag>
   );
 });

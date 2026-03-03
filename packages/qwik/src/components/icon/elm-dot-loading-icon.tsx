@@ -1,10 +1,6 @@
-import {
-  component$,
-  type CSSProperties,
-  useStylesScoped$,
-} from "@builder.io/qwik";
+import { component$, type CSSProperties } from "@builder.io/qwik";
 
-import styles from "./elm-dot-loading-icon.scoped.scss?inline";
+import styles from "./elm-dot-loading-icon.module.scss";
 
 export interface ElmDotLoadingIconProps {
   /**
@@ -22,18 +18,17 @@ export interface ElmDotLoadingIconProps {
 
 export const ElmDotLoadingIcon = component$<ElmDotLoadingIconProps>(
   ({ size = "4em", color = "#606875" }) => {
-    useStylesScoped$(styles);
     return (
       <div
-        class="wrapper"
+        class={styles.wrapper}
         style={{
           "--size": size,
           "--color": color,
         }}
       >
-        <div class="dot" aria-hidden="true"></div>
-        <div class="dot" aria-hidden="true"></div>
-        <div class="dot" aria-hidden="true"></div>
+        <div class={styles.dot} aria-hidden="true"></div>
+        <div class={styles.dot} aria-hidden="true"></div>
+        <div class={styles.dot} aria-hidden="true"></div>
       </div>
     );
   },

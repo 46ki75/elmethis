@@ -3,20 +3,18 @@ import {
   Slot,
   createContextId,
   useContextProvider,
-  useStylesScoped$,
 } from "@builder.io/qwik";
-import styles from "./elm-table-header.scoped.scss?inline";
+import styles from "./elm-table-header.module.scss";
 
 export const HasHeaderContext = createContextId<boolean>("HasHeaderContext");
 
 export type ElmTableHeaderProps = object;
 
 export const ElmTableHeader = component$<ElmTableHeaderProps>(() => {
-  useStylesScoped$(styles);
   useContextProvider(HasHeaderContext, true);
 
   return (
-    <thead class="thead">
+    <thead class={styles.thead}>
       <Slot />
     </thead>
   );

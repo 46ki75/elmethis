@@ -1,6 +1,6 @@
-import { component$, CSSProperties, useStylesScoped$ } from "@builder.io/qwik";
+import { component$, CSSProperties } from "@builder.io/qwik";
 
-import styles from "./elm-divider.scoped.scss?inline";
+import styles from "./elm-divider.module.scss";
 
 export type ElmDividerProps = {
   /**
@@ -10,6 +10,5 @@ export type ElmDividerProps = {
 };
 
 export const ElmDivider = component$<ElmDividerProps>(({ margin }) => {
-  useStylesScoped$(styles);
-  return <hr class="hr" style={{ marginBlock: margin }} />;
+  return <hr class={styles.hr} style={{ marginBlock: margin }} />;
 });

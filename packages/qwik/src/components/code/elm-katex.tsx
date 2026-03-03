@@ -1,6 +1,6 @@
-import { component$, useComputed$, useStylesScoped$ } from "@builder.io/qwik";
+import { component$, useComputed$ } from "@builder.io/qwik";
 
-import textStyle from "../../styles/text.scoped.scss?inline";
+import textStyle from "../../styles/text.module.scss";
 
 import { renderToString } from "katex";
 
@@ -22,7 +22,6 @@ export interface ElmKatexProps {
 
 export const ElmKatex = component$<ElmKatexProps>(
   ({ expression, block = false }) => {
-    useStylesScoped$(textStyle);
     const html = useComputed$(() =>
       renderToString(expression, {
         displayMode: block,
@@ -30,6 +29,8 @@ export const ElmKatex = component$<ElmKatexProps>(
       }),
     );
 
-    return <div class="text" dangerouslySetInnerHTML={html.value} />;
+    return (
+      <div class={textStyle.text} dangerouslySetInnerHTML={html.value ?? ""} />
+    );
   },
 );

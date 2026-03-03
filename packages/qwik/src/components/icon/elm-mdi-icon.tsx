@@ -1,6 +1,6 @@
-import { component$, useStylesScoped$ } from "@builder.io/qwik";
+import { component$ } from "@builder.io/qwik";
 
-import styles from "./elm-mdi-icon.scoped.scss?inline";
+import styles from "./elm-mdi-icon.module.scss";
 
 export interface ElmMdiIconProps {
   d: string;
@@ -12,10 +12,9 @@ export interface ElmMdiIconProps {
 
 export const ElmMdiIcon = component$<ElmMdiIconProps>(
   ({ d, size = "1em", color, lightColor, darkColor }) => {
-    useStylesScoped$(styles);
     return (
       <svg
-        class="icon"
+        class={styles.icon}
         style={{
           "--color": lightColor ?? color,
           "--dark-color": darkColor ?? color,

@@ -1,12 +1,7 @@
-import {
-  component$,
-  Slot,
-  type CSSProperties,
-  useStylesScoped$,
-} from "@builder.io/qwik";
+import { component$, Slot, type CSSProperties } from "@builder.io/qwik";
 
-import styles from "./elm-inline-text.scoped.scss?inline";
-import textStyles from "../../styles/text.scoped.scss?inline";
+import styles from "./elm-inline-text.module.scss";
+import textStyles from "../../styles/text.module.scss";
 
 import { ElmInlineIcon } from "../icon/elm-inline-icon";
 
@@ -76,9 +71,6 @@ export interface ElmInlineTextProps {
 }
 
 export const ElmInlineText = component$<ElmInlineTextProps>((props) => {
-  useStylesScoped$(styles);
-  useStylesScoped$(textStyles);
-
   const {
     bold = false,
     italic = false,
@@ -91,7 +83,7 @@ export const ElmInlineText = component$<ElmInlineTextProps>((props) => {
   let vnode = props.text ? <span>{props.text}</span> : <Slot />;
 
   if (props.kbd) {
-    vnode = <kbd class="kbd">{vnode}</kbd>;
+    vnode = <kbd class={styles.kbd}>{vnode}</kbd>;
   }
 
   if (strikethrough) {
@@ -111,12 +103,12 @@ export const ElmInlineText = component$<ElmInlineTextProps>((props) => {
   }
 
   if (code) {
-    vnode = <code class="code">{vnode}</code>;
+    vnode = <code class={styles.code}>{vnode}</code>;
   }
 
   if (props.ruby) {
     vnode = (
-      <ruby class="text">
+      <ruby class={styles.text}>
         <span>{vnode}</span>
         <rt>{props.ruby}</rt>
       </ruby>
@@ -125,7 +117,7 @@ export const ElmInlineText = component$<ElmInlineTextProps>((props) => {
 
   const wrappedVnode = (
     <span
-      class={["text", "text"]}
+      class={[styles.text, textStyles.text]}
       style={{
         "--color": props.color,
         "--font-size": size,
@@ -139,7 +131,7 @@ export const ElmInlineText = component$<ElmInlineTextProps>((props) => {
   if (props.href) {
     return (
       <a
-        class="link"
+        class={styles.link}
         href={props.href}
         style={{ "--font-size": size }}
         target="_blank"

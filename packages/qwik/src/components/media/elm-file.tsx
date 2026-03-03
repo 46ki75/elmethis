@@ -1,6 +1,6 @@
-import { $, component$, useStylesScoped$ } from "@builder.io/qwik";
+import { $, component$ } from "@builder.io/qwik";
 
-import styles from "./elm-file.scoped.scss?inline";
+import styles from "./elm-file.module.scss";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { mdiDownload, mdiFile } from "@mdi/js";
 import { ElmInlineText } from "../typography/elm-inline-text";
@@ -31,7 +31,6 @@ function getLastPathSegmentWithoutQueryOrHash(
 }
 
 export const ElmFile = component$<ElmFileProps>(({ name, src, filesize }) => {
-  useStylesScoped$(styles);
   const downloadFile = $(async () => {
     let link;
     try {
@@ -53,7 +52,7 @@ export const ElmFile = component$<ElmFileProps>(({ name, src, filesize }) => {
   });
 
   return (
-    <div class="file">
+    <div class={styles.file}>
       <div>
         <ElmMdiIcon d={mdiFile} size="1.25rem" />
       </div>
@@ -64,11 +63,11 @@ export const ElmFile = component$<ElmFileProps>(({ name, src, filesize }) => {
         </ElmInlineText>
       </div>
 
-      <div class="file-size">
+      <div class={styles["file-size"]}>
         <ElmInlineText>{filesize}</ElmInlineText>
       </div>
 
-      <div class="download-icon" onClick$={downloadFile}>
+      <div class={styles["download-icon"]} onClick$={downloadFile}>
         <ElmMdiIcon d={mdiDownload} size="1.25rem" />
       </div>
     </div>

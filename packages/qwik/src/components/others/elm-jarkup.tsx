@@ -1,8 +1,8 @@
-import { component$, type JSXOutput, useStylesScoped$ } from "@builder.io/qwik";
+import { component$, type JSXOutput } from "@builder.io/qwik";
 import type { Component, InlineComponent } from "jarkup-ts";
 import { kebabCase } from "lodash-es";
 
-import styles from "./elm-jarkup.scoped.scss?inline";
+import styles from "./elm-jarkup.module.scss";
 
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { ElmKatex } from "../code/elm-katex";
@@ -45,7 +45,6 @@ const convertInlineComponentsToPlainText = (
 };
 
 export const ElmJarkup = component$<ElmJarkupProps>((props) => {
-  useStylesScoped$(styles);
   const render = (jsonComponents: Component[]): JSXOutput[] => {
     return jsonComponents.map((component, index) => {
       const key = component.id || index;
@@ -231,7 +230,7 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
 
         case "ColumnList":
           return (
-            <div key={key} class="column-list">
+            <div key={key} class={styles["column-list"]}>
               {render(component.slots.default)}
             </div>
           );
@@ -240,7 +239,7 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
           return (
             <div
               key={key}
-              class="column"
+              class={styles.column}
               style={{
                 "--width-ratio": component.props?.widthRatio || 1,
                 width: component.props?.widthRatio
@@ -262,5 +261,7 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
     });
   };
 
-  return <div class="jarkup-body">{render(props.jsonComponents)}</div>;
+  return (
+    <div class={styles["jarkup-body"]}>{render(props.jsonComponents)}</div>
+  );
 });
