@@ -83,3 +83,26 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {};
 ```
+
+### Bulk Exports
+
+We export all components and their prop types in `src/index.ts`.
+
+```tsx
+// | Code |
+export {
+  ElmCodeBlock,
+  type ElmCodeBlockProps,
+} from "./components/code/elm-code-block";
+export { ElmKatex, type ElmKatexProps } from "./components/code/elm-katex";
+export {
+  ElmShikiHighlighter,
+  type ElmShikiHighlighterProps,
+} from "./components/code/elm-shiki-highlighter";
+
+// | Containments |
+export {
+  ElmParallax,
+  type ElmParallaxProps,
+} from "./components/containments/elm-parallax";
+```
