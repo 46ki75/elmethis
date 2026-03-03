@@ -36,7 +36,7 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
     });
 
     const handleToggleModal = $(() => {
-      if (enableModal) {
+      if (enableModal && !isLoading.value) {
         isShowModal.value = !isShowModal.value;
       }
     });
@@ -56,6 +56,7 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
               ? "zoom-out"
               : "zoom-in"
             : "default",
+          "--aspect-ratio": width && height ? `${width} / ${height}` : "auto",
         }}
       />
     );
