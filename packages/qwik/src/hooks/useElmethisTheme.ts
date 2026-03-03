@@ -37,13 +37,19 @@ export function useElmethisTheme() {
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(
     () => {
-      const currentTheme = document.documentElement.getAttribute("data-theme");
-      if (currentTheme != null) {
-        isDarkTheme.value = currentTheme === "dark";
+      const localStorageTheme = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (localStorageTheme != null) {
+        isDarkTheme.value = localStorageTheme === "dark";
+        document.documentElement.setAttribute("data-theme", localStorageTheme);
+        const body = document.querySelector("body");
+        if (body != null) {
+          body.style.colorScheme = localStorageTheme;
+        }
       } else {
-        const localStorageTheme = localStorage.getItem(LOCAL_STORAGE_KEY);
-        if (localStorageTheme != null) {
-          isDarkTheme.value = localStorageTheme === "dark";
+        const currentTheme =
+          document.documentElement.getAttribute("data-theme");
+        if (currentTheme != null) {
+          isDarkTheme.value = currentTheme === "dark";
         }
       }
     },
