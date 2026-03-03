@@ -20,6 +20,9 @@
         "types": "./lib-types/index.d.ts",
         "default": "./lib/index.qwik.cjs"
       }
+    },
+    "./style.css": {
+      "default": "./lib/style.css"
     }
   },
   "files": [

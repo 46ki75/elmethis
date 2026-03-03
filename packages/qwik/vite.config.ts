@@ -17,6 +17,7 @@ export default defineConfig(() => {
       lib: {
         entry: "./src/index.ts",
         formats: ["es", "cjs"],
+        cssFileName: "style.css",
         fileName: (format) => `index.qwik.${format === "es" ? "mjs" : "cjs"}`,
       },
       rollupOptions: {
@@ -29,6 +30,14 @@ export default defineConfig(() => {
           ...excludeAll(dependencies),
           ...excludeAll(peerDependencies),
         ],
+        output: {
+          assetFileNames: (assetInfo) => {
+            if (assetInfo.names?.[0]?.endsWith(".css")) {
+              return "style.css";
+            }
+            return "assets/[name].[hash][extname]";
+          },
+        },
       },
     },
     css: {},
