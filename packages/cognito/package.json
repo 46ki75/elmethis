@@ -34,7 +34,7 @@
     "@mdi/js": "^7.4.47",
     "@storybook/vue3-vite": "10.2.14",
     "@vitejs/plugin-vue": "^6.0.4",
-    "postcss": "^8.5.6",
+    "postcss": "^8.5.8",
     "postcss-preset-env": "^11.2.0",
     "sass": "^1.97.3",
     "vite": "^7.3.1",
