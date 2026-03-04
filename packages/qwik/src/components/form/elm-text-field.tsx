@@ -1,10 +1,4 @@
-import {
-  $,
-  component$,
-  useId,
-  useSignal,
-  type Signal,
-} from "@builder.io/qwik";
+import { $, component$, useId, useSignal, type Signal } from "@builder.io/qwik";
 import {
   mdiAccount,
   mdiArchive,
@@ -145,11 +139,7 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
           </div>
 
           <div class={styles.icon} onClick$={handleDelete}>
-            <ElmMdiIcon
-              d={mdiBackspaceOutline}
-              size="1.75em"
-              color="gray"
-            />
+            <ElmMdiIcon d={mdiBackspaceOutline} size="1.75em" color="gray" />
           </div>
         </div>
       </div>
