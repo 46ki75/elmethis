@@ -29,6 +29,12 @@ export {
   type ElmRectangleWaveProps,
 } from "./components/fallback/elm-rectangle-wave";
 
+// | Form |
+export {
+  ElmTextField,
+  type ElmTextFieldProps,
+} from "./components/form/elm-text-field";
+
 // | Icon |
 export {
   ElmDotLoadingIcon,
