@@ -16,5 +16,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  render: (args: any) => <ElmCheckbox {...args} />,
+  render() {
+    return <ElmCheckbox {...this.args} />;
+  },
 };
