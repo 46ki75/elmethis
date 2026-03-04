@@ -1,7 +1,7 @@
-import { $ } from "@builder.io/qwik";
+import { component$, $ } from "@builder.io/qwik";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { ElmButton } from "./elm-button";
-import { ElmTextField } from "./elm-text-field";
+import { ElmTextField, type ElmTextFieldProps } from "./elm-text-field";
 
 const meta: Meta<typeof ElmTextField> = {
   title: "Components/Form/elm-text-field",
@@ -40,14 +40,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {};
 
-export const Focus: Story = {
-  render: (args: any) => {
-    // Note: Imperative focus is not directly supported via ref in the ported component yet without extra implementation.
-    // However, we can simulate the "Need" for this story by just rendering the structure from Vue.
-    // Since we don't have a direct imperative handle exposed in the Qwik component (without useImperativeHandle logic or explicit context/signal based focus control),
-    // we'll just implement the visual part.
-    // If specific focus behavior is required, the component implementation needs to be updated to expose a focus method or take a 'focus' signal.
-
+const FocusWrapper = component$(
+  (props: Partial<ElmTextFieldProps> & { label?: string }) => {
     const handleClick = $(async () => {
       // Placeholder for focus logic
       console.log("Focus requested - this requires component implementation");
@@ -55,9 +49,15 @@ export const Focus: Story = {
 
     return (
       <>
-        <ElmTextField {...args} />
+        <ElmTextField label={props.label || "Focus Field"} {...props} />
         <ElmButton onClick$={handleClick}>Focus</ElmButton>
       </>
     );
+  },
+);
+
+export const Focus: Story = {
+  render() {
+    return <FocusWrapper {...this.args} />;
   },
 };
