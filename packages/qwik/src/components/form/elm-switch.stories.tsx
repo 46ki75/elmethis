@@ -1,6 +1,6 @@
-import { useSignal } from "@builder.io/qwik";
+import { component$, useSignal } from "@builder.io/qwik";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmSwitch } from "./elm-switch";
+import { ElmSwitch, type ElmSwitchProps } from "./elm-switch";
 
 const meta: Meta<typeof ElmSwitch> = {
   title: "Components/Form/elm-switch",
@@ -16,21 +16,25 @@ const meta: Meta<typeof ElmSwitch> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+const SwitchWrapper = component$((props: Partial<ElmSwitchProps>) => {
+  const checked = useSignal(false);
+  return <ElmSwitch {...props} checked={checked} />;
+});
+
 export const Primary: Story = {
-  render: (args: any) => {
-    const checked = useSignal(false);
-    return <ElmSwitch {...args} checked={checked} />;
+  render() {
+    return <SwitchWrapper {...this.args} />;
   },
 };
 
 export const Disabled: Story = {
-  args: {
-    disabled: true,
+  render() {
+    return <SwitchWrapper {...this.args} disabled={true} />;
   },
 };
 
 export const CustomColor: Story = {
-  args: {
-    color: "red",
+  render() {
+    return <SwitchWrapper {...this.args} color="red" />;
   },
 };
