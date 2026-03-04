@@ -153,3 +153,9 @@ export {
   ElmMarkdown,
   type ElmMarkdownProps,
 } from "./components/others/elm-markdown";
+
+// | Hooks |
+export { useDelayedSignal } from "./hooks/useDelayedSignal";
+export { useElmethisTheme } from "./hooks/useElmethisTheme";
+export { useInView } from "./hooks/useInView";
+export { useLocalStorage } from "./hooks/useLocalStorage";
