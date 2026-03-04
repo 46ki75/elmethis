@@ -85,7 +85,7 @@ export const ElmToggle = component$<ElmToggleProps>(({ summary }) => {
       </div>
 
       <div class={styles.footer} onClick$={toggle}>
-        <span class={styles["footer-chevron-icon"]}>
+        <span>
           <ElmMdiIcon d={mdiChevronRight} color="gray" />
         </span>
         <hr class={styles["footer-line"]} />
@@ -97,7 +97,7 @@ export const ElmToggle = component$<ElmToggleProps>(({ summary }) => {
           <ElmMdiIcon d={mdiPlus} color="#c56565" />
         </span>
         <hr class={styles["footer-line"]} />
-        <span class={styles["footer-chevron-icon"]}>
+        <span style={{ rotate: "180deg" }}>
           <ElmMdiIcon d={mdiChevronRight} color="gray" />
         </span>
       </div>
