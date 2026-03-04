@@ -15,16 +15,19 @@ export const ElmPageTop = component$<ElmPageTopProps>(
 
     // Initial check and scroll listener
     // eslint-disable-next-line qwik/no-use-visible-task
-    useVisibleTask$(({ cleanup }) => {
-      const checkScroll = () => {
-        isVisible.value = window.scrollY > 100;
-      };
+    useVisibleTask$(
+      ({ cleanup }) => {
+        const checkScroll = () => {
+          isVisible.value = window.scrollY > 100;
+        };
 
-      window.addEventListener("scroll", checkScroll, { passive: true });
-      checkScroll(); // Check initial state
+        window.addEventListener("scroll", checkScroll, { passive: true });
+        checkScroll(); // Check initial state
 
-      cleanup(() => window.removeEventListener("scroll", checkScroll));
-    });
+        cleanup(() => window.removeEventListener("scroll", checkScroll));
+      },
+      { strategy: "document-idle" },
+    );
 
     const toTop = $(() => {
       window.scrollTo({ top: 0, behavior: "smooth" });

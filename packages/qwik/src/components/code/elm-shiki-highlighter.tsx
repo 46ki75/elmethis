@@ -1,6 +1,7 @@
 import { component$, useSignal, useTask$ } from "@builder.io/qwik";
 
 import styles from "./elm-shiki-highlighter.module.scss";
+import { codeToHtml } from "shiki";
 
 export interface ElmShikiHighlighterProps {
   /**
@@ -19,15 +20,12 @@ export const ElmShikiHighlighter = component$<ElmShikiHighlighterProps>(
     const rawHtml = useSignal("");
 
     useTask$(async ({ track }) => {
-      const currentCode = track(() => code);
-      const currentLang = track(() => language);
-
-      const { getHighlighterSingleton } = await import("./shikiInstance");
-      const highlighter = await getHighlighterSingleton();
+      track(() => code);
+      track(() => language);
 
       try {
-        rawHtml.value = highlighter.codeToHtml(currentCode, {
-          lang: currentLang,
+        rawHtml.value = await codeToHtml(code, {
+          lang: language,
           themes: { dark: "vitesse-dark", light: "vitesse-light" },
           colorReplacements: {
             "#ffffff": "transparent",
@@ -35,7 +33,7 @@ export const ElmShikiHighlighter = component$<ElmShikiHighlighterProps>(
           },
         });
       } catch {
-        rawHtml.value = `<pre>${currentCode.replace(/</g, "&lt;")}</pre>`;
+        rawHtml.value = `<pre>${code.replace(/</g, "&lt;")}</pre>`;
       }
     });
 

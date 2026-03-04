@@ -1,0 +1,20 @@
+@mixin icon($color) {
+  box-sizing: border-box;
+  padding: 0.25rem;
+  color: $color;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.icon {
+  display: block; // Ensure it behaves like a block/inline-block
+  @include icon(#555b67);
+  box-shadow: 0 0 0.125rem rgba(black, 0.3);
+  background-color: rgba(white, 0.2);
+
+  :global([data-theme="dark"]) & {
+    box-shadow: 0 0 0.125rem rgba(black, 0.6);
+    background-color: rgba(black, 0.2);
+    @include icon(#b0b5be);
+  }
+}

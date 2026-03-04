@@ -1,55 +1,108 @@
-# Qwik Library ⚡️
+# Qwik Library
 
-- [Qwik Docs](https://qwik.dev/)
-- [Discord](https://qwik.dev/chat)
-- [Qwik on GitHub](https://github.com/QwikDev/qwik)
-- [@QwikDev](https://twitter.com/QwikDev)
-- [Vite](https://vitejs.dev/)
-- [Partytown](https://partytown.qwik.dev/)
-- [Mitosis](https://github.com/BuilderIO/mitosis)
-- [Builder.io](https://www.builder.io/)
+This package provides reusable UI building blocks for the Qwik web framework.
 
----
+## Directory structure
 
-## Project Structure
+This package is one of the workspace packages managed by pnpm.
 
-Inside your project, you'll see the following directories and files:
+The package lives at `./packages/qwik`.
 
+- `.storybook/` - Storybook configuration
+- `lib/` - build output
+- `lib-types/` - build output (TypeScript types)
+- `src/` - source root
+  - `assets/` - static assets
+  - `components/` - Qwik components
+    - `<category>/`
+      - `elm-x.module.scss`
+      - `elm-x.stories.tsx`
+      - `elm-x.tsx`
+  - `hooks/` - custom Qwik hooks
+  - `styles/` - shared styles (SCSS)
+  - `index.ts` - package exports (re-export components)
+
+## Coding style
+
+### Module structure
+
+Each component module should include:
+
+- **Component**: TypeScript JSX (`.tsx`)
+- **Styles**: SCSS Modules (`.module.scss`)
+- **Storybook**: a Storybook meta file (`.stories.tsx`)
+
+### Component (TypeScript JSX)
+
+File: `elm-my-something.tsx`
+
+```tsx
+import { component$ } from "@builder.io/qwik";
+
+import styles from "./elm-my-something.module.scss";
+
+export interface ElmMySomethingProps {
+  placeholder?: string;
+}
+
+export const ElmMySomething = component$<ElmMySomethingProps>(
+  ({ placeholder = "Howdy" }) => {
+    return <div class={styles["elm-my-something"]}>{placeholder}</div>;
+  },
+);
 ```
-├── public/
-│   └── ...
-└── src/
-    ├── components/
-    │   └── ...
-    └── index.ts
+
+### Styles (SCSS Modules)
+
+File: `elm-my-something.module.scss`
+
+```scss
+.elm-my-something {
+}
 ```
 
-- `src/components`: Recommended directory for components.
+### Storybook
 
-- `index.ts`: The entry point of your component library, make sure all the public components are exported from this file.
+File: `elm-my-something.stories.tsx`
 
-## Development
+```tsx
+import type { Meta, StoryObj } from "storybook-framework-qwik";
+import { ElmMySomething } from "./elm-my-something";
 
-Development mode uses [Vite's development server](https://vitejs.dev/). For Qwik during development, the `dev` command will also server-side render (SSR) the output. The client-side development modules are loaded by the browser.
+const meta: Meta<typeof ElmMySomething> = {
+  // Replace the <Category> placeholder
+  title: "Components/<Category>/elm-my-something",
+  component: ElmMySomething,
+  tags: ["autodocs"],
+  args: {},
+};
 
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Primary: Story = {};
 ```
-pnpm dev
+
+### Bulk Exports
+
+We export all components and their prop types in `src/index.ts`.
+
+```tsx
+// | Code |
+export {
+  ElmCodeBlock,
+  type ElmCodeBlockProps,
+} from "./components/code/elm-code-block";
+export { ElmKatex, type ElmKatexProps } from "./components/code/elm-katex";
+export {
+  ElmShikiHighlighter,
+  type ElmShikiHighlighterProps,
+} from "./components/code/elm-shiki-highlighter";
+
+// | Containments |
+export {
+  ElmParallax,
+  type ElmParallaxProps,
+} from "./components/containments/elm-parallax";
 ```
-
-> Note: during dev mode, Vite will request many JS files, which does not represent a Qwik production build.
-
-## Production
-
-The production build should generate the production build of your component library in (./lib) and the typescript type definitions in (./lib-types).
-
-```
-pnpm build
-```
-
-## sideEffects: false
-
-This package is configured with "sideEffects": false in its package.json.<br/>
-This tells bundlers that the module [has no side effects](https://webpack.js.org/guides/tree-shaking/#mark-the-file-as-side-effect-free) when imported.<br/>
-Consequently, to maintain the integrity of tree-shaking optimizations, please ensure your code truly contains no side effects (such as modifying global variables or the DOM upon import).<br/>
-If your module does introduce side effects, remove "sideEffects": false or specify the specific files with side effects.<br/>
-Be sure to only remove it from the specific file where the global is being set. Finally, verify that your build continues to function as expected after making any adjustments to the sideEffects setting.

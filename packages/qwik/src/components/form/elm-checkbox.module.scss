@@ -1,0 +1,86 @@
+// # --------------------------------------------------------------------------------
+//
+// styles
+//
+// # --------------------------------------------------------------------------------
+
+.container {
+  width: fit-content;
+  font-family: sans-serif;
+  user-select: none;
+  cursor: pointer;
+
+  transition: opacity 200ms;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &--disable {
+    opacity: 0.45;
+    cursor: not-allowed;
+
+    &:hover {
+      opacity: 0.45;
+    }
+  }
+}
+
+.checkbox {
+  stroke: rgba(0, 0, 0, 0.8);
+  fill: transparent;
+
+  [data-theme="dark"] & {
+    stroke: rgba(255, 255, 255, 0.8);
+  }
+}
+
+.rect {
+  transition: all 0.2s;
+
+  &--loading {
+    opacity: 0.3;
+  }
+
+  &--checked {
+    fill: rgba(0, 0, 0, 0.8);
+    [data-theme="dark"] & {
+      fill: rgba(255, 255, 255, 0.8);
+    }
+  }
+}
+
+.loading {
+  transition: opacity 200ms;
+
+  fill: rgba(black, 0.7);
+  [data-theme="dark"] & {
+    fill: rgba(white, 0.7);
+  }
+}
+
+@keyframes elmethis-checkbox-check-line {
+  0% {
+    stroke-dashoffset: 100%;
+  }
+  100% {
+    stroke-dashoffset: 0%;
+  }
+}
+
+.check-line {
+  stroke-dasharray: 100%;
+
+  animation-name: elmethis-checkbox-check-line;
+  animation-duration: 0.2s;
+  animation-timing-function: ease-in-out;
+  animation-delay: 0.1s;
+  animation-fill-mode: both;
+
+  transform-origin: center;
+
+  stroke: rgba(255, 255, 255, 0.9);
+  [data-theme="dark"] & {
+    stroke: rgba(0, 0, 0, 0.9);
+  }
+}

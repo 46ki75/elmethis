@@ -34,6 +34,8 @@ export const Svg: Story = {
   args: {
     src: "https://nuxt.com/cdn-cgi/image/w=1024,h=878/assets/landing/deploy.svg",
     alt: "Deploy your app anywhere",
+    height: 400,
+    width: 800,
   },
 };
 
@@ -48,6 +50,8 @@ export const LongAlt: Story = {
 export const Invalid: Story = {
   args: {
     src: "invalid",
+    height: 200,
+    width: 400,
   },
 };
 
