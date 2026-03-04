@@ -68,7 +68,7 @@
     "prettier": "3.6.2",
     "sass": "^1.97.3",
     "storybook": "8",
-    "storybook-framework-qwik": "^0.4.0",
+    "storybook-framework-qwik": "^0.6.0",
     "typescript": "5.4.5",
     "typescript-eslint": "8.56.1",
     "undici": "*",
