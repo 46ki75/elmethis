@@ -33,7 +33,7 @@ export const WithoutDate: Story = {
     description:
       "A tool to check OGP tags and OGP images for SNS shares for a given page in real time, accurately simulating X (formerly Twitter) and Facebook share images on both PC and mobile.",
     image:
-      "https://web-toolbox.dev/__og-image__/static/en/tools/ogp-checker/og.png",
+      "https://www.ikuma.cloud/api/v2/blog/leather-shoes-painting/og-image",
     url: "https://web-toolbox.dev/en/tools/ogp-checker",
   },
 };
