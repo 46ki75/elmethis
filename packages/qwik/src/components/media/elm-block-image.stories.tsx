@@ -30,6 +30,15 @@ export const Primary: Story = {
   },
 };
 
+export const SrcSet: Story = {
+  args: {
+    src: "https://images.unsplash.com/photo-1556983703-27576e5afa24?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb",
+    srcset:
+      "https://www.ikuma.cloud/api/v2/blog/leather-shoes-painting/og-image?lang=en 1200w, https://www.ikuma.cloud/api/v2/blog/amazon-bedrock-open-webui/og-image?lang=en 1600w",
+    sizes: "(max-width: 1200px) 100vw, 25vw",
+  },
+};
+
 export const Svg: Story = {
   args: {
     src: "https://nuxt.com/cdn-cgi/image/w=1024,h=878/assets/landing/deploy.svg",
