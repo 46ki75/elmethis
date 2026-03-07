@@ -1,4 +1,4 @@
-import { component$, Slot } from "@builder.io/qwik";
+import { component$, CSSProperties, Slot } from "@builder.io/qwik";
 
 import styles from "./elm-list.module.scss";
 
@@ -6,10 +6,11 @@ import textStyle from "../../styles/text.module.scss";
 
 export interface ElmListProps {
   listStyle: "unordered" | "ordered";
+  style?: CSSProperties;
 }
 
 export const ElmList = component$<ElmListProps>(
-  ({ listStyle = "unordered" }) => {
+  ({ listStyle = "unordered", style }) => {
     if (listStyle === "ordered") {
       return (
         <ol
@@ -18,6 +19,7 @@ export const ElmList = component$<ElmListProps>(
             styles["elmethis-list-common"],
             styles["elmethis-numbered-list"],
           ]}
+          style={style}
         >
           <Slot />
         </ol>

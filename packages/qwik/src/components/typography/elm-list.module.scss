@@ -1,5 +1,5 @@
 .elmethis-list-common {
-  margin-block: 1rem;
+  margin-block: var(--margin-block, 0);
   opacity: var(--opacity);
   transition: opacity 800ms;
   box-sizing: border-box;

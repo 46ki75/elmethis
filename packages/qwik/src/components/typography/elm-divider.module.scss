@@ -1,5 +1,5 @@
 .hr {
-  margin: 0;
+  margin-block: var(--margin-block, 0);
   width: 100%;
   border: none;
   border-bottom: dashed 1px #868e9c;
