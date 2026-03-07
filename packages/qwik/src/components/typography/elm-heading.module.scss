@@ -1,10 +1,9 @@
 .heading-common {
-  margin: 0;
-
   position: relative;
   font-size: var(--font-size);
   line-height: var(--font-size);
   opacity: var(--opacity);
+  margin-block: var(--margin-block, 0);
 
   transition:
     color 400ms,
