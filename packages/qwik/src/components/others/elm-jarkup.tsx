@@ -29,7 +29,7 @@ import {
 export interface ElmJarkupProps {
   jsonComponents: Component[];
 
-  style?: string | CSSProperties | undefined;
+  style?: CSSProperties;
 }
 
 const convertInlineComponentsToPlainText = (
@@ -263,5 +263,9 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
     });
   };
 
-  return <div style={props.style}>{render(props.jsonComponents)}</div>;
+  return (
+    <div style={{ "--margin-block": "3rem", ...props.style }}>
+      {render(props.jsonComponents)}
+    </div>
+  );
 });
