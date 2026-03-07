@@ -33,10 +33,12 @@ export interface ElmBookmarkProps {
    * The URL of the favicon.
    */
   favicon?: string;
+
+  style?: CSSProperties;
 }
 
 export const ElmBookmark = component$<ElmBookmarkProps>(
-  ({ url, image, title, description, favicon }) => {
+  ({ url, image, title, description, favicon, style }) => {
     const isError = useSignal(false);
 
     const handleImageOnError = $(() => {
@@ -49,7 +51,7 @@ export const ElmBookmark = component$<ElmBookmarkProps>(
     };
 
     return (
-      <div class={styles.bookmark}>
+      <div class={styles.bookmark} style={style}>
         <a
           class={styles.container}
           href={url}

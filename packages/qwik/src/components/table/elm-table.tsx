@@ -15,18 +15,15 @@ export const HasRowHeaderContext = createContextId<
 >("HasRowHeaderContext");
 
 export interface ElmTableProps {
-  /**
-   * The margin of the table.
-   */
-  margin?: CSSProperties["marginBlock"];
-
   caption?: string;
 
   hasRowHeader?: boolean;
+
+  style?: CSSProperties;
 }
 
 export const ElmTable = component$<ElmTableProps>((props) => {
-  const { margin, caption, hasRowHeader = false } = props;
+  const { caption, hasRowHeader = false, style } = props;
 
   const hasRowHeaderComputed = useComputed$(() => hasRowHeader);
   useContextProvider(HasRowHeaderContext, hasRowHeaderComputed);
@@ -35,7 +32,7 @@ export const ElmTable = component$<ElmTableProps>((props) => {
     <table
       class={[styles.table, textStyles.text]}
       style={{
-        "--margin-block": margin,
+        ...style,
       }}
     >
       {caption && (

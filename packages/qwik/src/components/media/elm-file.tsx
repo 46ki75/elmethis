@@ -1,4 +1,4 @@
-import { $, component$ } from "@builder.io/qwik";
+import { $, component$, CSSProperties } from "@builder.io/qwik";
 
 import styles from "./elm-file.module.scss";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
@@ -20,6 +20,8 @@ export interface ElmFileProps {
    * The size of the file in bytes.
    */
   filesize?: string;
+
+  style?: CSSProperties;
 }
 
 function getLastPathSegmentWithoutQueryOrHash(
@@ -30,46 +32,48 @@ function getLastPathSegmentWithoutQueryOrHash(
   return pathSegments.length > 0 ? pathSegments[pathSegments.length - 1] : null;
 }
 
-export const ElmFile = component$<ElmFileProps>(({ name, src, filesize }) => {
-  const downloadFile = $(async () => {
-    let link;
-    try {
-      const response = await fetch(src);
-      if (!response.ok) throw new Error("Failed to download file");
+export const ElmFile = component$<ElmFileProps>(
+  ({ name, src, filesize, style }) => {
+    const downloadFile = $(async () => {
+      let link;
+      try {
+        const response = await fetch(src);
+        if (!response.ok) throw new Error("Failed to download file");
 
-      const blob = await response.blob();
+        const blob = await response.blob();
 
-      link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download =
-        name ?? getLastPathSegmentWithoutQueryOrHash(src) ?? "file";
-      link.click();
-    } catch (error) {
-      console.error("ERROR:", error);
-    } finally {
-      if (link) URL.revokeObjectURL(link.href);
-    }
-  });
+        link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download =
+          name ?? getLastPathSegmentWithoutQueryOrHash(src) ?? "file";
+        link.click();
+      } catch (error) {
+        console.error("ERROR:", error);
+      } finally {
+        if (link) URL.revokeObjectURL(link.href);
+      }
+    });
 
-  return (
-    <div class={styles.file}>
-      <div>
-        <ElmMdiIcon d={mdiFile} size="1.25rem" />
+    return (
+      <div class={styles.file} style={style}>
+        <div>
+          <ElmMdiIcon d={mdiFile} size="1.25rem" />
+        </div>
+
+        <div>
+          <ElmInlineText>
+            {name ?? getLastPathSegmentWithoutQueryOrHash(src)}
+          </ElmInlineText>
+        </div>
+
+        <div class={styles["file-size"]}>
+          <ElmInlineText>{filesize}</ElmInlineText>
+        </div>
+
+        <div class={styles["download-icon"]} onClick$={downloadFile}>
+          <ElmMdiIcon d={mdiDownload} size="1.25rem" />
+        </div>
       </div>
-
-      <div>
-        <ElmInlineText>
-          {name ?? getLastPathSegmentWithoutQueryOrHash(src)}
-        </ElmInlineText>
-      </div>
-
-      <div class={styles["file-size"]}>
-        <ElmInlineText>{filesize}</ElmInlineText>
-      </div>
-
-      <div class={styles["download-icon"]} onClick$={downloadFile}>
-        <ElmMdiIcon d={mdiDownload} size="1.25rem" />
-      </div>
-    </div>
-  );
-});
+    );
+  },
+);

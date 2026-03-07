@@ -1,4 +1,10 @@
-import { $, component$, Slot, useSignal } from "@builder.io/qwik";
+import {
+  $,
+  component$,
+  CSSProperties,
+  Slot,
+  useSignal,
+} from "@builder.io/qwik";
 
 import styles from "./elm-toggle.module.scss";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
@@ -10,9 +16,11 @@ export interface ElmToggleProps {
    * The summary of the toggle.
    */
   summary?: string;
+
+  style?: CSSProperties;
 }
 
-export const ElmToggle = component$<ElmToggleProps>(({ summary }) => {
+export const ElmToggle = component$<ElmToggleProps>(({ summary, style }) => {
   const isOpen = useSignal(false);
 
   const toggle = $(() => {
@@ -28,6 +36,7 @@ export const ElmToggle = component$<ElmToggleProps>(({ summary }) => {
           [styles["toggle-closed"]]: !isOpen.value,
         },
       ]}
+      style={style}
     >
       <div
         class={[

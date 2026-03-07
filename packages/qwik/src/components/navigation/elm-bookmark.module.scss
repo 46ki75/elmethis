@@ -5,6 +5,7 @@
   border-radius: 0.25rem;
   box-shadow: 0 0 0.125rem rgba(black, 0.1);
   overflow: hidden;
+  margin-block: var(--margin-block, 0);
 
   transition:
     background-color 200ms,

@@ -35,14 +35,11 @@ export interface ElmCodeBlockProps {
    */
   caption?: string;
 
-  /**
-   * The margin of the code block.
-   */
-  margin?: CSSProperties["margin"];
+  style?: CSSProperties;
 }
 
 export const ElmCodeBlock = component$<ElmCodeBlockProps>(
-  ({ code, language = "txt", caption, margin }) => {
+  ({ code, language = "txt", caption, style }) => {
     const timerId = useSignal<number | null>(null);
 
     const copyToClipboard = $(async () => {
@@ -60,7 +57,7 @@ export const ElmCodeBlock = component$<ElmCodeBlockProps>(
     });
 
     return (
-      <figure class={styles["code-block"]} style={{ margin }}>
+      <figure class={styles["code-block"]} style={style}>
         <span class={styles["language-icon"]}>
           <ElmLanguageIcon language={language} />
         </span>
