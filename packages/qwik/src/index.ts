@@ -76,6 +76,11 @@ export {
   type ElmToggleThemeProps,
 } from "./components/icon/elm-toggle-theme";
 
+export {
+  ElmSquareLoadingIcon,
+  type ElmSquareLoadingIconProps,
+} from "./components/icon/elm-square-loading-icon";
+
 // | Media |
 export {
   ElmBlockImage,
