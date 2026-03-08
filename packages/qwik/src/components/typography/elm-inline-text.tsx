@@ -6,6 +6,8 @@ import textStyles from "../../styles/text.module.scss";
 import { ElmInlineIcon } from "../icon/elm-inline-icon";
 
 export interface ElmInlineTextProps {
+  style?: CSSProperties;
+
   /**
    * The text to display.
    */
@@ -122,6 +124,7 @@ export const ElmInlineText = component$<ElmInlineTextProps>((props) => {
         "--color": props.color,
         "--font-size": size,
         "--background-color": props.backgroundColor,
+        ...props.style,
       }}
     >
       {vnode}
