@@ -1,5 +1,4 @@
 .paragraph {
-  opacity: var(--opacity, 0);
   transition: opacity 800ms;
   color: var(--color, #606875);
   background-color: var(--background-color, inherit);
