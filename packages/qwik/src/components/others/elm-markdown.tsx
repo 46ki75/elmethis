@@ -210,9 +210,15 @@ const renderByToken = (tokens: Token[]): JSXOutput[] => {
   return results;
 };
 
-export const ElmMarkdown = component$<ElmMarkdownProps>(({ markdown }) => {
-  const tokens = marked.setOptions({ gfm: true }).lexer(markdown);
-  const elements = renderByToken(tokens);
+export const ElmMarkdown = component$<ElmMarkdownProps>(
+  ({ markdown, style }) => {
+    const tokens = marked.setOptions({ gfm: true }).lexer(markdown);
+    const elements = renderByToken(tokens);
 
-  return <div class={styles["markdown-body"]}>{elements}</div>;
-});
+    return (
+      <div class={styles["markdown-body"]} style={style}>
+        {elements}
+      </div>
+    );
+  },
+);
