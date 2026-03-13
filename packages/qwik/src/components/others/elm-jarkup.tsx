@@ -1,4 +1,4 @@
-import { component$, type JSXOutput } from "@builder.io/qwik";
+import { component$, CSSProperties, type JSXOutput } from "@builder.io/qwik";
 import type { Component, InlineComponent } from "jarkup-ts";
 import { kebabCase } from "lodash-es";
 
@@ -28,6 +28,8 @@ import {
 
 export interface ElmJarkupProps {
   jsonComponents: Component[];
+
+  style?: CSSProperties;
 }
 
 const convertInlineComponentsToPlainText = (
@@ -262,6 +264,8 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
   };
 
   return (
-    <div class={styles["jarkup-body"]}>{render(props.jsonComponents)}</div>
+    <div style={{ "--margin-block": "3rem", ...props.style }}>
+      {render(props.jsonComponents)}
+    </div>
   );
 });

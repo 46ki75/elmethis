@@ -1,9 +1,8 @@
 .paragraph {
-  opacity: var(--opacity, 0);
-  opacity: var(--opacity);
   transition: opacity 800ms;
   color: var(--color, #606875);
   background-color: var(--background-color, inherit);
+  margin-block: var(--margin-block, 0);
 
   &::selection {
     color: rgba(255, 255, 255, 0.7);

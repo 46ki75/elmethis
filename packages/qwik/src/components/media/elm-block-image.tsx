@@ -1,4 +1,10 @@
-import { $, component$, useSignal, type Numberish } from "@builder.io/qwik";
+import {
+  $,
+  component$,
+  CSSProperties,
+  useSignal,
+  type Numberish,
+} from "@builder.io/qwik";
 
 import styles from "./elm-block-image.module.scss";
 import { ElmInlineText } from "../typography/elm-inline-text";
@@ -12,6 +18,10 @@ export interface ElmBlockImageProps {
    */
   src: string;
 
+  srcset?: string;
+
+  sizes?: string;
+
   /**
    * Image alt text
    */
@@ -24,10 +34,22 @@ export interface ElmBlockImageProps {
   width?: Numberish;
 
   height?: Numberish;
+
+  style?: CSSProperties;
 }
 
 export const ElmBlockImage = component$<ElmBlockImageProps>(
-  ({ src, alt, caption, width, height, enableModal = true }) => {
+  ({
+    src,
+    alt,
+    caption,
+    width,
+    height,
+    enableModal = true,
+    srcset,
+    sizes,
+    style,
+  }) => {
     const isLoading = useSignal(true);
     const isShowModal = useSignal(false);
 
@@ -46,6 +68,8 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
         class={styles.image}
         src={src}
         alt={alt ?? caption ?? "Image"}
+        srcset={srcset}
+        sizes={sizes}
         width={width}
         height={height}
         onLoad$={handleImageLoad}
@@ -75,7 +99,7 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
     );
 
     return (
-      <figure class={styles["block-image"]}>
+      <figure class={styles["block-image"]} style={style}>
         <div
           class={styles["image-container"]}
           style={{ "--opacity": isLoading.value ? 1 : 0 }}

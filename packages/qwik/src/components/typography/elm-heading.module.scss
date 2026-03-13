@@ -1,14 +1,22 @@
 .heading-common {
-  margin: 0;
-
   position: relative;
   font-size: var(--font-size);
   line-height: var(--font-size);
   opacity: var(--opacity);
+  margin-block: var(--margin-block, 0);
 
   transition:
     color 400ms,
     opacity 800ms;
+}
+
+@keyframes heading-stretch {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
 }
 
 .h1 {
@@ -21,8 +29,8 @@
     height: 0.25px;
     background-color: rgba(0, 0, 0, 0.5);
 
-    transition: transform 800ms;
-    transform: scaleX(var(--scale));
+    transform-origin: left;
+    animation: heading-stretch 1000ms ease 200ms both;
 
     [data-theme="dark"] & {
       background-color: rgba(255, 255, 255, 0.5);
@@ -91,9 +99,8 @@
     height: 0.25px;
     background-color: rgba(0, 0, 0, 0.5);
 
-    transition: transform 800ms;
-    transform: scaleX(var(--scale));
     transform-origin: left;
+    animation: heading-stretch 1000ms ease 200ms both;
 
     [data-theme="dark"] & {
       background-color: rgba(255, 255, 255, 0.5);

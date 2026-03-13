@@ -1,4 +1,9 @@
-import { component$, Fragment, JSXOutput } from "@builder.io/qwik";
+import {
+  component$,
+  CSSProperties,
+  Fragment,
+  JSXOutput,
+} from "@builder.io/qwik";
 import { marked, type Token, type Tokens } from "marked";
 
 import { ElmInlineText } from "../typography/elm-inline-text";
@@ -19,6 +24,8 @@ import styles from "./elm-markdown.module.scss";
 
 export interface ElmMarkdownProps {
   markdown: string;
+
+  style?: CSSProperties;
 }
 
 const renderByToken = (tokens: Token[]): JSXOutput[] => {
@@ -114,9 +121,11 @@ const renderByToken = (tokens: Token[]): JSXOutput[] => {
         );
         break;
       case "list": {
-        const listItems = token.items.map((item: Tokens.ListItem, index: number) => (
-          <li key={index}>{renderByToken(item.tokens)}</li>
-        ));
+        const listItems = token.items.map(
+          (item: Tokens.ListItem, index: number) => (
+            <li key={index}>{renderByToken(item.tokens)}</li>
+          ),
+        );
         results.push(
           <ElmList listStyle={token.ordered ? "ordered" : "unordered"}>
             {listItems}
@@ -158,16 +167,20 @@ const renderByToken = (tokens: Token[]): JSXOutput[] => {
       case "table": {
         const renderTableCells = (cells: Tokens.TableCell[]): JSXOutput[] =>
           cells.map((cell: Tokens.TableCell, index: number) => (
-            <ElmTableCell key={index}>{renderByToken(cell.tokens)}</ElmTableCell>
+            <ElmTableCell key={index}>
+              {renderByToken(cell.tokens)}
+            </ElmTableCell>
           ));
 
         const headerRow = (
           <ElmTableRow>{renderTableCells(token.header)}</ElmTableRow>
         );
 
-        const bodyRows = token.rows.map((row: Tokens.TableCell[], index: number) => (
-          <ElmTableRow key={index}>{renderTableCells(row)}</ElmTableRow>
-        ));
+        const bodyRows = token.rows.map(
+          (row: Tokens.TableCell[], index: number) => (
+            <ElmTableRow key={index}>{renderTableCells(row)}</ElmTableRow>
+          ),
+        );
 
         results.push(
           <ElmTable>
@@ -197,9 +210,15 @@ const renderByToken = (tokens: Token[]): JSXOutput[] => {
   return results;
 };
 
-export const ElmMarkdown = component$<ElmMarkdownProps>(({ markdown }) => {
-  const tokens = marked.setOptions({ gfm: true }).lexer(markdown);
-  const elements = renderByToken(tokens);
+export const ElmMarkdown = component$<ElmMarkdownProps>(
+  ({ markdown, style }) => {
+    const tokens = marked.setOptions({ gfm: true }).lexer(markdown);
+    const elements = renderByToken(tokens);
 
-  return <div class={styles["markdown-body"]}>{elements}</div>;
-});
+    return (
+      <div class={styles["markdown-body"]} style={style}>
+        {elements}
+      </div>
+    );
+  },
+);

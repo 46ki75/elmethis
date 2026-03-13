@@ -1,5 +1,5 @@
 /* eslint-disable qwik/jsx-img */
-import { component$ } from "@builder.io/qwik";
+import { $, component$, CSSProperties, useSignal } from "@builder.io/qwik";
 
 import styles from "./elm-bookmark.module.scss";
 import { ElmInlineText } from "../typography/elm-inline-text";
@@ -33,19 +33,38 @@ export interface ElmBookmarkProps {
    * The URL of the favicon.
    */
   favicon?: string;
+
+  style?: CSSProperties;
 }
 
 export const ElmBookmark = component$<ElmBookmarkProps>(
-  ({ url, image, title, description, favicon }) => {
+  ({ url, image, title, description, favicon, style }) => {
+    const isError = useSignal(false);
+
+    const handleImageOnError = $(() => {
+      isError.value = true;
+    });
+
+    const hiddenStyle: CSSProperties = {
+      visibility: "hidden",
+      width: "0",
+    };
+
     return (
-      <div class={styles.bookmark}>
+      <div class={styles.bookmark} style={style}>
         <a
           class={styles.container}
           href={url}
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img class={styles.image} src={image} alt="OGP Image" />
+          <img
+            class={styles.image}
+            src={image}
+            alt="OGP Image"
+            onError$={handleImageOnError}
+            style={isError.value || image == null ? hiddenStyle : {}}
+          />
 
           <div class={styles.content}>
             <div class={styles.title}>
