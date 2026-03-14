@@ -53,12 +53,20 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
     const isLoading = useSignal(true);
     const isShowModal = useSignal(false);
 
+    const modalRef = useSignal<HTMLDivElement>();
+
     const handleImageLoad = $(() => {
       isLoading.value = false;
     });
 
     const handleToggleModal = $(() => {
       if (enableModal && !isLoading.value) {
+        if (isShowModal.value) {
+          modalRef.value?.hidePopover();
+        } else {
+          modalRef.value?.showPopover();
+        }
+
         isShowModal.value = !isShowModal.value;
       }
     });
@@ -87,12 +95,13 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
 
     const Modal = (
       <div
+        ref={modalRef}
         class={styles["modal-container"]}
         style={{
           pointerEvents: isShowModal.value ? "auto" : "none",
-          "--opacity": isShowModal.value ? 1 : 0,
         }}
         onClick$={handleToggleModal}
+        popover="manual"
       >
         {ImageComponent}
       </div>

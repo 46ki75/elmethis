@@ -56,16 +56,46 @@
 }
 
 .modal-container {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  inset: 0 0 auto auto;
-  z-index: 100;
-  background-color: rgba(#23262a, 0.8);
-  cursor: zoom-out;
-  opacity: var(--opacity, 1);
-  transition: opacity 200ms;
+  opacity: 0;
+  transform: scale(0.95);
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  margin: auto;
+  transition:
+    opacity 200ms,
+    transform 200ms,
+    display 200ms allow-discrete,
+    overlay 200ms allow-discrete;
+
+  &::backdrop {
+    background-color: rgba(#23262a, 0.8);
+    opacity: 0;
+
+    transition:
+      background-color 200ms,
+      opacity 200ms,
+      display 200ms allow-discrete,
+      overlay 200ms allow-discrete;
+  }
+
+  &:popover-open {
+    opacity: 1;
+    transform: scale(1);
+
+    &::backdrop {
+      opacity: 1;
+    }
+  }
+}
+
+@starting-style {
+  .modal-container:popover-open {
+    opacity: 0;
+    transform: scale(0.95);
+
+    &::backdrop {
+      opacity: 0;
+    }
+  }
 }
