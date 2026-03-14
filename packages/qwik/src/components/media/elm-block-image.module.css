@@ -24,7 +24,7 @@
   max-height: min(100%, 100vh);
   height: auto;
   border-radius: 0.25rem;
-  box-shadow: 0 0 0.125rem rgba(black, 0.1);
+  box-shadow: 0 0 0.125rem oklch(from black l c h / 0.1);
   transition: opacity 400ms;
   opacity: var(--opacity, 1);
   user-select: none;
@@ -70,7 +70,7 @@
     overlay 200ms allow-discrete;
 
   &::backdrop {
-    background-color: rgba(#23262a, 0.8);
+    background-color: oklch(from #23262a l c h / 0.8);
     opacity: 0;
 
     transition:

@@ -6,7 +6,7 @@ import {
   type Numberish,
 } from "@builder.io/qwik";
 
-import styles from "./elm-block-image.module.scss";
+import styles from "./elm-block-image.module.css";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { ElmRectangleWave } from "../fallback/elm-rectangle-wave";
