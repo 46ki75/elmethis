@@ -97,9 +97,6 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
       <div
         ref={modalRef}
         class={styles["modal-container"]}
-        style={{
-          pointerEvents: isShowModal.value ? "auto" : "none",
-        }}
         onClick$={handleToggleModal}
         popover="manual"
       >
