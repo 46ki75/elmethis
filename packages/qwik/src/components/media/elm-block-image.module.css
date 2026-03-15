@@ -20,6 +20,7 @@
 }
 
 .image {
+  box-sizing: border-box;
   max-width: 100%;
   max-height: min(100%, 100vh);
   height: auto;
@@ -34,8 +35,6 @@
 }
 
 .fallback {
-  width: 100%;
-  height: 100%;
   inset: 0 0 auto auto;
   position: absolute;
   transition: opacity 400ms;
@@ -56,6 +55,12 @@
 }
 
 .modal-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
   opacity: 0;
   transform: scale(0.95);
   background-color: transparent;
