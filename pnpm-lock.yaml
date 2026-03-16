@@ -64,8 +64,8 @@ importers:
         specifier: ^7.4.47
         version: 7.4.47
       katex:
-        specifier: ^0.16.33
-        version: 0.16.33
+        specifier: ^0.16.38
+        version: 0.16.38
       lodash-es:
         specifier: ^4.17.23
         version: 4.17.23
@@ -271,8 +271,8 @@ importers:
         specifier: ^7.1.0
         version: 7.1.0
       katex:
-        specifier: ^0.16.33
-        version: 0.16.33
+        specifier: ^0.16.38
+        version: 0.16.38
       lodash-es:
         specifier: ^4.17.23
         version: 4.17.23
@@ -4412,6 +4412,10 @@ packages:
 
   katex@0.16.33:
     resolution: {integrity: sha512-q3N5u+1sY9Bu7T4nlXoiRBXWfwSefNGoKeOwekV+gw0cAXQlz2Ww6BLcmBxVDeXBMUDQv6fK5bcNaJLxob3ZQA==}
+    hasBin: true
+
+  katex@0.16.38:
+    resolution: {integrity: sha512-cjHooZUmIAUmDsHBN+1n8LaZdpmbj03LtYeYPyuYB7OuloiaeaV6N4LcfjcnHVzGWjVQmKrxxTrpDcmSzEZQwQ==}
     hasBin: true
 
   keyv@4.5.4:
@@ -10787,6 +10791,10 @@ snapshots:
     dependencies:
       commander: 8.3.0
 
+  katex@0.16.38:
+    dependencies:
+      commander: 8.3.0
+
   keyv@4.5.4:
     dependencies:
       json-buffer: 3.0.1
@@ -11110,7 +11118,7 @@ snapshots:
       dagre-d3-es: 7.0.11
       dayjs: 1.11.18
       dompurify: 3.2.7
-      katex: 0.16.33
+      katex: 0.16.38
       khroma: 2.1.0
       lodash-es: 4.17.23
       marked: 16.4.2
@@ -11135,7 +11143,7 @@ snapshots:
       dagre-d3-es: 7.0.13
       dayjs: 1.11.19
       dompurify: 3.3.1
-      katex: 0.16.33
+      katex: 0.16.38
       khroma: 2.1.0
       lodash-es: 4.17.23
       marked: 16.4.2
