@@ -140,7 +140,9 @@ export const ElmInlineText = component$<ElmInlineTextProps>((props) => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        {props.favicon && <ElmInlineIcon src={props.favicon} />}
+        {props.favicon && (
+          <ElmInlineIcon src={props.favicon} alt={`Favicon of ${props.text}`} />
+        )}
         {wrappedVnode}
       </a>
     );
