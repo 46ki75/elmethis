@@ -3,6 +3,7 @@ import {
   component$,
   CSSProperties,
   useSignal,
+  useVisibleTask$,
   type Numberish,
 } from "@builder.io/qwik";
 
@@ -63,8 +64,21 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
       }
     });
 
+    const imgRef = useSignal<HTMLImageElement>();
+
+    /**
+     * @see {@link https://qwik.dev/docs/cookbook/detect-img-tag-onload/}
+     */
+    // eslint-disable-next-line qwik/no-use-visible-task
+    useVisibleTask$(() => {
+      imgRef.value!.decode().then(() => {
+        isLoading.value = false;
+      });
+    });
+
     const ImageComponent = (
       <img
+        ref={imgRef}
         class={styles.image}
         src={src}
         alt={alt ?? caption ?? "Image"}
