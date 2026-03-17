@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@ag-ui/core": "^0.0.47",
-    "@notionhq/client": "^5.11.1",
+    "@notionhq/client": "^5.13.0",
     "@storybook/addon-docs": "^10.2.19",
     "@storybook/vue3-vite": "10.2.19",
     "@types/json-schema": "^7.0.15",
