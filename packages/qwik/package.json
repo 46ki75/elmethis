@@ -76,7 +76,7 @@
   },
   "dependencies": {
     "@mdi/js": "^7.4.47",
-    "katex": "^0.16.40",
+    "katex": "^0.16.41",
     "lodash-es": "^4.17.23",
     "marked": "^17.0.5",
     "polished": "^4.3.1",
