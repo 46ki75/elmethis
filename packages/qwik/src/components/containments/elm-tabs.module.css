@@ -6,6 +6,7 @@
   border: solid 1px oklch(from black l c h / 0.1);
   border-radius: 0.25rem;
   box-shadow: 0 0 0.125rem oklch(from black l c h / 0.1);
+  overflow: hidden;
 
   background-color: oklch(from white l c h / 0.5);
 
@@ -47,11 +48,20 @@
   }
 }
 
-.tab-contant-container {
+.tab-content-container {
   display: flex;
+  flex-direction: row;
+  width: 300%;
+  overflow: hidden;
 }
 
 .tab-content {
+  width: 100%;
   box-sizing: border-box;
   padding: 2rem 1em;
+  transition: transform 100ms;
+
+  @starting-style {
+    transform: translateY(-16px);
+  }
 }

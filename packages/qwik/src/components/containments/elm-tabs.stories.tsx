@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { ElmTabs } from "./elm-tabs";
 import { $ } from "@builder.io/qwik";
 import { ElmInlineText } from "../typography/elm-inline-text";
+import { ElmParagraph } from "../typography/elm-paragraph";
 
 const meta: Meta<typeof ElmTabs> = {
   title: "Components/Containments/elm-tabs",
@@ -25,7 +26,13 @@ export const Primary: Story = {
         renderTabContentFunctions$={[
           $(() => <ElmInlineText>Content 1</ElmInlineText>),
           $(() => <ElmInlineText>Content 2</ElmInlineText>),
-          $(() => <ElmInlineText>Content 3</ElmInlineText>),
+          $(() => (
+            <div style={{ "--margin-block": "32px" }}>
+              <ElmParagraph>Content 3-A</ElmParagraph>
+              <ElmParagraph>Content 3-B</ElmParagraph>
+              <ElmParagraph>Content 3-C</ElmParagraph>
+            </div>
+          )),
         ]}
       />
     );

@@ -35,13 +35,9 @@ export const ElmTabs = component$<ElmTabsProps>(
         </div>
 
         <div class={styles["tab-content-container"]}>
-          {renderTabContentFunctions$.map(
-            (renderTabContentFunction$, index) => (
-              <div key={index} class={styles["tab-content"]}>
-                {renderTabContentFunction$()}
-              </div>
-            ),
-          )}
+          <div key={selectedTabIndex.value} class={styles["tab-content"]}>
+            {renderTabContentFunctions$[selectedTabIndex.value]()}
+          </div>
         </div>
       </div>
     );
