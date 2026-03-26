@@ -31,6 +31,8 @@ import { ElmUnsupportedBlock } from "../fallback/elm-unsupported-block";
 export interface ElmJarkupProps {
   jsonComponents: Component[];
 
+  skipUnsupportedComponentWarning?: boolean;
+
   style?: CSSProperties;
 }
 
@@ -284,6 +286,8 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
           );
 
         case "Unsupported": {
+          if (props.skipUnsupportedComponentWarning) return null;
+
           return (
             <ElmUnsupportedBlock
               key={key}
@@ -293,6 +297,8 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
         }
 
         default:
+          if (props.skipUnsupportedComponentWarning) return null;
+
           return (
             <ElmUnsupportedBlock
               key={key}

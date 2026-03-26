@@ -9,6 +9,7 @@ const meta: Meta<typeof ElmJarkup> = {
   tags: ["autodocs"],
   args: {
     jsonComponents: sampleData as Component[],
+    skipUnsupportedComponentWarning: false,
   },
 };
 
