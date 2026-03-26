@@ -59,9 +59,12 @@
   width: 100%;
   box-sizing: border-box;
   padding: 2rem 1em;
-  transition: transform 100ms;
+  transition:
+    transform 200ms,
+    opacity 200ms;
 
   @starting-style {
     transform: translateY(-16px);
+    opacity: 0;
   }
 }
