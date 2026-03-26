@@ -62,7 +62,7 @@
     opacity 200ms;
 
   @starting-style {
-    transform: translateY(-16px);
+    transform: translateY(-8px);
     opacity: 0;
   }
 }
