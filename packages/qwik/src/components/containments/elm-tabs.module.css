@@ -1,0 +1,48 @@
+.elm-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+  border: solid 1px oklch(from black l c h / 0.1);
+  border-radius: 0.25rem;
+  box-shadow: 0 0 0.125rem oklch(from black l c h / 0.1);
+  background-color: oklch(from white l c h / 0.5);
+}
+
+.tab-container {
+  display: flex;
+  flex-direction: row;
+  border-bottom: solid 1px oklch(from gray l c h / 0.3);
+}
+
+.tab {
+  box-sizing: border-box;
+  min-width: 6rem;
+  padding: 1rem;
+  margin: 0;
+  cursor: pointer;
+  border-right: dashed 1px oklch(from gray l c h / 0.2);
+  border-bottom: solid 2px transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition:
+    background-color 200ms,
+    border-color 200ms;
+
+  &.active {
+    background-color: oklch(from #59a7b5 l c h / 0.05);
+    border-bottom-color: #59a7b5;
+    cursor: default;
+  }
+}
+
+.tab-contant-container {
+  display: flex;
+}
+
+.tab-content {
+  box-sizing: border-box;
+  padding: 2rem 1em;
+}
