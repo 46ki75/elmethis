@@ -40,12 +40,12 @@ jobs:
 
       - name: Run Build
         run: pnpm run build-storybook
-        working-directory: packages/vue
+        working-directory: packages/qwik
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "./packages/vue/storybook-static"
+          path: "./packages/qwik/storybook-static"
 
       - name: Deploy to GitHub Pages
         id: deployment
