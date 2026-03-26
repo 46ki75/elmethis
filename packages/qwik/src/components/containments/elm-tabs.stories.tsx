@@ -3,6 +3,10 @@ import { ElmTabs } from "./elm-tabs";
 import { $ } from "@builder.io/qwik";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { ElmParagraph } from "../typography/elm-paragraph";
+import { ElmLanguageIcon } from "../icon/elm-language-icon";
+import { ElmCodeBlock } from "../code/elm-code-block";
+
+import code from "../code/seed/main.rs?raw";
 
 const meta: Meta<typeof ElmTabs> = {
   title: "Components/Containments/elm-tabs",
@@ -22,6 +26,12 @@ export const Primary: Story = {
           $(() => <ElmInlineText>Tab 1</ElmInlineText>),
           $(() => <ElmInlineText>Tab 2</ElmInlineText>),
           $(() => <ElmInlineText>Tab 3</ElmInlineText>),
+          $(() => (
+            <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <ElmLanguageIcon language="rust" size={16} />
+              <ElmInlineText>Code</ElmInlineText>
+            </span>
+          )),
         ]}
         renderTabContentFunctions$={[
           $(() => <ElmInlineText>Content 1</ElmInlineText>),
@@ -33,6 +43,7 @@ export const Primary: Story = {
               <ElmParagraph>Content 3-C</ElmParagraph>
             </div>
           )),
+          $(() => <ElmCodeBlock language="rust" code={code} />),
         ]}
       />
     );

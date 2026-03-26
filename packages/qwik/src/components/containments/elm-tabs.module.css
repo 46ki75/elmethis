@@ -49,16 +49,14 @@
 }
 
 .tab-content-container {
-  display: flex;
-  flex-direction: row;
-  width: 300%;
-  overflow: hidden;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 1em;
 }
 
 .tab-content {
   width: 100%;
-  box-sizing: border-box;
-  padding: 2rem 1em;
+  margin: 0;
   transition:
     transform 200ms,
     opacity 200ms;
