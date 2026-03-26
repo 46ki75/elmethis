@@ -85,6 +85,10 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
             />
           );
 
+        case "Fragment": {
+          return <>{render(component.slots.default)}</>;
+        }
+
         case "Heading":
           return (
             <ElmHeading
