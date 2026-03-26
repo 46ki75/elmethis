@@ -1,6 +1,7 @@
 .unsupported {
   box-sizing: border-box;
   padding: 4rem;
+  margin-block: var(--margin-block, 2rem) 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
