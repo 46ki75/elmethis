@@ -6,7 +6,12 @@
   border: solid 1px oklch(from black l c h / 0.1);
   border-radius: 0.25rem;
   box-shadow: 0 0 0.125rem oklch(from black l c h / 0.1);
+
   background-color: oklch(from white l c h / 0.5);
+
+  [data-theme="dark"] & {
+    background-color: oklch(from black l c h / 0.1);
+  }
 }
 
 .tab-container {
@@ -32,9 +37,13 @@
     border-color 200ms;
 
   &.active {
-    background-color: oklch(from #59a7b5 l c h / 0.05);
-    border-bottom-color: #59a7b5;
+    background-color: oklch(from #7cbac5 l c h / 0.025);
+    border-bottom-color: #7cbac5;
     cursor: default;
+  }
+
+  &:hover {
+    background-color: oklch(from #7cbac5 l c h / 0.05);
   }
 }
 
