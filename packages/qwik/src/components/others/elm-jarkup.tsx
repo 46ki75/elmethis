@@ -26,9 +26,12 @@ import {
   ElmTableCell,
 } from "../table";
 import { ElmTabs } from "../containments/elm-tabs";
+import { ElmUnsupportedBlock } from "../fallback/elm-unsupported-block";
 
 export interface ElmJarkupProps {
   jsonComponents: Component[];
+
+  skipUnsupportedComponentWarning?: boolean;
 
   style?: CSSProperties;
 }
@@ -84,6 +87,10 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
               alt={component.props.alt}
             />
           );
+
+        case "Fragment": {
+          return <>{render(component.slots.default)}</>;
+        }
 
         case "Heading":
           return (
@@ -278,11 +285,25 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
             </div>
           );
 
-        default:
+        case "Unsupported": {
+          if (props.skipUnsupportedComponentWarning) return null;
+
           return (
-            <div key={key} style={{ color: "red", border: "1px solid red" }}>
-              Unsupported component type: {component.type}
-            </div>
+            <ElmUnsupportedBlock
+              key={key}
+              details={`Unsupported component type: ${component.props?.details || component.type}`}
+            />
+          );
+        }
+
+        default:
+          if (props.skipUnsupportedComponentWarning) return null;
+
+          return (
+            <ElmUnsupportedBlock
+              key={key}
+              details={`Unsupported component type: ${component.type}`}
+            />
           );
       }
     });

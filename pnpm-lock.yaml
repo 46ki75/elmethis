@@ -107,8 +107,8 @@ importers:
         specifier: 17.4.0
         version: 17.4.0
       jarkup-ts:
-        specifier: ^0.11.0
-        version: 0.11.0
+        specifier: ^0.12.0
+        version: 0.12.0
       np:
         specifier: ^11.0.2
         version: 11.0.2(@types/node@25.5.0)(typescript@5.9.3)
@@ -4432,6 +4432,9 @@ packages:
 
   jarkup-ts@0.11.0:
     resolution: {integrity: sha512-H2HVuOj7j9OEcWW/8KZKXS+qYfspIORYfWTNMVIPkehqK48Yh9WRcDUfOR6q84/3Z5R+r9Q2xVs7rSIyJM3rZg==}
+
+  jarkup-ts@0.12.0:
+    resolution: {integrity: sha512-uQKYRNPfRqdh7NB5No8uf0edLA3ltDsG1vqIwTdXXL7ZcfgtmNFRICI5WchvW1QfdZn/Q9MEYX3DcLgrTgqX7w==}
 
   jiti@2.4.2:
     resolution: {integrity: sha512-rg9zJN+G4n2nfJl5MW3BMygZX56zKPNVEYYqq7adpmMh4Jn2QNEwhvQlFy6jPVdcod7txZtKHWnyZiA3a0zP7A==}
@@ -10825,6 +10828,8 @@ snapshots:
   issue-regex@4.3.0: {}
 
   jarkup-ts@0.11.0: {}
+
+  jarkup-ts@0.12.0: {}
 
   jiti@2.4.2:
     optional: true
