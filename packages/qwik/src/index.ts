@@ -29,6 +29,10 @@ export {
   ElmRectangleWave,
   type ElmRectangleWaveProps,
 } from "./components/fallback/elm-rectangle-wave";
+export {
+  ElmUnsupportedBlock,
+  type ElmUnsupportedBlockProps,
+} from "./components/fallback/elm-unsupported-block";
 
 // | Form |
 export { ElmButton, type ElmButtonProps } from "./components/form/elm-button";
