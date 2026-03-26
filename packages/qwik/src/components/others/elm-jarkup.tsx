@@ -283,6 +283,15 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
             </div>
           );
 
+        case "Unsupported": {
+          return (
+            <ElmUnsupportedBlock
+              key={key}
+              details={`Unsupported component type: ${component.props?.details || component.type}`}
+            />
+          );
+        }
+
         default:
           return (
             <ElmUnsupportedBlock
