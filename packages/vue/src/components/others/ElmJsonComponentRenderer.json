@@ -1,5 +1,116 @@
 [
     {
+        "type": "Tabs",
+        "id": "32f34608-d5c9-80b9-a2bf-e93a955bd8c1",
+        "props": null,
+        "slots": {
+            "default": [
+                {
+                    "type": "Tab",
+                    "id": "32f34608-d5c9-8075-8562-eaaacbd9a7c4",
+                    "slots": {
+                        "labels": [
+                            {
+                                "type": "Icon",
+                                "id": "30b34608-d5c9-80cb-a624-007a8bd352b0",
+                                "props": {
+                                    "src": "https://s3-us-west-2.amazonaws.com/public.notion-static.com/7df14aed-89c0-4e39-88b8-4a8890bafd66/devicon--npm.svg",
+                                    "alt": "npm"
+                                }
+                            },
+                            {
+                                "type": "Text",
+                                "id": null,
+                                "props": {
+                                    "text": " npm"
+                                }
+                            }
+                        ],
+                        "contents": [
+                            {
+                                "type": "CodeBlock",
+                                "id": "32f34608-d5c9-807c-a483-f548e1425629",
+                                "props": {
+                                    "code": "npm i -D typescript @types/node",
+                                    "language": "bash"
+                                },
+                                "slots": null
+                            }
+                        ]
+                    }
+                },
+                {
+                    "type": "Tab",
+                    "id": "32f34608-d5c9-805f-9a87-c0241e188793",
+                    "slots": {
+                        "labels": [
+                            {
+                                "type": "Icon",
+                                "id": "32f34608-d5c9-8064-9952-007ae6a766b6",
+                                "props": {
+                                    "src": "https://s3-us-west-2.amazonaws.com/public.notion-static.com/d75a3d7c-53e9-4f1b-98df-d0bea8897714/devicon--yarn.svg",
+                                    "alt": "yarnpkg"
+                                }
+                            },
+                            {
+                                "type": "Text",
+                                "id": null,
+                                "props": {
+                                    "text": " yarn"
+                                }
+                            }
+                        ],
+                        "contents": [
+                            {
+                                "type": "CodeBlock",
+                                "id": "32f34608-d5c9-8073-b3c8-f25fbc2f8c1e",
+                                "props": {
+                                    "code": "yarn add -D typescript @types/node",
+                                    "language": "bash"
+                                },
+                                "slots": null
+                            }
+                        ]
+                    }
+                },
+                {
+                    "type": "Tab",
+                    "id": "32f34608-d5c9-8021-b572-cf58f05920ea",
+                    "slots": {
+                        "labels": [
+                            {
+                                "type": "Icon",
+                                "id": "27534608-d5c9-80e3-b3d8-007a61b9f957",
+                                "props": {
+                                    "src": "https://s3-us-west-2.amazonaws.com/public.notion-static.com/aa21fd5e-337c-40d5-94af-e1bc4212c421/image.png",
+                                    "alt": "pnpm"
+                                }
+                            },
+                            {
+                                "type": "Text",
+                                "id": null,
+                                "props": {
+                                    "text": " pnpm"
+                                }
+                            }
+                        ],
+                        "contents": [
+                            {
+                                "type": "CodeBlock",
+                                "id": "32f34608-d5c9-80f7-b67c-e50f8c200acc",
+                                "props": {
+                                    "code": "pnpm i -D typescript @types/node",
+                                    "language": "bash"
+                                },
+                                "slots": null
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    },
+    {
         "id": "2a434608-d5c9-8057-975c-cb530ee27e2d",
         "slots": {
             "default": [
