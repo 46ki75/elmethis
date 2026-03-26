@@ -2,8 +2,9 @@
   margin: 0;
   padding: 0;
   display: inline-block;
-  vertical-align: middle;
-  height: 1em;
+  vertical-align: top;
+  width: 0.95lh;
+  height: 0.95lh;
 
   &::selection {
     filter: brightness(1000%);

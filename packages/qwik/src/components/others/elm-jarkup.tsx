@@ -25,6 +25,7 @@ import {
   ElmTableRow,
   ElmTableCell,
 } from "../table";
+import { ElmTabs } from "../containments/elm-tabs";
 
 export interface ElmJarkupProps {
   jsonComponents: Component[];
@@ -199,6 +200,30 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
               block={true}
             />
           );
+
+        case "Tabs": {
+          const labels: InlineComponent[][] = [];
+          const contents: Component[][] = [];
+          for (const tab of component.slots.default) {
+            labels.push(tab.slots.labels);
+            contents.push(tab.slots.contents);
+          }
+
+          // Render synchronously OUTSIDE the $ boundary
+          const renderedLabels = labels.map((label, index) => (
+            <span key={index}>{render(label)}</span>
+          ));
+          const renderedContents = contents.map((content, index) => (
+            <div key={index}>{render(content)}</div>
+          ));
+
+          return (
+            <ElmTabs
+              tabLabels={renderedLabels}
+              tabContents={renderedContents}
+            />
+          );
+        }
 
         case "Table":
           return (

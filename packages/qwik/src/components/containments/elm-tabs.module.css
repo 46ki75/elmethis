@@ -60,6 +60,11 @@
   transition:
     transform 200ms,
     opacity 200ms;
+  display: none;
+
+  &.active {
+    display: block;
+  }
 
   @starting-style {
     transform: translateY(-8px);

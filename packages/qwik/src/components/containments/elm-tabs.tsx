@@ -1,14 +1,15 @@
-import { $, component$, JSXOutput, QRL, useSignal } from "@builder.io/qwik";
+import { $, component$, useSignal } from "@builder.io/qwik";
+import type { JSXOutput } from "@builder.io/qwik";
 
 import styles from "./elm-tabs.module.css";
 
 export interface ElmTabsProps {
-  renderTabFunctions$: QRL<() => JSXOutput>[];
-  renderTabContentFunctions$: QRL<() => JSXOutput>[];
+  tabLabels: JSXOutput[];
+  tabContents: JSXOutput[];
 }
 
 export const ElmTabs = component$<ElmTabsProps>(
-  ({ renderTabFunctions$, renderTabContentFunctions$ }) => {
+  ({ tabLabels, tabContents }) => {
     const selectedTabIndex = useSignal(0);
 
     const selectTab = $((index: number) => {
@@ -18,7 +19,7 @@ export const ElmTabs = component$<ElmTabsProps>(
     return (
       <div class={styles["elm-tabs"]}>
         <div class={styles["tab-container"]}>
-          {renderTabFunctions$.map((renderTabFunction$, index) => (
+          {tabLabels.map((tabLabel, index) => (
             <div
               key={index}
               class={[
@@ -29,15 +30,25 @@ export const ElmTabs = component$<ElmTabsProps>(
               ]}
               onClick$={() => selectTab(index)}
             >
-              {renderTabFunction$()}
+              {tabLabel}
             </div>
           ))}
         </div>
 
         <div class={styles["tab-content-container"]}>
-          <div key={selectedTabIndex.value} class={styles["tab-content"]}>
-            {renderTabContentFunctions$[selectedTabIndex.value]()}
-          </div>
+          {tabContents.map((content, index) => (
+            <div
+              key={index}
+              class={[
+                styles["tab-content"],
+                {
+                  [styles["active"]]: selectedTabIndex.value === index,
+                },
+              ]}
+            >
+              {content}
+            </div>
+          ))}
         </div>
       </div>
     );
