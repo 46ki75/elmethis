@@ -1,0 +1,25 @@
+.unsupported {
+  box-sizing: border-box;
+  padding: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  border: 1px dashed rgba(#868e9c, 0.5);
+}
+
+.message {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon {
+  fill: #868e9c;
+}
+
+.details {
+  opacity: 0.75;
+}

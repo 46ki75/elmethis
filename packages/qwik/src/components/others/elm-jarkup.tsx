@@ -26,6 +26,7 @@ import {
   ElmTableCell,
 } from "../table";
 import { ElmTabs } from "../containments/elm-tabs";
+import { ElmUnsupportedBlock } from "../fallback/elm-unsupported-block";
 
 export interface ElmJarkupProps {
   jsonComponents: Component[];
@@ -284,9 +285,10 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
 
         default:
           return (
-            <div key={key} style={{ color: "red", border: "1px solid red" }}>
-              Unsupported component type: {component.type}
-            </div>
+            <ElmUnsupportedBlock
+              key={key}
+              details={`Unsupported component type: ${component.type}`}
+            />
           );
       }
     });
