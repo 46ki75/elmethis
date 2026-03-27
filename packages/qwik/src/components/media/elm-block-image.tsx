@@ -88,7 +88,7 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
         height={height}
         onLoad$={handleImageLoad}
         style={{
-          "--opacity": isLoading.value ? 0 : 1,
+          "--opacity": isLoading.value ? 0.01 : 1,
           "--cursor": enableModal
             ? isShowModal.value
               ? "zoom-out"
@@ -116,7 +116,7 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
       <figure class={styles["block-image"]} style={style}>
         <div
           class={styles["image-container"]}
-          style={{ "--opacity": isLoading.value ? 1 : 0 }}
+          style={{ "--opacity": isLoading.value ? 1 : 0.01 }}
           onClick$={handleToggleModal}
         >
           {ImageComponent}
@@ -129,7 +129,7 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
         {caption && (
           <figcaption
             class={styles["caption-box"]}
-            style={{ "--opacity": isLoading.value ? 0 : 1 }}
+            style={{ "--opacity": isLoading.value ? 0.01 : 1 }}
           >
             <span style={{ flex: "1" }}>
               <ElmMdiIcon
