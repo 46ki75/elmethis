@@ -184,6 +184,8 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
               key={key}
               src={component.props.src}
               alt={component.props.alt}
+              width={component.props.width}
+              height={component.props.height}
               enableModal={true}
             />
           );
