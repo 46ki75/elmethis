@@ -110,7 +110,7 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
         }}
         onClick$={handleToggleModal}
       >
-        {ImageComponent(true)}
+        {isShowModal.value && ImageComponent(true)}
       </div>
     );
 
