@@ -86,6 +86,8 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
         sizes={isModal ? undefined : sizes}
         width={width}
         height={height}
+        loading={isModal ? "lazy" : undefined}
+        fetchPriority={isModal ? "low" : "auto"}
         onLoad$={handleImageLoad}
         style={{
           "--opacity": isLoading.value ? 0.01 : 1,
