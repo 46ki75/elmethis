@@ -76,14 +76,14 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
       });
     });
 
-    const ImageComponent = (
+    const ImageComponent = (isModal: boolean) => (
       <img
         ref={imgRef}
         class={styles.image}
         src={src}
         alt={alt ?? caption ?? "Image"}
-        srcset={srcset}
-        sizes={sizes}
+        srcset={isModal ? undefined : srcset}
+        sizes={isModal ? undefined : sizes}
         width={width}
         height={height}
         onLoad$={handleImageLoad}
@@ -108,7 +108,7 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
         }}
         onClick$={handleToggleModal}
       >
-        {ImageComponent}
+        {ImageComponent(true)}
       </div>
     );
 
@@ -119,7 +119,7 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
           style={{ "--opacity": isLoading.value ? 1 : 0.01 }}
           onClick$={handleToggleModal}
         >
-          {ImageComponent}
+          {ImageComponent(false)}
 
           <div class={styles.fallback}>
             <ElmRectangleWave />
