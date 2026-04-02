@@ -132,7 +132,7 @@ importers:
         version: 8.58.0(eslint@10.1.0(jiti@2.4.2))(typescript@5.9.3)
       undici:
         specifier: '*'
-        version: 7.24.7
+        version: 8.0.0
       vite:
         specifier: ^6.4.1
         version: 6.4.1(@types/node@25.5.0)(jiti@2.4.2)(sass@1.98.0)(terser@5.39.0)(tsx@4.19.3)
@@ -6084,9 +6084,9 @@ packages:
   undici-types@7.18.2:
     resolution: {integrity: sha512-AsuCzffGHJybSaRrmr5eHr81mwJU3kjw6M+uprWvCXiNeN9SOGwQ3Jn8jb8m3Z6izVgknn1R0FTCEAP2QrLY/w==}
 
-  undici@7.24.7:
-    resolution: {integrity: sha512-H/nlJ/h0ggGC+uRL3ovD+G0i4bqhvsDOpbDv7At5eFLlj2b41L8QliGbnl2H7SnDiYhENphh1tQFJZf+MyfLsQ==}
-    engines: {node: '>=20.18.1'}
+  undici@8.0.0:
+    resolution: {integrity: sha512-RGabV5g1ggSX5mU4k+B8BLWgb418gDbg0wAVFeiU00iOxtw4ufGsE6GFsuSd2uqOKooWSLf71JGapOFYpE8f+A==}
+    engines: {node: '>=22.19.0'}
 
   unicorn-magic@0.3.0:
     resolution: {integrity: sha512-+QBBXBCvifc56fsbuxZQ6Sic3wqqc3WWaqxs58gvJrcOuN83HGTCwz3oS5phzU9LthRNE9VrJCFCLUgHeeFnfA==}
@@ -6701,7 +6701,7 @@ snapshots:
       '@types/mdx': 2.0.13
       source-map: 0.7.6
       svgo: 3.3.3
-      undici: 7.24.7
+      undici: 8.0.0
       valibot: 1.2.0(typescript@5.9.3)
       vfile: 6.0.3
       vite: 7.3.1(@types/node@25.5.0)(jiti@2.4.2)(sass@1.98.0)(terser@5.39.0)(tsx@4.19.3)
@@ -13058,7 +13058,7 @@ snapshots:
 
   undici-types@7.18.2: {}
 
-  undici@7.24.7: {}
+  undici@8.0.0: {}
 
   unicorn-magic@0.3.0: {}
 
