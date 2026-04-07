@@ -63,7 +63,7 @@
     "eslint-plugin-qwik": "1.19.2",
     "globals": "17.4.0",
     "jarkup-ts": "^0.14.0",
-    "np": "^11.0.2",
+    "np": "^11.0.3",
     "prettier": "3.8.1",
     "sass": "^1.99.0",
     "storybook": "8",
