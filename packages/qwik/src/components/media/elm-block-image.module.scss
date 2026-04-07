@@ -22,7 +22,9 @@
 .image {
   max-width: 100%;
   max-height: min(100%, 100vh);
+  width: auto;
   height: auto;
+  object-fit: contain;
   border-radius: 0.25rem;
   box-shadow: 0 0 0.125rem rgba(black, 0.1);
   transition: opacity 400ms;
