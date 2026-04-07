@@ -71,7 +71,7 @@
     "typescript": "5.9.3",
     "typescript-eslint": "8.58.0",
     "undici": "*",
-    "vite": "^8.0.7",
+    "vite": "^6",
     "vite-tsconfig-paths": "^6.1.1"
   },
   "dependencies": {
