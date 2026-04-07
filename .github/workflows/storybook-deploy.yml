@@ -50,6 +50,7 @@ jobs:
         run: |
           rm -rf ./storybook-static
           mkdir -p ./storybook-static
+          cp ./index.html ./storybook-static/index.html
           cp -r ./packages/qwik/storybook-static ./storybook-static/qwik
           cp -r ./packages/vue/storybook-static ./storybook-static/vue
 
