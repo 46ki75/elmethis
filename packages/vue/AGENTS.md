@@ -1,5 +1,7 @@
 # @elmethis/vue
 
+- Currently we're using SCSS, but we're migrating to CSS. So, when creating new styles, use CSS.
+
 ## Directory Structure
 
 - `src/`: Source root.
