@@ -2,14 +2,18 @@
 
 ## Workspace Overview
 
-- Root is a pnpm workspace with packages under `packages/*`.
+- The root is a pnpm workspace with packages under `packages/*`.
 - Contains UI component libraries for `vue`, `react`, and `qwik`.
 
 ## Directory Structure
 
-- `packages/vue`: (`@elmethis/vue`) Vue 3 component library and Storybook package.
-- `packages/react`: (`@elmethis/react`) React component library (WIP).
-- `packages/qwik`: (`@elmethis/qwik`) Qwik component library.
-- `packages/react-storybook`: React Storybook package.
-- `packages/cognito`: Cognito UI package.
-- `crates/elmethis-notion`: Rust library with unit tests.
+- vue: (`@elmethis/vue`) Vue 3 component library and Storybook package.
+- react: (`@elmethis/react`) React component library (WIP).
+- qwik: Qwik component library.
+- react-storybook: React Storybook package.
+- cognito: Cognito UI package.
+- elmethis-notion: Rust library with unit tests.
+
+## Toolchain
+
+- Use `pnpm` to manage dependencies and workspaces.
