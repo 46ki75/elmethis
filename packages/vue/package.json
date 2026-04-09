@@ -42,7 +42,7 @@
     "shiki": "^4.0.2"
   },
   "devDependencies": {
-    "@ag-ui/core": "^0.0.51",
+    "@ag-ui/core": "^0.0.52",
     "@notionhq/client": "^5.17.0",
     "@storybook/addon-docs": "^10.2.19",
     "@storybook/vue3-vite": "10.2.19",
