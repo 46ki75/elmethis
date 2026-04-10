@@ -14,6 +14,7 @@ import {
   watch,
   computed,
   defineAsyncComponent,
+  Fragment,
 } from "vue";
 
 import ElmInlineText from "../typography/ElmInlineText.vue";
@@ -26,6 +27,7 @@ import ElmBlockQuote from "../typography/ElmBlockQuote.vue";
 import ElmCallout from "../typography/ElmCallout.vue";
 import ElmDivider from "../typography/ElmDivider.vue";
 import ElmToggle from "../containments/ElmToggle.vue";
+import ElmTabs from "../containments/ElmTabs.vue";
 import ElmBookmark from "../navigation/ElmBookmark.vue";
 import ElmFile from "../media/ElmFile.vue";
 import ElmImage from "../media/ElmImage.vue";
@@ -47,6 +49,7 @@ const ElmMermaid = defineAsyncComponent({
 
 export interface ElmJsonComponentRendererProps {
   jsonComponents: Component[];
+  skipUnsupportedComponentWarning?: boolean;
 }
 
 const props = withDefaults(defineProps<ElmJsonComponentRendererProps>(), {});
@@ -95,6 +98,7 @@ const defaultRenderFunctionMap = (
       }
     },
     Icon: ({ props }) => h(ElmInlineIcon, { src: props.src, alt: props.alt }),
+    Fragment: ({ slots }) => h(Fragment, {}, render(slots.default)),
     Heading: ({ props, slots }) =>
       h(
         ElmHeading,
@@ -157,6 +161,10 @@ const defaultRenderFunctionMap = (
       h(ElmImage, {
         src: props.src,
         alt: props.alt,
+        width: props.width,
+        height: props.height,
+        srcset: props.srcset,
+        sizes: props.sizes,
         block: true,
         enableModal: true,
       }),
@@ -171,6 +179,23 @@ const defaultRenderFunctionMap = (
     Katex: ({ props }) =>
       h(ElmKatex, { expression: props.expression, block: true }),
     Mermaid: ({ props }) => h(ElmMermaid, { code: props.code }),
+    Tab: () => h(Fragment, {}),
+    Tabs: ({ slots }) => {
+      const labels: VNode[] = [];
+      const contents: VNode[] = [];
+      for (const tab of slots.default) {
+        labels.push(h("span", {}, render(tab.slots.labels)));
+        contents.push(h("div", {}, render(tab.slots.contents)));
+      }
+      return h(
+        ElmTabs,
+        {},
+        {
+          tabLabels: () => labels,
+          tabContents: () => contents,
+        },
+      );
+    },
     Table: ({ props, slots }) => {
       let header: ReturnType<typeof h> | undefined = undefined;
 
@@ -220,7 +245,25 @@ const render = (jsonComponents: Component[]): VNode[] => {
   const results: VNode[] = [];
 
   for (const component of jsonComponents) {
-    const renderFunction = defaultRenderFunctionMap(render)[component.type];
+    if (
+      props.skipUnsupportedComponentWarning &&
+      component.type === "Unsupported"
+    ) {
+      continue;
+    }
+
+    let renderFunction = defaultRenderFunctionMap(render)[component.type];
+
+    if (!renderFunction) {
+      if (props.skipUnsupportedComponentWarning) {
+        continue;
+      }
+      renderFunction = () =>
+        h(ElmUnsupportedBlock, {
+          details: `Unsupported component type: ${component.type}`,
+        });
+    }
+
     results.push(renderFunction(component as any));
   }
 
@@ -241,9 +284,13 @@ watch(
 );
 </script>
 
-<style module lang="scss">
+<style module lang="css">
+.jarkup-body {
+  --margin-block: 3rem;
+}
+
 .jarkup-body > * + * {
-  margin-block-start: 2em;
+  margin-block-start: var(--margin-block, 2em);
 }
 
 .column-list {
@@ -261,9 +308,9 @@ watch(
   box-sizing: border-box;
   padding: 0.125rem;
   flex: var(--width-ratio, 1);
+}
 
-  & > * + * {
-    margin-block-start: 2em;
-  }
+.column > * + * {
+  margin-block-start: 2em;
 }
 </style>
