@@ -30,6 +30,9 @@ export { default as ElmSnackbar } from "./components/containments/ElmSnackbar.vu
 export type { ElmSnackbarContainerProps } from "./components/containments/ElmSnackbarContainer.vue";
 export { default as ElmSnackbarContainer } from "./components/containments/ElmSnackbarContainer.vue";
 
+export type { ElmTabsProps } from "./components/containments/ElmTabs.vue";
+export { default as ElmTabs } from "./components/containments/ElmTabs.vue";
+
 export type { ElmToggleProps } from "./components/containments/ElmToggle.vue";
 export { default as ElmToggle } from "./components/containments/ElmToggle.vue";
 
