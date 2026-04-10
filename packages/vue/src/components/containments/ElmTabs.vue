@@ -2,7 +2,7 @@
   <div :class="$style['elm-tabs']">
     <div :class="$style['tab-container']">
       <div
-        v-for="(tabLabel, index) in tabLabels"
+        v-for="(tabLabel, index) in slots.tabLabels()"
         :key="index"
         :class="[
           $style['tab'],
@@ -14,14 +14,14 @@
           <component :is="tabLabel" />
         </template>
         <template v-else>
-          {{ tabLabel }}
+          <component :is="tabLabel" />
         </template>
       </div>
     </div>
 
     <div :class="$style['tab-content-container']">
       <div
-        v-for="(content, index) in tabContents"
+        v-for="(content, index) in slots.tabContents()"
         :key="index"
         :class="[
           $style['tab-content'],
@@ -32,7 +32,7 @@
           <component :is="content" />
         </template>
         <template v-else>
-          {{ content }}
+          <component :is="content" />
         </template>
       </div>
     </div>
@@ -40,17 +40,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, type VNode } from "vue";
 
-export interface ElmTabsProps {
-  tabLabels?: any[];
-  tabContents?: any[];
-}
+export interface ElmTabsProps {}
 
-withDefaults(defineProps<ElmTabsProps>(), {
-  tabLabels: () => [],
-  tabContents: () => [],
-});
+withDefaults(defineProps<ElmTabsProps>(), {});
+
+const slots = defineSlots<{
+  tabLabels: () => VNode[];
+  tabContents: () => VNode[];
+}>();
 
 const selectedTabIndex = ref(0);
 
