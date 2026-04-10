@@ -10,12 +10,7 @@
         ]"
         @click="selectTab(index)"
       >
-        <template v-if="typeof tabLabel === 'object'">
-          <component :is="tabLabel" />
-        </template>
-        <template v-else>
-          <component :is="tabLabel" />
-        </template>
+        <component :is="tabLabel" />
       </div>
     </div>
 
@@ -28,12 +23,7 @@
           { [$style['active']]: selectedTabIndex === index },
         ]"
       >
-        <template v-if="typeof content === 'object'">
-          <component :is="content" />
-        </template>
-        <template v-else>
-          <component :is="content" />
-        </template>
+        <component :is="content" />
       </div>
     </div>
   </div>
