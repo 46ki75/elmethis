@@ -18,11 +18,14 @@ export interface ElmKatexProps {
   block?: boolean;
 }
 
-export const ElmKatex = ({ expression, block = false, style }: ElmKatexProps) => {
+export const ElmKatex = ({
+  expression,
+  block = false,
+  style,
+}: ElmKatexProps) => {
   const [html, setHtml] = useState<string | undefined>();
 
   useEffect(() => {
-    // @ts-expect-error - katex is an optional peer dependency
     import("katex")
       .then(({ renderToString }) => {
         try {
