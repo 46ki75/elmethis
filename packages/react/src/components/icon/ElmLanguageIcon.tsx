@@ -29,10 +29,12 @@ import MdiCodeIcon from "./language-icon/mdi-code.svg?url";
 // Types
 import type { Language } from "./language";
 
+interface ElmLanguageIconCSSVariables {
+  "--elmethis-size"?: number;
+}
+
 export interface ElmLanguageIconProps {
-  style?: React.CSSProperties & {
-    "--elmethis-size"?: number;
-  };
+  style?: React.CSSProperties & ElmLanguageIconCSSVariables;
 
   /**
    * The size of the icon.
