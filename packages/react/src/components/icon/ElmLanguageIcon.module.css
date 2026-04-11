@@ -1,0 +1,4 @@
+.icon {
+  width: var(--elmethis-icon-size, 1rem);
+  height: var(--elmethis-icon-size, 1rem);
+}

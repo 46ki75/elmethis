@@ -5,15 +5,14 @@ import "@styles/global.css";
 import styles from "./ElmLanguageIcon.module.css";
 
 // Icons
-import { addCollection, Icon } from "@iconify/react";
-import { icons as devIcons } from "@iconify-json/devicon";
-import { icons as mdiIcons } from "@iconify-json/mdi";
+import RustIcon from "./language-icon/rust.svg?url";
+import JavaScriptIcon from "./language-icon/javascript.svg?url";
+import TypeScriptIcon from "./language-icon/typescript.svg?url";
+
+import MdiCodeIcon from "./language-icon/mdi-code.svg?url";
 
 // Types
 import type { Language } from "./language";
-
-addCollection(devIcons);
-addCollection(mdiIcons);
 
 export interface ElmLanguageIconProps {
   style?: React.CSSProperties & {
@@ -32,36 +31,39 @@ export interface ElmLanguageIconProps {
 }
 
 const LanguageIconMap: Record<Language, string> = {
-  rust: "devicon:rust",
-  javascript: "devicon:javascript",
-  typescript: "devicon:typescript",
-  shell: "devicon:bash",
-  terraform: "devicon:terraform",
-  html: "devicon:html5",
-  css: "devicon:css",
-  npm: "devicon:npm",
-  java: "devicon:java",
-  kotlin: "devicon:kotlin",
-  go: "devicon:go",
-  python: "devicon:python",
-  sql: "devicon:mysql",
-  json: "mdi:code-json",
-  lua: "devicon:lua",
-  csharp: "devicon:csharp",
-  cpp: "devicon:cplusplus",
-  c: "devicon:c",
-  file: "mdi:code",
+  rust: RustIcon,
+  javascript: JavaScriptIcon,
+  typescript: TypeScriptIcon,
+  // shell: "devicon:bash",
+  // terraform: "devicon:terraform",
+  // html: "devicon:html5",
+  // css: "devicon:css",
+  // npm: "devicon:npm",
+  // java: "devicon:java",
+  // kotlin: "devicon:kotlin",
+  // go: "devicon:go",
+  // python: "devicon:python",
+  // sql: "devicon:mysql",
+  // json: "mdi:code-json",
+  // lua: "devicon:lua",
+  // csharp: "devicon:csharp",
+  // cpp: "devicon:cplusplus",
+  // c: "devicon:c",
+  file: MdiCodeIcon,
 };
 
 export const ElmLanguageIcon = (props: ElmLanguageIconProps) => {
   return (
-    <div className={styles["elm-language-icon"]} style={props.style}>
-      <Icon
-        icon={LanguageIconMap[props.language as Language] || "mdi:code"}
-        width={props.size}
-        height={props.size}
-        color="gray"
-      />
-    </div>
+    <img
+      className={styles.icon}
+      src={LanguageIconMap[props.language as Language] || MdiCodeIcon}
+      width={props.size}
+      height={props.size}
+      alt={props.language}
+      style={{
+        "--elmethis-size": props.size,
+        ...props.style,
+      }}
+    />
   );
 };
