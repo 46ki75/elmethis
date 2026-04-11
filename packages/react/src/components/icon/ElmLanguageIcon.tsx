@@ -29,9 +29,7 @@ import MdiCodeIcon from "./language-icon/mdi-code.svg?url";
 // Types
 import type { Language } from "./language";
 
-export interface ElmLanguageIconCSSVariables {
-  "--elmethis-language-icon-size"?: React.CSSProperties["width"];
-}
+export interface ElmLanguageIconCSSVariables {}
 
 export interface ElmLanguageIconProps {
   style?: React.CSSProperties & ElmLanguageIconCSSVariables;
@@ -78,7 +76,8 @@ export const ElmLanguageIcon = (props: ElmLanguageIconProps) => {
       height={props.size}
       alt={props.language}
       style={{
-        "--elmethis-language-icon-size": `${props.size}px`,
+        width: props.size,
+        height: props.size,
         ...props.style,
       }}
     />
