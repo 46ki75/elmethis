@@ -100,7 +100,7 @@ export const ElmCodeBlock = ({
                   ? mdiClipboardCheckMultipleOutline
                   : mdiClipboardMultipleOutline
               }
-              color={copied ? "#b69545" : undefined}
+              useThemeColor={copied}
             />
           </div>
         </div>
