@@ -1,11 +1,11 @@
 import React from "react";
 import { clsx } from "clsx";
+import { getLuminance } from "polished";
 
 // Styles
 import "@styles/global.css";
 import styles from "./ElmInlineText.module.css";
 import textStyles from "@styles/text.module.css";
-import { getLuminance } from "polished";
 
 export interface ElmInlineTextProps extends React.PropsWithChildren {
   style?: React.CSSProperties & {
