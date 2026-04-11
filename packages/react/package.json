@@ -1,6 +1,6 @@
 {
   "name": "@elmethis/react",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "publishConfig": {
     "access": "public"
   },
@@ -16,13 +16,13 @@
   "module": "./lib/index.react.mjs",
   "exports": {
     ".": {
-      "types": "./lib-types/index.d.ts",
+      "types": "./lib-types/lib.d.ts",
       "import": {
-        "types": "./lib-types/index.d.ts",
+        "types": "./lib-types/lib.d.ts",
         "default": "./lib/index.react.mjs"
       },
       "require": {
-        "types": "./lib-types/index.d.ts",
+        "types": "./lib-types/lib.d.ts",
         "default": "./lib/index.react.cjs"
       }
     },
