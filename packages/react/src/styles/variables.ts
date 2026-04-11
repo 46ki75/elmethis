@@ -1,5 +1,6 @@
 export type ElmethisCSSVariables = {
   "--elmethis-color-primary"?: React.CSSProperties["color"];
+  "--elmethis-color-primary-dark"?: React.CSSProperties["color"];
 
   "--elmethis-text-color-light"?: React.CSSProperties["color"];
   "--elmethis-text-color-dark"?: React.CSSProperties["color"];

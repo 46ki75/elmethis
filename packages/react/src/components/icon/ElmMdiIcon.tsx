@@ -6,7 +6,7 @@ import type { ElmethisCSSVariables } from "@styles/variables";
 
 export type ElmMdiIconCSSVariables = Pick<
   ElmethisCSSVariables,
-  "--elmethis-color-primary"
+  "--elmethis-color-primary" | "--elmethis-color-primary-dark"
 >;
 
 export interface ElmMdiIconProps {
