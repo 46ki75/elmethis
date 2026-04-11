@@ -3,7 +3,7 @@ import { ElmParagraph } from "./ElmParagraph";
 import { ElmInlineText } from "./ElmInlineText";
 
 const meta: Meta<typeof ElmParagraph> = {
-  title: "Components/Components/ElmParagraph",
+  title: "Components/Typography/ElmParagraph",
   component: ElmParagraph,
   tags: ["autodocs"],
   args: {},
