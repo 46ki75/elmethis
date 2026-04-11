@@ -1,0 +1,19 @@
+.text {
+  font-size: var(--elmethis-font-size);
+  color: var(--elmethis-color, #606875);
+  background-color: var(--elmethis-background-color);
+
+  &::selection {
+    color: #cccfd5;
+    background-color: var(--elmethis-color, #3e434b);
+  }
+
+  [data-theme="dark"] & {
+    color: var(--elmethis-color, #b0b5be);
+
+    &::selection {
+      color: #3e434b;
+      background-color: var(--elmethis-color, #cccfd5);
+    }
+  }
+}
