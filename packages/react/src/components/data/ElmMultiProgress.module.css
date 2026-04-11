@@ -1,0 +1,24 @@
+.container {
+  width: 100%;
+  height: var(--weight);
+  position: relative;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+
+  background-color: rgba(0, 0, 0, 0.1);
+
+  [data-theme="dark"] & {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.bar {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  transition: transform 800ms;
+  transform: var(--transform, scaleX(0));
+  transform-origin: left;
+  background-color: var(--color, red);
+}
