@@ -7,9 +7,7 @@ import type { ElmethisCSSVariables } from "@styles/variables";
 
 export type ElmParagraphCSSVariables = Pick<
   ElmethisCSSVariables,
-  | "--elmethis-margin-block"
-  | "--elmethis-margin-block-start"
-  | "--elmethis-margin-block-end"
+  "--elmethis-margin-block"
 >;
 
 export interface ElmParagraphProps extends React.PropsWithChildren {

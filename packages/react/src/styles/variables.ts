@@ -7,6 +7,4 @@ export type ElmethisCSSVariables = {
   "--elmethis-text-background-color-dark"?: React.CSSProperties["backgroundColor"];
 
   "--elmethis-margin-block"?: React.CSSProperties["marginBlock"];
-  "--elmethis-margin-block-start"?: React.CSSProperties["marginBlockStart"];
-  "--elmethis-margin-block-end"?: React.CSSProperties["marginBlockEnd"];
 };
