@@ -1,11 +1,10 @@
 import React, { useMemo } from "react";
-import type { Property } from "csstype";
 
 import "@styles/global.css";
 import styles from "./ElmMultiProgress.module.css";
 
 export interface ElmMultiProgressCSSVariables {
-  "--weight"?: Property.Height<string | number>;
+  "--weight"?: React.CSSProperties["height"];
   "--border-radius"?: string;
 }
 
@@ -30,7 +29,7 @@ export interface ElmMultiProgressProps {
   /**
    * The weight of the progress.
    */
-  weight?: Property.Height<string | number>;
+  weight?: React.CSSProperties["height"];
 
   /**
    * Whether the progress should be round.

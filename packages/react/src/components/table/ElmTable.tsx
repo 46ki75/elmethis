@@ -1,5 +1,4 @@
 import React from "react";
-import type { Property } from "csstype";
 
 import "@styles/global.css";
 import styles from "./ElmTable.module.css";
@@ -9,7 +8,7 @@ import { HasRowHeaderContext } from "./TableContext";
 import { ElmInlineText } from "@components/typography/ElmInlineText";
 
 export interface ElmTableCSSVariables {
-  "--margin-block"?: Property.MarginBlock;
+  "--margin-block"?: React.CSSProperties["marginBlock"];
 }
 
 export interface ElmTableProps {
@@ -18,7 +17,7 @@ export interface ElmTableProps {
   /**
    * The margin of the table.
    */
-  margin?: Property.MarginBlock;
+  margin?: React.CSSProperties["marginBlock"];
 
   /**
    * Optional caption for the table.

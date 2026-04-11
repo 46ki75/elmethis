@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import type { Property } from "csstype";
 
 import "@styles/global.css";
 import styles from "./ElmImage.module.css";
@@ -36,7 +35,7 @@ export interface ElmImageProps {
   /**
    * The margin of the image.
    */
-  margin?: Property.MarginBlock;
+  margin?: React.CSSProperties["marginBlock"];
 
   /**
    * The width of the image.

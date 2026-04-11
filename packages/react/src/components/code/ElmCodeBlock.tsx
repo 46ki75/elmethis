@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import type { Property } from "csstype";
 
 import "@styles/global.css";
 import styles from "./ElmCodeBlock.module.css";
@@ -16,7 +15,7 @@ import { ElmDotLoadingIcon } from "@components/icon/ElmDotLoadingIcon";
 import { ElmShikiHighlighter } from "./ElmShikiHighlighter";
 
 export interface ElmCodeBlockCSSVariables {
-  "--margin-block"?: Property.MarginBlock;
+  "--margin-block"?: React.CSSProperties["marginBlock"];
 }
 
 export interface ElmCodeBlockProps {
@@ -40,7 +39,7 @@ export interface ElmCodeBlockProps {
   /**
    * The margin of the code block.
    */
-  margin?: Property.MarginBlock;
+  margin?: React.CSSProperties["marginBlock"];
 }
 
 export const ElmCodeBlock = ({

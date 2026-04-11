@@ -1,5 +1,4 @@
 import React from "react";
-import type { Property } from "csstype";
 
 import "@styles/global.css";
 import styles from "./ElmBlockFallback.module.css";
@@ -8,7 +7,7 @@ import { ElmDotLoadingIcon } from "@components/icon/ElmDotLoadingIcon";
 import { ElmRectangleWave } from "./ElmRectangleWave";
 
 export interface ElmBlockFallbackCSSVariables {
-  "--height"?: Property.Height;
+  "--height"?: React.CSSProperties["height"];
 }
 
 export interface ElmBlockFallbackProps {
@@ -17,7 +16,7 @@ export interface ElmBlockFallbackProps {
   /**
    * Specifies the height of the fallback container.
    */
-  height?: Property.Height;
+  height?: React.CSSProperties["height"];
 }
 
 export const ElmBlockFallback = (props: ElmBlockFallbackProps) => {

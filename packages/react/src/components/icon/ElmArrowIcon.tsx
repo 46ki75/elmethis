@@ -1,5 +1,4 @@
 import React from "react";
-import type { Property } from "csstype";
 
 import "@styles/global.css";
 import styles from "./ElmArrowIcon.module.css";
@@ -27,7 +26,7 @@ export interface ElmArrowIconProps {
   /**
    * Specifies the size of the arrow.
    */
-  size?: Property.Height;
+  size?: React.CSSProperties["height"];
 }
 
 export const ElmArrowIcon = (props: ElmArrowIconProps) => {

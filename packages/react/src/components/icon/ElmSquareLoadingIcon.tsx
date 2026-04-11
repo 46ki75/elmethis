@@ -1,5 +1,4 @@
 import React from "react";
-import type { Property } from "csstype";
 
 import "@styles/global.css";
 import styles from "./ElmSquareLoadingIcon.module.css";
@@ -12,7 +11,7 @@ export interface ElmSquareLoadingIconProps {
   /**
    * Specifies the size of the icon.
    */
-  size?: Property.Width;
+  size?: React.CSSProperties["width"];
 
   /**
    * Specifies the number of rows and columns.

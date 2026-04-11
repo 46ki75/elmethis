@@ -1,5 +1,4 @@
 import React from "react";
-import type { Property } from "csstype";
 
 import "@styles/global.css";
 import styles from "./ElmToggleTheme.module.css";
@@ -13,7 +12,7 @@ export interface ElmToggleThemeProps {
   /**
    * Specifies the size of the icon.
    */
-  size?: Property.Width<string | number>;
+  size?: React.CSSProperties["width"];
 }
 
 export const ElmToggleTheme = (props: ElmToggleThemeProps) => {

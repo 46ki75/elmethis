@@ -1,11 +1,10 @@
 import React from "react";
-import type { Property } from "csstype";
 
 import "@styles/global.css";
 import styles from "./ElmProgress.module.css";
 
 export interface ElmProgressCSSVariables {
-  "--weight"?: Property.Height<string | number>;
+  "--weight"?: React.CSSProperties["height"];
   "--border-radius"?: string;
   "--color"?: string;
 }
@@ -31,7 +30,7 @@ export interface ElmProgressProps {
   /**
    * The weight of the progress.
    */
-  weight?: Property.Height<string | number>;
+  weight?: React.CSSProperties["height"];
 
   /**
    * Whether the progress should be round.

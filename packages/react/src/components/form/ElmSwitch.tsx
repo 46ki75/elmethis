@@ -1,5 +1,4 @@
 import React, { useCallback } from "react";
-import type { Property } from "csstype";
 
 import "@styles/global.css";
 import styles from "./ElmSwitch.module.css";
@@ -18,7 +17,7 @@ export interface ElmSwitchProps {
   color?: string;
 
   /** The size of the switch. */
-  size?: Property.Width;
+  size?: React.CSSProperties["width"];
 
   /** Whether the switch is checked. */
   checked?: boolean;

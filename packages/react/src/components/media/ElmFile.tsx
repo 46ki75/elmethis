@@ -1,5 +1,4 @@
 import React, { useCallback } from "react";
-import type { Property } from "csstype";
 
 import "@styles/global.css";
 import styles from "./ElmFile.module.css";
@@ -31,7 +30,7 @@ export interface ElmFileProps {
   /**
    * The margin of the file.
    */
-  margin?: Property.MarginBlock;
+  margin?: React.CSSProperties["marginBlock"];
 }
 
 function getLastPathSegmentWithoutQueryOrHash(

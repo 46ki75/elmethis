@@ -1,5 +1,4 @@
 import React from "react";
-import type { Property } from "csstype";
 
 import "@styles/global.css";
 import styles from "./ElmDotLoadingIcon.module.css";
@@ -14,12 +13,12 @@ export interface ElmDotLoadingIconProps {
    *
    * e.g.) `'red'`, `'#ff0000'`, `'rgba(255, 0, 0, 0.5)'`
    */
-  color?: Property.BackgroundColor;
+  color?: React.CSSProperties["backgroundColor"];
 
   /**
    * Specifies the size of the dot.
    */
-  size?: Property.Width<string | number>;
+  size?: React.CSSProperties["width"];
 }
 
 export const ElmDotLoadingIcon = (props: ElmDotLoadingIconProps) => {

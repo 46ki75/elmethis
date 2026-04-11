@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import type { Property } from "csstype";
 
 import "@styles/global.css";
 import styles from "./ElmBookmark.module.css";
@@ -65,7 +64,7 @@ export interface ElmBookmarkProps {
   /**
    * The margin of the bookmark.
    */
-  margin?: Property.MarginBlock;
+  margin?: React.CSSProperties["marginBlock"];
 
   /**
    * The URL of the favicon.
