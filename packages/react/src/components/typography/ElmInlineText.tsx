@@ -4,7 +4,6 @@ import { getLuminance } from "polished";
 // Styles
 import "@styles/global.css";
 import styles from "./ElmInlineText.module.css";
-import textStyles from "@styles/text.module.css";
 
 // Components
 import { ElmInlineIcon } from "@components/icon/ElmInlineIcon";
@@ -86,7 +85,7 @@ export const ElmInlineText = (props: ElmInlineTextProps) => {
 
   return (
     <span
-      className={textStyles.text}
+      className={styles.text}
       style={{
         "--elmethis-color":
           props.color ??
