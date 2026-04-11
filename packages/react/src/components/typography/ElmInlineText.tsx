@@ -4,7 +4,6 @@ import { getLuminance } from "polished";
 // Styles
 import "@styles/global.css";
 import styles from "./ElmInlineText.module.css";
-import textStyles from "@styles/text.module.css";
 
 // Components
 import { ElmInlineIcon } from "@components/icon/ElmInlineIcon";
@@ -16,9 +15,9 @@ interface InlineLinkProps {
 
 export type ElmInlineTextProps = {
   style?: React.CSSProperties & {
-    "--elmethis-color"?: React.CSSProperties["color"];
-    "--elmethis-background-color"?: React.CSSProperties["backgroundColor"];
-    "--elmethis-font-size"?: React.CSSProperties["fontSize"];
+    "--elmethis-scoped-inline-text-color"?: React.CSSProperties["color"];
+    "--elmethis-scoped-inline-text-background-color"?: React.CSSProperties["backgroundColor"];
+    "--elmethis-scoped-inline-text-font-size"?: React.CSSProperties["fontSize"];
   };
 
   color?: React.CSSProperties["color"];
@@ -84,16 +83,16 @@ export const ElmInlineText = (props: ElmInlineTextProps) => {
 
   return (
     <span
-      className={textStyles.text}
+      className={styles.text}
       style={{
-        "--elmethis-color":
+        "--elmethis-scoped-inline-text-color":
           props.color ??
           (props.backgroundColor
             ? getLuminance(props.backgroundColor) > 0.5
               ? "#3e434b"
               : "#eeeff1"
             : false),
-        "--elmethis-background-color": props.backgroundColor,
+        "--elmethis-scoped-inline-text-background-color": props.backgroundColor,
         ...props.style,
       }}
     >

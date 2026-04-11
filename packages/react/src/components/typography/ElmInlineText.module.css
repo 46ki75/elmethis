@@ -1,8 +1,26 @@
+.text {
+  color: var(--elmethis-scoped-inline-text-color, #606875);
+  background-color: var(--elmethis-scoped-inline-text-background-color);
+
+  &::selection {
+    color: #cccfd5;
+    background-color: var(--elmethis-scoped-inline-text-color, #3e434b);
+  }
+
+  [data-theme="dark"] & {
+    color: var(--elmethis-scoped-inline-text-color, #b0b5be);
+
+    &::selection {
+      color: #3e434b;
+      background-color: var(--elmethis-scoped-inline-text-color, #cccfd5);
+    }
+  }
+}
+
 .link {
   all: unset;
   box-sizing: border-box;
   padding: 0 0.25rem;
-  font-size: var(--font-size);
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
