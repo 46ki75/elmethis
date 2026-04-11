@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import "@styles/global.css";
 import styles from "./ElmKatex.module.css";

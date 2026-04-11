@@ -105,7 +105,7 @@ export const ElmOEmbed = ({ oEmbed, style }: ElmOEmbedProps) => {
 
   return (
     <div style={style}>
-      <ElmInlineText href={href} text={label} />
+      <ElmInlineText href={href}>{label}</ElmInlineText>
     </div>
   );
 };

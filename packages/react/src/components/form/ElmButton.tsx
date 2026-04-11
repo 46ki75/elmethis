@@ -40,7 +40,7 @@ export const ElmButton = ({
   ...props
 }: ElmButtonProps) => {
   const [clicked, setClicked] = useState(false);
-  const timeoutRef = useRef<number | undefined>();
+  const timeoutRef = useRef<number | undefined>(undefined);
 
   const { onClick } = props;
 

@@ -96,21 +96,21 @@ export const ElmCodeBlock = ({
         <div className={styles.header__left}>
           <ElmLanguageIcon language={language as any} size={20} />
           <span className={styles.caption}>
-            <ElmInlineText text={caption ?? language} />
+            <ElmInlineText>{caption ?? language}</ElmInlineText>
           </span>
         </div>
         <div className={styles.header__right}>
-          <ElmMdiIcon
-            size="1.25em"
-            d={
-              copied
-                ? mdiClipboardCheckMultipleOutline
-                : mdiClipboardMultipleOutline
-            }
-            className={styles["copy-icon"]}
-            onClick={handleCopy}
-            color={copied ? "#b69545" : undefined}
-          />
+          <div className={styles["copy-icon"]} onClick={handleCopy}>
+            <ElmMdiIcon
+              size="1.25em"
+              d={
+                copied
+                  ? mdiClipboardCheckMultipleOutline
+                  : mdiClipboardMultipleOutline
+              }
+              color={copied ? "#b69545" : undefined}
+            />
+          </div>
         </div>
       </div>
 

@@ -49,7 +49,7 @@ export const ElmBookmarkIcon = (props: ElmBookmarkIconProps) => {
       )}
 
       <div className={styles.text}>
-        <ElmInlineText text={name ?? href} size=".6rem" />
+        <ElmInlineText size=".6rem">{name ?? href}</ElmInlineText>
       </div>
     </a>
   );

@@ -133,7 +133,7 @@ export const ElmCommandPalette = ({
       <div className={styles.body}>
         {searchResults.length === 0 ? (
           <div className={styles["empty-result"]}>
-            <ElmInlineText text="search anything..." />
+            <ElmInlineText>search anything...</ElmInlineText>
           </div>
         ) : (
           searchResults.map((command, index) => (
@@ -172,24 +172,26 @@ export const ElmCommandPalette = ({
               )}
 
               <ElmInlineText
-                text={command.label}
                 style={{
                   whiteSpace: "nowrap",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                   maxWidth: "24rem",
                 }}
-              />
+              >
+                {command.label}
+              </ElmInlineText>
 
               <ElmInlineText
-                text={command.description ?? "-"}
                 style={{
                   opacity: 0.4,
                   whiteSpace: "nowrap",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                 }}
-              />
+              >
+                {command.description ?? "-"}
+              </ElmInlineText>
 
               <div>
                 <ElmMdiIcon d={mdiKeyboardReturn} />
@@ -200,8 +202,8 @@ export const ElmCommandPalette = ({
       </div>
 
       <footer className={styles.footer}>
-        <ElmInlineText text="Esc" kbd />
-        <ElmInlineText text="Close" />
+        <ElmInlineText kbd>Esc</ElmInlineText>
+        <ElmInlineText>Close</ElmInlineText>
       </footer>
     </div>
   );

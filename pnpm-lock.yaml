@@ -114,6 +114,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      csstype:
+        specifier: ^3.2.3
+        version: 3.2.3
       katex:
         specifier: ^0.16.45
         version: 0.16.45

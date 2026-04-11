@@ -48,6 +48,7 @@
     "@iconify/react": "^6.0.2",
     "@mdi/js": "^7.4.47",
     "clsx": "^2.1.1",
+    "csstype": "^3.2.3",
     "katex": "^0.16.45",
     "marked": "^18.0.0",
     "polished": "^4.3.1",

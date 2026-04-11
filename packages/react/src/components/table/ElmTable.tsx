@@ -63,7 +63,7 @@ export const ElmTable = ({
                 <svg viewBox="0 0 24 24" width="1rem" height="1rem">
                   <path d={mdiTable} fill="#6987b8" />
                 </svg>
-                <ElmInlineText text={caption} />
+                <ElmInlineText>{caption}</ElmInlineText>
               </span>
               <span className={styles.spacing} />
             </span>

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import "@styles/global.css";
 import styles from "./ElmTyping.module.css";
@@ -22,7 +22,7 @@ export const ElmTyping = ({
   style,
 }: ElmTypingProps) => {
   const [targetArray, setTargetArray] = useState<TypingTarget[]>(() => {
-    const arr = target.split("").map((char) => ({ char, status: "default" as const }));
+    const arr: TypingTarget[] = target.split("").map((char) => ({ char, status: "default" }));
     if (arr.length > 0) arr[0].status = "current";
     return arr;
   });
@@ -31,7 +31,7 @@ export const ElmTyping = ({
   const [isFinished, setIsFinished] = useState(false);
 
   useEffect(() => {
-    const arr = target.split("").map((char) => ({ char, status: "default" as const }));
+    const arr: TypingTarget[] = target.split("").map((char) => ({ char, status: "default" }));
     if (arr.length > 0) arr[0].status = "current";
     setTargetArray(arr);
     setCurrentIndex(0);
