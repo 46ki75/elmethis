@@ -281,6 +281,10 @@ export {
   type ElmJsonComponentRendererProps,
 } from "./components/others/ElmJsonComponentRenderer";
 export {
+  ElmJarkup,
+  type ElmJarkupProps,
+} from "./components/others/ElmJarkup";
+export {
   ElmMarkdown,
   type ElmMarkdownProps,
 } from "./components/others/ElmMarkdown";
