@@ -3,13 +3,14 @@ import react from "@vitejs/plugin-react";
 
 import pkg from "./package.json";
 
-const { dependencies = {}, devDependencies = {}, peerDependencies = {} } = pkg;
+const { dependencies = {}, devDependencies = {} } = pkg;
 const makeRegex = (dep: string) => new RegExp(`^${dep}(/.*)?$`);
 const excludeAll = (obj: Record<string, unknown>) =>
   Object.keys(obj).map(makeRegex);
 
 // https://vite.dev/config/
 export default defineConfig({
+  resolve: { tsconfigPaths: true },
   plugins: [react()],
   build: {
     outDir: "./lib/",
@@ -27,7 +28,6 @@ export default defineConfig({
         "react-dom",
         ...excludeAll(dependencies),
         ...excludeAll(devDependencies),
-        ...excludeAll(peerDependencies),
       ],
       output: {
         assetFileNames: (assetInfo) => {

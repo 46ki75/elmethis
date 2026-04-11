@@ -1,5 +1,6 @@
 import React from "react";
 
+import "@styles/global.css";
 import styles from "./ElmTemplate.module.css";
 
 export interface ElmTemplateProps {
