@@ -3,8 +3,10 @@ import React from "react";
 import "@styles/global.css";
 import styles from "./ElmTemplate.module.css";
 
+export interface ElmTemplateCSSVariables {}
+
 export interface ElmTemplateProps {
-  style?: React.CSSProperties;
+  style?: React.CSSProperties & ElmTemplateCSSVariables;
 }
 
 export const ElmTemplate = (props: ElmTemplateProps) => {
