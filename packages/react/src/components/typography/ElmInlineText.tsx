@@ -7,6 +7,9 @@ import "@styles/global.css";
 import styles from "./ElmInlineText.module.css";
 import textStyles from "@styles/text.module.css";
 
+// Components
+import { ElmInlineIcon } from "@components/icon/ElmInlineIcon";
+
 interface InlineLinkProps {
   href?: string;
   favicon?: string;
@@ -65,6 +68,7 @@ export const ElmInlineText = (props: ElmInlineTextProps) => {
   }: InlineLinkProps & React.PropsWithChildren) => {
     return (
       <a href={href} target="_blank" rel="noopener noreferrer">
+        {favicon && <ElmInlineIcon src={favicon} />}
         {children}
       </a>
     );
