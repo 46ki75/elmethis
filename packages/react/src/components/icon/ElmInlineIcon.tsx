@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import "@styles/global.css";
 import styles from "./ElmInlineIcon.module.scss";
 
+export interface ElmInlineIconCSSVariables {}
+
 export interface ElmInlineIconProps {
   /**
    * The source URL of the icon.
