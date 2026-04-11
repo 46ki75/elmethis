@@ -3,6 +3,11 @@ export {
   ElmInlineIcon,
   type ElmInlineIconProps,
 } from "./components/icon/ElmInlineIcon";
+export {
+  ElmLanguageIcon,
+  type ElmLanguageIconProps,
+} from "./components/icon/ElmLanguageIcon";
+export { LANGUAGES, type Language } from "./components/icon/language";
 
 // Typography
 export {
