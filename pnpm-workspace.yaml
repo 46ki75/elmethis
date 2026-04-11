@@ -1,2 +1,4 @@
 packages:
-  - "packages/*"
+  - "packages/qwik"
+  - "packages/react"
+  - "packages/vue"
