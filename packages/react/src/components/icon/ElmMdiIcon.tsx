@@ -3,11 +3,7 @@ import React from "react";
 import "@styles/global.css";
 import styles from "./ElmMdiIcon.module.css";
 
-export interface ElmMdiIconCSSVariables {
-  "--elmethis-color"?: React.CSSProperties["color"];
-  "--elmethis-color-light"?: React.CSSProperties["color"];
-  "--elmethis-color-dark"?: React.CSSProperties["color"];
-}
+export interface ElmMdiIconCSSVariables {}
 
 export interface ElmMdiIconProps {
   style?: React.CSSProperties & ElmMdiIconCSSVariables;
@@ -31,7 +27,7 @@ export const ElmMdiIcon = (props: ElmMdiIconProps) => {
         role="img"
         className={styles.icon}
       >
-        <path fill="currentColor" d={props.d} />
+        <path style={{ color: props.color }} fill="currentColor" d={props.d} />
       </svg>
     </div>
   );
