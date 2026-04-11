@@ -13,8 +13,6 @@ export type ElmParagraphCSSVariables = Pick<
 export interface ElmParagraphProps extends React.PropsWithChildren {
   style?: React.CSSProperties & ElmParagraphCSSVariables;
 
-  color?: React.CSSProperties["color"];
-
   backgroundColor?: React.CSSProperties["backgroundColor"];
 }
 
@@ -23,7 +21,6 @@ export const ElmParagraph = (props: ElmParagraphProps) => {
     <p
       className={styles.paragraph}
       style={{
-        color: props.color,
         backgroundColor: props.backgroundColor,
         ...props.style,
       }}
