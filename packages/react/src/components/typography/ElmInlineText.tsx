@@ -27,13 +27,9 @@ export interface ElmInlineTextProps extends React.PropsWithChildren {
   code?: boolean;
   kbd?: boolean;
   ruby?: string;
+
   href?: string;
   favicon?: string;
-  ogp?: {
-    title: string;
-    description: string;
-    image: string;
-  };
 }
 
 export const ElmInlineText = (props: ElmInlineTextProps) => {
