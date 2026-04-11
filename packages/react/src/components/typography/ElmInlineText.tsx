@@ -21,12 +21,20 @@ export interface ElmInlineTextProps extends React.PropsWithChildren {
   size?: React.CSSProperties["fontSize"];
 
   bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
+  strikethrough?: boolean;
+  code?: boolean;
 }
 
 export const ElmInlineText = (props: ElmInlineTextProps) => {
   const render = () => {
     let component = props.children;
 
+    if (props.code) component = <code>{component}</code>;
+    if (props.strikethrough) component = <del>{component}</del>;
+    if (props.underline) component = <ins>{component}</ins>;
+    if (props.italic) component = <em>{component}</em>;
     if (props.bold) component = <strong>{component}</strong>;
 
     return component;
