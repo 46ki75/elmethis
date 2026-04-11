@@ -1,5 +1,4 @@
 import React from "react";
-import { clsx } from "clsx";
 import { getLuminance } from "polished";
 
 // Styles
@@ -67,7 +66,12 @@ export const ElmInlineText = (props: ElmInlineTextProps) => {
     children,
   }: InlineLinkProps & React.PropsWithChildren) => {
     return (
-      <a href={href} target="_blank" rel="noopener noreferrer">
+      <a
+        className={styles.link}
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         {favicon && <ElmInlineIcon src={favicon} />}
         {children}
       </a>
@@ -80,7 +84,7 @@ export const ElmInlineText = (props: ElmInlineTextProps) => {
 
   return (
     <span
-      className={clsx(styles["elm-inline-text"], textStyles.text)}
+      className={textStyles.text}
       style={{
         "--elmethis-color":
           props.color ??
