@@ -1,0 +1,31 @@
+@keyframes draw-line {
+  0% {
+    stroke-dashoffset: 0%;
+  }
+  100% {
+    stroke-dashoffset: 400%;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(-180deg);
+  }
+}
+
+.circle {
+  stroke-dasharray: 200%;
+  animation:
+    draw-line 1200ms infinite ease-in-out,
+    rotate 1200ms infinite linear;
+  transform-origin: center;
+
+  stroke: #555b67;
+
+  [data-theme="dark"] & {
+    stroke: #b0b5be;
+  }
+}
