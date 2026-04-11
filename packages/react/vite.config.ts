@@ -1,6 +1,5 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { resolve } from "path";
 
 import pkg from "./package.json";
 
@@ -13,25 +12,29 @@ const excludeAll = (obj: Record<string, unknown>) =>
 export default defineConfig({
   plugins: [react()],
   build: {
-    cssCodeSplit: true,
-    cssMinify: true,
-    minify: false,
+    target: "es2020",
     lib: {
-      entry: resolve(__dirname, "src/lib.ts"),
-      name: "elmethis",
-      fileName: "elmethis",
-      formats: ["es"],
+      entry: "./src/lib.ts",
+      formats: ["es", "cjs"],
+      cssFileName: "style.css",
+      fileName: (format) => `index.react.${format === "es" ? "mjs" : "cjs"}`,
     },
     rollupOptions: {
       external: [
+        /^node:.*/,
+        "react",
+        "react-dom",
         ...excludeAll(dependencies),
         ...excludeAll(devDependencies),
         ...excludeAll(peerDependencies),
       ],
       output: {
-        preserveModules: true,
-        preserveModulesRoot: "src",
-        entryFileNames: "[name].mjs",
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.names?.[0]?.endsWith(".css")) {
+            return "style.css";
+          }
+          return "assets/[name].[hash][extname]";
+        },
       },
     },
   },
