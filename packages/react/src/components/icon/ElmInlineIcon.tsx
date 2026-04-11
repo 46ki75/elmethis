@@ -6,6 +6,8 @@ import styles from "./ElmInlineIcon.module.scss";
 export interface ElmInlineIconCSSVariables {}
 
 export interface ElmInlineIconProps {
+  styles?: React.CSSProperties & ElmInlineIconCSSVariables;
+
   /**
    * The source URL of the icon.
    */
