@@ -3,7 +3,7 @@ import { ElmInlineText } from "./ElmInlineText";
 import { opacify } from "polished";
 
 const meta: Meta<typeof ElmInlineText> = {
-  title: "Components/Components/ElmInlineText",
+  title: "Components/Typography/ElmInlineText",
   component: ElmInlineText,
   tags: ["autodocs"],
   args: {
