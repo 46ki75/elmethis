@@ -3,8 +3,10 @@ import React, { useEffect, useState } from "react";
 import "@styles/global.css";
 import styles from "./ElmKatex.module.css";
 
+export type ElmKatexCSSVariables = {};
+
 export interface ElmKatexProps {
-  style?: React.CSSProperties;
+  style?: React.CSSProperties & ElmKatexCSSVariables;
 
   /**
    * The KaTeX expression to render.
