@@ -1,0 +1,39 @@
+.text {
+  font-family: monospace;
+  color: rgba(0, 0, 0, 0.8);
+  user-select: none;
+}
+
+.text::selection {
+  color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+[data-theme="dark"] .text {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="dark"] .text::selection {
+  color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+@keyframes blink {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.cursor {
+  margin-inline: 1px;
+  user-select: none;
+  background-color: rgba(62, 67, 75, 0.5);
+  animation: blink 1s step-end infinite;
+}
+
+[data-theme="dark"] .cursor {
+  background-color: rgba(204, 207, 213, 0.25);
+}
