@@ -9,12 +9,9 @@ const meta: Meta<typeof ElmInlineText> = {
     children: "This is an inline text.",
   },
   argTypes: {
-    color: {
-      control: "color",
-    },
-    backgroundColor: {
-      control: "color",
-    },
+    color: { control: "color" },
+    backgroundColor: { control: "color" },
+    bold: { control: "boolean" },
   },
 };
 

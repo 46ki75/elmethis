@@ -9,16 +9,29 @@ import textStyles from "@styles/text.module.css";
 
 export interface ElmInlineTextProps extends React.PropsWithChildren {
   style?: React.CSSProperties & {
-    "--elmethis-color"?: string;
-    "--elmethis-background-color"?: string;
+    "--elmethis-color"?: React.CSSProperties["color"];
+    "--elmethis-background-color"?: React.CSSProperties["backgroundColor"];
+    "--elmethis-font-size"?: React.CSSProperties["fontSize"];
   };
 
   color?: React.CSSProperties["color"];
 
   backgroundColor?: React.CSSProperties["backgroundColor"];
+
+  size?: React.CSSProperties["fontSize"];
+
+  bold?: boolean;
 }
 
 export const ElmInlineText = (props: ElmInlineTextProps) => {
+  const render = () => {
+    let component = props.children;
+
+    if (props.bold) component = <strong>{component}</strong>;
+
+    return component;
+  };
+
   return (
     <span
       className={clsx(styles["elm-inline-text"], textStyles.text)}
@@ -34,7 +47,7 @@ export const ElmInlineText = (props: ElmInlineTextProps) => {
         ...props.style,
       }}
     >
-      {props.children}
+      {render()}
     </span>
   );
 };

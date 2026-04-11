@@ -1,4 +1,5 @@
 .text {
+  font-size: var(--elmethis-font-size);
   color: var(--elmethis-color, #606875);
   background-color: var(--elmethis-background-color);
 
