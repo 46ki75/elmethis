@@ -51,7 +51,8 @@
 .tab-content-container {
   box-sizing: border-box;
   width: 100%;
-  padding: 1em;
+  height: min-content;
+  padding: 0.5rem;
 }
 
 .tab-content {

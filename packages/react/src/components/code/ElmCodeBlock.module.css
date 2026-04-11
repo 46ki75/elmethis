@@ -1,5 +1,5 @@
 .wrapper {
-  margin-block: var(--margin-block);
+  margin-block: var(--elmethis-margin-block);
   display: flex;
   flex-direction: column;
   border-radius: 0.25rem;
@@ -24,7 +24,8 @@
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
-  font-family: "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+  font-family:
+    "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
   border-bottom: solid 1px rgba(62, 67, 75, 0.3);
 
   [data-theme="dark"] & {
