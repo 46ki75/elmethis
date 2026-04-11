@@ -1,0 +1,131 @@
+.button {
+  all: unset;
+  position: relative;
+  overflow: hidden;
+  min-height: 2.75rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.25rem;
+
+  box-sizing: border-box;
+  padding: 0.5rem 1.5rem;
+  line-height: 1.5rem;
+
+  border: solid 1px color-mix(in srgb, #cdb57b 60%, transparent);
+
+  user-select: none;
+  cursor: pointer;
+
+  transition:
+    opacity 200ms,
+    transform 200ms;
+
+  opacity: var(--opacity);
+
+  box-shadow: 0 0 0.125rem rgba(128, 128, 128, 0.25);
+}
+
+.button-ornament {
+  position: absolute;
+  content: "";
+  bottom: -1px;
+  right: -1px;
+  height: 1rem;
+  width: 1rem;
+  background-color: color-mix(in srgb, #dbcaa0 60%, transparent);
+  clip-path: polygon(100% 0%, 1000% 100%, 0% 100%);
+}
+
+.normal {
+  color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(255, 255, 255, 0.8);
+
+  [data-theme="dark"] & {
+    color: rgba(255, 255, 255, 0.6);
+    background-color: #3e434b;
+  }
+}
+
+.primary {
+  color: rgba(255, 255, 255, 0.6);
+  background-color: #3e434b;
+
+  [data-theme="dark"] & {
+    color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+}
+
+.colored {
+  background-color: var(--color);
+}
+
+.enable {
+  transition:
+    opacity 200ms,
+    transform 100ms,
+    box-shadow 200ms;
+
+  [data-theme="dark"] & {
+    &:hover {
+      transform: translateX(-1px) translateY(-1px);
+      opacity: var(--opacity, 0.7);
+    }
+
+    &:active {
+      transform: translateX(1px) translateY(1px);
+      opacity: var(--opacity, 0.5);
+    }
+  }
+
+  &:hover {
+    transform: translateX(-1px) translateY(-1px);
+    opacity: var(--opacity, 0.7);
+    box-shadow: 0.125rem 0.125rem 0.125rem rgba(128, 128, 128, 0.25);
+  }
+
+  &:active {
+    transform: translateX(1px) translateY(1px);
+    opacity: var(--opacity, 0.5);
+    box-shadow: -1px -1px 0.125rem rgba(128, 128, 128, 0.25);
+  }
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@keyframes button-ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+.ripple {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+  background-color: color-mix(in srgb, #cdb57b 15%, transparent);
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  transition: none;
+  opacity: 0;
+
+  animation-name: button-ripple;
+  animation-duration: 300ms;
+  animation-fill-mode: both;
+  animation-timing-function: ease-out;
+}
