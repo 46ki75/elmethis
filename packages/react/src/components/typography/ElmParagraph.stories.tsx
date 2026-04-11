@@ -8,7 +8,6 @@ const meta: Meta<typeof ElmParagraph> = {
   tags: ["autodocs"],
   args: {},
   argTypes: {
-    color: { control: "color" },
     backgroundColor: { control: "color" },
   },
   render(args) {
@@ -26,12 +25,6 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {};
-
-export const Color: Story = {
-  args: {
-    color: "#4b9ba9",
-  },
-};
 
 export const BackgroundColor: Story = {
   args: {
