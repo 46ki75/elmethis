@@ -13,10 +13,12 @@ import { ElmInlineText } from "@components/typography/ElmInlineText";
 import { ElmMdiIcon } from "@components/icon/ElmMdiIcon";
 import { ElmDotLoadingIcon } from "@components/icon/ElmDotLoadingIcon";
 import { ElmShikiHighlighter } from "./ElmShikiHighlighter";
+import type { ElmethisCSSVariables } from "@styles/variables";
 
-export interface ElmCodeBlockCSSVariables {
-  "--margin-block"?: React.CSSProperties["marginBlock"];
-}
+export type ElmCodeBlockCSSVariables = Pick<
+  ElmethisCSSVariables,
+  "--elmethis-margin-block"
+>;
 
 export interface ElmCodeBlockProps {
   style?: React.CSSProperties & ElmCodeBlockCSSVariables;
@@ -35,18 +37,12 @@ export interface ElmCodeBlockProps {
    * Optional caption. Falls back to language if not provided.
    */
   caption?: string;
-
-  /**
-   * The margin of the code block.
-   */
-  margin?: React.CSSProperties["marginBlock"];
 }
 
 export const ElmCodeBlock = ({
   code,
   language = "txt",
   caption,
-  margin,
   style,
 }: ElmCodeBlockProps) => {
   const [isRendered, setIsRendered] = useState(false);
@@ -83,13 +79,10 @@ export const ElmCodeBlock = ({
     <div
       ref={wrapperRef}
       className={styles.wrapper}
-      style={
-        {
-          "--margin-block": margin,
-          opacity: isVisible ? 1 : 0,
-          ...style,
-        } as React.CSSProperties
-      }
+      style={{
+        opacity: isVisible ? 1 : 0,
+        ...style,
+      }}
     >
       <div className={styles.header}>
         <div className={styles.header__left}>
