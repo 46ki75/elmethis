@@ -9,17 +9,19 @@ import textStyles from "@styles/text.module.css";
 // Components
 import { ElmInlineIcon } from "@components/icon/ElmInlineIcon";
 
+export type ElmInlineTextCSSVariables = {
+  "--elmethis-color"?: React.CSSProperties["color"];
+  "--elmethis-background-color"?: React.CSSProperties["backgroundColor"];
+  "--elmethis-font-size"?: React.CSSProperties["fontSize"];
+};
+
 interface InlineLinkProps {
   href?: string;
   favicon?: string;
 }
 
 export type ElmInlineTextProps = {
-  style?: React.CSSProperties & {
-    "--elmethis-color"?: React.CSSProperties["color"];
-    "--elmethis-background-color"?: React.CSSProperties["backgroundColor"];
-    "--elmethis-font-size"?: React.CSSProperties["fontSize"];
-  };
+  style?: React.CSSProperties & ElmInlineTextCSSVariables;
 
   color?: React.CSSProperties["color"];
 
