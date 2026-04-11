@@ -29,7 +29,7 @@ import MdiCodeIcon from "./language-icon/mdi-code.svg?url";
 // Types
 import type { Language } from "./language";
 
-interface ElmLanguageIconCSSVariables {
+export interface ElmLanguageIconCSSVariables {
   "--elmethis-language-icon-size"?: React.CSSProperties["width"];
 }
 
