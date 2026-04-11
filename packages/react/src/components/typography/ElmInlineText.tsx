@@ -7,7 +7,12 @@ import "@styles/global.css";
 import styles from "./ElmInlineText.module.css";
 import textStyles from "@styles/text.module.css";
 
-export interface ElmInlineTextProps extends React.PropsWithChildren {
+interface InlineLinkProps {
+  href?: string;
+  favicon?: string;
+}
+
+export type ElmInlineTextProps = {
   style?: React.CSSProperties & {
     "--elmethis-color"?: React.CSSProperties["color"];
     "--elmethis-background-color"?: React.CSSProperties["backgroundColor"];
@@ -27,13 +32,11 @@ export interface ElmInlineTextProps extends React.PropsWithChildren {
   code?: boolean;
   kbd?: boolean;
   ruby?: string;
-
-  href?: string;
-  favicon?: string;
-}
+} & InlineLinkProps &
+  React.PropsWithChildren;
 
 export const ElmInlineText = (props: ElmInlineTextProps) => {
-  const render = () => {
+  const renderInlineText = (props: ElmInlineTextProps) => {
     let component = props.children;
 
     if (props.kbd) component = <kbd>{component}</kbd>;
@@ -55,6 +58,22 @@ export const ElmInlineText = (props: ElmInlineTextProps) => {
     return component;
   };
 
+  const renderInlineLink = ({
+    favicon,
+    href,
+    children,
+  }: InlineLinkProps & React.PropsWithChildren) => {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer">
+        {children}
+      </a>
+    );
+  };
+
+  const render = (props: ElmInlineTextProps) => {
+    return props.href ? renderInlineLink(props) : renderInlineText(props);
+  };
+
   return (
     <span
       className={clsx(styles["elm-inline-text"], textStyles.text)}
@@ -70,7 +89,7 @@ export const ElmInlineText = (props: ElmInlineTextProps) => {
         ...props.style,
       }}
     >
-      {render()}
+      {render(props)}
     </span>
   );
 };

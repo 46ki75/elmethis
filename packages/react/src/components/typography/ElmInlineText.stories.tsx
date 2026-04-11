@@ -40,3 +40,11 @@ export const Background: Story = {
 export const Ruby: Story = {
   args: { children: "国際連合", ruby: "こくさいれんごう" },
 };
+
+export const Link: Story = {
+  args: {
+    children: "Google Search",
+    href: "https://google.com",
+    favicon: "https://www.google.com/favicon.ico",
+  },
+};
