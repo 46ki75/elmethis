@@ -1,0 +1,17 @@
+.mermaid {
+  display: block;
+
+  &::selection {
+    color: #cccfd5;
+    background-color: #494f59;
+  }
+}
+
+.raw {
+  opacity: 0;
+}
+
+.rendered {
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
+}

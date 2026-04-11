@@ -1,0 +1,15 @@
+.code {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+:global(.shiki),
+:global(.shiki) span {
+  font-family:
+    "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace !important;
+}
+
+:global([data-theme="dark"]) :global(.shiki) span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+}
