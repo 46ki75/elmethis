@@ -1,0 +1,51 @@
+.text {
+  color: var(--elmethis-text-color-light);
+
+  &::selection {
+    color: var(--elmethis-text-color-dark);
+    background-color: var(--elmethis-text-background-color-dark);
+  }
+
+  [data-theme="dark"] & {
+    color: var(--elmethis-text-color-dark);
+
+    &::selection {
+      color: var(--elmethis-text-color-light);
+      background-color: var(--elmethis-text-background-color-light);
+    }
+  }
+}
+
+.link {
+  all: unset;
+  box-sizing: border-box;
+  padding: 0 0.25rem;
+  font-size: var(--font-size);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  color: #6987b8;
+  border-radius: 0.125rem;
+  transition:
+    background-color 200ms,
+    color 200ms,
+    opacity 200ms;
+
+  &:hover {
+    background-color: oklch(from #6987b8 l c h / 0.2);
+  }
+
+  &:active {
+    opacity: 0.5;
+  }
+
+  &:visited {
+    color: #9771bd;
+    border-bottom: dashed 1px #9771bd;
+
+    &:hover {
+      background-color: oklch(from #9771bd l c h / 0.2);
+    }
+  }
+}
