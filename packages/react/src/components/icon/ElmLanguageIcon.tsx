@@ -18,7 +18,7 @@ import KotlinIcon from "./language-icon/kotlin.svg?url";
 import GoIcon from "./language-icon/go.svg?url";
 import PythonIcon from "./language-icon/python.svg?url";
 import SqlIcon from "./language-icon/sql.svg?url";
-import JsonIcon from "./language-icon/json.svg?url";
+import MdiJsonIcon from "./language-icon/mdi-json.svg?url";
 import LuaIcon from "./language-icon/lua.svg?url";
 import CSharpIcon from "./language-icon/csharp.svg?url";
 import CppIcon from "./language-icon/cplusplus.svg?url";
@@ -59,7 +59,7 @@ const LanguageIconMap: Record<Language, string> = {
   go: GoIcon,
   python: PythonIcon,
   sql: SqlIcon,
-  json: JsonIcon,
+  json: MdiJsonIcon,
   lua: LuaIcon,
   csharp: CSharpIcon,
   cpp: CppIcon,
