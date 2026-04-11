@@ -1,6 +1,6 @@
 {
   "name": "@elmethis/react",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "publishConfig": {
     "access": "public"
   },
@@ -48,9 +48,13 @@
     "@iconify/react": "^6.0.2",
     "@mdi/js": "^7.4.47",
     "clsx": "^2.1.1",
+    "katex": "^0.16.45",
+    "marked": "^18.0.0",
+    "mermaid": "^11.14.0",
     "polished": "^4.3.1",
     "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "react-dom": "^19.2.4",
+    "shiki": "^4.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",

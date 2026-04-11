@@ -1,0 +1,10 @@
+.body {
+  margin-block: 3rem;
+}
+
+.button {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
