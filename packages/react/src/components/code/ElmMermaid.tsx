@@ -54,7 +54,7 @@ export const ElmMermaid = ({ code, style }: ElmMermaidProps) => {
         }
 
         if (!globalMermaidCache.instance) {
-          // @ts-ignore
+          // @ts-expect-error - mermaid is an optional peer dependency
           const { default: mermaid } = await import("mermaid");
           mermaid.initialize({
             startOnLoad: false,

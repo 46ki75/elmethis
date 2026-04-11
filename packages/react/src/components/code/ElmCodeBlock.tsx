@@ -93,7 +93,7 @@ export const ElmCodeBlock = ({
     >
       <div className={styles.header}>
         <div className={styles.header__left}>
-          <ElmLanguageIcon language={language as any} size={20} />
+          <ElmLanguageIcon language={language} size={20} />
           <span className={styles.caption}>
             <ElmInlineText>{caption ?? language}</ElmInlineText>
           </span>

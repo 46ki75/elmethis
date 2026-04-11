@@ -45,13 +45,12 @@ export const ElmMultiProgress = ({
 }: ElmMultiProgressProps) => {
   const computedProgress = useMemo(() => {
     const max = progress.reduce((p, n) => p + n.value, 0);
-    let cumulative = 0;
-    return progress.map((p) => {
-      const scale = (p.value / max) * 100;
-      const start = cumulative;
-      cumulative += scale;
-      return { ...p, scale: scale / 100, start };
-    });
+    const scales = progress.map((p) => (p.value / max) * 100);
+    return progress.map((p, i) => ({
+      ...p,
+      scale: scales[i] / 100,
+      start: scales.slice(0, i).reduce((a, b) => a + b, 0),
+    }));
   }, [progress]);
 
   return (

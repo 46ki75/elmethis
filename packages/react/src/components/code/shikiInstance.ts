@@ -1,12 +1,12 @@
 // shikiInstance.ts
-// @ts-ignore - shiki is an optional peer dependency
+// @ts-expect-error - shiki is an optional peer dependency
 import type { Highlighter } from "shiki";
 
 let highlighterPromise: Promise<Highlighter> | null = null;
 
 export function getHighlighterSingleton(): Promise<Highlighter> {
   if (!highlighterPromise) {
-    // @ts-ignore
+    // @ts-expect-error - shiki is an optional peer dependency
     highlighterPromise = import("shiki").then(({ createHighlighter }) =>
       createHighlighter({
         langs: [

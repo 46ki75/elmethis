@@ -16,7 +16,7 @@ export const ElmMarkdown = ({ markdown, style }: ElmMarkdownProps) => {
   const [html, setHtml] = useState<string>("");
 
   useEffect(() => {
-    // @ts-ignore - marked is an optional peer dependency
+    // @ts-expect-error - marked is an optional peer dependency
     import("marked")
       .then(({ marked }) => {
         try {

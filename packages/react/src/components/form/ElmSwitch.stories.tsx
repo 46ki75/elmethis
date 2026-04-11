@@ -14,7 +14,10 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   render: (args) => {
-    const [checked, setChecked] = useState(false);
-    return <ElmSwitch {...args} checked={checked} onChange={setChecked} />;
+    const PrimaryStory = () => {
+      const [checked, setChecked] = useState(false);
+      return <ElmSwitch {...args} checked={checked} onChange={setChecked} />;
+    };
+    return <PrimaryStory />;
   },
 };

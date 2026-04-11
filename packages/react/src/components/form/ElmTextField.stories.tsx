@@ -39,7 +39,10 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   render: (args) => {
-    const [value, setValue] = useState("");
-    return <ElmTextField {...args} value={value} onChange={setValue} />;
+    const PrimaryStory = () => {
+      const [value, setValue] = useState("");
+      return <ElmTextField {...args} value={value} onChange={setValue} />;
+    };
+    return <PrimaryStory />;
   },
 };

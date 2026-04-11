@@ -15,9 +15,12 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: { label: "Checkbox" },
   render: (args) => {
-    const [checked, setChecked] = useState(false);
-    return (
-      <ElmCheckbox {...args} checked={checked} onChange={setChecked} />
-    );
+    const PrimaryStory = () => {
+      const [checked, setChecked] = useState(false);
+      return (
+        <ElmCheckbox {...args} checked={checked} onChange={setChecked} />
+      );
+    };
+    return <PrimaryStory />;
   },
 };

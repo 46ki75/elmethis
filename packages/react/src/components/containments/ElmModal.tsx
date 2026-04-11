@@ -27,6 +27,7 @@ export interface ElmModalProps extends React.PropsWithChildren {
 
 export const ElmModal = ({
   closeOnClickOutside = true,
+  onChange,
   ...props
 }: ElmModalProps) => {
   const [visible, setVisible] = useState(false);
@@ -35,7 +36,8 @@ export const ElmModal = ({
 
   useEffect(() => {
     if (isOpen) {
-      setVisible(true);
+      const t = window.setTimeout(() => setVisible(true), 0);
+      return () => clearTimeout(t);
     } else {
       const timeout = window.setTimeout(() => setVisible(false), 400);
       return () => clearTimeout(timeout);
@@ -43,10 +45,10 @@ export const ElmModal = ({
   }, [isOpen]);
 
   const handleBackdropClick = useCallback(() => {
-    if (closeOnClickOutside && props.onChange) {
-      props.onChange(false);
+    if (closeOnClickOutside && onChange) {
+      onChange(false);
     }
-  }, [closeOnClickOutside, props.onChange]);
+  }, [closeOnClickOutside, onChange]);
 
   const handleContentClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();

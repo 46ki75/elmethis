@@ -33,10 +33,13 @@ export const ElmTyping = ({
   useEffect(() => {
     const arr: TypingTarget[] = target.split("").map((char) => ({ char, status: "default" }));
     if (arr.length > 0) arr[0].status = "current";
-    setTargetArray(arr);
-    setCurrentIndex(0);
-    setMistakes(0);
-    setIsFinished(false);
+    const t = window.setTimeout(() => {
+      setTargetArray(arr);
+      setCurrentIndex(0);
+      setMistakes(0);
+      setIsFinished(false);
+    }, 0);
+    return () => clearTimeout(t);
   }, [target]);
 
   useEffect(() => {

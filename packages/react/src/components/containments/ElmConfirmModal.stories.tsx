@@ -27,22 +27,25 @@ export const Primary: Story = {
     title: "Delete Passkey",
   },
   render: (args) => {
-    const [isOpen, setIsOpen] = useState(false);
-    return (
-      <div>
-        <ElmButton onClick={() => setIsOpen(true)}>OPEN</ElmButton>
-        <ElmConfirmModal {...args} value={isOpen} onChange={setIsOpen}>
-          <span>
-            Are you sure you want to delete the following log group(s)?
-          </span>
-          <ElmList>
-            <li>/aws/lambda/graphql-lambda-node</li>
-            <li>/aws/lambda/java</li>
-            <li>/aws/lambda/nuxt3</li>
-            <li>/aws/lambda/next</li>
-          </ElmList>
-        </ElmConfirmModal>
-      </div>
-    );
+    const PrimaryStory = () => {
+      const [isOpen, setIsOpen] = useState(false);
+      return (
+        <div>
+          <ElmButton onClick={() => setIsOpen(true)}>OPEN</ElmButton>
+          <ElmConfirmModal {...args} value={isOpen} onChange={setIsOpen}>
+            <span>
+              Are you sure you want to delete the following log group(s)?
+            </span>
+            <ElmList>
+              <li>/aws/lambda/graphql-lambda-node</li>
+              <li>/aws/lambda/java</li>
+              <li>/aws/lambda/nuxt3</li>
+              <li>/aws/lambda/next</li>
+            </ElmList>
+          </ElmConfirmModal>
+        </div>
+      );
+    };
+    return <PrimaryStory />;
   },
 };

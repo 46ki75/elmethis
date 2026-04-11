@@ -41,15 +41,18 @@ export const Primary: Story = {
     label: "Select",
   },
   render: (args) => {
-    const [selectedOption, setSelectedOption] =
-      useState<ElmSelectOption | null>(null);
-    return (
-      <ElmSelect
-        {...args}
-        options={options}
-        selectedOption={selectedOption}
-        onSelect={setSelectedOption}
-      />
-    );
+    const PrimaryStory = () => {
+      const [selectedOption, setSelectedOption] =
+        useState<ElmSelectOption | null>(null);
+      return (
+        <ElmSelect
+          {...args}
+          options={options}
+          selectedOption={selectedOption}
+          onSelect={setSelectedOption}
+        />
+      );
+    };
+    return <PrimaryStory />;
   },
 };

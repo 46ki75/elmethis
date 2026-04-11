@@ -22,7 +22,7 @@ export const ElmKatex = ({ expression, block = false, style }: ElmKatexProps) =>
   const [html, setHtml] = useState<string | undefined>();
 
   useEffect(() => {
-    // @ts-ignore
+    // @ts-expect-error - katex is an optional peer dependency
     import("katex")
       .then(({ renderToString }) => {
         try {

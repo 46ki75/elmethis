@@ -38,32 +38,36 @@ export interface ElmConfirmModalProps extends React.PropsWithChildren {
 
 export const ElmConfirmModal = ({
   closeOnClickOutside = true,
+  onChange,
+  onConfirm,
+  onSuccess,
+  onError,
   ...props
 }: ElmConfirmModalProps) => {
   const [loading, setLoading] = useState(false);
 
   const handleCancel = useCallback(() => {
-    if (props.onChange) props.onChange(false);
-  }, [props.onChange]);
+    if (onChange) onChange(false);
+  }, [onChange]);
 
   const handleConfirm = useCallback(async () => {
     setLoading(true);
     try {
-      await props.onConfirm();
+      await onConfirm();
       setLoading(false);
-      if (props.onChange) props.onChange(false);
-      if (props.onSuccess) props.onSuccess();
+      if (onChange) onChange(false);
+      if (onSuccess) onSuccess();
     } catch (e) {
-      if (props.onError) props.onError(e);
+      if (onError) onError(e);
       setLoading(false);
-      if (props.onChange) props.onChange(false);
+      if (onChange) onChange(false);
     }
-  }, [props.onConfirm, props.onSuccess, props.onError, props.onChange]);
+  }, [onConfirm, onSuccess, onError, onChange]);
 
   return (
     <ElmModal
       value={props.value}
-      onChange={props.onChange}
+      onChange={onChange}
       closeOnClickOutside={closeOnClickOutside}
     >
       <div>
