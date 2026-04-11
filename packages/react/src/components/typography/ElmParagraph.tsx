@@ -1,12 +1,14 @@
 import React from "react";
 
+// Styles
 import "@styles/global.css";
 import styles from "./ElmParagraph.module.css";
+import type { ElmethisCSSVariables } from "@styles/variables";
 
-export interface ElmParagraphCSSVariables {
-  "--elmethis-color"?: React.CSSProperties["color"];
-  "--elmethis-background-color"?: React.CSSProperties["backgroundColor"];
-}
+export type ElmParagraphCSSVariables = Pick<
+  ElmethisCSSVariables,
+  "--elmethis-color" | "--elmethis-background-color"
+>;
 
 export interface ElmParagraphProps extends React.PropsWithChildren {
   style?: React.CSSProperties & ElmParagraphCSSVariables;
@@ -19,7 +21,7 @@ export interface ElmParagraphProps extends React.PropsWithChildren {
 export const ElmParagraph = (props: ElmParagraphProps) => {
   return (
     <p
-      className={styles["elm-paragraph"]}
+      className={styles.paragraph}
       style={{
         "--elmethis-color": props.color,
         "--elmethis-background-color": props.backgroundColor,

@@ -7,9 +7,13 @@ const meta: Meta<typeof ElmParagraph> = {
   component: ElmParagraph,
   tags: ["autodocs"],
   args: {},
-  render() {
+  argTypes: {
+    color: { control: "color" },
+    backgroundColor: { control: "color" },
+  },
+  render(args) {
     return (
-      <ElmParagraph>
+      <ElmParagraph {...args}>
         <ElmInlineText>
           This is a paragraph with an inline text component
         </ElmInlineText>
