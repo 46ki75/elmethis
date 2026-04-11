@@ -5,9 +5,14 @@ const meta: Meta<typeof ElmInlineText> = {
   title: "Components/Components/ElmInlineText",
   component: ElmInlineText,
   tags: ["autodocs"],
-  args: {},
+  args: {
+    children: "This is an inline text.",
+  },
   argTypes: {
     color: {
+      control: "color",
+    },
+    backgroundColor: {
       control: "color",
     },
   },

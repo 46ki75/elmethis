@@ -1,5 +1,6 @@
 .text {
   color: var(--elmethis-color, #606875);
+  background-color: var(--elmethis-background-color, #3e434b);
 
   &::selection {
     color: #cccfd5;
