@@ -20,8 +20,8 @@ export const ElmMdiIcon = (props: ElmMdiIconProps) => {
   return (
     <div className={styles["elm-mdi-icon"]} style={props.style}>
       <svg
-        width={props.size}
-        height={props.size}
+        width={props.size || "1.25rem"}
+        height={props.size || "1.25rem"}
         viewBox="0 0 24 24"
         focusable="false"
         role="img"

@@ -49,10 +49,12 @@ export const ElmToggle = (props: ElmToggleProps) => {
   return (
     <div
       className={`${styles.toggle} ${isOpen ? styles.open : ""}`}
-      style={{
-        "--margin-block": props.margin,
-        ...props.style,
-      } as React.CSSProperties}
+      style={
+        {
+          "--margin-block": props.margin,
+          ...props.style,
+        } as React.CSSProperties
+      }
     >
       <div
         className={styles.summary}
@@ -62,8 +64,14 @@ export const ElmToggle = (props: ElmToggleProps) => {
         }}
       >
         <div className={styles["summary-left"]}>
-          <span style={{ transform: `rotate(${isOpen ? "90deg" : "0deg"})`, transition: "transform 200ms", display: "flex" }}>
-            <ElmMdiIcon d={mdiChevronRight} color="#59b57c" />
+          <span
+            style={{
+              transform: `rotate(${isOpen ? "90deg" : "0deg"})`,
+              transition: "transform 200ms",
+              display: "flex",
+            }}
+          >
+            <ElmMdiIcon d={mdiChevronRight} color="#59b57c" size="1.25em" />
           </span>
           <div>
             {props.summary != null ? (
@@ -74,11 +82,14 @@ export const ElmToggle = (props: ElmToggleProps) => {
           </div>
         </div>
 
-        <span style={{ transform: `rotate(${isOpen ? "135deg" : "0deg"})`, transition: "transform 200ms", display: "flex" }}>
-          <ElmMdiIcon
-            d={mdiPlus}
-            color={isOpen ? "#b36472" : "#59b57c"}
-          />
+        <span
+          style={{
+            transform: `rotate(${isOpen ? "135deg" : "0deg"})`,
+            transition: "transform 200ms",
+            display: "flex",
+          }}
+        >
+          <ElmMdiIcon d={mdiPlus} color={isOpen ? "#b36472" : "#59b57c"} />
         </span>
       </div>
 
