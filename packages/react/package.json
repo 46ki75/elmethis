@@ -6,12 +6,15 @@
   },
   "type": "module",
   "author": "Ikuma Yamashita",
+  "main": "./dist/index.react.mjs",
+  "react": "./dist/index.react.mjs",
   "repository": {
     "type": "git",
     "url": "git@github.com:46ki75/elmethis.git"
   },
   "scripts": {
     "build": "tsc -b && vite build",
+    "build.types": "tsc --project tsconfig.lib.json",
     "lint": "eslint ."
   },
   "dependencies": {
