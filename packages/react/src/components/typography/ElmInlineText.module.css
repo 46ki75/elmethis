@@ -1,19 +1,17 @@
 .text {
-  font-size: var(--elmethis-font-size);
-  color: var(--elmethis-color, #606875);
-  background-color: var(--elmethis-background-color);
+  color: var(--elmethis-text-color-light);
 
   &::selection {
-    color: #cccfd5;
-    background-color: var(--elmethis-color, #3e434b);
+    color: var(--elmethis-text-color-dark);
+    background-color: var(--elmethis-text-background-color-dark);
   }
 
   [data-theme="dark"] & {
-    color: var(--elmethis-color, #b0b5be);
+    color: var(--elmethis-text-color-dark);
 
     &::selection {
-      color: #3e434b;
-      background-color: var(--elmethis-color, #cccfd5);
+      color: var(--elmethis-text-color-light);
+      background-color: var(--elmethis-text-background-color-light);
     }
   }
 }

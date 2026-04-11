@@ -11,7 +11,10 @@ import type { ElmethisCSSVariables } from "@styles/variables";
 
 export type ElmInlineTextCSSVariables = Pick<
   ElmethisCSSVariables,
-  "--elmethis-color" | "--elmethis-background-color" | "--elmethis-font-size"
+  | "--elmethis-text-color-light"
+  | "--elmethis-text-color-dark"
+  | "--elmethis-text-background-color-light"
+  | "--elmethis-text-background-color-dark"
 >;
 
 interface InlineLinkProps {
@@ -87,14 +90,18 @@ export const ElmInlineText = (props: ElmInlineTextProps) => {
     <span
       className={styles.text}
       style={{
-        "--elmethis-color":
+        "--elmethis-text-color-light": props.color,
+        "--elmethis-text-color-dark": props.color,
+        "--elmethis-text-background-color-light": props.backgroundColor,
+        "--elmethis-text-background-color-dark": props.backgroundColor,
+        color:
           props.color ??
           (props.backgroundColor
             ? getLuminance(props.backgroundColor) > 0.5
               ? "#3e434b"
               : "#eeeff1"
-            : false),
-        "--elmethis-background-color": props.backgroundColor,
+            : undefined),
+        backgroundColor: props.backgroundColor,
         ...props.style,
       }}
     >
