@@ -12,6 +12,7 @@ const excludeAll = (obj: Record<string, unknown>) =>
 export default defineConfig({
   plugins: [react()],
   build: {
+    outDir: "./lib/",
     target: "es2020",
     lib: {
       entry: "./src/lib.ts",

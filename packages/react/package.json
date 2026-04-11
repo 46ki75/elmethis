@@ -6,14 +6,36 @@
   },
   "type": "module",
   "author": "Ikuma Yamashita",
-  "main": "./dist/index.react.mjs",
-  "react": "./dist/index.react.mjs",
   "repository": {
     "type": "git",
     "url": "git@github.com:46ki75/elmethis.git"
   },
+  "main": "./lib/index.react.mjs",
+  "react": "./lib/index.react.mjs",
+  "types": "./lib-types/index.d.ts",
+  "module": "./lib/index.react.mjs",
+  "exports": {
+    ".": {
+      "types": "./lib-types/index.d.ts",
+      "import": {
+        "types": "./lib-types/index.d.ts",
+        "default": "./lib/index.react.mjs"
+      },
+      "require": {
+        "types": "./lib-types/index.d.ts",
+        "default": "./lib/index.react.cjs"
+      }
+    },
+    "./style.css": {
+      "default": "./lib/style.css"
+    }
+  },
+  "files": [
+    "lib",
+    "lib-types"
+  ],
   "scripts": {
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && pnpm run build.types",
     "build.types": "tsc --project tsconfig.lib.json",
     "lint": "eslint ."
   },
