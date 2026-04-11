@@ -2,8 +2,12 @@ import React, { useState } from "react";
 
 import "@styles/global.css";
 import styles from "./ElmTabs.module.css";
+import type { ElmethisCSSVariables } from "@styles/variables";
 
-export interface ElmTabsCSSVariables {}
+export type ElmTabsCSSVariables = Pick<
+  ElmethisCSSVariables,
+  "--elmethis-color-primary"
+>;
 
 export interface ElmTabsProps {
   style?: React.CSSProperties & ElmTabsCSSVariables;

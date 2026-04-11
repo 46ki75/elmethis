@@ -39,7 +39,7 @@
 
   &.active {
     background-color: oklch(from #7cbac5 l c h / 0.025);
-    border-bottom-color: #7cbac5;
+    border-bottom-color: var(--elmethis-color-primary);
     cursor: default;
   }
 
