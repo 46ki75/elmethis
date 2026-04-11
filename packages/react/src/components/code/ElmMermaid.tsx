@@ -1,3 +1,4 @@
+import type { Mermaid } from "mermaid";
 import React, { useEffect, useRef, useState } from "react";
 
 import "@styles/global.css";
@@ -14,8 +15,7 @@ export interface ElmMermaidProps {
 
 // Global cache shared across all instances
 const globalMermaidCache = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  instance: null as any,
+  instance: null as Mermaid | null,
   svgCache: new Map<string, string>(),
 };
 
@@ -54,7 +54,6 @@ export const ElmMermaid = ({ code, style }: ElmMermaidProps) => {
         }
 
         if (!globalMermaidCache.instance) {
-          // @ts-expect-error - mermaid is an optional peer dependency
           const { default: mermaid } = await import("mermaid");
           mermaid.initialize({
             startOnLoad: false,
