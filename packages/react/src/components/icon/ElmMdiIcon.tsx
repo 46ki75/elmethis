@@ -7,7 +7,10 @@ import type { ElmethisCSSVariables } from "@styles/variables";
 export type ElmMdiIconCSSVariables = Pick<
   ElmethisCSSVariables,
   "--elmethis-color-primary" | "--elmethis-color-primary-dark"
->;
+> & {
+  "--elmethis-scoped-color"?: React.CSSProperties["color"];
+  "--elmethis-scoped-color-dark"?: React.CSSProperties["color"];
+};
 
 export interface ElmMdiIconProps {
   style?: React.CSSProperties & ElmMdiIconCSSVariables;
@@ -33,7 +36,11 @@ export const ElmMdiIcon = (props: ElmMdiIconProps) => {
         role="img"
       >
         <path
-          style={{ color: props.color }}
+          style={{
+            "--elmethis-scoped-color": props.colorLight ?? props.color,
+            "--elmethis-scoped-color-dark": props.colorDark ?? props.color,
+            ...props.style,
+          }}
           className={
             props.useThemeColor ? styles["icon-theme-color"] : styles.icon
           }
