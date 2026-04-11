@@ -3,7 +3,6 @@ import react from "@vitejs/plugin-react";
 
 import pkg from "./package.json";
 
-const { dependencies = {}, devDependencies = {} } = pkg;
 const makeRegex = (dep: string) => new RegExp(`^${dep}(/.*)?$`);
 const excludeAll = (obj: Record<string, unknown>) =>
   Object.keys(obj).map(makeRegex);
@@ -26,8 +25,8 @@ export default defineConfig({
         /^node:.*/,
         "react",
         "react-dom",
-        ...excludeAll(dependencies),
-        ...excludeAll(devDependencies),
+        ...excludeAll(pkg.dependencies),
+        ...excludeAll(pkg.devDependencies),
       ],
       output: {
         assetFileNames: (assetInfo) => {
