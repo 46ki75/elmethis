@@ -117,6 +117,9 @@ importers:
       katex:
         specifier: ^0.16.45
         version: 0.16.45
+      marked:
+        specifier: ^18.0.0
+        version: 18.0.0
       polished:
         specifier: ^4.3.1
         version: 4.3.1
