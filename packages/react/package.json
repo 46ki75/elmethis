@@ -44,6 +44,7 @@
   },
   "dependencies": {
     "@iconify-json/devicon": "^1.2.62",
+    "@iconify-json/mdi": "^1.2.3",
     "@iconify/react": "^6.0.2",
     "clsx": "^2.1.1",
     "polished": "^4.3.1",
