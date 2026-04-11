@@ -7,7 +7,7 @@ import type { ElmethisCSSVariables } from "@styles/variables";
 
 export type ElmParagraphCSSVariables = Pick<
   ElmethisCSSVariables,
-  "--elmethis-color" | "--elmethis-background-color"
+  "--elmethis-color" | "--elmethis-margin-block"
 >;
 
 export interface ElmParagraphProps extends React.PropsWithChildren {
@@ -24,7 +24,8 @@ export const ElmParagraph = (props: ElmParagraphProps) => {
       className={styles.paragraph}
       style={{
         "--elmethis-color": props.color,
-        "--elmethis-background-color": props.backgroundColor,
+        "--elmethis-margin-block": props.style?.["--elmethis-margin-block"],
+        backgroundColor: props.backgroundColor,
         ...props.style,
       }}
     >

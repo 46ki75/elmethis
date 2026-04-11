@@ -1,7 +1,6 @@
 .paragraph {
-  margin-block: 2rem;
+  margin-block: var(--elmethis-margin-block, 2rem);
   color: var(--elmethis-color, inherit);
-  background-color: var(--elmethis-background-color, inherit);
 
   &::selection {
     color: rgba(255, 255, 255, 0.7);
