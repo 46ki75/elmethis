@@ -36,7 +36,7 @@
   ],
   "scripts": {
     "prepublishOnly": "pnpm run build",
-    "build": "tsc -b && vite build && pnpm run build.types",
+    "build": "tsc --noEmit && vite build && pnpm run build.types",
     "build.types": "tsc --project tsconfig.lib.json",
     "lint": "eslint ."
   },
