@@ -7,12 +7,12 @@ import styles from "./ElmInlineText.module.css";
 
 // Components
 import { ElmInlineIcon } from "@components/icon/ElmInlineIcon";
+import type { ElmethisCSSVariables } from "@styles/variables";
 
-export type ElmInlineTextCSSVariables = {
-  "--elmethis-color"?: React.CSSProperties["color"];
-  "--elmethis-background-color"?: React.CSSProperties["backgroundColor"];
-  "--elmethis-font-size"?: React.CSSProperties["fontSize"];
-};
+export type ElmInlineTextCSSVariables = Pick<
+  ElmethisCSSVariables,
+  "--elmethis-color" | "--elmethis-background-color" | "--elmethis-font-size"
+>;
 
 interface InlineLinkProps {
   href?: string;
