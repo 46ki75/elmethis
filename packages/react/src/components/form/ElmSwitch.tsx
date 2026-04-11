@@ -37,11 +37,13 @@ export const ElmSwitch = ({
   checked = false,
   ...props
 }: ElmSwitchProps) => {
+  const { onChange } = props;
+
   const handleClick = useCallback(() => {
-    if (!disabled && props.onChange) {
-      props.onChange(!checked);
+    if (!disabled && onChange) {
+      onChange(!checked);
     }
-  }, [disabled, checked, props.onChange]);
+  }, [disabled, checked, onChange]);
 
   const barClass = [
     styles.bar,

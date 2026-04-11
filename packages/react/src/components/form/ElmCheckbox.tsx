@@ -30,11 +30,13 @@ export const ElmCheckbox = ({
   checked = false,
   ...props
 }: ElmCheckboxProps) => {
+  const { onChange } = props;
+
   const toggleCheck = useCallback(() => {
-    if (!loading && !disable && props.onChange) {
-      props.onChange(!checked);
+    if (!loading && !disable && onChange) {
+      onChange(!checked);
     }
-  }, [loading, disable, checked, props.onChange]);
+  }, [loading, disable, checked, onChange]);
 
   const containerClass = [
     styles.container,

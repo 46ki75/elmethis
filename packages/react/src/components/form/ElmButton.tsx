@@ -42,13 +42,15 @@ export const ElmButton = ({
   const [clicked, setClicked] = useState(false);
   const timeoutRef = useRef<number | undefined>();
 
+  const { onClick } = props;
+
   const handleClick = useCallback(() => {
-    if (!loading && !disabled && props.onClick) {
+    if (!loading && !disabled && onClick) {
       setClicked(true);
       timeoutRef.current = window.setTimeout(() => setClicked(false), 300);
-      props.onClick();
+      onClick();
     }
-  }, [loading, disabled, props.onClick]);
+  }, [loading, disabled, onClick]);
 
   useEffect(() => {
     return () => {

@@ -102,17 +102,29 @@ export const ElmTextField = ({
   const [isFocused, setIsFocused] = useState(false);
   const [type, setType] = useState(isPassword ? "password" : "text");
 
+  const { onChange } = props;
+
   const handleDelete = useCallback(() => {
-    if (!loading && !disabled && props.onChange) {
-      props.onChange("");
+    if (!loading && !disabled && onChange) {
+      onChange("");
     }
-  }, [loading, disabled, props.onChange]);
+  }, [loading, disabled, onChange]);
 
   const handleVisibleSwitch = useCallback(() => {
     if (!loading && !disabled) {
       setType((prev) => (prev === "text" ? "password" : "text"));
     }
   }, [loading, disabled]);
+
+  const handleKeyDown = useCallback(
+    (action: () => void) => (e: React.KeyboardEvent) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        action();
+      }
+    },
+    [],
+  );
 
   const wrapperClass = [styles.wrapper, isFocused ? styles.active : ""]
     .filter(Boolean)
@@ -158,7 +170,7 @@ export const ElmTextField = ({
           className={styles.input}
           placeholder={props.placeholder}
           value={value}
-          onChange={(e) => props.onChange?.(e.target.value)}
+          onChange={(e) => onChange?.(e.target.value)}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           disabled={disabled || loading}
@@ -176,6 +188,7 @@ export const ElmTextField = ({
           <div
             className={styles.icon}
             onClick={handleVisibleSwitch}
+            onKeyDown={handleKeyDown(handleVisibleSwitch)}
             role="button"
             tabIndex={0}
           >
@@ -189,6 +202,7 @@ export const ElmTextField = ({
           <div
             className={styles.icon}
             onClick={handleDelete}
+            onKeyDown={handleKeyDown(handleDelete)}
             role="button"
             tabIndex={0}
           >

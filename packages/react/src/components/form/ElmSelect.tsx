@@ -59,14 +59,16 @@ export const ElmSelect = ({
     }
   }, [disabled, loading]);
 
+  const { options, onSelect } = props;
+
   const handleSelect = useCallback(
     (id: string) => {
-      const selected = props.options.find((option) => option.id === id);
-      if (selected && props.onSelect) {
-        props.onSelect(selected);
+      const selected = options.find((option) => option.id === id);
+      if (selected && onSelect) {
+        onSelect(selected);
       }
     },
-    [props.options, props.onSelect],
+    [options, onSelect],
   );
 
   useEffect(() => {
