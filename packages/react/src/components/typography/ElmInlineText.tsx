@@ -5,6 +5,7 @@ import { clsx } from "clsx";
 import "@styles/global.css";
 import styles from "./ElmInlineText.module.css";
 import textStyles from "@styles/text.module.css";
+import { getLuminance } from "polished";
 
 export interface ElmInlineTextProps extends React.PropsWithChildren {
   style?: React.CSSProperties & {
@@ -22,7 +23,13 @@ export const ElmInlineText = (props: ElmInlineTextProps) => {
     <span
       className={clsx(styles["elm-inline-text"], textStyles.text)}
       style={{
-        "--elmethis-color": props.color,
+        "--elmethis-color":
+          props.color ??
+          (props.backgroundColor
+            ? getLuminance(props.backgroundColor) > 0.5
+              ? "#3e434b"
+              : "#eeeff1"
+            : false),
         "--elmethis-background-color": props.backgroundColor,
         ...props.style,
       }}
