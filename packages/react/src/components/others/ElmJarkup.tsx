@@ -27,6 +27,7 @@ import { ElmTableRow } from "@components/table/ElmTableRow";
 import { ElmTableCell } from "@components/table/ElmTableCell";
 import { ElmUnsupportedBlock } from "@components/fallback/ElmUnsupportedBlock";
 import { ElmBlockFallback } from "@components/fallback/ElmBlockFallback";
+import type { ElmethisCSSVariables } from "@styles/variables";
 
 const ElmMermaid = lazy(() =>
   import("@components/code/ElmMermaid").then((m) => ({
@@ -34,8 +35,13 @@ const ElmMermaid = lazy(() =>
   })),
 );
 
+export type ElmJarkupCSSVariables = Pick<
+  ElmethisCSSVariables,
+  "--elmethis-margin-block"
+>;
+
 export interface ElmJarkupProps {
-  style?: React.CSSProperties;
+  style?: React.CSSProperties & ElmJarkupCSSVariables;
 
   /**
    * JSON component tree to render.
@@ -105,7 +111,11 @@ export const ElmJarkup = ({
           );
 
         case "Fragment":
-          return <React.Fragment key={key}>{render(component.slots.default)}</React.Fragment>;
+          return (
+            <React.Fragment key={key}>
+              {render(component.slots.default)}
+            </React.Fragment>
+          );
 
         case "Heading":
           return (
@@ -166,7 +176,10 @@ export const ElmJarkup = ({
 
         case "Toggle":
           return (
-            <ElmToggle key={key} summaryContent={render(component.slots.summary)}>
+            <ElmToggle
+              key={key}
+              summaryContent={render(component.slots.summary)}
+            >
               {render(component.slots.default)}
             </ElmToggle>
           );
@@ -254,9 +267,7 @@ export const ElmJarkup = ({
                   </ElmTableHeader>
                 ) : undefined
               }
-              body={
-                <ElmTableBody>{render(component.slots.body)}</ElmTableBody>
-              }
+              body={<ElmTableBody>{render(component.slots.body)}</ElmTableBody>}
             />
           );
 
@@ -286,12 +297,14 @@ export const ElmJarkup = ({
             <div
               key={key}
               className={styles.column}
-              style={{
-                "--width-ratio": component.props?.widthRatio ?? 1,
-                width: component.props?.widthRatio
-                  ? `${component.props.widthRatio * 100}%`
-                  : undefined,
-              } as React.CSSProperties}
+              style={
+                {
+                  "--width-ratio": component.props?.widthRatio ?? 1,
+                  width: component.props?.widthRatio
+                    ? `${component.props.widthRatio * 100}%`
+                    : undefined,
+                } as React.CSSProperties
+              }
             >
               {render(component.slots.default)}
             </div>
@@ -302,7 +315,10 @@ export const ElmJarkup = ({
           return (
             <ElmUnsupportedBlock
               key={key}
-              details={component.props?.details ?? `Unsupported component type: ${component.type}`}
+              details={
+                component.props?.details ??
+                `Unsupported component type: ${component.type}`
+              }
             />
           );
         }
@@ -321,7 +337,13 @@ export const ElmJarkup = ({
   };
 
   return (
-    <div className={styles["jarkup-body"]} style={style}>
+    <div
+      className={styles["jarkup-body"]}
+      style={{
+        "--elmethis-margin-block": style?.["--elmethis-margin-block"] ?? "1em",
+        ...style,
+      }}
+    >
       {render(jsonComponents)}
     </div>
   );
