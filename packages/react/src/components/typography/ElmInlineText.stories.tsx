@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ElmInlineText } from "./ElmInlineText";
 import { opacify } from "polished";
 
+import ViteIcon from "@assets/vite.svg?url";
+
 const meta: Meta<typeof ElmInlineText> = {
   title: "Components/Typography/ElmInlineText",
   component: ElmInlineText,
@@ -41,10 +43,18 @@ export const Ruby: Story = {
   args: { children: "国際連合", ruby: "こくさいれんごう" },
 };
 
-export const Link: Story = {
+export const LinkGoogle: Story = {
   args: {
     children: "Google Search",
     href: "https://google.com",
     favicon: "https://www.google.com/favicon.ico",
+  },
+};
+
+export const LinkVite: Story = {
+  args: {
+    children: "Vite",
+    href: "https://vitejs.dev",
+    favicon: ViteIcon,
   },
 };
