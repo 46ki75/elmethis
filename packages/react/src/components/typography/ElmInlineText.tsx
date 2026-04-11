@@ -25,17 +25,36 @@ export interface ElmInlineTextProps extends React.PropsWithChildren {
   underline?: boolean;
   strikethrough?: boolean;
   code?: boolean;
+  kbd?: boolean;
+  ruby?: string;
+  href?: string;
+  favicon?: string;
+  ogp?: {
+    title: string;
+    description: string;
+    image: string;
+  };
 }
 
 export const ElmInlineText = (props: ElmInlineTextProps) => {
   const render = () => {
     let component = props.children;
 
+    if (props.kbd) component = <kbd>{component}</kbd>;
     if (props.code) component = <code>{component}</code>;
     if (props.strikethrough) component = <del>{component}</del>;
     if (props.underline) component = <ins>{component}</ins>;
     if (props.italic) component = <em>{component}</em>;
     if (props.bold) component = <strong>{component}</strong>;
+
+    if (props.ruby) {
+      component = (
+        <ruby>
+          {component}
+          <rt>{props.ruby}</rt>
+        </ruby>
+      );
+    }
 
     return component;
   };
