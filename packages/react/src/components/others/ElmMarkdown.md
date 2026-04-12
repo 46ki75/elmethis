@@ -1,22 +1,22 @@
 # Heading Level 1
 
-## Heading Level 2
+## Heading `Level` 2
 
 ### Heading Level 3
 
-#### Heading Level 4
+#### Heading `Level` 4
 
 ##### Heading Level 5
 
-###### Heading Level 6
+###### Heading `Level` 6
 
 ---
 
 ## Paragraph & Inline Styles
 
-This is a plain paragraph with **bold text**, *italic text*, ~~strikethrough~~, and `inline code`.
+This is a plain paragraph with **bold text**, _italic text_, ~~strikethrough~~, and `inline code`.
 
-You can also combine them: ***bold and italic***, **`bold code`**, and *~~italic strikethrough~~*.
+You can also combine them: **_bold and italic_**, **`bold code`**, and _~~italic strikethrough~~_.
 
 Here is a [link to example.com](https://example.com) and another with nested formatting: [**bold link**](https://example.com).
 
@@ -26,7 +26,7 @@ Here is a [link to example.com](https://example.com) and another with nested for
 
 > The only way to do great work is to love what you do.
 
-> Blockquotes can also contain **bold**, *italic*, and `code` inline styles.
+> Blockquotes can also contain **bold**, _italic_, and `code` inline styles.
 
 ---
 
