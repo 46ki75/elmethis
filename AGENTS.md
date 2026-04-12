@@ -7,12 +7,10 @@
 
 ## Directory Structure
 
-- vue: (`@elmethis/vue`) Vue 3 component library and Storybook package.
-- react: (`@elmethis/react`) React component library (WIP).
-- qwik: Qwik component library.
-- react-storybook: React Storybook package.
-- cognito: Cognito UI package.
-- elmethis-notion: Rust library with unit tests.
+- `packages/core`: (`@elmethis/core`) a common framework agnostic package which is used by each SPA component library.
+- `packages/vue`: (`@elmethis/vue`) Vue 3 component library and Storybook package.
+- `packages/react`: (`@elmethis/react`) React component library.
+- `packages/qwik`: (`@elmethis/qwik`) Qwik component library.
 
 ## Toolchain
 
