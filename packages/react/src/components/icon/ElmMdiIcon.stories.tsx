@@ -8,6 +8,11 @@ const meta: Meta<typeof ElmMdiIcon> = {
   component: ElmMdiIcon,
   tags: ["autodocs"],
   args: {},
+  argTypes: {
+    color: { control: "color" },
+    colorLight: { control: "color" },
+    colorDark: { control: "color" },
+  },
 };
 
 export default meta;

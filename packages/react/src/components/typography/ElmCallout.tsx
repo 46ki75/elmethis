@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 
 import "@styles/global.css";
 import styles from "./ElmCallout.module.css";
@@ -12,6 +12,7 @@ import {
   mdiAlert,
   mdiAlertOctagram,
 } from "@mdi/js";
+import type { ElmethisCSSVariables } from "@styles/variables";
 
 export type AlertType = "note" | "tip" | "important" | "warning" | "caution";
 
@@ -24,7 +25,10 @@ const COLOR_MAP: Record<AlertType, { code: string; icon: string }> =
     caution: { code: "#b36472", icon: mdiAlertOctagram },
   } as const);
 
-export interface ElmCalloutCSSVariables {}
+export type ElmCalloutCSSVariables = Pick<
+  ElmethisCSSVariables,
+  "--elmethis-margin-block-start"
+>;
 
 export interface ElmCalloutProps extends React.PropsWithChildren {
   style?: React.CSSProperties & ElmCalloutCSSVariables;
@@ -36,39 +40,22 @@ export interface ElmCalloutProps extends React.PropsWithChildren {
 }
 
 export const ElmCallout = ({ type = "note", ...props }: ElmCalloutProps) => {
-  const targetRef = useRef<HTMLElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const el = targetRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(([entry]) => {
-      setIsVisible(entry.isIntersecting);
-    });
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
   const color = COLOR_MAP[type];
 
   return (
     <aside
-      ref={targetRef}
       className={styles.callout}
-      style={{
-        "--border-color": color.code,
-        "--bg-color": `color-mix(in srgb, ${color.code} 10%, transparent)`,
-        "--scale": isVisible ? 1 : 0,
-        ...props.style,
-      } as React.CSSProperties}
+      style={
+        {
+          "--elmethis-scoped-border-color": color.code,
+          "--elmethis-scoped-background-color": `color-mix(in srgb, ${color.code} 10%, transparent)`,
+          ...props.style,
+        } as React.CSSProperties
+      }
     >
       <div className={styles.header}>
         <ElmMdiIcon d={color.icon} size="1.25em" color={color.code} />
-        <ElmInlineText color={color.code}>
-          {type.toUpperCase()}
-        </ElmInlineText>
+        <ElmInlineText color={color.code}>{type.toUpperCase()}</ElmInlineText>
       </div>
       <div>{props.children}</div>
     </aside>

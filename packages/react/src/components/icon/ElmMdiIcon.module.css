@@ -1,8 +1,17 @@
 .icon {
-  fill: var(--color, #555b67);
+  fill: var(--elmethis-scoped-color, #555b67);
   transition: fill 200ms;
 
   [data-theme="dark"] & {
-    fill: var(--dark-color, #b0b5be);
+    fill: var(--elmethis-scoped-color-dark, #b0b5be);
+  }
+}
+
+.icon-theme-color {
+  fill: var(--elmethis-color-primary, #555b67);
+  transition: fill 200ms;
+
+  [data-theme="dark"] & {
+    fill: var(--elmethis-color-primary-dark, #b0b5be);
   }
 }

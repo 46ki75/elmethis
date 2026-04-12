@@ -15,19 +15,16 @@ export interface ElmFragmentIdentifierProps {
 }
 
 export const ElmFragmentIdentifier = (props: ElmFragmentIdentifierProps) => {
-  const handleHashClick = useCallback(
-    (id: string) => {
-      const url = new URL(window.location.href);
-      url.hash = id;
-      window.history.replaceState(null, "", url.toString());
+  const handleHashClick = useCallback((id: string) => {
+    const url = new URL(window.location.href);
+    url.hash = id;
+    window.history.replaceState(null, "", url.toString());
 
-      const target = document.getElementById(id);
-      if (target != null) {
-        target.scrollIntoView({ behavior: "smooth" });
-      }
-    },
-    [],
-  );
+    const target = document.getElementById(id);
+    if (target != null) {
+      target.scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
 
   return (
     <span

@@ -126,14 +126,50 @@ export const ElmToggleTheme = (props: ElmToggleThemeProps) => {
             />
           </circle>
           <circle cx="18" cy="6" r="12" fill="#fff">
-            <animate fill="freeze" attributeName="cx" begin="0.6s" dur="0.4s" values="18;22" />
-            <animate fill="freeze" attributeName="cy" begin="0.6s" dur="0.4s" values="6;2" />
-            <animate fill="freeze" attributeName="r" begin="0.6s" dur="0.4s" values="12;3" />
+            <animate
+              fill="freeze"
+              attributeName="cx"
+              begin="0.6s"
+              dur="0.4s"
+              values="18;22"
+            />
+            <animate
+              fill="freeze"
+              attributeName="cy"
+              begin="0.6s"
+              dur="0.4s"
+              values="6;2"
+            />
+            <animate
+              fill="freeze"
+              attributeName="r"
+              begin="0.6s"
+              dur="0.4s"
+              values="12;3"
+            />
           </circle>
           <circle cx="18" cy="6" r="10">
-            <animate fill="freeze" attributeName="cx" begin="0.6s" dur="0.4s" values="18;22" />
-            <animate fill="freeze" attributeName="cy" begin="0.6s" dur="0.4s" values="6;2" />
-            <animate fill="freeze" attributeName="r" begin="0.6s" dur="0.4s" values="10;1" />
+            <animate
+              fill="freeze"
+              attributeName="cx"
+              begin="0.6s"
+              dur="0.4s"
+              values="18;22"
+            />
+            <animate
+              fill="freeze"
+              attributeName="cy"
+              begin="0.6s"
+              dur="0.4s"
+              values="6;2"
+            />
+            <animate
+              fill="freeze"
+              attributeName="r"
+              begin="0.6s"
+              dur="0.4s"
+              values="10;1"
+            />
           </circle>
         </mask>
         <circle
@@ -144,7 +180,13 @@ export const ElmToggleTheme = (props: ElmToggleThemeProps) => {
           opacity="0"
           fill="currentColor"
         >
-          <animate fill="freeze" attributeName="r" begin="0.6s" dur="0.4s" values="10;6" />
+          <animate
+            fill="freeze"
+            attributeName="r"
+            begin="0.6s"
+            dur="0.4s"
+            values="10;6"
+          />
           <set fill="freeze" attributeName="opacity" begin="0.6s" to="1" />
         </circle>
       </svg>
@@ -287,17 +329,59 @@ export const ElmToggleTheme = (props: ElmToggleThemeProps) => {
       <mask id="lineMdSunnyOutlineToMoonLoopTransition1">
         <circle cx="12" cy="12" r="12" fill="#fff" />
         <circle cx="12" cy="12" r="4">
-          <animate fill="freeze" attributeName="r" begin="0.1s" dur="0.4s" values="4;8" />
+          <animate
+            fill="freeze"
+            attributeName="r"
+            begin="0.1s"
+            dur="0.4s"
+            values="4;8"
+          />
         </circle>
         <circle cx="22" cy="2" r="3" fill="#fff">
-          <animate fill="freeze" attributeName="cx" begin="0.1s" dur="0.4s" values="22;18" />
-          <animate fill="freeze" attributeName="cy" begin="0.1s" dur="0.4s" values="2;6" />
-          <animate fill="freeze" attributeName="r" begin="0.1s" dur="0.4s" values="3;12" />
+          <animate
+            fill="freeze"
+            attributeName="cx"
+            begin="0.1s"
+            dur="0.4s"
+            values="22;18"
+          />
+          <animate
+            fill="freeze"
+            attributeName="cy"
+            begin="0.1s"
+            dur="0.4s"
+            values="2;6"
+          />
+          <animate
+            fill="freeze"
+            attributeName="r"
+            begin="0.1s"
+            dur="0.4s"
+            values="3;12"
+          />
         </circle>
         <circle cx="22" cy="2" r="1">
-          <animate fill="freeze" attributeName="cx" begin="0.1s" dur="0.4s" values="22;18" />
-          <animate fill="freeze" attributeName="cy" begin="0.1s" dur="0.4s" values="2;6" />
-          <animate fill="freeze" attributeName="r" begin="0.1s" dur="0.4s" values="1;10" />
+          <animate
+            fill="freeze"
+            attributeName="cx"
+            begin="0.1s"
+            dur="0.4s"
+            values="22;18"
+          />
+          <animate
+            fill="freeze"
+            attributeName="cy"
+            begin="0.1s"
+            dur="0.4s"
+            values="2;6"
+          />
+          <animate
+            fill="freeze"
+            attributeName="r"
+            begin="0.1s"
+            dur="0.4s"
+            values="1;10"
+          />
         </circle>
       </mask>
       <circle
@@ -307,7 +391,13 @@ export const ElmToggleTheme = (props: ElmToggleThemeProps) => {
         mask="url(#lineMdSunnyOutlineToMoonLoopTransition1)"
         fill="currentColor"
       >
-        <animate fill="freeze" attributeName="r" begin="0.1s" dur="0.4s" values="6;10" />
+        <animate
+          fill="freeze"
+          attributeName="r"
+          begin="0.1s"
+          dur="0.4s"
+          values="6;10"
+        />
         <set fill="freeze" attributeName="opacity" begin="0.5s" to="0" />
       </circle>
     </svg>

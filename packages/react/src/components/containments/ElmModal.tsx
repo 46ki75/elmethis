@@ -63,10 +63,12 @@ export const ElmModal = ({
     >
       <div
         className={styles.modal}
-        style={{
-          "--width": props.width,
-          ...props.style,
-        } as React.CSSProperties}
+        style={
+          {
+            "--width": props.width,
+            ...props.style,
+          } as React.CSSProperties
+        }
         onClick={handleContentClick}
       >
         {props.children}

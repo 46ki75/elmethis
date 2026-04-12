@@ -6,8 +6,12 @@ import { ElmMdiIcon } from "@components/icon/ElmMdiIcon";
 import { ElmInlineText } from "@components/typography/ElmInlineText";
 
 import { mdiMessageImageOutline } from "@mdi/js";
+import type { ElmethisCSSVariables } from "@styles/variables";
 
-export interface ElmImageCSSVariables {}
+export type ElmImageCSSVariables = Pick<
+  ElmethisCSSVariables,
+  "--elmethis-margin-block-start"
+>;
 
 export interface ElmImageProps {
   style?: React.CSSProperties & ElmImageCSSVariables;
@@ -33,11 +37,6 @@ export interface ElmImageProps {
   enableModal?: boolean;
 
   /**
-   * The margin of the image.
-   */
-  margin?: React.CSSProperties["marginBlock"];
-
-  /**
    * The width of the image.
    */
   width?: number;
@@ -53,7 +52,6 @@ export const ElmImage = ({
   alt,
   block = false,
   enableModal = false,
-  margin,
   width,
   height,
   style,
@@ -97,10 +95,7 @@ export const ElmImage = ({
         </div>
       )}
 
-      <div
-        className={styles["image-frame"]}
-        style={{ "--margin-block": margin } as React.CSSProperties}
-      >
+      <div className={styles["image-frame"]} style={style}>
         {isLoading && (
           <div
             className={styles.fallback}
@@ -122,14 +117,15 @@ export const ElmImage = ({
           onClick={() => {
             if (enableModal) setIsModalOpen(true);
           }}
-          style={{
-            "--margin-block": margin,
-            "--width": width ? `${width}px` : undefined,
-            "--height": height ? `${height}px` : undefined,
-            cursor: enableModal ? "zoom-in" : undefined,
-            opacity: !isLoading && !error ? 1 : 0,
-            pointerEvents: !isLoading && !error ? undefined : "none",
-          } as React.CSSProperties}
+          style={
+            {
+              "--width": width ? `${width}px` : undefined,
+              "--height": height ? `${height}px` : undefined,
+              cursor: enableModal ? "zoom-in" : undefined,
+              opacity: !isLoading && !error ? 1 : 0,
+              pointerEvents: !isLoading && !error ? undefined : "none",
+            } as React.CSSProperties
+          }
         />
       </div>
 
@@ -147,10 +143,7 @@ export const ElmImage = ({
       )}
 
       {isModalOpen && (
-        <div
-          className={styles.modal}
-          onClick={() => setIsModalOpen(false)}
-        >
+        <div className={styles.modal} onClick={() => setIsModalOpen(false)}>
           <img
             className={styles["modal-image"]}
             src={src}

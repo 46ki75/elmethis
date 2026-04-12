@@ -17,9 +17,7 @@ export const Primary: Story = {
   render: (args) => {
     const PrimaryStory = () => {
       const [checked, setChecked] = useState(false);
-      return (
-        <ElmCheckbox {...args} checked={checked} onChange={setChecked} />
-      );
+      return <ElmCheckbox {...args} checked={checked} onChange={setChecked} />;
     };
     return <PrimaryStory />;
   },

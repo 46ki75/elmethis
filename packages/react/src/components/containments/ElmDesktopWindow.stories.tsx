@@ -16,9 +16,7 @@ export const Primary: Story = {
   render: () => (
     <ElmDesktopWindow>
       <div style={{ padding: "1rem" }}>
-        <ElmParagraph>
-          This is the content of the desktop window.
-        </ElmParagraph>
+        <ElmParagraph>This is the content of the desktop window.</ElmParagraph>
       </div>
     </ElmDesktopWindow>
   ),

@@ -3,9 +3,15 @@ import React, { useEffect, useRef, useState } from "react";
 
 import "@styles/global.css";
 import styles from "./ElmMermaid.module.css";
+import type { ElmethisCSSVariables } from "@styles/variables";
+
+export type ElmMermaidCSSVariables = Pick<
+  ElmethisCSSVariables,
+  "--elmethis-margin-block-start"
+>;
 
 export interface ElmMermaidProps {
-  style?: React.CSSProperties;
+  style?: React.CSSProperties & ElmMermaidCSSVariables;
 
   /**
    * The Mermaid diagram code to render.
@@ -47,7 +53,8 @@ export const ElmMermaid = ({ code, style }: ElmMermaidProps) => {
 
         if (globalMermaidCache.svgCache.has(cacheKey)) {
           if (!cancelled && containerRef.current) {
-            containerRef.current.innerHTML = globalMermaidCache.svgCache.get(cacheKey)!;
+            containerRef.current.innerHTML =
+              globalMermaidCache.svgCache.get(cacheKey)!;
             setIsRendered(true);
           }
           return;
@@ -73,7 +80,10 @@ export const ElmMermaid = ({ code, style }: ElmMermaidProps) => {
         }
 
         const renderId = `mermaid-react-${++renderCounter}`;
-        const { svg } = await globalMermaidCache.instance.render(renderId, code);
+        const { svg } = await globalMermaidCache.instance.render(
+          renderId,
+          code,
+        );
 
         globalMermaidCache.svgCache.set(cacheKey, svg);
 

@@ -63,13 +63,15 @@ export const ElmSwitch = ({
   return (
     <div
       onClick={handleClick}
-      style={{
-        "--color": color,
-        "--padding": "2px",
-        "--size": size,
-        "--width": `calc(${size} * 2 + 2px * 2)`,
-        ...props.style,
-      } as React.CSSProperties}
+      style={
+        {
+          "--color": color,
+          "--padding": "2px",
+          "--size": size,
+          "--width": `calc(${size} * 2 + 2px * 2)`,
+          ...props.style,
+        } as React.CSSProperties
+      }
     >
       <input
         className={styles.switch}

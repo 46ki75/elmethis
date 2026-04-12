@@ -17,7 +17,7 @@ import type { ElmethisCSSVariables } from "@styles/variables";
 
 export type ElmCodeBlockCSSVariables = Pick<
   ElmethisCSSVariables,
-  "--elmethis-margin-block"
+  "--elmethis-margin-block-start"
 >;
 
 export interface ElmCodeBlockProps {
@@ -100,7 +100,7 @@ export const ElmCodeBlock = ({
                   ? mdiClipboardCheckMultipleOutline
                   : mdiClipboardMultipleOutline
               }
-              color={copied ? "#b69545" : undefined}
+              useThemeColor={copied}
             />
           </div>
         </div>

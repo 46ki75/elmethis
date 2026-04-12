@@ -7,8 +7,17 @@ const meta: Meta<typeof ElmJsonComponentRenderer> = {
   tags: ["autodocs"],
   args: {
     jsonComponents: [
-      { type: "Heading", props: { level: 1 }, slots: { default: [{ type: "Text", props: { text: "Hello World" } }] } },
-      { type: "Paragraph", slots: { default: [{ type: "Text", props: { text: "This is a paragraph." } }] } },
+      {
+        type: "Heading",
+        props: { level: 1 },
+        slots: { default: [{ type: "Text", props: { text: "Hello World" } }] },
+      },
+      {
+        type: "Paragraph",
+        slots: {
+          default: [{ type: "Text", props: { text: "This is a paragraph." } }],
+        },
+      },
     ],
   },
 };

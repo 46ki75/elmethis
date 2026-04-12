@@ -1,4 +1,5 @@
 .unsupported {
+  margin-block-start: var(--elmethis-margin-block-start);
   box-sizing: border-box;
   padding: 4rem;
   display: flex;

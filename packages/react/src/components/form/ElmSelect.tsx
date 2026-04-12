@@ -92,12 +92,13 @@ export const ElmSelect = ({
     <div
       ref={wrapperRef}
       className={wrapperClass}
-      style={{
-        backgroundColor:
-          disabled || loading ? "rgba(0,0,0,0.15)" : undefined,
-        "--highlight-color": isActive ? "#bfa056" : undefined,
-        ...props.style,
-      } as React.CSSProperties}
+      style={
+        {
+          backgroundColor: disabled || loading ? "rgba(0,0,0,0.15)" : undefined,
+          "--highlight-color": isActive ? "#bfa056" : undefined,
+          ...props.style,
+        } as React.CSSProperties
+      }
       onClick={handleToggle}
     >
       <div className={styles.header}>
@@ -137,7 +138,11 @@ export const ElmSelect = ({
                     handleSelect(option.id);
                   }}
                 >
-                  <ElmMdiIcon d={mdiChevronRight} color="#868e9c" size="0.75em" />
+                  <ElmMdiIcon
+                    d={mdiChevronRight}
+                    color="#868e9c"
+                    size="0.75em"
+                  />
                   <span>{option.label}</span>
                   {option.description && (
                     <span className={styles.description}>

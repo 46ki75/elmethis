@@ -1,10 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { mdiFormatQuoteOpen, mdiFormatQuoteClose } from "@mdi/js";
 
 import "@styles/global.css";
 import styles from "./ElmBlockQuote.module.css";
+import type { ElmethisCSSVariables } from "@styles/variables";
 
-export interface ElmBlockQuoteCSSVariables {}
+export type ElmBlockQuoteCSSVariables = Pick<
+  ElmethisCSSVariables,
+  "--elmethis-margin-block-start"
+>;
 
 export interface ElmBlockQuoteProps extends React.PropsWithChildren {
   style?: React.CSSProperties & ElmBlockQuoteCSSVariables;
@@ -17,19 +21,6 @@ export interface ElmBlockQuoteProps extends React.PropsWithChildren {
 
 export const ElmBlockQuote = (props: ElmBlockQuoteProps) => {
   const targetRef = useRef<HTMLQuoteElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const el = targetRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(([entry]) => {
-      setIsVisible(entry.isIntersecting);
-    });
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
 
   return (
     <blockquote
@@ -37,9 +28,8 @@ export const ElmBlockQuote = (props: ElmBlockQuoteProps) => {
       className={styles.blockquote}
       cite={props.cite}
       style={{
-        "--opacity": isVisible ? 1 : 0,
         ...props.style,
-      } as React.CSSProperties}
+      }}
     >
       {props.children}
 

@@ -56,22 +56,24 @@ export const ElmMultiProgress = ({
   return (
     <div
       className={styles.container}
-      style={{
-        "--weight": weight,
-        "--border-radius": round
-          ? "calc(var(--weight) / 2)"
-          : undefined,
-        ...style,
-      } as React.CSSProperties}
+      style={
+        {
+          "--weight": weight,
+          "--border-radius": round ? "calc(var(--weight) / 2)" : undefined,
+          ...style,
+        } as React.CSSProperties
+      }
     >
       {computedProgress.map((p, index) => (
         <div
           key={index}
           className={styles.bar}
-          style={{
-            "--transform": `translateX(${p.start}%) scaleX(${p.scale})`,
-            "--color": p.color,
-          } as React.CSSProperties}
+          style={
+            {
+              "--transform": `translateX(${p.start}%) scaleX(${p.scale})`,
+              "--color": p.color,
+            } as React.CSSProperties
+          }
         />
       ))}
     </div>

@@ -53,17 +53,16 @@ export const ElmBreadcrumb = ({ links, style }: ElmBreadcrumbProps) => {
     <nav
       className={styles.container}
       ref={containerRef}
-      style={{
-        "--opacity": isVisible ? 1 : 0,
-        ...style,
-      } as React.CSSProperties}
+      style={
+        {
+          "--opacity": isVisible ? 1 : 0,
+          ...style,
+        } as React.CSSProperties
+      }
     >
       {links.map((link, index) => (
         <React.Fragment key={index}>
-          <div
-            className={styles["link-container"]}
-            onClick={link.onClick}
-          >
+          <div className={styles["link-container"]} onClick={link.onClick}>
             <span
               className={styles.text}
               style={{ "--delay": `${index * 100}ms` } as React.CSSProperties}
@@ -82,9 +81,11 @@ export const ElmBreadcrumb = ({ links, style }: ElmBreadcrumbProps) => {
 
             <span
               className={styles.text}
-              style={{
-                "--delay": `${index * 100 + 50}ms`,
-              } as React.CSSProperties}
+              style={
+                {
+                  "--delay": `${index * 100 + 50}ms`,
+                } as React.CSSProperties
+              }
             >
               <ElmInlineText>{link.text}</ElmInlineText>
             </span>
@@ -93,9 +94,11 @@ export const ElmBreadcrumb = ({ links, style }: ElmBreadcrumbProps) => {
           {links.length !== index + 1 && (
             <span
               className={styles.text}
-              style={{
-                "--delay": `${index * 100 + 100}ms`,
-              } as React.CSSProperties}
+              style={
+                {
+                  "--delay": `${index * 100 + 100}ms`,
+                } as React.CSSProperties
+              }
             >
               <ElmMdiIcon d={mdiChevronRight} size="1em" color="#b69545" />
             </span>

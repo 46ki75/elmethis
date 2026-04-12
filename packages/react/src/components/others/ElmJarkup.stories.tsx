@@ -17,3 +17,17 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {};
+
+export const CustomRenderer: Story = {
+  args: {
+    renderFunctionMap: {
+      Paragraph: (component, render) => {
+        return (
+          <p style={{ background: "black", color: "white" }}>
+            {render(component.slots.default)}
+          </p>
+        );
+      },
+    },
+  },
+};

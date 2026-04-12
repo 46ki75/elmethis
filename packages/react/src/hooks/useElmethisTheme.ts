@@ -37,10 +37,7 @@ export function useElmethisTheme() {
       }
 
       if (typeof localStorage !== "undefined") {
-        localStorage.setItem(
-          LOCAL_STORAGE_KEY,
-          isDarkTheme ? "dark" : "light",
-        );
+        localStorage.setItem(LOCAL_STORAGE_KEY, isDarkTheme ? "dark" : "light");
       }
     }
   }, [isDarkTheme]);

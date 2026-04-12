@@ -7,6 +7,7 @@
 }
 
 .column-list {
+  margin-block-start: var(--elmethis-margin-block-start);
   box-sizing: content-box;
   padding-block: 0.25rem;
   width: 100%;
@@ -18,11 +19,8 @@
 }
 
 .column {
+  margin-block-start: var(--elmethis-margin-block-start);
   box-sizing: border-box;
   padding: 0.125rem;
   flex: var(--width-ratio, 1);
-}
-
-.column > * + * {
-  margin-block-start: 2em;
 }

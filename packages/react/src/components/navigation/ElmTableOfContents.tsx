@@ -33,9 +33,11 @@ export const ElmTableOfContents = ({
           key={index}
           className={styles.link}
           href={`#${heading.id ?? heading.text}`}
-          style={{
-            "--padding-left": `${heading.level * 0.5}rem`,
-          } as React.CSSProperties}
+          style={
+            {
+              "--padding-left": `${heading.level * 0.5}rem`,
+            } as React.CSSProperties
+          }
         >
           <sup>
             <ElmInlineText size="0.6rem" color="#6987b8">

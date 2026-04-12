@@ -1,9 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 
 import "@styles/global.css";
 import styles from "./ElmList.module.css";
+import type { ElmethisCSSVariables } from "@styles/variables";
 
-export interface ElmListCSSVariables {}
+export type ElmListCSSVariables = Pick<
+  ElmethisCSSVariables,
+  "--elmethis-margin-block-start"
+>;
 
 export interface ElmListProps extends React.PropsWithChildren {
   style?: React.CSSProperties & ElmListCSSVariables;
@@ -20,21 +24,6 @@ export const ElmList = ({
   listStyle = "unordered",
   ...props
 }: ElmListProps) => {
-  const targetRef = useRef<HTMLOListElement & HTMLUListElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const el = targetRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(([entry]) => {
-      setIsVisible(entry.isIntersecting);
-    });
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
   const className = [
     styles["elmethis-list-common"],
     listStyle === "unordered"
@@ -42,21 +31,16 @@ export const ElmList = ({
       : styles["elmethis-numbered-list"],
   ].join(" ");
 
-  const inlineStyle = {
-    "--opacity": isVisible ? 1 : 0,
-    ...props.style,
-  } as React.CSSProperties;
-
   if (listStyle === "ordered") {
     return (
-      <ol ref={targetRef} className={className} style={inlineStyle}>
+      <ol className={className} style={props.style}>
         {props.children}
       </ol>
     );
   }
 
   return (
-    <ul ref={targetRef} className={className} style={inlineStyle}>
+    <ul className={className} style={props.style}>
       {props.children}
     </ul>
   );

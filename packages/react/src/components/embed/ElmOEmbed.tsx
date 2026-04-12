@@ -98,8 +98,7 @@ export const ElmOEmbed = ({ oEmbed, style }: ElmOEmbedProps) => {
   }
 
   // type === "link"
-  const href =
-    oEmbed.author_url ?? oEmbed.provider_url ?? "#";
+  const href = oEmbed.author_url ?? oEmbed.provider_url ?? "#";
   const label =
     oEmbed.title ?? oEmbed.author_name ?? oEmbed.provider_name ?? "Link";
 

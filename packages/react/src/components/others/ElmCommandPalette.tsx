@@ -116,7 +116,13 @@ export const ElmCommandPalette = ({
   return (
     <div
       className={styles.palette}
-      style={{ "--height": "500px", "--width": "800px", ...style } as React.CSSProperties}
+      style={
+        {
+          "--height": "500px",
+          "--width": "800px",
+          ...style,
+        } as React.CSSProperties
+      }
     >
       <header className={styles.header}>
         <ElmMdiIcon d={mdiConsoleLine} />
@@ -158,12 +164,14 @@ export const ElmCommandPalette = ({
               {command.tag ? (
                 <div
                   className={styles.tag}
-                  style={{
-                    "--tag-color": opacify(
-                      -0.3,
-                      TAG_COLOR_MAP[command.tag.color],
-                    ),
-                  } as React.CSSProperties}
+                  style={
+                    {
+                      "--tag-color": opacify(
+                        -0.3,
+                        TAG_COLOR_MAP[command.tag.color],
+                      ),
+                    } as React.CSSProperties
+                  }
                 >
                   {command.tag.name}
                 </div>

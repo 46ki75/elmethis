@@ -133,12 +133,13 @@ export const ElmTextField = ({
   return (
     <div
       className={wrapperClass}
-      style={{
-        backgroundColor:
-          disabled || loading ? "rgba(0,0,0,0.15)" : undefined,
-        "--highlight-color": isFocused ? "#bfa056" : undefined,
-        ...props.style,
-      } as React.CSSProperties}
+      style={
+        {
+          backgroundColor: disabled || loading ? "rgba(0,0,0,0.15)" : undefined,
+          "--highlight-color": isFocused ? "#bfa056" : undefined,
+          ...props.style,
+        } as React.CSSProperties
+      }
     >
       <div className={styles.header}>
         <label htmlFor={id} className={styles.label}>

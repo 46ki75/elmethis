@@ -1,3 +1,4 @@
 .katex {
   font-family: inherit;
+  margin-block-start: var(--elmethis-margin-block-start);
 }
