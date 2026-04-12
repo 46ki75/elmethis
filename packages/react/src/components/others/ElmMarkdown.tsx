@@ -34,9 +34,14 @@ const renderByToken = (tokens: Token[]): React.ReactNode[] => {
     switch (token.type) {
       case "blockquote":
         if (token.tokens && token.tokens.length !== 0) {
+          const innerTokens = (token.tokens as Token[]).flatMap((t) =>
+            t.type === "paragraph" && (t as Tokens.Paragraph).tokens
+              ? ((t as Tokens.Paragraph).tokens as Token[])
+              : [t],
+          );
           results.push(
             <ElmBlockQuote key={results.length}>
-              {renderByToken(token.tokens as Token[])}
+              {renderByToken(innerTokens)}
             </ElmBlockQuote>,
           );
         }
