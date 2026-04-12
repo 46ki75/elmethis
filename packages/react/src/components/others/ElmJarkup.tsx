@@ -345,6 +345,11 @@ export const ElmJarkup = ({
                 ) : undefined
               }
               body={<ElmTableBody>{render(component.slots.body)}</ElmTableBody>}
+              style={
+                index === 0
+                  ? { "--elmethis-margin-block-start": "0" }
+                  : undefined
+              }
             />
           );
 

@@ -6,18 +6,15 @@ import styles from "./ElmTable.module.css";
 import { mdiTable } from "@mdi/js";
 import { HasRowHeaderContext } from "./TableContext";
 import { ElmInlineText } from "@components/typography/ElmInlineText";
+import type { ElmethisCSSVariables } from "@styles/variables";
 
-export interface ElmTableCSSVariables {
-  "--margin-block"?: React.CSSProperties["marginBlock"];
-}
+export type ElmTableCSSVariables = Pick<
+  ElmethisCSSVariables,
+  "--elmethis-margin-block-start"
+>;
 
 export interface ElmTableProps {
   style?: React.CSSProperties & ElmTableCSSVariables;
-
-  /**
-   * The margin of the table.
-   */
-  margin?: React.CSSProperties["marginBlock"];
 
   /**
    * Optional caption for the table.
@@ -41,7 +38,6 @@ export interface ElmTableProps {
 }
 
 export const ElmTable = ({
-  margin,
   caption,
   hasRowHeader = false,
   header,
@@ -50,10 +46,7 @@ export const ElmTable = ({
 }: ElmTableProps) => {
   return (
     <HasRowHeaderContext.Provider value={hasRowHeader}>
-      <table
-        className={styles.table}
-        style={{ "--margin-block": margin, ...style } as React.CSSProperties}
-      >
+      <table className={styles.table} style={style}>
         {caption != null && (
           <caption>
             <span className={styles.caption}>
