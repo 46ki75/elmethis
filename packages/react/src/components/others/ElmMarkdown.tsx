@@ -17,9 +17,15 @@ import { ElmTableHeader } from "../table/ElmTableHeader";
 import { ElmTableBody } from "../table/ElmTableBody";
 import { ElmTableRow } from "../table/ElmTableRow";
 import { ElmTableCell } from "../table/ElmTableCell";
+import type { ElmethisCSSVariables } from "@styles/variables";
+
+export type ElmMarkdownCSSVariables = Pick<
+  ElmethisCSSVariables,
+  "--elmethis-margin-block-start"
+>;
 
 export interface ElmMarkdownProps {
-  style?: React.CSSProperties;
+  style?: React.CSSProperties & ElmMarkdownCSSVariables;
 
   /**
    * The markdown string to render.
@@ -245,7 +251,13 @@ export const ElmMarkdown = ({ markdown, style }: ElmMarkdownProps) => {
   const elements = renderByToken(tokens);
 
   return (
-    <div className={styles["markdown-body"]} style={style}>
+    <div
+      className={styles["markdown-body"]}
+      style={{
+        "--elmethis-margin-block-start": "2.5rem",
+        ...style,
+      }}
+    >
       {elements}
     </div>
   );
