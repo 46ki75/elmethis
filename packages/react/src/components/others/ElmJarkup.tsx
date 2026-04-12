@@ -93,7 +93,7 @@ const convertInlineComponentsToPlainText = (
     .join("");
 };
 
-const renderFunctionMap: RenderFunctionMap = {
+const defaultRenderFunctionMap: RenderFunctionMap = {
   Text: (component, _render, index, _options) => {
     const key = component.id ?? index;
     const p = component.props;
@@ -460,7 +460,7 @@ export const ElmJarkup = ({
     return components.map((component, index) => {
       const key = (component as { id?: string }).id ?? index;
 
-      const handler = renderFunctionMap[component.type];
+      const handler = defaultRenderFunctionMap[component.type];
 
       if (handler) {
         return (handler as RenderFunction<any>)(component, render, index, {
