@@ -29,16 +29,13 @@ export const ElmColorSample = ({ color, style }: ElmColorSampleProps) => {
   const rgbStr = `rgb(${rgb.red}, ${rgb.green}, ${rgb.blue})`;
   const hslStr = `hsl(${Math.floor(hue)}, ${Math.floor(saturation * 100)}%, ${Math.floor(lightness * 100)}%)`;
 
-  const copyText = useCallback(
-    (text: string) => {
-      navigator.clipboard.writeText(text).then(() => {
-        setCopied(true);
-        if (timerRef.current) clearTimeout(timerRef.current);
-        timerRef.current = setTimeout(() => setCopied(false), 1500);
-      });
-    },
-    [],
-  );
+  const copyText = useCallback((text: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(true);
+      if (timerRef.current) clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => setCopied(false), 1500);
+    });
+  }, []);
 
   return (
     <div style={{ "--color": color, ...style } as React.CSSProperties}>
@@ -50,9 +47,7 @@ export const ElmColorSample = ({ color, style }: ElmColorSampleProps) => {
               style={{ "--background-color": color } as React.CSSProperties}
               onClick={() => copyText(hex)}
             >
-              {copied && (
-                <ElmMdiIcon d={mdiCheck} size="1em" color="white" />
-              )}
+              {copied && <ElmMdiIcon d={mdiCheck} size="1em" color="white" />}
             </div>
             <div className={styles.text} onClick={() => copyText(hex)}>
               {hex}

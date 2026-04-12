@@ -129,9 +129,7 @@ export const ElmBookmark = ({
 
         <div className={styles.typography}>
           <div className={styles.title}>
-            <ElmInlineText bold>
-              {title ?? "No title provided"}
-            </ElmInlineText>
+            <ElmInlineText bold>{title ?? "No title provided"}</ElmInlineText>
           </div>
 
           <div>
@@ -159,9 +157,7 @@ export const ElmBookmark = ({
 
           {!hideUrl && url != null && (
             <div className={styles.link}>
-              {favicon && (
-                <ElmInlineIcon src={favicon} />
-              )}
+              {favicon && <ElmInlineIcon src={favicon} />}
               <ElmInlineText size="0.8rem" color="#6987b8">
                 {url}
               </ElmInlineText>

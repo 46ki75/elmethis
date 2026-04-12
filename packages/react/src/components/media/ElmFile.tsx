@@ -87,10 +87,7 @@ export const ElmFile = ({
             <ElmInlineText>{filesize}</ElmInlineText>
           </span>
         )}
-        <div
-          className={styles["download-icon"]}
-          onClick={downloadFile}
-        >
+        <div className={styles["download-icon"]} onClick={downloadFile}>
           <ElmMdiIcon d={mdiDownload} size="1.25em" />
         </div>
       </div>

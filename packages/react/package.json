@@ -39,6 +39,7 @@
     "build": "tsc --noEmit && vite build && pnpm run build.types",
     "build.types": "tsc --project tsconfig.lib.json",
     "lint": "eslint .",
+    "format": "prettier --write ./src",
     "storybook": "storybook dev -p 6006 --no-open",
     "build-storybook": "storybook build"
   },
@@ -71,6 +72,7 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.4.0",
+    "prettier": "3.8.2",
     "storybook": "^10.3.5",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.58.0",

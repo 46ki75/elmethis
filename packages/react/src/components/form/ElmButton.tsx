@@ -71,14 +71,16 @@ export const ElmButton = ({
   return (
     <button
       className={classNames}
-      style={{
-        display: block ? "flex" : "inline-flex",
-        width: block ? "100%" : "auto",
-        cursor: disabled ? "not-allowed" : loading ? "progress" : "pointer",
-        "--opacity": disabled || loading ? 0.6 : undefined,
-        "--color": props.color,
-        ...props.style,
-      } as React.CSSProperties}
+      style={
+        {
+          display: block ? "flex" : "inline-flex",
+          width: block ? "100%" : "auto",
+          cursor: disabled ? "not-allowed" : loading ? "progress" : "pointer",
+          "--opacity": disabled || loading ? 0.6 : undefined,
+          "--color": props.color,
+          ...props.style,
+        } as React.CSSProperties
+      }
       onClick={handleClick}
     >
       {clicked && <div className={styles.ripple}></div>}

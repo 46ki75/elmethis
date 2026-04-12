@@ -74,12 +74,10 @@ export const ElmHeading = ({
   }, []);
 
   const Tag = `h${level}` as const;
-  const headingId = props.id ?? (props.text ? toKebabCase(props.text) : undefined);
+  const headingId =
+    props.id ?? (props.text ? toKebabCase(props.text) : undefined);
 
-  const className = [
-    styles["heading-common"],
-    styles[`h${level}`],
-  ]
+  const className = [styles["heading-common"], styles[`h${level}`]]
     .filter(Boolean)
     .join(" ");
 
@@ -88,12 +86,14 @@ export const ElmHeading = ({
       ref={targetRef}
       className={className}
       id={headingId}
-      style={{
-        "--font-size": props.size ?? `${SIZE_MAP[level]}rem`,
-        "--scale": isVisible ? 1 : 0,
-        "--opacity": isVisible ? 1 : 0,
-        ...props.style,
-      } as React.CSSProperties}
+      style={
+        {
+          "--font-size": props.size ?? `${SIZE_MAP[level]}rem`,
+          "--scale": isVisible ? 1 : 0,
+          "--opacity": isVisible ? 1 : 0,
+          ...props.style,
+        } as React.CSSProperties
+      }
     >
       {props.text && <span>{props.text}</span>}
       {props.children}

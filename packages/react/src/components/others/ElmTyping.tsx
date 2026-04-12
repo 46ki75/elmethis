@@ -22,7 +22,9 @@ export const ElmTyping = ({
   style,
 }: ElmTypingProps) => {
   const [targetArray, setTargetArray] = useState<TypingTarget[]>(() => {
-    const arr: TypingTarget[] = target.split("").map((char) => ({ char, status: "default" }));
+    const arr: TypingTarget[] = target
+      .split("")
+      .map((char) => ({ char, status: "default" }));
     if (arr.length > 0) arr[0].status = "current";
     return arr;
   });
@@ -31,7 +33,9 @@ export const ElmTyping = ({
   const [isFinished, setIsFinished] = useState(false);
 
   useEffect(() => {
-    const arr: TypingTarget[] = target.split("").map((char) => ({ char, status: "default" }));
+    const arr: TypingTarget[] = target
+      .split("")
+      .map((char) => ({ char, status: "default" }));
     if (arr.length > 0) arr[0].status = "current";
     const t = window.setTimeout(() => {
       setTargetArray(arr);

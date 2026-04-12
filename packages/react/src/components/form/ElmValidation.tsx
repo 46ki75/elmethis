@@ -30,10 +30,12 @@ export const ElmValidation = ({
   return (
     <div
       className={styles.validation}
-      style={{
-        "--opacity": props.isValid ? 1 : 0.5,
-        ...props.style,
-      } as React.CSSProperties}
+      style={
+        {
+          "--opacity": props.isValid ? 1 : 0.5,
+          ...props.style,
+        } as React.CSSProperties
+      }
     >
       <ElmMdiIcon
         d={props.isValid ? mdiCheckCircle : mdiCheckCircleOutline}

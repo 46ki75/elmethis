@@ -55,9 +55,7 @@ export const ElmCheckbox = ({
 
   return (
     <div className={containerClass} style={props.style} onClick={toggleCheck}>
-      <div
-        style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
-      >
+      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
         <svg width="24" height="24" className={styles.checkbox}>
           <circle
             cx="0"
@@ -127,13 +125,62 @@ export const ElmCheckbox = ({
             />
           )}
 
-          <line x1="0" y1="1" x2="4" y2="1" strokeWidth="2" fill="transparent" />
-          <line x1="4" y1="0" x2="24" y2="0" strokeWidth="1" fill="transparent" />
-          <line x1="0" y1="4" x2="0" y2="16" strokeWidth="1" fill="transparent" />
-          <line x1="0" y1="18" x2="0" y2="20" strokeWidth="1" fill="transparent" />
-          <line x1="0" y1="24" x2="20" y2="24" strokeWidth="1" fill="transparent" />
-          <line x1="20" y1="23" x2="24" y2="23" strokeWidth="1.5" fill="transparent" />
-          <line x1="24" y1="4" x2="24" y2="20" style={{ strokeWidth: 1 }} fill="transparent" />
+          <line
+            x1="0"
+            y1="1"
+            x2="4"
+            y2="1"
+            strokeWidth="2"
+            fill="transparent"
+          />
+          <line
+            x1="4"
+            y1="0"
+            x2="24"
+            y2="0"
+            strokeWidth="1"
+            fill="transparent"
+          />
+          <line
+            x1="0"
+            y1="4"
+            x2="0"
+            y2="16"
+            strokeWidth="1"
+            fill="transparent"
+          />
+          <line
+            x1="0"
+            y1="18"
+            x2="0"
+            y2="20"
+            strokeWidth="1"
+            fill="transparent"
+          />
+          <line
+            x1="0"
+            y1="24"
+            x2="20"
+            y2="24"
+            strokeWidth="1"
+            fill="transparent"
+          />
+          <line
+            x1="20"
+            y1="23"
+            x2="24"
+            y2="23"
+            strokeWidth="1.5"
+            fill="transparent"
+          />
+          <line
+            x1="24"
+            y1="4"
+            x2="24"
+            y2="20"
+            style={{ strokeWidth: 1 }}
+            fill="transparent"
+          />
         </svg>
         <span>{props.label}</span>
       </div>

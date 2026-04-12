@@ -34,11 +34,13 @@ export const ElmDivider = (props: ElmDividerProps) => {
     <hr
       ref={targetRef}
       className={styles.divider}
-      style={{
-        "--scale": isVisible ? 1 : 0,
-        "--margin-block": props.margin,
-        ...props.style,
-      } as React.CSSProperties}
+      style={
+        {
+          "--scale": isVisible ? 1 : 0,
+          "--margin-block": props.margin,
+          ...props.style,
+        } as React.CSSProperties
+      }
     />
   );
 };

@@ -5,12 +5,7 @@ import styles from "./ElmStatusMessage.module.css";
 import { ElmMdiIcon } from "@components/icon/ElmMdiIcon";
 import { ElmInlineText } from "@components/typography/ElmInlineText";
 
-import {
-  mdiReload,
-  mdiAlertCircle,
-  mdiCheckCircle,
-  mdiAlert,
-} from "@mdi/js";
+import { mdiReload, mdiAlertCircle, mdiCheckCircle, mdiAlert } from "@mdi/js";
 
 export type StatusType = "success" | "error" | "warning" | "pending";
 

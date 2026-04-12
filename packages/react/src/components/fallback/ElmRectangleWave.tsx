@@ -11,10 +11,6 @@ export interface ElmRectangleWaveProps {
 
 export const ElmRectangleWave = (props: ElmRectangleWaveProps) => {
   return (
-    <div
-      aria-hidden
-      className={styles["rectangle-wave"]}
-      style={props.style}
-    />
+    <div aria-hidden className={styles["rectangle-wave"]} style={props.style} />
   );
 };

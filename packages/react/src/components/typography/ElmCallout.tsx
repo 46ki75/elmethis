@@ -57,18 +57,18 @@ export const ElmCallout = ({ type = "note", ...props }: ElmCalloutProps) => {
     <aside
       ref={targetRef}
       className={styles.callout}
-      style={{
-        "--border-color": color.code,
-        "--bg-color": `color-mix(in srgb, ${color.code} 10%, transparent)`,
-        "--scale": isVisible ? 1 : 0,
-        ...props.style,
-      } as React.CSSProperties}
+      style={
+        {
+          "--border-color": color.code,
+          "--bg-color": `color-mix(in srgb, ${color.code} 10%, transparent)`,
+          "--scale": isVisible ? 1 : 0,
+          ...props.style,
+        } as React.CSSProperties
+      }
     >
       <div className={styles.header}>
         <ElmMdiIcon d={color.icon} size="1.25em" color={color.code} />
-        <ElmInlineText color={color.code}>
-          {type.toUpperCase()}
-        </ElmInlineText>
+        <ElmInlineText color={color.code}>{type.toUpperCase()}</ElmInlineText>
       </div>
       <div>{props.children}</div>
     </aside>

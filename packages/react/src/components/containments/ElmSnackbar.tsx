@@ -22,10 +22,7 @@ export interface ElmSnackbarProps extends React.PropsWithChildren {
   close: () => void;
 }
 
-export const ElmSnackbar = ({
-  timeout = 5000,
-  ...props
-}: ElmSnackbarProps) => {
+export const ElmSnackbar = ({ timeout = 5000, ...props }: ElmSnackbarProps) => {
   return (
     <div className={styles.snackbar} style={props.style}>
       {props.label != null ? (

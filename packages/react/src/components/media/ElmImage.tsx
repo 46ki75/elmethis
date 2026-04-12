@@ -122,14 +122,16 @@ export const ElmImage = ({
           onClick={() => {
             if (enableModal) setIsModalOpen(true);
           }}
-          style={{
-            "--margin-block": margin,
-            "--width": width ? `${width}px` : undefined,
-            "--height": height ? `${height}px` : undefined,
-            cursor: enableModal ? "zoom-in" : undefined,
-            opacity: !isLoading && !error ? 1 : 0,
-            pointerEvents: !isLoading && !error ? undefined : "none",
-          } as React.CSSProperties}
+          style={
+            {
+              "--margin-block": margin,
+              "--width": width ? `${width}px` : undefined,
+              "--height": height ? `${height}px` : undefined,
+              cursor: enableModal ? "zoom-in" : undefined,
+              opacity: !isLoading && !error ? 1 : 0,
+              pointerEvents: !isLoading && !error ? undefined : "none",
+            } as React.CSSProperties
+          }
         />
       </div>
 
@@ -147,10 +149,7 @@ export const ElmImage = ({
       )}
 
       {isModalOpen && (
-        <div
-          className={styles.modal}
-          onClick={() => setIsModalOpen(false)}
-        >
+        <div className={styles.modal} onClick={() => setIsModalOpen(false)}>
           <img
             className={styles["modal-image"]}
             src={src}

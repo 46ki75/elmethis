@@ -66,10 +66,7 @@ export const ElmShikiHighlighter = ({
 
   return (
     <div className={styles.code} style={style}>
-      <div
-        className="shiki"
-        dangerouslySetInnerHTML={{ __html: html }}
-      />
+      <div className="shiki" dangerouslySetInnerHTML={{ __html: html }} />
     </div>
   );
 };

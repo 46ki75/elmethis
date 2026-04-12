@@ -64,29 +64,33 @@ export const ElmProgress = ({
 
       <div
         className={styles.container}
-        style={{
-          "--weight": weight,
-          "--border-radius": round
-            ? "calc(var(--weight) / 2)"
-            : undefined,
-          "--color": color,
-          ...style,
-        } as React.CSSProperties}
+        style={
+          {
+            "--weight": weight,
+            "--border-radius": round ? "calc(var(--weight) / 2)" : undefined,
+            "--color": color,
+            ...style,
+          } as React.CSSProperties
+        }
       >
         <div
           className={styles.value}
-          style={{
-            "--scale-x": `scaleX(${loading ? 0 : value / max})`,
-          } as React.CSSProperties}
+          style={
+            {
+              "--scale-x": `scaleX(${loading ? 0 : value / max})`,
+            } as React.CSSProperties
+          }
         />
 
         {loading && <div className={styles.loading} />}
 
         <div
           className={styles.buffer}
-          style={{
-            "--scale-x": `scaleX(${loading ? 0 : buffer != null ? buffer / max : value / max})`,
-          } as React.CSSProperties}
+          style={
+            {
+              "--scale-x": `scaleX(${loading ? 0 : buffer != null ? buffer / max : value / max})`,
+            } as React.CSSProperties
+          }
         />
       </div>
     </>

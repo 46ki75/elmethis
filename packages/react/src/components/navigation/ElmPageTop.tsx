@@ -14,10 +14,7 @@ export interface ElmPageTopProps {
   position?: "left" | "right";
 }
 
-export const ElmPageTop = ({
-  position = "right",
-  style,
-}: ElmPageTopProps) => {
+export const ElmPageTop = ({ position = "right", style }: ElmPageTopProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -38,12 +35,14 @@ export const ElmPageTop = ({
   return (
     <nav
       className={`${styles.wrapper} ${isVisible ? styles["wrapper--visible"] : ""}`}
-      style={{
-        "--size": "64px",
-        left: position === "left" ? "0" : "auto",
-        right: position === "right" ? "0" : "auto",
-        ...style,
-      } as React.CSSProperties}
+      style={
+        {
+          "--size": "64px",
+          left: position === "left" ? "0" : "auto",
+          right: position === "right" ? "0" : "auto",
+          ...style,
+        } as React.CSSProperties
+      }
       onClick={toTop}
     >
       <div aria-hidden="true" className={styles.partial} />

@@ -47,7 +47,8 @@ export const ElmMermaid = ({ code, style }: ElmMermaidProps) => {
 
         if (globalMermaidCache.svgCache.has(cacheKey)) {
           if (!cancelled && containerRef.current) {
-            containerRef.current.innerHTML = globalMermaidCache.svgCache.get(cacheKey)!;
+            containerRef.current.innerHTML =
+              globalMermaidCache.svgCache.get(cacheKey)!;
             setIsRendered(true);
           }
           return;
@@ -73,7 +74,10 @@ export const ElmMermaid = ({ code, style }: ElmMermaidProps) => {
         }
 
         const renderId = `mermaid-react-${++renderCounter}`;
-        const { svg } = await globalMermaidCache.instance.render(renderId, code);
+        const { svg } = await globalMermaidCache.instance.render(
+          renderId,
+          code,
+        );
 
         globalMermaidCache.svgCache.set(cacheKey, svg);
 
