@@ -54,6 +54,15 @@ export interface ElmJarkupProps {
   skipUnsupportedComponentWarning?: boolean;
 }
 
+type RenderFunction = (
+  components: Component[],
+  rener: RenderFunction,
+  options?: {
+    skipUnsupportedComponentWarning?: boolean;
+    style?: ElmJarkupProps["style"];
+  },
+) => React.ReactNode[];
+
 const convertInlineComponentsToPlainText = (
   inlineComponents: InlineComponent[],
 ): string => {
