@@ -71,17 +71,19 @@ type RenderOptions = {
 
 type RenderFunction<
   C extends keyof (InlineComponentMap & BlockComponentMap),
-  Node,
+  N,
 > = (
   component: ComponentMap[C],
   render: (components: Component[]) => React.ReactNode[],
   index: number,
   options?: RenderOptions,
-) => Node;
+) => N;
 
-type RenderFunctionMapReact = {
-  [C in ComponentType]: RenderFunction<C, React.ReactNode>;
+type RenderFunctionMap<N> = {
+  [C in ComponentType]: RenderFunction<C, N>;
 };
+
+type RenderFunctionMapReact = RenderFunctionMap<React.ReactNode>;
 
 const convertInlineComponentsToPlainText = (
   inlineComponents: InlineComponent[],
