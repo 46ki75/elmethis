@@ -25,7 +25,7 @@ Here is a [link to example.com](https://example.com) and another with nested for
 ## Blockquote
 
 > The only way to do great work is to love what you do.
-
+>
 > Blockquotes can also contain **bold**, _italic_, and `code` inline styles.
 
 ---
