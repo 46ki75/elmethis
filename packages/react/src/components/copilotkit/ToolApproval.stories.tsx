@@ -32,6 +32,14 @@ const PrimaryRender = (args: React.ComponentProps<typeof ToolApproval>) => {
     setStatus((prev) => STATUS_SEQUENCE_MAP[prev]);
   };
 
+  const handleApprove = () => {
+    nextStatus();
+  };
+
+  const handleReject = () => {
+    nextStatus();
+  };
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "4rem" }}>
       <div style={{ textAlign: "center" }}>
@@ -61,7 +69,12 @@ const PrimaryRender = (args: React.ComponentProps<typeof ToolApproval>) => {
         <ElmInlineText>Next</ElmInlineText>
       </ElmButton>
 
-      <ToolApproval {...args} status={status} />
+      <ToolApproval
+        {...args}
+        status={status}
+        onApprove={handleApprove}
+        onReject={handleReject}
+      />
     </div>
   );
 };
