@@ -77,7 +77,7 @@ type RenderFunction<C extends keyof (InlineComponentMap & BlockComponentMap)> =
   ) => React.ReactNode;
 
 type RenderFunctionMap = {
-  [C in ComponentType]?: RenderFunction<C>;
+  [C in ComponentType]: RenderFunction<C>;
 };
 
 const convertInlineComponentsToPlainText = (
@@ -339,6 +339,10 @@ const renderFunctionMap: RenderFunctionMap = {
         />
       </Suspense>
     );
+  },
+
+  Tab: (_component, _render, _index, _options) => {
+    return [];
   },
 
   Tabs: (component, render, index, _options) => {
