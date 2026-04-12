@@ -1,14 +1,11 @@
 .divider {
-  margin-block: var(--margin-block);
+  margin-block: var(--elmethis-margin-block);
   position: relative;
   display: block;
   width: 100%;
   overflow: visible;
   border: none;
   border-bottom: 1px solid #555b67;
-
-  transform: scaleX(var(--scale));
-  transition: transform 1200ms;
 
   [data-theme="dark"] & {
     border-bottom-color: #bec2ca;

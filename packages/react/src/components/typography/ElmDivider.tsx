@@ -1,9 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 
 import "@styles/global.css";
 import styles from "./ElmDivider.module.css";
+import type { ElmethisCSSVariables } from "@styles/variables";
 
-export interface ElmDividerCSSVariables {}
+export type ElmDividerCSSVariables = Pick<
+  ElmethisCSSVariables,
+  | "--elmethis-margin-block"
+  | "--elmethis-text-color-light"
+  | "--elmethis-text-color-dark"
+>;
 
 export interface ElmDividerProps {
   style?: React.CSSProperties & ElmDividerCSSVariables;
@@ -15,29 +21,12 @@ export interface ElmDividerProps {
 }
 
 export const ElmDivider = (props: ElmDividerProps) => {
-  const targetRef = useRef<HTMLHRElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const el = targetRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(([entry]) => {
-      setIsVisible(entry.isIntersecting);
-    });
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <hr
-      ref={targetRef}
       className={styles.divider}
       style={
         {
-          "--scale": isVisible ? 1 : 0,
-          "--margin-block": props.margin,
+          "--elmethis-margin-block": props.margin,
           ...props.style,
         } as React.CSSProperties
       }
