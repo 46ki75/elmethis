@@ -43,7 +43,19 @@ export const ToolApproval = (props: ToolApprovalProps) => {
       style={props.style}
     >
       <div className={styles.message}>
-        <ElmMdiIcon d={mdiHammerScrewdriver} />
+        <ElmMdiIcon
+          d={mdiHammerScrewdriver}
+          color={
+            {
+              [ToolCallStatus.InProgress]: "#cdb57b",
+              [ToolCallStatus.Executing]: "#6987b8",
+              [ToolCallStatus.Complete]: "#59b57c",
+            }[props.status]
+          }
+        />
+        <ElmInlineText code style={{ fontSize: "1rem" }}>
+          {props.toolName}
+        </ElmInlineText>
       </div>
 
       <div className={styles["button-container"]}>

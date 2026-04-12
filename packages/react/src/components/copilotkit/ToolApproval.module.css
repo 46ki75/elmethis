@@ -15,12 +15,15 @@
   }
 
   &.complete {
-    grid-template-rows: 0fr 0fr 1fr;
+    grid-template-rows: auto 0fr 1fr;
   }
 }
 
 .message {
   overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
 }
 
 .button-container {
