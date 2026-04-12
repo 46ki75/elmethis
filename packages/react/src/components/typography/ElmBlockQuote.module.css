@@ -2,7 +2,7 @@
   position: relative;
   box-sizing: border-box;
   margin: 0;
-  margin-block: var(--elmethis-margin-block);
+  margin-block-start: var(--elmethis-margin-block-start);
   padding: 1.5rem 0.5rem 1.5rem 1.5rem;
   background-color: rgba(134, 142, 156, 0.05);
 

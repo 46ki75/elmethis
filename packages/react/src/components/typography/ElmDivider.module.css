@@ -1,5 +1,5 @@
 .divider {
-  margin-block: var(--elmethis-margin-block);
+  margin-block-start: var(--elmethis-margin-block-start);
   position: relative;
   display: block;
   width: 100%;

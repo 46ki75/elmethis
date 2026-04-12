@@ -1,4 +1,4 @@
 .paragraph {
   all: inherit;
-  margin-block: var(--elmethis-margin-block);
+  margin-block-start: var(--elmethis-margin-block-start);
 }

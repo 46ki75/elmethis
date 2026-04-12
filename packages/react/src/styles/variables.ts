@@ -7,5 +7,5 @@ export type ElmethisCSSVariables = {
   "--elmethis-text-background-color-light"?: React.CSSProperties["backgroundColor"];
   "--elmethis-text-background-color-dark"?: React.CSSProperties["backgroundColor"];
 
-  "--elmethis-margin-block"?: React.CSSProperties["marginBlock"];
+  "--elmethis-margin-block-start"?: React.CSSProperties["marginBlockStart"];
 };

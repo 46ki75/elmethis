@@ -7,7 +7,7 @@ import type { ElmethisCSSVariables } from "@styles/variables";
 
 export type ElmBlockQuoteCSSVariables = Pick<
   ElmethisCSSVariables,
-  "--elmethis-margin-block"
+  "--elmethis-margin-block-start"
 >;
 
 export interface ElmBlockQuoteProps extends React.PropsWithChildren {

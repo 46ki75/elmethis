@@ -1,5 +1,5 @@
 .callout {
-  margin-block: var(--elmethis-margin-block);
+  margin-block-start: var(--elmethis-margin-block-start);
   position: relative;
   box-sizing: border-box;
   display: flex;

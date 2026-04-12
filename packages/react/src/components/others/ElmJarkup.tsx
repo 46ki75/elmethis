@@ -37,7 +37,7 @@ const ElmMermaid = lazy(() =>
 
 export type ElmJarkupCSSVariables = Pick<
   ElmethisCSSVariables,
-  "--elmethis-margin-block"
+  "--elmethis-margin-block-start"
 >;
 
 export interface ElmJarkupProps {
@@ -340,7 +340,8 @@ export const ElmJarkup = ({
     <div
       className={styles["jarkup-body"]}
       style={{
-        "--elmethis-margin-block": style?.["--elmethis-margin-block"] ?? "2rem",
+        "--elmethis-margin-block-start":
+          style?.["--elmethis-margin-block-start"] ?? "2rem",
         ...style,
       }}
     >

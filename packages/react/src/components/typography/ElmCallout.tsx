@@ -27,7 +27,7 @@ const COLOR_MAP: Record<AlertType, { code: string; icon: string }> =
 
 export type ElmCalloutCSSVariables = Pick<
   ElmethisCSSVariables,
-  "--elmethis-margin-block"
+  "--elmethis-margin-block-start"
 >;
 
 export interface ElmCalloutProps extends React.PropsWithChildren {
