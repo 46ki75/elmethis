@@ -74,6 +74,11 @@ const PrimaryRender = (args: React.ComponentProps<typeof ToolApproval>) => {
         status={status}
         onApprove={handleApprove}
         onReject={handleReject}
+        completeContent={
+          <div>
+            <ElmInlineText>Tool execution completed.</ElmInlineText>
+          </div>
+        }
       />
     </div>
   );

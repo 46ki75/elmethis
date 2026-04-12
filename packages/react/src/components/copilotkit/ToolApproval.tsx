@@ -29,7 +29,7 @@ export interface ToolApprovalProps {
   onApprove?: () => void;
   onReject?: () => void;
 
-  resultContent: React.ReactNode;
+  completeContent: React.ReactNode;
 }
 
 export const ToolApproval = (props: ToolApprovalProps) => {
@@ -96,7 +96,7 @@ export const ToolApproval = (props: ToolApprovalProps) => {
         </div>
       </div>
 
-      <div className={styles["result-container"]}>{props.resultContent}</div>
+      <div className={styles["result-container"]}>{props.completeContent}</div>
     </div>
   );
 };
