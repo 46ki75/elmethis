@@ -340,7 +340,7 @@ export const ElmJarkup = ({
     <div
       className={styles["jarkup-body"]}
       style={{
-        "--elmethis-margin-block": style?.["--elmethis-margin-block"] ?? "1em",
+        "--elmethis-margin-block": style?.["--elmethis-margin-block"] ?? "2rem",
         ...style,
       }}
     >
