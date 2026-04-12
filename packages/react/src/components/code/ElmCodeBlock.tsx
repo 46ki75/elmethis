@@ -1,10 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+
 import "@styles/global.css";
 import styles from "./ElmCodeBlock.module.css";
+
 import {
   mdiClipboardMultipleOutline,
   mdiClipboardCheckMultipleOutline,
 } from "@mdi/js";
+
 import { ElmLanguageIcon } from "@components/icon/ElmLanguageIcon";
 import { ElmInlineText } from "@components/typography/ElmInlineText";
 import { ElmMdiIcon } from "@components/icon/ElmMdiIcon";
@@ -19,8 +22,20 @@ export type ElmCodeBlockCSSVariables = Pick<
 
 export interface ElmCodeBlockProps {
   style?: React.CSSProperties & ElmCodeBlockCSSVariables;
+
+  /**
+   * The code to display.
+   */
   code: string;
+
+  /**
+   * The language of the code.
+   */
   language?: string;
+
+  /**
+   * Optional caption. Falls back to language if not provided.
+   */
   caption?: string;
 }
 
@@ -33,22 +48,8 @@ export const ElmCodeBlock = ({
   const [isRendered, setIsRendered] = useState(false);
   const [copied, setCopied] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [stableCode, setStableCode] = useState(code);
-
   const wrapperRef = useRef<HTMLDivElement>(null);
   const copiedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // Debounce code updates to avoid thrashing the highlighter during streaming
-  useEffect(() => {
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => {
-      setStableCode(code);
-    }, 150);
-    return () => {
-      if (debounceRef.current) clearTimeout(debounceRef.current);
-    };
-  }, [code]);
 
   useEffect(() => {
     const el = wrapperRef.current;
@@ -61,7 +62,6 @@ export const ElmCodeBlock = ({
   }, []);
 
   const handleCopy = useCallback(() => {
-    // Use live `code`, not `stableCode`, so the copy is always up to date
     navigator.clipboard.writeText(code).then(() => {
       setCopied(true);
       if (copiedTimerRef.current) clearTimeout(copiedTimerRef.current);
@@ -112,7 +112,7 @@ export const ElmCodeBlock = ({
           style={{ opacity: isRendered ? 1 : 0 }}
         >
           <ElmShikiHighlighter
-            code={stableCode}
+            code={code}
             language={language}
             onRendered={setIsRendered}
           />
