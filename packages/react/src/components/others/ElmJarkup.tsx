@@ -297,6 +297,11 @@ export const ElmJarkup = ({
               key={key}
               expression={component.props.expression}
               block={true}
+              style={
+                index === 0
+                  ? { "--elmethis-margin-block-start": "0" }
+                  : undefined
+              }
             />
           );
 

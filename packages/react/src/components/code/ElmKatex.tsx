@@ -2,8 +2,12 @@ import React, { useEffect, useState } from "react";
 
 import "@styles/global.css";
 import styles from "./ElmKatex.module.css";
+import type { ElmethisCSSVariables } from "@styles/variables";
 
-export type ElmKatexCSSVariables = {};
+export type ElmKatexCSSVariables = Pick<
+  ElmethisCSSVariables,
+  "--elmethis-margin-block-start"
+>;
 
 export interface ElmKatexProps {
   style?: React.CSSProperties & ElmKatexCSSVariables;
@@ -51,7 +55,7 @@ export const ElmKatex = ({
     return (
       <div
         className={className}
-        style={{ marginBlock: "3rem", ...style }}
+        style={style}
         dangerouslySetInnerHTML={html ? { __html: html } : undefined}
       />
     );
