@@ -7,8 +7,12 @@ import { ElmMdiIcon } from "@components/icon/ElmMdiIcon";
 import { ElmInlineIcon } from "@components/icon/ElmInlineIcon";
 
 import { mdiCalendarMonth, mdiCalendarRefresh } from "@mdi/js";
+import type { ElmethisCSSVariables } from "@styles/variables";
 
-export interface ElmBookmarkCSSVariables {}
+export type ElmBookmarkCSSVariables = Pick<
+  ElmethisCSSVariables,
+  "--elmethis-margin-block-start"
+>;
 
 export interface ElmBookmarkProps {
   style?: React.CSSProperties & ElmBookmarkCSSVariables;
@@ -62,11 +66,6 @@ export interface ElmBookmarkProps {
   onClick?: () => void;
 
   /**
-   * The margin of the bookmark.
-   */
-  margin?: React.CSSProperties["marginBlock"];
-
-  /**
    * The URL of the favicon.
    */
   favicon?: string;
@@ -82,7 +81,6 @@ export const ElmBookmark = ({
   createdAt,
   updatedAt,
   onClick,
-  margin,
   favicon,
   style,
 }: ElmBookmarkProps) => {
@@ -101,10 +99,7 @@ export const ElmBookmark = ({
       : description;
 
   return (
-    <div
-      className={styles.parent}
-      style={{ "--margin-block": margin, ...style } as React.CSSProperties}
-    >
+    <div className={styles.parent} style={style}>
       <a
         className={styles.bookmark}
         href={url}

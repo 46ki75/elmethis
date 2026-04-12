@@ -61,7 +61,7 @@
   width: var(--width, auto);
   max-width: 100%;
   height: var(--height, auto);
-  margin-block: var(--margin-block, 0);
+  margin-block-start: var(--elmethis-margin-block-start, 0);
 }
 
 .image-block {

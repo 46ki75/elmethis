@@ -1,5 +1,5 @@
 .file {
-  margin-block: var(--margin-block);
+  margin-block-start: var(--elmethis-margin-block-start);
   box-sizing: border-box;
   width: 100%;
   padding: 1rem;

@@ -6,8 +6,12 @@ import { ElmMdiIcon } from "@components/icon/ElmMdiIcon";
 import { ElmInlineText } from "@components/typography/ElmInlineText";
 
 import { mdiDownload, mdiFileOutline } from "@mdi/js";
+import type { ElmethisCSSVariables } from "@styles/variables";
 
-export interface ElmFileCSSVariables {}
+export type ElmFileCSSVariables = Pick<
+  ElmethisCSSVariables,
+  "--elmethis-margin-block-start"
+>;
 
 export interface ElmFileProps {
   style?: React.CSSProperties & ElmFileCSSVariables;
@@ -26,11 +30,6 @@ export interface ElmFileProps {
    * The size of the file in bytes.
    */
   filesize?: string;
-
-  /**
-   * The margin of the file.
-   */
-  margin?: React.CSSProperties["marginBlock"];
 }
 
 function getLastPathSegmentWithoutQueryOrHash(
@@ -41,13 +40,7 @@ function getLastPathSegmentWithoutQueryOrHash(
   return pathSegments.length > 0 ? pathSegments[pathSegments.length - 1] : null;
 }
 
-export const ElmFile = ({
-  name,
-  src,
-  filesize,
-  margin,
-  style,
-}: ElmFileProps) => {
+export const ElmFile = ({ name, src, filesize, style }: ElmFileProps) => {
   const downloadFile = useCallback(async () => {
     let link: HTMLAnchorElement | undefined;
     try {
@@ -72,10 +65,7 @@ export const ElmFile = ({
     name ?? getLastPathSegmentWithoutQueryOrHash(src) ?? "unknown file";
 
   return (
-    <div
-      className={styles.file}
-      style={{ "--margin-block": margin, ...style } as React.CSSProperties}
-    >
+    <div className={styles.file} style={style}>
       <div className={styles["left-container"]}>
         <ElmMdiIcon d={mdiFileOutline} size="1.25em" />
         <ElmInlineText>{displayName}</ElmInlineText>

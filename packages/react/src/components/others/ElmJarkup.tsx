@@ -237,6 +237,11 @@ export const ElmJarkup = ({
               title={component.props.title}
               description={component.props.description}
               image={component.props.image}
+              style={
+                index === 0
+                  ? { "--elmethis-margin-block-start": "0" }
+                  : undefined
+              }
             />
           );
 
@@ -246,6 +251,11 @@ export const ElmJarkup = ({
               key={key}
               src={component.props.src}
               name={component.props.name}
+              style={
+                index === 0
+                  ? { "--elmethis-margin-block-start": "0" }
+                  : undefined
+              }
             />
           );
 
@@ -259,6 +269,11 @@ export const ElmJarkup = ({
               height={component.props.height}
               block={true}
               enableModal={true}
+              style={
+                index === 0
+                  ? { "--elmethis-margin-block-start": "0" }
+                  : undefined
+              }
             />
           );
 
