@@ -1,5 +1,12 @@
 import React, { lazy, Suspense } from "react";
-import type { Component, InlineComponent } from "jarkup-ts";
+import type {
+  BlockComponentMap,
+  Component,
+  ComponentMap,
+  ComponentType,
+  InlineComponent,
+  InlineComponentMap,
+} from "jarkup-ts";
 import { kebabCase } from "lodash-es";
 
 import "@styles/global.css";
@@ -54,14 +61,38 @@ export interface ElmJarkupProps {
   skipUnsupportedComponentWarning?: boolean;
 }
 
-type RenderFunction = (
-  components: Component[],
-  rener: RenderFunction,
-  options?: {
-    skipUnsupportedComponentWarning?: boolean;
-    style?: ElmJarkupProps["style"];
+type RenderFunction<C extends keyof (InlineComponentMap & BlockComponentMap)> =
+  (
+    component: ComponentMap[C],
+    render: RenderFunction<ComponentType>,
+    index: number,
+    options?: {
+      skipUnsupportedComponentWarning?: boolean;
+      style?: ElmJarkupProps["style"];
+    },
+  ) => React.ReactNode;
+
+type RenderFunctionMap = {
+  [C in ComponentType]?: RenderFunction<C>;
+};
+
+const renderFunctionMap: RenderFunctionMap = {
+  Paragraph: (component, render, index, options) => {
+    return (
+      <ElmParagraph
+        key={component.id ?? index}
+        backgroundColor={component.props?.backgroundColor}
+        style={
+          index === 0 ? { "--elmethis-margin-block-start": "0" } : undefined
+        }
+      >
+        {component.slots?.default.map((child, childIndex) =>
+          render(child, render, childIndex, options),
+        )}
+      </ElmParagraph>
+    );
   },
-) => React.ReactNode[];
+};
 
 const convertInlineComponentsToPlainText = (
   inlineComponents: InlineComponent[],
