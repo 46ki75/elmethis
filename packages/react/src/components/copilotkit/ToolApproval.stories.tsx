@@ -6,6 +6,7 @@ import { ToolApproval } from "./ToolApproval";
 import { ToolCallStatus } from "@copilotkit/react-core/v2";
 import { ElmButton } from "@components/form/ElmButton";
 import { ElmInlineText } from "@components/typography/ElmInlineText";
+import { ElmParagraph } from "@components/typography/ElmParagraph";
 
 const meta: Meta<typeof ToolApproval> = {
   title: "Components/CopilotKit/ToolApproval",
@@ -33,11 +34,32 @@ const PrimaryRender = (args: React.ComponentProps<typeof ToolApproval>) => {
   };
 
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "column", gap: "4rem" }}>
+      <div style={{ textAlign: "center" }}>
+        <ElmInlineText
+          bold={status === ToolCallStatus.InProgress}
+          color={status === ToolCallStatus.InProgress ? "#c56565" : undefined}
+        >
+          InProgress
+        </ElmInlineText>
+        <ElmInlineText> → </ElmInlineText>
+        <ElmInlineText
+          bold={status === ToolCallStatus.Executing}
+          color={status === ToolCallStatus.Executing ? "#c56565" : undefined}
+        >
+          Executing
+        </ElmInlineText>
+        <ElmInlineText> → </ElmInlineText>
+        <ElmInlineText
+          bold={status === ToolCallStatus.Complete}
+          color={status === ToolCallStatus.Complete ? "#c56565" : undefined}
+        >
+          Complete
+        </ElmInlineText>
+      </div>
+
       <ElmButton onClick={nextStatus} style={{ marginBottom: 48 }} block>
-        <ElmInlineText>{status}</ElmInlineText>
-        <ElmInlineText>→</ElmInlineText>
-        <ElmInlineText>{STATUS_SEQUENCE_MAP[status]}</ElmInlineText>
+        <ElmInlineText>Next</ElmInlineText>
       </ElmButton>
 
       <ToolApproval {...args} status={status} />
@@ -47,4 +69,7 @@ const PrimaryRender = (args: React.ComponentProps<typeof ToolApproval>) => {
 
 export const Primary: Story = {
   render: (args) => <PrimaryRender {...args} />,
+  args: {
+    toolName: "example_tool",
+  },
 };

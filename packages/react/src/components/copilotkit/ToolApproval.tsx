@@ -6,7 +6,7 @@ import "@styles/global.css";
 import styles from "./ToolApproval.module.css";
 
 // Components
-import { mdiMinusCircle, mdiTools } from "@mdi/js";
+import { mdiHammerScrewdriver, mdiMinusCircle, mdiTools } from "@mdi/js";
 import { ElmButton } from "@components/form/ElmButton";
 import { ElmMdiIcon } from "@components/icon/ElmMdiIcon";
 import { ElmInlineText } from "@components/typography/ElmInlineText";
@@ -42,7 +42,9 @@ export const ToolApproval = (props: ToolApprovalProps) => {
       })}
       style={props.style}
     >
-      <div className={styles.message}>// TODO</div>
+      <div className={styles.message}>
+        <ElmMdiIcon d={mdiHammerScrewdriver} />
+      </div>
 
       <div className={styles["button-container"]}>
         <ElmButton
