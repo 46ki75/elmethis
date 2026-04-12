@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { lazy, Suspense } from "react";
 import type {
@@ -62,7 +61,7 @@ export interface ElmJarkupProps {
    */
   skipUnsupportedComponentWarning?: boolean;
 
-  renderFunctionMap?: Partial<RenderFunctionMap>;
+  renderFunctionMap?: Partial<RenderFunctionMapReact>;
 }
 
 type RenderOptions = {
@@ -70,16 +69,18 @@ type RenderOptions = {
   style?: ElmJarkupProps["style"];
 };
 
-type RenderFunction<C extends keyof (InlineComponentMap & BlockComponentMap)> =
-  (
-    component: ComponentMap[C],
-    render: (components: Component[]) => React.ReactNode[],
-    index: number,
-    options?: RenderOptions,
-  ) => React.ReactNode;
+type RenderFunction<
+  C extends keyof (InlineComponentMap & BlockComponentMap),
+  Node,
+> = (
+  component: ComponentMap[C],
+  render: (components: Component[]) => React.ReactNode[],
+  index: number,
+  options?: RenderOptions,
+) => Node;
 
-type RenderFunctionMap = {
-  [C in ComponentType]: RenderFunction<C>;
+type RenderFunctionMapReact = {
+  [C in ComponentType]: RenderFunction<C, React.ReactNode>;
 };
 
 const convertInlineComponentsToPlainText = (
@@ -95,7 +96,7 @@ const convertInlineComponentsToPlainText = (
     .join("");
 };
 
-const defaultRenderFunctionMap: RenderFunctionMap = {
+const defaultRenderFunctionMap: RenderFunctionMapReact = {
   Text: (component, _render, index, _options) => {
     const key = component.id ?? index;
     const p = component.props;
@@ -471,7 +472,9 @@ export const ElmJarkup = ({
       const handler = mergedRenderFunctionMap[component.type];
 
       if (handler) {
-        return (handler as RenderFunction<any>)(component, render, index, {
+        return (
+          handler as RenderFunction<typeof component.type, React.ReactNode>
+        )(component, render, index, {
           skipUnsupportedComponentWarning,
           style,
         });
