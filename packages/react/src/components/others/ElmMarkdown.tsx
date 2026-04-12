@@ -207,7 +207,7 @@ const defaultRenderFunctionMap: RenderFunctionMapReact = {
         {render(token.tokens as Token[])}
       </ElmInlineText>
     ) : (
-      <React.Fragment key={index}>{token.text}</React.Fragment>
+      <ElmInlineText key={index}>{token.text}</ElmInlineText>
     ),
 };
 
