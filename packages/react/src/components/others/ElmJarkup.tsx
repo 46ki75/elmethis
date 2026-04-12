@@ -61,6 +61,8 @@ export interface ElmJarkupProps {
    * If true, Unsupported components and unknown types are silently skipped.
    */
   skipUnsupportedComponentWarning?: boolean;
+
+  renderFunctionMap?: Partial<RenderFunctionMap>;
 }
 
 type RenderOptions = {
@@ -454,13 +456,19 @@ const defaultRenderFunctionMap: RenderFunctionMap = {
 export const ElmJarkup = ({
   jsonComponents,
   skipUnsupportedComponentWarning = false,
+  renderFunctionMap,
   style,
 }: ElmJarkupProps) => {
+  const mergedRenderFunctionMap = {
+    ...defaultRenderFunctionMap,
+    ...renderFunctionMap,
+  };
+
   const render = (components: Component[]): React.ReactNode[] => {
     return components.map((component, index) => {
       const key = (component as { id?: string }).id ?? index;
 
-      const handler = defaultRenderFunctionMap[component.type];
+      const handler = mergedRenderFunctionMap[component.type];
 
       if (handler) {
         return (handler as RenderFunction<any>)(component, render, index, {
