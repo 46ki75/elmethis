@@ -6,7 +6,6 @@ import { ToolApproval } from "./ToolApproval";
 import { ToolCallStatus } from "@copilotkit/react-core/v2";
 import { ElmButton } from "@components/form/ElmButton";
 import { ElmInlineText } from "@components/typography/ElmInlineText";
-import { ElmParagraph } from "@components/typography/ElmParagraph";
 
 const meta: Meta<typeof ToolApproval> = {
   title: "Components/CopilotKit/ToolApproval",
