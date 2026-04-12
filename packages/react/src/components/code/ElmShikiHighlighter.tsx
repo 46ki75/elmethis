@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import "@styles/global.css";
 import styles from "./ElmShikiHighlighter.module.css";
@@ -31,13 +31,13 @@ export const ElmShikiHighlighter = ({
   style,
 }: ElmShikiHighlighterProps) => {
   const [html, setHtml] = useState(`<pre>${code}</pre>`);
-  const renderedRef = useRef(false);
 
   useEffect(() => {
-    if (renderedRef.current) return;
+    let cancelled = false;
 
     getHighlighterSingleton()
       .then((highlighter) => {
+        if (cancelled) return;
         try {
           const result = highlighter.codeToHtml(code, {
             lang: language,
@@ -50,18 +50,21 @@ export const ElmShikiHighlighter = ({
               "#121212": "transparent",
             },
           });
-          setHtml(result);
+          if (!cancelled) {
+            setHtml(result);
+            onRendered?.(true);
+          }
         } catch {
-          // keep plain fallback
-        } finally {
-          renderedRef.current = true;
-          onRendered?.(true);
+          if (!cancelled) onRendered?.(true);
         }
       })
       .catch(() => {
-        renderedRef.current = true;
-        onRendered?.(true);
+        if (!cancelled) onRendered?.(true);
       });
+
+    return () => {
+      cancelled = true;
+    };
   }, [code, language, onRendered]);
 
   return (
