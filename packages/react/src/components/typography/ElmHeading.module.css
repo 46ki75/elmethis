@@ -1,5 +1,5 @@
 .heading-common {
-  margin-block: 1.5rem;
+  margin-block-start: var(--elmethis-margin-block-start);
   position: relative;
   font-size: var(--font-size);
   line-height: var(--font-size);

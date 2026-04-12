@@ -125,6 +125,11 @@ export const ElmJarkup = ({
               id={kebabCase(
                 convertInlineComponentsToPlainText(component.slots.default),
               )}
+              style={
+                index === 0
+                  ? { "--elmethis-margin-block-start": "0" }
+                  : undefined
+              }
             >
               {render(component.slots.default)}
             </ElmHeading>

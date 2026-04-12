@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import "@styles/global.css";
 import styles from "./ElmHeading.module.css";
 import { ElmFragmentIdentifier } from "@components/typography/ElmFragmentIdentifier";
+import type { ElmethisCSSVariables } from "@styles/variables";
 
 const SIZE_MAP: Record<1 | 2 | 3 | 4 | 5 | 6, number> = Object.freeze({
   1: 1.5,
@@ -13,7 +14,10 @@ const SIZE_MAP: Record<1 | 2 | 3 | 4 | 5 | 6, number> = Object.freeze({
   6: 1.1,
 } as const);
 
-export interface ElmHeadingCSSVariables {}
+export type ElmHeadingCSSVariables = Pick<
+  ElmethisCSSVariables,
+  "--elmethis-margin-block-start"
+>;
 
 export interface ElmHeadingProps extends React.PropsWithChildren {
   style?: React.CSSProperties & ElmHeadingCSSVariables;
