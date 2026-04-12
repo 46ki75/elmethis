@@ -369,7 +369,17 @@ export const ElmJarkup = ({
 
         case "ColumnList":
           return (
-            <div key={key} className={styles["column-list"]}>
+            <div
+              key={key}
+              className={styles["column-list"]}
+              style={
+                index === 0
+                  ? ({
+                      "--elmethis-margin-block-start": "0",
+                    } as React.CSSProperties)
+                  : undefined
+              }
+            >
               {render(component.slots.default)}
             </div>
           );
@@ -385,6 +395,10 @@ export const ElmJarkup = ({
                   width: component.props?.widthRatio
                     ? `${component.props.widthRatio * 100}%`
                     : undefined,
+
+                  ...(index === 0
+                    ? { "--elmethis-margin-block-start": "0" }
+                    : undefined),
                 } as React.CSSProperties
               }
             >
@@ -400,6 +414,11 @@ export const ElmJarkup = ({
               details={
                 component.props?.details ??
                 `Unsupported component type: ${component.type}`
+              }
+              style={
+                index === 0
+                  ? { "--elmethis-margin-block-start": "0" }
+                  : undefined
               }
             />
           );

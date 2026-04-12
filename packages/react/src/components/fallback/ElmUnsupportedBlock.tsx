@@ -5,8 +5,12 @@ import "@styles/global.css";
 import styles from "./ElmUnsupportedBlock.module.css";
 
 import { ElmInlineText } from "@components/typography/ElmInlineText";
+import type { ElmethisCSSVariables } from "@styles/variables";
 
-export interface ElmUnsupportedBlockCSSVariables {}
+export type ElmUnsupportedBlockCSSVariables = Pick<
+  ElmethisCSSVariables,
+  "--elmethis-margin-block-start"
+>;
 
 export interface ElmUnsupportedBlockProps {
   style?: React.CSSProperties & ElmUnsupportedBlockCSSVariables;
