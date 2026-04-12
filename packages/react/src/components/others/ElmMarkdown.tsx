@@ -1,5 +1,5 @@
 import React from "react";
-import { marked, type Token, type Tokens } from "marked";
+import { marked, type MarkedToken, type Token, type Tokens } from "marked";
 
 import "@styles/global.css";
 import styles from "./ElmMarkdown.module.css";
@@ -18,6 +18,7 @@ import { ElmTableBody } from "../table/ElmTableBody";
 import { ElmTableRow } from "../table/ElmTableRow";
 import { ElmTableCell } from "../table/ElmTableCell";
 import type { ElmethisCSSVariables } from "@styles/variables";
+import { ElmCheckbox } from "@components/form/ElmCheckbox";
 
 export type ElmMarkdownCSSVariables = Pick<
   ElmethisCSSVariables,
@@ -36,26 +37,7 @@ export interface ElmMarkdownProps {
 }
 
 type TokenTypeMap = {
-  blockquote: Tokens.Blockquote;
-  br: Tokens.Br;
-  code: Tokens.Code;
-  codespan: Tokens.Codespan;
-  def: Tokens.Def;
-  del: Tokens.Del;
-  em: Tokens.Em;
-  escape: Tokens.Escape;
-  heading: Tokens.Heading;
-  hr: Tokens.Hr;
-  html: Tokens.HTML | Tokens.Tag;
-  image: Tokens.Image;
-  link: Tokens.Link;
-  list: Tokens.List;
-  list_item: Tokens.ListItem;
-  paragraph: Tokens.Paragraph;
-  space: Tokens.Space;
-  strong: Tokens.Strong;
-  table: Tokens.Table;
-  text: Tokens.Text;
+  [T in MarkedToken as T["type"]]: T;
 };
 
 type RenderFunction<T extends keyof TokenTypeMap, N> = (
@@ -82,6 +64,10 @@ const defaultRenderFunctionMap: RenderFunctionMapReact = {
   },
 
   br: (_token, _render, index) => <br key={index} />,
+
+  checkbox: (token, _render, index) => (
+    <ElmCheckbox key={index} label={token.raw} checked={token.checked} />
+  ),
 
   code: (token, _render, index) => (
     <ElmCodeBlock key={index} code={token.text.trim()} language={token.lang} />
@@ -156,16 +142,11 @@ const defaultRenderFunctionMap: RenderFunctionMapReact = {
     ),
 
   list: (token, render, index) => {
-    const listItems = token.items.map(
-      (item: Tokens.ListItem, i: number) => (
-        <li key={i}>{render(item.tokens)}</li>
-      ),
-    );
+    const listItems = token.items.map((item: Tokens.ListItem, i: number) => (
+      <li key={i}>{render(item.tokens)}</li>
+    ));
     return (
-      <ElmList
-        key={index}
-        listStyle={token.ordered ? "ordered" : "unordered"}
-      >
+      <ElmList key={index} listStyle={token.ordered ? "ordered" : "unordered"}>
         {listItems}
       </ElmList>
     );
@@ -242,8 +223,7 @@ export const ElmMarkdown = ({
 
   const render = (tokens: Token[]): React.ReactNode[] =>
     tokens.map((token, index) => {
-      const handler =
-        mergedRenderFunctionMap[token.type as keyof TokenTypeMap];
+      const handler = mergedRenderFunctionMap[token.type as keyof TokenTypeMap];
       if (handler) {
         return (handler as RenderFunction<keyof TokenTypeMap, React.ReactNode>)(
           token as TokenTypeMap[keyof TokenTypeMap],
