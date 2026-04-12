@@ -442,7 +442,7 @@ export const ElmJarkup = ({
       className={styles["jarkup-body"]}
       style={{
         "--elmethis-margin-block-start":
-          style?.["--elmethis-margin-block-start"] ?? "5rem",
+          style?.["--elmethis-margin-block-start"] ?? "2.5rem",
         ...style,
       }}
     >
