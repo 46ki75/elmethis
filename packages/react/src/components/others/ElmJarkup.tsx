@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { lazy, Suspense } from "react";
 import type {
   BlockComponentMap,
@@ -61,37 +63,21 @@ export interface ElmJarkupProps {
   skipUnsupportedComponentWarning?: boolean;
 }
 
+type RenderOptions = {
+  skipUnsupportedComponentWarning?: boolean;
+  style?: ElmJarkupProps["style"];
+};
+
 type RenderFunction<C extends keyof (InlineComponentMap & BlockComponentMap)> =
   (
     component: ComponentMap[C],
-    render: RenderFunction<ComponentType>,
+    render: (components: Component[]) => React.ReactNode[],
     index: number,
-    options?: {
-      skipUnsupportedComponentWarning?: boolean;
-      style?: ElmJarkupProps["style"];
-    },
+    options?: RenderOptions,
   ) => React.ReactNode;
 
 type RenderFunctionMap = {
   [C in ComponentType]?: RenderFunction<C>;
-};
-
-const renderFunctionMap: RenderFunctionMap = {
-  Paragraph: (component, render, index, options) => {
-    return (
-      <ElmParagraph
-        key={component.id ?? index}
-        backgroundColor={component.props?.backgroundColor}
-        style={
-          index === 0 ? { "--elmethis-margin-block-start": "0" } : undefined
-        }
-      >
-        {component.slots?.default.map((child, childIndex) =>
-          render(child, render, childIndex, options),
-        )}
-      </ElmParagraph>
-    );
-  },
 };
 
 const convertInlineComponentsToPlainText = (
@@ -107,6 +93,360 @@ const convertInlineComponentsToPlainText = (
     .join("");
 };
 
+const renderFunctionMap: RenderFunctionMap = {
+  Text: (component, _render, index, _options) => {
+    const key = component.id ?? index;
+    const p = component.props;
+    if (p.katex) {
+      return <ElmKatex key={key} expression={p.text} block={false} />;
+    }
+    return (
+      <ElmInlineText
+        key={key}
+        color={p.color}
+        backgroundColor={p.backgroundColor}
+        bold={p.bold}
+        italic={p.italic}
+        underline={p.underline}
+        strikethrough={p.strikethrough}
+        code={p.code}
+        ruby={p.ruby}
+        href={p.href}
+        favicon={p.favicon}
+      >
+        {p.text}
+      </ElmInlineText>
+    );
+  },
+
+  Icon: (component, _render, index, _options) => {
+    const key = component.id ?? index;
+    return (
+      <ElmInlineIcon
+        key={key}
+        src={component.props.src}
+        alt={component.props.alt}
+      />
+    );
+  },
+
+  Fragment: (component, render, index, _options) => {
+    const key = component.id ?? index;
+    return (
+      <React.Fragment key={key}>
+        {render(component.slots.default)}
+      </React.Fragment>
+    );
+  },
+
+  Heading: (component, render, index, _options) => {
+    const key = component.id ?? index;
+    return (
+      <ElmHeading
+        key={key}
+        level={component.props.level}
+        id={kebabCase(
+          convertInlineComponentsToPlainText(component.slots.default),
+        )}
+        style={
+          index === 0 ? { "--elmethis-margin-block-start": "0" } : undefined
+        }
+      >
+        {render(component.slots.default)}
+      </ElmHeading>
+    );
+  },
+
+  Paragraph: (component, render, index, _options) => {
+    const key = component.id ?? index;
+    return (
+      <ElmParagraph
+        key={key}
+        backgroundColor={component.props?.backgroundColor}
+        style={
+          index === 0 ? { "--elmethis-margin-block-start": "0" } : undefined
+        }
+      >
+        {render(component.slots.default)}
+      </ElmParagraph>
+    );
+  },
+
+  ListItem: (component, render, index, _options) => {
+    const key = component.id ?? index;
+    return <li key={key}>{render(component.slots.default)}</li>;
+  },
+
+  List: (component, render, index, _options) => {
+    const key = component.id ?? index;
+    return (
+      <ElmList
+        key={key}
+        listStyle={
+          component.props?.listStyle === "unordered" ? "unordered" : "ordered"
+        }
+        style={
+          index === 0 ? { "--elmethis-margin-block-start": "0" } : undefined
+        }
+      >
+        {render(component.slots.default)}
+      </ElmList>
+    );
+  },
+
+  BlockQuote: (component, render, index, _options) => {
+    const key = component.id ?? index;
+    return (
+      <ElmBlockQuote
+        key={key}
+        cite={component.props?.cite}
+        style={
+          index === 0 ? { "--elmethis-margin-block-start": "0" } : undefined
+        }
+      >
+        {render(component.slots.default)}
+      </ElmBlockQuote>
+    );
+  },
+
+  Callout: (component, render, index, _options) => {
+    const key = component.id ?? index;
+    return (
+      <ElmCallout
+        key={key}
+        type={component.props?.type}
+        style={
+          index === 0 ? { "--elmethis-margin-block-start": "0" } : undefined
+        }
+      >
+        {render(component.slots.default)}
+      </ElmCallout>
+    );
+  },
+
+  Divider: (component, _render, index, _options) => {
+    const key = component.id ?? index;
+    return (
+      <ElmDivider
+        key={key}
+        style={
+          index === 0 ? { "--elmethis-margin-block-start": "0" } : undefined
+        }
+      />
+    );
+  },
+
+  Toggle: (component, render, index, _options) => {
+    const key = component.id ?? index;
+    return (
+      <ElmToggle
+        key={key}
+        summaryContent={render(component.slots.summary)}
+        style={
+          index === 0 ? { "--elmethis-margin-block-start": "0" } : undefined
+        }
+      >
+        {render(component.slots.default)}
+      </ElmToggle>
+    );
+  },
+
+  Bookmark: (component, _render, index, _options) => {
+    const key = component.id ?? index;
+    return (
+      <ElmBookmark
+        key={key}
+        url={component.props.url}
+        title={component.props.title}
+        description={component.props.description}
+        image={component.props.image}
+        style={
+          index === 0 ? { "--elmethis-margin-block-start": "0" } : undefined
+        }
+      />
+    );
+  },
+
+  File: (component, _render, index, _options) => {
+    const key = component.id ?? index;
+    return (
+      <ElmFile
+        key={key}
+        src={component.props.src}
+        name={component.props.name}
+        style={
+          index === 0 ? { "--elmethis-margin-block-start": "0" } : undefined
+        }
+      />
+    );
+  },
+
+  Image: (component, _render, index, _options) => {
+    const key = component.id ?? index;
+    return (
+      <ElmImage
+        key={key}
+        src={component.props.src}
+        alt={component.props.alt}
+        width={component.props.width}
+        height={component.props.height}
+        block={true}
+        enableModal={true}
+        style={
+          index === 0 ? { "--elmethis-margin-block-start": "0" } : undefined
+        }
+      />
+    );
+  },
+
+  CodeBlock: (component, _render, index, _options) => {
+    const key = component.id ?? index;
+    return (
+      <ElmCodeBlock
+        key={key}
+        code={component.props.code}
+        language={component.props.language}
+        style={
+          index === 0 ? { "--elmethis-margin-block-start": "0" } : undefined
+        }
+      />
+    );
+  },
+
+  Katex: (component, _render, index, _options) => {
+    const key = component.id ?? index;
+    return (
+      <ElmKatex
+        key={key}
+        expression={component.props.expression}
+        block={true}
+        style={
+          index === 0 ? { "--elmethis-margin-block-start": "0" } : undefined
+        }
+      />
+    );
+  },
+
+  Mermaid: (component, _render, index, _options) => {
+    const key = component.id ?? index;
+    return (
+      <Suspense key={key} fallback={<ElmBlockFallback />}>
+        <ElmMermaid
+          code={component.props.code}
+          style={
+            index === 0 ? { "--elmethis-margin-block-start": "0" } : undefined
+          }
+        />
+      </Suspense>
+    );
+  },
+
+  Tabs: (component, render, index, _options) => {
+    const key = component.id ?? index;
+    const labels: React.ReactNode[] = [];
+    const contents: React.ReactNode[] = [];
+    for (const tab of component.slots.default) {
+      labels.push(<span>{render(tab.slots.labels)}</span>);
+      contents.push(<div>{render(tab.slots.contents)}</div>);
+    }
+    return <ElmTabs key={key} tabLabels={labels} tabContents={contents} />;
+  },
+
+  Table: (component, render, index, _options) => {
+    const key = component.id ?? index;
+    return (
+      <ElmTable
+        key={key}
+        caption={component.props?.caption}
+        hasRowHeader={component.props?.hasRowHeader}
+        header={
+          component.slots.header ? (
+            <ElmTableHeader>{render(component.slots.header)}</ElmTableHeader>
+          ) : undefined
+        }
+        body={<ElmTableBody>{render(component.slots.body)}</ElmTableBody>}
+        style={
+          index === 0 ? { "--elmethis-margin-block-start": "0" } : undefined
+        }
+      />
+    );
+  },
+
+  TableRow: (component, render, index, _options) => {
+    const key = component.id ?? index;
+    return (
+      <ElmTableRow key={key}>{render(component.slots.default)}</ElmTableRow>
+    );
+  },
+
+  TableCell: (component, render, index, _options) => {
+    const key = component.id ?? index;
+    return (
+      <ElmTableCell key={key}>{render(component.slots.default)}</ElmTableCell>
+    );
+  },
+
+  ColumnList: (component, render, index, _options) => {
+    const key = component.id ?? index;
+    return (
+      <div
+        key={key}
+        className={styles["column-list"]}
+        style={
+          index === 0
+            ? ({
+                "--elmethis-margin-block-start": "0",
+              } as React.CSSProperties)
+            : undefined
+        }
+      >
+        {render(component.slots.default)}
+      </div>
+    );
+  },
+
+  Column: (component, render, index, _options) => {
+    const key = component.id ?? index;
+    return (
+      <div
+        key={key}
+        className={styles.column}
+        style={
+          {
+            "--width-ratio": component.props?.widthRatio ?? 1,
+            width: component.props?.widthRatio
+              ? `${component.props.widthRatio * 100}%`
+              : undefined,
+
+            ...(index === 0
+              ? { "--elmethis-margin-block-start": "0" }
+              : undefined),
+          } as React.CSSProperties
+        }
+      >
+        {render(component.slots.default)}
+      </div>
+    );
+  },
+
+  Unsupported: (component, _render, index, options) => {
+    const key = component.id ?? index;
+    if (options?.skipUnsupportedComponentWarning) return null;
+    return (
+      <ElmUnsupportedBlock
+        key={key}
+        details={
+          component.props?.details ??
+          `Unsupported component type: ${component.type}`
+        }
+        style={
+          index === 0 ? { "--elmethis-margin-block-start": "0" } : undefined
+        }
+      />
+    );
+  },
+};
+
 export const ElmJarkup = ({
   jsonComponents,
   skipUnsupportedComponentWarning = false,
@@ -116,364 +456,22 @@ export const ElmJarkup = ({
     return components.map((component, index) => {
       const key = (component as { id?: string }).id ?? index;
 
-      switch (component.type) {
-        case "Text": {
-          const { props: p } = component;
-          if (p.katex) {
-            return <ElmKatex key={key} expression={p.text} block={false} />;
-          }
-          return (
-            <ElmInlineText
-              key={key}
-              color={p.color}
-              backgroundColor={p.backgroundColor}
-              bold={p.bold}
-              italic={p.italic}
-              underline={p.underline}
-              strikethrough={p.strikethrough}
-              code={p.code}
-              ruby={p.ruby}
-              href={p.href}
-              favicon={p.favicon}
-            >
-              {p.text}
-            </ElmInlineText>
-          );
-        }
+      const handler = renderFunctionMap[component.type];
 
-        case "Icon":
-          return (
-            <ElmInlineIcon
-              key={key}
-              src={component.props.src}
-              alt={component.props.alt}
-            />
-          );
-
-        case "Fragment":
-          return (
-            <React.Fragment key={key}>
-              {render(component.slots.default)}
-            </React.Fragment>
-          );
-
-        case "Heading":
-          return (
-            <ElmHeading
-              key={key}
-              level={component.props.level}
-              id={kebabCase(
-                convertInlineComponentsToPlainText(component.slots.default),
-              )}
-              style={
-                index === 0
-                  ? { "--elmethis-margin-block-start": "0" }
-                  : undefined
-              }
-            >
-              {render(component.slots.default)}
-            </ElmHeading>
-          );
-
-        case "Paragraph":
-          return (
-            <ElmParagraph
-              key={key}
-              backgroundColor={component.props?.backgroundColor}
-              style={
-                index === 0
-                  ? { "--elmethis-margin-block-start": "0" }
-                  : undefined
-              }
-            >
-              {render(component.slots.default)}
-            </ElmParagraph>
-          );
-
-        case "ListItem":
-          return <li key={key}>{render(component.slots.default)}</li>;
-
-        case "List":
-          return (
-            <ElmList
-              key={key}
-              listStyle={
-                component.props?.listStyle === "unordered"
-                  ? "unordered"
-                  : "ordered"
-              }
-              style={
-                index === 0
-                  ? { "--elmethis-margin-block-start": "0" }
-                  : undefined
-              }
-            >
-              {render(component.slots.default)}
-            </ElmList>
-          );
-
-        case "BlockQuote":
-          return (
-            <ElmBlockQuote
-              key={key}
-              cite={component.props?.cite}
-              style={
-                index === 0
-                  ? { "--elmethis-margin-block-start": "0" }
-                  : undefined
-              }
-            >
-              {render(component.slots.default)}
-            </ElmBlockQuote>
-          );
-
-        case "Callout":
-          return (
-            <ElmCallout
-              key={key}
-              type={component.props?.type}
-              style={
-                index === 0
-                  ? { "--elmethis-margin-block-start": "0" }
-                  : undefined
-              }
-            >
-              {render(component.slots.default)}
-            </ElmCallout>
-          );
-
-        case "Divider":
-          return (
-            <ElmDivider
-              key={key}
-              style={
-                index === 0
-                  ? { "--elmethis-margin-block-start": "0" }
-                  : undefined
-              }
-            />
-          );
-
-        case "Toggle":
-          return (
-            <ElmToggle
-              key={key}
-              summaryContent={render(component.slots.summary)}
-              style={
-                index === 0
-                  ? { "--elmethis-margin-block-start": "0" }
-                  : undefined
-              }
-            >
-              {render(component.slots.default)}
-            </ElmToggle>
-          );
-
-        case "Bookmark":
-          return (
-            <ElmBookmark
-              key={key}
-              url={component.props.url}
-              title={component.props.title}
-              description={component.props.description}
-              image={component.props.image}
-              style={
-                index === 0
-                  ? { "--elmethis-margin-block-start": "0" }
-                  : undefined
-              }
-            />
-          );
-
-        case "File":
-          return (
-            <ElmFile
-              key={key}
-              src={component.props.src}
-              name={component.props.name}
-              style={
-                index === 0
-                  ? { "--elmethis-margin-block-start": "0" }
-                  : undefined
-              }
-            />
-          );
-
-        case "Image":
-          return (
-            <ElmImage
-              key={key}
-              src={component.props.src}
-              alt={component.props.alt}
-              width={component.props.width}
-              height={component.props.height}
-              block={true}
-              enableModal={true}
-              style={
-                index === 0
-                  ? { "--elmethis-margin-block-start": "0" }
-                  : undefined
-              }
-            />
-          );
-
-        case "CodeBlock":
-          return (
-            <ElmCodeBlock
-              key={key}
-              code={component.props.code}
-              language={component.props.language}
-              style={
-                index === 0
-                  ? { "--elmethis-margin-block-start": "0" }
-                  : undefined
-              }
-            />
-          );
-
-        case "Katex":
-          return (
-            <ElmKatex
-              key={key}
-              expression={component.props.expression}
-              block={true}
-              style={
-                index === 0
-                  ? { "--elmethis-margin-block-start": "0" }
-                  : undefined
-              }
-            />
-          );
-
-        case "Mermaid":
-          return (
-            <Suspense key={key} fallback={<ElmBlockFallback />}>
-              <ElmMermaid
-                code={component.props.code}
-                style={
-                  index === 0
-                    ? { "--elmethis-margin-block-start": "0" }
-                    : undefined
-                }
-              />
-            </Suspense>
-          );
-
-        case "Tabs": {
-          const labels: React.ReactNode[] = [];
-          const contents: React.ReactNode[] = [];
-          for (const tab of component.slots.default) {
-            labels.push(<span>{render(tab.slots.labels)}</span>);
-            contents.push(<div>{render(tab.slots.contents)}</div>);
-          }
-          return (
-            <ElmTabs key={key} tabLabels={labels} tabContents={contents} />
-          );
-        }
-
-        case "Table":
-          return (
-            <ElmTable
-              key={key}
-              caption={component.props?.caption}
-              hasRowHeader={component.props?.hasRowHeader}
-              header={
-                component.slots.header ? (
-                  <ElmTableHeader>
-                    {render(component.slots.header)}
-                  </ElmTableHeader>
-                ) : undefined
-              }
-              body={<ElmTableBody>{render(component.slots.body)}</ElmTableBody>}
-              style={
-                index === 0
-                  ? { "--elmethis-margin-block-start": "0" }
-                  : undefined
-              }
-            />
-          );
-
-        case "TableRow":
-          return (
-            <ElmTableRow key={key}>
-              {render(component.slots.default)}
-            </ElmTableRow>
-          );
-
-        case "TableCell":
-          return (
-            <ElmTableCell key={key}>
-              {render(component.slots.default)}
-            </ElmTableCell>
-          );
-
-        case "ColumnList":
-          return (
-            <div
-              key={key}
-              className={styles["column-list"]}
-              style={
-                index === 0
-                  ? ({
-                      "--elmethis-margin-block-start": "0",
-                    } as React.CSSProperties)
-                  : undefined
-              }
-            >
-              {render(component.slots.default)}
-            </div>
-          );
-
-        case "Column":
-          return (
-            <div
-              key={key}
-              className={styles.column}
-              style={
-                {
-                  "--width-ratio": component.props?.widthRatio ?? 1,
-                  width: component.props?.widthRatio
-                    ? `${component.props.widthRatio * 100}%`
-                    : undefined,
-
-                  ...(index === 0
-                    ? { "--elmethis-margin-block-start": "0" }
-                    : undefined),
-                } as React.CSSProperties
-              }
-            >
-              {render(component.slots.default)}
-            </div>
-          );
-
-        case "Unsupported": {
-          if (skipUnsupportedComponentWarning) return null;
-          return (
-            <ElmUnsupportedBlock
-              key={key}
-              details={
-                component.props?.details ??
-                `Unsupported component type: ${component.type}`
-              }
-              style={
-                index === 0
-                  ? { "--elmethis-margin-block-start": "0" }
-                  : undefined
-              }
-            />
-          );
-        }
-
-        default: {
-          if (skipUnsupportedComponentWarning) return null;
-          return (
-            <ElmUnsupportedBlock
-              key={key}
-              details={`Unsupported component type: ${(component as { type: string }).type}`}
-            />
-          );
-        }
+      if (handler) {
+        return (handler as RenderFunction<any>)(component, render, index, {
+          skipUnsupportedComponentWarning,
+          style,
+        });
       }
+
+      if (skipUnsupportedComponentWarning) return null;
+      return (
+        <ElmUnsupportedBlock
+          key={key}
+          details={`Unsupported component type: ${(component as { type: string }).type}`}
+        />
+      );
     });
   };
 
