@@ -1,5 +1,6 @@
 .mermaid {
   display: block;
+  margin-block-start: var(--elmethis-margin-block-start);
 
   &::selection {
     color: #cccfd5;

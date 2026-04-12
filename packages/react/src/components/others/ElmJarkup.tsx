@@ -308,7 +308,14 @@ export const ElmJarkup = ({
         case "Mermaid":
           return (
             <Suspense key={key} fallback={<ElmBlockFallback />}>
-              <ElmMermaid code={component.props.code} />
+              <ElmMermaid
+                code={component.props.code}
+                style={
+                  index === 0
+                    ? { "--elmethis-margin-block-start": "0" }
+                    : undefined
+                }
+              />
             </Suspense>
           );
 

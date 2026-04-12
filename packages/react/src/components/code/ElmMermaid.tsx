@@ -3,9 +3,15 @@ import React, { useEffect, useRef, useState } from "react";
 
 import "@styles/global.css";
 import styles from "./ElmMermaid.module.css";
+import type { ElmethisCSSVariables } from "@styles/variables";
+
+export type ElmMermaidCSSVariables = Pick<
+  ElmethisCSSVariables,
+  "--elmethis-margin-block-start"
+>;
 
 export interface ElmMermaidProps {
-  style?: React.CSSProperties;
+  style?: React.CSSProperties & ElmMermaidCSSVariables;
 
   /**
    * The Mermaid diagram code to render.
