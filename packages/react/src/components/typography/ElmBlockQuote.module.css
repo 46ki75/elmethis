@@ -1,9 +1,8 @@
 .blockquote {
   position: relative;
-  opacity: var(--opacity);
-  transition: opacity 800ms;
   box-sizing: border-box;
   margin: 0;
+  margin-block: var(--elmethis-margin-block);
   padding: 1.5rem 0.5rem 1.5rem 1.5rem;
   background-color: rgba(134, 142, 156, 0.05);
 
