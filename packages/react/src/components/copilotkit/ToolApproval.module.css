@@ -1,6 +1,6 @@
 .human-in-the-loop {
   display: grid;
-  transition: grid-template-rows 100ms;
+  transition: grid-template-rows 200ms;
   overflow: hidden;
   gap: 1rem;
 
