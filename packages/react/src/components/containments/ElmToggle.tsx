@@ -6,10 +6,12 @@ import styles from "./ElmToggle.module.css";
 import { ElmMdiIcon } from "@components/icon/ElmMdiIcon";
 import { ElmInlineText } from "@components/typography/ElmInlineText";
 import { mdiChevronRight, mdiChevronUp, mdiPlus } from "@mdi/js";
+import type { ElmethisCSSVariables } from "@styles/variables";
 
-export interface ElmToggleCSSVariables {
-  "--margin-block"?: string;
-}
+export type ElmToggleCSSVariables = Pick<
+  ElmethisCSSVariables,
+  "--elmethis-margin-block-start"
+>;
 
 export interface ElmToggleProps extends React.PropsWithChildren {
   style?: React.CSSProperties & ElmToggleCSSVariables;
@@ -19,9 +21,6 @@ export interface ElmToggleProps extends React.PropsWithChildren {
 
   /** Custom inline summary content (used when summary is not provided). */
   summaryContent?: React.ReactNode;
-
-  /** The margin-block of the toggle. */
-  margin?: React.CSSProperties["marginBlock"];
 
   /** Whether the toggle is open. */
   value?: boolean;
@@ -51,7 +50,6 @@ export const ElmToggle = (props: ElmToggleProps) => {
       className={`${styles.toggle} ${isOpen ? styles.open : ""}`}
       style={
         {
-          "--margin-block": props.margin,
           ...props.style,
         } as React.CSSProperties
       }

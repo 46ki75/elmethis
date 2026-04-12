@@ -1,5 +1,5 @@
 .toggle {
-  margin-block: var(--margin-block);
+  scroll-margin-block-start: var(--elmethis-margin-block-start);
   display: grid;
   grid-template-rows: 3rem 0fr;
   transition: grid 200ms;

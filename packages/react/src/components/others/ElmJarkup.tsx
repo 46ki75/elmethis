@@ -140,6 +140,11 @@ export const ElmJarkup = ({
             <ElmParagraph
               key={key}
               backgroundColor={component.props?.backgroundColor}
+              style={
+                index === 0
+                  ? { "--elmethis-margin-block-start": "0" }
+                  : undefined
+              }
             >
               {render(component.slots.default)}
             </ElmParagraph>
@@ -157,6 +162,11 @@ export const ElmJarkup = ({
                   ? "unordered"
                   : "ordered"
               }
+              style={
+                index === 0
+                  ? { "--elmethis-margin-block-start": "0" }
+                  : undefined
+              }
             >
               {render(component.slots.default)}
             </ElmList>
@@ -164,26 +174,56 @@ export const ElmJarkup = ({
 
         case "BlockQuote":
           return (
-            <ElmBlockQuote key={key} cite={component.props?.cite}>
+            <ElmBlockQuote
+              key={key}
+              cite={component.props?.cite}
+              style={
+                index === 0
+                  ? { "--elmethis-margin-block-start": "0" }
+                  : undefined
+              }
+            >
               {render(component.slots.default)}
             </ElmBlockQuote>
           );
 
         case "Callout":
           return (
-            <ElmCallout key={key} type={component.props?.type}>
+            <ElmCallout
+              key={key}
+              type={component.props?.type}
+              style={
+                index === 0
+                  ? { "--elmethis-margin-block-start": "0" }
+                  : undefined
+              }
+            >
               {render(component.slots.default)}
             </ElmCallout>
           );
 
         case "Divider":
-          return <ElmDivider key={key} />;
+          return (
+            <ElmDivider
+              key={key}
+              style={
+                index === 0
+                  ? { "--elmethis-margin-block-start": "0" }
+                  : undefined
+              }
+            />
+          );
 
         case "Toggle":
           return (
             <ElmToggle
               key={key}
               summaryContent={render(component.slots.summary)}
+              style={
+                index === 0
+                  ? { "--elmethis-margin-block-start": "0" }
+                  : undefined
+              }
             >
               {render(component.slots.default)}
             </ElmToggle>
@@ -346,7 +386,7 @@ export const ElmJarkup = ({
       className={styles["jarkup-body"]}
       style={{
         "--elmethis-margin-block-start":
-          style?.["--elmethis-margin-block-start"] ?? "2rem",
+          style?.["--elmethis-margin-block-start"] ?? "5rem",
         ...style,
       }}
     >
