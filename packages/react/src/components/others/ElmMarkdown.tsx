@@ -52,6 +52,13 @@ type RenderFunctionMap<N> = {
 
 type RenderFunctionMapReact = RenderFunctionMap<React.ReactNode>;
 
+const marginStyle = (index: number) =>
+  index === 0
+    ? ({
+        "--elmethis-margin-block-start": "0",
+      } as React.CSSProperties)
+    : undefined;
+
 const defaultRenderFunctionMap: RenderFunctionMapReact = {
   blockquote: (token, render, index) => {
     if (!token.tokens || token.tokens.length === 0) return null;
@@ -60,17 +67,21 @@ const defaultRenderFunctionMap: RenderFunctionMapReact = {
         ? ((t as Tokens.Paragraph).tokens as Token[])
         : [t],
     );
-    return <ElmBlockQuote key={index}>{render(innerTokens)}</ElmBlockQuote>;
+    return (
+      <ElmBlockQuote key={index} style={marginStyle(index)}>
+        {render(innerTokens)}
+      </ElmBlockQuote>
+    );
   },
 
   br: (_token, _render, index) => <br key={index} />,
 
   checkbox: (token, _render, index) => (
-    <ElmCheckbox key={index} label={token.raw} checked={token.checked} />
+    <ElmCheckbox key={index} label={token.raw} checked={token.checked} style={marginStyle(index)} />
   ),
 
   code: (token, _render, index) => (
-    <ElmCodeBlock key={index} code={token.text.trim()} language={token.lang} />
+    <ElmCodeBlock key={index} code={token.text.trim()} language={token.lang} style={marginStyle(index)} />
   ),
 
   codespan: (token, _render, index) => (
@@ -108,15 +119,15 @@ const defaultRenderFunctionMap: RenderFunctionMapReact = {
   heading: (token, render, index) => {
     const level = token.depth as 1 | 2 | 3 | 4 | 5 | 6;
     return token.tokens && token.tokens.length !== 0 ? (
-      <ElmHeading key={index} level={level}>
+      <ElmHeading key={index} level={level} style={marginStyle(index)}>
         {render(token.tokens as Token[])}
       </ElmHeading>
     ) : (
-      <ElmHeading key={index} level={level} text={token.text} />
+      <ElmHeading key={index} level={level} text={token.text} style={marginStyle(index)} />
     );
   },
 
-  hr: (_token, _render, index) => <ElmDivider key={index} />,
+  hr: (_token, _render, index) => <ElmDivider key={index} style={marginStyle(index)} />,
 
   html: () => null,
 
@@ -127,6 +138,7 @@ const defaultRenderFunctionMap: RenderFunctionMapReact = {
       enableModal={true}
       src={token.href}
       alt={token.text}
+      style={marginStyle(index)}
     />
   ),
 
@@ -146,7 +158,7 @@ const defaultRenderFunctionMap: RenderFunctionMapReact = {
       <li key={i}>{render(item.tokens)}</li>
     ));
     return (
-      <ElmList key={index} listStyle={token.ordered ? "ordered" : "unordered"}>
+      <ElmList key={index} listStyle={token.ordered ? "ordered" : "unordered"} style={marginStyle(index)}>
         {listItems}
       </ElmList>
     );
@@ -162,7 +174,7 @@ const defaultRenderFunctionMap: RenderFunctionMapReact = {
 
   paragraph: (token, render, index) =>
     token.tokens && token.tokens.length !== 0 ? (
-      <ElmParagraph key={index}>{render(token.tokens as Token[])}</ElmParagraph>
+      <ElmParagraph key={index} style={marginStyle(index)}>{render(token.tokens as Token[])}</ElmParagraph>
     ) : null,
 
   space: () => null,
@@ -197,6 +209,7 @@ const defaultRenderFunctionMap: RenderFunctionMapReact = {
         key={index}
         header={<ElmTableHeader>{headerRow}</ElmTableHeader>}
         body={<ElmTableBody>{bodyRows}</ElmTableBody>}
+        style={marginStyle(index)}
       />
     );
   },
