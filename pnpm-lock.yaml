@@ -89,7 +89,7 @@ importers:
         version: 8.58.1(eslint@10.2.0(jiti@2.4.2))(typescript@5.9.3)
       undici:
         specifier: '*'
-        version: 8.0.2
+        version: 8.1.0
       vite:
         specifier: ^6
         version: 6.4.2(@types/node@25.5.0)(jiti@2.4.2)(lightningcss@1.32.0)(sass@1.99.0)(terser@5.39.0)(tsx@4.19.3)
@@ -6834,8 +6834,8 @@ packages:
   undici-types@7.18.2:
     resolution: {integrity: sha512-AsuCzffGHJybSaRrmr5eHr81mwJU3kjw6M+uprWvCXiNeN9SOGwQ3Jn8jb8m3Z6izVgknn1R0FTCEAP2QrLY/w==}
 
-  undici@8.0.2:
-    resolution: {integrity: sha512-B9MeU5wuFhkFAuNeA19K2GDFcQXZxq33fL0nRy2Aq30wdufZbyyvxW3/ChaeipXVfy/wUweZyzovQGk39+9k2w==}
+  undici@8.1.0:
+    resolution: {integrity: sha512-E9MkTS4xXLnRPYqxH2e6Hr2/49e7WFDKczKcCaFH4VaZs2iNvHMqeIkyUAD9vM8kujy9TjVrRlQ5KkdEJxB2pw==}
     engines: {node: '>=22.19.0'}
 
   unicorn-magic@0.3.0:
@@ -7462,7 +7462,7 @@ snapshots:
       '@types/mdx': 2.0.13
       source-map: 0.7.6
       svgo: 3.3.3
-      undici: 8.0.2
+      undici: 8.1.0
       valibot: 1.2.0(typescript@5.9.3)
       vfile: 6.0.3
       vite: 6.4.2(@types/node@25.5.0)(jiti@2.4.2)(lightningcss@1.32.0)(sass@1.99.0)(terser@5.39.0)(tsx@4.19.3)
@@ -15098,7 +15098,7 @@ snapshots:
 
   undici-types@7.18.2: {}
 
-  undici@8.0.2: {}
+  undici@8.1.0: {}
 
   unicorn-magic@0.3.0: {}
 
