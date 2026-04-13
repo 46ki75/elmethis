@@ -61,7 +61,7 @@
   },
   "devDependencies": {
     "@copilotkit/react-core": "^1.55.3",
-    "@eslint/js": "^9.39.4",
+    "@eslint/js": "^10.0.1",
     "@storybook/addon-docs": "^10.3.5",
     "@storybook/react-vite": "^10.3.5",
     "@types/lodash-es": "^4.17.12",
@@ -69,14 +69,14 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
-    "eslint": "^9.39.4",
+    "eslint": "^10.2.0",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.4.0",
     "prettier": "3.8.2",
     "storybook": "^10.3.5",
     "typescript": "~6.0.2",
-    "typescript-eslint": "^8.58.0",
+    "typescript-eslint": "^8.58.2",
     "vite": "^8.0.4"
   }
 }
