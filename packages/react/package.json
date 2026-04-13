@@ -1,6 +1,6 @@
 {
   "name": "@elmethis/react",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "publishConfig": {
     "access": "public"
   },
@@ -60,6 +60,7 @@
     "shiki": "^4.0.2"
   },
   "devDependencies": {
+    "@copilotkit/react-core": "^1.55.3",
     "@eslint/js": "^9.39.4",
     "@storybook/addon-docs": "^10.3.5",
     "@storybook/react-vite": "^10.3.5",
