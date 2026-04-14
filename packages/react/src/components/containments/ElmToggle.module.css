@@ -1,17 +1,19 @@
 .toggle {
   margin-block-start: var(--elmethis-margin-block-start);
+  box-sizing: border-box;
   display: grid;
-  grid-template-rows: 3rem 0fr;
+  grid-template-rows: 3.5rem 0fr;
   grid-template-columns: 1px 1fr;
   grid-template-areas:
     "summary summary"
     "border content";
+
   gap: 0.5rem 2.5rem;
   transition: grid-template-rows 200ms;
-}
 
-.open {
-  grid-template-rows: 3rem 1fr;
+  &.open {
+    grid-template-rows: 3.5rem 1fr;
+  }
 }
 
 .summary {
@@ -71,22 +73,16 @@
 .border {
   grid-area: border;
   width: 1px;
-  margin-left: 1.25rem;
+  margin-left: 1rem;
   height: 100%;
   background-color: oklch(from gray l c h / 0.125);
 }
 
 .content {
   grid-area: content;
+  box-sizing: border-box;
 
-  display: block;
-  overflow: hidden;
-
-  opacity: 0;
-  transition: opacity 150ms;
-}
-
-.content-open {
-  border-width: 1px;
-  opacity: 1;
+  &.close {
+    overflow: hidden;
+  }
 }

@@ -87,7 +87,9 @@ export const ElmToggle = (props: ElmToggleProps) => {
       <div className={styles.border}></div>
 
       <div
-        className={clsx(styles.content, { [styles["content-open"]]: isOpen })}
+        className={clsx(styles.content, {
+          [styles.close]: !isOpen,
+        })}
       >
         {props.children}
       </div>
