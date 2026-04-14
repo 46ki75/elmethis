@@ -5,7 +5,7 @@ import styles from "./ElmToggle.module.css";
 
 import { ElmMdiIcon } from "@components/icon/ElmMdiIcon";
 import { ElmInlineText } from "@components/typography/ElmInlineText";
-import { mdiChevronRight, mdiChevronUp, mdiPlus } from "@mdi/js";
+import { mdiChevronRight, mdiPlus } from "@mdi/js";
 import type { ElmethisCSSVariables } from "@styles/variables";
 import clsx from "clsx";
 
@@ -57,13 +57,7 @@ export const ElmToggle = (props: ElmToggleProps) => {
         } as React.CSSProperties
       }
     >
-      <div
-        className={styles.summary}
-        onClick={handleClick}
-        style={{
-          borderRadius: isOpen ? "0.25rem 0.25rem 0rem 0rem" : "0.25rem",
-        }}
-      >
+      <div className={styles.summary} onClick={handleClick}>
         <div className={styles["summary-left"]}>
           <ElmMdiIcon
             className={clsx(styles.chevron, { [styles.open]: isOpen })}
@@ -91,19 +85,10 @@ export const ElmToggle = (props: ElmToggleProps) => {
       <div className={styles.border}></div>
 
       <div
-        className={`${styles.content} ${isOpen ? styles["content-open"] : ""}`}
+        className={clsx(styles.content, { [styles["content-open"]]: isOpen })}
       >
         {props.children}
       </div>
-
-      {isOpen && (
-        <div className={styles.close} onClick={handleClick}>
-          <div className={styles["close-button"]}>
-            <ElmMdiIcon d={mdiChevronUp} size="1rem" color="#c56565" />
-            <ElmInlineText color="#8e3636">CLOSE</ElmInlineText>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
