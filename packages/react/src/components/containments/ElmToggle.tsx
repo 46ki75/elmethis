@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 
 import "@styles/global.css";
 import styles from "./ElmToggle.module.css";
+
+import { useControllableState } from "@radix-ui/react-use-controllable-state";
 
 import { ElmMdiIcon } from "@components/icon/ElmMdiIcon";
 import { ElmInlineText } from "@components/typography/ElmInlineText";
@@ -26,26 +28,22 @@ export interface ElmToggleProps extends React.PropsWithChildren {
   summaryContent?: React.ReactNode;
 
   /** Whether the toggle is open. */
-  value?: boolean;
+  isOpen?: boolean;
 
   /** Called when the toggle open state changes. */
-  onChange?: (value: boolean) => void;
+  setIsOpen?: (value: boolean) => void;
 }
 
 export const ElmToggle = (props: ElmToggleProps) => {
-  const [internalOpen, setInternalOpen] = useState(false);
-
-  const isControlled = props.value !== undefined;
-  const isOpen = isControlled ? props.value! : internalOpen;
+  const [isOpen, setIsOpen] = useControllableState({
+    prop: props.isOpen,
+    defaultProp: false,
+    onChange: props.setIsOpen,
+  });
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    const next = !isOpen;
-    if (isControlled) {
-      props.onChange?.(next);
-    } else {
-      setInternalOpen(next);
-    }
+    setIsOpen(!isOpen);
   };
 
   return (

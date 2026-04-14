@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { ElmToggle } from "./ElmToggle";
+import { ElmToggle, type ElmToggleProps } from "./ElmToggle";
 import { ElmInlineText } from "@components/typography/ElmInlineText";
 
 import md from "./ElmToggle.md?raw";
 import { ElmMarkdown } from "@components/others/ElmMarkdown";
+import { useState } from "react";
 
 const meta: Meta<typeof ElmToggle> = {
   title: "Components/Containments/ElmToggle",
@@ -44,19 +45,34 @@ export const InlineSummary: Story = {
   ),
 };
 
+const MarkdoenStoryComponent = (args: ElmToggleProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div>
+      <div>
+        <button onClick={() => setIsOpen(!isOpen)}>Toggle</button>
+      </div>
+      <ElmToggle
+        {...args}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        summaryContent={
+          <>
+            <ElmInlineText>How to use </ElmInlineText>
+            <ElmInlineText code>console.table()</ElmInlineText>
+            <ElmInlineText>?</ElmInlineText>
+          </>
+        }
+      >
+        <ElmMarkdown markdown={md} />
+      </ElmToggle>
+    </div>
+  );
+};
+
 export const Markdown: Story = {
-  render: (args) => (
-    <ElmToggle
-      {...args}
-      summaryContent={
-        <>
-          <ElmInlineText>How to use </ElmInlineText>
-          <ElmInlineText code>console.table()</ElmInlineText>
-          <ElmInlineText>?</ElmInlineText>
-        </>
-      }
-    >
-      <ElmMarkdown markdown={md} />
-    </ElmToggle>
-  ),
+  render: (args) => {
+    return <MarkdoenStoryComponent {...args} />;
+  },
 };

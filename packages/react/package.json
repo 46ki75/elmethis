@@ -48,6 +48,7 @@
     "@iconify-json/mdi": "^1.2.3",
     "@iconify/react": "^6.0.2",
     "@mdi/js": "^7.4.47",
+    "@radix-ui/react-use-controllable-state": "^1.2.2",
     "clsx": "^2.1.1",
     "jarkup-ts": "^0.14.0",
     "katex": "^0.16.45",
