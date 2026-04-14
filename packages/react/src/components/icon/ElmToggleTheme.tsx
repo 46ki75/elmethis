@@ -9,6 +9,8 @@ export interface ElmToggleThemeCSSVariables {}
 export interface ElmToggleThemeProps {
   style?: React.CSSProperties & ElmToggleThemeCSSVariables;
 
+  className?: string;
+
   /**
    * Specifies the size of the icon.
    */
@@ -16,7 +18,7 @@ export interface ElmToggleThemeProps {
 }
 
 export const ElmToggleTheme = (props: ElmToggleThemeProps) => {
-  const { size = "2rem", style } = props;
+  const { size = "2rem", style, className } = props;
   const { isDarkTheme, toggleTheme } = useElmethisTheme();
 
   if (!isDarkTheme) {
@@ -199,7 +201,7 @@ export const ElmToggleTheme = (props: ElmToggleThemeProps) => {
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      className={styles.icon}
+      className={[styles.icon, className].filter(Boolean).join(" ")}
       style={style}
       onClick={toggleTheme}
     >

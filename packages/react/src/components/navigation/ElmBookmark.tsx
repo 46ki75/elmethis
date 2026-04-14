@@ -17,6 +17,8 @@ export type ElmBookmarkCSSVariables = Pick<
 export interface ElmBookmarkProps {
   style?: React.CSSProperties & ElmBookmarkCSSVariables;
 
+  className?: string;
+
   /**
    * Whether to hide the URL.
    */
@@ -83,6 +85,7 @@ export const ElmBookmark = ({
   onClick,
   favicon,
   style,
+  className,
 }: ElmBookmarkProps) => {
   const [imageError, setImageError] = useState(false);
 
@@ -99,7 +102,10 @@ export const ElmBookmark = ({
       : description;
 
   return (
-    <div className={styles.parent} style={style}>
+    <div
+      className={[styles.parent, className].filter(Boolean).join(" ")}
+      style={style}
+    >
       <a
         className={styles.bookmark}
         href={url}

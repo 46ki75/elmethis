@@ -16,6 +16,8 @@ export type ElmFileCSSVariables = Pick<
 export interface ElmFileProps {
   style?: React.CSSProperties & ElmFileCSSVariables;
 
+  className?: string;
+
   /**
    * The name of the file.
    */
@@ -40,7 +42,13 @@ function getLastPathSegmentWithoutQueryOrHash(
   return pathSegments.length > 0 ? pathSegments[pathSegments.length - 1] : null;
 }
 
-export const ElmFile = ({ name, src, filesize, style }: ElmFileProps) => {
+export const ElmFile = ({
+  name,
+  src,
+  filesize,
+  style,
+  className,
+}: ElmFileProps) => {
   const downloadFile = useCallback(async () => {
     let link: HTMLAnchorElement | undefined;
     try {
@@ -65,7 +73,10 @@ export const ElmFile = ({ name, src, filesize, style }: ElmFileProps) => {
     name ?? getLastPathSegmentWithoutQueryOrHash(src) ?? "unknown file";
 
   return (
-    <div className={styles.file} style={style}>
+    <div
+      className={[styles.file, className].filter(Boolean).join(" ")}
+      style={style}
+    >
       <div className={styles["left-container"]}>
         <ElmMdiIcon d={mdiFileOutline} size="1.25em" />
         <ElmInlineText>{displayName}</ElmInlineText>

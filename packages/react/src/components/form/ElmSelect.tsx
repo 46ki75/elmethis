@@ -23,6 +23,8 @@ export interface ElmSelectCSSVariables {
 export interface ElmSelectProps {
   style?: React.CSSProperties & ElmSelectCSSVariables;
 
+  className?: string;
+
   /** Label displayed above the select. */
   label: string;
 
@@ -84,7 +86,11 @@ export const ElmSelect = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const wrapperClass = [styles.wrapper, isActive ? styles.active : ""]
+  const wrapperClass = [
+    styles.wrapper,
+    isActive ? styles.active : "",
+    props.className,
+  ]
     .filter(Boolean)
     .join(" ");
 

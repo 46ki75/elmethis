@@ -12,6 +12,8 @@ export interface ElmTableOfContentsCSSVariables {}
 export interface ElmTableOfContentsProps {
   style?: React.CSSProperties & ElmTableOfContentsCSSVariables;
 
+  className?: string;
+
   /**
    * The headings to display.
    */
@@ -25,9 +27,13 @@ export interface ElmTableOfContentsProps {
 export const ElmTableOfContents = ({
   headings,
   style,
+  className,
 }: ElmTableOfContentsProps) => {
   return (
-    <nav className={styles.toc} style={style}>
+    <nav
+      className={[styles.toc, className].filter(Boolean).join(" ")}
+      style={style}
+    >
       {headings.map((heading, index) => (
         <a
           key={index}

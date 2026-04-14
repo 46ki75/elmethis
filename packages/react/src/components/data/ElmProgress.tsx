@@ -12,6 +12,8 @@ export interface ElmProgressCSSVariables {
 export interface ElmProgressProps {
   style?: React.CSSProperties & ElmProgressCSSVariables;
 
+  className?: string;
+
   /**
    * The current value of the progress.
    */
@@ -57,13 +59,14 @@ export const ElmProgress = ({
   color,
   loading = false,
   style,
+  className,
 }: ElmProgressProps) => {
   return (
     <>
       <progress className={styles.progress} value={value} max={max} />
 
       <div
-        className={styles.container}
+        className={[styles.container, className].filter(Boolean).join(" ")}
         style={
           {
             "--weight": weight,

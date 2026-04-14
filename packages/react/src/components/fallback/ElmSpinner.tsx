@@ -8,6 +8,8 @@ export interface ElmSpinnerCSSVariables {}
 export interface ElmSpinnerProps {
   style?: React.CSSProperties & ElmSpinnerCSSVariables;
 
+  className?: string;
+
   /**
    * Specifies the radius of the spinner circle.
    */
@@ -23,7 +25,12 @@ export const ElmSpinner = (props: ElmSpinnerProps) => {
   const { radius = 16, weight = 2, style } = props;
 
   return (
-    <svg height={radius * 2} width={radius * 2} style={style}>
+    <svg
+      className={props.className}
+      height={radius * 2}
+      width={radius * 2}
+      style={style}
+    >
       <circle
         className={styles.circle}
         cx={radius}

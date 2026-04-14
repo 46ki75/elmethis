@@ -8,6 +8,8 @@ export interface ElmArrowIconCSSVariables {}
 export interface ElmArrowIconProps {
   style?: React.CSSProperties & ElmArrowIconCSSVariables;
 
+  className?: string;
+
   /**
    * Specifies the direction of the arrow.
    */
@@ -52,6 +54,7 @@ export const ElmArrowIcon = (props: ElmArrowIconProps) => {
     !loading && !pending ? styles.normal : undefined,
     loading ? styles.loading : undefined,
     !loading && pending ? styles.pending : undefined,
+    props.className,
   ]
     .filter(Boolean)
     .join(" ");

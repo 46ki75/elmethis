@@ -17,6 +17,8 @@ export interface ElmBreadcrumbCSSVariables {}
 export interface ElmBreadcrumbProps {
   style?: React.CSSProperties & ElmBreadcrumbCSSVariables;
 
+  className?: string;
+
   /**
    * The links to display.
    */
@@ -33,7 +35,11 @@ export interface ElmBreadcrumbProps {
   }>;
 }
 
-export const ElmBreadcrumb = ({ links, style }: ElmBreadcrumbProps) => {
+export const ElmBreadcrumb = ({
+  links,
+  style,
+  className,
+}: ElmBreadcrumbProps) => {
   const containerRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -51,7 +57,7 @@ export const ElmBreadcrumb = ({ links, style }: ElmBreadcrumbProps) => {
 
   return (
     <nav
-      className={styles.container}
+      className={[styles.container, className].filter(Boolean).join(" ")}
       ref={containerRef}
       style={
         {

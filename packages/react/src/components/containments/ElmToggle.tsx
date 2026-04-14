@@ -17,6 +17,8 @@ export type ElmToggleCSSVariables = Pick<
 export interface ElmToggleProps extends React.PropsWithChildren {
   style?: React.CSSProperties & ElmToggleCSSVariables;
 
+  className?: string;
+
   /** The summary text of the toggle. */
   summary?: string;
 
@@ -48,7 +50,7 @@ export const ElmToggle = (props: ElmToggleProps) => {
 
   return (
     <div
-      className={clsx(styles.toggle, {
+      className={clsx(styles.toggle, props.className, {
         [styles.open]: isOpen,
       })}
       style={

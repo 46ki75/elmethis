@@ -22,6 +22,8 @@ export interface ElmStatusMessageCSSVariables {}
 export interface ElmStatusMessageProps {
   style?: React.CSSProperties & ElmStatusMessageCSSVariables;
 
+  className?: string;
+
   /**
    * The status type of the message.
    */
@@ -37,11 +39,15 @@ export const ElmStatusMessage = ({
   status,
   message,
   style,
+  className,
 }: ElmStatusMessageProps) => {
   const { color, icon } = STATUS_MAP[status];
 
   return (
-    <div className={styles.wrapper} style={style}>
+    <div
+      className={[styles.wrapper, className].filter(Boolean).join(" ")}
+      style={style}
+    >
       <ElmMdiIcon d={icon} color={color} size="1em" />
       <ElmInlineText color={color}>{message}</ElmInlineText>
     </div>

@@ -37,6 +37,8 @@ export interface Command {
 export interface ElmCommandPaletteProps {
   style?: React.CSSProperties;
 
+  className?: string;
+
   commands: Command[];
   onCommandInvoked?: (command?: Command) => void;
 }
@@ -56,6 +58,7 @@ export const ElmCommandPalette = ({
   commands,
   onCommandInvoked,
   style,
+  className,
 }: ElmCommandPaletteProps) => {
   const [input, setInput] = useState("");
   const [searchResults, setSearchResults] = useState<Command[]>([]);
@@ -115,7 +118,7 @@ export const ElmCommandPalette = ({
 
   return (
     <div
-      className={styles.palette}
+      className={[styles.palette, className].filter(Boolean).join(" ")}
       style={
         {
           "--height": "500px",

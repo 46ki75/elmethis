@@ -23,6 +23,8 @@ export type ElmCodeBlockCSSVariables = Pick<
 export interface ElmCodeBlockProps {
   style?: React.CSSProperties & ElmCodeBlockCSSVariables;
 
+  className?: string;
+
   /**
    * The code to display.
    */
@@ -44,6 +46,7 @@ export const ElmCodeBlock = ({
   language = "txt",
   caption,
   style,
+  className,
 }: ElmCodeBlockProps) => {
   const [isRendered, setIsRendered] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -78,7 +81,7 @@ export const ElmCodeBlock = ({
   return (
     <div
       ref={wrapperRef}
-      className={styles.wrapper}
+      className={[styles.wrapper, className].filter(Boolean).join(" ")}
       style={{
         opacity: isVisible ? 1 : 0,
         ...style,

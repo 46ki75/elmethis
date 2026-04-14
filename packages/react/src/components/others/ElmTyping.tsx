@@ -11,6 +11,8 @@ interface TypingTarget {
 export interface ElmTypingProps {
   style?: React.CSSProperties;
 
+  className?: string;
+
   /**
    * The target text for the typing game.
    */
@@ -20,6 +22,7 @@ export interface ElmTypingProps {
 export const ElmTyping = ({
   target = "Typing game",
   style,
+  className,
 }: ElmTypingProps) => {
   const [targetArray, setTargetArray] = useState<TypingTarget[]>(() => {
     const arr: TypingTarget[] = target
@@ -76,7 +79,7 @@ export const ElmTyping = ({
   }, [currentIndex, isFinished]);
 
   return (
-    <div style={style}>
+    <div className={className} style={style}>
       <div>
         {targetArray.map((t, i) => (
           <span

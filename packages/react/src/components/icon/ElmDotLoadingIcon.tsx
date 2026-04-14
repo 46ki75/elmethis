@@ -8,6 +8,8 @@ export interface ElmDotLoadingIconCSSVariables {}
 export interface ElmDotLoadingIconProps {
   style?: React.CSSProperties & ElmDotLoadingIconCSSVariables;
 
+  className?: string;
+
   /**
    * Specifies the color of the dot.
    *
@@ -26,7 +28,7 @@ export const ElmDotLoadingIcon = (props: ElmDotLoadingIconProps) => {
 
   return (
     <div
-      className={styles.wrapper}
+      className={[styles.wrapper, props.className].filter(Boolean).join(" ")}
       style={{ width: size, height: size, ...style }}
     >
       {[1, 2, 3].map((n) => (

@@ -33,6 +33,8 @@ export type ElmCalloutCSSVariables = Pick<
 export interface ElmCalloutProps extends React.PropsWithChildren {
   style?: React.CSSProperties & ElmCalloutCSSVariables;
 
+  className?: string;
+
   /**
    * Type of alert
    */
@@ -44,7 +46,7 @@ export const ElmCallout = ({ type = "note", ...props }: ElmCalloutProps) => {
 
   return (
     <aside
-      className={styles.callout}
+      className={[styles.callout, props.className].filter(Boolean).join(" ")}
       style={
         {
           "--elmethis-scoped-border-color": color.code,

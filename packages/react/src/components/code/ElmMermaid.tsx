@@ -13,6 +13,8 @@ export type ElmMermaidCSSVariables = Pick<
 export interface ElmMermaidProps {
   style?: React.CSSProperties & ElmMermaidCSSVariables;
 
+  className?: string;
+
   /**
    * The Mermaid diagram code to render.
    */
@@ -37,7 +39,7 @@ function getCacheKey(code: string): string {
   return `mermaid-${hash}`;
 }
 
-export const ElmMermaid = ({ code, style }: ElmMermaidProps) => {
+export const ElmMermaid = ({ code, style, className }: ElmMermaidProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isRendered, setIsRendered] = useState(false);
 
@@ -110,7 +112,13 @@ export const ElmMermaid = ({ code, style }: ElmMermaidProps) => {
   return (
     <div
       ref={containerRef}
-      className={`${styles.mermaid} ${isRendered ? styles.rendered : styles.raw}`}
+      className={[
+        styles.mermaid,
+        isRendered ? styles.rendered : styles.raw,
+        className,
+      ]
+        .filter(Boolean)
+        .join(" ")}
       style={style}
     />
   );

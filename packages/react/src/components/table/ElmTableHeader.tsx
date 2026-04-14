@@ -7,12 +7,21 @@ import { HasHeaderContext } from "./TableContext";
 
 export interface ElmTableHeaderProps extends React.PropsWithChildren {
   style?: React.CSSProperties;
+
+  className?: string;
 }
 
-export const ElmTableHeader = ({ children, style }: ElmTableHeaderProps) => {
+export const ElmTableHeader = ({
+  children,
+  style,
+  className,
+}: ElmTableHeaderProps) => {
   return (
     <HasHeaderContext.Provider value={true}>
-      <thead className={styles.thead} style={style}>
+      <thead
+        className={[styles.thead, className].filter(Boolean).join(" ")}
+        style={style}
+      >
         {children}
       </thead>
     </HasHeaderContext.Provider>

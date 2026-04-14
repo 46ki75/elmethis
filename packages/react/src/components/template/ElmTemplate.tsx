@@ -7,11 +7,18 @@ export interface ElmTemplateCSSVariables {}
 
 export interface ElmTemplateProps {
   style?: React.CSSProperties & ElmTemplateCSSVariables;
+
+  className?: string;
 }
 
 export const ElmTemplate = (props: ElmTemplateProps) => {
   return (
-    <div className={styles["elm-template"]} style={props.style}>
+    <div
+      className={[styles["elm-template"], props.className]
+        .filter(Boolean)
+        .join(" ")}
+      style={props.style}
+    >
       PLACEHOLDER
     </div>
   );

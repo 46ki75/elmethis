@@ -22,6 +22,8 @@ export type ElmHeadingCSSVariables = Pick<
 export interface ElmHeadingProps extends React.PropsWithChildren {
   style?: React.CSSProperties & ElmHeadingCSSVariables;
 
+  className?: string;
+
   /**
    * Text to display
    */
@@ -81,7 +83,11 @@ export const ElmHeading = ({
   const headingId =
     props.id ?? (props.text ? toKebabCase(props.text) : undefined);
 
-  const className = [styles["heading-common"], styles[`h${level}`]]
+  const className = [
+    styles["heading-common"],
+    styles[`h${level}`],
+    props.className,
+  ]
     .filter(Boolean)
     .join(" ");
 

@@ -8,6 +8,8 @@ export interface ElmTooltipCSSVariables {}
 export interface ElmTooltipProps {
   style?: React.CSSProperties & ElmTooltipCSSVariables;
 
+  className?: string;
+
   /** The original element that triggers the tooltip. */
   original: React.ReactNode;
 
@@ -49,7 +51,7 @@ export const ElmTooltip = (props: ElmTooltipProps) => {
   return (
     <span
       ref={elRef}
-      className={styles.original}
+      className={[styles.original, props.className].filter(Boolean).join(" ")}
       onMouseOver={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
       style={props.style}

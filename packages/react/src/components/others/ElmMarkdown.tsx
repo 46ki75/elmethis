@@ -28,6 +28,8 @@ export type ElmMarkdownCSSVariables = Pick<
 export interface ElmMarkdownProps {
   style?: React.CSSProperties & ElmMarkdownCSSVariables;
 
+  className?: string;
+
   /**
    * The markdown string to render.
    */
@@ -77,11 +79,21 @@ const defaultRenderFunctionMap: RenderFunctionMapReact = {
   br: (_token, _render, index) => <br key={index} />,
 
   checkbox: (token, _render, index) => (
-    <ElmCheckbox key={index} label={token.raw} checked={token.checked} style={marginStyle(index)} />
+    <ElmCheckbox
+      key={index}
+      label={token.raw}
+      checked={token.checked}
+      style={marginStyle(index)}
+    />
   ),
 
   code: (token, _render, index) => (
-    <ElmCodeBlock key={index} code={token.text.trim()} language={token.lang} style={marginStyle(index)} />
+    <ElmCodeBlock
+      key={index}
+      code={token.text.trim()}
+      language={token.lang}
+      style={marginStyle(index)}
+    />
   ),
 
   codespan: (token, _render, index) => (
@@ -123,11 +135,18 @@ const defaultRenderFunctionMap: RenderFunctionMapReact = {
         {render(token.tokens as Token[])}
       </ElmHeading>
     ) : (
-      <ElmHeading key={index} level={level} text={token.text} style={marginStyle(index)} />
+      <ElmHeading
+        key={index}
+        level={level}
+        text={token.text}
+        style={marginStyle(index)}
+      />
     );
   },
 
-  hr: (_token, _render, index) => <ElmDivider key={index} style={marginStyle(index)} />,
+  hr: (_token, _render, index) => (
+    <ElmDivider key={index} style={marginStyle(index)} />
+  ),
 
   html: () => null,
 
@@ -158,7 +177,11 @@ const defaultRenderFunctionMap: RenderFunctionMapReact = {
       <li key={i}>{render(item.tokens)}</li>
     ));
     return (
-      <ElmList key={index} listStyle={token.ordered ? "ordered" : "unordered"} style={marginStyle(index)}>
+      <ElmList
+        key={index}
+        listStyle={token.ordered ? "ordered" : "unordered"}
+        style={marginStyle(index)}
+      >
         {listItems}
       </ElmList>
     );
@@ -174,7 +197,9 @@ const defaultRenderFunctionMap: RenderFunctionMapReact = {
 
   paragraph: (token, render, index) =>
     token.tokens && token.tokens.length !== 0 ? (
-      <ElmParagraph key={index} style={marginStyle(index)}>{render(token.tokens as Token[])}</ElmParagraph>
+      <ElmParagraph key={index} style={marginStyle(index)}>
+        {render(token.tokens as Token[])}
+      </ElmParagraph>
     ) : null,
 
   space: () => null,
@@ -227,6 +252,7 @@ const defaultRenderFunctionMap: RenderFunctionMapReact = {
 export const ElmMarkdown = ({
   markdown,
   style,
+  className,
   renderFunctionMap,
 }: ElmMarkdownProps) => {
   const mergedRenderFunctionMap = {
@@ -251,7 +277,7 @@ export const ElmMarkdown = ({
 
   return (
     <div
-      className={styles["markdown-body"]}
+      className={[styles["markdown-body"], className].filter(Boolean).join(" ")}
       style={{
         "--elmethis-margin-block-start": "2.5rem",
         ...style,

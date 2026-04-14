@@ -16,6 +16,8 @@ export type ElmTableCSSVariables = Pick<
 export interface ElmTableProps {
   style?: React.CSSProperties & ElmTableCSSVariables;
 
+  className?: string;
+
   /**
    * Optional caption for the table.
    */
@@ -43,10 +45,14 @@ export const ElmTable = ({
   header,
   body,
   style,
+  className,
 }: ElmTableProps) => {
   return (
     <HasRowHeaderContext.Provider value={hasRowHeader}>
-      <table className={styles.table} style={style}>
+      <table
+        className={[styles.table, className].filter(Boolean).join(" ")}
+        style={style}
+      >
         {caption != null && (
           <caption>
             <span className={styles.caption}>

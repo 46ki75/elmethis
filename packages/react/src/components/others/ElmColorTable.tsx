@@ -9,6 +9,8 @@ import { ElmColorSample } from "./ElmColorSample";
 export interface ElmColorTableProps {
   style?: React.CSSProperties;
 
+  className?: string;
+
   /**
    * The colors to display.
    */
@@ -19,9 +21,16 @@ const DARKNESS_LEVELS = [
   -3, -0.25, -0.2, -0.15, -0.1, -0.05, 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3,
 ] as const;
 
-export const ElmColorTable = ({ colors, style }: ElmColorTableProps) => {
+export const ElmColorTable = ({
+  colors,
+  style,
+  className,
+}: ElmColorTableProps) => {
   return (
-    <div className={styles.container} style={style}>
+    <div
+      className={[styles.container, className].filter(Boolean).join(" ")}
+      style={style}
+    >
       {colors.map((color) => (
         <div key={color.name} className={styles["row-container"]}>
           <div

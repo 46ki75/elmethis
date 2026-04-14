@@ -55,6 +55,8 @@ export interface ElmTextFieldCSSVariables {
 export interface ElmTextFieldProps {
   style?: React.CSSProperties & ElmTextFieldCSSVariables;
 
+  className?: string;
+
   /** Label for the text field. */
   label: string;
 
@@ -126,7 +128,11 @@ export const ElmTextField = ({
     [],
   );
 
-  const wrapperClass = [styles.wrapper, isFocused ? styles.active : ""]
+  const wrapperClass = [
+    styles.wrapper,
+    isFocused ? styles.active : "",
+    props.className,
+  ]
     .filter(Boolean)
     .join(" ");
 

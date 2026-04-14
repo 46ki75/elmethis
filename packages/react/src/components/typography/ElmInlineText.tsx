@@ -25,6 +25,8 @@ interface InlineLinkProps {
 export type ElmInlineTextProps = {
   style?: React.CSSProperties & ElmInlineTextCSSVariables;
 
+  className?: string;
+
   color?: React.CSSProperties["color"];
 
   backgroundColor?: React.CSSProperties["backgroundColor"];
@@ -88,7 +90,7 @@ export const ElmInlineText = (props: ElmInlineTextProps) => {
 
   return (
     <span
-      className={styles.text}
+      className={[styles.text, props.className].filter(Boolean).join(" ")}
       style={{
         "--elmethis-text-color-light": props.color,
         "--elmethis-text-color-dark": props.color,

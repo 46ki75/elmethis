@@ -8,13 +8,19 @@ export interface ElmPageTopCSSVariables {}
 export interface ElmPageTopProps {
   style?: React.CSSProperties & ElmPageTopCSSVariables;
 
+  className?: string;
+
   /**
    * Specifies the position of the button.
    */
   position?: "left" | "right";
 }
 
-export const ElmPageTop = ({ position = "right", style }: ElmPageTopProps) => {
+export const ElmPageTop = ({
+  position = "right",
+  style,
+  className,
+}: ElmPageTopProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -34,7 +40,13 @@ export const ElmPageTop = ({ position = "right", style }: ElmPageTopProps) => {
 
   return (
     <nav
-      className={`${styles.wrapper} ${isVisible ? styles["wrapper--visible"] : ""}`}
+      className={[
+        styles.wrapper,
+        isVisible ? styles["wrapper--visible"] : undefined,
+        className,
+      ]
+        .filter(Boolean)
+        .join(" ")}
       style={
         {
           "--size": "64px",

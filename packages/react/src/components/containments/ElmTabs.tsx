@@ -12,6 +12,8 @@ export type ElmTabsCSSVariables = Pick<
 export interface ElmTabsProps {
   style?: React.CSSProperties & ElmTabsCSSVariables;
 
+  className?: string;
+
   /** Array of tab label elements. */
   tabLabels: React.ReactNode[];
 
@@ -23,7 +25,12 @@ export const ElmTabs = (props: ElmTabsProps) => {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
 
   return (
-    <div className={styles["elm-tabs"]} style={props.style}>
+    <div
+      className={[styles["elm-tabs"], props.className]
+        .filter(Boolean)
+        .join(" ")}
+      style={props.style}
+    >
       <div className={styles["tab-container"]}>
         {props.tabLabels.map((tabLabel, index) => (
           <div

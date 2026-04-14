@@ -34,6 +34,8 @@ export interface ElmLanguageIconCSSVariables {}
 export interface ElmLanguageIconProps {
   style?: React.CSSProperties & ElmLanguageIconCSSVariables;
 
+  className?: string;
+
   /**
    * The size of the icon.
    */
@@ -70,7 +72,7 @@ const LanguageIconMap: Record<Language, string> = {
 export const ElmLanguageIcon = (props: ElmLanguageIconProps) => {
   return (
     <img
-      className={styles.icon}
+      className={[styles.icon, props.className].filter(Boolean).join(" ")}
       src={LanguageIconMap[props.language as Language] || MdiCodeIcon}
       width={props.size}
       height={props.size}

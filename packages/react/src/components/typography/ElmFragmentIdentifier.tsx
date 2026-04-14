@@ -8,6 +8,8 @@ export interface ElmFragmentIdentifierCSSVariables {}
 export interface ElmFragmentIdentifierProps {
   style?: React.CSSProperties & ElmFragmentIdentifierCSSVariables;
 
+  className?: string;
+
   /**
    * ID of the heading element.
    */
@@ -28,7 +30,7 @@ export const ElmFragmentIdentifier = (props: ElmFragmentIdentifierProps) => {
 
   return (
     <span
-      className={styles.fragment}
+      className={[styles.fragment, props.className].filter(Boolean).join(" ")}
       style={props.style}
       onClick={() => handleHashClick(props.id)}
     >

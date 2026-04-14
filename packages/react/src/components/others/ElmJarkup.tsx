@@ -51,6 +51,8 @@ export type ElmJarkupCSSVariables = Pick<
 export interface ElmJarkupProps {
   style?: React.CSSProperties & ElmJarkupCSSVariables;
 
+  className?: string;
+
   /**
    * JSON component tree to render.
    */
@@ -461,6 +463,7 @@ export const ElmJarkup = ({
   skipUnsupportedComponentWarning = false,
   renderFunctionMap,
   style,
+  className,
 }: ElmJarkupProps) => {
   const mergedRenderFunctionMap = {
     ...defaultRenderFunctionMap,
@@ -494,7 +497,7 @@ export const ElmJarkup = ({
 
   return (
     <div
-      className={styles["jarkup-body"]}
+      className={[styles["jarkup-body"], className].filter(Boolean).join(" ")}
       style={{
         "--elmethis-margin-block-start":
           style?.["--elmethis-margin-block-start"] ?? "2.5rem",

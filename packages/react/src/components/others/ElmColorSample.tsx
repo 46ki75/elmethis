@@ -12,13 +12,19 @@ import { ElmMdiIcon } from "@components/icon/ElmMdiIcon";
 export interface ElmColorSampleProps {
   style?: React.CSSProperties;
 
+  className?: string;
+
   /**
    * The color to display.
    */
   color: string;
 }
 
-export const ElmColorSample = ({ color, style }: ElmColorSampleProps) => {
+export const ElmColorSample = ({
+  color,
+  style,
+  className,
+}: ElmColorSampleProps) => {
   const [copied, setCopied] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -38,7 +44,10 @@ export const ElmColorSample = ({ color, style }: ElmColorSampleProps) => {
   }, []);
 
   return (
-    <div style={{ "--color": color, ...style } as React.CSSProperties}>
+    <div
+      className={className}
+      style={{ "--color": color, ...style } as React.CSSProperties}
+    >
       <ElmTooltip
         original={
           <>

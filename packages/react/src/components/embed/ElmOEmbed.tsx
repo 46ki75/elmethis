@@ -50,16 +50,18 @@ type OEmbedResponse = OEmbedPhoto | OEmbedVideo | OEmbedRich | OEmbedLink;
 export interface ElmOEmbedProps {
   style?: React.CSSProperties;
 
+  className?: string;
+
   /**
    * The oEmbed response data to render.
    */
   oEmbed: OEmbedResponse;
 }
 
-export const ElmOEmbed = ({ oEmbed, style }: ElmOEmbedProps) => {
+export const ElmOEmbed = ({ oEmbed, style, className }: ElmOEmbedProps) => {
   if (oEmbed.type === "photo") {
     return (
-      <div style={style}>
+      <div className={className} style={style}>
         <ElmImage
           src={oEmbed.url}
           alt={oEmbed.title}
@@ -103,7 +105,7 @@ export const ElmOEmbed = ({ oEmbed, style }: ElmOEmbedProps) => {
     oEmbed.title ?? oEmbed.author_name ?? oEmbed.provider_name ?? "Link";
 
   return (
-    <div style={style}>
+    <div className={className} style={style}>
       <ElmInlineText href={href}>{label}</ElmInlineText>
     </div>
   );

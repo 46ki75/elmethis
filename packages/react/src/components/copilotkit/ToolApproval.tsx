@@ -19,6 +19,8 @@ export type ToolApprovalCSSVariables = {};
 export interface ToolApprovalProps {
   style?: React.CSSProperties & ToolApprovalCSSVariables;
 
+  className?: string;
+
   toolName: string;
 
   status: ToolCallStatus;
@@ -35,7 +37,7 @@ export interface ToolApprovalProps {
 export const ToolApproval = (props: ToolApprovalProps) => {
   return (
     <div
-      className={clsx(styles["human-in-the-loop"], {
+      className={clsx(styles["human-in-the-loop"], props.className, {
         [styles["in-progress"]]: props.status === ToolCallStatus.InProgress,
         [styles.executing]: props.status === ToolCallStatus.Executing,
         [styles.complete]: props.status === ToolCallStatus.Complete,

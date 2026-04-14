@@ -13,6 +13,8 @@ export interface ElmButtonCSSVariables {
 export interface ElmButtonProps extends React.PropsWithChildren {
   style?: React.CSSProperties & ElmButtonCSSVariables;
 
+  className?: string;
+
   /** Whether the button is in loading state. */
   loading?: boolean;
 
@@ -64,6 +66,7 @@ export const ElmButton = ({
     props.color ? styles.colored : "",
     !props.color && !primary ? styles.normal : "",
     !props.color && primary ? styles.primary : "",
+    props.className,
   ]
     .filter(Boolean)
     .join(" ");

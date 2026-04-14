@@ -13,6 +13,8 @@ export interface ElmBlockFallbackCSSVariables {
 export interface ElmBlockFallbackProps {
   style?: React.CSSProperties & ElmBlockFallbackCSSVariables;
 
+  className?: string;
+
   /**
    * Specifies the height of the fallback container.
    */
@@ -24,7 +26,9 @@ export const ElmBlockFallback = (props: ElmBlockFallbackProps) => {
 
   return (
     <div
-      className={styles["block-fallback"]}
+      className={[styles["block-fallback"], props.className]
+        .filter(Boolean)
+        .join(" ")}
       style={{ "--height": height, ...style } as React.CSSProperties}
     >
       <ElmDotLoadingIcon />
