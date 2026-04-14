@@ -76,6 +76,8 @@ export const ElmToggle = (props: ElmToggleProps) => {
           </div>
         </div>
 
+        <hr className={styles.divider} />
+
         <ElmMdiIcon
           className={clsx(styles.cross, { [styles.open]: isOpen })}
           d={mdiPlus}

@@ -30,6 +30,23 @@
   gap: 0.5rem;
   transition: background-color 200ms;
 
+  .summary-left {
+    flex-shrink: 0;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .divider {
+    all: unset;
+    flex-shrink: 1;
+    box-sizing: border-box;
+    margin: 0 1rem;
+    height: 1px;
+    width: 100%;
+    background-color: oklch(from gray l c h / 0.125);
+  }
+
   &:hover {
     background-color: rgba(62, 67, 75, 0.05);
     [data-theme="dark"] & {
@@ -62,12 +79,6 @@
       transform: rotate(135deg);
     }
   }
-}
-
-.summary-left {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
 }
 
 .border {
