@@ -2,6 +2,9 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ElmToggle } from "./ElmToggle";
 import { ElmInlineText } from "@components/typography/ElmInlineText";
 
+import md from "./ElmToggle.md?raw";
+import { ElmMarkdown } from "@components/others/ElmMarkdown";
+
 const meta: Meta<typeof ElmToggle> = {
   title: "Components/Containments/ElmToggle",
   component: ElmToggle,
@@ -37,6 +40,23 @@ export const InlineSummary: Story = {
       <p>
         <ElmInlineText>Block Content</ElmInlineText>
       </p>
+    </ElmToggle>
+  ),
+};
+
+export const Markdown: Story = {
+  render: (args) => (
+    <ElmToggle
+      {...args}
+      summaryContent={
+        <>
+          <ElmInlineText>How to use </ElmInlineText>
+          <ElmInlineText code>console.table()</ElmInlineText>
+          <ElmInlineText>?</ElmInlineText>
+        </>
+      }
+    >
+      <ElmMarkdown markdown={md} />
     </ElmToggle>
   ),
 };
