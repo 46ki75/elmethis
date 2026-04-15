@@ -10,6 +10,7 @@ import {
   mdiArrowDownDropCircleOutline,
 } from "@mdi/js";
 import type { ElmethisCSSVariables } from "@styles/variables";
+import clsx from "clsx";
 
 export interface ElmSelectOption {
   id: string;
@@ -133,8 +134,12 @@ export const ElmSelect = ({
 
           <ElmMdiIcon d={mdiMenuDown} size="1.5rem" />
 
-          {isActive && (
-            <div className={styles.pulldown}>
+          <div
+            className={clsx(styles.pulldown, {
+              [styles.active]: isActive,
+            })}
+          >
+            <div className={styles["collapse"]}>
               {props.options.map((option) => (
                 <div
                   key={option.id}
@@ -158,7 +163,7 @@ export const ElmSelect = ({
                 </div>
               ))}
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>
