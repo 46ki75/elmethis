@@ -152,6 +152,10 @@ export {
 
 // Containments
 export {
+  ElmCollapse,
+  type ElmCollapseProps,
+} from "./components/containments/ElmCollapse";
+export {
   ElmColumn,
   type ElmColumnProps,
 } from "./components/containments/ElmColumn";
