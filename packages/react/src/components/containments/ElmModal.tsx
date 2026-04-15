@@ -13,6 +13,12 @@ export interface ElmModalProps extends React.PropsWithChildren {
 
   className?: string;
 
+  /**
+   * In milliseconds, the duration of the open/close animation.
+   * The modal will be removed from the DOM after the close animation finishes.
+   */
+  duration?: number;
+
   /** Whether the modal is open. */
   isOpen?: boolean;
 
@@ -25,6 +31,7 @@ export interface ElmModalProps extends React.PropsWithChildren {
 
 export const ElmModal = ({
   closeOnClickOutside = true,
+  duration = 400,
   isOpen,
   setIsOpen,
   ...props
@@ -36,10 +43,10 @@ export const ElmModal = ({
       const t = window.setTimeout(() => setVisible(true), 0);
       return () => clearTimeout(t);
     } else {
-      const timeout = window.setTimeout(() => setVisible(false), 400);
+      const timeout = window.setTimeout(() => setVisible(false), duration);
       return () => clearTimeout(timeout);
     }
-  }, [isOpen]);
+  }, [isOpen, duration]);
 
   const handleBackdropClick = useCallback(() => {
     if (closeOnClickOutside && setIsOpen) {
@@ -58,10 +65,11 @@ export const ElmModal = ({
       className={clsx(styles.provider, {
         [styles["exit"]]: !isOpen,
       })}
+      style={{ transitionDuration: `${duration}ms` }}
       onClick={handleBackdropClick}
     >
       <div
-        className={[styles.modal, props.className].filter(Boolean).join(" ")}
+        className={props.className}
         style={props.style}
         onClick={handleContentClick}
       >

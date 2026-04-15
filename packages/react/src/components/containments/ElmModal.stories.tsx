@@ -1,7 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ElmModal } from "./ElmModal";
-import { ElmInlineText } from "@components/typography/ElmInlineText";
+
 import { useState } from "react";
+import { ElmCodeBlock } from "@components/code/ElmCodeBlock";
+
+import code from "./ElmModal.stories.tsx?raw";
 
 const meta: Meta<typeof ElmModal> = {
   title: "Components/Containments/ElmModal",
@@ -24,7 +27,7 @@ export const Primary: Story = {
         <div>
           <button onClick={() => setIsOpen(!isOpen)}>Toggle Modal</button>
           <ElmModal {...args} isOpen={isOpen} setIsOpen={setIsOpen}>
-            <ElmInlineText>Hello world!</ElmInlineText>
+            <ElmCodeBlock language="tsx" code={code} />
           </ElmModal>
         </div>
       );
