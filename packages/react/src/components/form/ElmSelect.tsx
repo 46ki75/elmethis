@@ -70,6 +70,7 @@ export const ElmSelect = ({
       const selected = options.find((option) => option.id === id);
       if (selected && onSelect) {
         onSelect(selected);
+        setIsActive(false);
       }
     },
     [options, onSelect],
