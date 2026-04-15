@@ -31,7 +31,7 @@ export interface ElmModalProps extends React.PropsWithChildren {
 
 export const ElmModal = ({
   closeOnClickOutside = true,
-  duration = 400,
+  duration = 200,
   isOpen,
   setIsOpen,
   ...props
