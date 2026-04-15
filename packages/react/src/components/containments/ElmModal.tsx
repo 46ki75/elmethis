@@ -4,10 +4,9 @@ import "@styles/global.css";
 import styles from "./ElmModal.module.css";
 
 import { createPortal } from "react-dom";
+import clsx from "clsx";
 
-export interface ElmModalCSSVariables {
-  "--width"?: string;
-}
+export interface ElmModalCSSVariables {}
 
 export interface ElmModalProps extends React.PropsWithChildren {
   style?: React.CSSProperties & ElmModalCSSVariables;
@@ -19,9 +18,6 @@ export interface ElmModalProps extends React.PropsWithChildren {
 
   /** Called when the modal open state changes. */
   onChange?: (value: boolean) => void;
-
-  /** Max width of the modal content. */
-  width?: string;
 
   /** Whether clicking outside closes the modal. */
   closeOnClickOutside?: boolean;
@@ -60,17 +56,14 @@ export const ElmModal = ({
 
   return createPortal(
     <div
-      className={`${styles.provider} ${isOpen ? styles["provider-enter"] : styles["provider-exit"]}`}
+      className={clsx(styles.provider, {
+        [styles["exit"]]: !isOpen,
+      })}
       onClick={handleBackdropClick}
     >
       <div
         className={[styles.modal, props.className].filter(Boolean).join(" ")}
-        style={
-          {
-            "--width": props.width,
-            ...props.style,
-          } as React.CSSProperties
-        }
+        style={props.style}
         onClick={handleContentClick}
       >
         {props.children}

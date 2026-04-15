@@ -13,15 +13,17 @@
 
   background-color: rgba(35, 38, 42, 0.8);
 
-  transition: opacity 400ms;
-}
-
-.provider-enter {
+  transition: opacity 200ms;
   opacity: 1;
-}
 
-.provider-exit {
-  opacity: 0;
+  @starting-style {
+    opacity: 0;
+  }
+
+  &.exit {
+    opacity: 0;
+    pointer-events: none;
+  }
 }
 
 .modal {
