@@ -4,24 +4,26 @@ import "@styles/global.css";
 import styles from "./ElmModal.module.css";
 
 import { createPortal } from "react-dom";
+import clsx from "clsx";
 
-export interface ElmModalCSSVariables {
-  "--width"?: string;
-}
+export interface ElmModalCSSVariables {}
 
 export interface ElmModalProps extends React.PropsWithChildren {
   style?: React.CSSProperties & ElmModalCSSVariables;
 
   className?: string;
 
+  /**
+   * In milliseconds, the duration of the open/close animation.
+   * The modal will be removed from the DOM after the close animation finishes.
+   */
+  duration?: number;
+
   /** Whether the modal is open. */
-  value?: boolean;
+  isOpen?: boolean;
 
   /** Called when the modal open state changes. */
-  onChange?: (value: boolean) => void;
-
-  /** Max width of the modal content. */
-  width?: string;
+  setIsOpen?: (value: boolean) => void;
 
   /** Whether clicking outside closes the modal. */
   closeOnClickOutside?: boolean;
@@ -29,28 +31,28 @@ export interface ElmModalProps extends React.PropsWithChildren {
 
 export const ElmModal = ({
   closeOnClickOutside = true,
-  onChange,
+  duration = 200,
+  isOpen,
+  setIsOpen,
   ...props
 }: ElmModalProps) => {
   const [visible, setVisible] = useState(false);
-
-  const isOpen = props.value ?? false;
 
   useEffect(() => {
     if (isOpen) {
       const t = window.setTimeout(() => setVisible(true), 0);
       return () => clearTimeout(t);
     } else {
-      const timeout = window.setTimeout(() => setVisible(false), 400);
+      const timeout = window.setTimeout(() => setVisible(false), duration);
       return () => clearTimeout(timeout);
     }
-  }, [isOpen]);
+  }, [isOpen, duration]);
 
   const handleBackdropClick = useCallback(() => {
-    if (closeOnClickOutside && onChange) {
-      onChange(false);
+    if (closeOnClickOutside && setIsOpen) {
+      setIsOpen(false);
     }
-  }, [closeOnClickOutside, onChange]);
+  }, [closeOnClickOutside, setIsOpen]);
 
   const handleContentClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
@@ -60,17 +62,15 @@ export const ElmModal = ({
 
   return createPortal(
     <div
-      className={`${styles.provider} ${isOpen ? styles["provider-enter"] : styles["provider-exit"]}`}
+      className={clsx(styles.provider, {
+        [styles["exit"]]: !isOpen,
+      })}
+      style={{ transitionDuration: `${duration}ms` }}
       onClick={handleBackdropClick}
     >
       <div
-        className={[styles.modal, props.className].filter(Boolean).join(" ")}
-        style={
-          {
-            "--width": props.width,
-            ...props.style,
-          } as React.CSSProperties
-        }
+        className={props.className}
+        style={props.style}
         onClick={handleContentClick}
       >
         {props.children}

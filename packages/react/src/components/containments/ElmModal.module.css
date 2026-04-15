@@ -13,22 +13,15 @@
 
   background-color: rgba(35, 38, 42, 0.8);
 
-  transition: opacity 400ms;
-}
-
-.provider-enter {
+  transition-property: opacity;
   opacity: 1;
-}
 
-.provider-exit {
-  opacity: 0;
-}
+  @starting-style {
+    opacity: 0;
+  }
 
-.modal {
-  box-sizing: border-box;
-  max-width: min(500px, calc(100vw - 1rem));
-  width: var(--width, 100%);
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  background-color: rgba(255, 255, 255, 0.8);
+  &.exit {
+    opacity: 0;
+    pointer-events: none;
+  }
 }

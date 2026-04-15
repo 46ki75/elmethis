@@ -68,8 +68,8 @@ export const ElmConfirmModal = ({
 
   return (
     <ElmModal
-      value={props.value}
-      onChange={onChange}
+      isOpen={props.value}
+      setIsOpen={onChange}
       closeOnClickOutside={closeOnClickOutside}
       className={props.className}
     >

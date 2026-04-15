@@ -14,8 +14,9 @@ import clsx from "clsx";
 
 export interface ElmSelectOption {
   id: string;
-  label: string;
+  label?: string;
   description?: string;
+  children?: React.ReactNode;
 }
 
 export type ElmSelectCSSVariables = Pick<
@@ -90,18 +91,12 @@ export const ElmSelect = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const wrapperClass = [
-    styles.wrapper,
-    isActive ? styles.active : "",
-    props.className,
-  ]
-    .filter(Boolean)
-    .join(" ");
-
   return (
     <div
       ref={wrapperRef}
-      className={wrapperClass}
+      className={clsx(styles.wrapper, props.className, {
+        [styles.active]: isActive,
+      })}
       style={{
         backgroundColor: disabled || loading ? "rgba(0,0,0,0.15)" : undefined,
         ...props.style,
@@ -116,14 +111,18 @@ export const ElmSelect = ({
         <div className={styles.select}>
           <div className={styles.selected}>
             {props.selectedOption ? (
-              <div>
-                <span>{props.selectedOption.label}</span>
-                {props.selectedOption.description && (
-                  <span className={styles.description}>
-                    {props.selectedOption.description}
-                  </span>
-                )}
-              </div>
+              props.selectedOption.children ? (
+                <div>{props.selectedOption.children}</div>
+              ) : (
+                <div>
+                  <span>{props.selectedOption.label}</span>
+                  {props.selectedOption.description && (
+                    <span className={styles.description}>
+                      {props.selectedOption.description}
+                    </span>
+                  )}
+                </div>
+              )
             ) : (
               <div className={styles.fallback}>
                 <ElmMdiIcon d={mdiArrowDownDropCircleOutline} />
@@ -154,11 +153,18 @@ export const ElmSelect = ({
                     color="#868e9c"
                     size="0.75em"
                   />
-                  <span>{option.label}</span>
-                  {option.description && (
-                    <span className={styles.description}>
-                      {option.description}
-                    </span>
+
+                  {option.children ? (
+                    <div>{option.children}</div>
+                  ) : (
+                    <>
+                      <span>{option.label}</span>
+                      {option.description && (
+                        <span className={styles.description}>
+                          {option.description}
+                        </span>
+                      )}
+                    </>
                   )}
                 </div>
               ))}
