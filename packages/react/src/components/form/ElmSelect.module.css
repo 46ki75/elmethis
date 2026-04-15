@@ -27,7 +27,7 @@
 }
 
 .active {
-  border-color: var(--highlight-color);
+  border-color: var(--elmethis-color-primary);
 }
 
 .header {
@@ -48,7 +48,7 @@
   vertical-align: top;
   transition: color 200ms;
   user-select: none;
-  color: var(--highlight-color);
+  color: var(--elmethis-color-primary);
 }
 
 .body {

@@ -9,6 +9,7 @@ import {
   mdiChevronRight,
   mdiArrowDownDropCircleOutline,
 } from "@mdi/js";
+import type { ElmethisCSSVariables } from "@styles/variables";
 
 export interface ElmSelectOption {
   id: string;
@@ -16,9 +17,10 @@ export interface ElmSelectOption {
   description?: string;
 }
 
-export interface ElmSelectCSSVariables {
-  "--highlight-color"?: string;
-}
+export type ElmSelectCSSVariables = Pick<
+  ElmethisCSSVariables,
+  "--elmethis-color-primary"
+>;
 
 export interface ElmSelectProps {
   style?: React.CSSProperties & ElmSelectCSSVariables;
@@ -101,7 +103,6 @@ export const ElmSelect = ({
       style={
         {
           backgroundColor: disabled || loading ? "rgba(0,0,0,0.15)" : undefined,
-          "--highlight-color": isActive ? "#bfa056" : undefined,
           ...props.style,
         } as React.CSSProperties
       }
