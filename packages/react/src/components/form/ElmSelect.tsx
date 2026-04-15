@@ -100,12 +100,10 @@ export const ElmSelect = ({
     <div
       ref={wrapperRef}
       className={wrapperClass}
-      style={
-        {
-          backgroundColor: disabled || loading ? "rgba(0,0,0,0.15)" : undefined,
-          ...props.style,
-        } as React.CSSProperties
-      }
+      style={{
+        backgroundColor: disabled || loading ? "rgba(0,0,0,0.15)" : undefined,
+        ...props.style,
+      }}
       onClick={handleToggle}
     >
       <div className={styles.header}>
