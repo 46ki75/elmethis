@@ -14,10 +14,10 @@ export interface ElmModalProps extends React.PropsWithChildren {
   className?: string;
 
   /** Whether the modal is open. */
-  value?: boolean;
+  isOpen?: boolean;
 
   /** Called when the modal open state changes. */
-  onChange?: (value: boolean) => void;
+  setIsOpen?: (value: boolean) => void;
 
   /** Whether clicking outside closes the modal. */
   closeOnClickOutside?: boolean;
@@ -25,12 +25,11 @@ export interface ElmModalProps extends React.PropsWithChildren {
 
 export const ElmModal = ({
   closeOnClickOutside = true,
-  onChange,
+  isOpen,
+  setIsOpen,
   ...props
 }: ElmModalProps) => {
   const [visible, setVisible] = useState(false);
-
-  const isOpen = props.value ?? false;
 
   useEffect(() => {
     if (isOpen) {
@@ -43,10 +42,10 @@ export const ElmModal = ({
   }, [isOpen]);
 
   const handleBackdropClick = useCallback(() => {
-    if (closeOnClickOutside && onChange) {
-      onChange(false);
+    if (closeOnClickOutside && setIsOpen) {
+      setIsOpen(false);
     }
-  }, [closeOnClickOutside, onChange]);
+  }, [closeOnClickOutside, setIsOpen]);
 
   const handleContentClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();

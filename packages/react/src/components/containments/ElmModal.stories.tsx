@@ -23,7 +23,7 @@ export const Primary: Story = {
       return (
         <div>
           <button onClick={() => setIsOpen(!isOpen)}>Toggle Modal</button>
-          <ElmModal {...args} value={isOpen} onChange={setIsOpen}>
+          <ElmModal {...args} isOpen={isOpen} setIsOpen={setIsOpen}>
             <ElmInlineText>Hello world!</ElmInlineText>
           </ElmModal>
         </div>
