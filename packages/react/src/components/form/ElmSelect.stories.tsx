@@ -26,6 +26,30 @@ const options: ElmSelectOption[] = [
   },
 ];
 
+const optionsWithChildren: ElmSelectOption[] = [
+  {
+    id: "1",
+    label: "banana",
+    description: "A yellow fruit that's high in potassium.",
+    children: <div style={{ color: "red" }}>This is a child element</div>,
+  },
+  {
+    id: "2",
+    label: "apple",
+    description: "A sweet red or green fruit often eaten raw.",
+  },
+  {
+    id: "3",
+    label: "orange",
+    description: "A citrus fruit known for its vitamin C content.",
+  },
+  {
+    id: "4",
+    label: "grape",
+    description: "A small, juicy fruit often used to make wine.",
+  },
+];
+
 const meta: Meta<typeof ElmSelect> = {
   title: "Components/Form/ElmSelect",
   component: ElmSelect,
@@ -54,5 +78,26 @@ export const Primary: Story = {
       );
     };
     return <PrimaryStory />;
+  },
+};
+
+export const WithChildren: Story = {
+  args: {
+    label: "Select with Children",
+  },
+  render: (args) => {
+    const WithChildrenStory = () => {
+      const [selectedOption, setSelectedOption] =
+        useState<ElmSelectOption | null>(null);
+      return (
+        <ElmSelect
+          {...args}
+          options={optionsWithChildren}
+          selectedOption={selectedOption}
+          onSelect={setSelectedOption}
+        />
+      );
+    };
+    return <WithChildrenStory />;
   },
 };
