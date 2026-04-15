@@ -11,6 +11,8 @@ export interface ElmMultiProgressCSSVariables {
 export interface ElmMultiProgressProps {
   style?: React.CSSProperties & ElmMultiProgressCSSVariables;
 
+  className?: string;
+
   /**
    * The progress segments to display.
    */
@@ -42,6 +44,7 @@ export const ElmMultiProgress = ({
   weight = "4px",
   round = true,
   style,
+  className,
 }: ElmMultiProgressProps) => {
   const computedProgress = useMemo(() => {
     const max = progress.reduce((p, n) => p + n.value, 0);
@@ -55,7 +58,7 @@ export const ElmMultiProgress = ({
 
   return (
     <div
-      className={styles.container}
+      className={[styles.container, className].filter(Boolean).join(" ")}
       style={
         {
           "--weight": weight,

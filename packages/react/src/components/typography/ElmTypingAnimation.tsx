@@ -8,6 +8,8 @@ export interface ElmTypingAnimationCSSVariables {}
 export interface ElmTypingAnimationProps {
   style?: React.CSSProperties & ElmTypingAnimationCSSVariables;
 
+  className?: string;
+
   /**
    * The texts to display.
    */
@@ -76,7 +78,10 @@ export const ElmTypingAnimation = ({
   }, [texts, interval]);
 
   return (
-    <span className={styles.text} style={{ fontSize, ...props.style }}>
+    <span
+      className={[styles.text, props.className].filter(Boolean).join(" ")}
+      style={{ fontSize, ...props.style }}
+    >
       {display}
       <span className={styles.cursor}>&nbsp;</span>
     </span>

@@ -12,6 +12,8 @@ export type ElmListCSSVariables = Pick<
 export interface ElmListProps extends React.PropsWithChildren {
   style?: React.CSSProperties & ElmListCSSVariables;
 
+  className?: string;
+
   /**
    * The type of list to render.
    * - `unordered` `<ul/>` for a **bulleted** list
@@ -29,7 +31,10 @@ export const ElmList = ({
     listStyle === "unordered"
       ? styles["elmethis-bulleted-list"]
       : styles["elmethis-numbered-list"],
-  ].join(" ");
+    props.className,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   if (listStyle === "ordered") {
     return (

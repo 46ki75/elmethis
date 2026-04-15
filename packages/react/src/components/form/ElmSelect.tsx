@@ -9,6 +9,8 @@ import {
   mdiChevronRight,
   mdiArrowDownDropCircleOutline,
 } from "@mdi/js";
+import type { ElmethisCSSVariables } from "@styles/variables";
+import clsx from "clsx";
 
 export interface ElmSelectOption {
   id: string;
@@ -16,12 +18,15 @@ export interface ElmSelectOption {
   description?: string;
 }
 
-export interface ElmSelectCSSVariables {
-  "--highlight-color"?: string;
-}
+export type ElmSelectCSSVariables = Pick<
+  ElmethisCSSVariables,
+  "--elmethis-color-primary"
+>;
 
 export interface ElmSelectProps {
   style?: React.CSSProperties & ElmSelectCSSVariables;
+
+  className?: string;
 
   /** Label displayed above the select. */
   label: string;
@@ -66,6 +71,7 @@ export const ElmSelect = ({
       const selected = options.find((option) => option.id === id);
       if (selected && onSelect) {
         onSelect(selected);
+        setIsActive(false);
       }
     },
     [options, onSelect],
@@ -84,7 +90,11 @@ export const ElmSelect = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const wrapperClass = [styles.wrapper, isActive ? styles.active : ""]
+  const wrapperClass = [
+    styles.wrapper,
+    isActive ? styles.active : "",
+    props.className,
+  ]
     .filter(Boolean)
     .join(" ");
 
@@ -92,13 +102,10 @@ export const ElmSelect = ({
     <div
       ref={wrapperRef}
       className={wrapperClass}
-      style={
-        {
-          backgroundColor: disabled || loading ? "rgba(0,0,0,0.15)" : undefined,
-          "--highlight-color": isActive ? "#bfa056" : undefined,
-          ...props.style,
-        } as React.CSSProperties
-      }
+      style={{
+        backgroundColor: disabled || loading ? "rgba(0,0,0,0.15)" : undefined,
+        ...props.style,
+      }}
       onClick={handleToggle}
     >
       <div className={styles.header}>
@@ -127,8 +134,12 @@ export const ElmSelect = ({
 
           <ElmMdiIcon d={mdiMenuDown} size="1.5rem" />
 
-          {isActive && (
-            <div className={styles.pulldown}>
+          <div
+            className={clsx(styles.pulldown, {
+              [styles.active]: isActive,
+            })}
+          >
+            <div className={styles["collapse"]}>
               {props.options.map((option) => (
                 <div
                   key={option.id}
@@ -152,7 +163,7 @@ export const ElmSelect = ({
                 </div>
               ))}
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>

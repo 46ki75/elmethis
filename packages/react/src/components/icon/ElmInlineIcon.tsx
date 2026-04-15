@@ -8,6 +8,8 @@ export interface ElmInlineIconCSSVariables {}
 export interface ElmInlineIconProps {
   styles?: React.CSSProperties & ElmInlineIconCSSVariables;
 
+  className?: string;
+
   /**
    * The source URL of the icon.
    */
@@ -19,7 +21,11 @@ export interface ElmInlineIconProps {
   alt?: string;
 }
 
-export const ElmInlineIcon: React.FC<ElmInlineIconProps> = ({ src, alt }) => {
+export const ElmInlineIcon: React.FC<ElmInlineIconProps> = ({
+  src,
+  alt,
+  className,
+}) => {
   const [icon, setIcon] = useState(src);
 
   const handleError = () => {
@@ -29,6 +35,11 @@ export const ElmInlineIcon: React.FC<ElmInlineIconProps> = ({ src, alt }) => {
   };
 
   return (
-    <img className={styles.icon} src={icon} alt={alt} onError={handleError} />
+    <img
+      className={[styles.icon, className].filter(Boolean).join(" ")}
+      src={icon}
+      alt={alt}
+      onError={handleError}
+    />
   );
 };

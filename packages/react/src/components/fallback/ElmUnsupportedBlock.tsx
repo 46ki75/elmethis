@@ -15,6 +15,8 @@ export type ElmUnsupportedBlockCSSVariables = Pick<
 export interface ElmUnsupportedBlockProps {
   style?: React.CSSProperties & ElmUnsupportedBlockCSSVariables;
 
+  className?: string;
+
   /**
    * Optional details text displayed below the unsupported block message.
    */
@@ -23,7 +25,12 @@ export interface ElmUnsupportedBlockProps {
 
 export const ElmUnsupportedBlock = (props: ElmUnsupportedBlockProps) => {
   return (
-    <div className={styles.unsupported} style={props.style}>
+    <div
+      className={[styles.unsupported, props.className]
+        .filter(Boolean)
+        .join(" ")}
+      style={props.style}
+    >
       <div className={styles.message}>
         <svg
           viewBox="0 0 24 24"

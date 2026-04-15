@@ -8,6 +8,8 @@ export interface ElmDesktopWindowCSSVariables {}
 export interface ElmDesktopWindowProps extends React.PropsWithChildren {
   style?: React.CSSProperties & ElmDesktopWindowCSSVariables;
 
+  className?: string;
+
   /**
    * The minimum height of the window.
    * @default '6rem'
@@ -20,7 +22,10 @@ export const ElmDesktopWindow = ({
   ...props
 }: ElmDesktopWindowProps) => {
   return (
-    <div className={styles.window} style={props.style}>
+    <div
+      className={[styles.window, props.className].filter(Boolean).join(" ")}
+      style={props.style}
+    >
       <div className={styles.header}>
         <div
           aria-hidden

@@ -8,6 +8,8 @@ import { HasHeaderContext } from "./TableContext";
 export interface ElmTableCellProps extends React.PropsWithChildren {
   style?: React.CSSProperties;
 
+  className?: string;
+
   /**
    * Whether the cell is a header cell.
    */
@@ -25,6 +27,7 @@ export const ElmTableCell = ({
   style,
   hasHeader = false,
   text,
+  className,
 }: ElmTableCellProps) => {
   const hasHeaderInjected = useContext(HasHeaderContext);
   const isHeader = hasHeader || hasHeaderInjected;
@@ -32,7 +35,9 @@ export const ElmTableCell = ({
 
   return (
     <Tag
-      className={`${styles.common} ${isHeader ? styles.th : styles.td}`}
+      className={[styles.common, isHeader ? styles.th : styles.td, className]
+        .filter(Boolean)
+        .join(" ")}
       style={style}
     >
       {text != null ? text : children}

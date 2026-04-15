@@ -75,10 +75,9 @@
   min-height: 3rem;
   width: 100%;
   display: grid;
-  grid-template-columns: 2rem minmax(min-content, 1fr) minmax(
-      min-content,
-      1fr
-    ) 50fr 2rem;
+  grid-template-columns:
+    2rem minmax(min-content, 1fr) minmax(min-content, 1fr)
+    50fr 2rem;
   align-items: center;
   gap: 0.5rem;
   border-bottom: 1px solid rgba(204, 207, 213, 0.5);

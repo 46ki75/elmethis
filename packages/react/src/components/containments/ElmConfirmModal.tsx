@@ -14,6 +14,8 @@ export interface ElmConfirmModalCSSVariables {}
 export interface ElmConfirmModalProps extends React.PropsWithChildren {
   style?: React.CSSProperties & ElmConfirmModalCSSVariables;
 
+  className?: string;
+
   /** Title displayed in the modal header. */
   title: string;
 
@@ -69,6 +71,7 @@ export const ElmConfirmModal = ({
       value={props.value}
       onChange={onChange}
       closeOnClickOutside={closeOnClickOutside}
+      className={props.className}
     >
       <div>
         <ElmHeading level={2} disableFragmentIdentifier>

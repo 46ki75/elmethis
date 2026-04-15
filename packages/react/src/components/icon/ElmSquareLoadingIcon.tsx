@@ -8,6 +8,8 @@ export interface ElmSquareLoadingIconCSSVariables {}
 export interface ElmSquareLoadingIconProps {
   style?: React.CSSProperties & ElmSquareLoadingIconCSSVariables;
 
+  className?: string;
+
   /**
    * Specifies the size of the icon.
    */
@@ -29,7 +31,7 @@ export const ElmSquareLoadingIcon = (props: ElmSquareLoadingIconProps) => {
 
   return (
     <div
-      className={styles.wrapper}
+      className={[styles.wrapper, props.className].filter(Boolean).join(" ")}
       style={
         {
           "--size": size,

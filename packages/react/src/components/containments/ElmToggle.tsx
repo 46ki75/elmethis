@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 
 import "@styles/global.css";
 import styles from "./ElmToggle.module.css";
 
+import { useControllableState } from "@radix-ui/react-use-controllable-state";
+
 import { ElmMdiIcon } from "@components/icon/ElmMdiIcon";
 import { ElmInlineText } from "@components/typography/ElmInlineText";
-import { mdiChevronRight, mdiChevronUp, mdiPlus } from "@mdi/js";
+import { mdiChevronRight, mdiPlus } from "@mdi/js";
 import type { ElmethisCSSVariables } from "@styles/variables";
+import clsx from "clsx";
 
 export type ElmToggleCSSVariables = Pick<
   ElmethisCSSVariables,
@@ -16,6 +19,8 @@ export type ElmToggleCSSVariables = Pick<
 export interface ElmToggleProps extends React.PropsWithChildren {
   style?: React.CSSProperties & ElmToggleCSSVariables;
 
+  className?: string;
+
   /** The summary text of the toggle. */
   summary?: string;
 
@@ -23,54 +28,43 @@ export interface ElmToggleProps extends React.PropsWithChildren {
   summaryContent?: React.ReactNode;
 
   /** Whether the toggle is open. */
-  value?: boolean;
+  isOpen?: boolean;
 
   /** Called when the toggle open state changes. */
-  onChange?: (value: boolean) => void;
+  setIsOpen?: (value: boolean) => void;
 }
 
 export const ElmToggle = (props: ElmToggleProps) => {
-  const [internalOpen, setInternalOpen] = useState(false);
-
-  const isControlled = props.value !== undefined;
-  const isOpen = isControlled ? props.value! : internalOpen;
+  const [isOpen, setIsOpen] = useControllableState({
+    prop: props.isOpen,
+    defaultProp: false,
+    onChange: props.setIsOpen,
+  });
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    const next = !isOpen;
-    if (isControlled) {
-      props.onChange?.(next);
-    } else {
-      setInternalOpen(next);
-    }
+    setIsOpen(!isOpen);
   };
 
   return (
     <div
-      className={`${styles.toggle} ${isOpen ? styles.open : ""}`}
+      className={clsx(styles.toggle, props.className, {
+        [styles.open]: isOpen,
+      })}
       style={
         {
           ...props.style,
         } as React.CSSProperties
       }
     >
-      <div
-        className={styles.summary}
-        onClick={handleClick}
-        style={{
-          borderRadius: isOpen ? "0.25rem 0.25rem 0rem 0rem" : "0.25rem",
-        }}
-      >
+      <div className={styles.summary} onClick={handleClick}>
         <div className={styles["summary-left"]}>
-          <span
-            style={{
-              transform: `rotate(${isOpen ? "90deg" : "0deg"})`,
-              transition: "transform 200ms",
-              display: "flex",
-            }}
-          >
-            <ElmMdiIcon d={mdiChevronRight} color="#59b57c" size="1.25em" />
-          </span>
+          <ElmMdiIcon
+            className={clsx(styles.chevron, { [styles.open]: isOpen })}
+            d={mdiChevronRight}
+            color="#59b57c"
+            size="1rem"
+          />
           <div>
             {props.summary != null ? (
               <ElmInlineText>{props.summary}</ElmInlineText>
@@ -80,31 +74,25 @@ export const ElmToggle = (props: ElmToggleProps) => {
           </div>
         </div>
 
-        <span
-          style={{
-            transform: `rotate(${isOpen ? "135deg" : "0deg"})`,
-            transition: "transform 200ms",
-            display: "flex",
-          }}
-        >
-          <ElmMdiIcon d={mdiPlus} color={isOpen ? "#b36472" : "#59b57c"} />
-        </span>
+        <hr className={styles.divider} />
+
+        <ElmMdiIcon
+          className={clsx(styles.cross, { [styles.open]: isOpen })}
+          d={mdiPlus}
+          size="1rem"
+          color={isOpen ? "#b36472" : "#59b57c"}
+        />
       </div>
 
+      <div className={styles.border}></div>
+
       <div
-        className={`${styles.content} ${isOpen ? styles["content-open"] : ""}`}
+        className={clsx(styles.content, {
+          [styles.close]: !isOpen,
+        })}
       >
         {props.children}
       </div>
-
-      {isOpen && (
-        <div className={styles.close} onClick={handleClick}>
-          <div className={styles["close-button"]}>
-            <ElmMdiIcon d={mdiChevronUp} size="1.25em" color="#c56565" />
-            <ElmInlineText color="#8e3636">CLOSE</ElmInlineText>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

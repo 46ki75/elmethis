@@ -8,6 +8,8 @@ export interface ElmParallaxCSSVariables {}
 export interface ElmParallaxProps {
   style?: React.CSSProperties & ElmParallaxCSSVariables;
 
+  className?: string;
+
   /** First background image URL. */
   imageUrl1: string;
 
@@ -15,7 +17,7 @@ export interface ElmParallaxProps {
   imageUrl2: string;
 }
 
-export const ElmParallax = (props: ElmParallaxProps) => {
+export const ElmParallax = ({ className, ...props }: ElmParallaxProps) => {
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
@@ -39,7 +41,7 @@ export const ElmParallax = (props: ElmParallaxProps) => {
   return (
     <>
       <div
-        className={styles.parallax}
+        className={[styles.parallax, className].filter(Boolean).join(" ")}
         style={{
           backgroundImage: `url(${props.imageUrl1})`,
           transform: `scale(1.2) translateY(${scrollY / 400}%)`,

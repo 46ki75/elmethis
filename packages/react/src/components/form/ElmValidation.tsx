@@ -13,6 +13,8 @@ export interface ElmValidationCSSVariables {
 export interface ElmValidationProps {
   style?: React.CSSProperties & ElmValidationCSSVariables;
 
+  className?: string;
+
   /** The validation message text. */
   text: string;
 
@@ -29,7 +31,7 @@ export const ElmValidation = ({
 }: ElmValidationProps) => {
   return (
     <div
-      className={styles.validation}
+      className={[styles.validation, props.className].filter(Boolean).join(" ")}
       style={
         {
           "--opacity": props.isValid ? 1 : 0.5,

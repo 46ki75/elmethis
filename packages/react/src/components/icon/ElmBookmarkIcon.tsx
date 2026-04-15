@@ -11,6 +11,8 @@ export interface ElmBookmarkIconCSSVariables {}
 export interface ElmBookmarkIconProps {
   style?: React.CSSProperties & ElmBookmarkIconCSSVariables;
 
+  className?: string;
+
   /**
    * The display name for the bookmark.
    */
@@ -32,7 +34,7 @@ export const ElmBookmarkIcon = (props: ElmBookmarkIconProps) => {
 
   return (
     <a
-      className={styles.wrapper}
+      className={[styles.wrapper, props.className].filter(Boolean).join(" ")}
       href={href}
       target="_blank"
       rel="noopener noreferrer"

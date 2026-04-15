@@ -12,6 +12,8 @@ export interface ElmModalCSSVariables {
 export interface ElmModalProps extends React.PropsWithChildren {
   style?: React.CSSProperties & ElmModalCSSVariables;
 
+  className?: string;
+
   /** Whether the modal is open. */
   value?: boolean;
 
@@ -62,7 +64,7 @@ export const ElmModal = ({
       onClick={handleBackdropClick}
     >
       <div
-        className={styles.modal}
+        className={[styles.modal, props.className].filter(Boolean).join(" ")}
         style={
           {
             "--width": props.width,

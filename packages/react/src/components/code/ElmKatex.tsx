@@ -12,6 +12,8 @@ export type ElmKatexCSSVariables = Pick<
 export interface ElmKatexProps {
   style?: React.CSSProperties & ElmKatexCSSVariables;
 
+  className?: string;
+
   /**
    * The KaTeX expression to render.
    */
@@ -28,6 +30,7 @@ export const ElmKatex = ({
   expression,
   block = false,
   style,
+  className,
 }: ElmKatexProps) => {
   const [html, setHtml] = useState<string | undefined>();
 
@@ -49,12 +52,12 @@ export const ElmKatex = ({
       });
   }, [expression, block]);
 
-  const className = `${styles.katex}`;
+  const katexClassName = [styles.katex, className].filter(Boolean).join(" ");
 
   if (block) {
     return (
       <div
-        className={className}
+        className={katexClassName}
         style={style}
         dangerouslySetInnerHTML={html ? { __html: html } : undefined}
       />
@@ -63,7 +66,7 @@ export const ElmKatex = ({
 
   return (
     <span
-      className={className}
+      className={katexClassName}
       style={style}
       dangerouslySetInnerHTML={html ? { __html: html } : undefined}
     />

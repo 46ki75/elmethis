@@ -13,6 +13,8 @@ export type ElmBlockQuoteCSSVariables = Pick<
 export interface ElmBlockQuoteProps extends React.PropsWithChildren {
   style?: React.CSSProperties & ElmBlockQuoteCSSVariables;
 
+  className?: string;
+
   /**
    * The cite URL for the blockquote.
    */
@@ -25,7 +27,7 @@ export const ElmBlockQuote = (props: ElmBlockQuoteProps) => {
   return (
     <blockquote
       ref={targetRef}
-      className={styles.blockquote}
+      className={[styles.blockquote, props.className].filter(Boolean).join(" ")}
       cite={props.cite}
       style={{
         ...props.style,

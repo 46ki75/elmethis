@@ -6,6 +6,8 @@ import styles from "./ElmJsonComponentRenderer.module.css";
 export interface ElmJsonComponentRendererProps {
   style?: React.CSSProperties;
 
+  className?: string;
+
   /**
    * JSON component tree to render.
    * Accepts the jarkup-ts Component[] format.
@@ -18,9 +20,13 @@ export interface ElmJsonComponentRendererProps {
 export const ElmJsonComponentRenderer = ({
   jsonComponents,
   style,
+  className,
 }: ElmJsonComponentRendererProps) => {
   return (
-    <div className={styles["jarkup-body"]} style={style}>
+    <div
+      className={[styles["jarkup-body"], className].filter(Boolean).join(" ")}
+      style={style}
+    >
       {jsonComponents.map((component, i) => (
         <div key={i} className={styles["unsupported-block"]}>
           <code>{JSON.stringify(component, null, 2)}</code>

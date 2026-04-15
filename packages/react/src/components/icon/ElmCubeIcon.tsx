@@ -8,6 +8,8 @@ export interface ElmCubeIconCSSVariables {}
 export interface ElmCubeIconProps {
   style?: React.CSSProperties & ElmCubeIconCSSVariables;
 
+  className?: string;
+
   /**
    * The size of the cube [px]
    */
@@ -30,7 +32,7 @@ export const ElmCubeIcon = (props: ElmCubeIconProps) => {
 
   return (
     <div
-      className={styles.cube}
+      className={[styles.cube, props.className].filter(Boolean).join(" ")}
       style={{
         width: `${size}px`,
         height: `${size}px`,

@@ -18,13 +18,20 @@ export interface ElmSnackbarContainerCSSVariables {}
 export interface ElmSnackbarContainerProps {
   style?: React.CSSProperties & ElmSnackbarContainerCSSVariables;
 
+  className?: string;
+
   /** List of snackbars to display. */
   snackbars: SnackbarItem[];
 }
 
 export const ElmSnackbarContainer = (props: ElmSnackbarContainerProps) => {
   return (
-    <div className={styles["snackbar-screen"]} style={props.style}>
+    <div
+      className={[styles["snackbar-screen"], props.className]
+        .filter(Boolean)
+        .join(" ")}
+      style={props.style}
+    >
       <div className={styles["snackbar-container"]}>
         {props.snackbars.map((snackbar) => (
           <div key={snackbar.id} className={styles["snackbar-item"]}>

@@ -10,6 +10,8 @@ export interface ElmLoginIconCSSVariables {}
 export interface ElmLoginIconProps {
   style?: React.CSSProperties & ElmLoginIconCSSVariables;
 
+  className?: string;
+
   /**
    * Specifies the width of the icon.
    */
@@ -38,7 +40,10 @@ export const ElmLoginIcon = (props: ElmLoginIconProps) => {
   const color = isLoading ? "gray" : isLogin ? "#b36472" : "#6987b8";
 
   return (
-    <div className={styles.icon} style={style}>
+    <div
+      className={[styles.icon, props.className].filter(Boolean).join(" ")}
+      style={style}
+    >
       <ElmMdiIcon d={d} color={color} size={size} />
     </div>
   );

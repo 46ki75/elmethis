@@ -13,8 +13,15 @@ export type ElmDividerCSSVariables = Pick<
 
 export interface ElmDividerProps {
   style?: React.CSSProperties & ElmDividerCSSVariables;
+
+  className?: string;
 }
 
 export const ElmDivider = (props: ElmDividerProps) => {
-  return <hr className={styles.divider} style={props.style} />;
+  return (
+    <hr
+      className={[styles.divider, props.className].filter(Boolean).join(" ")}
+      style={props.style}
+    />
+  );
 };

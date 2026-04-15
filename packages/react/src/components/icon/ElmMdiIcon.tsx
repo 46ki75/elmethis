@@ -15,6 +15,8 @@ export type ElmMdiIconCSSVariables = Pick<
 export interface ElmMdiIconProps {
   style?: React.CSSProperties & ElmMdiIconCSSVariables;
 
+  className?: string;
+
   d: string;
 
   useThemeColor?: boolean;
@@ -27,7 +29,7 @@ export interface ElmMdiIconProps {
 
 export const ElmMdiIcon = (props: ElmMdiIconProps) => {
   return (
-    <div style={props.style}>
+    <div className={props.className} style={props.style}>
       <svg
         width={props.size || "1.25rem"}
         height={props.size || "1.25rem"}

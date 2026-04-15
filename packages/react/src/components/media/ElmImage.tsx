@@ -16,6 +16,8 @@ export type ElmImageCSSVariables = Pick<
 export interface ElmImageProps {
   style?: React.CSSProperties & ElmImageCSSVariables;
 
+  className?: string;
+
   /**
    * Image source URL
    */
@@ -55,6 +57,7 @@ export const ElmImage = ({
   width,
   height,
   style,
+  className,
 }: ElmImageProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -86,7 +89,11 @@ export const ElmImage = ({
   }, []);
 
   return (
-    <div className={styles.wrapper} ref={wrapperRef} style={style}>
+    <div
+      className={[styles.wrapper, className].filter(Boolean).join(" ")}
+      ref={wrapperRef}
+      style={style}
+    >
       {error && (
         <div className={styles.error}>
           <ElmInlineText color="#c56565" size="1.5rem">

@@ -8,6 +8,8 @@ export interface ElmCheckboxCSSVariables {}
 export interface ElmCheckboxProps {
   style?: React.CSSProperties & ElmCheckboxCSSVariables;
 
+  className?: string;
+
   /** The label displayed. */
   label: string;
 
@@ -41,6 +43,7 @@ export const ElmCheckbox = ({
   const containerClass = [
     styles.container,
     disable ? styles["container-disable"] : "",
+    props.className,
   ]
     .filter(Boolean)
     .join(" ");

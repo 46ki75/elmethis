@@ -8,6 +8,8 @@ import { getHighlighterSingleton } from "./shikiInstance";
 export interface ElmShikiHighlighterProps {
   style?: React.CSSProperties;
 
+  className?: string;
+
   /**
    * The code to highlight.
    */
@@ -29,6 +31,7 @@ export const ElmShikiHighlighter = ({
   language = "txt",
   onRendered,
   style,
+  className,
 }: ElmShikiHighlighterProps) => {
   const [html, setHtml] = useState(`<pre>${code}</pre>`);
 
@@ -68,7 +71,10 @@ export const ElmShikiHighlighter = ({
   }, [code, language, onRendered]);
 
   return (
-    <div className={styles.code} style={style}>
+    <div
+      className={[styles.code, className].filter(Boolean).join(" ")}
+      style={style}
+    >
       <div className="shiki" dangerouslySetInnerHTML={{ __html: html }} />
     </div>
   );

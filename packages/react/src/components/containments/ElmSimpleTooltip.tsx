@@ -9,6 +9,8 @@ export interface ElmSimpleTooltipCSSVariables {}
 export interface ElmSimpleTooltipProps extends React.PropsWithChildren {
   style?: React.CSSProperties & ElmSimpleTooltipCSSVariables;
 
+  className?: string;
+
   /** Optional title for the tooltip. */
   title?: string;
 
@@ -21,7 +23,12 @@ export const ElmSimpleTooltip = (props: ElmSimpleTooltipProps) => {
     <ElmTooltip
       original={props.children}
       tooltip={
-        <div className={styles.container} style={props.style}>
+        <div
+          className={[styles.container, props.className]
+            .filter(Boolean)
+            .join(" ")}
+          style={props.style}
+        >
           {props.title && <div className={styles.title}>{props.title}</div>}
           <div className={styles.text}>{props.text}</div>
         </div>

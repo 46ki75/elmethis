@@ -13,6 +13,8 @@ export interface ElmSwitchCSSVariables {
 export interface ElmSwitchProps {
   style?: React.CSSProperties & ElmSwitchCSSVariables;
 
+  className?: string;
+
   /** The color of the switch when checked. */
   color?: string;
 
@@ -62,6 +64,7 @@ export const ElmSwitch = ({
 
   return (
     <div
+      className={props.className}
       onClick={handleClick}
       style={
         {
