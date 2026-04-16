@@ -3,7 +3,7 @@ import { ElmSelect } from "./ElmSelect";
 import type { ElmSelectOption } from "./ElmSelect";
 import { useState } from "react";
 
-const options: ElmSelectOption[] = [
+const options: ElmSelectOption<string>[] = [
   {
     id: "1",
     label: "banana",
@@ -26,7 +26,7 @@ const options: ElmSelectOption[] = [
   },
 ];
 
-const optionsWithChildren: ElmSelectOption[] = [
+const optionsWithChildren: ElmSelectOption<string>[] = [
   {
     id: "1",
     label: "banana",
@@ -67,7 +67,7 @@ export const Primary: Story = {
   render: (args) => {
     const PrimaryStory = () => {
       const [selectedOption, setSelectedOption] =
-        useState<ElmSelectOption | null>(null);
+        useState<string | null>(null);
       return (
         <ElmSelect
           {...args}
@@ -88,7 +88,7 @@ export const WithChildren: Story = {
   render: (args) => {
     const WithChildrenStory = () => {
       const [selectedOption, setSelectedOption] =
-        useState<ElmSelectOption | null>(null);
+        useState<string | null>(null);
       return (
         <ElmSelect
           {...args}
