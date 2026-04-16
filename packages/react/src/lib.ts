@@ -1,3 +1,9 @@
+// CopilotKit
+export {
+  ElmModelSelect,
+  type ElmModelSelectProps,
+} from "./components/copilotkit/ElmModelSelect";
+
 // Icon
 export {
   ElmInlineIcon,
