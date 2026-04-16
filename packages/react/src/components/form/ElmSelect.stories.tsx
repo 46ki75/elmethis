@@ -72,7 +72,7 @@ export const Primary: Story = {
         <ElmSelect
           {...args}
           options={options}
-          selectedOption={selectedOption}
+          selectedOptionId={selectedOption}
           onSelect={setSelectedOption}
         />
       );
@@ -93,7 +93,7 @@ export const WithChildren: Story = {
         <ElmSelect
           {...args}
           options={optionsWithChildren}
-          selectedOption={selectedOption}
+          selectedOptionId={selectedOption}
           onSelect={setSelectedOption}
         />
       );
