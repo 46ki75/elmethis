@@ -104,9 +104,6 @@ export const ElmSelect = <T extends string>({
 
     const innerContent = (
       <>
-        {isSelectable && (
-          <ElmMdiIcon d={mdiChevronRight} color="#868e9c" size="0.75em" />
-        )}
         <span>{option.label}</span>
         {option.description && (
           <span className={styles.description}>{option.description}</span>
@@ -122,6 +119,9 @@ export const ElmSelect = <T extends string>({
         })}
         onClick={onClick}
       >
+        {isSelectable && (
+          <ElmMdiIcon d={mdiChevronRight} color="#868e9c" size="0.75em" />
+        )}
         {option.children ? option.children : innerContent}
       </div>
     );
