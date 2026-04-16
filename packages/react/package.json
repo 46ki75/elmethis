@@ -61,7 +61,7 @@
     "shiki": "^4.0.2"
   },
   "devDependencies": {
-    "@copilotkit/react-core": "^1.55.3",
+    "@copilotkit/react-core": "^1.56.2",
     "@eslint/js": "^10.0.1",
     "@storybook/addon-docs": "^10.3.5",
     "@storybook/react-vite": "^10.3.5",
