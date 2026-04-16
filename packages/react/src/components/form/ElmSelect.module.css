@@ -126,11 +126,13 @@
   transition: background-color 100ms;
   cursor: pointer;
 
-  &:hover {
-    background-color: color-mix(in srgb, #bec2ca 30%, transparent);
+  &.selectable {
+    &:hover {
+      background-color: color-mix(in srgb, #bec2ca 30%, transparent);
 
-    [data-theme="dark"] & {
-      background-color: color-mix(in srgb, #bec2ca 20%, transparent);
+      [data-theme="dark"] & {
+        background-color: color-mix(in srgb, #bec2ca 20%, transparent);
+      }
     }
   }
 }

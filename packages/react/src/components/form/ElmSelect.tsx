@@ -91,6 +91,43 @@ export const ElmSelect = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const optionContent = (
+    option: ElmSelectOption,
+    isSelectable: boolean,
+    key?: string,
+  ) => {
+    const onClick = isSelectable
+      ? (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+          e.stopPropagation();
+          handleSelect(option.id);
+        }
+      : undefined;
+
+    const innerContent = (
+      <>
+        {isSelectable && (
+          <ElmMdiIcon d={mdiChevronRight} color="#868e9c" size="0.75em" />
+        )}
+        <span>{option.label}</span>
+        {option.description && (
+          <span className={styles.description}>{option.description}</span>
+        )}
+      </>
+    );
+
+    return (
+      <div
+        key={key}
+        className={clsx(styles.option, {
+          [styles.selectable]: isSelectable,
+        })}
+        onClick={onClick}
+      >
+        {option.children ? option.children : innerContent}
+      </div>
+    );
+  };
+
   return (
     <div
       ref={wrapperRef}
@@ -111,18 +148,7 @@ export const ElmSelect = ({
         <div className={styles.select}>
           <div className={styles.selected}>
             {props.selectedOption ? (
-              props.selectedOption.children ? (
-                <div>{props.selectedOption.children}</div>
-              ) : (
-                <div>
-                  <span>{props.selectedOption.label}</span>
-                  {props.selectedOption.description && (
-                    <span className={styles.description}>
-                      {props.selectedOption.description}
-                    </span>
-                  )}
-                </div>
-              )
+              optionContent(props.selectedOption, false)
             ) : (
               <div className={styles.fallback}>
                 <ElmMdiIcon d={mdiArrowDownDropCircleOutline} />
@@ -139,35 +165,9 @@ export const ElmSelect = ({
             })}
           >
             <div className={styles["collapse"]}>
-              {props.options.map((option) => (
-                <div
-                  key={option.id}
-                  className={styles.option}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleSelect(option.id);
-                  }}
-                >
-                  <ElmMdiIcon
-                    d={mdiChevronRight}
-                    color="#868e9c"
-                    size="0.75em"
-                  />
-
-                  {option.children ? (
-                    <div>{option.children}</div>
-                  ) : (
-                    <>
-                      <span>{option.label}</span>
-                      {option.description && (
-                        <span className={styles.description}>
-                          {option.description}
-                        </span>
-                      )}
-                    </>
-                  )}
-                </div>
-              ))}
+              {props.options.map((option) =>
+                optionContent(option, true, option.id),
+              )}
             </div>
           </div>
         </div>
