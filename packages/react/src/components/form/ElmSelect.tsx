@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import "@styles/global.css";
 import styles from "./ElmSelect.module.css";
@@ -12,8 +12,8 @@ import {
 import type { ElmethisCSSVariables } from "@styles/variables";
 import clsx from "clsx";
 
-export interface ElmSelectOption {
-  id: string;
+export interface ElmSelectOption<T extends string> {
+  id: T;
   label?: string;
   description?: string;
   children?: React.ReactNode;
@@ -24,7 +24,7 @@ export type ElmSelectCSSVariables = Pick<
   "--elmethis-color-primary"
 >;
 
-export interface ElmSelectProps {
+export interface ElmSelectProps<T extends string> {
   style?: React.CSSProperties & ElmSelectCSSVariables;
 
   className?: string;
@@ -42,41 +42,38 @@ export interface ElmSelectProps {
   loading?: boolean;
 
   /** List of options. */
-  options: ElmSelectOption[];
+  options: ElmSelectOption<T>[];
 
   /** Currently selected option. */
-  selectedOption?: ElmSelectOption | null;
+  selectedOptionId?: T | null;
 
   /** Called when an option is selected. */
-  onSelect?: (option: ElmSelectOption) => void;
+  onSelect?: (option: T) => void;
 }
 
-export const ElmSelect = ({
+export const ElmSelect = <T extends string>({
   disabled = false,
   loading = false,
   ...props
-}: ElmSelectProps) => {
+}: ElmSelectProps<T>) => {
   const [isActive, setIsActive] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const handleToggle = useCallback(() => {
+  const handleToggle = () => {
     if (!disabled && !loading) {
       setIsActive((prev) => !prev);
     }
-  }, [disabled, loading]);
+  };
 
   const { options, onSelect } = props;
 
-  const handleSelect = useCallback(
-    (id: string) => {
-      const selected = options.find((option) => option.id === id);
-      if (selected && onSelect) {
-        onSelect(selected);
-        setIsActive(false);
-      }
-    },
-    [options, onSelect],
-  );
+  const handleSelect = (id: T) => {
+    const selected = options.find((option) => option.id === id);
+    if (selected && onSelect) {
+      onSelect(selected.id);
+      setIsActive(false);
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -90,6 +87,45 @@ export const ElmSelect = ({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const optionContent = (id: T, isSelectable: boolean, key?: string) => {
+    const option = props.options.find((option) => option.id === id);
+
+    if (!option) {
+      return null;
+    }
+
+    const onClick = isSelectable
+      ? (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+          e.stopPropagation();
+          handleSelect(option.id);
+        }
+      : undefined;
+
+    const innerContent = (
+      <>
+        <span>{option.label}</span>
+        {option.description && (
+          <span className={styles.description}>{option.description}</span>
+        )}
+      </>
+    );
+
+    return (
+      <div
+        key={key}
+        className={clsx(styles.option, {
+          [styles.selectable]: isSelectable,
+        })}
+        onClick={onClick}
+      >
+        {isSelectable && (
+          <ElmMdiIcon d={mdiChevronRight} color="#868e9c" size="0.75em" />
+        )}
+        {option.children ? option.children : innerContent}
+      </div>
+    );
+  };
 
   return (
     <div
@@ -110,19 +146,8 @@ export const ElmSelect = ({
       <div className={styles.body}>
         <div className={styles.select}>
           <div className={styles.selected}>
-            {props.selectedOption ? (
-              props.selectedOption.children ? (
-                <div>{props.selectedOption.children}</div>
-              ) : (
-                <div>
-                  <span>{props.selectedOption.label}</span>
-                  {props.selectedOption.description && (
-                    <span className={styles.description}>
-                      {props.selectedOption.description}
-                    </span>
-                  )}
-                </div>
-              )
+            {props.selectedOptionId ? (
+              optionContent(props.selectedOptionId, false)
             ) : (
               <div className={styles.fallback}>
                 <ElmMdiIcon d={mdiArrowDownDropCircleOutline} />
@@ -139,35 +164,9 @@ export const ElmSelect = ({
             })}
           >
             <div className={styles["collapse"]}>
-              {props.options.map((option) => (
-                <div
-                  key={option.id}
-                  className={styles.option}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleSelect(option.id);
-                  }}
-                >
-                  <ElmMdiIcon
-                    d={mdiChevronRight}
-                    color="#868e9c"
-                    size="0.75em"
-                  />
-
-                  {option.children ? (
-                    <div>{option.children}</div>
-                  ) : (
-                    <>
-                      <span>{option.label}</span>
-                      {option.description && (
-                        <span className={styles.description}>
-                          {option.description}
-                        </span>
-                      )}
-                    </>
-                  )}
-                </div>
-              ))}
+              {props.options.map((option) =>
+                optionContent(option.id, true, option.id),
+              )}
             </div>
           </div>
         </div>
