@@ -1,29 +1,28 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmBlockImage } from "./elm-block-image";
+import { ElmBlockImage , type ElmBlockImageProps} from "./elm-block-image";
 
 import landscape from "../../assets/images/lamdscape.svg?url";
 import portrait from "../../assets/images/portrait.svg?url";
 import square from "../../assets/images/square.svg?url";
 
-const meta: Meta<typeof ElmBlockImage> = {
+const meta: Meta<ElmBlockImageProps> = {
   title: "Components/Media/elm-block-image",
   component: ElmBlockImage,
   tags: ["autodocs"],
   args: {
     src: "https://images.unsplash.com/photo-1556983703-27576e5afa24?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb",
-    block: true,
     enableModal: true,
   },
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmBlockImageProps>;
 
 export const Primary: Story = {
   render() {
     return (
       <>
-        <ElmBlockImage {...this.args} />
+        <ElmBlockImage {...(this.args as ElmBlockImageProps)} />
         <div>Some text below the image to demonstrate block display.</div>
       </>
     );

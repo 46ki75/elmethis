@@ -1,8 +1,8 @@
 import { type Meta, type StoryObj } from "storybook-framework-qwik";
-import { ElmMdiIcon } from "./elm-mdi-icon";
+import { ElmMdiIcon , type ElmMdiIconProps} from "./elm-mdi-icon";
 import { mdiTag } from "@mdi/js";
 
-const meta: Meta<typeof ElmMdiIcon> = {
+const meta: Meta<ElmMdiIconProps> = {
   title: "Components/Icon/elm-mdi-icon",
   component: ElmMdiIcon,
   tags: ["autodocs"],
@@ -15,7 +15,7 @@ const meta: Meta<typeof ElmMdiIcon> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmMdiIconProps>;
 
 export const Primary: Story = {
   args: {

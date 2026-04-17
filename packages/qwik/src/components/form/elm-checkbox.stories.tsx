@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmCheckbox } from "./elm-checkbox";
+import { ElmCheckbox , type ElmCheckboxProps} from "./elm-checkbox";
 
-const meta: Meta<typeof ElmCheckbox> = {
+const meta: Meta<ElmCheckboxProps> = {
   title: "Components/Form/elm-checkbox",
   component: ElmCheckbox,
   tags: ["autodocs"],
@@ -13,10 +13,10 @@ const meta: Meta<typeof ElmCheckbox> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmCheckboxProps>;
 
 export const Primary: Story = {
   render() {
-    return <ElmCheckbox {...this.args} />;
+    return <ElmCheckbox {...(this.args as ElmCheckboxProps)} />;
   },
 };

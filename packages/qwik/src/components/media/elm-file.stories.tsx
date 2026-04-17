@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmFile } from "./elm-file";
+import { ElmFile , type ElmFileProps} from "./elm-file";
 
 import file from "../../assets/vite.svg";
 
-const meta: Meta<typeof ElmFile> = {
+const meta: Meta<ElmFileProps> = {
   title: "Components/Media/elm-file",
   component: ElmFile,
   tags: ["autodocs"],
@@ -11,7 +11,7 @@ const meta: Meta<typeof ElmFile> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmFileProps>;
 
 export const Primary: Story = {
   args: {

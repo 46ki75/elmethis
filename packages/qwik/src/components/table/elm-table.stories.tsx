@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmTable } from "./elm-table";
+import { ElmTable , type ElmTableProps} from "./elm-table";
 import { ElmTableHeader } from "./elm-table-header";
 import { ElmTableBody } from "./elm-table-body";
 import { ElmTableRow } from "./elm-table-row";
 import { ElmTableCell } from "./elm-table-cell";
 
-const meta: Meta<typeof ElmTable> = {
+const meta: Meta<ElmTableProps> = {
   title: "Components/Table/elm-table",
   component: ElmTable,
   tags: ["autodocs"],
@@ -15,7 +15,7 @@ const meta: Meta<typeof ElmTable> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmTableProps>;
 
 export const Primary: Story = {
   render() {

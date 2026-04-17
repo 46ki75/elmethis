@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmList } from "./elm-list";
+import { ElmList , type ElmListProps} from "./elm-list";
 
-const meta: Meta<typeof ElmList> = {
+const meta: Meta<ElmListProps> = {
   title: "Components/Typography/elm-list",
   component: ElmList,
   tags: ["autodocs"],
@@ -13,7 +13,7 @@ const meta: Meta<typeof ElmList> = {
   },
   render() {
     return (
-      <ElmList {...this.args}>
+      <ElmList {...(this.args as ElmListProps)}>
         <li>Item 1</li>
         <li>Item 2</li>
         <li>Item 3</li>
@@ -23,7 +23,7 @@ const meta: Meta<typeof ElmList> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmListProps>;
 
 export const Unordered: Story = {
   args: { listStyle: "unordered" },
@@ -37,15 +37,15 @@ export const Nested: Story = {
   args: { listStyle: "unordered" },
   render() {
     return (
-      <ElmList {...this.args}>
+      <ElmList {...(this.args as ElmListProps)}>
         <li>Item 1</li>
         <li>
           Item 2
-          <ElmList {...this.args}>
+          <ElmList {...(this.args as ElmListProps)}>
             <li>Item 2.1</li>
             <li>
               Item 2.2
-              <ElmList {...this.args}>
+              <ElmList {...(this.args as ElmListProps)}>
                 <li>Item 2.2.1</li>
                 <li>Item 2.2.2</li>
                 <li>Item 2.2.3</li>

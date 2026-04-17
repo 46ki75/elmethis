@@ -1,9 +1,9 @@
 import { mdiSquareEditOutline } from "@mdi/js";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
-import { ElmButton } from "./elm-button";
+import { ElmButton , type ElmButtonProps} from "./elm-button";
 
-const meta: Meta<typeof ElmButton> = {
+const meta: Meta<ElmButtonProps> = {
   title: "Components/Form/elm-button",
   component: ElmButton,
   tags: ["autodocs"],
@@ -16,7 +16,7 @@ const meta: Meta<typeof ElmButton> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmButtonProps>;
 
 export const Primary: Story = {
   render() {

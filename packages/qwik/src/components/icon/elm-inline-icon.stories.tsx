@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmInlineIcon } from "./elm-inline-icon";
+import { ElmInlineIcon , type ElmInlineIconProps} from "./elm-inline-icon";
 
-const meta: Meta<typeof ElmInlineIcon> = {
+const meta: Meta<ElmInlineIconProps> = {
   title: "Components/Icon/elm-inline-icon",
   component: ElmInlineIcon,
   tags: ["autodocs"],
@@ -11,6 +11,6 @@ const meta: Meta<typeof ElmInlineIcon> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmInlineIconProps>;
 
 export const Primary: Story = {};

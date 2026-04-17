@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmLanguageIcon, LANGUAGES } from "./elm-language-icon";
+import { ElmLanguageIcon, LANGUAGES , type ElmLanguageIconProps} from "./elm-language-icon";
 
-const meta: Meta<typeof ElmLanguageIcon> = {
+const meta: Meta<ElmLanguageIconProps> = {
   title: "Components/Icon/elm-language-icon",
   component: ElmLanguageIcon,
   tags: ["autodocs"],
@@ -15,7 +15,7 @@ const meta: Meta<typeof ElmLanguageIcon> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmLanguageIconProps>;
 
 export const Primary: Story = {
   args: { language: "rust" },

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmFragmentIdentifier } from "./elm-fragment-identifier";
+import { ElmFragmentIdentifier , type ElmFragmentIdentifierProps} from "./elm-fragment-identifier";
 
-const meta: Meta<typeof ElmFragmentIdentifier> = {
+const meta: Meta<ElmFragmentIdentifierProps> = {
   title: "Components/Typography/elm-fragment-identifier",
   component: ElmFragmentIdentifier,
   tags: ["autodocs"],
@@ -9,6 +9,6 @@ const meta: Meta<typeof ElmFragmentIdentifier> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmFragmentIdentifierProps>;
 
 export const Primary: Story = {};

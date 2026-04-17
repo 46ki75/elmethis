@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmBlockQuote } from "./elm-block-quote";
+import { ElmBlockQuote , type ElmBlockQuoteProps} from "./elm-block-quote";
 
-const meta: Meta<typeof ElmBlockQuote> = {
+const meta: Meta<ElmBlockQuoteProps> = {
   title: "Components/Typography/elm-block-quote",
   component: ElmBlockQuote,
   tags: ["autodocs"],
@@ -17,6 +17,6 @@ const meta: Meta<typeof ElmBlockQuote> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmBlockQuoteProps>;
 
 export const Primary: Story = {};

@@ -2,7 +2,7 @@ import { component$, useSignal } from "@builder.io/qwik";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { ElmSwitch, type ElmSwitchProps } from "./elm-switch";
 
-const meta: Meta<typeof ElmSwitch> = {
+const meta: Meta<ElmSwitchProps> = {
   title: "Components/Form/elm-switch",
   component: ElmSwitch,
   tags: ["autodocs"],
@@ -14,7 +14,7 @@ const meta: Meta<typeof ElmSwitch> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmSwitchProps>;
 
 const SwitchWrapper = component$((props: Partial<ElmSwitchProps>) => {
   const checked = useSignal(false);

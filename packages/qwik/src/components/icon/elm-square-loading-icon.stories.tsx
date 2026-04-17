@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmSquareLoadingIcon } from "./elm-square-loading-icon";
+import { ElmSquareLoadingIcon , type ElmSquareLoadingIconProps} from "./elm-square-loading-icon";
 
-const meta: Meta<typeof ElmSquareLoadingIcon> = {
+const meta: Meta<ElmSquareLoadingIconProps> = {
   title: "Components/Icon/elm-square-loading-icon",
   component: ElmSquareLoadingIcon,
   tags: ["autodocs"],
@@ -10,7 +10,7 @@ const meta: Meta<typeof ElmSquareLoadingIcon> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmSquareLoadingIconProps>;
 
 export const Primary: Story = {
   args: {

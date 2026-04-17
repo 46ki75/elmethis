@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmParagraph } from "./elm-paragraph";
+import { ElmParagraph , type ElmParagraphProps} from "./elm-paragraph";
 
-const meta: Meta<typeof ElmParagraph> = {
+const meta: Meta<ElmParagraphProps> = {
   title: "Components/Typography/elm-paragraph",
   component: ElmParagraph,
   tags: ["autodocs"],
@@ -20,7 +20,7 @@ const meta: Meta<typeof ElmParagraph> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmParagraphProps>;
 
 export const Primary: Story = {};
 

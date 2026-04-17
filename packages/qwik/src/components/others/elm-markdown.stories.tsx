@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmMarkdown } from "./elm-markdown";
+import { ElmMarkdown , type ElmMarkdownProps} from "./elm-markdown";
 
-const meta: Meta<typeof ElmMarkdown> = {
+const meta: Meta<ElmMarkdownProps> = {
   title: "Components/Others/elm-markdown",
   component: ElmMarkdown,
   tags: ["autodocs"],
@@ -10,7 +10,7 @@ const meta: Meta<typeof ElmMarkdown> = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmMarkdownProps>;
 
 const MARKDOWN = `
 [google]: https://www.google.com "Google検索"

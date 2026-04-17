@@ -6,7 +6,7 @@ import {
   type ElmSelectProps,
 } from "./elm-select";
 
-const meta: Meta<typeof ElmSelect> = {
+const meta: Meta<ElmSelectProps> = {
   title: "Components/Form/elm-select",
   component: ElmSelect,
   tags: ["autodocs"],
@@ -16,7 +16,7 @@ const meta: Meta<typeof ElmSelect> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmSelectProps>;
 
 const SelectWrapper = component$(
   (props: Partial<ElmSelectProps> & { label?: string }) => {

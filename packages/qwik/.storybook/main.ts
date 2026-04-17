@@ -2,12 +2,9 @@ import { StorybookConfig } from "storybook-framework-qwik";
 import type { InlineConfig } from "vite";
 
 const config: StorybookConfig = {
-  addons: ["@storybook/addon-essentials", "@storybook/addon-docs"],
+  addons: ["@storybook/addon-docs"],
   framework: {
     name: "storybook-framework-qwik",
-  },
-  core: {
-    renderer: "storybook-framework-qwik",
   },
   stories: [
     // ...rootMain.stories,

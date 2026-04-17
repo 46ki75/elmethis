@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmBookmark } from "./elm-bookmark";
+import { ElmBookmark , type ElmBookmarkProps} from "./elm-bookmark";
 
-const meta: Meta<typeof ElmBookmark> = {
+const meta: Meta<ElmBookmarkProps> = {
   title: "Components/Navigation/elm-bookmark",
   component: ElmBookmark,
   tags: ["autodocs"],
@@ -11,7 +11,7 @@ const meta: Meta<typeof ElmBookmark> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmBookmarkProps>;
 
 export const Primary: Story = {
   args: {

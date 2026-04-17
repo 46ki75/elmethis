@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { ElmButton } from "./elm-button";
 import { ElmTextField, type ElmTextFieldProps } from "./elm-text-field";
 
-const meta: Meta<typeof ElmTextField> = {
+const meta: Meta<ElmTextFieldProps> = {
   title: "Components/Form/elm-text-field",
   component: ElmTextField,
   tags: ["autodocs"],
@@ -36,7 +36,7 @@ const meta: Meta<typeof ElmTextField> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmTextFieldProps>;
 
 export const Primary: Story = {};
 
