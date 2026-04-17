@@ -2,6 +2,7 @@ import React, { useCallback } from "react";
 
 import "@styles/global.css";
 import styles from "./ElmCheckbox.module.css";
+import { useControllableState } from "@radix-ui/react-use-controllable-state";
 
 export interface ElmCheckboxCSSVariables {}
 
@@ -29,10 +30,13 @@ export interface ElmCheckboxProps {
 export const ElmCheckbox = ({
   loading = false,
   disable = false,
-  checked = false,
   ...props
 }: ElmCheckboxProps) => {
-  const { onChange } = props;
+  const [checked, onChange] = useControllableState({
+    prop: props.checked,
+    defaultProp: false,
+    onChange: props.onChange,
+  });
 
   const toggleCheck = useCallback(() => {
     if (!loading && !disable && onChange) {
