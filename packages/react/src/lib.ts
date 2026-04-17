@@ -266,3 +266,10 @@ export { ElmTyping, type ElmTypingProps } from "./components/others/ElmTyping";
 
 // Embed
 export { ElmOEmbed, type ElmOEmbedProps } from "./components/embed/ElmOEmbed";
+
+// Hooks
+export { useElmethisTheme } from "@hooks/useElmethisTheme";
+export {
+  useLocalStorage,
+  type UseLocalStorageOptions,
+} from "@hooks/useLocalStorage";
