@@ -268,9 +268,9 @@ export {
 } from "./components/typography/ElmTypingAnimation";
 
 // Hooks
-export { useElmethisTheme } from "@hooks/useElmethisTheme";
+export { useElmethisTheme } from "./hooks/useElmethisTheme";
 export {
   useLocalStorage,
   type UseLocalStorageOptions,
-} from "@hooks/useLocalStorage";
-export { useLocalStorageDispatch } from "@hooks/useLocalStorageDispatch";
+} from "./hooks/useLocalStorage";
+export { useLocalStorageDispatch } from "./hooks/useLocalStorageDispatch";
