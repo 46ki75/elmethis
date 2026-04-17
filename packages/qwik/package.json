@@ -67,7 +67,7 @@
     "sass": "^1.99.0",
     "storybook": "^10.3.5",
     "storybook-framework-qwik": "0.6.1",
-    "typescript": "5.9.3",
+    "typescript": "6.0.3",
     "typescript-eslint": "8.58.2",
     "undici": "*",
     "vite": "^6",
