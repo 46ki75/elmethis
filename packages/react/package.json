@@ -1,6 +1,6 @@
 {
   "name": "@elmethis/react",
-  "version": "0.3.17",
+  "version": "0.3.21",
   "publishConfig": {
     "access": "public"
   },
@@ -37,7 +37,7 @@
   "scripts": {
     "prepublishOnly": "pnpm run build",
     "build": "tsc --noEmit && vite build && pnpm run build.types",
-    "build.types": "tsc --project tsconfig.lib.json",
+    "build.types": "tsc --project tsconfig.lib.json && tsc-alias --project tsconfig.lib.json",
     "lint": "eslint .",
     "format": "prettier --write ./src",
     "storybook": "storybook dev -p 6006 --no-open",
@@ -76,6 +76,7 @@
     "globals": "^17.5.0",
     "prettier": "3.8.3",
     "storybook": "^10.3.5",
+    "tsc-alias": "^1.8.16",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.58.2",
     "vite": "^8.0.4"

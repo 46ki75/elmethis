@@ -8,7 +8,11 @@ export function useLocalStorageDispatch<S, A>(
   initialState: S,
 ): [S, (action: A) => void, () => void] {
   const reducerRef = useRef(reducer);
-  reducerRef.current = reducer;
+  useEffect(() => {
+    reducerRef.current = reducer;
+  });
+
+  const initialStateRef = useRef(initialState);
 
   const [state, setState] = useState<S>(() => {
     if (typeof localStorage === "undefined") return initialState;
@@ -23,11 +27,10 @@ export function useLocalStorageDispatch<S, A>(
 
   const dispatchChange = useCallback(
     (newValue: S) => {
-      if (typeof window !== "undefined") {
-        window.dispatchEvent(
-          new CustomEvent(CUSTOM_EVENT, { detail: { key, newValue } }),
-        );
-      }
+      if (typeof window === "undefined") return;
+      window.dispatchEvent(
+        new CustomEvent(CUSTOM_EVENT, { detail: { key, newValue } }),
+      );
     },
     [key],
   );
@@ -50,13 +53,21 @@ export function useLocalStorageDispatch<S, A>(
     [key, dispatchChange],
   );
 
+  const remove = useCallback(() => {
+    if (typeof localStorage !== "undefined") {
+      localStorage.removeItem(key);
+    }
+    setState(initialStateRef.current);
+    dispatchChange(initialStateRef.current);
+  }, [key, dispatchChange]);
+
   useEffect(() => {
     if (typeof window === "undefined") return;
 
     const handleStorage = (e: StorageEvent) => {
       if (e.key !== key) return;
       if (e.newValue === null) {
-        setState(initialState);
+        setState(initialStateRef.current);
         return;
       }
       try {
@@ -80,17 +91,7 @@ export function useLocalStorageDispatch<S, A>(
       window.removeEventListener("storage", handleStorage);
       window.removeEventListener(CUSTOM_EVENT, handleCustom);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
-
-  const remove = useCallback(() => {
-    if (typeof localStorage !== "undefined") {
-      localStorage.removeItem(key);
-    }
-    setState(initialState);
-    dispatchChange(initialState);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key, dispatchChange]);
 
   return [state, dispatch, remove];
 }
