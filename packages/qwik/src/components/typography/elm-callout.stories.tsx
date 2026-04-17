@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmCallout } from "./elm-callout";
+import { ElmCallout , type ElmCalloutProps} from "./elm-callout";
 import { ElmInlineText } from "./elm-inline-text";
 
 const lorem =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc tincidunt aliquam. Nullam nec purus nec nunc tincidunt aliquam.";
 
-const meta: Meta<typeof ElmCallout> = {
+const meta: Meta<ElmCalloutProps> = {
   title: "Components/Typography/elm-callout",
   component: ElmCallout,
   tags: ["autodocs"],
@@ -26,7 +26,7 @@ const meta: Meta<typeof ElmCallout> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmCalloutProps>;
 
 export const Primary: Story = {};
 

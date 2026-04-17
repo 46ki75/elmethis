@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmPageTop } from "./elm-page-top";
+import { ElmPageTop , type ElmPageTopProps} from "./elm-page-top";
 
-const meta: Meta<typeof ElmPageTop> = {
+const meta: Meta<ElmPageTopProps> = {
   title: "Components/Navigation/elm-page-top",
   component: ElmPageTop,
   tags: ["autodocs"],
@@ -12,7 +12,7 @@ const meta: Meta<typeof ElmPageTop> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmPageTopProps>;
 
 export const Primary: Story = {
   render() {

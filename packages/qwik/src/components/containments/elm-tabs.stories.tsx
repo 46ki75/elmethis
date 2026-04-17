@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmTabs } from "./elm-tabs";
+import { ElmTabs , type ElmTabsProps} from "./elm-tabs";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { ElmParagraph } from "../typography/elm-paragraph";
 import { ElmLanguageIcon } from "../icon/elm-language-icon";
@@ -7,7 +7,7 @@ import { ElmCodeBlock } from "../code/elm-code-block";
 
 import code from "../code/seed/main.rs?raw";
 
-const meta: Meta<typeof ElmTabs> = {
+const meta: Meta<ElmTabsProps> = {
   title: "Components/Containments/elm-tabs",
   component: ElmTabs,
   tags: ["autodocs"],
@@ -15,7 +15,7 @@ const meta: Meta<typeof ElmTabs> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmTabsProps>;
 
 export const Primary: Story = {
   render() {

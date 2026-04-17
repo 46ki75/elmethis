@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmUnsupportedBlock } from "./elm-unsupported-block";
+import { ElmUnsupportedBlock , type ElmUnsupportedBlockProps} from "./elm-unsupported-block";
 
-const meta: Meta<typeof ElmUnsupportedBlock> = {
+const meta: Meta<ElmUnsupportedBlockProps> = {
   title: "Components/Fallback/elm-unsupported-block",
   component: ElmUnsupportedBlock,
   tags: ["autodocs"],
@@ -9,7 +9,7 @@ const meta: Meta<typeof ElmUnsupportedBlock> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmUnsupportedBlockProps>;
 
 export const Primary: Story = {
   args: {

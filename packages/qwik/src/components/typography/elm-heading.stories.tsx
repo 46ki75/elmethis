@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 
-import { ElmHeading } from "./elm-heading";
+import { ElmHeading , type ElmHeadingProps} from "./elm-heading";
 import { ElmInlineText } from "./elm-inline-text";
 
-const meta: Meta<typeof ElmHeading> = {
+const meta: Meta<ElmHeadingProps> = {
   title: "Components/Typography/elm-heading",
   component: ElmHeading,
   tags: ["autodocs"],
@@ -16,7 +16,7 @@ const meta: Meta<typeof ElmHeading> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmHeadingProps>;
 
 export const Primary: Story = {
   args: {
@@ -33,7 +33,7 @@ export const Slot: Story = {
   },
   render() {
     return (
-      <ElmHeading {...this.args}>
+      <ElmHeading {...(this.args as ElmHeadingProps)}>
         <ElmInlineText text="This" color="crimson" /> is{" "}
         <ElmInlineText text="code" code /> !
       </ElmHeading>

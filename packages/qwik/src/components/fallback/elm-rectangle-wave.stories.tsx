@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmRectangleWave } from "./elm-rectangle-wave";
+import { ElmRectangleWave , type ElmRectangleWaveProps} from "./elm-rectangle-wave";
 
-const meta: Meta<typeof ElmRectangleWave> = {
+const meta: Meta<ElmRectangleWaveProps> = {
   title: "Components/Fallback/elm-rectangle-wave",
   component: ElmRectangleWave,
   tags: ["autodocs"],
@@ -23,6 +23,6 @@ const meta: Meta<typeof ElmRectangleWave> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmRectangleWaveProps>;
 
 export const Primary: Story = {};

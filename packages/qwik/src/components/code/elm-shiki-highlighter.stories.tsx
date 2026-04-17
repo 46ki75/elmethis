@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmShikiHighlighter } from "./elm-shiki-highlighter";
+import { ElmShikiHighlighter , type ElmShikiHighlighterProps} from "./elm-shiki-highlighter";
 
 import code from "./seed/main.rs?raw";
 
-const meta: Meta<typeof ElmShikiHighlighter> = {
+const meta: Meta<ElmShikiHighlighterProps> = {
   title: "Components/Code/elm-shiki-highlighter",
   component: ElmShikiHighlighter,
   tags: ["autodocs"],
@@ -11,7 +11,7 @@ const meta: Meta<typeof ElmShikiHighlighter> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmShikiHighlighterProps>;
 
 export const Primary: Story = {
   args: {

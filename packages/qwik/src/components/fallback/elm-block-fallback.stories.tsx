@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmBlockFallback } from "./elm-block-fallback";
+import { ElmBlockFallback , type ElmBlockFallbackProps} from "./elm-block-fallback";
 
-const meta: Meta<typeof ElmBlockFallback> = {
+const meta: Meta<ElmBlockFallbackProps> = {
   title: "Components/Fallback/elm-block-fallback",
   component: ElmBlockFallback,
   tags: ["autodocs"],
@@ -9,6 +9,6 @@ const meta: Meta<typeof ElmBlockFallback> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmBlockFallbackProps>;
 
 export const Primary: Story = {};

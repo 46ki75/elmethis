@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmJarkup } from "./elm-jarkup";
+import { ElmJarkup , type ElmJarkupProps} from "./elm-jarkup";
 import sampleData from "../../../../vue/src/components/others/ElmJsonComponentRenderer.json";
 import { type Component } from "jarkup-ts";
 
-const meta: Meta<typeof ElmJarkup> = {
+const meta: Meta<ElmJarkupProps> = {
   title: "Components/Others/elm-jarkup",
   component: ElmJarkup,
   tags: ["autodocs"],
@@ -14,6 +14,6 @@ const meta: Meta<typeof ElmJarkup> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmJarkupProps>;
 
 export const Primary: Story = {};

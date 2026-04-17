@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmInlineText } from "./elm-inline-text";
+import { ElmInlineText , type ElmInlineTextProps} from "./elm-inline-text";
 import { opacify } from "polished";
 
-const meta: Meta<typeof ElmInlineText> = {
+const meta: Meta<ElmInlineTextProps> = {
   title: "Components/Typography/elm-inline-text",
   component: ElmInlineText,
   tags: ["autodocs"],
@@ -29,7 +29,7 @@ const meta: Meta<typeof ElmInlineText> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmInlineTextProps>;
 
 export const Primary: Story = {};
 

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmBreadcrumb } from "./elm-breadcrumb";
+import { ElmBreadcrumb , type ElmBreadcrumbProps} from "./elm-breadcrumb";
 
-const meta: Meta<typeof ElmBreadcrumb> = {
+const meta: Meta<ElmBreadcrumbProps> = {
   title: "Components/Navigation/elm-breadcrumb",
   component: ElmBreadcrumb,
   tags: ["autodocs"],
@@ -9,7 +9,7 @@ const meta: Meta<typeof ElmBreadcrumb> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmBreadcrumbProps>;
 
 export const Primary: Story = {
   args: {

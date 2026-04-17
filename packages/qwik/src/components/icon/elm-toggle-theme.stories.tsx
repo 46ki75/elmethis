@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmToggleTheme } from "./elm-toggle-theme";
+import { ElmToggleTheme , type ElmToggleThemeProps} from "./elm-toggle-theme";
 
-const meta: Meta<typeof ElmToggleTheme> = {
+const meta: Meta<ElmToggleThemeProps> = {
   title: "Components/Icon/elm-toggle-theme",
   component: ElmToggleTheme,
   tags: ["autodocs"],
@@ -9,6 +9,6 @@ const meta: Meta<typeof ElmToggleTheme> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmToggleThemeProps>;
 
 export const Primary: Story = {};

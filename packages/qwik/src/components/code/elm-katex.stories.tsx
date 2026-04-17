@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmKatex } from "./elm-katex";
+import { ElmKatex , type ElmKatexProps} from "./elm-katex";
 
-const meta: Meta<typeof ElmKatex> = {
+const meta: Meta<ElmKatexProps> = {
   title: "Components/Code/elm-katex",
   component: ElmKatex,
   tags: ["autodocs"],
@@ -9,7 +9,7 @@ const meta: Meta<typeof ElmKatex> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<ElmKatexProps>;
 
 export const Inline: Story = {
   args: { expression: "c = pmsqrt{a^2 + b^2}" },

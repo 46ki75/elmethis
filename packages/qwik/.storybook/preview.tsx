@@ -4,21 +4,14 @@ import type { Component } from "@builder.io/qwik";
 import "./sb.scss";
 
 export const preview: Preview = {
-  a11y: {
-    config: {},
-    options: {
-      checks: { "color-contrast": { options: { noScroll: true } } },
-      restoreScroll: true,
-    },
-  },
-  options: {
-    showRoots: true,
-  },
-  docs: {
-    iframeHeight: "200px",
-  },
-
   parameters: {
+    a11y: {
+      config: {},
+      options: {
+        checks: { "color-contrast": { options: { noScroll: true } } },
+        restoreScroll: true,
+      },
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,
