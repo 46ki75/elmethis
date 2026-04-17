@@ -1,6 +1,14 @@
 import { $, type QRL, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 
-export const useLocalStorage = <T>(key: string, initialValue: T) => {
+export type UseLocalStorageOptions<T> = {
+  key: string;
+  initialValue: T;
+};
+
+export const useLocalStorage = <T>({
+  key,
+  initialValue,
+}: UseLocalStorageOptions<T>) => {
   const state = useSignal<T>(initialValue);
 
   // eslint-disable-next-line qwik/no-use-visible-task
