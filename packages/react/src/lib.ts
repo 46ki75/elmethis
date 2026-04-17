@@ -273,3 +273,4 @@ export {
   useLocalStorage,
   type UseLocalStorageOptions,
 } from "@hooks/useLocalStorage";
+export { useLocalStorageDispatch } from "@hooks/useLocalStorageDispatch";
