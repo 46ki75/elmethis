@@ -19,41 +19,23 @@ const reducer = (state: CounterState, action: Action): CounterState => {
   }
 };
 
-const CounterButtons = ({
-  state,
-  dispatch,
-  remove,
-  storageKey,
-}: {
-  state: CounterState;
-  dispatch: (action: Action) => void;
-  remove: () => void;
-  storageKey?: string;
-}) => (
-  <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", width: "fit-content" }}>
-    <div>Count: {state.count}</div>
-    <div style={{ display: "flex", gap: "0.5rem" }}>
-      <button onClick={() => dispatch({ type: "DECREMENT" })}>-</button>
-      <button onClick={() => dispatch({ type: "INCREMENT" })}>+</button>
-      <button onClick={() => dispatch({ type: "RESET" })}>Reset</button>
-      <button onClick={remove}>Remove</button>
-    </div>
-    {storageKey && (
+const CounterDemo = ({ storageKey }: { storageKey: string }) => {
+  const [state, dispatch, remove] = useLocalStorageDispatch(storageKey, reducer, { count: 0 });
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", width: "fit-content" }}>
+      <div>Count: {state.count}</div>
+      <div style={{ display: "flex", gap: "0.5rem" }}>
+        <button onClick={() => dispatch({ type: "DECREMENT" })}>-</button>
+        <button onClick={() => dispatch({ type: "INCREMENT" })}>+</button>
+        <button onClick={() => dispatch({ type: "RESET" })}>Reset</button>
+        <button onClick={remove}>Remove</button>
+      </div>
       <div style={{ fontSize: "0.75rem", opacity: 0.6 }}>
         localStorage key: <code>{storageKey}</code>
       </div>
-    )}
-  </div>
-);
-
-const InMemoryDemo = () => {
-  const [state, dispatch, remove] = useLocalStorageDispatch(reducer, { count: 0 });
-  return <CounterButtons state={state} dispatch={dispatch} remove={remove} />;
-};
-
-const WithLocalStorageDemo = ({ storageKey }: { storageKey: string }) => {
-  const [state, dispatch, remove] = useLocalStorageDispatch(storageKey, reducer, { count: 0 });
-  return <CounterButtons state={state} dispatch={dispatch} remove={remove} storageKey={storageKey} />;
+    </div>
+  );
 };
 
 const meta: Meta = {
@@ -64,10 +46,6 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const InMemory: Story = {
-  render: () => <InMemoryDemo />,
-};
-
-export const WithLocalStorage: Story = {
-  render: () => <WithLocalStorageDemo storageKey="storybook-counter" />,
+export const Primary: Story = {
+  render: () => <CounterDemo storageKey="storybook-counter" />,
 };

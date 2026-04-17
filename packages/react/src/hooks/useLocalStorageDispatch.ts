@@ -3,26 +3,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 const CUSTOM_EVENT = "elm-local-storage-change";
 
 export function useLocalStorageDispatch<S, A>(
-  reducer: (state: S, action: A) => S,
-  initialState: S,
-): [S, (action: A) => void, () => void];
-export function useLocalStorageDispatch<S, A>(
   key: string,
   reducer: (state: S, action: A) => S,
   initialState: S,
-): [S, (action: A) => void, () => void];
-export function useLocalStorageDispatch<S, A>(
-  keyOrReducer: string | ((state: S, action: A) => S),
-  reducerOrInitial: ((state: S, action: A) => S) | S,
-  maybeInitial?: S,
 ): [S, (action: A) => void, () => void] {
-  const hasKey = typeof keyOrReducer === "string";
-  const key = hasKey ? (keyOrReducer as string) : null;
-  const reducer = hasKey
-    ? (reducerOrInitial as (state: S, action: A) => S)
-    : (keyOrReducer as (state: S, action: A) => S);
-  const initialState = hasKey ? (maybeInitial as S) : (reducerOrInitial as S);
-
   const reducerRef = useRef(reducer);
   useEffect(() => {
     reducerRef.current = reducer;
@@ -31,7 +15,7 @@ export function useLocalStorageDispatch<S, A>(
   const initialStateRef = useRef(initialState);
 
   const [state, setState] = useState<S>(() => {
-    if (!key || typeof localStorage === "undefined") return initialState;
+    if (typeof localStorage === "undefined") return initialState;
     try {
       const stored = localStorage.getItem(key);
       if (stored === null) return initialState;
@@ -43,7 +27,7 @@ export function useLocalStorageDispatch<S, A>(
 
   const dispatchChange = useCallback(
     (newValue: S) => {
-      if (!key || typeof window === "undefined") return;
+      if (typeof window === "undefined") return;
       window.dispatchEvent(
         new CustomEvent(CUSTOM_EVENT, { detail: { key, newValue } }),
       );
@@ -55,7 +39,7 @@ export function useLocalStorageDispatch<S, A>(
     (action: A) => {
       setState((prev) => {
         const next = reducerRef.current(prev, action);
-        if (key && typeof localStorage !== "undefined") {
+        if (typeof localStorage !== "undefined") {
           try {
             localStorage.setItem(key, JSON.stringify(next));
           } catch (e) {
@@ -70,7 +54,7 @@ export function useLocalStorageDispatch<S, A>(
   );
 
   const remove = useCallback(() => {
-    if (key && typeof localStorage !== "undefined") {
+    if (typeof localStorage !== "undefined") {
       localStorage.removeItem(key);
     }
     setState(initialStateRef.current);
@@ -78,7 +62,7 @@ export function useLocalStorageDispatch<S, A>(
   }, [key, dispatchChange]);
 
   useEffect(() => {
-    if (!key || typeof window === "undefined") return;
+    if (typeof window === "undefined") return;
 
     const handleStorage = (e: StorageEvent) => {
       if (e.key !== key) return;
