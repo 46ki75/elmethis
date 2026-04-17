@@ -1,85 +1,96 @@
-import { useCallback, useRef } from "react";
-import type { UseLocalStorageOptions } from "./useLocalStorage";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const CUSTOM_EVENT = "elm-local-storage-change";
 
-type Setter<T> = (value: T | ((prev: T) => T)) => void;
-type Remover = () => void;
-
-export function useLocalStorageDispatch(
+export function useLocalStorageDispatch<S, A>(
   key: string,
-  options: { raw: true },
-): [Setter<string>, Remover];
-export function useLocalStorageDispatch<T>(
-  key: string,
-  options?: UseLocalStorageOptions<T>,
-): [Setter<T>, Remover];
-export function useLocalStorageDispatch<T>(
-  key: string,
-  options?: UseLocalStorageOptions<T> | { raw: true },
-): [Setter<T>, Remover] {
-  const raw = !!(options && "raw" in options && options.raw);
+  reducer: (state: S, action: A) => S,
+  initialState: S,
+): [S, (action: A) => void, () => void] {
+  const reducerRef = useRef(reducer);
+  reducerRef.current = reducer;
 
-  const serializerRef = useRef<(v: T) => string>(
-    raw
-      ? (v: T) => String(v)
-      : ((!raw && options && "serializer" in options && options.serializer) ||
-          ((v: T) => JSON.stringify(v))),
-  );
-  const deserializerRef = useRef<(s: string) => T>(
-    raw
-      ? (s: string) => s as unknown as T
-      : ((!raw && options && "deserializer" in options && options.deserializer) ||
-          ((s: string) => JSON.parse(s) as T)),
-  );
-
-  const readFromStorage = useCallback((): T | undefined => {
-    if (typeof localStorage === "undefined") return undefined;
+  const [state, setState] = useState<S>(() => {
+    if (typeof localStorage === "undefined") return initialState;
     try {
       const stored = localStorage.getItem(key);
-      if (stored === null) return undefined;
-      return deserializerRef.current(stored);
-    } catch (e) {
-      console.warn(`useLocalStorageDispatch: failed to read "${key}"`, e);
-      return undefined;
+      if (stored === null) return initialState;
+      return JSON.parse(stored) as S;
+    } catch {
+      return initialState;
     }
-  }, [key]);
+  });
 
   const dispatchChange = useCallback(
-    (newValue: T | null) => {
-      if (typeof window === "undefined") return;
-      window.dispatchEvent(
-        new CustomEvent(CUSTOM_EVENT, { detail: { key, newValue } }),
-      );
+    (newValue: S) => {
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(
+          new CustomEvent(CUSTOM_EVENT, { detail: { key, newValue } }),
+        );
+      }
     },
     [key],
   );
 
-  const set: Setter<T> = useCallback(
-    (valueOrUpdater) => {
-      const current = readFromStorage();
-      const next =
-        typeof valueOrUpdater === "function"
-          ? (valueOrUpdater as (p: T | undefined) => T)(current)
-          : valueOrUpdater;
-      if (typeof localStorage !== "undefined") {
-        try {
-          localStorage.setItem(key, serializerRef.current(next));
-        } catch (e) {
-          console.warn(`useLocalStorageDispatch: failed to write "${key}"`, e);
+  const dispatch = useCallback(
+    (action: A) => {
+      setState((prev) => {
+        const next = reducerRef.current(prev, action);
+        if (typeof localStorage !== "undefined") {
+          try {
+            localStorage.setItem(key, JSON.stringify(next));
+          } catch (e) {
+            console.warn(`useLocalStorageDispatch: failed to write "${key}"`, e);
+          }
         }
-      }
-      dispatchChange(next);
+        dispatchChange(next);
+        return next;
+      });
     },
-    [key, readFromStorage, dispatchChange],
+    [key, dispatchChange],
   );
 
-  const remove: Remover = useCallback(() => {
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key !== key) return;
+      if (e.newValue === null) {
+        setState(initialState);
+        return;
+      }
+      try {
+        setState(JSON.parse(e.newValue) as S);
+      } catch {
+        console.warn(`useLocalStorageDispatch: failed to parse storage event for "${key}"`);
+      }
+    };
+
+    const handleCustom = (e: Event) => {
+      const { key: k, newValue } = (
+        e as CustomEvent<{ key: string; newValue: S }>
+      ).detail;
+      if (k !== key) return;
+      setState(newValue);
+    };
+
+    window.addEventListener("storage", handleStorage);
+    window.addEventListener(CUSTOM_EVENT, handleCustom);
+    return () => {
+      window.removeEventListener("storage", handleStorage);
+      window.removeEventListener(CUSTOM_EVENT, handleCustom);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key]);
+
+  const remove = useCallback(() => {
     if (typeof localStorage !== "undefined") {
       localStorage.removeItem(key);
     }
-    dispatchChange(null);
+    setState(initialState);
+    dispatchChange(initialState);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key, dispatchChange]);
 
-  return [set, remove];
+  return [state, dispatch, remove];
 }
