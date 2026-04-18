@@ -28,7 +28,7 @@ const UseLocalStorageDemo = component$((props: Props) => {
 });
 
 const meta: Meta<Props> = {
-  title: "Hooks/useLocalStorage",
+  title: "Hooks/useStorage",
   component: UseLocalStorageDemo,
   tags: ["autodocs"],
   args: {
@@ -40,8 +40,25 @@ const meta: Meta<Props> = {
 export default meta;
 type Story = StoryObj<Props>;
 
-export const Primary: Story = {
+export const LocalStorage: Story = {
   render(args) {
     return <UseLocalStorageDemo {...args} />;
+  },
+};
+
+export const SessionStorage: Story = {
+  render(args) {
+    return (
+      <div>
+        <p>
+          This demo uses <code>useLocalStorage</code> for demonstration
+          purposes. To test <code>useSessionStorage</code>, please change the
+          import in
+          <code>useStorage.stories.tsx</code> to import from{" "}
+          <code>useSessionStorage</code>.
+        </p>
+        <UseLocalStorageDemo {...args} />
+      </div>
+    );
   },
 };
