@@ -1,9 +1,9 @@
 import { useStorage, UseStorageOptions } from "./useStorage";
 
-export type UseLocalStorageOptions<T> = {
-  key: UseStorageOptions<T>["key"];
-  initialValue: UseStorageOptions<T>["initialValue"];
-};
+export type UseLocalStorageOptions<T> = Omit<
+  UseStorageOptions<T>,
+  "storageArea"
+>;
 
 export const useLocalStorage = <T>({
   key,
