@@ -1,10 +1,7 @@
 import { component$ } from "@builder.io/qwik";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import {
-  useLocalStorage,
-  type UseLocalStorageOptions,
-} from "./useLocalStorage";
-import { useSessionStorage } from "./useSessionStorage";
+import { useLocalStorage, type UseLocalStorageOptions } from "./useStorage";
+import { useSessionStorage } from "./useStorage";
 
 type Props = UseLocalStorageOptions<string>;
 

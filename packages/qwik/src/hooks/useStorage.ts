@@ -55,7 +55,9 @@ export const useStorage = <T>({
       let bc: BroadcastChannel | undefined;
       if (channel) {
         bc = new BroadcastChannel(channel);
-        bc.onmessage = (event: MessageEvent<{ key: string; value: T | null }>) => {
+        bc.onmessage = (
+          event: MessageEvent<{ key: string; value: T | null }>,
+        ) => {
           if (event.data.key === key) {
             state.value = event.data.value ?? initialValue;
           }
@@ -107,4 +109,37 @@ export const useStorage = <T>({
   });
 
   return { state, set, remove };
+};
+
+export type UseLocalStorageOptions<T> = Omit<
+  UseStorageOptions<T>,
+  "storageArea"
+>;
+
+export const useLocalStorage = <T>({
+  key,
+  initialValue,
+}: UseLocalStorageOptions<T>) => {
+  return useStorage<T>({
+    storageArea: localStorage,
+    key,
+    initialValue,
+  });
+};
+
+export type UseSessionStorageOptions<T> = Omit<
+  UseStorageOptions<T>,
+  "storageArea"
+>;
+
+export const useSessionStorage = <T>({
+  key,
+  initialValue,
+}: UseSessionStorageOptions<T>) => {
+  return useStorage<T>({
+    storageArea: sessionStorage,
+    key,
+    initialValue,
+    channel: `elmethis:sessionStorage:${key}`,
+  });
 };
