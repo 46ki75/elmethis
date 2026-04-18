@@ -10,12 +10,15 @@ export type UseStorageOptions<T> = {
   storageArea: Storage;
   key: string;
   initialValue: T;
+  /** BroadcastChannel name for cross-tab sync (required for sessionStorage) */
+  channel?: string;
 };
 
 export const useStorage = <T>({
   storageArea,
   key,
   initialValue,
+  channel,
 }: UseStorageOptions<T>) => {
   const state = useSignal<T>(initialValue);
 
@@ -48,8 +51,20 @@ export const useStorage = <T>({
       };
 
       addEventListener("storage", onStorage);
+
+      let bc: BroadcastChannel | undefined;
+      if (channel) {
+        bc = new BroadcastChannel(channel);
+        bc.onmessage = (event: MessageEvent<{ key: string; value: T | null }>) => {
+          if (event.data.key === key) {
+            state.value = event.data.value ?? initialValue;
+          }
+        };
+      }
+
       cleanup(() => {
         removeEventListener("storage", onStorage);
+        bc?.close();
       });
     },
     { strategy: "document-ready" },
@@ -62,6 +77,11 @@ export const useStorage = <T>({
       try {
         state.value = value;
         storage.setItem(key, JSON.stringify(value));
+        if (channel) {
+          const bc = new BroadcastChannel(channel);
+          bc.postMessage({ key, value });
+          bc.close();
+        }
       } catch (e) {
         console.warn(`useStorage: failed to write "${key}"`, e);
       }
@@ -75,6 +95,11 @@ export const useStorage = <T>({
       try {
         state.value = initialValue;
         storage.removeItem(key);
+        if (channel) {
+          const bc = new BroadcastChannel(channel);
+          bc.postMessage({ key, value: null });
+          bc.close();
+        }
       } catch (e) {
         console.warn(`useStorage: failed to remove "${key}"`, e);
       }

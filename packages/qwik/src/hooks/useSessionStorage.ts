@@ -13,5 +13,6 @@ export const useSessionStorage = <T>({
     storageArea: sessionStorage,
     key,
     initialValue,
+    channel: `elmethis:sessionStorage:${key}`,
   });
 };

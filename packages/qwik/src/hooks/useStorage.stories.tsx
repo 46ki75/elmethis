@@ -4,11 +4,32 @@ import {
   useLocalStorage,
   type UseLocalStorageOptions,
 } from "./useLocalStorage";
+import { useSessionStorage } from "./useSessionStorage";
 
 type Props = UseLocalStorageOptions<string>;
 
 const UseLocalStorageDemo = component$((props: Props) => {
   const { state, set, remove } = useLocalStorage(props);
+
+  return (
+    <div style={{ fontFamily: "monospace", padding: "1rem" }}>
+      <p>
+        <strong>key:</strong> {props.key}
+      </p>
+      <p>
+        <strong>value:</strong> {String(state.value)}
+      </p>
+      <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.5rem" }}>
+        <button onClick$={() => set("hello")}>set "hello"</button>
+        <button onClick$={() => set("world")}>set "world"</button>
+        <button onClick$={() => remove()}>remove</button>
+      </div>
+    </div>
+  );
+});
+
+const UseSessionStorageDemo = component$((props: Props) => {
+  const { state, set, remove } = useSessionStorage(props);
 
   return (
     <div style={{ fontFamily: "monospace", padding: "1rem" }}>
@@ -48,17 +69,6 @@ export const LocalStorage: Story = {
 
 export const SessionStorage: Story = {
   render(args) {
-    return (
-      <div>
-        <p>
-          This demo uses <code>useLocalStorage</code> for demonstration
-          purposes. To test <code>useSessionStorage</code>, please change the
-          import in
-          <code>useStorage.stories.tsx</code> to import from{" "}
-          <code>useSessionStorage</code>.
-        </p>
-        <UseLocalStorageDemo {...args} />
-      </div>
-    );
+    return <UseSessionStorageDemo {...args} />;
   },
 };
