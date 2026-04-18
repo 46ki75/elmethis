@@ -13,7 +13,7 @@ export const useLocalStorage = <T>({
 
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(
-    () => {
+    ({ cleanup }) => {
       try {
         const item = localStorage.getItem(key);
         if (item !== null) {
@@ -22,6 +22,23 @@ export const useLocalStorage = <T>({
       } catch (e) {
         console.warn(`useLocalStorage: failed to read "${key}"`, e);
       }
+
+      const onStorage = (event: StorageEvent) => {
+        if (event.storageArea === localStorage && event.key === key) {
+          try {
+            state.value = event.newValue
+              ? (JSON.parse(event.newValue) as T)
+              : initialValue;
+          } catch (e) {
+            console.warn(`useLocalStorage: failed to parse "${key}"`, e);
+          }
+        }
+      };
+
+      addEventListener("storage", onStorage);
+      cleanup(() => {
+        removeEventListener("storage", onStorage);
+      });
     },
     { strategy: "document-ready" },
   );
