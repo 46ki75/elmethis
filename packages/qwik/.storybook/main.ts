@@ -10,6 +10,8 @@ const config: StorybookConfig = {
     // ...rootMain.stories,
     "../src/components/**/*.stories.mdx",
     "../src/components/**/*.stories.@(js|jsx|ts|tsx)",
+    "../src/hooks/**/*.stories.mdx",
+    "../src/hooks/**/*.stories.@(js|jsx|ts|tsx)",
   ],
 
   viteFinal: async (config: InlineConfig) => {
