@@ -52,23 +52,27 @@ export const AssistantMarkdownMessage: Story = {
   },
 };
 
-const streamingTokens = md.split(/(?<=\s)|(?=\s)/);
+async function* tokenStream(tokens: string[], delayMs: number) {
+  for (const token of tokens) {
+    await new Promise((resolve) => setTimeout(resolve, delayMs));
+    yield token;
+  }
+}
 
 const StreamingWrapper = component$(() => {
   const content = useSignal("");
 
   // eslint-disable-next-line qwik/no-use-visible-task
-  useVisibleTask$(() => {
-    let i = 0;
-    const interval = setInterval(() => {
-      if (i < streamingTokens.length) {
-        content.value += streamingTokens[i];
-        i++;
-      } else {
-        clearInterval(interval);
+  useVisibleTask$(({ cleanup }) => {
+    const aborted = { value: false };
+    cleanup(() => { aborted.value = true; });
+
+    (async () => {
+      for await (const token of tokenStream(md.split(/(?<=\s)|(?=\s)/), 80)) {
+        if (aborted.value) break;
+        content.value += token;
       }
-    }, 80);
-    return () => clearInterval(interval);
+    })();
   });
 
   return (
