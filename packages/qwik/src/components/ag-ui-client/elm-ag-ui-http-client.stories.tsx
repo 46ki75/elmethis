@@ -5,7 +5,7 @@ import {
 } from "./elm-ag-ui-http-client";
 
 const meta: Meta<ElmAgUiHttpClientProps> = {
-  title: "Components/Components/elm-ag-ui-http-client",
+  title: "Components/AG-UI/elm-ag-ui-http-client",
   component: ElmAgUiHttpClient,
   tags: ["autodocs"],
   args: {},
