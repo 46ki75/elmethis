@@ -70,7 +70,7 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
         <button onClick$={send}>Send</button>
 
         <div>
-          <ElmMarkdown markdown={message.value} />
+          <ElmMarkdown markdown={message.value} streaming={true} />
         </div>
       </div>
     );

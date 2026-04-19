@@ -2,6 +2,8 @@ import {
   component$,
   CSSProperties,
   JSXOutput,
+  useSignal,
+  useTask$,
 } from "@builder.io/qwik";
 import { marked, type Token, type Tokens } from "marked";
 
@@ -23,6 +25,12 @@ import styles from "./elm-markdown.module.scss";
 
 export interface ElmMarkdownProps {
   markdown: string;
+
+  /**
+   * Set to true when markdown is being streamed incrementally.
+   * Keeps completed blocks stable and only re-renders the trailing block on each token.
+   */
+  streaming?: boolean;
 
   style?: CSSProperties;
 }
@@ -205,14 +213,37 @@ const renderByToken = (tokens: Token[]): JSXOutput[] => {
   return results;
 };
 
+const ElmMarkdownStable = component$<{ tokens: Token[] }>(({ tokens }) => (
+  <>{renderByToken(tokens)}</>
+));
+
 export const ElmMarkdown = component$<ElmMarkdownProps>(
-  ({ markdown, style }) => {
-    const tokens = marked.setOptions({ gfm: true }).lexer(markdown);
-    const elements = renderByToken(tokens);
+  ({ markdown, style, streaming }) => {
+    const stableTokens = useSignal<Token[]>([]);
+    const tailTokens = useSignal<Token[]>([]);
+
+    useTask$(({ track }) => {
+      const md = track(() => markdown);
+      const allTokens = marked.setOptions({ gfm: true }).lexer(md) as Token[];
+
+      if (streaming && allTokens.length > 0) {
+        const newStable = allTokens.slice(0, -1);
+        // Only replace stableTokens when a new complete block is added,
+        // so ElmMarkdownStable skips re-renders between block boundaries.
+        if (newStable.length !== stableTokens.value.length) {
+          stableTokens.value = newStable;
+        }
+        tailTokens.value = allTokens.slice(-1);
+      } else {
+        stableTokens.value = allTokens;
+        tailTokens.value = [];
+      }
+    });
 
     return (
       <div class={styles["markdown-body"]} style={style}>
-        {elements}
+        <ElmMarkdownStable tokens={stableTokens.value} />
+        {renderByToken(tailTokens.value)}
       </div>
     );
   },
