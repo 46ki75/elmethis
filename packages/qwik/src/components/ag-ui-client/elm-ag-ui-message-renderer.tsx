@@ -7,7 +7,7 @@ import { ElmBlockImage } from "../media/elm-block-image";
 import { ElmMarkdown } from "../others/elm-markdown";
 
 export interface ElmAgUiMessageRendererProps {
-  messages: Message[];
+  messages: readonly Message[];
 }
 
 export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
@@ -107,7 +107,8 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
       }
     });
 
-    const lastMessage = messages.length > 0 ? messages[messages.length - 1] : null;
+    const lastMessage =
+      messages.length > 0 ? messages[messages.length - 1] : null;
 
     return (
       <div class={styles["elm-my-something"]}>
@@ -115,7 +116,9 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
           <div key={msg.id ?? i}>{render(msg)}</div>
         ))}
         {lastMessage && (
-          <div key={lastMessage.id ?? messages.length - 1}>{render(lastMessage)}</div>
+          <div key={lastMessage.id ?? messages.length - 1}>
+            {render(lastMessage)}
+          </div>
         )}
       </div>
     );

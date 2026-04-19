@@ -8,10 +8,10 @@ import {
 } from "@builder.io/qwik";
 
 import styles from "./elm-ag-ui-http-client.module.css";
-import { ElmMarkdown } from "../others/elm-markdown";
 
 // AG-UI
-import { HttpAgent, randomUUID } from "@ag-ui/client";
+import { HttpAgent, Message, randomUUID } from "@ag-ui/client";
+import { ElmAgUiMessageRenderer } from "./elm-ag-ui-message-renderer";
 
 export interface ElmAgUiHttpClientProps {
   url: string;
@@ -21,7 +21,7 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
   ({ url }) => {
     const agent = useSignal<NoSerialize<HttpAgent> | null>(null);
 
-    const message = useSignal<string>("");
+    const messages = useSignal<readonly Message[]>([]);
 
     // eslint-disable-next-line qwik/no-use-visible-task
     useVisibleTask$(({ cleanup }) => {
@@ -42,8 +42,8 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
 
       if (agent.value) {
         const subscription = agent.value?.subscribe({
-          onTextMessageContentEvent({ event }) {
-            message.value += event.delta;
+          onTextMessageContentEvent({ messages: newMessages }) {
+            messages.value = newMessages;
           },
         });
 
@@ -70,7 +70,7 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
         <button onClick$={send}>Send</button>
 
         <div>
-          <ElmMarkdown markdown={message.value} streaming={true} />
+          <ElmAgUiMessageRenderer messages={messages.value} />
         </div>
       </div>
     );
