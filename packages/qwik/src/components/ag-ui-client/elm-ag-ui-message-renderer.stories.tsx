@@ -1,3 +1,4 @@
+import { component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import {
   ElmAgUiMessageRenderer,
@@ -26,17 +27,10 @@ export const UserTextMessage: Story = {
   },
 };
 
-export const AssistantMarkdownMessage: Story = {
-  args: {
-    messages: [
-      {
-        id: "msg-002",
-        role: "assistant",
-        content: `## AG-UI Overview
+const md = `# AG-UI Protocol
 
-AG-UI is a protocol that standardizes communication between AI agents and frontend applications.
+AG-UI is a standardized protocol for communication between AI agents and frontend applications. It enables seamless integration of AI capabilities into user interfaces, supporting features like:
 
-Key features:
 - **Vendor-neutral**: Works with any LLM provider
 - **Streaming support**: Real-time text and tool call updates
 - **Multimodal**: Supports text, images, audio, and documents
@@ -44,10 +38,48 @@ Key features:
 \`\`\`typescript
 const client = new AgUiClient({ endpoint: "/api/agent" });
 \`\`\`
-`,
+`;
+
+export const AssistantMarkdownMessage: Story = {
+  args: {
+    messages: [
+      {
+        id: "msg-002",
+        role: "assistant",
+        content: md,
       },
     ],
   },
+};
+
+const streamingTokens = md.split(/(?<=\s)|(?=\s)/);
+
+const StreamingWrapper = component$(() => {
+  const content = useSignal("");
+
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(() => {
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i < streamingTokens.length) {
+        content.value += streamingTokens[i];
+        i++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 80);
+    return () => clearInterval(interval);
+  });
+
+  return (
+    <ElmAgUiMessageRenderer
+      messages={[{ id: "msg-stream-001", role: "assistant", content: content.value }]}
+    />
+  );
+});
+
+export const AssistantMarkdownMessageStreaming: Story = {
+  render: () => <StreamingWrapper />,
 };
 
 export const Conversation: Story = {
@@ -126,7 +158,8 @@ export const AssistantWithToolCall: Story = {
       {
         id: "msg-304",
         role: "assistant",
-        content: "The current weather in Tokyo is **22°C** and sunny with 60% humidity.",
+        content:
+          "The current weather in Tokyo is **22°C** and sunny with 60% humidity.",
       },
     ],
   },
