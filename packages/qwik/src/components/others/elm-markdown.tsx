@@ -1,7 +1,6 @@
 import {
   component$,
   CSSProperties,
-  Fragment,
   JSXOutput,
 } from "@builder.io/qwik";
 import { marked, type Token, type Tokens } from "marked";
@@ -143,13 +142,13 @@ const renderByToken = (tokens: Token[]): JSXOutput[] => {
         );
         break;
       case "paragraph":
-        if (token.tokens && token.tokens.length !== 0) {
-          results.push(
-            <ElmParagraph>
-              {renderByToken(token.tokens as Token[])}
-            </ElmParagraph>,
-          );
-        }
+        results.push(
+          <ElmParagraph>
+            {token.tokens && token.tokens.length !== 0
+              ? renderByToken(token.tokens as Token[])
+              : token.text}
+          </ElmParagraph>,
+        );
         break;
       case "space":
         break;
@@ -191,15 +190,11 @@ const renderByToken = (tokens: Token[]): JSXOutput[] => {
         break;
       }
       case "text":
-        results.push(
-          token.tokens && token.tokens.length !== 0 ? (
-            <ElmInlineText>
-              {renderByToken(token.tokens as Token[])}
-            </ElmInlineText>
-          ) : (
-            <Fragment>{token.text}</Fragment>
-          ),
-        );
+        if (token.tokens && token.tokens.length !== 0) {
+          results.push(...renderByToken(token.tokens as Token[]));
+        } else {
+          results.push(token.text as unknown as JSXOutput);
+        }
         break;
       default:
         // Generic or unknown token

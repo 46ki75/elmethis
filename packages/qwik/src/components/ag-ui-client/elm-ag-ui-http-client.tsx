@@ -8,10 +8,10 @@ import {
 } from "@builder.io/qwik";
 
 import styles from "./elm-ag-ui-http-client.module.css";
+import { ElmMarkdown } from "../others/elm-markdown";
 
 // AG-UI
 import { HttpAgent, randomUUID } from "@ag-ui/client";
-import { ElmMarkdown } from "../others/elm-markdown";
 
 export interface ElmAgUiHttpClientProps {
   url: string;
@@ -42,15 +42,8 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
 
       if (agent.value) {
         const subscription = agent.value?.subscribe({
-          onTextMessageStartEvent() {
-            message.value = "";
-          },
           onTextMessageContentEvent({ event }) {
             message.value += event.delta;
-          },
-          onRunFinishedEvent({ messages }) {
-            const allMessages = messages.map((m) => m.content).join("\n");
-            console.log(allMessages);
           },
         });
 
