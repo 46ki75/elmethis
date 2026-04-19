@@ -99,23 +99,24 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
     };
 
     const stableMessages = useSignal<Message[]>([]);
-    const tailMessages = useSignal<Message[]>([]);
 
     useTask$(({ track }) => {
       const currentMessages = track(() => messages);
-
-      if (currentMessages.length > stableMessages.value.length) {
-        const newMessages = currentMessages.slice(stableMessages.value.length);
-        tailMessages.value = [...tailMessages.value, ...newMessages];
-        stableMessages.value = currentMessages;
+      if (currentMessages.length > 1) {
+        stableMessages.value = currentMessages.slice(0, -1);
       }
     });
+
+    const lastMessage = messages.length > 0 ? messages[messages.length - 1] : null;
 
     return (
       <div class={styles["elm-my-something"]}>
         {stableMessages.value.map((msg, i) => (
           <div key={msg.id ?? i}>{render(msg)}</div>
         ))}
+        {lastMessage && (
+          <div key={lastMessage.id ?? messages.length - 1}>{render(lastMessage)}</div>
+        )}
       </div>
     );
   },
