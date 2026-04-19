@@ -10,7 +10,7 @@ import {
 import styles from "./elm-ag-ui-http-client.module.css";
 
 // AG-UI
-import { AgentSubscriber, HttpAgent, randomUUID } from "@ag-ui/client";
+import { HttpAgent, randomUUID } from "@ag-ui/client";
 import { ElmMarkdown } from "../others/elm-markdown";
 
 export interface ElmAgUiHttpClientProps {
@@ -42,8 +42,11 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
 
       if (agent.value) {
         const subscription = agent.value?.subscribe({
-          onTextMessageContentEvent({ textMessageBuffer }) {
-            message.value = textMessageBuffer;
+          onTextMessageStartEvent() {
+            message.value = "";
+          },
+          onTextMessageContentEvent({ event }) {
+            message.value += event.delta;
           },
           onRunFinishedEvent({ messages }) {
             const allMessages = messages.map((m) => m.content).join("\n");
