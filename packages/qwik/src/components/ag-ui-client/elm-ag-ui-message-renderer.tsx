@@ -1,4 +1,4 @@
-import { component$, JSX } from "@builder.io/qwik";
+import { component$, JSX, useSignal, useTask$ } from "@builder.io/qwik";
 
 import styles from "./elm-ag-ui-message-renderer.module.css";
 import { Message, InputContent } from "@ag-ui/core";
@@ -90,12 +90,33 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
           if (typeof message.content === "string") {
             return <ElmInlineText>{message.content}</ElmInlineText>;
           } else {
-            return message.content.map((item) => renderInputContent(item));
+            return message.content.map((item, i) => (
+              <span key={i}>{renderInputContent(item)}</span>
+            ));
           }
         }
       }
     };
 
-    return <div class={styles["elm-my-something"]}>{messages.map(render)}</div>;
+    const stableMessages = useSignal<Message[]>([]);
+    const tailMessages = useSignal<Message[]>([]);
+
+    useTask$(({ track }) => {
+      const currentMessages = track(() => messages);
+
+      if (currentMessages.length > stableMessages.value.length) {
+        const newMessages = currentMessages.slice(stableMessages.value.length);
+        tailMessages.value = [...tailMessages.value, ...newMessages];
+        stableMessages.value = currentMessages;
+      }
+    });
+
+    return (
+      <div class={styles["elm-my-something"]}>
+        {stableMessages.value.map((msg, i) => (
+          <div key={msg.id ?? i}>{render(msg)}</div>
+        ))}
+      </div>
+    );
   },
 );
