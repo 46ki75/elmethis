@@ -64,7 +64,7 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
 
         case "assistant": {
           if (message.content != null) {
-            return <ElmMarkdown markdown={message.content} />;
+            return <ElmMarkdown markdown={message.content} streaming={true} />;
           }
 
           return null;
