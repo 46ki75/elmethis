@@ -10,7 +10,8 @@ import {
 import styles from "./elm-ag-ui-http-client.module.css";
 
 // AG-UI
-import { HttpAgent, randomUUID } from "@ag-ui/client";
+import { AgentSubscriber, HttpAgent, randomUUID } from "@ag-ui/client";
+import { ElmMarkdown } from "../others/elm-markdown";
 
 export interface ElmAgUiHttpClientProps {
   url: string;
@@ -19,6 +20,8 @@ export interface ElmAgUiHttpClientProps {
 export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
   ({ url }) => {
     const agent = useSignal<NoSerialize<HttpAgent> | null>(null);
+
+    const message = useSignal<string>("");
 
     // eslint-disable-next-line qwik/no-use-visible-task
     useVisibleTask$(({ cleanup }) => {
@@ -40,11 +43,12 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
       if (agent.value) {
         const subscription = agent.value?.subscribe({
           onTextMessageContentEvent({ textMessageBuffer }) {
-            console.log(textMessageBuffer);
+            message.value = textMessageBuffer;
           },
-          // onRunFinishedEvent({ result }) {
-          //   displayFinalResult(result);
-          // },
+          onRunFinishedEvent({ messages }) {
+            const allMessages = messages.map((m) => m.content).join("\n");
+            console.log(allMessages);
+          },
         });
 
         cleanup(() => {
@@ -58,7 +62,7 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
         agent.value.messages.push({
           id: randomUUID(),
           role: "user",
-          content: "Hi!",
+          content: "What is the origin of a s'more?",
         });
 
         await agent.value.runAgent({});
@@ -68,6 +72,10 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
     return (
       <div class={styles["elm-my-something"]}>
         <button onClick$={send}>Send</button>
+
+        <div>
+          <ElmMarkdown markdown={message.value} />
+        </div>
       </div>
     );
   },

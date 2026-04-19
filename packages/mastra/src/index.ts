@@ -17,6 +17,11 @@ const agent = new Agent({
   name: "Assistant",
   instructions: "You are a helpful AI assistant.",
   model: openrouter("openai/gpt-5.4-nano"),
+  defaultOptions: {
+    modelSettings: {
+      maxOutputTokens: 4096,
+    },
+  },
 });
 
 export const mastra = new Mastra({
