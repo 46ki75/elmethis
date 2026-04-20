@@ -1,8 +1,9 @@
 import {
   component$,
   CSSProperties,
-  Fragment,
   JSXOutput,
+  useSignal,
+  useTask$,
 } from "@builder.io/qwik";
 import { marked, type Token, type Tokens } from "marked";
 
@@ -25,33 +26,44 @@ import styles from "./elm-markdown.module.scss";
 export interface ElmMarkdownProps {
   markdown: string;
 
+  /**
+   * Set to true when markdown is being streamed incrementally.
+   * Keeps completed blocks stable and only re-renders the trailing block on each token.
+   */
+  streaming?: boolean;
+
   style?: CSSProperties;
 }
 
 const renderByToken = (tokens: Token[]): JSXOutput[] => {
   const results: JSXOutput[] = [];
 
-  for (const token of tokens) {
+  for (let i = 0; i < tokens.length; i++) {
+    const token = tokens[i];
     switch (token.type) {
       case "blockquote":
         if (token.tokens && token.tokens.length !== 0) {
           results.push(
-            <ElmBlockQuote>
+            <ElmBlockQuote key={i}>
               {renderByToken(token.tokens as Token[])}
             </ElmBlockQuote>,
           );
         }
         break;
       case "br":
-        results.push(<br />);
+        results.push(<br key={i} />);
         break;
       case "code":
         results.push(
-          <ElmCodeBlock code={token.text.trim()} language={token.lang} />,
+          <ElmCodeBlock
+            key={i}
+            code={token.text.trim()}
+            language={token.lang}
+          />,
         );
         break;
       case "codespan":
-        results.push(<ElmInlineText text={token.text} code={true} />);
+        results.push(<ElmInlineText key={i} text={token.text} code={true} />);
         break;
       case "def":
         // Link reference definitions (usually not rendered directly)
@@ -59,22 +71,22 @@ const renderByToken = (tokens: Token[]): JSXOutput[] => {
       case "del":
         results.push(
           token.tokens && token.tokens.length !== 0 ? (
-            <ElmInlineText strikethrough={true}>
+            <ElmInlineText key={i} strikethrough={true}>
               {renderByToken(token.tokens as Token[])}
             </ElmInlineText>
           ) : (
-            <ElmInlineText text={token.text} strikethrough={true} />
+            <ElmInlineText key={i} text={token.text} strikethrough={true} />
           ),
         );
         break;
       case "em":
         results.push(
           token.tokens && token.tokens.length !== 0 ? (
-            <ElmInlineText italic={true}>
+            <ElmInlineText key={i} italic={true}>
               {renderByToken(token.tokens as Token[])}
             </ElmInlineText>
           ) : (
-            <ElmInlineText text={token.text} italic={true} />
+            <ElmInlineText key={i} text={token.text} italic={true} />
           ),
         );
         break;
@@ -85,17 +97,17 @@ const renderByToken = (tokens: Token[]): JSXOutput[] => {
         const level = token.depth as 1 | 2 | 3 | 4 | 5 | 6;
         if (token.tokens && token.tokens.length !== 0) {
           results.push(
-            <ElmHeading level={level}>
+            <ElmHeading key={i} level={level}>
               {renderByToken(token.tokens as Token[])}
             </ElmHeading>,
           );
         } else {
-          results.push(<ElmHeading level={level} text={token.text} />);
+          results.push(<ElmHeading key={i} level={level} text={token.text} />);
         }
         break;
       }
       case "hr":
-        results.push(<ElmDivider />);
+        results.push(<ElmDivider key={i} />);
         break;
       case "html":
         // HTML token - rendering raw HTML in Qwik needs dangerouslySetInnerHTML
@@ -103,6 +115,7 @@ const renderByToken = (tokens: Token[]): JSXOutput[] => {
       case "image":
         results.push(
           <ElmBlockImage
+            key={i}
             enableModal={true}
             src={token.href}
             alt={token.text}
@@ -112,11 +125,11 @@ const renderByToken = (tokens: Token[]): JSXOutput[] => {
       case "link":
         results.push(
           token.tokens && token.tokens.length !== 0 ? (
-            <ElmInlineText href={token.href}>
+            <ElmInlineText key={i} href={token.href}>
               {renderByToken(token.tokens as Token[])}
             </ElmInlineText>
           ) : (
-            <ElmInlineText text={token.text} href={token.href} />
+            <ElmInlineText key={i} text={token.text} href={token.href} />
           ),
         );
         break;
@@ -127,7 +140,7 @@ const renderByToken = (tokens: Token[]): JSXOutput[] => {
           ),
         );
         results.push(
-          <ElmList listStyle={token.ordered ? "ordered" : "unordered"}>
+          <ElmList key={i} listStyle={token.ordered ? "ordered" : "unordered"}>
             {listItems}
           </ElmList>,
         );
@@ -135,7 +148,7 @@ const renderByToken = (tokens: Token[]): JSXOutput[] => {
       }
       case "list_item":
         results.push(
-          <li>
+          <li key={i}>
             {token.tokens && token.tokens.length !== 0
               ? renderByToken(token.tokens as Token[])
               : token.text}
@@ -143,24 +156,24 @@ const renderByToken = (tokens: Token[]): JSXOutput[] => {
         );
         break;
       case "paragraph":
-        if (token.tokens && token.tokens.length !== 0) {
-          results.push(
-            <ElmParagraph>
-              {renderByToken(token.tokens as Token[])}
-            </ElmParagraph>,
-          );
-        }
+        results.push(
+          <ElmParagraph key={i}>
+            {token.tokens && token.tokens.length !== 0
+              ? renderByToken(token.tokens as Token[])
+              : token.text}
+          </ElmParagraph>,
+        );
         break;
       case "space":
         break;
       case "strong":
         results.push(
           token.tokens && token.tokens.length !== 0 ? (
-            <ElmInlineText bold={true}>
+            <ElmInlineText key={i} bold={true}>
               {renderByToken(token.tokens as Token[])}
             </ElmInlineText>
           ) : (
-            <ElmInlineText text={token.text} bold={true} />
+            <ElmInlineText key={i} text={token.text} bold={true} />
           ),
         );
         break;
@@ -183,7 +196,7 @@ const renderByToken = (tokens: Token[]): JSXOutput[] => {
         );
 
         results.push(
-          <ElmTable>
+          <ElmTable key={i}>
             <ElmTableHeader q:slot="header">{headerRow}</ElmTableHeader>
             <ElmTableBody q:slot="body">{bodyRows}</ElmTableBody>
           </ElmTable>,
@@ -191,15 +204,11 @@ const renderByToken = (tokens: Token[]): JSXOutput[] => {
         break;
       }
       case "text":
-        results.push(
-          token.tokens && token.tokens.length !== 0 ? (
-            <ElmInlineText>
-              {renderByToken(token.tokens as Token[])}
-            </ElmInlineText>
-          ) : (
-            <Fragment>{token.text}</Fragment>
-          ),
-        );
+        if (token.tokens && token.tokens.length !== 0) {
+          results.push(...renderByToken(token.tokens as Token[]));
+        } else {
+          results.push(token.text as unknown as JSXOutput);
+        }
         break;
       default:
         // Generic or unknown token
@@ -210,14 +219,37 @@ const renderByToken = (tokens: Token[]): JSXOutput[] => {
   return results;
 };
 
+const ElmMarkdownStable = component$<{ tokens: Token[] }>(({ tokens }) => (
+  <>{renderByToken(tokens)}</>
+));
+
 export const ElmMarkdown = component$<ElmMarkdownProps>(
-  ({ markdown, style }) => {
-    const tokens = marked.setOptions({ gfm: true }).lexer(markdown);
-    const elements = renderByToken(tokens);
+  ({ markdown, style, streaming }) => {
+    const stableTokens = useSignal<Token[]>([]);
+    const tailTokens = useSignal<Token[]>([]);
+
+    useTask$(({ track }) => {
+      const md = track(() => markdown);
+      const allTokens = marked.setOptions({ gfm: true }).lexer(md) as Token[];
+
+      if (streaming && allTokens.length > 0) {
+        const newStable = allTokens.slice(0, -1);
+        // Only replace stableTokens when a new complete block is added,
+        // so ElmMarkdownStable skips re-renders between block boundaries.
+        if (newStable.length !== stableTokens.value.length) {
+          stableTokens.value = newStable;
+        }
+        tailTokens.value = allTokens.slice(-1);
+      } else {
+        stableTokens.value = allTokens;
+        tailTokens.value = [];
+      }
+    });
 
     return (
       <div class={styles["markdown-body"]} style={style}>
-        {elements}
+        <ElmMarkdownStable tokens={stableTokens.value} />
+        {renderByToken(tailTokens.value)}
       </div>
     );
   },

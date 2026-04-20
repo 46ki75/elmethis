@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmMarkdown , type ElmMarkdownProps} from "./elm-markdown";
+import { ElmMarkdown, type ElmMarkdownProps } from "./elm-markdown";
+import { component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 
 const meta: Meta<ElmMarkdownProps> = {
   title: "Components/Others/elm-markdown",
@@ -102,4 +103,39 @@ export const Primary: Story = {
   args: {
     markdown: MARKDOWN,
   },
+};
+
+async function* tokenStream(tokens: string[], delayMs: number) {
+  for (const token of tokens) {
+    await new Promise((resolve) => setTimeout(resolve, delayMs));
+    yield token;
+  }
+}
+
+const StreamingWrapper = component$(() => {
+  const content = useSignal("");
+
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(({ cleanup }) => {
+    const aborted = { value: false };
+    cleanup(() => {
+      aborted.value = true;
+    });
+
+    (async () => {
+      for await (const token of tokenStream(
+        MARKDOWN.split(/(?<=\s)|(?=\s)/),
+        80,
+      )) {
+        if (aborted.value) break;
+        content.value += token;
+      }
+    })();
+  });
+
+  return <ElmMarkdown markdown={content.value} streaming={true} />;
+});
+
+export const Stream: Story = {
+  render: () => <StreamingWrapper />,
 };

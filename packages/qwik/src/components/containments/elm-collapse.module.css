@@ -1,0 +1,15 @@
+.elm-collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows
+    var(--elmethis-scoped-collapse-transition-duration, 200ms)
+    var(--elmethis-scoped-collapse-transition-timing-function, ease);
+
+  .inner {
+    overflow: hidden;
+  }
+
+  &.open {
+    grid-template-rows: 1fr;
+  }
+}
