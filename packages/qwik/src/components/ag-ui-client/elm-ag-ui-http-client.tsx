@@ -4,6 +4,7 @@ import {
   NoSerialize,
   noSerialize,
   useSignal,
+  useStore,
   useVisibleTask$,
 } from "@builder.io/qwik";
 
@@ -21,7 +22,7 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
   ({ url }) => {
     const agent = useSignal<NoSerialize<HttpAgent> | null>(null);
 
-    const messages = useSignal<readonly Message[]>([]);
+    const messages = useStore<Message[]>([]);
 
     // eslint-disable-next-line qwik/no-use-visible-task
     useVisibleTask$(({ cleanup }) => {
@@ -43,7 +44,11 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
       if (agent.value) {
         const subscription = agent.value?.subscribe({
           onTextMessageContentEvent({ messages: newMessages }) {
-            messages.value = newMessages;
+            if (messages.length < newMessages.length) {
+              messages.push(...newMessages.slice(messages.length));
+            }
+            messages[messages.length - 1].content =
+              newMessages[newMessages.length - 1].content;
           },
         });
 
@@ -70,7 +75,7 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
         <button onClick$={send}>Send</button>
 
         <div>
-          <ElmAgUiMessageRenderer messages={messages.value} />
+          <ElmAgUiMessageRenderer messages={messages} />
         </div>
       </div>
     );

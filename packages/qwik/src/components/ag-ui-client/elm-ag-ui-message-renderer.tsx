@@ -7,7 +7,7 @@ import { ElmBlockImage } from "../media/elm-block-image";
 import { ElmMarkdown } from "../others/elm-markdown";
 
 export interface ElmAgUiMessageRendererProps {
-  messages: readonly Message[];
+  messages: Message[];
 }
 
 export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
