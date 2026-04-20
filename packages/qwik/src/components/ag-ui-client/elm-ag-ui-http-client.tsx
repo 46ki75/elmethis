@@ -20,14 +20,14 @@ export interface ElmAgUiHttpClientProps {
 
 export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
   ({ url }) => {
-    const agent = useSignal<NoSerialize<HttpAgent> | null>(null);
+    const httpAgent = useSignal<NoSerialize<HttpAgent> | null>(null);
 
-    const messages = useStore<Message[]>([]);
+    const agent = useStore<{ messages: Message[] }>({ messages: [] });
 
     // eslint-disable-next-line qwik/no-use-visible-task
     useVisibleTask$(({ cleanup }) => {
-      if (!agent.value) {
-        agent.value = noSerialize(
+      if (!httpAgent.value) {
+        httpAgent.value = noSerialize(
           new HttpAgent({
             url,
             // headers: {
@@ -37,20 +37,21 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
         );
 
         cleanup(() => {
-          agent.value = null;
+          httpAgent.value = null;
         });
       }
 
-      if (agent.value) {
-        const subscription = agent.value?.subscribe({
+      if (httpAgent.value) {
+        const subscription = httpAgent.value?.subscribe({
           onTextMessageContentEvent({ messages: newMessages }) {
-            if (messages.length < newMessages.length) {
-              messages.push(...newMessages.slice(messages.length));
+            if (agent.messages.length < newMessages.length) {
+              agent.messages.push(...newMessages.slice(agent.messages.length));
             }
             const incomingContent = newMessages[newMessages.length - 1].content;
 
             if (incomingContent) {
-              messages[messages.length - 1].content = incomingContent;
+              agent.messages[agent.messages.length - 1].content =
+                incomingContent;
             }
           },
         });
@@ -62,14 +63,14 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
     });
 
     const send = $(async () => {
-      if (agent.value) {
-        agent.value.messages.push({
+      if (httpAgent.value) {
+        httpAgent.value.messages.push({
           id: randomUUID(),
           role: "user",
           content: "What is the origin of a s'more?",
         });
 
-        await agent.value.runAgent({});
+        await httpAgent.value.runAgent({});
       }
     });
 
@@ -78,7 +79,7 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
         <button onClick$={send}>Send</button>
 
         <div>
-          <ElmAgUiMessageRenderer messages={messages} />
+          <ElmAgUiMessageRenderer messages={agent.messages} />
         </div>
       </div>
     );
