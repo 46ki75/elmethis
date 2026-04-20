@@ -43,10 +43,12 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
 
       if (httpAgent.value) {
         const subscription = httpAgent.value?.subscribe({
-          onTextMessageContentEvent({ messages: newMessages }) {
+          onEvent({ messages: newMessages }) {
             if (agent.messages.length < newMessages.length) {
               agent.messages.push(...newMessages.slice(agent.messages.length));
             }
+          },
+          onTextMessageContentEvent({ messages: newMessages }) {
             const incomingContent = newMessages[newMessages.length - 1].content;
 
             if (incomingContent) {
