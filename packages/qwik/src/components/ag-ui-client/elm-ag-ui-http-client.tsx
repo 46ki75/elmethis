@@ -11,7 +11,13 @@ import {
 import styles from "./elm-ag-ui-http-client.module.css";
 
 // AG-UI
-import { HttpAgent, Message, randomUUID } from "@ag-ui/client";
+import {
+  BaseEvent,
+  compactEvents,
+  HttpAgent,
+  Message,
+  randomUUID,
+} from "@ag-ui/client";
 import { ElmAgUiMessageRenderer } from "./elm-ag-ui-message-renderer";
 
 export interface ElmAgUiHttpClientProps {
@@ -22,7 +28,10 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
   ({ url }) => {
     const httpAgent = useSignal<NoSerialize<HttpAgent> | null>(null);
 
-    const agent = useStore<{ messages: Message[] }>({ messages: [] });
+    const agent = useStore<{ messages: Message[]; events: BaseEvent[] }>({
+      messages: [],
+      events: [],
+    });
 
     // eslint-disable-next-line qwik/no-use-visible-task
     useVisibleTask$(({ cleanup }) => {
@@ -47,6 +56,8 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
             if (agent.messages.length < newMessages.length) {
               agent.messages.push(...newMessages.slice(agent.messages.length));
             }
+            const events = [...agent.events, event];
+            agent.events = compactEvents(events);
             console.info(event);
           },
           onToolCallStartEvent({ event }) {
@@ -74,6 +85,7 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
           },
           onRunFinalized({ messages }) {
             console.info(messages);
+            console.info(agent.events);
           },
         });
 
