@@ -5,6 +5,8 @@ import { Message, InputContent } from "@ag-ui/core";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { ElmBlockImage } from "../media/elm-block-image";
 import { ElmMarkdown } from "../others/elm-markdown";
+import { ElmMdiIcon } from "../icon/elm-mdi-icon";
+import { mdiAccount, mdiCreation } from "@mdi/js";
 
 export interface ElmAgUiMessageRendererProps {
   messages: Message[];
@@ -64,7 +66,23 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
 
         case "assistant": {
           if (message.content != null) {
-            return <ElmMarkdown markdown={message.content} streaming={true} />;
+            return (
+              <div class={styles["message-content-assistant-wrapper"]}>
+                <div class={styles["message-content-type"]}>
+                  <ElmMdiIcon
+                    class={styles["message-content-icon"]}
+                    d={mdiCreation}
+                  />
+                  <ElmInlineText>Assistant</ElmInlineText>
+                  <div
+                    aria-hidden="true"
+                    class={styles["message-content-spacer"]}
+                  ></div>
+                </div>
+
+                <ElmMarkdown markdown={message.content} streaming={true} />
+              </div>
+            );
           }
 
           return null;
@@ -87,13 +105,33 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
         }
 
         case "user": {
-          if (typeof message.content === "string") {
-            return <ElmInlineText>{message.content}</ElmInlineText>;
-          } else {
-            return message.content.map((item, i) => (
-              <span key={i}>{renderInputContent(item)}</span>
-            ));
-          }
+          return (
+            <div class={styles["message-content-user-wrapper"]}>
+              <div class={styles["message-content-user-inner"]}>
+                <div class={styles["message-content-type"]}>
+                  <ElmMdiIcon
+                    class={styles["message-content-icon"]}
+                    d={mdiAccount}
+                  />
+                  <ElmInlineText>User</ElmInlineText>
+                  <div
+                    aria-hidden="true"
+                    class={styles["message-content-spacer"]}
+                  ></div>
+                </div>
+
+                <div class={styles["message-content-user-content"]}>
+                  {typeof message.content === "string" ? (
+                    <ElmInlineText>{message.content}</ElmInlineText>
+                  ) : (
+                    message.content.map((item, i) => (
+                      <span key={i}>{renderInputContent(item)}</span>
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
+          );
         }
       }
     };

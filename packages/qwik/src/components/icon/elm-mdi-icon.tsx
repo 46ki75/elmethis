@@ -3,6 +3,8 @@ import { component$ } from "@builder.io/qwik";
 import styles from "./elm-mdi-icon.module.scss";
 
 export interface ElmMdiIconProps {
+  class?: string;
+
   d: string;
   size?: string;
   color?: string;
@@ -11,10 +13,10 @@ export interface ElmMdiIconProps {
 }
 
 export const ElmMdiIcon = component$<ElmMdiIconProps>(
-  ({ d, size = "1em", color, lightColor, darkColor }) => {
+  ({ class: className, d, size = "1em", color, lightColor, darkColor }) => {
     return (
       <svg
-        class={styles.icon}
+        class={[styles.icon, className]}
         style={{
           "--color": lightColor ?? color,
           "--dark-color": darkColor ?? color,
