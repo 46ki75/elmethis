@@ -101,7 +101,13 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
         }
 
         case "tool": {
-          return null;
+          return (
+            <>
+              <div>
+                <ElmInlineText>Tool Call: {message.content}</ElmInlineText>
+              </div>
+            </>
+          );
         }
 
         case "user": {

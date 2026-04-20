@@ -11,7 +11,7 @@ import "dotenv/config";
 const mcp = new MCPClient({
   servers: {
     context7: {
-      url: new URL("https://mcp.context7.com/mcp"),
+      url: new URL("https://knowledge-mcp.global.api.aws"),
     },
   },
 });
@@ -30,6 +30,11 @@ const agent = new Agent({
     maxSteps: 10,
     modelSettings: {
       maxOutputTokens: 20000,
+    },
+    providerOptions: {
+      openrouter: {
+        reasoning: { effort: "medium" },
+      },
     },
   },
   tools: await mcp.listTools(),

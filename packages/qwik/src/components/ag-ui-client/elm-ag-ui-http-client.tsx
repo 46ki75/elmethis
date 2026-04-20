@@ -43,10 +43,11 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
 
       if (httpAgent.value) {
         const subscription = httpAgent.value?.subscribe({
-          onEvent({ messages: newMessages }) {
+          onEvent({ messages: newMessages, event }) {
             if (agent.messages.length < newMessages.length) {
               agent.messages.push(...newMessages.slice(agent.messages.length));
             }
+            console.info(event);
           },
           onToolCallStartEvent({ event }) {
             console.log("Tool call started:", event);
@@ -81,7 +82,7 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
         httpAgent.value.messages.push({
           id: randomUUID(),
           role: "user",
-          content: "Can you tell me how to get started with Toasty in Rust?",
+          content: "What is a new feature called Amazon S3 Files?",
         });
 
         await httpAgent.value.runAgent({});
