@@ -47,8 +47,11 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
             if (messages.length < newMessages.length) {
               messages.push(...newMessages.slice(messages.length));
             }
-            messages[messages.length - 1].content =
-              newMessages[newMessages.length - 1].content;
+            const incomingContent = newMessages[newMessages.length - 1].content;
+
+            if (incomingContent) {
+              messages[messages.length - 1].content = incomingContent;
+            }
           },
         });
 
