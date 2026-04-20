@@ -7,6 +7,7 @@ import { ElmBlockImage } from "../media/elm-block-image";
 import { ElmMarkdown } from "../others/elm-markdown";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { mdiAccount, mdiCreation } from "@mdi/js";
+import { ElmCodeBlock } from "../code/elm-code-block";
 
 export interface ElmAgUiMessageRendererProps {
   messages: Message[];
@@ -104,7 +105,10 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
           return (
             <>
               <div>
-                <ElmInlineText>Tool Call: {message.content}</ElmInlineText>
+                <ElmCodeBlock
+                  language="json"
+                  code={JSON.stringify(JSON.parse(message.content), null, 2)}
+                />
               </div>
             </>
           );
