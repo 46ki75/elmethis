@@ -27,6 +27,7 @@ const agent = new Agent({
   instructions: "You are a helpful AI assistant.",
   model: openrouter.chat("openai/gpt-5.4-nano"),
   defaultOptions: {
+    maxSteps: 10,
     modelSettings: {
       maxOutputTokens: 20000,
     },
