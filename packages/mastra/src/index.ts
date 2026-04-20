@@ -10,7 +10,7 @@ import "dotenv/config";
 
 const mcp = new MCPClient({
   servers: {
-    context7: {
+    aws_knowledge: {
       url: new URL("https://knowledge-mcp.global.api.aws"),
     },
   },
