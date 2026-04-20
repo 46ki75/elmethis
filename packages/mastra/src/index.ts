@@ -1,11 +1,20 @@
 import { Agent } from "@mastra/core/agent";
 import { Mastra } from "@mastra/core";
+import { MCPClient } from "@mastra/mcp";
 import { registerApiRoute } from "@mastra/core/server";
 import { createOpenAI } from "@ai-sdk/openai";
 import { getLocalAgent } from "@ag-ui/mastra";
 import { EventEncoder } from "@ag-ui/encoder";
 
 import "dotenv/config";
+
+const mcp = new MCPClient({
+  servers: {
+    context7: {
+      url: new URL("https://mcp.context7.com/mcp"),
+    },
+  },
+});
 
 const openrouter = createOpenAI({
   baseURL: "https://openrouter.ai/api/v1",
@@ -16,12 +25,13 @@ const agent = new Agent({
   id: "my-assistant",
   name: "Assistant",
   instructions: "You are a helpful AI assistant.",
-  model: openrouter("openai/gpt-5.4-nano"),
+  model: openrouter.chat("openai/gpt-5.4-nano"),
   defaultOptions: {
     modelSettings: {
-      maxOutputTokens: 4096,
+      maxOutputTokens: 20000,
     },
   },
+  tools: await mcp.listTools(),
 });
 
 export const mastra = new Mastra({

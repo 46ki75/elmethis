@@ -48,6 +48,18 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
               agent.messages.push(...newMessages.slice(agent.messages.length));
             }
           },
+          onToolCallStartEvent({ event }) {
+            console.log("Tool call started:", event);
+          },
+          onToolCallArgsEvent({ event }) {
+            console.log("Tool call args:", event);
+          },
+          onToolCallResultEvent({ event }) {
+            console.log("Tool call result:", event);
+          },
+          async onToolCallEndEvent({ event }) {
+            console.log("Tool call ended:", event);
+          },
           onTextMessageContentEvent({ messages: newMessages }) {
             const incomingContent = newMessages[newMessages.length - 1].content;
 
@@ -69,7 +81,7 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
         httpAgent.value.messages.push({
           id: randomUUID(),
           role: "user",
-          content: "What is the origin of a s'more?",
+          content: "Can you tell me how to get started with Toasty in Rust?",
         });
 
         await httpAgent.value.runAgent({});
