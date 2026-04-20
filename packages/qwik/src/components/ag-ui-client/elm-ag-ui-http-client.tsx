@@ -61,13 +61,19 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
           async onToolCallEndEvent({ event }) {
             console.log("Tool call ended:", event);
           },
-          onTextMessageContentEvent({ messages: newMessages }) {
-            const incomingContent = newMessages[newMessages.length - 1].content;
+          onTextMessageContentEvent({ event }) {
+            const incomingContent = event.delta;
 
-            if (incomingContent) {
-              agent.messages[agent.messages.length - 1].content =
-                incomingContent;
+            const lastAssistantMessageRef = agent.messages.findLast(
+              (msg) => msg.role === "assistant",
+            );
+            if (lastAssistantMessageRef && incomingContent) {
+              lastAssistantMessageRef.content =
+                lastAssistantMessageRef.content + incomingContent;
             }
+          },
+          onRunFinalized({ messages }) {
+            console.info(messages);
           },
         });
 
