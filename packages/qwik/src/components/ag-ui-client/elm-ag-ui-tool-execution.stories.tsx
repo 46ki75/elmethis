@@ -74,21 +74,23 @@ const states: ElmAgUiToolExecutionProps[] = [
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function* transition() {
-  for (const state of states) {
-    await sleep(1500);
-    yield state;
+  while (true) {
+    for (const state of states) {
+      await sleep(1500);
+      yield state;
+    }
   }
 }
 
 const RenderTransition = component$(() => {
   const state = useStore<{ args: ElmAgUiToolExecutionProps }>({
-    args: states[0],
+    args: { ...states[0] },
   });
 
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(async () => {
     for await (const newState of transition()) {
-      state.args = newState;
+      state.args = { ...newState };
     }
   });
 
