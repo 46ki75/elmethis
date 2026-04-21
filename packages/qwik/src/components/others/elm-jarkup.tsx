@@ -1,6 +1,6 @@
 import { component$, CSSProperties, type JSXOutput } from "@builder.io/qwik";
 import type { Component, InlineComponent } from "jarkup-ts";
-import { kebabCase } from "lodash-es";
+import { kebabCase } from "es-toolkit";
 
 import styles from "./elm-jarkup.module.scss";
 
@@ -316,7 +316,10 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
   };
 
   return (
-    <div class={props.class} style={{ "--margin-block": "3rem", ...props.style }}>
+    <div
+      class={props.class}
+      style={{ "--margin-block": "3rem", ...props.style }}
+    >
       {render(props.jsonComponents)}
     </div>
   );
