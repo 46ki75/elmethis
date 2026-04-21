@@ -56,16 +56,20 @@ const states: ElmAgUiToolExecutionProps[] = [
   {
     toolName: "aws_knowledge_graph",
     toolEventType: EventType.TOOL_CALL_START,
+    toolCallArgs: undefined,
+    toolCallResult: undefined,
   },
   {
     toolName: "aws_knowledge_graph",
     toolEventType: EventType.TOOL_CALL_ARGS,
     toolCallArgs,
+    toolCallResult: undefined,
   },
   {
     toolName: "aws_knowledge_graph",
     toolEventType: EventType.TOOL_CALL_END,
     toolCallArgs,
+    toolCallResult: undefined,
   },
   {
     toolName: "aws_knowledge_graph",
