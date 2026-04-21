@@ -25,7 +25,7 @@ const agent = new Agent({
   id: "my-assistant",
   name: "Assistant",
   instructions: "You are a helpful AI assistant.",
-  model: openrouter.chat("openai/gpt-5.4-nano"),
+  model: openrouter.chat("minimax/minimax-m2.5"),
   defaultOptions: {
     maxSteps: 10,
     modelSettings: {
