@@ -1,4 +1,4 @@
-import { Component, component$ } from "@builder.io/qwik";
+import { Component, component$, type CSSProperties } from "@builder.io/qwik";
 
 // import styles from "./elm-language-icon.scoped.scss?inline";
 
@@ -50,6 +50,10 @@ export const LANGUAGES = [
 export type Language = (typeof LANGUAGES)[number];
 
 export interface ElmLanguageIconProps {
+  class?: string;
+
+  style?: CSSProperties;
+
   /**
    * The size of the icon.
    */
@@ -161,9 +165,13 @@ const renderMap: Record<Language, Component<CommonLanguageProps>> = {
 };
 
 export const ElmLanguageIcon = component$<ElmLanguageIconProps>(
-  ({ size = 24, language }) => {
+  ({ class: className, style, size = 24, language }) => {
     const Component = renderMap[normalizeLanguage(language)];
 
-    return <Component size={size} />;
+    return (
+      <div class={className} style={style}>
+        <Component size={size} />
+      </div>
+    );
   },
 );

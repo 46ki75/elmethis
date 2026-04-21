@@ -3,6 +3,10 @@ import { component$, type CSSProperties } from "@builder.io/qwik";
 import styles from "./elm-dot-loading-icon.module.scss";
 
 export interface ElmDotLoadingIconProps {
+  class?: string;
+
+  style?: CSSProperties;
+
   /**
    * Specifies the color of the dot.
    *
@@ -17,13 +21,14 @@ export interface ElmDotLoadingIconProps {
 }
 
 export const ElmDotLoadingIcon = component$<ElmDotLoadingIconProps>(
-  ({ size = "4em", color = "#606875" }) => {
+  ({ class: className, style, size = "4em", color = "#606875" }) => {
     return (
       <div
-        class={styles.wrapper}
+        class={[styles.wrapper, className]}
         style={{
           "--size": size,
           "--color": color,
+          ...style,
         }}
       >
         <div class={styles.dot} aria-hidden="true"></div>

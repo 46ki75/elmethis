@@ -12,6 +12,8 @@ import { mdiChevronRight, mdiPlus } from "@mdi/js";
 import { ElmInlineText } from "../typography/elm-inline-text";
 
 export interface ElmToggleProps {
+  class?: string;
+
   /**
    * The summary of the toggle.
    */
@@ -20,7 +22,7 @@ export interface ElmToggleProps {
   style?: CSSProperties;
 }
 
-export const ElmToggle = component$<ElmToggleProps>(({ summary, style }) => {
+export const ElmToggle = component$<ElmToggleProps>(({ class: className, summary, style }) => {
   const isOpen = useSignal(false);
 
   const toggle = $(() => {
@@ -35,6 +37,7 @@ export const ElmToggle = component$<ElmToggleProps>(({ summary, style }) => {
           [styles["toggle-open"]]: isOpen.value,
           [styles["toggle-closed"]]: !isOpen.value,
         },
+        className,
       ]}
       style={style}
     >

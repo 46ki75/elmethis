@@ -6,6 +6,7 @@ import {
   useSignal,
   useStore,
   useVisibleTask$,
+  type CSSProperties,
 } from "@builder.io/qwik";
 
 import styles from "./elm-ag-ui-http-client.module.css";
@@ -21,11 +22,15 @@ import {
 import { ElmAgUiMessageRenderer } from "./elm-ag-ui-message-renderer";
 
 export interface ElmAgUiHttpClientProps {
+  class?: string;
+
+  style?: CSSProperties;
+
   url: string;
 }
 
 export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
-  ({ url }) => {
+  ({ class: className, style, url }) => {
     const httpAgent = useSignal<NoSerialize<HttpAgent> | null>(null);
 
     const agent = useStore<{ messages: Message[]; events: BaseEvent[] }>({
@@ -108,7 +113,7 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
     });
 
     return (
-      <div class={styles["elm-my-something"]}>
+      <div class={[styles["elm-my-something"], className]} style={style}>
         <button onClick$={send}>Send</button>
 
         <div>

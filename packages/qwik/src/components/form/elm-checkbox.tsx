@@ -1,9 +1,13 @@
-import { $, component$, useSignal, type Signal } from "@builder.io/qwik";
+import { $, component$, useSignal, type CSSProperties, type Signal } from "@builder.io/qwik";
 
 import { ElmInlineText } from "../typography/elm-inline-text";
 import styles from "./elm-checkbox.module.scss";
 
 export interface ElmCheckboxProps {
+  class?: string;
+
+  style?: CSSProperties;
+
   /**
    * The label displayed.
    */
@@ -37,7 +41,8 @@ export const ElmCheckbox = component$<ElmCheckboxProps>((props) => {
 
   return (
     <div
-      class={[styles.container, props.disable && styles["container--disable"]]}
+      class={[styles.container, props.disable && styles["container--disable"], props.class]}
+      style={props.style}
       onClick$={toggleCheck}
     >
       <div

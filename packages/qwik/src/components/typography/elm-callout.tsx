@@ -23,6 +23,8 @@ const COLOR_MAP: Record<AlertType, { code: string; icon: string }> =
   } as const);
 
 export interface ElmCalloutProps {
+  class?: string;
+
   /**
    * Type of alert
    */
@@ -32,10 +34,10 @@ export interface ElmCalloutProps {
 }
 
 export const ElmCallout = component$<ElmCalloutProps>(
-  ({ type = "note", style }) => {
+  ({ class: className, type = "note", style }) => {
     return (
       <aside
-        class={styles.callout}
+        class={[styles.callout, className]}
         style={{ "--callout-color": COLOR_MAP[type].code, ...style }}
       >
         <div class={styles.header}>

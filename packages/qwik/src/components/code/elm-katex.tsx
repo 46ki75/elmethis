@@ -1,10 +1,14 @@
-import { component$, useComputed$ } from "@builder.io/qwik";
+import { component$, useComputed$, type CSSProperties } from "@builder.io/qwik";
 
 import textStyle from "../../styles/text.module.scss";
 
 import { renderToString } from "katex";
 
 export interface ElmKatexProps {
+  class?: string;
+
+  style?: CSSProperties;
+
   /**
    * The KaTex expression.
    */
@@ -21,7 +25,7 @@ export interface ElmKatexProps {
 }
 
 export const ElmKatex = component$<ElmKatexProps>(
-  ({ expression, block = false }) => {
+  ({ class: className, style, expression, block = false }) => {
     const html = useComputed$(() =>
       renderToString(expression, {
         displayMode: block,
@@ -30,7 +34,7 @@ export const ElmKatex = component$<ElmKatexProps>(
     );
 
     return (
-      <div class={textStyle.text} dangerouslySetInnerHTML={html.value ?? ""} />
+      <div class={[textStyle.text, className]} style={style} dangerouslySetInnerHTML={html.value ?? ""} />
     );
   },
 );

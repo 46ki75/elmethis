@@ -6,6 +6,8 @@ import { mdiDownload, mdiFile } from "@mdi/js";
 import { ElmInlineText } from "../typography/elm-inline-text";
 
 export interface ElmFileProps {
+  class?: string;
+
   /**
    * The name of the file.
    */
@@ -33,7 +35,7 @@ function getLastPathSegmentWithoutQueryOrHash(
 }
 
 export const ElmFile = component$<ElmFileProps>(
-  ({ name, src, filesize, style }) => {
+  ({ class: className, name, src, filesize, style }) => {
     const downloadFile = $(async () => {
       let link;
       try {
@@ -55,7 +57,7 @@ export const ElmFile = component$<ElmFileProps>(
     });
 
     return (
-      <div class={styles.file} style={style}>
+      <div class={[styles.file, className]} style={style}>
         <div>
           <ElmMdiIcon d={mdiFile} size="1.25rem" />
         </div>

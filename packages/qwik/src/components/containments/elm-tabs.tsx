@@ -1,15 +1,19 @@
-import { $, component$, useSignal } from "@builder.io/qwik";
+import { $, component$, useSignal, type CSSProperties } from "@builder.io/qwik";
 import type { JSXOutput } from "@builder.io/qwik";
 
 import styles from "./elm-tabs.module.css";
 
 export interface ElmTabsProps {
+  class?: string;
+
+  style?: CSSProperties;
+
   tabLabels: JSXOutput[];
   tabContents: JSXOutput[];
 }
 
 export const ElmTabs = component$<ElmTabsProps>(
-  ({ tabLabels, tabContents }) => {
+  ({ class: className, style, tabLabels, tabContents }) => {
     const selectedTabIndex = useSignal(0);
 
     const selectTab = $((index: number) => {
@@ -17,7 +21,7 @@ export const ElmTabs = component$<ElmTabsProps>(
     });
 
     return (
-      <div class={styles["elm-tabs"]}>
+      <div class={[styles["elm-tabs"], className]} style={style}>
         <div class={styles["tab-container"]}>
           {tabLabels.map((tabLabel, index) => (
             <div

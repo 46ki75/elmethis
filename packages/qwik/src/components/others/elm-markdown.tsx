@@ -24,6 +24,8 @@ import { ElmTableCell } from "../table/elm-table-cell";
 import styles from "./elm-markdown.module.scss";
 
 export interface ElmMarkdownProps {
+  class?: string;
+
   markdown: string;
 
   /**
@@ -224,7 +226,7 @@ const ElmMarkdownStable = component$<{ tokens: Token[] }>(({ tokens }) => (
 ));
 
 export const ElmMarkdown = component$<ElmMarkdownProps>(
-  ({ markdown, style, streaming }) => {
+  ({ class: className, markdown, style, streaming }) => {
     const stableTokens = useSignal<Token[]>([]);
     const tailTokens = useSignal<Token[]>([]);
 
@@ -247,7 +249,7 @@ export const ElmMarkdown = component$<ElmMarkdownProps>(
     });
 
     return (
-      <div class={styles["markdown-body"]} style={style}>
+      <div class={[styles["markdown-body"], className]} style={style}>
         <ElmMarkdownStable tokens={stableTokens.value} />
         {renderByToken(tailTokens.value)}
       </div>

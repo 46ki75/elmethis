@@ -1,8 +1,12 @@
-import { component$ } from "@builder.io/qwik";
+import { component$, type CSSProperties } from "@builder.io/qwik";
 import { useElmethisTheme } from "../../hooks/useElmethisTheme";
 import styles from "./elm-toggle-theme.module.scss";
 
 export interface ElmToggleThemeProps {
+  class?: string;
+
+  style?: CSSProperties;
+
   /**
    * Specifies the size of the icon.
    */
@@ -10,11 +14,11 @@ export interface ElmToggleThemeProps {
 }
 
 export const ElmToggleTheme = component$<ElmToggleThemeProps>(
-  ({ size = "2rem" }) => {
+  ({ class: className, style, size = "2rem" }) => {
     const { isDarkTheme, toggleTheme } = useElmethisTheme();
 
     return (
-      <>
+      <div class={className} style={style}>
         {!isDarkTheme.value ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -402,7 +406,7 @@ export const ElmToggleTheme = component$<ElmToggleThemeProps>(
             </circle>
           </svg>
         )}
-      </>
+      </div>
     );
   },
 );

@@ -29,6 +29,8 @@ import { ElmTabs } from "../containments/elm-tabs";
 import { ElmUnsupportedBlock } from "../fallback/elm-unsupported-block";
 
 export interface ElmJarkupProps {
+  class?: string;
+
   jsonComponents: Component[];
 
   skipUnsupportedComponentWarning?: boolean;
@@ -314,7 +316,7 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
   };
 
   return (
-    <div style={{ "--margin-block": "3rem", ...props.style }}>
+    <div class={props.class} style={{ "--margin-block": "3rem", ...props.style }}>
       {render(props.jsonComponents)}
     </div>
   );

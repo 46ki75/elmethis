@@ -3,22 +3,27 @@ import { component$, CSSProperties } from "@builder.io/qwik";
 import styles from "./elm-square-loading-icon.module.scss";
 
 export interface ElmSquareLoadingIconProps {
+  class?: string;
+
+  style?: CSSProperties;
+
   size?: CSSProperties["width"];
   dimensions?: number;
 }
 
 export const ElmSquareLoadingIcon = component$<ElmSquareLoadingIconProps>(
-  ({ size = "3rem", dimensions = 4 }) => {
+  ({ class: className, style, size = "3rem", dimensions = 4 }) => {
     const DURATION = 1200;
     const DELAY = DURATION / (dimensions * 3);
 
     return (
       <div
-        class={styles.wrapper}
+        class={[styles.wrapper, className]}
         style={{
           "--size": size,
           "--dimensions": dimensions,
           "--duration": `${DURATION}ms`,
+          ...style,
         }}
       >
         {new Array(dimensions)
