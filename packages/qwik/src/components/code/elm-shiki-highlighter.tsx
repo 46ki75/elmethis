@@ -27,6 +27,8 @@ export const ElmShikiHighlighter = component$<ElmShikiHighlighterProps>(
       track(() => code);
       track(() => language);
 
+      if (!code) return;
+
       try {
         rawHtml.value = await codeToHtml(code, {
           lang: language,
