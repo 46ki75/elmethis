@@ -46,6 +46,7 @@ const toolCallResult = JSON.stringify(
 export const Primary: Story = {
   args: {
     toolName: "aws_knowledge_graph",
+    toolEventType: EventType.TOOL_CALL_END,
     toolCallArgs,
     toolCallResult,
   },
@@ -80,7 +81,7 @@ async function* transition() {
   while (true) {
     for (const state of states) {
       await sleep(1500);
-      yield state;
+      yield { ...state };
     }
   }
 }
