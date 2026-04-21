@@ -10,9 +10,9 @@ import styles from "./elm-ag-ui-tool-execution.module.css";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { mdiCodeJson, mdiHammerScrewdriver } from "@mdi/js";
 import { ElmInlineText } from "../typography/elm-inline-text";
-import { ElmCollapse } from "../containments/elm-collapse";
 import { EventType } from "@ag-ui/core";
 import { ElmCodeBlock } from "../code/elm-code-block";
+import { ElmToggle } from "../containments/elm-toggle";
 
 type ToolEventType =
   | EventType.TOOL_CALL_START
@@ -81,26 +81,26 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
         class={[styles["elm-ag-ui-tool-execution"], className]}
         style={style}
       >
-        <div class={styles["summary"]} onClick$={toggleIsOpen}>
-          <ElmMdiIcon d={mdiHammerScrewdriver} />
-          <ElmInlineText>{toolName}</ElmInlineText>
-        </div>
+        <ElmToggle isOpen={isOpen.value}>
+          <div q:slot="summary" onClick$={toggleIsOpen}>
+            <ElmMdiIcon d={mdiHammerScrewdriver} />
+            <ElmInlineText>{toolName}</ElmInlineText>
+          </div>
 
-        <ElmCollapse isOpen={isOpen.value}>
           <div>
-            <div class={styles["summary"]} onClick$={toggleIsArgsOpen}>
-              <ElmMdiIcon d={mdiCodeJson} />
-              <ElmInlineText>Args</ElmInlineText>
-            </div>
+            <ElmToggle isOpen={isArgsOpen.value}>
+              <div q:slot="summary" onClick$={toggleIsArgsOpen}>
+                <ElmMdiIcon d={mdiCodeJson} />
+                <ElmInlineText>Args</ElmInlineText>
+              </div>
 
-            <ElmCollapse isOpen={toolCallArgsSignal.value != null}>
               <ElmCodeBlock
                 language="json"
                 code={toolCallArgsSignal.value || ""}
               />
-            </ElmCollapse>
+            </ElmToggle>
           </div>
-        </ElmCollapse>
+        </ElmToggle>
       </div>
     );
   },
