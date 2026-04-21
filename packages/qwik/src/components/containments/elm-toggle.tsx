@@ -83,7 +83,7 @@ export const ElmToggle = component$<ElmToggleProps>(
 
         <div class={styles.border} />
 
-        <div class={styles.content}>
+        <div class={[styles.content, { [styles.open]: isOpen.value }]}>
           <Slot />
         </div>
       </div>

@@ -90,7 +90,15 @@
 }
 
 .content {
+  box-sizing: border-box;
   grid-area: content;
   box-sizing: border-box;
   overflow: hidden;
+  transition: padding 200ms;
+  transition-timing-function: steps(1, jump-end);
+
+  &.open {
+    transition-timing-function: steps(1, jump-start);
+    padding: 0.125rem;
+  }
 }
