@@ -1,8 +1,12 @@
-import { component$, useSignal, useVisibleTask$, $ } from "@builder.io/qwik";
+import { component$, useSignal, useVisibleTask$, $, type CSSProperties } from "@builder.io/qwik";
 
 import styles from "./elm-page-top.module.scss";
 
 export interface ElmPageTopProps {
+  class?: string;
+
+  style?: CSSProperties;
+
   /**
    * Specifies the position of the button.
    */
@@ -10,7 +14,7 @@ export interface ElmPageTopProps {
 }
 
 export const ElmPageTop = component$<ElmPageTopProps>(
-  ({ position = "right" }) => {
+  ({ class: className, style, position = "right" }) => {
     const isVisible = useSignal(false);
 
     // Initial check and scroll listener
@@ -38,11 +42,13 @@ export const ElmPageTop = component$<ElmPageTopProps>(
         class={[
           styles.wrapper,
           { [styles["wrapper--visible"]]: isVisible.value },
+          className,
         ]}
         style={{
           "--size": `${64}px`,
           left: position === "left" ? "0" : "auto",
           right: position === "right" ? "0" : "auto",
+          ...style,
         }}
         onClick$={toTop}
       >

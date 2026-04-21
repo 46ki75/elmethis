@@ -15,6 +15,8 @@ export const HasRowHeaderContext = createContextId<
 >("HasRowHeaderContext");
 
 export interface ElmTableProps {
+  class?: string;
+
   caption?: string;
 
   hasRowHeader?: boolean;
@@ -30,7 +32,7 @@ export const ElmTable = component$<ElmTableProps>((props) => {
 
   return (
     <table
-      class={[styles.table, textStyles.text]}
+      class={[styles.table, textStyles.text, props.class]}
       style={{
         ...style,
       }}

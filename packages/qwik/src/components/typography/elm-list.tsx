@@ -5,12 +5,14 @@ import styles from "./elm-list.module.scss";
 import textStyle from "../../styles/text.module.scss";
 
 export interface ElmListProps {
+  class?: string;
+
   listStyle: "unordered" | "ordered";
   style?: CSSProperties;
 }
 
 export const ElmList = component$<ElmListProps>(
-  ({ listStyle = "unordered", style }) => {
+  ({ class: className, listStyle = "unordered", style }) => {
     if (listStyle === "ordered") {
       return (
         <ol
@@ -18,6 +20,7 @@ export const ElmList = component$<ElmListProps>(
             textStyle.text,
             styles["elmethis-list-common"],
             styles["elmethis-numbered-list"],
+            className,
           ]}
           style={style}
         >
@@ -31,7 +34,9 @@ export const ElmList = component$<ElmListProps>(
             textStyle.text,
             styles["elmethis-list-common"],
             styles["elmethis-bulleted-list"],
+            className,
           ]}
+          style={style}
         >
           <Slot />
         </ul>

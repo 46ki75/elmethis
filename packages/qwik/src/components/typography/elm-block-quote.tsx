@@ -6,16 +6,18 @@ import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { mdiFormatQuoteClose, mdiFormatQuoteOpen } from "@mdi/js";
 
 export interface ElmBlockQuoteProps {
+  class?: string;
+
   cite?: string;
 
   style?: string | CSSProperties;
 }
 
 export const ElmBlockQuote = component$<ElmBlockQuoteProps>(
-  ({ cite, style }) => {
+  ({ class: className, cite, style }) => {
     return (
       <blockquote
-        class={[styles.blockquote, textStyles.text]}
+        class={[styles.blockquote, textStyles.text, className]}
         cite={cite}
         style={style}
       >

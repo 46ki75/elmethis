@@ -5,6 +5,8 @@ import textStyles from "../../styles/text.module.scss";
 import { ElmFragmentIdentifier } from "./elm-fragment-identifier";
 
 export interface ElmHeadingProps {
+  class?: string;
+
   level: 1 | 2 | 3 | 4 | 5 | 6;
 
   text?: string;
@@ -24,11 +26,11 @@ const SIZE_MAP: Record<1 | 2 | 3 | 4 | 5 | 6, number> = Object.freeze({
 } as const);
 
 export const ElmHeading = component$<ElmHeadingProps>(
-  ({ level, text, id, style }) => {
+  ({ class: className, level, text, id, style }) => {
     const Tag = `h${level}` as "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
     return (
       <Tag
-        class={[styles["heading-common"], textStyles.text, styles[`h${level}`]]}
+        class={[styles["heading-common"], textStyles.text, styles[`h${level}`], className]}
         style={{ "--font-size": `${SIZE_MAP[level]}em`, ...style }}
       >
         <span>{text}</span>

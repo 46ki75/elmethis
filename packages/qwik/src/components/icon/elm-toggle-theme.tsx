@@ -1,8 +1,12 @@
-import { component$ } from "@builder.io/qwik";
+import { component$, type CSSProperties } from "@builder.io/qwik";
 import { useElmethisTheme } from "../../hooks/useElmethisTheme";
 import styles from "./elm-toggle-theme.module.scss";
 
 export interface ElmToggleThemeProps {
+  class?: string;
+
+  style?: CSSProperties;
+
   /**
    * Specifies the size of the icon.
    */
@@ -10,7 +14,7 @@ export interface ElmToggleThemeProps {
 }
 
 export const ElmToggleTheme = component$<ElmToggleThemeProps>(
-  ({ size = "2rem" }) => {
+  ({ class: className, style, size = "2rem" }) => {
     const { isDarkTheme, toggleTheme } = useElmethisTheme();
 
     return (
@@ -21,7 +25,8 @@ export const ElmToggleTheme = component$<ElmToggleThemeProps>(
             width={size}
             height={size}
             viewBox="0 0 24 24"
-            class={styles.icon}
+            class={[styles.icon, className]}
+            style={style}
             onClick$={toggleTheme}
           >
             <g
@@ -190,7 +195,8 @@ export const ElmToggleTheme = component$<ElmToggleThemeProps>(
             width={size}
             height={size}
             viewBox="0 0 24 24"
-            class={styles.icon}
+            class={[styles.icon, className]}
+            style={style}
             onClick$={toggleTheme}
           >
             <path

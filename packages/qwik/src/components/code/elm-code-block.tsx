@@ -19,6 +19,8 @@ import {
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 
 export interface ElmCodeBlockProps {
+  class?: string;
+
   /**
    * The code to display.
    */
@@ -39,7 +41,7 @@ export interface ElmCodeBlockProps {
 }
 
 export const ElmCodeBlock = component$<ElmCodeBlockProps>(
-  ({ code, language = "txt", caption, style }) => {
+  ({ class: className, code, language = "txt", caption, style }) => {
     const timerId = useSignal<number | null>(null);
 
     const copyToClipboard = $(async () => {
@@ -57,7 +59,7 @@ export const ElmCodeBlock = component$<ElmCodeBlockProps>(
     });
 
     return (
-      <figure class={styles["code-block"]} style={style}>
+      <figure class={[styles["code-block"], className]} style={style}>
         <span class={styles["language-icon"]}>
           <ElmLanguageIcon language={language} />
         </span>

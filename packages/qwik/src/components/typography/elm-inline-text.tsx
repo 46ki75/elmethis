@@ -6,6 +6,8 @@ import textStyles from "../../styles/text.module.scss";
 import { ElmInlineIcon } from "../icon/elm-inline-icon";
 
 export interface ElmInlineTextProps {
+  class?: string;
+
   style?: CSSProperties;
 
   /**
@@ -119,7 +121,7 @@ export const ElmInlineText = component$<ElmInlineTextProps>((props) => {
 
   const wrappedVnode = (
     <span
-      class={[styles.text, textStyles.text]}
+      class={[styles.text, textStyles.text, props.class]}
       style={{
         "--color": props.color,
         "--font-size": size,

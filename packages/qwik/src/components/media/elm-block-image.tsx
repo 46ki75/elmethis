@@ -14,6 +14,8 @@ import { ElmRectangleWave } from "../fallback/elm-rectangle-wave";
 import { mdiMessageImageOutline } from "@mdi/js";
 
 export interface ElmBlockImageProps {
+  class?: string;
+
   /**
    * Image source URL
    */
@@ -41,6 +43,7 @@ export interface ElmBlockImageProps {
 
 export const ElmBlockImage = component$<ElmBlockImageProps>(
   ({
+    class: className,
     src,
     alt,
     caption,
@@ -115,7 +118,7 @@ export const ElmBlockImage = component$<ElmBlockImageProps>(
     );
 
     return (
-      <figure class={styles["block-image"]} style={style}>
+      <figure class={[styles["block-image"], className]} style={style}>
         <div
           class={styles["image-container"]}
           style={{ "--opacity": isLoading.value ? 1 : 0.01 }}

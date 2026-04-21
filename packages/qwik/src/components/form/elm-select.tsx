@@ -3,6 +3,7 @@ import {
   component$,
   useOnDocument,
   useSignal,
+  type CSSProperties,
   type Signal,
 } from "@builder.io/qwik";
 import {
@@ -22,6 +23,10 @@ export interface ElmSelectOption {
 }
 
 export interface ElmSelectProps {
+  class?: string;
+
+  style?: CSSProperties;
+
   label: string;
   placeholder?: string;
   disabled?: boolean;
@@ -69,11 +74,12 @@ export const ElmSelect = component$<ElmSelectProps>((props) => {
   return (
     <div
       ref={containerRef}
-      class={[styles.wrapper, isActive.value && styles.active]}
+      class={[styles.wrapper, isActive.value && styles.active, props.class]}
       style={{
         backgroundColor:
           props.disabled || props.loading ? "rgba(0,0,0,0.15)" : undefined,
         "--highlight-color": isActive.value ? "#bfa056" : undefined,
+        ...props.style,
       }}
       onClick$={handleToggle}
     >

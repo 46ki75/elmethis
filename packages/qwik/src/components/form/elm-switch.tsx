@@ -1,8 +1,12 @@
-import { $, component$, useSignal, type Signal } from "@builder.io/qwik";
+import { $, component$, useSignal, type CSSProperties, type Signal } from "@builder.io/qwik";
 
 import styles from "./elm-switch.module.scss";
 
 export interface ElmSwitchProps {
+  class?: string;
+
+  style?: CSSProperties;
+
   /**
    * The color of the switch when checked.
    */
@@ -40,11 +44,13 @@ export const ElmSwitch = component$<ElmSwitchProps>((props) => {
   return (
     <div
       onClick$={handleClick}
+      class={props.class}
       style={{
         "--color": color,
         "--padding": "2px",
         "--size": size,
         "--width": "calc(var(--size) * 2 + var(--padding) * 2)",
+        ...props.style,
       }}
     >
       <input

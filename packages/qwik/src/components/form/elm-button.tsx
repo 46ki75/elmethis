@@ -3,6 +3,7 @@ import {
   component$,
   Slot,
   useSignal,
+  type CSSProperties,
   type PropFunction,
 } from "@builder.io/qwik";
 
@@ -10,6 +11,10 @@ import { ElmDotLoadingIcon } from "../icon/elm-dot-loading-icon";
 import styles from "./elm-button.module.scss";
 
 export interface ElmButtonProps {
+  class?: string;
+
+  style?: CSSProperties;
+
   /**
    * Whether the button is in loading state.
    */
@@ -60,6 +65,7 @@ export const ElmButton = component$<ElmButtonProps>((props) => {
         props.color && styles.colored,
         !props.color && !props.primary && styles.normal,
         !props.color && props.primary && styles.primary,
+        props.class,
       ]}
       style={{
         display: props.block ? "flex" : "inline-flex",
@@ -71,6 +77,7 @@ export const ElmButton = component$<ElmButtonProps>((props) => {
             : "pointer",
         "--opacity": props.disabled || props.loading ? 0.6 : undefined,
         "--color": props.color,
+        ...props.style,
       }}
     >
       {clicked.value && <div class={styles.ripple}></div>}

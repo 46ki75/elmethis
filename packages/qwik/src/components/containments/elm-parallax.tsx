@@ -1,16 +1,20 @@
-import { component$, useSignal } from "@builder.io/qwik";
+import { component$, useSignal, type CSSProperties } from "@builder.io/qwik";
 
 import styles from "./elm-parallax.module.scss";
 
 export interface ElmParallaxProps {
+  class?: string;
+
+  style?: CSSProperties;
+
   images: string[];
 }
 
-export const ElmParallax = component$<ElmParallaxProps>(({ images }) => {
+export const ElmParallax = component$<ElmParallaxProps>(({ class: className, style, images }) => {
   const y = useSignal(0);
 
   return (
-    <>
+    <div class={className} style={style}>
       <div
         class={styles["parallax-watcher"]}
         window:onScroll$={() => {
@@ -29,6 +33,6 @@ export const ElmParallax = component$<ElmParallaxProps>(({ images }) => {
           }}
         ></div>
       ))}
-    </>
+    </div>
   );
 });

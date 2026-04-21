@@ -8,6 +8,8 @@ import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { ElmInlineIcon } from "../icon/elm-inline-icon";
 
 export interface ElmBookmarkProps {
+  class?: string;
+
   /**
    * The title of the bookmark.
    */
@@ -38,7 +40,7 @@ export interface ElmBookmarkProps {
 }
 
 export const ElmBookmark = component$<ElmBookmarkProps>(
-  ({ url, image, title, description, favicon, style }) => {
+  ({ class: className, url, image, title, description, favicon, style }) => {
     const isError = useSignal(false);
 
     const handleImageOnError = $(() => {
@@ -51,7 +53,7 @@ export const ElmBookmark = component$<ElmBookmarkProps>(
     };
 
     return (
-      <div class={styles.bookmark} style={style}>
+      <div class={[styles.bookmark, className]} style={style}>
         <a
           class={styles.container}
           href={url}

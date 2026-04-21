@@ -1,4 +1,4 @@
-import { $, component$, useId, useSignal, type Signal } from "@builder.io/qwik";
+import { $, component$, useId, useSignal, type CSSProperties, type Signal } from "@builder.io/qwik";
 import {
   mdiAccount,
   mdiArchive,
@@ -22,6 +22,10 @@ import { ElmInlineText } from "../typography/elm-inline-text";
 import styles from "./elm-text-field.module.scss";
 
 export interface ElmTextFieldProps {
+  class?: string;
+
+  style?: CSSProperties;
+
   label: string;
   maxLength?: number;
   suffix?: string;
@@ -80,11 +84,12 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
 
   return (
     <div
-      class={[styles.wrapper, isFocused.value && styles.active]}
+      class={[styles.wrapper, isFocused.value && styles.active, props.class]}
       style={{
         backgroundColor:
           props.disabled || props.loading ? "rgba(0,0,0,0.15)" : undefined,
         "--highlight-color": isFocused.value ? "#bfa056" : undefined,
+        ...props.style,
       }}
     >
       <div class={styles.header}>

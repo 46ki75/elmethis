@@ -1,4 +1,4 @@
-import { component$, JSX } from "@builder.io/qwik";
+import { component$, JSX, type CSSProperties } from "@builder.io/qwik";
 
 import styles from "./elm-ag-ui-message-renderer.module.css";
 import { Message, InputContent } from "@ag-ui/core";
@@ -10,11 +10,15 @@ import { mdiAccount, mdiCreation } from "@mdi/js";
 import { ElmCodeBlock } from "../code/elm-code-block";
 
 export interface ElmAgUiMessageRendererProps {
+  class?: string;
+
+  style?: CSSProperties;
+
   messages: Message[];
 }
 
 export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
-  ({ messages }) => {
+  ({ class: className, style, messages }) => {
     const renderInputContent = (content: InputContent) => {
       if (typeof content === "string") {
         return <ElmInlineText>{content}</ElmInlineText>;
@@ -147,7 +151,7 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
     };
 
     return (
-      <div class={styles["elm-my-something"]}>
+      <div class={[styles["elm-my-something"], className]} style={style}>
         {messages.map((msg, i) => (
           <div key={msg.id ?? i}>{render(msg)}</div>
         ))}

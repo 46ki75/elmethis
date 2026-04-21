@@ -1,4 +1,4 @@
-import { component$, type QRLEventHandlerMulti } from "@builder.io/qwik";
+import { component$, type CSSProperties, type QRLEventHandlerMulti } from "@builder.io/qwik";
 
 import styles from "./elm-breadcrumb.module.scss";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
@@ -11,6 +11,10 @@ import {
 import { ElmInlineText } from "../typography/elm-inline-text";
 
 export interface ElmBreadcrumbProps {
+  class?: string;
+
+  style?: CSSProperties;
+
   links: Array<{
     /**
      * The text to display.
@@ -24,9 +28,9 @@ export interface ElmBreadcrumbProps {
   }>;
 }
 
-export const ElmBreadcrumb = component$<ElmBreadcrumbProps>(({ links }) => {
+export const ElmBreadcrumb = component$<ElmBreadcrumbProps>(({ class: className, style, links }) => {
   return (
-    <nav class={styles.container}>
+    <nav class={[styles.container, className]} style={style}>
       {links.map((link, index) => (
         <>
           <span class={styles["link-container"]} onClick$={link.onClick$}>
