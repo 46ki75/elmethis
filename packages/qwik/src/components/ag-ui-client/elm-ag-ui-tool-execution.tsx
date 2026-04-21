@@ -82,24 +82,26 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
         style={style}
       >
         <ElmToggle isOpen={isOpen.value}>
-          <div q:slot="summary" onClick$={toggleIsOpen}>
+          <div q:slot="summary" class={styles.summary} onClick$={toggleIsOpen}>
             <ElmMdiIcon d={mdiHammerScrewdriver} />
             <ElmInlineText>{toolName}</ElmInlineText>
           </div>
 
-          <div>
-            <ElmToggle isOpen={isArgsOpen.value}>
-              <div q:slot="summary" onClick$={toggleIsArgsOpen}>
-                <ElmMdiIcon d={mdiCodeJson} />
-                <ElmInlineText>Args</ElmInlineText>
-              </div>
+          <ElmToggle isOpen={isArgsOpen.value}>
+            <div
+              q:slot="summary"
+              class={styles.summary}
+              onClick$={toggleIsArgsOpen}
+            >
+              <ElmMdiIcon d={mdiCodeJson} />
+              <ElmInlineText>Args</ElmInlineText>
+            </div>
 
-              <ElmCodeBlock
-                language="json"
-                code={toolCallArgsSignal.value || ""}
-              />
-            </ElmToggle>
-          </div>
+            <ElmCodeBlock
+              language="json"
+              code={toolCallArgsSignal.value || ""}
+            />
+          </ElmToggle>
         </ElmToggle>
       </div>
     );
