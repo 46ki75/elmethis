@@ -54,10 +54,10 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
           isArgsOpen.value = true;
           break;
         case EventType.TOOL_CALL_END:
+        case EventType.TOOL_CALL_CHUNK:
           isOpen.value = true;
           isArgsOpen.value = false;
           break;
-        case EventType.TOOL_CALL_CHUNK:
         case EventType.TOOL_CALL_RESULT:
           isOpen.value = false;
           break;
