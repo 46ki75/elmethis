@@ -31,15 +31,22 @@ export interface ElmAgUiToolExecutionProps {
   toolEventType?: ToolEventType;
 
   toolCallArgs?: string;
+
+  toolCallResult?: string;
 }
 
 export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
-  ({ class: className, style, toolName, toolEventType, toolCallArgs }) => {
-    const toolCallArgsSignal = useSignal<string | undefined>(toolCallArgs);
-
+  ({
+    class: className,
+    style,
+    toolName,
+    toolEventType,
+    toolCallArgs,
+    toolCallResult,
+  }) => {
     const isOpen = useSignal<boolean>(true);
     const isArgsOpen = useSignal<boolean>(true);
-    // const isResultOpen = useSignal<boolean>(false);
+    const isResultOpen = useSignal<boolean>(true);
 
     useTask$(({ track }) => {
       const eventType = track(() => toolEventType);
@@ -72,9 +79,9 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
       isArgsOpen.value = !isArgsOpen.value;
     });
 
-    // const toggleIsResultOpen = $(() => {
-    //   isResultOpen.value = !isResultOpen.value;
-    // });
+    const toggleIsResultOpen = $(() => {
+      isResultOpen.value = !isResultOpen.value;
+    });
 
     return (
       <div
@@ -83,7 +90,7 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
       >
         <ElmToggle isOpen={isOpen.value}>
           <div q:slot="summary" class={styles.summary} onClick$={toggleIsOpen}>
-            <ElmMdiIcon d={mdiHammerScrewdriver} />
+            <ElmMdiIcon d={mdiHammerScrewdriver} size="1.25rem" />
             <ElmInlineText>{toolName}</ElmInlineText>
           </div>
 
@@ -93,14 +100,24 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
               class={styles.summary}
               onClick$={toggleIsArgsOpen}
             >
-              <ElmMdiIcon d={mdiCodeJson} />
+              <ElmMdiIcon d={mdiCodeJson} size="1.25rem" />
               <ElmInlineText>Args</ElmInlineText>
             </div>
 
-            <ElmCodeBlock
-              language="json"
-              code={toolCallArgsSignal.value || ""}
-            />
+            <ElmCodeBlock language="json" code={toolCallArgs || ""} />
+          </ElmToggle>
+
+          <ElmToggle isOpen={isResultOpen.value}>
+            <div
+              q:slot="summary"
+              class={styles.summary}
+              onClick$={toggleIsResultOpen}
+            >
+              <ElmMdiIcon d={mdiCodeJson} size="1.25rem" />
+              <ElmInlineText>Result</ElmInlineText>
+            </div>
+
+            <ElmCodeBlock language="json" code={toolCallResult || ""} />
           </ElmToggle>
         </ElmToggle>
       </div>

@@ -4,16 +4,8 @@
     flex-direction: row;
     align-items: center;
     gap: 0.5rem;
-    box-sizing: border-box;
-    padding: 0.5rem;
-    border-radius: 0.25rem;
-    transition: background-color 100ms;
     user-select: none;
     cursor: pointer;
     font-family: monospace;
-
-    &:hover {
-      background-color: oklch(from gray l c h / 0.125);
-    }
   }
 }
