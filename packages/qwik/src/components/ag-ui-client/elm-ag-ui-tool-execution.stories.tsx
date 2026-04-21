@@ -52,7 +52,10 @@ export const Primary: Story = {
 };
 
 const states: ElmAgUiToolExecutionProps[] = [
-  { toolName: "aws_knowledge_graph", toolEventType: EventType.TOOL_CALL_START },
+  {
+    toolName: "aws_knowledge_graph",
+    toolEventType: EventType.TOOL_CALL_START,
+  },
   {
     toolName: "aws_knowledge_graph",
     toolEventType: EventType.TOOL_CALL_ARGS,
