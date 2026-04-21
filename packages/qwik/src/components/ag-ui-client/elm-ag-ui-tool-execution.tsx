@@ -121,7 +121,7 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
                 <ElmInlineText>Args</ElmInlineText>
               </div>
 
-              {toolCallArgs && (
+              {toolCallArgs != null && (
                 <ElmCodeBlock language="json" code={toolCallArgs} />
               )}
             </ElmToggle>
@@ -138,7 +138,7 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
                 <ElmInlineText>Result</ElmInlineText>
               </div>
 
-              {toolCallResult && (
+              {toolCallResult != null && (
                 <ElmCodeBlock language="json" code={toolCallResult} />
               )}
             </ElmToggle>
