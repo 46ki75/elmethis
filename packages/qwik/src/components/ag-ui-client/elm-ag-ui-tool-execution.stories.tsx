@@ -3,6 +3,8 @@ import {
   ElmAgUiToolExecution,
   type ElmAgUiToolExecutionProps,
 } from "./elm-ag-ui-tool-execution";
+import { EventType } from "@ag-ui/core";
+import { component$, useStore, useVisibleTask$ } from "@builder.io/qwik";
 
 const meta: Meta<ElmAgUiToolExecutionProps> = {
   title: "Components/AG-UI/elm-ag-ui-tool-execution",
@@ -47,4 +49,52 @@ export const Primary: Story = {
     toolCallArgs,
     toolCallResult,
   },
+};
+
+const states: ElmAgUiToolExecutionProps[] = [
+  { toolName: "aws_knowledge_graph", toolEventType: EventType.TOOL_CALL_START },
+  {
+    toolName: "aws_knowledge_graph",
+    toolEventType: EventType.TOOL_CALL_ARGS,
+    toolCallArgs,
+  },
+  {
+    toolName: "aws_knowledge_graph",
+    toolEventType: EventType.TOOL_CALL_END,
+    toolCallArgs,
+  },
+  {
+    toolName: "aws_knowledge_graph",
+    toolEventType: EventType.TOOL_CALL_RESULT,
+    toolCallArgs,
+    toolCallResult,
+  },
+];
+
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function* transition() {
+  for (const state of states) {
+    await sleep(1500);
+    yield state;
+  }
+}
+
+const RenderTransition = component$(() => {
+  const state = useStore<{ args: ElmAgUiToolExecutionProps }>({
+    args: states[0],
+  });
+
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(async () => {
+    for await (const newState of transition()) {
+      state.args = newState;
+    }
+  });
+
+  return <ElmAgUiToolExecution {...state.args} />;
+});
+
+export const Transition: Story = {
+  render: () => <RenderTransition />,
 };
