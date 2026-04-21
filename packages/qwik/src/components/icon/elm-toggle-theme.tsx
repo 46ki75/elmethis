@@ -18,14 +18,15 @@ export const ElmToggleTheme = component$<ElmToggleThemeProps>(
     const { isDarkTheme, toggleTheme } = useElmethisTheme();
 
     return (
-      <div class={className} style={style}>
+      <>
         {!isDarkTheme.value ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width={size}
             height={size}
             viewBox="0 0 24 24"
-            class={styles.icon}
+            class={[styles.icon, className]}
+            style={style}
             onClick$={toggleTheme}
           >
             <g
@@ -194,7 +195,8 @@ export const ElmToggleTheme = component$<ElmToggleThemeProps>(
             width={size}
             height={size}
             viewBox="0 0 24 24"
-            class={styles.icon}
+            class={[styles.icon, className]}
+            style={style}
             onClick$={toggleTheme}
           >
             <path
@@ -406,7 +408,7 @@ export const ElmToggleTheme = component$<ElmToggleThemeProps>(
             </circle>
           </svg>
         )}
-      </div>
+      </>
     );
   },
 );

@@ -168,10 +168,6 @@ export const ElmLanguageIcon = component$<ElmLanguageIconProps>(
   ({ class: className, style, size = 24, language }) => {
     const Component = renderMap[normalizeLanguage(language)];
 
-    return (
-      <div class={className} style={style}>
-        <Component size={size} />
-      </div>
-    );
+    return <Component size={size} class={className} style={style} />;
   },
 );
