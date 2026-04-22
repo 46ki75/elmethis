@@ -1,0 +1,11 @@
+.elm-ag-ui-tool-execution {
+  .summary {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    user-select: none;
+    cursor: pointer;
+    font-family: monospace;
+  }
+}

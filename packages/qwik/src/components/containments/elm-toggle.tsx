@@ -1,9 +1,11 @@
 import {
   $,
   component$,
-  CSSProperties,
+  type CSSProperties,
+  type PropFunction,
   Slot,
   useSignal,
+  useTask$,
 } from "@builder.io/qwik";
 
 import styles from "./elm-toggle.module.scss";
@@ -14,105 +16,77 @@ import { ElmInlineText } from "../typography/elm-inline-text";
 export interface ElmToggleProps {
   class?: string;
 
-  /**
-   * The summary of the toggle.
-   */
+  style?: CSSProperties & { "--elmethis-margin-block-start"?: string };
+
+  /** The summary text of the toggle. */
   summary?: string;
 
-  style?: CSSProperties;
+  /** Whether the toggle is open. */
+  isOpen?: boolean;
+
+  /** Called when the toggle open state changes. */
+  setIsOpen$?: PropFunction<(value: boolean) => void>;
 }
 
-export const ElmToggle = component$<ElmToggleProps>(({ class: className, summary, style }) => {
-  const isOpen = useSignal(false);
+export const ElmToggle = component$<ElmToggleProps>(
+  ({ class: className, summary, style, isOpen: isOpenProp, setIsOpen$ }) => {
+    const isOpen = useSignal(isOpenProp ?? false);
 
-  const toggle = $(() => {
-    isOpen.value = !isOpen.value;
-  });
+    useTask$(({ track }) => {
+      track(() => isOpenProp);
+      if (isOpenProp !== undefined) {
+        isOpen.value = isOpenProp;
+      }
+    });
 
-  return (
-    <div
-      class={[
-        styles.toggle,
-        {
-          [styles["toggle-open"]]: isOpen.value,
-          [styles["toggle-closed"]]: !isOpen.value,
-        },
-        className,
-      ]}
-      style={style}
-    >
+    const handleClick = $(async () => {
+      const next = !isOpen.value;
+      isOpen.value = next;
+      if (setIsOpen$) await setIsOpen$(next);
+    });
+
+    return (
       <div
         class={[
-          styles.summary,
+          styles.toggle,
           {
-            [styles["summary-open"]]: isOpen.value,
-            [styles["summary-closed"]]: !isOpen.value,
+            [styles.open]: isOpen.value,
           },
+          className,
         ]}
-        onClick$={toggle}
+        style={style}
       >
-        <span
-          class={[
-            styles["chevron-icon"],
-            {
-              [styles["chevron-icon-open"]]: isOpen.value,
-              [styles["chevron-icon-closed"]]: !isOpen.value,
-            },
-          ]}
-        >
-          <ElmMdiIcon d={mdiChevronRight} />
-        </span>
+        <div class={styles.summary} preventdefault:click onClick$={handleClick}>
+          <div class={styles["summary-left"]}>
+            <span class={[styles.chevron, { [styles.open]: isOpen.value }]}>
+              <ElmMdiIcon d={mdiChevronRight} color="#59b57c" size="1rem" />
+            </span>
+            <div>
+              {summary != null ? (
+                <ElmInlineText>{summary}</ElmInlineText>
+              ) : (
+                <Slot name="summary" />
+              )}
+            </div>
+          </div>
 
-        <span class={styles["summary-text"]}>
-          {summary ? summary : <Slot name="summary" />}
-        </span>
+          <hr class={styles.divider} />
 
-        <span
-          class={[
-            styles["plus-icon"],
-            {
-              [styles["plus-icon-open"]]: isOpen.value,
-              [styles["plus-icon-closed"]]: !isOpen.value,
-            },
-          ]}
-        >
-          <ElmMdiIcon
-            d={mdiPlus}
-            color={isOpen.value ? "#c56565" : "#59b57c"}
-            size="1rem"
-          />
-        </span>
+          <span class={[styles.cross, { [styles.open]: isOpen.value }]}>
+            <ElmMdiIcon
+              d={mdiPlus}
+              size="1rem"
+              color={isOpen.value ? "#b36472" : "#59b57c"}
+            />
+          </span>
+        </div>
+
+        <div class={styles.border} />
+
+        <div class={[styles.content, { [styles.open]: isOpen.value }]}>
+          <Slot />
+        </div>
       </div>
-
-      <div
-        class={[
-          styles.content,
-          {
-            [styles["content-open"]]: isOpen.value,
-            [styles["content-closed"]]: !isOpen.value,
-          },
-        ]}
-      >
-        <Slot />
-      </div>
-
-      <div class={styles.footer} onClick$={toggle}>
-        <span>
-          <ElmMdiIcon d={mdiChevronRight} color="gray" />
-        </span>
-        <hr class={styles["footer-line"]} />
-        <span class={styles["footer-cross-icon"]}>
-          <ElmMdiIcon d={mdiPlus} color="#c56565" />
-        </span>
-        <ElmInlineText>CLOSE</ElmInlineText>
-        <span class={styles["footer-cross-icon"]}>
-          <ElmMdiIcon d={mdiPlus} color="#c56565" />
-        </span>
-        <hr class={styles["footer-line"]} />
-        <span style={{ rotate: "180deg" }}>
-          <ElmMdiIcon d={mdiChevronRight} color="gray" />
-        </span>
-      </div>
-    </div>
-  );
-});
+    );
+  },
+);
