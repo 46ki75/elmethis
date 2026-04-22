@@ -3,6 +3,8 @@ import { component$, type CSSProperties } from "@builder.io/qwik";
 import styles from "./elm-ag-ui-input-content-image.module.css";
 
 import type { ImageInputContent } from "@ag-ui/core";
+import { ElmMdiIcon } from "../../icon/elm-mdi-icon";
+import { mdiImage } from "@mdi/js";
 
 export interface ElmAgUiInputContentImageProps {
   class?: string;
@@ -27,6 +29,7 @@ export const ElmAgUiInputContentImage =
           class={[styles["elm-ag-ui-input-content-image"], className]}
           style={style}
         >
+          <ElmMdiIcon class={styles["image-icon"]} d={mdiImage} />
           <img class={styles.image} width={96} height={96} src={url} />
           {source.mimeType && (
             <div class={styles["mime-type-label"]}>{source.mimeType}</div>
