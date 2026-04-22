@@ -6,7 +6,7 @@ import {
 import { BaseEvent } from "@ag-ui/client";
 
 const meta: Meta<ElmAgUiEventRendererProps> = {
-  title: "Components/Components/elm-ag-ui-event-renderer",
+  title: "Components/AG-UI/elm-ag-ui-event-renderer",
   component: ElmAgUiEventRenderer,
   tags: ["autodocs"],
   args: {},
