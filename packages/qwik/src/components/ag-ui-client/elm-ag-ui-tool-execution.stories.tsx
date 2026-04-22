@@ -84,7 +84,7 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 async function* transition() {
   while (true) {
     for (const state of states) {
-      await sleep(1500);
+      await sleep(300);
       yield state;
     }
   }

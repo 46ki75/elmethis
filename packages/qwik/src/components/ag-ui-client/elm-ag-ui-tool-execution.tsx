@@ -2,7 +2,7 @@ import {
   $,
   component$,
   useSignal,
-  useTask$,
+  useVisibleTask$,
   type CSSProperties,
 } from "@builder.io/qwik";
 
@@ -13,6 +13,7 @@ import { ElmInlineText } from "../typography/elm-inline-text";
 import { EventType } from "@ag-ui/core";
 import { ElmCodeBlock } from "../code/elm-code-block";
 import { ElmToggle } from "../containments/elm-toggle";
+import { useThrottledQueue } from "../../hooks/useThrottledQueue";
 
 type ToolEventType =
   | EventType.TOOL_CALL_START
@@ -51,38 +52,51 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
     const isArgsShown = useSignal<boolean>(false);
     const isResultShown = useSignal<boolean>(false);
 
-    useTask$(({ track }) => {
+    const queue = useThrottledQueue(200);
+
+    // eslint-disable-next-line qwik/no-use-visible-task
+    useVisibleTask$(({ track }) => {
       const eventType = track(() => toolEventType);
 
       switch (eventType) {
         case EventType.TOOL_CALL_START:
-          isOpen.value = true;
-          isArgsShown.value = true;
-          isArgsOpen.value = false;
-          isResultShown.value = false;
-          isResultOpen.value = false;
+          queue.value?.push(async () => {
+            isOpen.value = true;
+            isArgsShown.value = true;
+            isArgsOpen.value = false;
+            isResultShown.value = false;
+            isResultOpen.value = false;
+          });
           break;
         case EventType.TOOL_CALL_ARGS:
-          isOpen.value = true;
-          isArgsShown.value = true;
-          isArgsOpen.value = true;
-          isResultShown.value = false;
-          isResultOpen.value = false;
+          queue.value?.push(async () => {
+            isOpen.value = true;
+            isArgsShown.value = true;
+            isArgsOpen.value = true;
+            isResultShown.value = false;
+            isResultOpen.value = false;
+          });
           break;
         case EventType.TOOL_CALL_END:
         case EventType.TOOL_CALL_CHUNK:
-          isOpen.value = true;
-          isArgsShown.value = true;
-          isArgsOpen.value = false;
-          isResultShown.value = true;
-          isResultOpen.value = false;
+          queue.value?.push(async () => {
+            isOpen.value = true;
+            isArgsShown.value = true;
+            isArgsOpen.value = false;
+            isResultShown.value = true;
+            isResultOpen.value = false;
+          });
           break;
         case EventType.TOOL_CALL_RESULT:
-          isOpen.value = false;
-          isArgsShown.value = true;
-          isArgsOpen.value = false;
-          isResultShown.value = true;
-          isResultOpen.value = true;
+          queue.value?.push(async () => {
+            isArgsShown.value = true;
+            isArgsOpen.value = false;
+            isResultShown.value = true;
+            isResultOpen.value = true;
+          });
+          queue.value?.push(async () => {
+            isOpen.value = false;
+          });
           break;
       }
     });
