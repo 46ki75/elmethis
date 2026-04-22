@@ -76,13 +76,13 @@ export const ElmAgUiEventRenderer = component$<ElmAgUiEventRendererProps>(
       ) as UserMessage[];
 
       const components: JSX.Element[] = [];
-      const inputContentIndex = 0;
+      let userMessageIndex = 0;
 
       for (const event of events) {
         switch (event.type) {
           case EventType.RUN_STARTED: {
             // Render user input messages
-            const contents = userMessages[inputContentIndex]
+            const contents = userMessages[userMessageIndex]
               .content as InputContent[];
 
             const userInputComponent = (
@@ -114,6 +114,7 @@ export const ElmAgUiEventRenderer = component$<ElmAgUiEventRendererProps>(
             );
 
             components.push(userInputComponent);
+            userMessageIndex++;
 
             break;
           }
