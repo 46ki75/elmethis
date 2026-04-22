@@ -65,18 +65,6 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
             agent.events = compactEvents(events);
             console.info(event);
           },
-          onToolCallStartEvent({ event }) {
-            console.log("Tool call started:", event);
-          },
-          onToolCallArgsEvent({ event }) {
-            console.log("Tool call args:", event);
-          },
-          onToolCallResultEvent({ event }) {
-            console.log("Tool call result:", event);
-          },
-          async onToolCallEndEvent({ event }) {
-            console.log("Tool call ended:", event);
-          },
           onTextMessageContentEvent({ event }) {
             const incomingContent = event.delta;
 
