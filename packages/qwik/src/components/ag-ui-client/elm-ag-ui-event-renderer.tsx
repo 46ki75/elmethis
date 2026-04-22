@@ -1,7 +1,14 @@
 import { component$, JSX, type CSSProperties } from "@builder.io/qwik";
 
 import styles from "./elm-ag-ui-event-renderer.module.css";
-import { BaseEvent, EventType } from "@ag-ui/core";
+import {
+  BaseEvent,
+  EventType,
+  InputContent,
+  MessagesSnapshotEvent,
+  UserMessage,
+} from "@ag-ui/core";
+import { ElmBlockImage, ElmInlineText } from "../..";
 
 export interface ElmAgUiEventRendererProps {
   class?: string;
@@ -11,21 +18,92 @@ export interface ElmAgUiEventRendererProps {
   events: BaseEvent[];
 }
 
+const renderInputContent = (content: InputContent) => {
+  if (typeof content === "string") {
+    return <ElmInlineText>{content}</ElmInlineText>;
+  }
+
+  switch (content.type) {
+    case "audio": {
+      break;
+    }
+
+    // Deprecated: previous Python-specific type that has since been
+    // replaced by the more explicit typed variants
+    // `ImageInputContent`, `AudioInputContent`.
+    case "binary": {
+      break;
+    }
+
+    // Uploaded Files
+    case "document": {
+      break;
+    }
+
+    case "image": {
+      const url =
+        content.source.type === "url"
+          ? content.source.value
+          : URL.createObjectURL(
+              new Blob([atob(content.source.value)], {
+                type: content.source.mimeType,
+              }),
+            );
+      return <ElmBlockImage src={url} />;
+    }
+
+    case "video": {
+      break;
+    }
+
+    case "text": {
+      return <ElmInlineText>{content.text}</ElmInlineText>;
+    }
+  }
+};
+
 export const ElmAgUiEventRenderer = component$<ElmAgUiEventRendererProps>(
   ({ class: className, style, events }) => {
-    const render = (event: BaseEvent): JSX.Element | null => {
-      switch (event.type) {
-        case EventType.RUN_STARTED: {
-          break;
+    const render = (events: BaseEvent[]): JSX.Element[] => {
+      const messageSnapshot = events.findLast(
+        (e) => e.type === EventType.MESSAGES_SNAPSHOT,
+      ) as MessagesSnapshotEvent;
+
+      const { messages } = messageSnapshot;
+      const userMessages = messages.filter(
+        (m) => m.role === "user" && m.content != null,
+      ) as UserMessage[];
+
+      const components: JSX.Element[] = [];
+      const inputContentIndex = 0;
+
+      for (const event of events) {
+        switch (event.type) {
+          case EventType.RUN_STARTED: {
+            const contents = userMessages[inputContentIndex]
+              .content as InputContent[];
+
+            for (const content of contents) {
+              const renderedContent = renderInputContent(content);
+              if (renderedContent != null) {
+                components.push(renderedContent);
+              }
+            }
+            break;
+          }
+
+          case EventType.MESSAGES_SNAPSHOT: {
+            break;
+          }
         }
       }
 
-      return null;
+      return components;
     };
 
     return (
       <div class={[styles["elm-my-something"], className]} style={style}>
-        {events.map((event) => render(event))}
+        {render(events)}
       </div>
     );
   },
