@@ -66,18 +66,6 @@ export const mastra = new Mastra({
           agentWrapper.run(body).subscribe({
             next(event) {
               writer.write(textEncoder.encode(encoder.encodeSSE(event)));
-
-              if (event.type === EventType.RUN_STARTED) {
-                writer.write(
-                  textEncoder.encode(
-                    encoder.encodeSSE({
-                      type: EventType.MESSAGES_SNAPSHOT,
-                      messages: body.messages,
-                    } satisfies MessagesSnapshotEvent),
-                  ),
-                );
-                return;
-              }
             },
             error() {
               writer.close();
