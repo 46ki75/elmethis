@@ -10,7 +10,7 @@
     "@ag-ui/core": "^0.0.52",
     "@ag-ui/encoder": "^0.0.52",
     "@ag-ui/mastra": "^1.0.1",
-    "@ai-sdk/openai": "^2.0.103",
+    "@ai-sdk/openai": "^3.0.53",
     "@mastra/core": "^1.25.0",
     "@mastra/libsql": "^1.8.1",
     "@mastra/mcp": "^1.5.0",
