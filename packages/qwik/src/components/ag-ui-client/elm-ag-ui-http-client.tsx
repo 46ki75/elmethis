@@ -18,6 +18,7 @@ import {
   EventType,
   HttpAgent,
   Message,
+  MessagesSnapshotEvent,
   randomUUID,
 } from "@ag-ui/client";
 import { ElmAgUiMessageRenderer } from "./elm-ag-ui-message-renderer";
@@ -83,6 +84,11 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
           },
           onRunFinalized({ messages }) {
             console.info(messages);
+            const messagesSnapshotEvent: MessagesSnapshotEvent = {
+              type: EventType.MESSAGES_SNAPSHOT,
+              messages: messages as Message[],
+            };
+            agent.events.push(messagesSnapshotEvent);
             console.info(agent.events);
           },
         });
