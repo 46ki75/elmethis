@@ -95,6 +95,7 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
           });
           queue.value?.push(async () => {
             isOpen.value = false;
+            isResultOpen.value = false;
           });
           break;
       }
