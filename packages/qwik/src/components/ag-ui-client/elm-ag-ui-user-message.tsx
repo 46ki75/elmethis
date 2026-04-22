@@ -1,9 +1,9 @@
 import { component$, type CSSProperties } from "@builder.io/qwik";
 
-import styles from "./ag-ui-user-message.module.css";
+import styles from "./elm-ag-ui-user-message.module.css";
 import { ElmInlineText } from "../typography/elm-inline-text";
 
-export interface AgUiUserMessageProps {
+export interface ElmAgUiUserMessageProps {
   class?: string;
 
   style?: CSSProperties;
@@ -11,7 +11,7 @@ export interface AgUiUserMessageProps {
   text?: string;
 }
 
-export const AgUiUserMessage = component$<AgUiUserMessageProps>(
+export const ElmAgUiUserMessage = component$<ElmAgUiUserMessageProps>(
   ({ class: className, style, text }) => {
     return (
       <div
