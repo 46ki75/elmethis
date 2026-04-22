@@ -8,7 +8,8 @@ import {
   MessagesSnapshotEvent,
   UserMessage,
 } from "@ag-ui/core";
-import { ElmBlockImage, ElmInlineText } from "../..";
+import { ElmBlockImage, ElmInlineText, ElmMdiIcon } from "../..";
+import { mdiAccount } from "@mdi/js";
 
 export interface ElmAgUiEventRendererProps {
   class?: string;
@@ -80,15 +81,40 @@ export const ElmAgUiEventRenderer = component$<ElmAgUiEventRendererProps>(
       for (const event of events) {
         switch (event.type) {
           case EventType.RUN_STARTED: {
+            // Render user input messages
             const contents = userMessages[inputContentIndex]
               .content as InputContent[];
 
-            for (const content of contents) {
-              const renderedContent = renderInputContent(content);
-              if (renderedContent != null) {
-                components.push(renderedContent);
-              }
-            }
+            const userInputComponent = (
+              <div class={styles["message-content-user-wrapper"]}>
+                <div class={styles["message-content-user-inner"]}>
+                  <div class={styles["message-content-type"]}>
+                    <ElmMdiIcon
+                      class={styles["message-content-icon"]}
+                      d={mdiAccount}
+                    />
+                    <ElmInlineText>User</ElmInlineText>
+                    <div
+                      aria-hidden="true"
+                      class={styles["message-content-spacer"]}
+                    ></div>
+                  </div>
+
+                  <div class={styles["message-content-user-content"]}>
+                    {typeof contents === "string" ? (
+                      <ElmInlineText>{contents}</ElmInlineText>
+                    ) : (
+                      contents.map((item, i) => (
+                        <span key={i}>{renderInputContent(item)}</span>
+                      ))
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+
+            components.push(userInputComponent);
+
             break;
           }
 
