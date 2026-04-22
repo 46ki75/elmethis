@@ -45,12 +45,11 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
     toolCallArgs,
     toolCallResult,
   }) => {
-    const isOpen = useSignal<boolean>(true);
-    const isArgsOpen = useSignal<boolean>(true);
-    const isResultOpen = useSignal<boolean>(true);
-
+    const isOpen = useSignal<boolean>(false);
     const isArgsShown = useSignal<boolean>(false);
+    const isArgsOpen = useSignal<boolean>(false);
     const isResultShown = useSignal<boolean>(false);
+    const isResultOpen = useSignal<boolean>(false);
 
     const queue = useThrottledQueue(200);
 
