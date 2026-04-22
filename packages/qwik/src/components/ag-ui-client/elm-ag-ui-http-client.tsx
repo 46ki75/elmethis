@@ -15,6 +15,7 @@ import styles from "./elm-ag-ui-http-client.module.css";
 import {
   BaseEvent,
   compactEvents,
+  EventType,
   HttpAgent,
   Message,
   randomUUID,
@@ -61,20 +62,24 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
             if (agent.messages.length < newMessages.length) {
               agent.messages.push(...newMessages.slice(agent.messages.length));
             }
+
+            if (event.type === EventType.TEXT_MESSAGE_CONTENT) {
+              const incomingContent = event.delta;
+
+              const lastAssistantMessageRef = agent.messages.findLast(
+                (msg) => msg.role === "assistant",
+              );
+
+              if (lastAssistantMessageRef?.content && incomingContent) {
+                lastAssistantMessageRef.content =
+                  lastAssistantMessageRef?.content + incomingContent;
+              } else if (lastAssistantMessageRef && incomingContent) {
+                lastAssistantMessageRef.content = String(incomingContent);
+              }
+            }
+
             const events = [...agent.events, event];
             agent.events = compactEvents(events);
-            console.info(event);
-          },
-          onTextMessageContentEvent({ event }) {
-            const incomingContent = event.delta;
-
-            const lastAssistantMessageRef = agent.messages.findLast(
-              (msg) => msg.role === "assistant",
-            );
-            if (lastAssistantMessageRef && incomingContent) {
-              lastAssistantMessageRef.content =
-                lastAssistantMessageRef.content + incomingContent;
-            }
           },
           onRunFinalized({ messages }) {
             console.info(messages);
