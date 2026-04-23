@@ -176,6 +176,7 @@ export {
 export { useDelayedSignal } from "./hooks/useDelayedSignal";
 export { useElmethisTheme } from "./hooks/useElmethisTheme";
 export { useInView } from "./hooks/useInView";
+export { useModal, type UseModalOptions } from "./hooks/useModal";
 export {
   useLocalStorage,
   type UseLocalStorageOptions,
