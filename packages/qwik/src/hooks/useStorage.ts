@@ -1,18 +1,22 @@
 import {
   $,
   noSerialize,
+  type NoSerialize,
   type QRL,
   useSignal,
   useVisibleTask$,
 } from "@builder.io/qwik";
 
 export type UseStorageOptions<T> = {
-  storageArea: Storage;
+  storageArea: "local" | "session";
   key: string;
   initialValue: T;
   /** BroadcastChannel name for cross-tab sync (required for sessionStorage) */
   channel?: string;
 };
+
+const resolveStorage = (area: "local" | "session"): Storage =>
+  area === "local" ? localStorage : sessionStorage;
 
 export const useStorage = <T>({
   storageArea,
@@ -21,25 +25,25 @@ export const useStorage = <T>({
   channel,
 }: UseStorageOptions<T>) => {
   const state = useSignal<T>(initialValue);
-
-  const storage = noSerialize(storageArea);
+  const storageRef = useSignal<NoSerialize<Storage> | undefined>(undefined);
 
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(
     ({ cleanup }) => {
-      if (storage) {
-        try {
-          const item = storage.getItem(key);
-          if (item !== null) {
-            state.value = JSON.parse(item) as T;
-          }
-        } catch (e) {
-          console.warn(`useStorage: failed to read "${key}"`, e);
+      const resolved = resolveStorage(storageArea);
+      storageRef.value = noSerialize(resolved);
+
+      try {
+        const item = resolved.getItem(key);
+        if (item !== null) {
+          state.value = JSON.parse(item) as T;
         }
+      } catch (e) {
+        console.warn(`useStorage: failed to read "${key}"`, e);
       }
 
       const onStorage = (event: StorageEvent) => {
-        if (event.storageArea === storage && event.key === key) {
+        if (event.storageArea === resolved && event.key === key) {
           try {
             state.value = event.newValue
               ? (JSON.parse(event.newValue) as T)
@@ -73,6 +77,7 @@ export const useStorage = <T>({
   );
 
   const set: QRL<(value: T) => void> = $((value: T) => {
+    const storage = storageRef.value;
     if (!storage) {
       console.warn(`useStorage: storage area is not available`);
     } else {
@@ -91,6 +96,7 @@ export const useStorage = <T>({
   });
 
   const remove: QRL<() => void> = $(() => {
+    const storage = storageRef.value;
     if (!storage) {
       console.warn(`useStorage: storage area is not available`);
     } else {
@@ -121,7 +127,7 @@ export const useLocalStorage = <T>({
   initialValue,
 }: UseLocalStorageOptions<T>) => {
   return useStorage<T>({
-    storageArea: localStorage,
+    storageArea: "local",
     key,
     initialValue,
   });
@@ -137,7 +143,7 @@ export const useSessionStorage = <T>({
   initialValue,
 }: UseSessionStorageOptions<T>) => {
   return useStorage<T>({
-    storageArea: sessionStorage,
+    storageArea: "session",
     key,
     initialValue,
     channel: `elmethis:sessionStorage:${key}`,
