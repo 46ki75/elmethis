@@ -4,7 +4,7 @@ import {
   QRL,
   Slot,
   useSignal,
-  useTask$,
+  useVisibleTask$,
   type CSSProperties,
 } from "@builder.io/qwik";
 
@@ -25,7 +25,8 @@ export const ElmModal = component$<ElmModalProps>(
     const dialogRef = useSignal<HTMLDialogElement>();
     const isShown = useSignal(false);
 
-    useTask$(({ track, cleanup }) => {
+    // eslint-disable-next-line qwik/no-use-visible-task
+    useVisibleTask$(({ track, cleanup }) => {
       track(() => isOpen);
       if (!dialogRef.value) return;
       if (isOpen) {
