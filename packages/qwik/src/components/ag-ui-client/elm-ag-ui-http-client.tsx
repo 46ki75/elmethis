@@ -58,6 +58,8 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
       }
 
       if (httpAgent.value) {
+        let pendingToolMessages: Message[] = [];
+
         const subscription = httpAgent.value?.subscribe({
           onEvent({ messages: newMessages, event }) {
             if (agent.messages.length < newMessages.length) {
@@ -82,7 +84,17 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
             const events = [...agent.events, event];
             agent.events = compactEvents(events);
           },
-          onRunFinalized({ messages }) {
+          onToolCallEndEvent({ event, toolCallName }) {
+            if (toolCallName === "generateUuidV4") {
+              pendingToolMessages.push({
+                id: randomUUID(),
+                role: "tool",
+                content: randomUUID(),
+                toolCallId: event.toolCallId,
+              } as Message);
+            }
+          },
+          async onRunFinalized({ messages }) {
             console.info(messages);
             const messagesSnapshotEvent: MessagesSnapshotEvent = {
               type: EventType.MESSAGES_SNAPSHOT,
@@ -90,6 +102,24 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
             };
             agent.events.push(messagesSnapshotEvent);
             console.info(agent.events);
+
+            if (pendingToolMessages.length > 0 && httpAgent.value) {
+              httpAgent.value.messages.push(...pendingToolMessages);
+              pendingToolMessages = [];
+              await httpAgent.value.runAgent({
+                tools: [
+                  {
+                    name: "generateUuidV4",
+                    description: "Generate a random UUID v4 string",
+                    parameters: {
+                      type: "object",
+                      properties: {},
+                      required: [],
+                    },
+                  },
+                ],
+              });
+            }
           },
         });
 
@@ -104,10 +134,22 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
         httpAgent.value.messages.push({
           id: randomUUID(),
           role: "user",
-          content: "What is a new feature called Amazon S3 Files?",
+          content: "Generate a random UUID v4 string",
         });
 
-        await httpAgent.value.runAgent({});
+        await httpAgent.value.runAgent({
+          tools: [
+            {
+              name: "generateUuidV4",
+              description: "Generate a random UUID v4 string",
+              parameters: {
+                type: "object",
+                properties: {},
+                required: [],
+              },
+            },
+          ],
+        });
       }
     });
 
