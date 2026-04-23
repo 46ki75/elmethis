@@ -20,6 +20,7 @@ import {
   Message,
   MessagesSnapshotEvent,
   randomUUID,
+  ToolCallResultEvent,
 } from "@ag-ui/client";
 import { ElmAgUiMessageRenderer } from "./elm-ag-ui-message-renderer";
 
@@ -92,6 +93,11 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
                 content: JSON.stringify({ uuid: randomUUID() }),
                 toolCallId: event.toolCallId,
               } as Message);
+              agent.events.push({
+                type: EventType.TOOL_CALL_RESULT,
+                toolCallId: event.toolCallId,
+                content: JSON.stringify({ uuid: randomUUID() }),
+              } as ToolCallResultEvent);
             }
           },
           async onRunFinalized({ messages }) {
