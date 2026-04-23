@@ -2,6 +2,7 @@ import {
   $,
   component$,
   QRL,
+  Slot,
   useSignal,
   useTask$,
   type CSSProperties,
@@ -59,7 +60,9 @@ export const ElmModal = component$<ElmModalProps>(
         onClick$={handleClose}
         closedBy="none"
       >
-        a
+        <div onClick$={(e) => e.stopPropagation()}>
+          <Slot />
+        </div>
       </dialog>
     );
   },

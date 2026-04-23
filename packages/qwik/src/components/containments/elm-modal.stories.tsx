@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { ElmModal, type ElmModalProps } from "./elm-modal";
-import { $, component$, useSignal } from "@builder.io/qwik";
+import { $, component$, Slot, useSignal } from "@builder.io/qwik";
 
 const meta: Meta<ElmModalProps> = {
   title: "Components/Containments/elm-modal",
@@ -22,11 +22,33 @@ const RenderPriary = component$<ElmModalProps>((args) => {
   return (
     <>
       <button onClick$={toggle}>Toggle Modal</button>
-      <ElmModal {...args} isOpen={isOpen.value} onClose$={toggle} />
+      <ElmModal {...args} isOpen={isOpen.value} onClose$={toggle}>
+        <Slot />
+      </ElmModal>
     </>
   );
 });
 
 export const Primary: Story = {
-  render: (args) => <RenderPriary {...args} />,
+  render: (args) => (
+    <RenderPriary {...args}>
+      <p>This is the content of the modal.</p>
+    </RenderPriary>
+  ),
+};
+
+export const WithStyle: Story = {
+  render: (args) => (
+    <RenderPriary {...args}>
+      <div
+        style={{
+          backgroundColor: "white",
+          borderRadius: "0.25rem",
+          padding: "1rem",
+        }}
+      >
+        <p>This is the content of the modal.</p>
+      </div>
+    </RenderPriary>
+  ),
 };
