@@ -77,15 +77,14 @@ export const useStorage = <T>({
   );
 
   // eslint-disable-next-line qwik/no-use-visible-task
-  useVisibleTask$(({ track }) => {
-    const newState = track(state);
+  useVisibleTask$(
+    ({ track }) => {
+      const newState = track(state);
 
-    const storage = storageRef.value;
-    if (!storage) {
-      console.warn(`useStorage: storage area is not available`);
-    } else {
+      const storage = storageRef.value;
+      if (!storage) return;
+
       try {
-        state.value = newState;
         storage.setItem(key, JSON.stringify(newState));
         if (channel) {
           const bc = new BroadcastChannel(channel);
@@ -95,8 +94,9 @@ export const useStorage = <T>({
       } catch (e) {
         console.warn(`useStorage: failed to write "${key}"`, e);
       }
-    }
-  });
+    },
+    { strategy: "document-ready" },
+  );
 
   const remove: QRL<() => void> = $(() => {
     const storage = storageRef.value;
