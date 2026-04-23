@@ -1,0 +1,5 @@
+.elm-modal {
+  &::backdrop {
+    background-color: oklch(from black l c h / 0.5);
+  }
+}
