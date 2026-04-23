@@ -1,9 +1,9 @@
 .elm-modal {
   opacity: 0;
   transition:
-    opacity 200ms ease-out,
-    overlay 200ms ease-out allow-discrete,
-    display 200ms ease-out allow-discrete;
+    opacity 200ms,
+    overlay 200ms allow-discrete,
+    display 200ms allow-discrete;
 
   &:open {
     opacity: 1;
