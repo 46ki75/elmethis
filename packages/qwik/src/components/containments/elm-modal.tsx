@@ -26,22 +26,25 @@ export const ElmModal = component$<ElmModalProps>(
     const isShown = useSignal(false);
 
     // eslint-disable-next-line qwik/no-use-visible-task
-    useVisibleTask$(({ track, cleanup }) => {
-      track(() => isOpen);
-      if (!dialogRef.value) return;
-      if (isOpen) {
-        dialogRef.value.showModal();
-        isShown.value = true;
-      } else {
-        isShown.value = false;
-        const timer = setTimeout(() => {
-          dialogRef.value?.close();
-        }, 200);
-        cleanup(() => {
-          clearTimeout(timer);
-        });
-      }
-    });
+    useVisibleTask$(
+      ({ track, cleanup }) => {
+        track(() => isOpen);
+        if (!dialogRef.value) return;
+        if (isOpen) {
+          dialogRef.value.showModal();
+          isShown.value = true;
+        } else {
+          isShown.value = false;
+          const timer = setTimeout(() => {
+            dialogRef.value?.close();
+          }, 200);
+          cleanup(() => {
+            clearTimeout(timer);
+          });
+        }
+      },
+      { strategy: "document-ready" },
+    );
 
     const handleClose = $((event: Event, element: HTMLDialogElement) => {
       onClose$?.(event, element);
