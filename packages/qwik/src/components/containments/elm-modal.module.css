@@ -1,35 +1,18 @@
 .elm-modal {
   opacity: 0;
-  transition:
-    opacity 200ms,
-    overlay 200ms allow-discrete,
-    display 200ms allow-discrete;
+  transition: opacity 200ms;
 
-  &:open {
+  &.shown {
     opacity: 1;
-  }
-
-  @starting-style {
-    &:open {
-      opacity: 0;
+    &::backdrop {
+      opacity: 1;
     }
   }
 
   &::backdrop {
+    opacity: 0;
+    transition: opacity 200ms;
     background-color: transparent;
-    transition:
-      background-color 200ms,
-      overlay 200ms allow-discrete,
-      display 200ms allow-discrete;
-  }
-
-  &:open::backdrop {
     background-color: oklch(from black l c h / 0.5);
-  }
-
-  @starting-style {
-    &:open::backdrop {
-      background-color: transparent;
-    }
   }
 }

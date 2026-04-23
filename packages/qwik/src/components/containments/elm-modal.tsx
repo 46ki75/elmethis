@@ -1,4 +1,5 @@
 import {
+  $,
   component$,
   QRL,
   useSignal,
@@ -16,36 +17,47 @@ export interface ElmModalProps {
   isOpen?: boolean;
 
   onClose$?: QRL<(event: Event, element: HTMLDialogElement) => void>;
-
-  /**
-   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog#closerequest}
-   * @default "any"
-   */
-  closedBy?: "any" | "closerequest" | "none";
 }
 
 export const ElmModal = component$<ElmModalProps>(
-  ({ class: className, style, isOpen, onClose$, closedBy = "any" }) => {
+  ({ class: className, style, isOpen, onClose$ }) => {
     const dialogRef = useSignal<HTMLDialogElement>();
+    const isShown = useSignal(false);
 
-    useTask$(({ track }) => {
+    useTask$(({ track, cleanup }) => {
       track(() => isOpen);
-      const dialog = dialogRef.value;
-      if (!dialog) return;
+      if (!dialogRef.value) return;
       if (isOpen) {
-        dialog.showModal();
+        dialogRef.value.showModal();
+        isShown.value = true;
       } else {
-        dialog.close();
+        isShown.value = false;
+        const timer = setTimeout(() => {
+          dialogRef.value?.close();
+        }, 200);
+        cleanup(() => {
+          clearTimeout(timer);
+        });
       }
+    });
+
+    const handleClose = $((event: Event, element: HTMLDialogElement) => {
+      onClose$?.(event, element);
     });
 
     return (
       <dialog
         ref={dialogRef}
-        class={[styles["elm-modal"], className]}
+        class={[
+          styles["elm-modal"],
+          className,
+          {
+            [styles["shown"]]: isShown.value,
+          },
+        ]}
         style={style}
-        onClose$={onClose$}
-        closedBy={closedBy}
+        onClick$={handleClose}
+        closedBy="none"
       >
         a
       </dialog>
