@@ -76,17 +76,20 @@ export const useStorage = <T>({
     { strategy: "document-ready" },
   );
 
-  const set: QRL<(value: T) => void> = $((value: T) => {
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(({ track }) => {
+    const newState = track(state);
+
     const storage = storageRef.value;
     if (!storage) {
       console.warn(`useStorage: storage area is not available`);
     } else {
       try {
-        state.value = value;
-        storage.setItem(key, JSON.stringify(value));
+        state.value = newState;
+        storage.setItem(key, JSON.stringify(newState));
         if (channel) {
           const bc = new BroadcastChannel(channel);
-          bc.postMessage({ key, value });
+          bc.postMessage({ key, value: newState });
           bc.close();
         }
       } catch (e) {
@@ -114,7 +117,7 @@ export const useStorage = <T>({
     }
   });
 
-  return { state, set, remove };
+  return { state, remove };
 };
 
 export type UseLocalStorageOptions<T> = Omit<
