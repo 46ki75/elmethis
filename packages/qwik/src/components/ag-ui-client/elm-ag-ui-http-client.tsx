@@ -89,7 +89,7 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
               pendingToolMessages.push({
                 id: randomUUID(),
                 role: "tool",
-                content: randomUUID(),
+                content: JSON.stringify({ uuid: randomUUID() }),
                 toolCallId: event.toolCallId,
               } as Message);
             }
