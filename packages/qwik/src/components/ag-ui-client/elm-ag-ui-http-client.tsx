@@ -20,9 +20,46 @@ import {
   Message,
   MessagesSnapshotEvent,
   randomUUID,
-  ToolCallResultEvent,
 } from "@ag-ui/client";
 import { ElmAgUiMessageRenderer } from "./elm-ag-ui-message-renderer";
+
+// ---------------------------------------------------------------------------
+// Tool registry
+// ---------------------------------------------------------------------------
+
+interface ToolEntry {
+  description: string;
+  parameters: {
+    type: "object";
+    properties: Record<string, unknown>;
+    required: string[];
+  };
+  execute: (args?: Record<string, unknown>) => unknown;
+}
+
+type ToolRegistry = Record<string, ToolEntry>;
+
+function getToolDefinitions(registry: ToolRegistry) {
+  return Object.entries(registry).map(
+    ([name, { description, parameters }]) => ({
+      name,
+      description,
+      parameters,
+    }),
+  );
+}
+
+const toolRegistry: ToolRegistry = {
+  generateUuidV4: {
+    description: "Generate a random UUID v4 string",
+    parameters: {
+      type: "object",
+      properties: {},
+      required: [],
+    },
+    execute: () => ({ uuid: randomUUID() }),
+  },
+};
 
 export interface ElmAgUiHttpClientProps {
   class?: string;
@@ -86,18 +123,15 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
             agent.events = compactEvents(events);
           },
           onToolCallEndEvent({ event, toolCallName }) {
-            if (toolCallName === "generateUuidV4") {
+            const tool = toolRegistry[toolCallName];
+            if (tool) {
+              const result = JSON.stringify(tool.execute());
               pendingToolMessages.push({
                 id: randomUUID(),
                 role: "tool",
-                content: JSON.stringify({ uuid: randomUUID() }),
+                content: result,
                 toolCallId: event.toolCallId,
               } as Message);
-              agent.events.push({
-                type: EventType.TOOL_CALL_RESULT,
-                toolCallId: event.toolCallId,
-                content: JSON.stringify({ uuid: randomUUID() }),
-              } as ToolCallResultEvent);
             }
           },
           async onRunFinalized({ messages }) {
@@ -113,17 +147,7 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
               httpAgent.value.messages.push(...pendingToolMessages);
               pendingToolMessages = [];
               await httpAgent.value.runAgent({
-                tools: [
-                  {
-                    name: "generateUuidV4",
-                    description: "Generate a random UUID v4 string",
-                    parameters: {
-                      type: "object",
-                      properties: {},
-                      required: [],
-                    },
-                  },
-                ],
+                tools: getToolDefinitions(toolRegistry),
               });
             }
           },
@@ -144,17 +168,7 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
         });
 
         await httpAgent.value.runAgent({
-          tools: [
-            {
-              name: "generateUuidV4",
-              description: "Generate a random UUID v4 string",
-              parameters: {
-                type: "object",
-                properties: {},
-                required: [],
-              },
-            },
-          ],
+          tools: getToolDefinitions(toolRegistry),
         });
       }
     });
