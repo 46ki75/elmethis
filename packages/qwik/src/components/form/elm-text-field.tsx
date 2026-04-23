@@ -1,4 +1,12 @@
-import { $, component$, useId, useSignal, type CSSProperties, type Signal } from "@builder.io/qwik";
+import {
+  $,
+  component$,
+  QRLEventHandlerMulti,
+  useId,
+  useSignal,
+  type CSSProperties,
+  type Signal,
+} from "@builder.io/qwik";
 import {
   mdiAccount,
   mdiArchive,
@@ -47,6 +55,8 @@ export interface ElmTextFieldProps {
     | "search";
   isPassword?: boolean;
   required?: boolean;
+
+  onInput$?: QRLEventHandlerMulti<InputEvent, HTMLInputElement>;
 }
 
 export const ElmTextField = component$<ElmTextFieldProps>((props) => {
@@ -128,6 +138,7 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
                 : "auto",
           }}
           aria-required={props.required}
+          onInput$={props.onInput$}
         />
 
         <div class={styles["icon-box"]}>

@@ -11,6 +11,14 @@ export {
 
 // | Containments |
 export {
+  ElmCollapse,
+  type ElmCollapseProps,
+} from "./components/containments/elm-collapse";
+export {
+  ElmModal,
+  type ElmModalProps,
+} from "./components/containments/elm-modal";
+export {
   ElmParallax,
   type ElmParallaxProps,
 } from "./components/containments/elm-parallax";
@@ -168,6 +176,7 @@ export {
 export { useDelayedSignal } from "./hooks/useDelayedSignal";
 export { useElmethisTheme } from "./hooks/useElmethisTheme";
 export { useInView } from "./hooks/useInView";
+export { useModal, type UseModalOptions } from "./hooks/useModal";
 export {
   useLocalStorage,
   type UseLocalStorageOptions,
