@@ -77,7 +77,7 @@
     "@ag-ui/client": "^0.0.52",
     "@ag-ui/core": "^0.0.52",
     "@mdi/js": "^7.4.47",
-    "es-toolkit": "^1.45.1",
+    "es-toolkit": "^1.46.0",
     "katex": "^0.16.45",
     "marked": "^18.0.2",
     "polished": "^4.3.1",
