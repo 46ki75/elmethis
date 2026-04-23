@@ -3,7 +3,9 @@ import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { useLocalStorage, type UseLocalStorageOptions } from "./useStorage";
 import { useSessionStorage } from "./useStorage";
 
-type Props = UseLocalStorageOptions<string>;
+type UserProfile = { name: string; age: number };
+
+type Props = UseLocalStorageOptions<UserProfile>;
 
 const UseLocalStorageDemo = component$((props: Props) => {
   const { state, remove } = useLocalStorage(props);
@@ -14,11 +16,15 @@ const UseLocalStorageDemo = component$((props: Props) => {
         <strong>key:</strong> {props.key}
       </p>
       <p>
-        <strong>value:</strong> {String(state.value)}
+        <strong>value:</strong> {JSON.stringify(state.value)}
       </p>
       <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.5rem" }}>
-        <button onClick$={$(() => (state.value = "hello"))}>set "hello"</button>
-        <button onClick$={$(() => (state.value = "world"))}>set "world"</button>
+        <button onClick$={$(() => (state.value = { name: "Alice", age: 30 }))}>
+          set Alice
+        </button>
+        <button onClick$={$(() => (state.value = { name: "Bob", age: 25 }))}>
+          set Bob
+        </button>
         <button onClick$={() => remove()}>remove</button>
       </div>
     </div>
@@ -34,11 +40,15 @@ const UseSessionStorageDemo = component$((props: Props) => {
         <strong>key:</strong> {props.key}
       </p>
       <p>
-        <strong>value:</strong> {String(state.value)}
+        <strong>value:</strong> {JSON.stringify(state.value)}
       </p>
       <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.5rem" }}>
-        <button onClick$={$(() => (state.value = "hello"))}>set "hello"</button>
-        <button onClick$={$(() => (state.value = "world"))}>set "world"</button>
+        <button onClick$={$(() => (state.value = { name: "Alice", age: 30 }))}>
+          set Alice
+        </button>
+        <button onClick$={$(() => (state.value = { name: "Bob", age: 25 }))}>
+          set Bob
+        </button>
         <button onClick$={() => remove()}>remove</button>
       </div>
     </div>
@@ -51,7 +61,7 @@ const meta: Meta<Props> = {
   tags: ["autodocs"],
   args: {
     key: "storybook-demo",
-    initialValue: "initial",
+    initialValue: { name: "Guest", age: 0 },
   },
 };
 
