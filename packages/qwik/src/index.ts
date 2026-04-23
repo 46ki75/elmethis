@@ -11,6 +11,14 @@ export {
 
 // | Containments |
 export {
+  ElmCollapse,
+  type ElmCollapseProps,
+} from "./components/containments/elm-collapse";
+export {
+  ElmModal,
+  type ElmModalProps,
+} from "./components/containments/elm-modal";
+export {
   ElmParallax,
   type ElmParallaxProps,
 } from "./components/containments/elm-parallax";
