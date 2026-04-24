@@ -9,6 +9,26 @@ import { EventType } from "@ag-ui/core";
 
 import "dotenv/config";
 
+// ── AG-UI → Mastra integration (hand-rolled) ──────────────────────────────────
+//
+// We intentionally do NOT use @ag-ui/mastra because its internal message
+// conversion function silently drops `role: "system"` messages — they are
+// never forwarded to the Mastra agent (bug in @ag-ui/mastra@1.0.1).
+//
+// AG-UI wire format  →  Mastra stream  →  AG-UI SSE events
+//
+// Mastra stream event mapping (from agent.stream().fullStream):
+//   text-delta   → TEXT_MESSAGE_START (on first delta) + TEXT_MESSAGE_CONTENT
+//   tool-call    → TOOL_CALL_START + TOOL_CALL_ARGS + TOOL_CALL_END
+//   tool-result  → TOOL_CALL_RESULT
+//   step-finish  → TEXT_MESSAGE_END (if in text) + rotate messageId
+//                  (multi-step agents emit one step-finish per LLM call)
+//
+// Payload field names (from @mastra/core dist/stream/types.d.ts):
+//   text-delta:  chunk.payload.text
+//   tool-call:   chunk.payload.toolCallId, .toolName, .args
+//   tool-result: chunk.payload.toolCallId, .result
+
 // ── AG-UI types (subset) ──────────────────────────────────────────────────────
 
 type AgUiContentPart = { type: "text"; text: string } | { type: string };
@@ -49,10 +69,16 @@ function textContent(content: string | AgUiContentPart[]): string {
     .join("");
 }
 
+// Converts AG-UI messages to the format Mastra's agent.stream() expects.
+// system  → passed through as-is (fixes the @ag-ui/mastra bug)
+// user    → { role, content: string }
+// assistant → { role, content: (text | tool-call)[] }
+// tool    → { role, content: [tool-result] }  (toolName resolved from history)
 function convertMessages(messages: AgUiMessage[]) {
   const out: unknown[] = [];
   for (const msg of messages) {
     if (msg.role === "system") {
+      // @ag-ui/mastra drops these; we pass them directly so the model sees them.
       out.push({ role: "system", content: textContent(msg.content) });
       continue;
     }
@@ -72,6 +98,7 @@ function convertMessages(messages: AgUiMessage[]) {
       }
       out.push({ role: "assistant", content: parts });
     } else if (msg.role === "tool") {
+      // Mastra requires toolName on tool-result; look it up from assistant history.
       const toolName =
         messages
           .flatMap((m) => (m.role === "assistant" ? (m.toolCalls ?? []) : []))
@@ -112,12 +139,17 @@ const openrouter = createOpenAI({
 const agent = new Agent({
   id: "my-assistant",
   name: "Assistant",
+  // Keep instructions as a static string (not a function) so the prompt cache
+  // hit rate stays high. Dynamic context from AG-UI is handled two ways:
+  //   • system messages → passed as role:"system" entries in the messages array
+  //   • context items   → not injected here (would break caching)
   instructions: "You are a helpful AI assistant.",
   model: openrouter.chat("minimax/minimax-m2.5"),
   defaultOptions: {
     maxSteps: 10,
     modelSettings: { maxOutputTokens: 20000 },
     providerOptions: {
+      // openrouter-specific: reasoning effort + prefer fastest provider
       openrouter: { reasoning: { effort: "medium" }, sort: "throughput" },
     },
   },
@@ -141,6 +173,7 @@ export const mastra = new Mastra({
           const requestContext = new RequestContext();
 
           // AG-UI tools → Mastra clientTools
+          // Shape: { [name]: { id, description, inputSchema } }
           const clientTools = (tools ?? []).reduce<Record<string, unknown>>(
             (acc, t) => {
               acc[t.name] = {
@@ -156,6 +189,9 @@ export const mastra = new Mastra({
           const mastraMessages = convertMessages(messages);
           const agentInstance = mastraInstance.getAgent("agent");
 
+          // Stream AG-UI SSE events back to the client via a TransformStream.
+          // The async IIFE runs the Mastra stream in the background while the
+          // Response starts streaming immediately.
           const encoder = new EventEncoder();
           const { readable, writable } = new TransformStream<Uint8Array>();
           const writer = writable.getWriter();
@@ -169,6 +205,8 @@ export const mastra = new Mastra({
             try {
               emit({ type: EventType.RUN_STARTED, threadId, runId });
 
+              // agent.stream() returns MastraModelOutput; iterate .fullStream
+              // for typed chunk events (see top-of-file comment for mapping).
               const output = await agentInstance.stream(
                 mastraMessages as never,
                 {
@@ -179,6 +217,9 @@ export const mastra = new Mastra({
                 } as never,
               );
 
+              // messageId groups all TEXT_MESSAGE_* events for one LLM response.
+              // It resets on step-finish because multi-step runs produce a new
+              // assistant message per step.
               let messageId = crypto.randomUUID();
               let inText = false;
 
@@ -211,6 +252,7 @@ export const mastra = new Mastra({
                       emit({ type: EventType.TEXT_MESSAGE_END, messageId });
                       inText = false;
                     }
+                    // AG-UI represents a tool call as three consecutive events.
                     emit({
                       type: EventType.TOOL_CALL_START,
                       toolCallId: chunk.payload["toolCallId"],
@@ -241,7 +283,6 @@ export const mastra = new Mastra({
                       emit({ type: EventType.TEXT_MESSAGE_END, messageId });
                       inText = false;
                     }
-                    // New message ID for the next LLM step
                     messageId = crypto.randomUUID();
                     break;
                 }
