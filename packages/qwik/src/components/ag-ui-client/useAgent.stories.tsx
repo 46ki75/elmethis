@@ -1,4 +1,4 @@
-import { component$, useTask$, type CSSProperties } from "@builder.io/qwik";
+import { component$, type CSSProperties } from "@builder.io/qwik";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { v4, v7 } from "uuid";
 import { z } from "zod";
@@ -14,13 +14,7 @@ const defaultTools = {
           "The version of UUID to generate. Supported values are 'v4' and 'v7'.",
         ),
     }),
-    execute: ({ version }) => {
-      if (version === "v4") {
-        return { uuid: v4() };
-      } else {
-        return { uuid: v7() };
-      }
-    },
+    execute: ({ version }) => ({ uuid: version === "v4" ? v4() : v7() }),
   }),
 };
 
@@ -32,12 +26,7 @@ export interface UseAgentProps {
 
 export const UseAgent = component$<UseAgentProps>(
   ({ class: className, style, url = "http://localhost:4111/ag-ui" }) => {
-    const { AgentUI, defineTools } = useAgent({ url });
-
-    useTask$(() => {
-      defineTools(defaultTools);
-    });
-
+    const { AgentUI } = useAgent({ url, tools: defaultTools });
     return <AgentUI class={className} style={style} />;
   },
 );
