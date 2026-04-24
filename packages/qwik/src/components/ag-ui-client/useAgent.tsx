@@ -201,7 +201,10 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
             <ElmAgUiInput
               onInput$={onInput$}
               onSubmit$={onSubmit$}
-              isRunning={!!httpAgent.value?.isRunning}
+              isRunning={
+                agentStateStore.currentEventType != null &&
+                agentStateStore.currentEventType !== EventType.RUN_FINISHED
+              }
             />
           </div>
         </div>
