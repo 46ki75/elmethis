@@ -100,7 +100,9 @@ export function useAgent({ url, tools }: UseAgentOptions) {
       },
       onToolCallArgsEvent({ event }) {
         const msg = agent.messages.findLast((m) => m.role === "assistant");
-        const toolCall = msg?.toolCalls?.find((tc) => tc.id === event.toolCallId);
+        const toolCall = msg?.toolCalls?.find(
+          (tc) => tc.id === event.toolCallId,
+        );
         if (toolCall) toolCall.function.arguments += event.delta;
       },
       onToolCallEndEvent({ event, toolCallName }) {
@@ -108,7 +110,9 @@ export function useAgent({ url, tools }: UseAgentOptions) {
         const tool = registry[toolCallName];
         if (!tool) return;
         const msg = agent.messages.findLast((m) => m.role === "assistant");
-        const toolCall = msg?.toolCalls?.find((tc) => tc.id === event.toolCallId);
+        const toolCall = msg?.toolCalls?.find(
+          (tc) => tc.id === event.toolCallId,
+        );
         const args = toolCall?.function.arguments
           ? JSON.parse(toolCall.function.arguments)
           : {};
@@ -144,12 +148,18 @@ export function useAgent({ url, tools }: UseAgentOptions) {
     httpAgent.value.messages.push({ id: randomUUID(), role: "user", content });
     await httpAgent.value.runAgent({
       tools: getToolDefinitions(toolsRef.value ?? {}),
-      context: [{ description: "Current date and time", value: new Date().toString() }],
+      context: [
+        { description: "Current date and time", value: new Date().toString() },
+      ],
     });
   });
 
   const defineTools = $((newTools: ToolRegistry) => {
     toolsRef.value = noSerialize(newTools);
+  });
+
+  const addTool = $((name: string, tool: AnyToolDef) => {
+    toolsRef.value = noSerialize({ ...(toolsRef.value ?? {}), [name]: tool });
   });
 
   const AgentUI = component$<{ class?: string; style?: CSSProperties }>(
@@ -174,7 +184,11 @@ export function useAgent({ url, tools }: UseAgentOptions) {
             <ElmAgUiMessageRenderer messages={agent.messages} />
           </div>
           <ElmAgUiInput
-            style={{ position: "fixed", bottom: 16, width: "calc(100% - 32px)" }}
+            style={{
+              position: "fixed",
+              bottom: 16,
+              width: "calc(100% - 32px)",
+            }}
             onInput$={onInput$}
             onSubmit$={onSubmit$}
           />
@@ -183,5 +197,12 @@ export function useAgent({ url, tools }: UseAgentOptions) {
     },
   );
 
-  return { messages: agent.messages, events: agent.events, send, defineTools, AgentUI };
+  return {
+    messages: agent.messages,
+    events: agent.events,
+    send,
+    defineTools,
+    addTool,
+    AgentUI,
+  };
 }
