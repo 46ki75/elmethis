@@ -50,7 +50,7 @@ const agent = new Agent({
       },
     },
   },
-  tools: await mcp.listTools(),
+  tools: await mcp.listTools().catch(() => ({})),
 });
 
 export const mastra = new Mastra({
