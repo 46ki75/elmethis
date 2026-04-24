@@ -45,7 +45,15 @@ export const ElmAgUiInput = component$<ElmAgUiInputProps>(
           onInput$={onInput$}
         />
 
-        <div class={styles["submit-button"]} onClick$={onSubmit}>
+        <div
+          class={[
+            styles["submit-button"],
+            {
+              [styles["disabled"]]: isRunning,
+            },
+          ]}
+          onClick$={onSubmit}
+        >
           <ElmMdiIcon
             d={isRunning ? mdiStop : mdiSend}
             size="1.5rem"
