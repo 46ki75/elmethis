@@ -227,6 +227,7 @@ export const mastra = new Mastra({
               // assistant message per step.
               let messageId = crypto.randomUUID();
               let inText = false;
+              let inThinking = false;
               // reasoningMessageId is independent of messageId — reasoning and
               // text can interleave within a single step.
               let reasoningMessageId: string = crypto.randomUUID();
@@ -235,7 +236,18 @@ export const mastra = new Mastra({
                 output as { fullStream: AsyncIterable<AgentChunkType> }
               ).fullStream) {
                 switch (chunk.type) {
+                  case "step-start":
+                    // Emit STEP_STARTED when the LLM call begins — models that do
+                    // internal reasoning (e.g. minimax-m2.5) don't stream reasoning
+                    // chunks, so this is the only signal that the model is "working".
+                    emit({ type: EventType.STEP_STARTED, stepName: "llm" });
+                    inThinking = true;
+                    break;
                   case "text-delta":
+                    if (inThinking) {
+                      emit({ type: EventType.STEP_FINISHED, stepName: "llm" });
+                      inThinking = false;
+                    }
                     if (!inText) {
                       emit({
                         type: EventType.TEXT_MESSAGE_START,
@@ -251,6 +263,10 @@ export const mastra = new Mastra({
                     });
                     break;
                   case "tool-call":
+                    if (inThinking) {
+                      emit({ type: EventType.STEP_FINISHED, stepName: "llm" });
+                      inThinking = false;
+                    }
                     if (inText) {
                       emit({ type: EventType.TEXT_MESSAGE_END, messageId });
                       inText = false;
@@ -282,6 +298,10 @@ export const mastra = new Mastra({
                     });
                     break;
                   case "step-finish":
+                    if (inThinking) {
+                      emit({ type: EventType.STEP_FINISHED, stepName: "llm" });
+                      inThinking = false;
+                    }
                     if (inText) {
                       emit({ type: EventType.TEXT_MESSAGE_END, messageId });
                       inText = false;
