@@ -12,11 +12,9 @@ export interface UseAgentProps {
 
 export const UseAgent = component$<UseAgentProps>(
   ({ class: className, style, url = "http://localhost:4111/ag-ui" }) => {
-    const { AgentUI, addTool } = useAgent({
+    const { AgentUI, addTool, setContext } = useAgent({
       url,
-      context: [
-        { description: "Current date and time", value: new Date().toString() },
-      ],
+      context: [],
     });
 
     useTask$(() => {
@@ -31,6 +29,11 @@ export const UseAgent = component$<UseAgentProps>(
         }),
         execute: ({ version }) => ({ uuid: version === "v4" ? v4() : v7() }),
       });
+
+      setContext([
+        { description: "Current date and time", value: new Date().toString() },
+        { description: "Location information", value: "Nerima, Tokyo, Japan" },
+      ]);
     });
 
     return <AgentUI class={className} style={style} />;

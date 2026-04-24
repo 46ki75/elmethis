@@ -203,12 +203,19 @@ export function useAgent({ url, tools, context }: UseAgentOptions) {
     },
   );
 
+  const setContext = $(
+    (newContext: { value: string; description: string }[]) => {
+      agentStateStore.context = newContext;
+    },
+  );
+
   return {
     messages: agentStateStore.messages,
     events: agentStateStore.events,
+    context: agentStateStore.context,
+    setContext,
     send,
     addTool,
-    agentStateStore,
     AgentUI,
   };
 }
