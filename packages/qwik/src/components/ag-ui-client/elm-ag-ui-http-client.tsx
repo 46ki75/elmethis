@@ -22,6 +22,7 @@ import {
   randomUUID,
 } from "@ag-ui/client";
 import { ElmAgUiMessageRenderer } from "./elm-ag-ui-message-renderer";
+import { ElmAgUiInput } from "./elm-ag-ui-input";
 
 // ---------------------------------------------------------------------------
 // Tool registry
@@ -188,6 +189,23 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
       }
     });
 
+    const input = useSignal("");
+
+    const onInput$ = $((event: InputEvent, element: HTMLTextAreaElement) => {
+      input.value = element.value;
+    });
+
+    const onSubmit$ = $((event: Event, element: Element) => {
+      if (input.value.trim() !== "") {
+        send(input.value);
+        input.value = "";
+        const textarea = element.querySelector("textarea");
+        if (textarea) {
+          textarea.value = "";
+        }
+      }
+    });
+
     return (
       <div class={[styles["elm-my-something"], className]} style={style}>
         <button onClick$={() => send("Generate a random UUID v4 string")}>
@@ -209,6 +227,12 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
         <div>
           <ElmAgUiMessageRenderer messages={agent.messages} />
         </div>
+
+        <ElmAgUiInput
+          style={{ position: "fixed", bottom: 16, width: "calc(100% - 32px)" }}
+          onInput$={onInput$}
+          onSubmit$={onSubmit$}
+        />
       </div>
     );
   },
