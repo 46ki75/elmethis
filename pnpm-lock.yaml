@@ -84,6 +84,12 @@ importers:
       uuid:
         specifier: ^14.0.0
         version: 14.0.0
+      zod:
+        specifier: ^3
+        version: 3.25.76
+      zod-to-json-schema:
+        specifier: ^3.25.2
+        version: 3.25.2(zod@3.25.76)
     devDependencies:
       '@builder.io/qwik':
         specifier: 1.19.1

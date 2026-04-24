@@ -25,57 +25,59 @@ import { ElmAgUiMessageRenderer } from "./elm-ag-ui-message-renderer";
 import { ElmAgUiInput } from "./elm-ag-ui-input";
 
 import { v4, v7 } from "uuid";
+import { z } from "zod";
+import { zodToJsonSchema } from "zod-to-json-schema";
 
 // ---------------------------------------------------------------------------
 // Tool registry
 // ---------------------------------------------------------------------------
 
-interface ToolEntry {
+interface ToolDef<T extends z.ZodObject<z.ZodRawShape>> {
   description: string;
-  parameters: {
-    type: "object";
-    properties: Record<string, unknown>;
-    required: string[];
-  };
-  execute: (args?: Record<string, unknown>) => unknown;
+  schema: T;
+  execute: (args: z.infer<T>) => unknown;
 }
 
-type ToolRegistry = Record<string, ToolEntry>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AnyToolDef = ToolDef<any>;
+type ToolRegistry = Record<string, AnyToolDef>;
+
+function defineTool<T extends z.ZodObject<z.ZodRawShape>>(
+  tool: ToolDef<T>,
+): ToolDef<T> {
+  return tool;
+}
 
 function getToolDefinitions(registry: ToolRegistry) {
-  return Object.entries(registry).map(
-    ([name, { description, parameters }]) => ({
-      name,
-      description,
-      parameters,
-    }),
-  );
+  return Object.entries(registry).map(([name, { description, schema }]) => ({
+    name,
+    description,
+    parameters: zodToJsonSchema(schema) as {
+      type: "object";
+      properties: Record<string, unknown>;
+      required: string[];
+    },
+  }));
 }
 
 const toolRegistry: ToolRegistry = {
-  generateUuid: {
+  generateUuid: defineTool({
     description: "Generate a random UUID v4 string",
-    parameters: {
-      type: "object",
-      properties: {
-        version: {
-          type: "string",
-          description:
-            "The version of UUID to generate. Supported values are 'v4' and 'v7'.",
-        },
-      },
-      required: ["version"],
-    },
+    schema: z.object({
+      version: z
+        .enum(["v4", "v7"])
+        .describe(
+          "The version of UUID to generate. Supported values are 'v4' and 'v7'.",
+        ),
+    }),
     execute: ({ version }) => {
       if (version === "v4") {
         return { uuid: v4() };
-      } else if (version === "v7") {
-        return { uuid: v7() };
       } else {
-        throw new Error("Unsupported UUID version");
+        return { uuid: v7() };
       }
     },
-  },
+  }),
 };
 
 export interface ElmAgUiHttpClientProps {
