@@ -62,7 +62,10 @@ export function useAgent({ url, tools }: UseAgentOptions) {
   const httpAgent = useSignal<NoSerialize<HttpAgent> | null>(null);
   const toolsRef = useSignal<NoSerialize<ToolRegistry>>(noSerialize(tools));
 
-  const agent = useStore<{ messages: Message[]; events: BaseEvent[] }>({
+  const agentStateStore = useStore<{
+    messages: Message[];
+    events: BaseEvent[];
+  }>({
     messages: [],
     events: [],
   });
@@ -82,17 +85,26 @@ export function useAgent({ url, tools }: UseAgentOptions) {
 
     const subscription = httpAgent.value.subscribe({
       onEvent({ messages: newMessages, event }) {
-        if (agent.messages.length < newMessages.length) {
-          agent.messages.push(...newMessages.slice(agent.messages.length));
+        if (agentStateStore.messages.length < newMessages.length) {
+          agentStateStore.messages.push(
+            ...newMessages.slice(agentStateStore.messages.length),
+          );
         }
-        agent.events = compactEvents([...agent.events, event]);
+        agentStateStore.events = compactEvents([
+          ...agentStateStore.events,
+          event,
+        ]);
       },
       onTextMessageContentEvent({ event }) {
-        const msg = agent.messages.findLast((m) => m.role === "assistant");
+        const msg = agentStateStore.messages.findLast(
+          (m) => m.role === "assistant",
+        );
         if (msg) msg.content = (msg.content ?? "") + event.delta;
       },
       onToolCallArgsEvent({ event }) {
-        const msg = agent.messages.findLast((m) => m.role === "assistant");
+        const msg = agentStateStore.messages.findLast(
+          (m) => m.role === "assistant",
+        );
         const toolCall = msg?.toolCalls?.find(
           (tc) => tc.id === event.toolCallId,
         );
@@ -102,7 +114,9 @@ export function useAgent({ url, tools }: UseAgentOptions) {
         const registry: ToolRegistry = toolsRef.value ?? {};
         const tool = registry[toolCallName];
         if (!tool) return;
-        const msg = agent.messages.findLast((m) => m.role === "assistant");
+        const msg = agentStateStore.messages.findLast(
+          (m) => m.role === "assistant",
+        );
         const toolCall = msg?.toolCalls?.find(
           (tc) => tc.id === event.toolCallId,
         );
@@ -117,7 +131,7 @@ export function useAgent({ url, tools }: UseAgentOptions) {
         } as Message);
       },
       async onRunFinalized({ messages }) {
-        agent.events.push({
+        agentStateStore.events.push({
           type: EventType.MESSAGES_SNAPSHOT,
           messages: messages as Message[],
         } as MessagesSnapshotEvent);
@@ -170,7 +184,7 @@ export function useAgent({ url, tools }: UseAgentOptions) {
       return (
         <div class={className} style={style}>
           <div>
-            <ElmAgUiMessageRenderer messages={agent.messages} />
+            <ElmAgUiMessageRenderer messages={agentStateStore.messages} />
           </div>
           <ElmAgUiInput
             style={{
@@ -187,8 +201,8 @@ export function useAgent({ url, tools }: UseAgentOptions) {
   );
 
   return {
-    messages: agent.messages,
-    events: agent.events,
+    messages: agentStateStore.messages,
+    events: agentStateStore.events,
     send,
     addTool,
     AgentUI,
