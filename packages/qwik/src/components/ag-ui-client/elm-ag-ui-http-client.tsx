@@ -178,6 +178,12 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
 
         await httpAgent.value.runAgent({
           tools: getToolDefinitions(toolRegistry),
+          context: [
+            {
+              description: "Current date and time",
+              value: new Date().toString(),
+            },
+          ],
         });
       }
     });
@@ -194,6 +200,10 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
           }
         >
           What is Amazon S3 Files?
+        </button>
+
+        <button onClick$={() => send("What date is it today?")}>
+          What date is it today?
         </button>
 
         <div>

@@ -25,7 +25,18 @@ const openrouter = createOpenAI({
 const agent = new Agent({
   id: "my-assistant",
   name: "Assistant",
-  instructions: "You are a helpful AI assistant.",
+  instructions: ({ requestContext }) => {
+    const agUiCtx = requestContext?.get("ag-ui") as
+      | { context?: Array<{ description: string; value: string }> }
+      | undefined;
+    const contextItems = agUiCtx?.context ?? [];
+    const base = "You are a helpful AI assistant.";
+    if (contextItems.length === 0) return base;
+    const contextStr = contextItems
+      .map((item) => `${item.description}: ${item.value}`)
+      .join("\n");
+    return `${base}\n\n## Context\n${contextStr}`;
+  },
   model: openrouter.chat("minimax/minimax-m2.5"),
   defaultOptions: {
     maxSteps: 10,
