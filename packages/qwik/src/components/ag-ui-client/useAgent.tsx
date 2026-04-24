@@ -14,6 +14,7 @@ import styles from "./useAgent.module.css";
 import {
   BaseEvent,
   compactEvents,
+  EventType,
   HttpAgent,
   Message,
   randomUUID,
@@ -74,10 +75,12 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
       value: string;
       description: string;
     }[];
+    currentEventType: EventType | null;
   }>({
     messages: [],
     events: [],
     context,
+    currentEventType: null,
   });
 
   // eslint-disable-next-line qwik/no-use-visible-task
@@ -95,6 +98,7 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
 
     const subscription = httpAgent.value.subscribe({
       onEvent({ messages: newMessages, event }) {
+        agentStateStore.currentEventType = event.type;
         if (agentStateStore.messages.length < newMessages.length) {
           agentStateStore.messages.push(
             ...newMessages.slice(agentStateStore.messages.length),
@@ -212,8 +216,10 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
     events: agentStateStore.events,
     context: agentStateStore.context,
     setContext,
+    currentEventType: agentStateStore.currentEventType,
     send,
     addTool,
+    abort: httpAgent.value?.abortRun,
     AgentUI,
   };
 }
