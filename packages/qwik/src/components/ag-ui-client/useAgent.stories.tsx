@@ -16,7 +16,11 @@ export interface UseAgentProps {
 }
 
 export const UseAgent = component$<UseAgentProps>(
-  ({ class: className, style, url = "http://localhost:4111/ag-ui" }) => {
+  ({
+    class: className,
+    style,
+    url = "http://localhost:8080/copilotkit/agent/default/run",
+  }) => {
     const context = useStore<Array<{ description: string; value: string }>>([]);
 
     const { AgentUI, addTool } = useAgent({
