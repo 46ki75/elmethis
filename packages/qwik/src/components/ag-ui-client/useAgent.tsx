@@ -12,10 +12,8 @@ import {
 import {
   BaseEvent,
   compactEvents,
-  EventType,
   HttpAgent,
   Message,
-  MessagesSnapshotEvent,
   randomUUID,
 } from "@ag-ui/client";
 
@@ -130,12 +128,7 @@ export function useAgent({ url, tools }: UseAgentOptions) {
           toolCallId: event.toolCallId,
         } as Message);
       },
-      async onRunFinalized({ messages }) {
-        agentStateStore.events.push({
-          type: EventType.MESSAGES_SNAPSHOT,
-          messages: messages as Message[],
-        } as MessagesSnapshotEvent);
-
+      async onRunFinalized() {
         if (pendingToolMessages.length === 0 || !httpAgent.value) return;
         httpAgent.value.messages.push(...pendingToolMessages);
         pendingToolMessages = [];
