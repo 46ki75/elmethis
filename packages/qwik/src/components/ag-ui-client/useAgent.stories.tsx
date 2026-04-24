@@ -1,4 +1,9 @@
-import { component$, useTask$, type CSSProperties } from "@builder.io/qwik";
+import {
+  component$,
+  useStore,
+  useTask$,
+  type CSSProperties,
+} from "@builder.io/qwik";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { v4, v7 } from "uuid";
 import { z } from "zod";
@@ -12,9 +17,11 @@ export interface UseAgentProps {
 
 export const UseAgent = component$<UseAgentProps>(
   ({ class: className, style, url = "http://localhost:4111/ag-ui" }) => {
-    const { AgentUI, addTool, setContext } = useAgent({
+    const context = useStore<Array<{ description: string; value: string }>>([]);
+
+    const { AgentUI, addTool } = useAgent({
       url,
-      context: [],
+      context: context,
     });
 
     useTask$(() => {
@@ -30,10 +37,14 @@ export const UseAgent = component$<UseAgentProps>(
         execute: ({ version }) => ({ uuid: version === "v4" ? v4() : v7() }),
       });
 
-      setContext([
-        { description: "Current date and time", value: new Date().toString() },
-        { description: "Location information", value: "Nerima, Tokyo, Japan" },
-      ]);
+      context.push({
+        description: "Current date and time",
+        value: new Date().toString(),
+      });
+      context.push({
+        description: "Location information",
+        value: "Nerima, Tokyo, Japan",
+      });
     });
 
     return <AgentUI class={className} style={style} />;
