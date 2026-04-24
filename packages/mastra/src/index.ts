@@ -52,7 +52,10 @@ function textContent(content: string | AgUiContentPart[]): string {
 function convertMessages(messages: AgUiMessage[]) {
   const out: unknown[] = [];
   for (const msg of messages) {
-    if (msg.role === "system") continue;
+    if (msg.role === "system") {
+      out.push({ role: "system", content: textContent(msg.content) });
+      continue;
+    }
     if (msg.role === "user") {
       out.push({ role: "user", content: textContent(msg.content) });
     } else if (msg.role === "assistant") {
@@ -109,9 +112,7 @@ const openrouter = createOpenAI({
 const agent = new Agent({
   id: "my-assistant",
   name: "Assistant",
-  instructions: ({ requestContext }) => {
-    return "You are a helpful AI assistant.";
-  },
+  instructions: "You are a helpful AI assistant.",
   model: openrouter.chat("minimax/minimax-m2.5"),
   defaultOptions: {
     maxSteps: 10,
@@ -135,20 +136,9 @@ export const mastra = new Mastra({
         handler: async (c) => {
           const mastraInstance = c.get("mastra");
           const body: RunInput = await c.req.json();
-          const { threadId, runId, messages, tools, context } = body;
-
-          // System messages → requestContext so instructions() can read them
-          const systemText = messages
-            .filter((m) => m.role === "system")
-            .map((m) => textContent(m.content))
-            .filter(Boolean)
-            .join("\n");
+          const { threadId, runId, messages, tools } = body;
 
           const requestContext = new RequestContext();
-          requestContext.set("ag-ui", {
-            system: systemText || undefined,
-            context: context ?? [],
-          });
 
           // AG-UI tools → Mastra clientTools
           const clientTools = (tools ?? []).reduce<Record<string, unknown>>(
