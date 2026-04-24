@@ -75,16 +75,23 @@ export const mastra = new Mastra({
           const writer = writable.getWriter();
           const textEncoder = new TextEncoder();
 
-          agentWrapper.run(body).subscribe({
+          const subscription = agentWrapper.run(body).subscribe({
             next(event) {
-              writer.write(textEncoder.encode(encoder.encodeSSE(event)));
+              writer
+                .write(textEncoder.encode(encoder.encodeSSE(event)))
+                .catch(() => subscription.unsubscribe());
             },
             error() {
-              writer.close();
+              writer.close().catch(() => {});
             },
             complete() {
-              writer.close();
+              writer.close().catch(() => {});
             },
+          });
+
+          c.req.raw.signal.addEventListener("abort", () => {
+            subscription.unsubscribe();
+            writer.close().catch(() => {});
           });
 
           return new Response(readable, {

@@ -152,9 +152,13 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
         }
         httpAgent.value.messages.push(...pendingToolMessages);
         pendingToolMessages = [];
-        await httpAgent.value.runAgent({
-          tools: getToolDefinitions(toolsRef.value ?? {}),
-        });
+        try {
+          await httpAgent.value.runAgent({
+            tools: getToolDefinitions(toolsRef.value ?? {}),
+          });
+        } catch {
+          agentStateStore.isRunning = false;
+        }
       },
     });
 
@@ -166,13 +170,17 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
   const send = $(async (content: string) => {
     if (!httpAgent.value) return;
     httpAgent.value.messages.push({ id: randomUUID(), role: "user", content });
-    await httpAgent.value.runAgent({
-      tools: getToolDefinitions(toolsRef.value ?? {}),
-      context: agentStateStore.context?.map(({ value, description }) => ({
-        value,
-        description,
-      })),
-    });
+    try {
+      await httpAgent.value.runAgent({
+        tools: getToolDefinitions(toolsRef.value ?? {}),
+        context: agentStateStore.context?.map(({ value, description }) => ({
+          value,
+          description,
+        })),
+      });
+    } catch {
+      agentStateStore.isRunning = false;
+    }
   });
 
   const addTool = $((name: string, tool: AnyToolDef) => {
