@@ -34,8 +34,7 @@ export interface ToolDef<T extends z.ZodObject<z.ZodRawShape>> {
   execute: (args: z.infer<T>) => unknown;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type AnyToolDef = ToolDef<any>;
+export type AnyToolDef = ToolDef<z.ZodObject<z.ZodRawShape>>;
 export type ToolRegistry = Record<string, AnyToolDef>;
 
 export function getToolDefinitions(registry: ToolRegistry) {
