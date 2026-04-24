@@ -4,7 +4,9 @@ import {
   type ElmAgUiToolExecutionProps,
 } from "./elm-ag-ui-tool-execution";
 import { EventType } from "@ag-ui/core";
-import { component$, useStore, useVisibleTask$ } from "@builder.io/qwik";
+import { $, component$, useStore, useVisibleTask$ } from "@builder.io/qwik";
+import { ElmInlineText } from "../typography/elm-inline-text";
+import { ElmButton } from "../form/elm-button";
 
 const meta: Meta<ElmAgUiToolExecutionProps> = {
   title: "Components/AG-UI/elm-ag-ui-tool-execution",
@@ -114,4 +116,60 @@ const RenderTransition = component$(() => {
 
 export const Transition: Story = {
   render: () => <RenderTransition />,
+};
+
+const RenderManualTransition = component$(() => {
+  const state = useStore<{ args: ElmAgUiToolExecutionProps }>({
+    args: states[0],
+  });
+
+  const next = $(() => {
+    state.args =
+      states[
+        (states.findIndex((s) => s.toolEventType === state.args.toolEventType) +
+          1) %
+          states.length
+      ];
+  });
+
+  const eventTypes = [
+    EventType.TOOL_CALL_START,
+    EventType.TOOL_CALL_ARGS,
+    EventType.TOOL_CALL_END,
+    EventType.TOOL_CALL_CHUNK,
+    EventType.TOOL_CALL_RESULT,
+  ] as const;
+
+  return (
+    <>
+      <ElmButton block onClick$={next} style={{ marginBottom: "1rem" }}>
+        Next
+      </ElmButton>
+      <div>
+        {eventTypes.map((eventType) => (
+          <>
+            <ElmInlineText
+              color={
+                state.args.toolEventType === eventType ? "#5879b0" : "gray"
+              }
+              bold={state.args.toolEventType === eventType}
+            >
+              {eventType}
+            </ElmInlineText>
+            <ElmInlineText style={{ marginInline: "1rem" }}>→</ElmInlineText>
+          </>
+        ))}
+      </div>
+      <ElmAgUiToolExecution
+        toolName={state.args.toolName}
+        toolEventType={state.args.toolEventType}
+        toolCallArgs={state.args.toolCallArgs}
+        toolCallResult={state.args.toolCallResult}
+      />
+    </>
+  );
+});
+
+export const ManualTransition: Story = {
+  render: () => <RenderManualTransition />,
 };
