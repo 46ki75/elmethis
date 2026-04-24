@@ -104,3 +104,125 @@ const events = [
 export const Primary: Story = {
   args: { events },
 };
+
+export const FrontendTools: Story = {
+  args: {
+    events: [
+      {
+        type: "RUN_STARTED",
+        threadId: "9f3c3843-d244-41e1-9c07-495879897976",
+        runId: "2e9b0ce8-19f3-499e-a12e-735bb3ffb2be",
+      },
+      {
+        type: "TOOL_CALL_START",
+        toolCallId: "call_724e219309894e039ad384e9",
+        toolCallName: "generateUuidV4",
+        parentMessageId: "6e2d2d54-835e-4853-b6d5-fc06e5d99840",
+      },
+      {
+        type: "TOOL_CALL_ARGS",
+        toolCallId: "call_724e219309894e039ad384e9",
+        delta: "{}",
+      },
+      {
+        type: "TOOL_CALL_END",
+        toolCallId: "call_724e219309894e039ad384e9",
+      },
+      {
+        type: "TOOL_CALL_RESULT",
+        toolCallId: "call_724e219309894e039ad384e9",
+        content: '{"uuid":"b80cb7f5-017d-43ea-9d72-e29adc118116"}',
+      },
+      {
+        type: "RUN_FINISHED",
+        threadId: "9f3c3843-d244-41e1-9c07-495879897976",
+        runId: "2e9b0ce8-19f3-499e-a12e-735bb3ffb2be",
+      },
+      {
+        type: "MESSAGES_SNAPSHOT",
+        messages: [
+          {
+            id: "8e54936a-280f-4c18-8e56-a19645138935",
+            role: "user",
+            content: "Generate a random UUID v4 string",
+          },
+          {
+            id: "6e2d2d54-835e-4853-b6d5-fc06e5d99840",
+            role: "assistant",
+            toolCalls: [
+              {
+                id: "call_724e219309894e039ad384e9",
+                type: "function",
+                function: {
+                  name: "generateUuidV4",
+                  arguments: "{}",
+                },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "RUN_STARTED",
+        threadId: "9f3c3843-d244-41e1-9c07-495879897976",
+        runId: "c40fbf7d-9cd4-4493-b31c-273c2204830d",
+      },
+      {
+        type: "TEXT_MESSAGE_START",
+        messageId: "458aed30-d3ef-482d-a18a-4de97e9ce6e4",
+        role: "assistant",
+      },
+      {
+        type: "TEXT_MESSAGE_CONTENT",
+        messageId: "458aed30-d3ef-482d-a18a-4de97e9ce6e4",
+        delta:
+          "Here is a random UUID v4 string:\n\n```\n0b64492a-d0ed-4993-9501-5897a190c579\n```",
+      },
+      {
+        type: "TEXT_MESSAGE_END",
+        messageId: "458aed30-d3ef-482d-a18a-4de97e9ce6e4",
+      },
+      {
+        type: "RUN_FINISHED",
+        threadId: "9f3c3843-d244-41e1-9c07-495879897976",
+        runId: "c40fbf7d-9cd4-4493-b31c-273c2204830d",
+      },
+      {
+        type: "MESSAGES_SNAPSHOT",
+        messages: [
+          {
+            id: "8e54936a-280f-4c18-8e56-a19645138935",
+            role: "user",
+            content: "Generate a random UUID v4 string",
+          },
+          {
+            id: "6e2d2d54-835e-4853-b6d5-fc06e5d99840",
+            role: "assistant",
+            toolCalls: [
+              {
+                id: "call_724e219309894e039ad384e9",
+                type: "function",
+                function: {
+                  name: "generateUuidV4",
+                  arguments: "{}",
+                },
+              },
+            ],
+          },
+          {
+            id: "2a8ca1c5-8b2e-4c4c-969e-71a20f29c8ae",
+            role: "tool",
+            content: '{"uuid":"0b64492a-d0ed-4993-9501-5897a190c579"}',
+            toolCallId: "call_724e219309894e039ad384e9",
+          },
+          {
+            id: "458aed30-d3ef-482d-a18a-4de97e9ce6e4",
+            role: "assistant",
+            content:
+              "Here is a random UUID v4 string:\n\n```\n0b64492a-d0ed-4993-9501-5897a190c579\n```",
+          },
+        ],
+      },
+    ] as BaseEvent[],
+  },
+};

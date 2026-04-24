@@ -23,6 +23,44 @@ import {
 } from "@ag-ui/client";
 import { ElmAgUiMessageRenderer } from "./elm-ag-ui-message-renderer";
 
+// ---------------------------------------------------------------------------
+// Tool registry
+// ---------------------------------------------------------------------------
+
+interface ToolEntry {
+  description: string;
+  parameters: {
+    type: "object";
+    properties: Record<string, unknown>;
+    required: string[];
+  };
+  execute: (args?: Record<string, unknown>) => unknown;
+}
+
+type ToolRegistry = Record<string, ToolEntry>;
+
+function getToolDefinitions(registry: ToolRegistry) {
+  return Object.entries(registry).map(
+    ([name, { description, parameters }]) => ({
+      name,
+      description,
+      parameters,
+    }),
+  );
+}
+
+const toolRegistry: ToolRegistry = {
+  generateUuidV4: {
+    description: "Generate a random UUID v4 string",
+    parameters: {
+      type: "object",
+      properties: {},
+      required: [],
+    },
+    execute: () => ({ uuid: randomUUID() }),
+  },
+};
+
 export interface ElmAgUiHttpClientProps {
   class?: string;
 
@@ -58,38 +96,69 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
       }
 
       if (httpAgent.value) {
+        let pendingToolMessages: Message[] = [];
+
         const subscription = httpAgent.value?.subscribe({
           onEvent({ messages: newMessages, event }) {
             if (agent.messages.length < newMessages.length) {
               agent.messages.push(...newMessages.slice(agent.messages.length));
             }
 
-            if (event.type === EventType.TEXT_MESSAGE_CONTENT) {
-              const incomingContent = event.delta;
-
-              const lastAssistantMessageRef = agent.messages.findLast(
-                (msg) => msg.role === "assistant",
-              );
-
-              if (lastAssistantMessageRef?.content && incomingContent) {
-                lastAssistantMessageRef.content =
-                  lastAssistantMessageRef?.content + incomingContent;
-              } else if (lastAssistantMessageRef && incomingContent) {
-                lastAssistantMessageRef.content = String(incomingContent);
-              }
-            }
-
             const events = [...agent.events, event];
             agent.events = compactEvents(events);
           },
-          onRunFinalized({ messages }) {
-            console.info(messages);
+          onTextMessageContentEvent({ event }) {
+            const lastAssistantMessageRef = agent.messages.findLast(
+              (msg) => msg.role === "assistant",
+            );
+
+            if (lastAssistantMessageRef) {
+              lastAssistantMessageRef.content =
+                (lastAssistantMessageRef.content ?? "") + event.delta;
+            }
+          },
+          onToolCallArgsEvent({ event }) {
+            const lastAssistantMessageRef = agent.messages.findLast(
+              (msg) => msg.role === "assistant",
+            );
+
+            if (lastAssistantMessageRef) {
+              const toolCallRef = lastAssistantMessageRef.toolCalls?.find(
+                (toolCall) => toolCall.id === event.toolCallId,
+              );
+
+              if (toolCallRef) {
+                toolCallRef.function.arguments =
+                  toolCallRef.function.arguments + event.delta;
+              }
+            }
+          },
+          onToolCallEndEvent({ event, toolCallName }) {
+            const tool = toolRegistry[toolCallName];
+            if (tool) {
+              const result = JSON.stringify(tool.execute());
+              pendingToolMessages.push({
+                id: randomUUID(),
+                role: "tool",
+                content: result,
+                toolCallId: event.toolCallId,
+              } as Message);
+            }
+          },
+          async onRunFinalized({ messages }) {
             const messagesSnapshotEvent: MessagesSnapshotEvent = {
               type: EventType.MESSAGES_SNAPSHOT,
               messages: messages as Message[],
             };
             agent.events.push(messagesSnapshotEvent);
-            console.info(agent.events);
+
+            if (pendingToolMessages.length > 0 && httpAgent.value) {
+              httpAgent.value.messages.push(...pendingToolMessages);
+              pendingToolMessages = [];
+              await httpAgent.value.runAgent({
+                tools: getToolDefinitions(toolRegistry),
+              });
+            }
           },
         });
 
@@ -99,27 +168,46 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
       }
     });
 
-    const send = $(async () => {
+    const send = $(async (content: string) => {
       if (httpAgent.value) {
         httpAgent.value.messages.push({
           id: randomUUID(),
           role: "user",
-          content: "What is a new feature called Amazon S3 Files?",
+          content: content,
         });
 
-        await httpAgent.value.runAgent({});
+        await httpAgent.value.runAgent({
+          tools: getToolDefinitions(toolRegistry),
+          context: [
+            {
+              description: "Current date and time",
+              value: new Date().toString(),
+            },
+          ],
+        });
       }
     });
 
     return (
       <div class={[styles["elm-my-something"], className]} style={style}>
-        <button onClick$={send}>Send</button>
+        <button onClick$={() => send("Generate a random UUID v4 string")}>
+          Generate UUID v4
+        </button>
+
+        <button
+          onClick$={() =>
+            send("What is the new feature called Amazon S3 Files?")
+          }
+        >
+          What is Amazon S3 Files?
+        </button>
+
+        <button onClick$={() => send("What date is it today?")}>
+          What date is it today?
+        </button>
 
         <div>
-          <ElmAgUiMessageRenderer
-            messages={agent.messages}
-            events={agent.events}
-          />
+          <ElmAgUiMessageRenderer messages={agent.messages} />
         </div>
       </div>
     );

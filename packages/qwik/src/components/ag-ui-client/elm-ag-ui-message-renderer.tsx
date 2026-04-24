@@ -4,12 +4,9 @@ import styles from "./elm-ag-ui-message-renderer.module.css";
 import {
   Message,
   InputContent,
-  BaseEvent,
   EventType,
-  ToolCallStartEvent,
-  ToolCallArgsEvent,
-  ToolCallEndEvent,
   ToolCallResultEvent,
+  ToolCall,
 } from "@ag-ui/core";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { ElmBlockImage } from "../media/elm-block-image";
@@ -24,51 +21,31 @@ export interface ElmAgUiMessageRendererProps {
   style?: CSSProperties;
 
   messages: Message[];
-
-  events: BaseEvent[];
 }
 
 export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
-  ({ class: className, style, messages, events }) => {
-    const renderToolByToolCallId = (
-      toolCallId: string,
-      events: BaseEvent[],
-    ) => {
-      const toolCalls = events.filter((e) => e?.toolCallId === toolCallId);
+  ({ class: className, style, messages }) => {
+    const renderTool = (toolCall: ToolCall, messages: Message[]) => {
+      let toolEventType = EventType.TOOL_CALL_START;
 
-      const [
-        toolCallStartEvent,
-        toolCallArgsEvent,
-        toolCallEndEvent,
-        toolCallResultEvent,
-      ] = [
-        EventType.TOOL_CALL_START,
-        EventType.TOOL_CALL_ARGS,
-        EventType.TOOL_CALL_END,
-        EventType.TOOL_CALL_RESULT,
-      ].map((type) => toolCalls.find((e) => e.type === type)) as
-        | [
-            ToolCallStartEvent,
-            ToolCallArgsEvent,
-            ToolCallEndEvent,
-            ToolCallResultEvent,
-          ]
-        | [undefined, undefined, undefined, undefined];
+      if (toolCall.function.arguments != null)
+        toolEventType = EventType.TOOL_CALL_ARGS;
 
-      if (!toolCallStartEvent) return null;
+      const toolCallResultEvent = messages.find(
+        (message) =>
+          message.role === "tool" &&
+          message.toolCallId === toolCall.id &&
+          message.content != null,
+      ) as ToolCallResultEvent | undefined;
 
-      const getCurrentEventType = (() => {
-        if (toolCallResultEvent) return EventType.TOOL_CALL_RESULT;
-        if (toolCallEndEvent) return EventType.TOOL_CALL_END;
-        if (toolCallArgsEvent) return EventType.TOOL_CALL_ARGS;
-        return EventType.TOOL_CALL_START;
-      })();
+      if (toolCallResultEvent?.content != null)
+        toolEventType = EventType.TOOL_CALL_RESULT;
 
       return (
         <ElmAgUiToolExecution
-          toolName={toolCallStartEvent.toolCallName}
-          toolEventType={getCurrentEventType}
-          toolCallArgs={toolCallArgsEvent?.delta}
+          toolName={toolCall.function.name}
+          toolEventType={toolEventType}
+          toolCallArgs={toolCall.function.arguments}
           toolCallResult={toolCallResultEvent?.content}
         />
       );
@@ -125,28 +102,30 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
         }
 
         case "assistant": {
-          if (message.content != null) {
+          if (message.content != null || message.toolCalls?.length) {
             return (
               <>
                 {message.toolCalls?.map((toolCall) =>
-                  renderToolByToolCallId(toolCall.id, events),
+                  renderTool(toolCall, messages),
                 )}
 
-                <div class={styles["message-content-assistant-wrapper"]}>
-                  <div class={styles["message-content-type"]}>
-                    <ElmMdiIcon
-                      class={styles["message-content-icon"]}
-                      d={mdiCreation}
-                    />
-                    <ElmInlineText>Assistant</ElmInlineText>
-                    <div
-                      aria-hidden="true"
-                      class={styles["message-content-spacer"]}
-                    ></div>
-                  </div>
+                {message.content != null && (
+                  <div class={styles["message-content-assistant-wrapper"]}>
+                    <div class={styles["message-content-type"]}>
+                      <ElmMdiIcon
+                        class={styles["message-content-icon"]}
+                        d={mdiCreation}
+                      />
+                      <ElmInlineText>Assistant</ElmInlineText>
+                      <div
+                        aria-hidden="true"
+                        class={styles["message-content-spacer"]}
+                      ></div>
+                    </div>
 
-                  <ElmMarkdown markdown={message.content} streaming={true} />
-                </div>
+                    <ElmMarkdown markdown={message.content} streaming={true} />
+                  </div>
+                )}
               </>
             );
           }

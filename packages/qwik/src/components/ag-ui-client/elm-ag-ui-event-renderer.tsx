@@ -82,8 +82,9 @@ export const ElmAgUiEventRenderer = component$<ElmAgUiEventRendererProps>(
         switch (event.type) {
           case EventType.RUN_STARTED: {
             // Render user input messages
-            const contents = userMessages[userMessageIndex]
-              .content as InputContent[];
+            const userMsg = userMessages[userMessageIndex];
+            if (!userMsg) break;
+            const contents = userMsg.content as InputContent[];
 
             const userInputComponent = (
               <div class={styles["message-content-user-wrapper"]}>
