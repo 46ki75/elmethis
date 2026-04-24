@@ -246,7 +246,7 @@ export function useAgent({
 
       return (
         <div class={[styles["use-agent"], className]} style={style}>
-          <div>
+          <div class={styles["messages"]}>
             <ElmAgUiMessageRenderer messages={agentStateStore.messages} />
           </div>
 
