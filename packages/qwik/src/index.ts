@@ -27,6 +27,10 @@ export {
   ElmToggle,
   type ElmToggleProps,
 } from "./components/containments/elm-toggle";
+export {
+  ElmTooltip,
+  type ElmTooltipProps,
+} from "./components/containments/elm-tooltip";
 
 // | Fallback |
 export {
@@ -173,6 +177,7 @@ export {
 } from "./components/others/elm-markdown";
 
 // | Hooks |
+export { useClipboard, type UseClipboardOptions } from "./hooks/useClipboard";
 export { useDelayedSignal } from "./hooks/useDelayedSignal";
 export { useElmethisTheme } from "./hooks/useElmethisTheme";
 export { useInView } from "./hooks/useInView";

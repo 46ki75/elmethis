@@ -1,0 +1,13 @@
+.use-clipboard {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  transition: background-color 200ms;
+  cursor: pointer;
+
+  &:hover {
+    background-color: oklch(from gray l c h / 0.25);
+  }
+}
