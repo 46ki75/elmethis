@@ -9,7 +9,9 @@ const meta: Meta<ElmAgUiMessageRendererProps> = {
   title: "Components/AG-UI/elm-ag-ui-message-renderer",
   component: ElmAgUiMessageRenderer,
   tags: ["autodocs"],
-  args: {},
+  args: {
+    isRunning: false,
+  },
 };
 
 export default meta;
@@ -79,6 +81,7 @@ const StreamingWrapper = component$(() => {
 
   return (
     <ElmAgUiMessageRenderer
+      isRunning={false}
       messages={[
         { id: "msg-stream-001", role: "assistant", content: content.value },
       ]}

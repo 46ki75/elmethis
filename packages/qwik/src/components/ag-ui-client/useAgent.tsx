@@ -253,7 +253,10 @@ export function useAgent({
       return (
         <div class={[styles["use-agent"], className]} style={style}>
           <div class={styles["messages"]}>
-            <ElmAgUiMessageRenderer messages={agentStateStore.messages} />
+            <ElmAgUiMessageRenderer
+              isRunning={agentStateStore.isRunning}
+              messages={agentStateStore.messages}
+            />
           </div>
 
           <div class={styles["agent-input"]}>

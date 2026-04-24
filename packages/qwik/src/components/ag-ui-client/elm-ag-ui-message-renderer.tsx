@@ -21,11 +21,13 @@ export interface ElmAgUiMessageRendererProps {
 
   style?: CSSProperties;
 
+  isRunning: boolean;
+
   messages: Message[];
 }
 
 export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
-  ({ class: className, style, messages }) => {
+  ({ class: className, style, messages, isRunning }) => {
     const renderTool = (toolCall: ToolCall, messages: Message[]) => {
       let toolEventType = EventType.TOOL_CALL_START;
 
@@ -126,9 +128,11 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
 
                     <ElmMarkdown markdown={message.content} streaming={true} />
 
-                    <div>
-                      <ElmCopyIcon content={message.content} />
-                    </div>
+                    {!isRunning && (
+                      <div>
+                        <ElmCopyIcon content={message.content} />
+                      </div>
+                    )}
                   </div>
                 )}
               </>
