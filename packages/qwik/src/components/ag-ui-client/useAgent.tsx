@@ -38,12 +38,6 @@ export interface ToolDef<T extends z.ZodObject<z.ZodRawShape>> {
 export type AnyToolDef = ToolDef<any>;
 export type ToolRegistry = Record<string, AnyToolDef>;
 
-export function defineTool<T extends z.ZodObject<z.ZodRawShape>>(
-  tool: ToolDef<T>,
-): ToolDef<T> {
-  return tool;
-}
-
 export function getToolDefinitions(registry: ToolRegistry) {
   return Object.entries(registry).map(([name, { description, schema }]) => ({
     name,
