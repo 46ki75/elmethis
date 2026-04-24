@@ -10,9 +10,9 @@ export interface ElmAgUiInputProps {
 
   style?: CSSProperties;
 
-  onInput$: QRL<(event: InputEvent, element: HTMLInputElement) => void>;
+  onInput$: QRL<(event: InputEvent, element: HTMLTextAreaElement) => void>;
 
-  onSubmit$: QRL<(event: Event, element: HTMLInputElement) => void>;
+  onSubmit$: QRL<(event: Event, element: Element) => void>;
 }
 
 export const ElmAgUiInput = component$<ElmAgUiInputProps>(
@@ -22,7 +22,7 @@ export const ElmAgUiInput = component$<ElmAgUiInputProps>(
         class={[styles["elm-ag-ui-input"], textStyle["text"], className]}
         style={style}
       >
-        <input type="text" class={styles["input"]} onInput$={onInput$} />
+        <textarea class={styles["input"]} onInput$={onInput$} />
 
         <div class={styles["submit-button"]} onClick$={onSubmit$}>
           <ElmMdiIcon d={mdiSend} size="1.5rem" color="white" />
