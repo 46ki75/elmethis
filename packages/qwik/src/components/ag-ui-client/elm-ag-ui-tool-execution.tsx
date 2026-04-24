@@ -109,16 +109,16 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
       }
     });
 
-    const toggleIsOpen = $(() => {
-      isOpen.value = !isOpen.value;
+    const setIsOpen = $((v: boolean) => {
+      isOpen.value = v;
     });
 
-    const toggleIsArgsOpen = $(() => {
-      isArgsOpen.value = !isArgsOpen.value;
+    const setIsArgsOpen = $((v: boolean) => {
+      isArgsOpen.value = v;
     });
 
-    const toggleIsResultOpen = $(() => {
-      isResultOpen.value = !isResultOpen.value;
+    const setIsResultOpen = $((v: boolean) => {
+      isResultOpen.value = v;
     });
 
     return (
@@ -126,8 +126,8 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
         class={[styles["elm-ag-ui-tool-execution"], className]}
         style={{ "--margin-block": "0", ...style }}
       >
-        <ElmToggle isOpen={isOpen.value}>
-          <div q:slot="summary" class={styles.summary} onClick$={toggleIsOpen}>
+        <ElmToggle isOpen={isOpen.value} setIsOpen$={setIsOpen}>
+          <div q:slot="summary" class={styles.summary}>
             <ElmMdiIcon d={mdiHammerScrewdriver} size="1.25rem" />
             <ElmInlineText>{toolName}</ElmInlineText>
           </div>
@@ -148,11 +148,10 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
           }
 
           {isArgsShown.value && (
-            <ElmToggle isOpen={isArgsOpen.value}>
+            <ElmToggle isOpen={isArgsOpen.value} setIsOpen$={setIsArgsOpen}>
               <div
                 q:slot="summary"
                 class={styles.summary}
-                onClick$={toggleIsArgsOpen}
               >
                 <ElmMdiIcon d={mdiCodeJson} size="1.25rem" />
                 <ElmInlineText>Args</ElmInlineText>
@@ -186,11 +185,10 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
           )}
 
           {isResultShown.value && (
-            <ElmToggle isOpen={isResultOpen.value}>
+            <ElmToggle isOpen={isResultOpen.value} setIsOpen$={setIsResultOpen}>
               <div
                 q:slot="summary"
                 class={styles.summary}
-                onClick$={toggleIsResultOpen}
               >
                 <ElmMdiIcon d={mdiCodeJson} size="1.25rem" />
                 <ElmInlineText>Result</ElmInlineText>
