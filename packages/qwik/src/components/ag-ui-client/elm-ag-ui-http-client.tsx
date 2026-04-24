@@ -146,13 +146,11 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
             }
           },
           async onRunFinalized({ messages }) {
-            console.info(messages);
             const messagesSnapshotEvent: MessagesSnapshotEvent = {
               type: EventType.MESSAGES_SNAPSHOT,
               messages: messages as Message[],
             };
             agent.events.push(messagesSnapshotEvent);
-            console.info(agent.events);
 
             if (pendingToolMessages.length > 0 && httpAgent.value) {
               httpAgent.value.messages.push(...pendingToolMessages);
