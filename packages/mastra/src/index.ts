@@ -110,16 +110,7 @@ const agent = new Agent({
   id: "my-assistant",
   name: "Assistant",
   instructions: ({ requestContext }) => {
-    const ctx = requestContext?.get("ag-ui") as
-      | { system?: string; context?: AgUiContextItem[] }
-      | undefined;
-    const base = ctx?.system ?? "You are a helpful AI assistant.";
-    const items = ctx?.context ?? [];
-    if (items.length === 0) return base;
-    const contextStr = items
-      .map((item) => `${item.description}: ${item.value}`)
-      .join("\n");
-    return `${base}\n\n## Context\n${contextStr}`;
+    return "You are a helpful AI assistant.";
   },
   model: openrouter.chat("minimax/minimax-m2.5"),
   defaultOptions: {
