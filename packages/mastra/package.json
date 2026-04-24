@@ -11,7 +11,7 @@
     "@ag-ui/encoder": "^0.0.46",
     "@ag-ui/mastra": "^1.0.1",
     "@ai-sdk/openai": "^2.0.103",
-    "@mastra/core": "^1.27.0",
+    "@mastra/core": "^1.28.0",
     "@mastra/libsql": "^1.9.0",
     "@mastra/mcp": "^1.5.1",
     "dotenv": "^17.4.2",
