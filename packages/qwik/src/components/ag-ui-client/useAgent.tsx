@@ -61,9 +61,17 @@ export interface UseAgentOptions {
     description: string;
   }[];
   headers?: Record<string, string> | undefined;
+
+  autoAddContext?: boolean;
 }
 
-export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
+export function useAgent({
+  url,
+  tools,
+  context,
+  headers,
+  autoAddContext = true,
+}: UseAgentOptions) {
   const httpAgent = useSignal<NoSerialize<HttpAgent> | null>(null);
   const toolsRef = useSignal<NoSerialize<ToolRegistry>>(noSerialize(tools));
 
@@ -146,6 +154,7 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
         } as Message);
       },
       async onRunFinalized() {
+        console.log(agentStateStore.messages);
         if (pendingToolMessages.length === 0 || !httpAgent.value) {
           agentStateStore.isRunning = false;
           return;
@@ -170,6 +179,22 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
   const send = $(async (content: string) => {
     if (!httpAgent.value) return;
     httpAgent.value.messages.push({ id: randomUUID(), role: "user", content });
+
+    if (autoAddContext) {
+      const id = "ag-ui-client-context";
+      const contextSystemMessage: Message = {
+        id,
+        role: "system",
+        content: `## Context\n\n${agentStateStore.context
+          ?.map((c) => `- ${c.value}: ${c.description}`)
+          .join("\n")}`,
+      };
+      httpAgent.value.messages = httpAgent.value.messages.filter(
+        (m) => m.id !== id,
+      );
+      httpAgent.value.messages.push(contextSystemMessage);
+    }
+
     try {
       await httpAgent.value.runAgent({
         tools: getToolDefinitions(toolsRef.value ?? {}),
