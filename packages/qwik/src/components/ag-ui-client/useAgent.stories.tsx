@@ -15,7 +15,7 @@ export interface UseAgentProps {
   url?: string;
 }
 
-export const UseAgent = component$<UseAgentProps>(
+const UseAgent = component$<UseAgentProps>(
   ({
     class: className,
     style,
