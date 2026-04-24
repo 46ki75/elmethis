@@ -3,6 +3,7 @@ import { Mastra } from "@mastra/core";
 import { MCPClient } from "@mastra/mcp";
 import { registerApiRoute } from "@mastra/core/server";
 import { RequestContext } from "@mastra/core/request-context";
+import type { AgentChunkType } from "@mastra/core/stream";
 import { createOpenAI } from "@ai-sdk/openai";
 import { EventEncoder } from "@ag-ui/encoder";
 import { EventType } from "@ag-ui/core";
@@ -226,13 +227,8 @@ export const mastra = new Mastra({
               // text can interleave within a single step.
               let reasoningMessageId: string = crypto.randomUUID();
 
-              type Chunk = {
-                type: string;
-                payload: Record<string, unknown>;
-              };
-
               for await (const chunk of (
-                output as { fullStream: AsyncIterable<Chunk> }
+                output as { fullStream: AsyncIterable<AgentChunkType> }
               ).fullStream) {
                 switch (chunk.type) {
                   case "text-delta":
