@@ -46,6 +46,7 @@ const agent = new Agent({
     providerOptions: {
       openrouter: {
         reasoning: { effort: "medium" },
+        sort: "throughput",
       },
     },
   },
