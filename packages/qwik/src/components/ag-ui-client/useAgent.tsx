@@ -175,6 +175,10 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
     toolsRef.value = noSerialize({ ...(toolsRef.value ?? {}), [name]: tool });
   });
 
+  const abort = $(() => {
+    httpAgent.value?.abortRun();
+  });
+
   const AgentUI = component$<{ class?: string; style?: CSSProperties }>(
     ({ class: className, style }) => {
       const input = useSignal("");
@@ -201,9 +205,13 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
             <ElmAgUiInput
               onInput$={onInput$}
               onSubmit$={onSubmit$}
+              onAbort$={abort}
               isRunning={
                 agentStateStore.currentEventType != null &&
-                agentStateStore.currentEventType !== EventType.RUN_FINISHED
+                !(
+                  agentStateStore.currentEventType === EventType.RUN_FINISHED ||
+                  agentStateStore.currentEventType === EventType.RUN_ERROR
+                )
               }
             />
           </div>
@@ -217,10 +225,6 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
       agentStateStore.context = newContext;
     },
   );
-
-  const abort = $(() => {
-    httpAgent.value?.abortRun();
-  });
 
   return {
     messages: agentStateStore.messages,

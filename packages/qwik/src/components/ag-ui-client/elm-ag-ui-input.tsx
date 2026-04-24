@@ -21,10 +21,12 @@ export interface ElmAgUiInputProps {
   onInput$: QRL<(event: InputEvent, element: HTMLTextAreaElement) => void>;
 
   onSubmit$: QRL<(event: Event, element: Element) => void>;
+
+  onAbort$: QRL<() => void>;
 }
 
 export const ElmAgUiInput = component$<ElmAgUiInputProps>(
-  ({ class: className, style, isRunning, onInput$, onSubmit$ }) => {
+  ({ class: className, style, isRunning, onInput$, onSubmit$, onAbort$ }) => {
     const textAreaRef = useSignal<HTMLTextAreaElement>();
 
     const onSubmit = $((event: Event, element: Element) => {
@@ -46,13 +48,8 @@ export const ElmAgUiInput = component$<ElmAgUiInputProps>(
         />
 
         <div
-          class={[
-            styles["submit-button"],
-            {
-              [styles["disabled"]]: isRunning,
-            },
-          ]}
-          onClick$={onSubmit}
+          class={[styles["submit-button"]]}
+          onClick$={isRunning ? onAbort$ : onSubmit}
         >
           <ElmMdiIcon
             d={isRunning ? mdiStop : mdiSend}
