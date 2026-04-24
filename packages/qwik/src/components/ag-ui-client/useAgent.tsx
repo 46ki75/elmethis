@@ -111,12 +111,21 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
           event,
         ]);
       },
+
       onTextMessageContentEvent({ event }) {
         const msg = agentStateStore.messages.findLast(
           (m) => m.role === "assistant",
         );
         if (msg) msg.content = (msg.content ?? "") + event.delta;
       },
+
+      onReasoningMessageContentEvent({ event }) {
+        const msg = agentStateStore.messages.findLast(
+          (m) => m.role === "reasoning",
+        );
+        if (msg) msg.content = (msg.content ?? "") + event.delta;
+      },
+
       onToolCallArgsEvent({ event }) {
         const msg = agentStateStore.messages.findLast(
           (m) => m.role === "assistant",

@@ -21,7 +21,7 @@ const agent = new BuiltInAgent({
   maxSteps: 200,
   mcpServers: [
     {
-      url: "https://mcp.context7.com/mcp",
+      url: "https://knowledge-mcp.global.api.aws",
       type: "http",
       options: {},
     },
