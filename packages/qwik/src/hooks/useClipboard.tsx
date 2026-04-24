@@ -10,16 +10,24 @@ export interface UseClipboardOptions {
 
   style?: CSSProperties;
 
-  content: string;
+  content: string | ClipboardItemParameter[];
 
   delay?: number;
 }
+
+type ClipboardItemParameter = ConstructorParameters<typeof ClipboardItem>[0];
 
 export const useClipboard = (options: UseClipboardOptions) => {
   const copied = useSignal(false);
 
   const copy = $(async () => {
-    await window.navigator.clipboard.writeText(options.content);
+    if (typeof options.content === "string") {
+      await window.navigator.clipboard.writeText(options.content);
+    } else {
+      await window.navigator.clipboard.write(
+        options.content.map((item) => new ClipboardItem(item)),
+      );
+    }
     copied.value = true;
 
     setTimeout(() => {
