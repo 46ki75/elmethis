@@ -24,6 +24,14 @@ import { zodToJsonSchema } from "zod-to-json-schema";
 import { ElmAgUiMessageRenderer } from "./elm-ag-ui-message-renderer";
 import { ElmAgUiInput } from "./elm-ag-ui-input";
 
+async function sh256(data: string): Promise<string> {
+  const encoded = new TextEncoder().encode(data);
+  const buffer = await crypto.subtle.digest("SHA-256", encoded);
+  return Array.from(new Uint8Array(buffer))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
 // ---------------------------------------------------------------------------
 // Tool registry
 // ---------------------------------------------------------------------------
@@ -181,7 +189,8 @@ export function useAgent({
     httpAgent.value.messages.push({ id: randomUUID(), role: "user", content });
 
     if (autoAddContext) {
-      const id = "ag-ui-client-context";
+      const hash = await sh256(JSON.stringify(agentStateStore.context));
+      const id = `ag-ui-client-context-${hash}`;
       const contextSystemMessage: Message = {
         id,
         role: "system",
@@ -189,10 +198,13 @@ export function useAgent({
           ?.map((c) => `- ${c.value}: ${c.description}`)
           .join("\n")}`,
       };
-      httpAgent.value.messages = httpAgent.value.messages.filter(
-        (m) => m.id !== id,
-      );
-      httpAgent.value.messages.push(contextSystemMessage);
+      const isContextFresh = httpAgent.value.messages.some((m) => m.id === id);
+      if (!isContextFresh) {
+        httpAgent.value.messages = httpAgent.value.messages.filter(
+          (m) => m.id !== id,
+        );
+        httpAgent.value.messages.push(contextSystemMessage);
+      }
     }
 
     try {
