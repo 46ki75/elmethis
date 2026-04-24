@@ -5,6 +5,8 @@
 
   .messages {
     overflow-y: auto;
+    box-sizing: border-box;
+    height: 100%;
     padding-bottom: 4rem;
   }
 
