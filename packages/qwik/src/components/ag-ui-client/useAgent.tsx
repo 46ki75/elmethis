@@ -148,10 +148,6 @@ export function useAgent({ url, tools }: UseAgentOptions) {
     });
   });
 
-  const defineTools = $((newTools: ToolRegistry) => {
-    toolsRef.value = noSerialize(newTools);
-  });
-
   const addTool = $((name: string, tool: AnyToolDef) => {
     toolsRef.value = noSerialize({ ...(toolsRef.value ?? {}), [name]: tool });
   });
@@ -195,7 +191,6 @@ export function useAgent({ url, tools }: UseAgentOptions) {
     messages: agent.messages,
     events: agent.events,
     send,
-    defineTools,
     addTool,
     AgentUI,
   };
