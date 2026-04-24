@@ -215,6 +215,10 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
     },
   );
 
+  const abort = $(() => {
+    httpAgent.value?.abortRun();
+  });
+
   return {
     messages: agentStateStore.messages,
     events: agentStateStore.events,
@@ -223,7 +227,7 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
     currentEventType: agentStateStore.currentEventType,
     send,
     addTool,
-    abort: httpAgent.value?.abortRun,
+    abort,
     AgentUI,
   };
 }
