@@ -24,6 +24,8 @@ import {
 import { ElmAgUiMessageRenderer } from "./elm-ag-ui-message-renderer";
 import { ElmAgUiInput } from "./elm-ag-ui-input";
 
+import { v4, v7 } from "uuid";
+
 // ---------------------------------------------------------------------------
 // Tool registry
 // ---------------------------------------------------------------------------
@@ -51,14 +53,28 @@ function getToolDefinitions(registry: ToolRegistry) {
 }
 
 const toolRegistry: ToolRegistry = {
-  generateUuidV4: {
+  generateUuid: {
     description: "Generate a random UUID v4 string",
     parameters: {
       type: "object",
-      properties: {},
-      required: [],
+      properties: {
+        version: {
+          type: "string",
+          description:
+            "The version of UUID to generate. Supported values are 'v4' and 'v7'.",
+        },
+      },
+      required: ["version"],
     },
-    execute: () => ({ uuid: randomUUID() }),
+    execute: ({ version }) => {
+      if (version === "v4") {
+        return { uuid: v4() };
+      } else if (version === "v7") {
+        return { uuid: v7() };
+      } else {
+        throw new Error("Unsupported UUID version");
+      }
+    },
   },
 };
 
@@ -137,7 +153,16 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
           onToolCallEndEvent({ event, toolCallName }) {
             const tool = toolRegistry[toolCallName];
             if (tool) {
-              const result = JSON.stringify(tool.execute());
+              const lastAssistantMsg = agent.messages.findLast(
+                (msg) => msg.role === "assistant",
+              );
+              const toolCall = lastAssistantMsg?.toolCalls?.find(
+                (tc) => tc.id === event.toolCallId,
+              );
+              const args = toolCall?.function.arguments
+                ? JSON.parse(toolCall.function.arguments)
+                : {};
+              const result = JSON.stringify(tool.execute(args));
               pendingToolMessages.push({
                 id: randomUUID(),
                 role: "tool",
