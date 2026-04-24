@@ -1,4 +1,4 @@
-import { component$, type CSSProperties } from "@builder.io/qwik";
+import { component$, useTask$, type CSSProperties } from "@builder.io/qwik";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { v4, v7 } from "uuid";
 import { z } from "zod";
@@ -32,7 +32,12 @@ export interface UseAgentProps {
 
 export const UseAgent = component$<UseAgentProps>(
   ({ class: className, style, url = "http://localhost:4111/ag-ui" }) => {
-    const { AgentUI } = useAgent({ url, tools: defaultTools });
+    const { AgentUI, defineTools } = useAgent({ url });
+
+    useTask$(() => {
+      defineTools(defaultTools);
+    });
+
     return <AgentUI class={className} style={style} />;
   },
 );

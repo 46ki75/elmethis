@@ -78,142 +78,110 @@ export function useAgent({ url, tools }: UseAgentOptions) {
   useVisibleTask$(({ cleanup }) => {
     if (!httpAgent.value) {
       httpAgent.value = noSerialize(new HttpAgent({ url }));
-
       cleanup(() => {
         httpAgent.value = null;
       });
     }
 
-    if (httpAgent.value) {
-      let pendingToolMessages: Message[] = [];
+    if (!httpAgent.value) return;
 
-      const subscription = httpAgent.value?.subscribe({
-        onEvent({ messages: newMessages, event }) {
-          if (agent.messages.length < newMessages.length) {
-            agent.messages.push(...newMessages.slice(agent.messages.length));
-          }
-          const events = [...agent.events, event];
-          agent.events = compactEvents(events);
-        },
-        onTextMessageContentEvent({ event }) {
-          const lastAssistantMessageRef = agent.messages.findLast(
-            (msg) => msg.role === "assistant",
-          );
-          if (lastAssistantMessageRef) {
-            lastAssistantMessageRef.content =
-              (lastAssistantMessageRef.content ?? "") + event.delta;
-          }
-        },
-        onToolCallArgsEvent({ event }) {
-          const lastAssistantMessageRef = agent.messages.findLast(
-            (msg) => msg.role === "assistant",
-          );
-          if (lastAssistantMessageRef) {
-            const toolCallRef = lastAssistantMessageRef.toolCalls?.find(
-              (toolCall) => toolCall.id === event.toolCallId,
-            );
-            if (toolCallRef) {
-              toolCallRef.function.arguments =
-                toolCallRef.function.arguments + event.delta;
-            }
-          }
-        },
-        onToolCallEndEvent({ event, toolCallName }) {
-          const registry: ToolRegistry = toolsRef.value ?? {};
-          const tool = registry[toolCallName];
-          if (tool) {
-            const lastAssistantMsg = agent.messages.findLast(
-              (msg) => msg.role === "assistant",
-            );
-            const toolCall = lastAssistantMsg?.toolCalls?.find(
-              (tc) => tc.id === event.toolCallId,
-            );
-            const args = toolCall?.function.arguments
-              ? JSON.parse(toolCall.function.arguments)
-              : {};
-            const result = JSON.stringify(tool.execute(args));
-            pendingToolMessages.push({
-              id: randomUUID(),
-              role: "tool",
-              content: result,
-              toolCallId: event.toolCallId,
-            } as Message);
-          }
-        },
-        async onRunFinalized({ messages }) {
-          const messagesSnapshotEvent: MessagesSnapshotEvent = {
-            type: EventType.MESSAGES_SNAPSHOT,
-            messages: messages as Message[],
-          };
-          agent.events.push(messagesSnapshotEvent);
+    let pendingToolMessages: Message[] = [];
 
-          if (pendingToolMessages.length > 0 && httpAgent.value) {
-            httpAgent.value.messages.push(...pendingToolMessages);
-            pendingToolMessages = [];
-            await httpAgent.value.runAgent({
-              tools: getToolDefinitions(toolsRef.value ?? {}),
-            });
-          }
-        },
-      });
+    const subscription = httpAgent.value.subscribe({
+      onEvent({ messages: newMessages, event }) {
+        if (agent.messages.length < newMessages.length) {
+          agent.messages.push(...newMessages.slice(agent.messages.length));
+        }
+        agent.events = compactEvents([...agent.events, event]);
+      },
+      onTextMessageContentEvent({ event }) {
+        const msg = agent.messages.findLast((m) => m.role === "assistant");
+        if (msg) msg.content = (msg.content ?? "") + event.delta;
+      },
+      onToolCallArgsEvent({ event }) {
+        const msg = agent.messages.findLast((m) => m.role === "assistant");
+        const toolCall = msg?.toolCalls?.find((tc) => tc.id === event.toolCallId);
+        if (toolCall) toolCall.function.arguments += event.delta;
+      },
+      onToolCallEndEvent({ event, toolCallName }) {
+        const registry: ToolRegistry = toolsRef.value ?? {};
+        const tool = registry[toolCallName];
+        if (!tool) return;
+        const msg = agent.messages.findLast((m) => m.role === "assistant");
+        const toolCall = msg?.toolCalls?.find((tc) => tc.id === event.toolCallId);
+        const args = toolCall?.function.arguments
+          ? JSON.parse(toolCall.function.arguments)
+          : {};
+        pendingToolMessages.push({
+          id: randomUUID(),
+          role: "tool",
+          content: JSON.stringify(tool.execute(args)),
+          toolCallId: event.toolCallId,
+        } as Message);
+      },
+      async onRunFinalized({ messages }) {
+        agent.events.push({
+          type: EventType.MESSAGES_SNAPSHOT,
+          messages: messages as Message[],
+        } as MessagesSnapshotEvent);
 
-      cleanup(() => {
-        subscription.unsubscribe();
-      });
-    }
+        if (pendingToolMessages.length === 0 || !httpAgent.value) return;
+        httpAgent.value.messages.push(...pendingToolMessages);
+        pendingToolMessages = [];
+        await httpAgent.value.runAgent({
+          tools: getToolDefinitions(toolsRef.value ?? {}),
+        });
+      },
+    });
+
+    cleanup(() => {
+      subscription.unsubscribe();
+    });
   });
 
   const send = $(async (content: string) => {
-    if (httpAgent.value) {
-      httpAgent.value.messages.push({
-        id: randomUUID(),
-        role: "user",
-        content: content,
-      });
-
-      await httpAgent.value.runAgent({
-        tools: getToolDefinitions(toolsRef.value ?? {}),
-        context: [
-          {
-            description: "Current date and time",
-            value: new Date().toString(),
-          },
-        ],
-      });
-    }
+    if (!httpAgent.value) return;
+    httpAgent.value.messages.push({ id: randomUUID(), role: "user", content });
+    await httpAgent.value.runAgent({
+      tools: getToolDefinitions(toolsRef.value ?? {}),
+      context: [{ description: "Current date and time", value: new Date().toString() }],
+    });
   });
 
-  const input = useSignal("");
-
-  const onInput$ = $((_event: InputEvent, element: HTMLTextAreaElement) => {
-    input.value = element.value;
-  });
-
-  const onSubmit$ = $((_event: Event, element: Element) => {
-    if (input.value.trim() !== "") {
-      send(input.value);
-      input.value = "";
-      const textarea = element.querySelector("textarea");
-      if (textarea) {
-        textarea.value = "";
-      }
-    }
+  const defineTools = $((newTools: ToolRegistry) => {
+    toolsRef.value = noSerialize(newTools);
   });
 
   const AgentUI = component$<{ class?: string; style?: CSSProperties }>(
-    ({ class: className, style }) => (
-      <div class={className} style={style}>
-        <div>
-          <ElmAgUiMessageRenderer messages={agent.messages} />
+    ({ class: className, style }) => {
+      const input = useSignal("");
+
+      const onInput$ = $((_event: InputEvent, element: HTMLTextAreaElement) => {
+        input.value = element.value;
+      });
+
+      const onSubmit$ = $((_event: Event, element: Element) => {
+        if (input.value.trim() === "") return;
+        send(input.value);
+        input.value = "";
+        const textarea = element.querySelector("textarea");
+        if (textarea) textarea.value = "";
+      });
+
+      return (
+        <div class={className} style={style}>
+          <div>
+            <ElmAgUiMessageRenderer messages={agent.messages} />
+          </div>
+          <ElmAgUiInput
+            style={{ position: "fixed", bottom: 16, width: "calc(100% - 32px)" }}
+            onInput$={onInput$}
+            onSubmit$={onSubmit$}
+          />
         </div>
-        <ElmAgUiInput
-          style={{ position: "fixed", bottom: 16, width: "calc(100% - 32px)" }}
-          onInput$={onInput$}
-          onSubmit$={onSubmit$}
-        />
-      </div>
-    ),
+      );
+    },
   );
 
-  return { messages: agent.messages, events: agent.events, send, AgentUI };
+  return { messages: agent.messages, events: agent.events, send, defineTools, AgentUI };
 }
