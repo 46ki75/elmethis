@@ -17,6 +17,7 @@ import {
   HttpAgent,
   Message,
   randomUUID,
+  UserMessage,
 } from "@ag-ui/client";
 
 import { z } from "zod";
@@ -186,7 +187,12 @@ export function useAgent({
 
   const send = $(async (content: string) => {
     if (!httpAgent.value) return;
-    httpAgent.value.messages.push({ id: randomUUID(), role: "user", content });
+    const userMessage: UserMessage = {
+      id: randomUUID(),
+      role: "user",
+      content,
+    };
+    httpAgent.value.messages.push(userMessage);
 
     if (autoAddContext) {
       const hash = await sh256(JSON.stringify(agentStateStore.context));
