@@ -104,23 +104,18 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
               agent.messages.push(...newMessages.slice(agent.messages.length));
             }
 
-            if (event.type === EventType.TEXT_MESSAGE_CONTENT) {
-              const incomingContent = event.delta;
-
-              const lastAssistantMessageRef = agent.messages.findLast(
-                (msg) => msg.role === "assistant",
-              );
-
-              if (lastAssistantMessageRef?.content && incomingContent) {
-                lastAssistantMessageRef.content =
-                  lastAssistantMessageRef?.content + incomingContent;
-              } else if (lastAssistantMessageRef && incomingContent) {
-                lastAssistantMessageRef.content = String(incomingContent);
-              }
-            }
-
             const events = [...agent.events, event];
             agent.events = compactEvents(events);
+          },
+          onTextMessageContentEvent({ event }) {
+            const lastAssistantMessageRef = agent.messages.findLast(
+              (msg) => msg.role === "assistant",
+            );
+
+            if (lastAssistantMessageRef) {
+              lastAssistantMessageRef.content =
+                (lastAssistantMessageRef.content ?? "") + event.delta;
+            }
           },
           onToolCallEndEvent({ event, toolCallName }) {
             const tool = toolRegistry[toolCallName];
