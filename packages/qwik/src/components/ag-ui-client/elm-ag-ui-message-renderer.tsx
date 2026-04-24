@@ -14,6 +14,7 @@ import { ElmMarkdown } from "../others/elm-markdown";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { mdiAccount, mdiCreation } from "@mdi/js";
 import { ElmAgUiToolExecution } from "./elm-ag-ui-tool-execution";
+import { ElmCopyIcon } from "../icon/elm-copy-icon";
 
 export interface ElmAgUiMessageRendererProps {
   class?: string;
@@ -124,6 +125,10 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
                     </div>
 
                     <ElmMarkdown markdown={message.content} streaming={true} />
+
+                    <div>
+                      <ElmCopyIcon content={message.content} />
+                    </div>
                   </div>
                 )}
               </>
@@ -152,6 +157,24 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
         }
 
         case "user": {
+          const contentToText = () => {
+            if (typeof message.content === "string") return message.content;
+
+            if (Array.isArray(message.content)) {
+              return message.content
+                .map((item) =>
+                  typeof item === "string"
+                    ? item
+                    : item.type === "text"
+                      ? item.text
+                      : "",
+                )
+                .join(" ");
+            }
+
+            return "";
+          };
+
           return (
             <div class={styles["message-content-user-wrapper"]}>
               <div class={styles["message-content-user-inner"]}>
@@ -175,6 +198,10 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
                       <span key={i}>{renderInputContent(item)}</span>
                     ))
                   )}
+                </div>
+
+                <div>
+                  <ElmCopyIcon content={contentToText()} />
                 </div>
               </div>
             </div>
