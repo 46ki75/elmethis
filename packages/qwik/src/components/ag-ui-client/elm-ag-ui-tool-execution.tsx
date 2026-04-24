@@ -1,6 +1,7 @@
 import {
   $,
   component$,
+  useComputed$,
   useSignal,
   useVisibleTask$,
   type CSSProperties,
@@ -8,7 +9,7 @@ import {
 
 import styles from "./elm-ag-ui-tool-execution.module.css";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
-import { mdiCodeJson, mdiHammerScrewdriver } from "@mdi/js";
+import { mdiCodeJson, mdiHammerScrewdriver, mdiWrenchClock } from "@mdi/js";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { EventType } from "@ag-ui/core";
 import { ElmCodeBlock } from "../code/elm-code-block";
@@ -51,6 +52,17 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
     const isResultShown = useSignal<boolean>(false);
     const isResultOpen = useSignal<boolean>(false);
 
+    const executionState = useComputed$(() => {
+      if (toolEventType === EventType.TOOL_CALL_START)
+        return "BEFORE_EXECUTION";
+      if (
+        toolEventType === EventType.TOOL_CALL_ARGS ||
+        toolEventType === EventType.TOOL_CALL_END
+      )
+        return "EXECUTING";
+      return "COMPLETED";
+    });
+
     const queue = useThrottledQueue(200);
 
     // eslint-disable-next-line qwik/no-use-visible-task
@@ -74,6 +86,9 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
             isArgsOpen.value = true;
             isResultShown.value = false;
             isResultOpen.value = false;
+          });
+          queue.value?.push(async () => {
+            isArgsOpen.value = false;
           });
           break;
         case EventType.TOOL_CALL_END:
@@ -116,7 +131,7 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
     return (
       <div
         class={[styles["elm-ag-ui-tool-execution"], className]}
-        style={style}
+        style={{ "--margin-block": "0", ...style }}
       >
         <ElmToggle isOpen={isOpen.value}>
           <div q:slot="summary" class={styles.summary} onClick$={toggleIsOpen}>
@@ -139,6 +154,23 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
                 <ElmCodeBlock language="json" code={toolCallArgs} />
               )}
             </ElmToggle>
+          )}
+
+          {executionState.value === "BEFORE_EXECUTION" ? null : (
+            <div class={styles.summary}>
+              <ElmMdiIcon
+                d={mdiWrenchClock}
+                size="1.25rem"
+                color={
+                  executionState.value === "EXECUTING" ? "#6987b8" : "#59b57c"
+                }
+              />
+              <ElmInlineText>
+                {executionState.value === "EXECUTING"
+                  ? "Executing..."
+                  : "Execution completed"}
+              </ElmInlineText>
+            </div>
           )}
 
           {isResultShown.value && (
