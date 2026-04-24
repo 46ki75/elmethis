@@ -92,3 +92,27 @@ export const Small: Story = {
     );
   },
 };
+
+export const Full: Story = {
+  render: (args) => {
+    return (
+      <div
+        style={{
+          width: "100%",
+          height: "calc(100vh - 34px)",
+        }}
+      >
+        <div
+          style={{
+            width: "500px",
+            border: "1px solid #ccc",
+            padding: 0,
+            margin: "0 auto",
+          }}
+        >
+          <UseAgent {...args} />
+        </div>
+      </div>
+    );
+  },
+};
