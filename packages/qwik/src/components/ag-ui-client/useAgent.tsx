@@ -119,7 +119,7 @@ export function useAgent({ url, tools, context }: UseAgentOptions) {
         );
         if (toolCall) toolCall.function.arguments += event.delta;
       },
-      onToolCallEndEvent({ event, toolCallName }) {
+      async onToolCallEndEvent({ event, toolCallName }) {
         const registry: ToolRegistry = toolsRef.value ?? {};
         const tool = registry[toolCallName];
         if (!tool) return;
@@ -135,7 +135,7 @@ export function useAgent({ url, tools, context }: UseAgentOptions) {
         pendingToolMessages.push({
           id: randomUUID(),
           role: "tool",
-          content: JSON.stringify(tool.execute(args)),
+          content: JSON.stringify(await tool.execute(args)),
           toolCallId: event.toolCallId,
         } as Message);
       },

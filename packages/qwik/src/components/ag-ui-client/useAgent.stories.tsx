@@ -34,7 +34,9 @@ export const UseAgent = component$<UseAgentProps>(
               "The version of UUID to generate. Supported values are 'v4' and 'v7'.",
             ),
         }),
-        execute: ({ version }) => ({ uuid: version === "v4" ? v4() : v7() }),
+        execute: async ({ version }) => ({
+          uuid: version === "v4" ? v4() : v7(),
+        }),
       });
 
       context.push({
