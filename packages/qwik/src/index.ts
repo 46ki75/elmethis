@@ -69,6 +69,11 @@ export {
 
 // | Icon |
 export {
+  ElmCopyIcon,
+  type ElmCopyIconProps,
+} from "./components/icon/elm-copy-icon";
+
+export {
   ElmDotLoadingIcon,
   type ElmDotLoadingIconProps,
 } from "./components/icon/elm-dot-loading-icon";
