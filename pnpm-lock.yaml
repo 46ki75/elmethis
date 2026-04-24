@@ -81,6 +81,15 @@ importers:
       shiki:
         specifier: ^4.0.2
         version: 4.0.2
+      uuid:
+        specifier: ^14.0.0
+        version: 14.0.0
+      zod:
+        specifier: ^3
+        version: 3.25.76
+      zod-to-json-schema:
+        specifier: ^3.25.2
+        version: 3.25.2(zod@3.25.76)
     devDependencies:
       '@builder.io/qwik':
         specifier: 1.19.1
@@ -8977,6 +8986,10 @@ packages:
 
   uuid@13.0.0:
     resolution: {integrity: sha512-XQegIaBTVUjSHliKqcnFqYypAd4S+WCYt5NIeRs6w/UAry7z8Y9j5ZwRRL4kzq9U3sD6v+85er9FvkEaBpji2w==}
+    hasBin: true
+
+  uuid@14.0.0:
+    resolution: {integrity: sha512-Qo+uWgilfSmAhXCMav1uYFynlQO7fMFiMVZsQqZRMIXp0O7rR7qjkj+cPvBHLgBqi960QCoo/PH2/6ZtVqKvrg==}
     hasBin: true
 
   uuid@9.0.1:
@@ -19536,6 +19549,8 @@ snapshots:
   uuid@11.1.0: {}
 
   uuid@13.0.0: {}
+
+  uuid@14.0.0: {}
 
   uuid@9.0.1: {}
 
