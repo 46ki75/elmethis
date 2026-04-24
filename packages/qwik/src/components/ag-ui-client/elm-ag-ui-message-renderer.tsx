@@ -102,28 +102,30 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
         }
 
         case "assistant": {
-          if (message.content != null) {
+          if (message.content != null || message.toolCalls?.length) {
             return (
               <>
                 {message.toolCalls?.map((toolCall) =>
                   renderTool(toolCall, messages),
                 )}
 
-                <div class={styles["message-content-assistant-wrapper"]}>
-                  <div class={styles["message-content-type"]}>
-                    <ElmMdiIcon
-                      class={styles["message-content-icon"]}
-                      d={mdiCreation}
-                    />
-                    <ElmInlineText>Assistant</ElmInlineText>
-                    <div
-                      aria-hidden="true"
-                      class={styles["message-content-spacer"]}
-                    ></div>
-                  </div>
+                {message.content != null && (
+                  <div class={styles["message-content-assistant-wrapper"]}>
+                    <div class={styles["message-content-type"]}>
+                      <ElmMdiIcon
+                        class={styles["message-content-icon"]}
+                        d={mdiCreation}
+                      />
+                      <ElmInlineText>Assistant</ElmInlineText>
+                      <div
+                        aria-hidden="true"
+                        class={styles["message-content-spacer"]}
+                      ></div>
+                    </div>
 
-                  <ElmMarkdown markdown={message.content} streaming={true} />
-                </div>
+                    <ElmMarkdown markdown={message.content} streaming={true} />
+                  </div>
+                )}
               </>
             );
           }
