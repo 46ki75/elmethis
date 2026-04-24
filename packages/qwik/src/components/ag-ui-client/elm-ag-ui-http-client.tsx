@@ -178,10 +178,7 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
         <button onClick$={send}>Send</button>
 
         <div>
-          <ElmAgUiMessageRenderer
-            messages={agent.messages}
-            events={agent.events}
-          />
+          <ElmAgUiMessageRenderer messages={agent.messages} />
         </div>
       </div>
     );
