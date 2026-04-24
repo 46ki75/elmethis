@@ -1,7 +1,6 @@
 import {
   $,
   component$,
-  useComputed$,
   useSignal,
   useVisibleTask$,
   type CSSProperties,
@@ -56,17 +55,6 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
     const isArgsOpen = useSignal<boolean>(false);
     const isResultShown = useSignal<boolean>(false);
     const isResultOpen = useSignal<boolean>(false);
-
-    const executionState = useComputed$(() => {
-      if (toolEventType === EventType.TOOL_CALL_START)
-        return "BEFORE_EXECUTION";
-      if (
-        toolEventType === EventType.TOOL_CALL_ARGS ||
-        toolEventType === EventType.TOOL_CALL_END
-      )
-        return "EXECUTING";
-      return "COMPLETED";
-    });
 
     const queue = useThrottledQueue(200);
 
@@ -176,17 +164,21 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
             </ElmToggle>
           )}
 
-          {executionState.value === "BEFORE_EXECUTION" ? null : (
+          {toolEventType === EventType.TOOL_CALL_START ? null : (
             <div class={styles.summary}>
               <ElmMdiIcon
                 d={mdiWrenchClock}
                 size="1.25rem"
                 color={
-                  executionState.value === "EXECUTING" ? "#6987b8" : "#59b57c"
+                  toolEventType === EventType.TOOL_CALL_ARGS ||
+                  toolEventType === EventType.TOOL_CALL_END
+                    ? "#6987b8"
+                    : "#59b57c"
                 }
               />
               <ElmInlineText>
-                {executionState.value === "EXECUTING"
+                {toolEventType === EventType.TOOL_CALL_ARGS ||
+                toolEventType === EventType.TOOL_CALL_END
                   ? "Executing..."
                   : "Execution completed"}
               </ElmInlineText>
