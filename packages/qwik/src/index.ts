@@ -27,6 +27,10 @@ export {
   ElmToggle,
   type ElmToggleProps,
 } from "./components/containments/elm-toggle";
+export {
+  ElmTooltip,
+  type ElmTooltipProps,
+} from "./components/containments/elm-tooltip";
 
 // | Fallback |
 export {
