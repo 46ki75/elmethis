@@ -33,6 +33,7 @@
   align-items: center;
   gap: 0.5rem;
   width: 100%;
+  font-family: monospace;
 
   .message-content-icon {
     flex-shrink: 0;
