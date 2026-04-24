@@ -60,9 +60,10 @@ export interface UseAgentOptions {
     value: string;
     description: string;
   }[];
+  headers?: Record<string, string> | undefined;
 }
 
-export function useAgent({ url, tools, context }: UseAgentOptions) {
+export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
   const httpAgent = useSignal<NoSerialize<HttpAgent> | null>(null);
   const toolsRef = useSignal<NoSerialize<ToolRegistry>>(noSerialize(tools));
 
@@ -82,7 +83,7 @@ export function useAgent({ url, tools, context }: UseAgentOptions) {
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(({ cleanup }) => {
     if (!httpAgent.value) {
-      httpAgent.value = noSerialize(new HttpAgent({ url }));
+      httpAgent.value = noSerialize(new HttpAgent({ url, headers }));
       cleanup(() => {
         httpAgent.value = null;
       });
