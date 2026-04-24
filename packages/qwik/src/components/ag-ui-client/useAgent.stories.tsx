@@ -1,6 +1,28 @@
 import { component$, type CSSProperties } from "@builder.io/qwik";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { useAgent } from "./useAgent";
+import { v4, v7 } from "uuid";
+import { z } from "zod";
+import { defineTool, useAgent } from "./useAgent";
+
+const defaultTools = {
+  generateUuid: defineTool({
+    description: "Generate a random UUID v4 string",
+    schema: z.object({
+      version: z
+        .enum(["v4", "v7"])
+        .describe(
+          "The version of UUID to generate. Supported values are 'v4' and 'v7'.",
+        ),
+    }),
+    execute: ({ version }) => {
+      if (version === "v4") {
+        return { uuid: v4() };
+      } else {
+        return { uuid: v7() };
+      }
+    },
+  }),
+};
 
 export interface UseAgentProps {
   class?: string;
@@ -10,7 +32,7 @@ export interface UseAgentProps {
 
 export const UseAgent = component$<UseAgentProps>(
   ({ class: className, style, url = "http://localhost:4111/ag-ui" }) => {
-    const { AgentUI } = useAgent(url);
+    const { AgentUI } = useAgent({ url, tools: defaultTools });
     return <AgentUI class={className} style={style} />;
   },
 );

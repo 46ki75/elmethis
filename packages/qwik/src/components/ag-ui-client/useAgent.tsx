@@ -19,7 +19,6 @@ import {
   randomUUID,
 } from "@ag-ui/client";
 
-import { v4, v7 } from "uuid";
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import { ElmAgUiMessageRenderer } from "./elm-ag-ui-message-renderer";
@@ -29,23 +28,23 @@ import { ElmAgUiInput } from "./elm-ag-ui-input";
 // Tool registry
 // ---------------------------------------------------------------------------
 
-interface ToolDef<T extends z.ZodObject<z.ZodRawShape>> {
+export interface ToolDef<T extends z.ZodObject<z.ZodRawShape>> {
   description: string;
   schema: T;
   execute: (args: z.infer<T>) => unknown;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AnyToolDef = ToolDef<any>;
-type ToolRegistry = Record<string, AnyToolDef>;
+export type AnyToolDef = ToolDef<any>;
+export type ToolRegistry = Record<string, AnyToolDef>;
 
-function defineTool<T extends z.ZodObject<z.ZodRawShape>>(
+export function defineTool<T extends z.ZodObject<z.ZodRawShape>>(
   tool: ToolDef<T>,
 ): ToolDef<T> {
   return tool;
 }
 
-function getToolDefinitions(registry: ToolRegistry) {
+export function getToolDefinitions(registry: ToolRegistry) {
   return Object.entries(registry).map(([name, { description, schema }]) => ({
     name,
     description,
@@ -57,32 +56,18 @@ function getToolDefinitions(registry: ToolRegistry) {
   }));
 }
 
-const toolRegistry: ToolRegistry = {
-  generateUuid: defineTool({
-    description: "Generate a random UUID v4 string",
-    schema: z.object({
-      version: z
-        .enum(["v4", "v7"])
-        .describe(
-          "The version of UUID to generate. Supported values are 'v4' and 'v7'.",
-        ),
-    }),
-    execute: ({ version }) => {
-      if (version === "v4") {
-        return { uuid: v4() };
-      } else {
-        return { uuid: v7() };
-      }
-    },
-  }),
-};
-
 // ---------------------------------------------------------------------------
 // Hook
 // ---------------------------------------------------------------------------
 
-export function useAgent(url: string = "http://localhost:8000/api/chat") {
+export interface UseAgentOptions {
+  url: string;
+  tools?: ToolRegistry;
+}
+
+export function useAgent({ url, tools }: UseAgentOptions) {
   const httpAgent = useSignal<NoSerialize<HttpAgent> | null>(null);
+  const toolsRef = useSignal<NoSerialize<ToolRegistry>>(noSerialize(tools));
 
   const agent = useStore<{ messages: Message[]; events: BaseEvent[] }>({
     messages: [],
@@ -134,7 +119,8 @@ export function useAgent(url: string = "http://localhost:8000/api/chat") {
           }
         },
         onToolCallEndEvent({ event, toolCallName }) {
-          const tool = toolRegistry[toolCallName];
+          const registry: ToolRegistry = toolsRef.value ?? {};
+          const tool = registry[toolCallName];
           if (tool) {
             const lastAssistantMsg = agent.messages.findLast(
               (msg) => msg.role === "assistant",
@@ -165,7 +151,7 @@ export function useAgent(url: string = "http://localhost:8000/api/chat") {
             httpAgent.value.messages.push(...pendingToolMessages);
             pendingToolMessages = [];
             await httpAgent.value.runAgent({
-              tools: getToolDefinitions(toolRegistry),
+              tools: getToolDefinitions(toolsRef.value ?? {}),
             });
           }
         },
@@ -186,7 +172,7 @@ export function useAgent(url: string = "http://localhost:8000/api/chat") {
       });
 
       await httpAgent.value.runAgent({
-        tools: getToolDefinitions(toolRegistry),
+        tools: getToolDefinitions(toolsRef.value ?? {}),
         context: [
           {
             description: "Current date and time",
@@ -217,19 +203,6 @@ export function useAgent(url: string = "http://localhost:8000/api/chat") {
   const AgentUI = component$<{ class?: string; style?: CSSProperties }>(
     ({ class: className, style }) => (
       <div class={className} style={style}>
-        <button onClick$={() => send("Generate a random UUID v4 string")}>
-          Generate UUID v4
-        </button>
-        <button
-          onClick$={() =>
-            send("What is the new feature called Amazon S3 Files?")
-          }
-        >
-          What is Amazon S3 Files?
-        </button>
-        <button onClick$={() => send("What date is it today?")}>
-          What date is it today?
-        </button>
         <div>
           <ElmAgUiMessageRenderer messages={agent.messages} />
         </div>
@@ -244,4 +217,3 @@ export function useAgent(url: string = "http://localhost:8000/api/chat") {
 
   return { messages: agent.messages, events: agent.events, send, AgentUI };
 }
-
