@@ -12,9 +12,10 @@ import { ElmInlineText } from "../typography/elm-inline-text";
 import { ElmBlockImage } from "../media/elm-block-image";
 import { ElmMarkdown } from "../others/elm-markdown";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
-import { mdiAccount, mdiCreation } from "@mdi/js";
+import { mdiAccount, mdiCreation, mdiLightbulbOn } from "@mdi/js";
 import { ElmAgUiToolExecution } from "./elm-ag-ui-tool-execution";
 import { ElmCopyIcon } from "../icon/elm-copy-icon";
+import { ElmToggle } from "../containments/elm-toggle";
 
 export interface ElmAgUiMessageRendererProps {
   class?: string;
@@ -98,7 +99,7 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
       }
     };
 
-    const render = (message: Message): JSX.Element | null => {
+    const render = (message: Message, index: number): JSX.Element | null => {
       switch (message.role) {
         case "activity": {
           return null;
@@ -147,7 +148,25 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
         }
 
         case "reasoning": {
-          return null;
+          return (
+            <>
+              <ElmToggle isOpen={messages.length - 1 === index}>
+                <div q:slot="summary" class={styles["message-content-type"]}>
+                  <ElmMdiIcon
+                    class={styles["message-content-icon"]}
+                    d={mdiLightbulbOn}
+                  />
+                  <ElmInlineText>Reasoning</ElmInlineText>
+                  <div
+                    aria-hidden="true"
+                    class={styles["message-content-spacer"]}
+                  ></div>
+                </div>
+
+                <ElmMarkdown markdown={message.content} streaming={true} />
+              </ElmToggle>
+            </>
+          );
         }
 
         case "system": {
@@ -217,7 +236,7 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
     return (
       <div class={[styles["elm-my-something"], className]} style={style}>
         {messages.map((msg, i) => (
-          <div key={msg.id ?? i}>{render(msg)}</div>
+          <div key={msg.id ?? i}>{render(msg, i)}</div>
         ))}
       </div>
     );
