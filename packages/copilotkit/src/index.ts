@@ -42,6 +42,8 @@ const runtime = new CopilotRuntime({
 const app = new Hono();
 
 app.use("*", cors());
+
+// `/copilotkit/default/run`
 app.route("/", createCopilotHonoHandler({ runtime, basePath: "/copilotkit" }));
 
 const port = parseInt(process.env.PORT || "8080", 10);
