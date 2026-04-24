@@ -9,7 +9,12 @@ import {
 
 import styles from "./elm-ag-ui-tool-execution.module.css";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
-import { mdiCodeJson, mdiHammerScrewdriver, mdiWrenchClock } from "@mdi/js";
+import {
+  mdiCodeJson,
+  mdiFunctionVariant,
+  mdiHammerScrewdriver,
+  mdiWrenchClock,
+} from "@mdi/js";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { EventType } from "@ag-ui/core";
 import { ElmCodeBlock } from "../code/elm-code-block";
@@ -138,6 +143,21 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
             <ElmMdiIcon d={mdiHammerScrewdriver} size="1.25rem" />
             <ElmInlineText>{toolName}</ElmInlineText>
           </div>
+
+          {
+            <div class={styles.summary}>
+              <ElmMdiIcon
+                d={mdiFunctionVariant}
+                size="1.25rem"
+                color={
+                  toolEventType === EventType.TOOL_CALL_START
+                    ? "#6987b8"
+                    : "#59b57c"
+                }
+              />
+              <ElmInlineText>Preparing arguments...</ElmInlineText>
+            </div>
+          }
 
           {isArgsShown.value && (
             <ElmToggle isOpen={isArgsOpen.value}>
