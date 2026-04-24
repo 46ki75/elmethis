@@ -130,9 +130,12 @@ const mcp = new MCPClient({
   },
 });
 
+// name: "openrouter" sets the provider ID so providerOptions.openrouter is matched correctly.
+// Without it, createOpenAI defaults to "openai" and providerOptions.openrouter is silently ignored.
 const openrouter = createOpenAI({
   baseURL: "https://openrouter.ai/api/v1",
   apiKey: process.env.OPENROUTER_API_KEY,
+  name: "openrouter",
 });
 
 // ── Agent ─────────────────────────────────────────────────────────────────────
@@ -150,8 +153,9 @@ const agent = new Agent({
     maxSteps: 10,
     modelSettings: { maxOutputTokens: 20000 },
     providerOptions: {
-      // openrouter-specific: reasoning effort + prefer fastest provider
-      openrouter: { reasoning: { effort: "medium" }, sort: "throughput" },
+      // reasoningEffort is the AI SDK field; maps to reasoning_effort in the request body.
+      // sort: "throughput" asks OpenRouter to prefer the fastest available provider instance.
+      openrouter: { reasoningEffort: "medium", sort: "throughput" },
     },
   },
   tools: await mcp.listTools().catch(() => ({})),
