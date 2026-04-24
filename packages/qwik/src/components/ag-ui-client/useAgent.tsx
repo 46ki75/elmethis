@@ -157,7 +157,10 @@ export function useAgent({ url, tools, context }: UseAgentOptions) {
     httpAgent.value.messages.push({ id: randomUUID(), role: "user", content });
     await httpAgent.value.runAgent({
       tools: getToolDefinitions(toolsRef.value ?? {}),
-      context: agentStateStore.context?.map(({ value, description }) => ({ value, description })),
+      context: agentStateStore.context?.map(({ value, description }) => ({
+        value,
+        description,
+      })),
     });
   });
 
@@ -205,6 +208,7 @@ export function useAgent({ url, tools, context }: UseAgentOptions) {
     events: agentStateStore.events,
     send,
     addTool,
+    agentStateStore,
     AgentUI,
   };
 }
