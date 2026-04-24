@@ -148,7 +148,7 @@ const agent = new Agent({
   //   • system messages → passed as role:"system" entries in the messages array
   //   • context items   → not injected here (would break caching)
   instructions: "You are a helpful AI assistant.",
-  model: openrouter.chat("minimax/minimax-m2.5"),
+  model: openrouter.chat("moonshotai/kimi-k2.6"),
   defaultOptions: {
     maxSteps: 10,
     modelSettings: { maxOutputTokens: 20000 },
@@ -295,19 +295,41 @@ export const mastra = new Mastra({
                   //                 reasoning-signature { id, signature }
                   case "reasoning-start":
                     reasoningMessageId = chunk.payload["id"] as string;
-                    emit({ type: EventType.REASONING_START, messageId: reasoningMessageId });
-                    emit({ type: EventType.REASONING_MESSAGE_START, messageId: reasoningMessageId, role: "reasoning" });
+                    emit({
+                      type: EventType.REASONING_START,
+                      messageId: reasoningMessageId,
+                    });
+                    emit({
+                      type: EventType.REASONING_MESSAGE_START,
+                      messageId: reasoningMessageId,
+                      role: "reasoning",
+                    });
                     break;
                   case "reasoning-delta":
-                    emit({ type: EventType.REASONING_MESSAGE_CONTENT, messageId: reasoningMessageId, delta: chunk.payload["text"] });
+                    emit({
+                      type: EventType.REASONING_MESSAGE_CONTENT,
+                      messageId: reasoningMessageId,
+                      delta: chunk.payload["text"],
+                    });
                     break;
                   case "reasoning-end":
-                    emit({ type: EventType.REASONING_MESSAGE_END, messageId: reasoningMessageId });
-                    emit({ type: EventType.REASONING_END, messageId: reasoningMessageId });
+                    emit({
+                      type: EventType.REASONING_MESSAGE_END,
+                      messageId: reasoningMessageId,
+                    });
+                    emit({
+                      type: EventType.REASONING_END,
+                      messageId: reasoningMessageId,
+                    });
                     break;
                   case "reasoning-signature":
                     // Encrypted reasoning value (e.g. Claude's thinking signature)
-                    emit({ type: EventType.REASONING_ENCRYPTED_VALUE, subtype: "message", entityId: chunk.payload["id"], encryptedValue: chunk.payload["signature"] });
+                    emit({
+                      type: EventType.REASONING_ENCRYPTED_VALUE,
+                      subtype: "message",
+                      entityId: chunk.payload["id"],
+                      encryptedValue: chunk.payload["signature"],
+                    });
                     break;
                 }
               }

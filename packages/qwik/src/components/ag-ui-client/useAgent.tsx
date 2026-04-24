@@ -163,8 +163,10 @@ export function useAgent({
         } as Message);
       },
       async onRunFinalized() {
-        console.log(agentStateStore.messages);
-        console.log(agentStateStore.events);
+        console.log({
+          messages: agentStateStore.messages,
+          events: agentStateStore.events,
+        });
         if (pendingToolMessages.length === 0 || !httpAgent.value) {
           agentStateStore.isRunning = false;
           return;
