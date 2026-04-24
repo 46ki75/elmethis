@@ -14,7 +14,6 @@ import styles from "./useAgent.module.css";
 import {
   BaseEvent,
   compactEvents,
-  EventType,
   HttpAgent,
   Message,
   randomUUID,
@@ -75,12 +74,12 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
       value: string;
       description: string;
     }[];
-    currentEventType: EventType | null;
+    isRunning: boolean;
   }>({
     messages: [],
     events: [],
     context,
-    currentEventType: null,
+    isRunning: false,
   });
 
   // eslint-disable-next-line qwik/no-use-visible-task
@@ -97,8 +96,10 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
     let pendingToolMessages: Message[] = [];
 
     const subscription = httpAgent.value.subscribe({
+      onRunInitialized() {
+        agentStateStore.isRunning = true;
+      },
       onEvent({ messages: newMessages, event }) {
-        agentStateStore.currentEventType = event.type;
         if (agentStateStore.messages.length < newMessages.length) {
           agentStateStore.messages.push(
             ...newMessages.slice(agentStateStore.messages.length),
@@ -145,7 +146,10 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
         } as Message);
       },
       async onRunFinalized() {
-        if (pendingToolMessages.length === 0 || !httpAgent.value) return;
+        if (pendingToolMessages.length === 0 || !httpAgent.value) {
+          agentStateStore.isRunning = false;
+          return;
+        }
         httpAgent.value.messages.push(...pendingToolMessages);
         pendingToolMessages = [];
         await httpAgent.value.runAgent({
@@ -206,13 +210,7 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
               onInput$={onInput$}
               onSubmit$={onSubmit$}
               onAbort$={abort}
-              isRunning={
-                agentStateStore.currentEventType != null &&
-                !(
-                  agentStateStore.currentEventType === EventType.RUN_FINISHED ||
-                  agentStateStore.currentEventType === EventType.RUN_ERROR
-                )
-              }
+              isRunning={agentStateStore.isRunning}
             />
           </div>
         </div>
@@ -231,7 +229,6 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
     events: agentStateStore.events,
     context: agentStateStore.context,
     setContext,
-    currentEventType: agentStateStore.currentEventType,
     send,
     addTool,
     abort,
