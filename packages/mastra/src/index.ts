@@ -7,7 +7,8 @@ import { getLocalAgent } from "@ag-ui/mastra";
 import { EventEncoder } from "@ag-ui/encoder";
 
 import "dotenv/config";
-import { EventType, MessagesSnapshotEvent } from "@ag-ui/core";
+import type { RunAgentInput } from "@ag-ui/core";
+import { convertContextToSystemMessage } from "./utils";
 
 const mcp = new MCPClient({
   servers: {
@@ -25,18 +26,7 @@ const openrouter = createOpenAI({
 const agent = new Agent({
   id: "my-assistant",
   name: "Assistant",
-  instructions: ({ requestContext }) => {
-    const agUiCtx = requestContext?.get("ag-ui") as
-      | { context?: Array<{ description: string; value: string }> }
-      | undefined;
-    const contextItems = agUiCtx?.context ?? [];
-    const base = "You are a helpful AI assistant.";
-    if (contextItems.length === 0) return base;
-    const contextStr = contextItems
-      .map((item) => `${item.description}: ${item.value}`)
-      .join("\n");
-    return `${base}\n\n## Context\n${contextStr}`;
-  },
+  instructions: "You are a helpful AI assistant.",
   model: openrouter.chat("minimax/minimax-m2.5"),
   defaultOptions: {
     maxSteps: 10,
@@ -62,7 +52,39 @@ export const mastra = new Mastra({
         requiresAuth: false,
         handler: async (c) => {
           const mastraInstance = c.get("mastra");
-          const body = await c.req.json();
+          const body = (await c.req.json()) as RunAgentInput;
+
+          console.log(body);
+
+          let messages = [...body.messages];
+
+          if (body.context.length > 0) {
+            const contextContent =
+              "## Runtime context (ephemeral, current turn only)\n" +
+              body.context
+                .map((i) => `### ${i.description}\n${i.value}`)
+                .join("\n\n");
+
+            const contextMessageId = "ag-ui-context";
+
+            const contextMessage = convertContextToSystemMessage(
+              body.context,
+              contextMessageId,
+            );
+
+            if (contextMessage) {
+              messages = body.messages.filter(
+                (msg) => msg.id !== contextMessageId,
+              );
+              messages.push(contextMessage);
+            }
+          }
+
+          const patchedBody: RunAgentInput = {
+            ...body,
+            messages,
+            context: [],
+          };
 
           const agentWrapper = getLocalAgent({
             mastra: mastraInstance,
@@ -75,16 +97,18 @@ export const mastra = new Mastra({
           const writer = writable.getWriter();
           const textEncoder = new TextEncoder();
 
-          const subscription = agentWrapper.run(body).subscribe({
+          const subscription = agentWrapper.run(patchedBody).subscribe({
             next(event) {
               writer
                 .write(textEncoder.encode(encoder.encodeSSE(event)))
                 .catch(() => subscription.unsubscribe());
             },
             error() {
+              subscription.unsubscribe();
               writer.close().catch(() => {});
             },
             complete() {
+              subscription.unsubscribe();
               writer.close().catch(() => {});
             },
           });
@@ -93,6 +117,8 @@ export const mastra = new Mastra({
             subscription.unsubscribe();
             writer.close().catch(() => {});
           });
+
+          console.log(messages);
 
           return new Response(readable, {
             headers: {
