@@ -117,6 +117,22 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
                 (lastAssistantMessageRef.content ?? "") + event.delta;
             }
           },
+          onToolCallArgsEvent({ event }) {
+            const lastAssistantMessageRef = agent.messages.findLast(
+              (msg) => msg.role === "assistant",
+            );
+
+            if (lastAssistantMessageRef) {
+              const toolCallRef = lastAssistantMessageRef.toolCalls?.find(
+                (toolCall) => toolCall.id === event.toolCallId,
+              );
+
+              if (toolCallRef) {
+                toolCallRef.function.arguments =
+                  toolCallRef.function.arguments + event.delta;
+              }
+            }
+          },
           onToolCallEndEvent({ event, toolCallName }) {
             const tool = toolRegistry[toolCallName];
             if (tool) {
