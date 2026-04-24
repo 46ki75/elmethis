@@ -222,6 +222,9 @@ export const mastra = new Mastra({
               // assistant message per step.
               let messageId = crypto.randomUUID();
               let inText = false;
+              // reasoningMessageId is independent of messageId — reasoning and
+              // text can interleave within a single step.
+              let reasoningMessageId: string = crypto.randomUUID();
 
               type Chunk = {
                 type: string;
@@ -284,6 +287,27 @@ export const mastra = new Mastra({
                       inText = false;
                     }
                     messageId = crypto.randomUUID();
+                    reasoningMessageId = crypto.randomUUID();
+                    break;
+                  // Mastra reasoning triple: reasoning-start → reasoning-delta → reasoning-end
+                  // reasoning-signature carries the encrypted signature (e.g. Claude extended thinking)
+                  // Payload fields: reasoning-start/end { id }, reasoning-delta { id, text },
+                  //                 reasoning-signature { id, signature }
+                  case "reasoning-start":
+                    reasoningMessageId = chunk.payload["id"] as string;
+                    emit({ type: EventType.REASONING_START, messageId: reasoningMessageId });
+                    emit({ type: EventType.REASONING_MESSAGE_START, messageId: reasoningMessageId, role: "reasoning" });
+                    break;
+                  case "reasoning-delta":
+                    emit({ type: EventType.REASONING_MESSAGE_CONTENT, messageId: reasoningMessageId, delta: chunk.payload["text"] });
+                    break;
+                  case "reasoning-end":
+                    emit({ type: EventType.REASONING_MESSAGE_END, messageId: reasoningMessageId });
+                    emit({ type: EventType.REASONING_END, messageId: reasoningMessageId });
+                    break;
+                  case "reasoning-signature":
+                    // Encrypted reasoning value (e.g. Claude's thinking signature)
+                    emit({ type: EventType.REASONING_ENCRYPTED_VALUE, subtype: "message", entityId: chunk.payload["id"], encryptedValue: chunk.payload["signature"] });
                     break;
                 }
               }
