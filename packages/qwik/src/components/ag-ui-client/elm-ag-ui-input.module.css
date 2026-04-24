@@ -1,0 +1,38 @@
+.elm-ag-ui-input {
+  position: relative;
+  box-sizing: border-box;
+  padding: 0 4rem 0 1.5rem;
+  height: 4rem;
+  width: 100%;
+  border: solid 1px oklch(from gray l c h / 0.5);
+  border-radius: 2rem;
+  display: flex;
+  align-items: center;
+  background-color: oklch(from white l c h / 0.5);
+
+  .input {
+    all: unset;
+    width: 100%;
+    height: 1.5em;
+  }
+
+  .submit-button {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background-color: oklch(from black l c h / 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 200ms;
+
+    &:hover {
+      opacity: 0.75;
+    }
+  }
+}
