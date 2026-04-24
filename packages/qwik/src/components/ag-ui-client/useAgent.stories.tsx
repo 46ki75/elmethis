@@ -50,7 +50,23 @@ const meta: Meta<UseAgentProps> = {
 export default meta;
 type Story = StoryObj<UseAgentProps>;
 
-export const Primary: Story = {};
+export const Primary: Story = {
+  render: (args) => {
+    return (
+      <div
+        style={{
+          width: "100%",
+          height: "calc(100vh - 34px)",
+          border: "1px solid #ccc",
+          padding: 0,
+          margin: 0,
+        }}
+      >
+        <UseAgent {...args} />
+      </div>
+    );
+  },
+};
 
 export const Small: Story = {
   render: (args) => {

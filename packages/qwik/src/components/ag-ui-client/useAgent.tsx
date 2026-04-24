@@ -9,6 +9,8 @@ import {
   type CSSProperties,
 } from "@builder.io/qwik";
 
+import styles from "./useAgent.module.css";
+
 import {
   BaseEvent,
   compactEvents,
@@ -185,19 +187,14 @@ export function useAgent({ url, tools, context }: UseAgentOptions) {
       });
 
       return (
-        <div class={className} style={style}>
+        <div class={[styles["use-agent"], className]} style={style}>
           <div>
             <ElmAgUiMessageRenderer messages={agentStateStore.messages} />
           </div>
-          <ElmAgUiInput
-            style={{
-              position: "fixed",
-              bottom: 16,
-              width: "calc(100% - 32px)",
-            }}
-            onInput$={onInput$}
-            onSubmit$={onSubmit$}
-          />
+
+          <div class={styles["agent-input"]}>
+            <ElmAgUiInput onInput$={onInput$} onSubmit$={onSubmit$} />
+          </div>
         </div>
       );
     },
