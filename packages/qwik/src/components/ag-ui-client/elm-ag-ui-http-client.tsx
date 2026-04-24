@@ -154,12 +154,12 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
       }
     });
 
-    const send = $(async () => {
+    const send = $(async (content: string) => {
       if (httpAgent.value) {
         httpAgent.value.messages.push({
           id: randomUUID(),
           role: "user",
-          content: "Generate a random UUID v4 string",
+          content: content,
         });
 
         await httpAgent.value.runAgent({
@@ -170,7 +170,17 @@ export const ElmAgUiHttpClient = component$<ElmAgUiHttpClientProps>(
 
     return (
       <div class={[styles["elm-my-something"], className]} style={style}>
-        <button onClick$={send}>Send</button>
+        <button onClick$={() => send("Generate a random UUID v4 string")}>
+          Generate UUID v4
+        </button>
+
+        <button
+          onClick$={() =>
+            send("What is the new feature called Amazon S3 Files?")
+          }
+        >
+          What is Amazon S3 Files?
+        </button>
 
         <div>
           <ElmAgUiMessageRenderer messages={agent.messages} />
