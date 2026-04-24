@@ -54,18 +54,27 @@ export function getToolDefinitions(registry: ToolRegistry) {
 export interface UseAgentOptions {
   url: string;
   tools?: ToolRegistry;
+  context?: {
+    value: string;
+    description: string;
+  }[];
 }
 
-export function useAgent({ url, tools }: UseAgentOptions) {
+export function useAgent({ url, tools, context }: UseAgentOptions) {
   const httpAgent = useSignal<NoSerialize<HttpAgent> | null>(null);
   const toolsRef = useSignal<NoSerialize<ToolRegistry>>(noSerialize(tools));
 
   const agentStateStore = useStore<{
     messages: Message[];
     events: BaseEvent[];
+    context?: {
+      value: string;
+      description: string;
+    }[];
   }>({
     messages: [],
     events: [],
+    context,
   });
 
   // eslint-disable-next-line qwik/no-use-visible-task
@@ -148,9 +157,7 @@ export function useAgent({ url, tools }: UseAgentOptions) {
     httpAgent.value.messages.push({ id: randomUUID(), role: "user", content });
     await httpAgent.value.runAgent({
       tools: getToolDefinitions(toolsRef.value ?? {}),
-      context: [
-        { description: "Current date and time", value: new Date().toString() },
-      ],
+      context: agentStateStore.context?.map(({ value, description }) => ({ value, description })),
     });
   });
 

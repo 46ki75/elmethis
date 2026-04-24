@@ -12,7 +12,12 @@ export interface UseAgentProps {
 
 export const UseAgent = component$<UseAgentProps>(
   ({ class: className, style, url = "http://localhost:4111/ag-ui" }) => {
-    const { AgentUI, addTool } = useAgent({ url });
+    const { AgentUI, addTool } = useAgent({
+      url,
+      context: [
+        { description: "Current date and time", value: new Date().toString() },
+      ],
+    });
 
     useTask$(() => {
       addTool("generateUuid", {
