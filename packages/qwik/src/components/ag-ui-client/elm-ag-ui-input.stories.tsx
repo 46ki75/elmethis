@@ -7,13 +7,18 @@ const meta: Meta<ElmAgUiInputProps> = {
   component: ElmAgUiInput,
   tags: ["autodocs"],
   args: {},
+  argTypes: {
+    isRunning: { control: "boolean" },
+  },
 };
 
 export default meta;
 type Story = StoryObj<ElmAgUiInputProps>;
 
 export const Primary: Story = {
-  args: {},
+  args: {
+    isRunning: false,
+  },
   render: (args) => {
     const Render = component$((props: ElmAgUiInputProps) => {
       const input = useSignal("");

@@ -198,7 +198,11 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
           </div>
 
           <div class={styles["agent-input"]}>
-            <ElmAgUiInput onInput$={onInput$} onSubmit$={onSubmit$} />
+            <ElmAgUiInput
+              onInput$={onInput$}
+              onSubmit$={onSubmit$}
+              isRunning={!!httpAgent.value?.isRunning}
+            />
           </div>
         </div>
       );

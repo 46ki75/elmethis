@@ -9,12 +9,14 @@ import {
 import styles from "./elm-ag-ui-input.module.css";
 import textStyle from "../../styles/text.module.scss";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
-import { mdiSend } from "@mdi/js";
+import { mdiSend, mdiStop } from "@mdi/js";
 
 export interface ElmAgUiInputProps {
   class?: string;
 
   style?: CSSProperties;
+
+  isRunning: boolean;
 
   onInput$: QRL<(event: InputEvent, element: HTMLTextAreaElement) => void>;
 
@@ -22,7 +24,7 @@ export interface ElmAgUiInputProps {
 }
 
 export const ElmAgUiInput = component$<ElmAgUiInputProps>(
-  ({ class: className, style, onInput$, onSubmit$ }) => {
+  ({ class: className, style, isRunning, onInput$, onSubmit$ }) => {
     const textAreaRef = useSignal<HTMLTextAreaElement>();
 
     const onSubmit = $((event: Event, element: Element) => {
@@ -44,7 +46,11 @@ export const ElmAgUiInput = component$<ElmAgUiInputProps>(
         />
 
         <div class={styles["submit-button"]} onClick$={onSubmit}>
-          <ElmMdiIcon d={mdiSend} size="1.5rem" color="white" />
+          <ElmMdiIcon
+            d={isRunning ? mdiStop : mdiSend}
+            size="1.5rem"
+            color="white"
+          />
         </div>
       </div>
     );
