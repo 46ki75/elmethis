@@ -46,3 +46,25 @@
     background-color: oklch(from grey l c h / 0.125);
   }
 }
+
+.message-content-assistant-actions {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.clickable-icon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  transition: background-color 200ms;
+  cursor: pointer;
+
+  &:hover {
+    background-color: oklch(from gray l c h / 0.25);
+  }
+}

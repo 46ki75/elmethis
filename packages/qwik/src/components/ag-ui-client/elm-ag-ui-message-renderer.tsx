@@ -12,7 +12,7 @@ import { ElmInlineText } from "../typography/elm-inline-text";
 import { ElmBlockImage } from "../media/elm-block-image";
 import { ElmMarkdown } from "../others/elm-markdown";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
-import { mdiAccount, mdiCreation, mdiLightbulbOn } from "@mdi/js";
+import { mdiAccount, mdiCreation, mdiLightbulbOn, mdiRefresh } from "@mdi/js";
 import { ElmAgUiToolExecution } from "./elm-ag-ui-tool-execution";
 import { ElmCopyIcon } from "../icon/elm-copy-icon";
 import { ElmToggle } from "../containments/elm-toggle";
@@ -130,8 +130,12 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
                     <ElmMarkdown markdown={message.content} streaming={true} />
 
                     {!isRunning && (
-                      <div>
+                      <div class={styles["message-content-assistant-actions"]}>
                         <ElmCopyIcon content={message.content} />
+
+                        <span class={styles["clickable-icon"]}>
+                          <ElmMdiIcon d={mdiRefresh} size="1.25rem" />
+                        </span>
                       </div>
                     )}
                   </div>
