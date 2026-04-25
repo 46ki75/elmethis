@@ -13,12 +13,12 @@ import styles from "./useAgent.module.css";
 
 import {
   BaseEvent,
-  compactEvents,
   HttpAgent,
   Message,
   randomUUID,
   UserMessage,
 } from "@ag-ui/client";
+import { compactEventsExtended } from "./compactEventsExtended";
 
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
@@ -123,7 +123,7 @@ export function useAgent({
             ...newMessages.slice(agentStateStore.messages.length),
           );
         }
-        agentStateStore.events = compactEvents([
+        agentStateStore.events = compactEventsExtended([
           ...agentStateStore.events,
           event,
         ]);
