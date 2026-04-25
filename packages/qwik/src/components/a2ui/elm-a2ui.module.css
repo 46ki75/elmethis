@@ -1,0 +1,211 @@
+.elm-a2ui {
+  display: contents;
+}
+
+.surface {
+  display: contents;
+}
+
+/* ---- text ---- */
+
+.text {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.text-h1 { font-size: 2rem;   font-weight: 700; }
+.text-h2 { font-size: 1.5rem; font-weight: 600; }
+.text-h3 { font-size: 1.25rem; font-weight: 600; }
+.text-h4 { font-size: 1.125rem; font-weight: 500; }
+.text-h5 { font-size: 1rem;   font-weight: 500; }
+.text-body { font-size: 1rem; }
+.text-caption { font-size: 0.75rem; color: #666; }
+
+/* ---- layout ---- */
+
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* child-wrap lets Row/Column children participate in flex without extra styles */
+.child-wrap {
+  display: contents;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  gap: 4px;
+}
+
+.list-horizontal {
+  flex-direction: row;
+}
+
+.list-item {
+  flex-shrink: 0;
+}
+
+/* ---- card ---- */
+
+.card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* ---- button ---- */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background 0.15s;
+}
+
+.button:hover { background: rgba(0, 0, 0, 0.05); }
+
+.button-primary {
+  background: var(--a2ui-primary, #1976d2);
+  border-color: transparent;
+  color: #fff;
+}
+
+.button-primary:hover { background: var(--a2ui-primary-hover, #1565c0); }
+
+/* ---- image ---- */
+
+.image {
+  max-width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* ---- icon ---- */
+
+.icon {
+  display: inline-block;
+  width: 1.25em;
+  height: 1.25em;
+  vertical-align: middle;
+}
+
+/* ---- divider ---- */
+
+.divider {
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 8px 0;
+}
+
+.divider-vertical {
+  border-top: none;
+  border-left: 1px solid #e0e0e0;
+  margin: 0 8px;
+  align-self: stretch;
+  width: 0;
+}
+
+/* ---- form fields ---- */
+
+.text-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #555;
+}
+
+.input {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.input:focus { border-color: var(--a2ui-primary, #1976d2); }
+
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.checkbox-label { user-select: none; }
+
+.slider {
+  width: 100%;
+  cursor: pointer;
+}
+
+/* ---- tabs ---- */
+
+.tabs {
+  display: flex;
+  flex-direction: column;
+}
+
+.tabs-bar {
+  display: flex;
+  border-bottom: 2px solid #e0e0e0;
+  gap: 4px;
+}
+
+.tab-button {
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.875rem;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: border-color 0.15s;
+}
+
+.tab-button:hover { border-bottom-color: #bbb; }
+
+.tab-content {
+  padding: 16px 0;
+}
+
+/* ---- modal ---- */
+
+.modal {
+  display: contents;
+}
+
+/* ---- media ---- */
+
+.video,
+.audio {
+  max-width: 100%;
+  display: block;
+}
