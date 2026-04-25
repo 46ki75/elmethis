@@ -39,12 +39,13 @@ const runtime = new CopilotRuntime({
   agents: {
     "gpt-5.4-nano": generateAgent("openai/gpt-5.4-nano"),
     "minimax-m2.5": generateAgent("minimax/minimax-m2.5"),
+    "minimax-m2.5-free": generateAgent("minimax/minimax-m2.5:free"),
     "kimi-k2.6": generateAgent("moonshotai/kimi-k2.6"),
   },
   runner: new InMemoryAgentRunner(),
-  // a2ui: {
-  //   injectA2UITool: true,
-  // },
+  a2ui: {
+    injectA2UITool: true,
+  },
 });
 
 const app = new Hono();

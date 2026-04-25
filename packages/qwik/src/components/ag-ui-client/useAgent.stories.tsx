@@ -63,10 +63,10 @@ const UseAgent = component$<UseAgentProps>(
         },
         {
           description: "Render A2UI",
-          value: `Could you render a \`Title\` component with A2UI?
+          value: `Could you render a \`Tabs\` component with A2UI?
 
 - catalogId: <https://a2ui.org/specification/v0_9/basic_catalog.json>
-- surfaceId: \`my-title-surface\``,
+- surfaceId: \`my-tabs-surface\``,
         },
       ]);
     });
@@ -80,7 +80,7 @@ const meta: Meta<UseAgentProps> = {
   component: UseAgent,
   tags: ["autodocs"],
   args: {
-    url: "http://localhost:8080/copilotkit/agent/gpt-5.4-nano/run",
+    url: "http://localhost:8080/copilotkit/agent/minimax-m2.5/run",
   },
   argTypes: {
     url: {
@@ -89,6 +89,7 @@ const meta: Meta<UseAgentProps> = {
       options: [
         "http://localhost:8080/copilotkit/agent/gpt-5.4-nano/run",
         "http://localhost:8080/copilotkit/agent/minimax-m2.5/run",
+        "http://localhost:8080/copilotkit/agent/minimax-m2.5-free/run",
         "http://localhost:8080/copilotkit/agent/kimi-k2.6/run",
       ],
     },
