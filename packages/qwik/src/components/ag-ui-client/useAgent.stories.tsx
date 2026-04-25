@@ -73,7 +73,7 @@ const meta: Meta<UseAgentProps> = {
   component: UseAgent,
   tags: ["autodocs"],
   args: {
-    url: "http://localhost:8080/copilotkit/agent/default/run",
+    url: "http://localhost:8080/copilotkit/agent/gpt-5.4-nano/run",
   },
 };
 
