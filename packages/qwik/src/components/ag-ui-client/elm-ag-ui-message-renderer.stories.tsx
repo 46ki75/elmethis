@@ -315,43 +315,25 @@ export const A2UISurfaceUpdate: Story = {
                 surfaceId: "my-tabs-surface",
                 components: [
                   {
-                    id: "root",
                     component: "Tabs",
-                    children: ["tab1", "tab2", "tab3"],
+                    id: "root",
+                    tabs: [
+                      { title: "Overview", child: "tab1" },
+                      { title: "Details", child: "tab2" },
+                      { title: "History", child: "tab3" },
+                    ],
                   },
                   {
+                    component: "Text",
                     id: "tab1",
-                    component: "Tab",
-                    label: "Tab 1",
-                    child: "content1",
+                    text: "Overview content goes here.",
                   },
                   {
-                    id: "content1",
                     component: "Text",
-                    text: "Content for Tab 1",
-                  },
-                  {
                     id: "tab2",
-                    component: "Tab",
-                    label: "Tab 2",
-                    child: "content2",
+                    text: "Detailed information.",
                   },
-                  {
-                    id: "content2",
-                    component: "Text",
-                    text: "Content for Tab 2",
-                  },
-                  {
-                    id: "tab3",
-                    component: "Tab",
-                    label: "Tab 3",
-                    child: "content3",
-                  },
-                  {
-                    id: "content3",
-                    component: "Text",
-                    text: "Content for Tab 3",
-                  },
+                  { component: "Text", id: "tab3", text: "Historical data." },
                 ],
               },
             },
