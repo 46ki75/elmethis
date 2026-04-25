@@ -264,3 +264,84 @@ export const Reasoning: Story = {
     ],
   },
 };
+
+export const A2UISurfaceUpdate: Story = {
+  args: {
+    messages: [
+      {
+        id: "6951db4c-3c8e-4848-b389-8cfd8deed658",
+        role: "user",
+        content: "can you render Title component with A2UI?",
+      },
+      {
+        id: "H3Ra8XyNi09y6c9k",
+        role: "reasoning",
+        content:
+          'The user is asking if I can render a Title component with A2UI. Based on the system prompt, I have a render_a2ui tool available that can render A2UI v0.9 surfaces.\n\nLooking at the example in the system prompt, I can see that Title is a valid component in A2UI:\n```json\n{ "id": "title", "component": "Title", "text": "Overview" }\n```\n\nHowever, the user is just asking if I can render it - they\'re not asking me to actually render it right now. They might be asking a yes/no question, or they might want me to demonstrate.\n\nLet me check what information I have about available components. The system prompt mentions using the catalog ID from the available components context, but I don\'t see the full catalog in the context provided. However, the example does show that Title is a valid component.\n\nI should confirm that I can render a Title component and perhaps demonstrate with a simple example. Let me render a simple A2UI surface with a Title component to show that it\'s possible.\n',
+      },
+      {
+        id: "gen-1777149148-KLuk9vFEW40DRPawimDG",
+        role: "assistant",
+        content:
+          'Yes, I can render a Title component with A2UI! Based on the component catalog, `Title` is a valid A2UI v0.9 component.\n\nHere\'s a simple example showing how to render a Title component:\n\n```json\n{\n  "surfaceId": "title-demo",\n  "catalogId": "copilotkit://app-dashboard-catalog",\n  "components": [\n    { "id": "root", "component": "Column", "children": ["title"] },\n    { "id": "title", "component": "Title", "text": "Hello, World!" }\n  ]\n}\n```\n\nLet me render this for you:\n\n',
+      },
+      {
+        id: "a2ui-surface-title-demo-call_6016e1356d6b3003",
+        role: "activity",
+        activityType: "a2ui-surface",
+        content: {
+          a2ui_operations: [
+            {
+              version: "v0.9",
+              createSurface: {
+                surfaceId: "title-demo",
+                catalogId: "copilotkit://app-dashboard-catalog",
+              },
+            },
+            {
+              version: "v0.9",
+              updateComponents: {
+                surfaceId: "title-demo",
+                components: [
+                  {
+                    id: "root",
+                    component: "Column",
+                    children: ["title"],
+                  },
+                  {
+                    id: "title",
+                    component: "Title",
+                    text: "Hello, World!",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+      {
+        id: "ee5e5d63-3068-45dd-8ce6-4e35a549123b",
+        toolCallId: "call_6016e1356d6b3003",
+        role: "tool",
+        content: '{"status":"rendered"}',
+      },
+      {
+        id: "f85e68d4-46a1-45ff-b150-e1af3faac224",
+        role: "user",
+        content: "use rendering tool",
+      },
+      {
+        id: "Ms0qBJGcAu9JiSsv",
+        role: "reasoning",
+        content:
+          "The user wants me to use the \"rendering tool\" - which I believe refers to the `render_a2ui` function. I've already done this in my previous response, but perhaps the user wants me to demonstrate it again or they didn't notice the previous render.\n\nLet me render the Title component again to confirm.\n",
+      },
+      {
+        id: "gen-1777149176-FsX6CDGgbZmnpygjK8WB",
+        role: "assistant",
+        content:
+          "I did use the rendering tool (`render_a2ui`) in my previous response. The Title component was successfully rendered.\n\nHere's the rendered result:\n\n**Title: Hello, World!**\n\nWould you like me to render a different Title component, or perhaps show more complex examples with other components (like a Metric, Row, or Card)?",
+      },
+    ],
+  },
+};
