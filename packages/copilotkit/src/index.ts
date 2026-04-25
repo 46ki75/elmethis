@@ -16,26 +16,31 @@ const openrouter = createOpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY,
 });
 
-const agent = new BuiltInAgent({
-  model: openrouter(process.env.MODEL_ID || "openai/gpt-5.4-nano"),
-  maxSteps: 200,
-  mcpServers: [
-    {
-      url: "https://knowledge-mcp.global.api.aws",
-      type: "http",
-      options: {},
+const generateAgent = (modelId: string): BuiltInAgent =>
+  new BuiltInAgent({
+    model: openrouter(modelId),
+    maxSteps: 200,
+    mcpServers: [
+      {
+        url: "https://knowledge-mcp.global.api.aws",
+        type: "http",
+        options: {},
+      },
+    ],
+    providerOptions: {
+      openrouter: {
+        reasoning: { effort: "high" },
+      },
     },
-  ],
-  providerOptions: {
-    openrouter: {
-      reasoning: { effort: "high" },
-    },
-  },
-  tools: [],
-});
+    tools: [],
+  });
 
 const runtime = new CopilotRuntime({
-  agents: { default: agent },
+  agents: {
+    "gpt-5.4-nano": generateAgent("openai/gpt-5.4-nano"),
+    "minimax-m2.5": generateAgent("minimax/minimax-m2.5"),
+    "kimi-k2.6": generateAgent("moonshotai/kimi-k2.6"),
+  },
   runner: new InMemoryAgentRunner(),
 });
 
@@ -43,8 +48,17 @@ const app = new Hono();
 
 app.use("*", cors());
 
-// `/copilotkit/default/run`
-app.route("/", createCopilotHonoHandler({ runtime, basePath: "/copilotkit" }));
+// `/copilotkit/agent/default/run`
+// `/copilotkit/agent/gpt-5.4-nano/run`
+// `/copilotkit/agent/minimax-m2.5/run`
+// `/copilotkit/agent/kimi-k2.6/run`
+app.route(
+  "/",
+  createCopilotHonoHandler({
+    runtime,
+    basePath: "/copilotkit",
+  }),
+);
 
 const port = parseInt(process.env.PORT || "8080", 10);
 const hostname = process.env.ADDRESS || "0.0.0.0";
