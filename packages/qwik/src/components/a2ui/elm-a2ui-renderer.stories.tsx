@@ -20,7 +20,7 @@ import {
 } from "@a2ui/web_core/v0_9/basic_catalog";
 
 const CATALOG_ID =
-  "https://a2ui.org/specification/v0_9/standard_catalog_definition.json";
+  "https://a2ui.org/specification/v0_9/basic_catalog.json";
 
 // ---- shared bootstrap helper ----
 

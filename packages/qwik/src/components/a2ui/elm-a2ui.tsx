@@ -53,7 +53,7 @@ export const ElmA2ui = component$<ElmA2uiProps>(
     useVisibleTask$(async ({ cleanup }) => {
       const catalog = new Catalog(
         catalogId ??
-          "https://a2ui.org/specification/v0_9/standard_catalog_definition.json",
+          "https://a2ui.org/specification/v0_9/basic_catalog.json",
         BASIC_COMPONENTS as ComponentApi[],
         BASIC_FUNCTIONS,
       );

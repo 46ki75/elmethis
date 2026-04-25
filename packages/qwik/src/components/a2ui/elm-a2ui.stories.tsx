@@ -51,7 +51,7 @@ const MockStreamStory = component$(() => {
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(({ cleanup }) => {
     const CATALOG =
-      "https://a2ui.org/specification/v0_9/standard_catalog_definition.json";
+      "https://a2ui.org/specification/v0_9/basic_catalog.json";
     const SID = "demo";
     const DELAY = 800;
 
