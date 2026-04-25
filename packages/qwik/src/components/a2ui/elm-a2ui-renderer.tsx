@@ -1,8 +1,9 @@
 import {
   component$,
-  type Signal,
+  noSerialize,
   type NoSerialize,
   useSignal,
+  useStore,
   useVisibleTask$,
   type CSSProperties,
   type JSX,
@@ -10,48 +11,102 @@ import {
 
 import {
   ComponentContext,
+  MessageProcessor,
+  Catalog,
   type ComponentApi,
   type SurfaceModel,
 } from "@a2ui/web_core/v0_9";
+import {
+  BASIC_COMPONENTS,
+  BASIC_FUNCTIONS,
+} from "@a2ui/web_core/v0_9/basic_catalog";
 
 import styles from "./elm-a2ui.module.css";
 
 export interface ElmA2uiRendererProps {
   class?: string;
   style?: CSSProperties;
+  /** A2UI v0.9 protocol messages to render. */
+  messages: unknown[];
   /**
-   * Signal that holds the live surface map.
-   * Pass the same signal reference throughout; mutate the map and increment
-   * `tick` to trigger a re-render.
+   * Catalog ID to pre-register before messages arrive — useful for streaming
+   * where the catalogId is known upfront but createSurface hasn't arrived yet.
+   * If omitted, catalog IDs are extracted from the messages array.
    */
-  surfaceMapSig: Signal<
-    NoSerialize<Map<string, SurfaceModel<ComponentApi>>> | undefined
-  >;
-  /**
-   * Increment to force Qwik to re-read from the (non-reactive) surface models.
-   * Typically managed by the parent that mutates the surface map.
-   */
-  tick: number;
+  catalogId?: string;
 }
 
-/** Pure UI renderer for an A2UI v0.9 surface map. Contains no HTTP or streaming logic. */
+/** Renders A2UI v0.9 messages. Manages MessageProcessor internally. */
 export const ElmA2uiRenderer = component$<ElmA2uiRendererProps>(
-  ({ class: className, style, surfaceMapSig, tick }) => {
+  ({ class: className, style, messages, catalogId }) => {
     const containerRef = useSignal<HTMLDivElement | undefined>(undefined);
+    const surfaceMapSig = useSignal<
+      NoSerialize<Map<string, SurfaceModel<ComponentApi>>> | undefined
+    >();
+    const tick = useStore<{ v: number }>({ v: 0 });
+    const internalRef = useSignal<
+      | NoSerialize<{
+          processor: MessageProcessor<ComponentApi>;
+          processed: number;
+        }>
+      | undefined
+    >();
+
+    // ---- setup (runs once on mount) ----
 
     // eslint-disable-next-line qwik/no-use-visible-task
     useVisibleTask$(({ cleanup }) => {
       const container = containerRef.value!;
 
+      // Collect all catalog IDs from the prop and from any createSurface messages
+      const catalogIdSet = new Set<string>();
+      if (catalogId) catalogIdSet.add(catalogId);
+      for (const m of messages) {
+        if (m && typeof m === "object" && "createSurface" in m) {
+          const id = (m as { createSurface?: { catalogId?: string } })
+            .createSurface?.catalogId;
+          if (typeof id === "string") catalogIdSet.add(id);
+        }
+      }
+      // Always register the standard catalog as a fallback
+      catalogIdSet.add("https://a2ui.org/specification/v0_9/basic_catalog.json");
+
+      const catalogs = Array.from(catalogIdSet).map(
+        (id) =>
+          new Catalog(id, BASIC_COMPONENTS as ComponentApi[], BASIC_FUNCTIONS),
+      );
+      const processor = new MessageProcessor<ComponentApi>(catalogs);
+      const surfaceMap = new Map<string, SurfaceModel<ComponentApi>>();
+      surfaceMapSig.value = noSerialize(surfaceMap);
+
+      const subCreated = processor.model.onSurfaceCreated.subscribe(
+        (surface) => {
+          surfaceMap.set(surface.id, surface);
+          surface.componentsModel.onCreated.subscribe(() => {
+            tick.v++;
+          });
+          surface.componentsModel.onDeleted.subscribe(() => {
+            tick.v++;
+          });
+          tick.v++;
+        },
+      );
+      const subDeleted = processor.model.onSurfaceDeleted.subscribe((id) => {
+        surfaceMap.delete(id);
+        tick.v++;
+      });
+
+      internalRef.value = noSerialize({ processor, processed: 0 });
+
       const handleClick = (e: MouseEvent) => {
-        const surfaceMap = surfaceMapSig.value;
-        if (!surfaceMap) return;
+        const map = surfaceMapSig.value;
+        if (!map) return;
         const el = (e.target as HTMLElement).closest(
           "[data-a2ui-action]",
         ) as HTMLElement | null;
         if (!el) return;
         const [sid, cid] = (el.dataset.a2uiAction ?? "").split(":");
-        const surface = surfaceMap.get(sid);
+        const surface = map.get(sid);
         const model = surface?.componentsModel.get(cid);
         if (!surface || !model?.properties.action) return;
         const ctx = new ComponentContext(surface, cid);
@@ -64,11 +119,11 @@ export const ElmA2uiRenderer = component$<ElmA2uiRendererProps>(
       };
 
       const handleInput = (e: Event) => {
-        const surfaceMap = surfaceMapSig.value;
-        if (!surfaceMap) return;
+        const map = surfaceMapSig.value;
+        if (!map) return;
         const el = e.target as HTMLInputElement;
         const [sid, cid] = (el.dataset.a2uiInput ?? "").split(":");
-        const surface = surfaceMap.get(sid);
+        const surface = map.get(sid);
         const model = surface?.componentsModel.get(cid);
         if (!surface || !model) return;
         const bound = model.properties.text;
@@ -81,13 +136,13 @@ export const ElmA2uiRenderer = component$<ElmA2uiRendererProps>(
       };
 
       const handleChange = (e: Event) => {
-        const surfaceMap = surfaceMapSig.value;
-        if (!surfaceMap) return;
+        const map = surfaceMapSig.value;
+        if (!map) return;
         const el = e.target as HTMLInputElement;
         const parts = (el.dataset.a2uiChange ?? "").split(":");
         if (parts.length < 3) return;
         const [sid, cid, prop] = parts;
-        const surface = surfaceMap.get(sid);
+        const surface = map.get(sid);
         const model = surface?.componentsModel.get(cid);
         if (!surface || !model) return;
         const bound = model.properties[prop];
@@ -114,10 +169,27 @@ export const ElmA2uiRenderer = component$<ElmA2uiRendererProps>(
       container.addEventListener("change", handleChange);
 
       cleanup(() => {
+        subCreated.unsubscribe();
+        subDeleted.unsubscribe();
         container.removeEventListener("click", handleClick);
         container.removeEventListener("input", handleInput);
         container.removeEventListener("change", handleChange);
       });
+    });
+
+    // ---- incremental processing (initial batch + streaming updates) ----
+
+    // eslint-disable-next-line qwik/no-use-visible-task
+    useVisibleTask$(({ track }) => {
+      track(() => messages.length);
+      const internal = internalRef.value;
+      if (!internal) return;
+      const newMsgs = messages.slice(internal.processed);
+      if (!newMsgs.length) return;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      internal.processor.processMessages(newMsgs as any[]);
+      internal.processed = messages.length;
+      tick.v++;
     });
 
     // ---- rendering ----
@@ -480,7 +552,7 @@ export const ElmA2uiRenderer = component$<ElmA2uiRendererProps>(
         style={style}
         ref={containerRef}
       >
-        {tick >= 0 &&
+        {tick.v >= 0 &&
           Array.from(surfaceMapSig.value?.values() ?? []).map((surface) => {
             const rootId = findRootId(surface);
             if (!rootId) return null;

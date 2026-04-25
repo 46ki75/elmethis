@@ -16,6 +16,7 @@ import { mdiAccount, mdiCreation, mdiLightbulbOn, mdiRefresh } from "@mdi/js";
 import { ElmAgUiToolExecution } from "./elm-ag-ui-tool-execution";
 import { ElmCopyIcon } from "../icon/elm-copy-icon";
 import { ElmToggle } from "../containments/elm-toggle";
+import { ElmA2uiRenderer } from "../a2ui/elm-a2ui-renderer";
 
 export interface ElmAgUiMessageRendererProps {
   class?: string;
@@ -32,6 +33,22 @@ export interface ElmAgUiMessageRendererProps {
 export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
   ({ class: className, style, messages, isRunning, handleRetry$ }) => {
     const renderTool = (toolCall: ToolCall, messages: Message[]) => {
+      if (toolCall.function.name === "render_a2ui") {
+        const args = JSON.parse(toolCall.function.arguments ?? "{}") as {
+          surfaceId: string;
+          catalogId: string;
+          components: unknown[];
+        };
+        return (
+          <ElmA2uiRenderer
+            messages={[
+              { version: "v0.9", createSurface: { surfaceId: args.surfaceId, catalogId: args.catalogId } },
+              { version: "v0.9", updateComponents: { surfaceId: args.surfaceId, components: args.components } },
+            ]}
+          />
+        );
+      }
+
       let toolEventType = EventType.TOOL_CALL_START;
 
       if (toolCall.function.arguments != null)

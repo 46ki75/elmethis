@@ -1,70 +1,7 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import {
-  component$,
-  noSerialize,
-  useSignal,
-  useStore,
-  useVisibleTask$,
-  type NoSerialize,
-} from "@builder.io/qwik";
 import { ElmA2uiRenderer, type ElmA2uiRendererProps } from "./elm-a2ui-renderer";
-import {
-  MessageProcessor,
-  Catalog,
-  type ComponentApi,
-  type SurfaceModel,
-} from "@a2ui/web_core/v0_9";
-import {
-  BASIC_COMPONENTS,
-  BASIC_FUNCTIONS,
-} from "@a2ui/web_core/v0_9/basic_catalog";
 
-const CATALOG_ID =
-  "https://a2ui.org/specification/v0_9/basic_catalog.json";
-
-// ---- shared bootstrap helper ----
-
-type A2uiMsg = Record<string, unknown>;
-
-/** Renders ElmA2uiRenderer seeded with static A2UI messages. */
-const Scene = component$<{ messages: A2uiMsg[] }>(({ messages }) => {
-  const surfaceMapSig = useSignal<
-    NoSerialize<Map<string, SurfaceModel<ComponentApi>>> | undefined
-  >();
-  const tick = useStore({ v: 0 });
-
-  // eslint-disable-next-line qwik/no-use-visible-task
-  useVisibleTask$(() => {
-    const catalog = new Catalog(
-      CATALOG_ID,
-      BASIC_COMPONENTS as ComponentApi[],
-      BASIC_FUNCTIONS,
-    );
-    const processor = new MessageProcessor<ComponentApi>([catalog]);
-    const surfaceMap = new Map<string, SurfaceModel<ComponentApi>>();
-
-    processor.model.onSurfaceCreated.subscribe((surface) => {
-      surfaceMap.set(surface.id, surface);
-      surface.componentsModel.onCreated.subscribe(() => {
-        tick.v++;
-      });
-      tick.v++;
-    });
-    processor.model.onSurfaceDeleted.subscribe((id) => {
-      surfaceMap.delete(id);
-      tick.v++;
-    });
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    processor.processMessages(messages as any[]);
-    surfaceMapSig.value = noSerialize(surfaceMap);
-    tick.v++;
-  });
-
-  return <ElmA2uiRenderer surfaceMapSig={surfaceMapSig} tick={tick.v} />;
-});
-
-// ---- Storybook meta ----
+const CATALOG_ID = "https://a2ui.org/specification/v0_9/basic_catalog.json";
 
 const meta: Meta<ElmA2uiRendererProps> = {
   title: "Components/A2UI/elm-a2ui-renderer",
@@ -74,10 +11,9 @@ const meta: Meta<ElmA2uiRendererProps> = {
     docs: {
       description: {
         component:
-          "Pure UI renderer for an A2UI v0.9 surface map. " +
-          "Accepts a `surfaceMapSig` signal (populated by `ElmA2ui` or custom " +
-          "streaming logic) and a `tick` counter that triggers re-renders when " +
-          "the map contents change. Contains no HTTP or streaming logic.",
+          "Pure UI renderer for A2UI v0.9 messages. " +
+          "Pass a `messages` array of A2UI protocol messages; the component " +
+          "manages the MessageProcessor internally.",
       },
     },
   },
@@ -86,8 +22,6 @@ const meta: Meta<ElmA2uiRendererProps> = {
 export default meta;
 type Story = StoryObj<ElmA2uiRendererProps>;
 
-// ---- Typography ----
-
 export const Typography: Story = {
   parameters: {
     docs: {
@@ -95,12 +29,9 @@ export const Typography: Story = {
     },
   },
   render: () => (
-    <Scene
+    <ElmA2uiRenderer
       messages={[
-        {
-          version: "v0.9",
-          createSurface: { surfaceId: "typography", catalogId: CATALOG_ID },
-        },
+        { version: "v0.9", createSurface: { surfaceId: "typography", catalogId: CATALOG_ID } },
         {
           version: "v0.9",
           updateComponents: {
@@ -122,8 +53,6 @@ export const Typography: Story = {
   ),
 };
 
-// ---- Layout ----
-
 export const Layout: Story = {
   parameters: {
     docs: {
@@ -131,12 +60,9 @@ export const Layout: Story = {
     },
   },
   render: () => (
-    <Scene
+    <ElmA2uiRenderer
       messages={[
-        {
-          version: "v0.9",
-          createSurface: { surfaceId: "layout", catalogId: CATALOG_ID },
-        },
+        { version: "v0.9", createSurface: { surfaceId: "layout", catalogId: CATALOG_ID } },
         {
           version: "v0.9",
           updateComponents: {
@@ -144,20 +70,15 @@ export const Layout: Story = {
             components: [
               { component: "Column", id: "root",   children: ["rowLabel","row","colLabel","col"] },
               { component: "Text",   id: "rowLabel", variant: "h4", text: "Row (spaceBetween)" },
-              {
-                component: "Row",
-                id: "row",
-                distribution: "spaceBetween",
-                children: ["a","b","c"],
-              },
-              { component: "Text", id: "a", text: "Alpha" },
-              { component: "Text", id: "b", text: "Beta" },
-              { component: "Text", id: "c", text: "Gamma" },
-              { component: "Text", id: "colLabel", variant: "h4", text: "Column (start)" },
+              { component: "Row",    id: "row", distribution: "spaceBetween", children: ["a","b","c"] },
+              { component: "Text",   id: "a", text: "Alpha" },
+              { component: "Text",   id: "b", text: "Beta" },
+              { component: "Text",   id: "c", text: "Gamma" },
+              { component: "Text",   id: "colLabel", variant: "h4", text: "Column (start)" },
               { component: "Column", id: "col", children: ["x","y","z"] },
-              { component: "Text", id: "x", text: "First" },
-              { component: "Text", id: "y", text: "Second" },
-              { component: "Text", id: "z", text: "Third" },
+              { component: "Text",   id: "x", text: "First" },
+              { component: "Text",   id: "y", text: "Second" },
+              { component: "Text",   id: "z", text: "Third" },
             ],
           },
         },
@@ -166,8 +87,6 @@ export const Layout: Story = {
   ),
 };
 
-// ---- Card ----
-
 export const Card: Story = {
   parameters: {
     docs: {
@@ -175,12 +94,9 @@ export const Card: Story = {
     },
   },
   render: () => (
-    <Scene
+    <ElmA2uiRenderer
       messages={[
-        {
-          version: "v0.9",
-          createSurface: { surfaceId: "card", catalogId: CATALOG_ID },
-        },
+        { version: "v0.9", createSurface: { surfaceId: "card", catalogId: CATALOG_ID } },
         {
           version: "v0.9",
           updateComponents: {
@@ -198,8 +114,6 @@ export const Card: Story = {
   ),
 };
 
-// ---- Buttons ----
-
 export const Buttons: Story = {
   parameters: {
     docs: {
@@ -207,22 +121,19 @@ export const Buttons: Story = {
     },
   },
   render: () => (
-    <Scene
+    <ElmA2uiRenderer
       messages={[
-        {
-          version: "v0.9",
-          createSurface: { surfaceId: "buttons", catalogId: CATALOG_ID },
-        },
+        { version: "v0.9", createSurface: { surfaceId: "buttons", catalogId: CATALOG_ID } },
         {
           version: "v0.9",
           updateComponents: {
             surfaceId: "buttons",
             components: [
-              { component: "Row",    id: "root",     children: ["btn1","btn2"] },
-              { component: "Button", id: "btn1",     child: "lbl1" },
-              { component: "Text",   id: "lbl1",     text: "Default" },
-              { component: "Button", id: "btn2",     child: "lbl2", primary: true },
-              { component: "Text",   id: "lbl2",     text: "Primary" },
+              { component: "Row",    id: "root", children: ["btn1","btn2"] },
+              { component: "Button", id: "btn1", child: "lbl1" },
+              { component: "Text",   id: "lbl1", text: "Default" },
+              { component: "Button", id: "btn2", child: "lbl2", primary: true },
+              { component: "Text",   id: "lbl2", text: "Primary" },
             ],
           },
         },
@@ -230,8 +141,6 @@ export const Buttons: Story = {
     />
   ),
 };
-
-// ---- Form fields ----
 
 export const FormFields: Story = {
   parameters: {
@@ -242,45 +151,20 @@ export const FormFields: Story = {
     },
   },
   render: () => (
-    <Scene
+    <ElmA2uiRenderer
       messages={[
-        {
-          version: "v0.9",
-          createSurface: { surfaceId: "form", catalogId: CATALOG_ID },
-        },
+        { version: "v0.9", createSurface: { surfaceId: "form", catalogId: CATALOG_ID } },
         {
           version: "v0.9",
           updateComponents: {
             surfaceId: "form",
             components: [
-              {
-                component: "Column",
-                id: "root",
-                children: ["tf1","tf2","tf3","check","slider"],
-              },
-              {
-                component: "TextField",
-                id: "tf1",
-                label: "Short text",
-                text: "",
-                textFieldType: "shortText",
-              },
-              {
-                component: "TextField",
-                id: "tf2",
-                label: "Password",
-                text: "",
-                textFieldType: "obscured",
-              },
-              {
-                component: "TextField",
-                id: "tf3",
-                label: "Number",
-                text: "42",
-                textFieldType: "number",
-              },
-              { component: "CheckBox", id: "check",  label: "Enable feature", checked: true },
-              { component: "Slider",   id: "slider", minValue: 0, maxValue: 100, value: 60 },
+              { component: "Column",    id: "root", children: ["tf1","tf2","tf3","check","slider"] },
+              { component: "TextField", id: "tf1",  label: "Short text", text: "",   textFieldType: "shortText" },
+              { component: "TextField", id: "tf2",  label: "Password",   text: "",   textFieldType: "obscured" },
+              { component: "TextField", id: "tf3",  label: "Number",     text: "42", textFieldType: "number" },
+              { component: "CheckBox",  id: "check",  label: "Enable feature", checked: true },
+              { component: "Slider",    id: "slider", minValue: 0, maxValue: 100, value: 60 },
             ],
           },
         },
@@ -289,24 +173,18 @@ export const FormFields: Story = {
   ),
 };
 
-// ---- List ----
-
 export const List: Story = {
   parameters: {
     docs: {
       description: {
-        story:
-          "List component with a data-driven template list (`children.componentId` + `path`).",
+        story: "List component with a data-driven template list (`children.componentId` + `path`).",
       },
     },
   },
   render: () => (
-    <Scene
+    <ElmA2uiRenderer
       messages={[
-        {
-          version: "v0.9",
-          createSurface: { surfaceId: "list", catalogId: CATALOG_ID },
-        },
+        { version: "v0.9", createSurface: { surfaceId: "list", catalogId: CATALOG_ID } },
         {
           version: "v0.9",
           updateDataModel: {
@@ -325,21 +203,9 @@ export const List: Story = {
           updateComponents: {
             surfaceId: "list",
             components: [
-              {
-                component: "List",
-                id: "root",
-                children: { componentId: "item", path: "/items" },
-              },
-              {
-                component: "Card",
-                id: "item",
-                child: "itemText",
-              },
-              {
-                component: "Text",
-                id: "itemText",
-                text: { path: "label" },
-              },
+              { component: "List", id: "root", children: { componentId: "item", path: "/items" } },
+              { component: "Card", id: "item", child: "itemText" },
+              { component: "Text", id: "itemText", text: { path: "label" } },
             ],
           },
         },
@@ -348,8 +214,6 @@ export const List: Story = {
   ),
 };
 
-// ---- Divider ----
-
 export const Divider: Story = {
   parameters: {
     docs: {
@@ -357,18 +221,15 @@ export const Divider: Story = {
     },
   },
   render: () => (
-    <Scene
+    <ElmA2uiRenderer
       messages={[
-        {
-          version: "v0.9",
-          createSurface: { surfaceId: "divider", catalogId: CATALOG_ID },
-        },
+        { version: "v0.9", createSurface: { surfaceId: "divider", catalogId: CATALOG_ID } },
         {
           version: "v0.9",
           updateComponents: {
             surfaceId: "divider",
             components: [
-              { component: "Column", id: "root", children: ["a","div1","b","row"] },
+              { component: "Column",  id: "root", children: ["a","div1","b","row"] },
               { component: "Text",    id: "a",    text: "Above" },
               { component: "Divider", id: "div1" },
               { component: "Text",    id: "b",    text: "Below" },
@@ -384,8 +245,6 @@ export const Divider: Story = {
   ),
 };
 
-// ---- Tabs ----
-
 export const Tabs: Story = {
   parameters: {
     docs: {
@@ -393,12 +252,9 @@ export const Tabs: Story = {
     },
   },
   render: () => (
-    <Scene
+    <ElmA2uiRenderer
       messages={[
-        {
-          version: "v0.9",
-          createSurface: { surfaceId: "tabs", catalogId: CATALOG_ID },
-        },
+        { version: "v0.9", createSurface: { surfaceId: "tabs", catalogId: CATALOG_ID } },
         {
           version: "v0.9",
           updateComponents: {
