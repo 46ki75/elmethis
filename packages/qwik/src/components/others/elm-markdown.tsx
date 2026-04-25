@@ -21,7 +21,7 @@ import { ElmTableBody } from "../table/elm-table-body";
 import { ElmTableRow } from "../table/elm-table-row";
 import { ElmTableCell } from "../table/elm-table-cell";
 
-import styles from "./elm-markdown.module.scss";
+import styles from "./elm-markdown.module.css";
 
 export interface ElmMarkdownProps {
   class?: string;
@@ -225,35 +225,33 @@ const ElmMarkdownStable = component$<{ tokens: Token[] }>(({ tokens }) => (
   <>{renderByToken(tokens)}</>
 ));
 
-export const ElmMarkdown = component$<ElmMarkdownProps>(
-  (props) => {
-    const { class: className, markdown, style } = props;
-    const stableTokens = useSignal<Token[]>([]);
-    const tailTokens = useSignal<Token[]>([]);
+export const ElmMarkdown = component$<ElmMarkdownProps>((props) => {
+  const { class: className, markdown, style } = props;
+  const stableTokens = useSignal<Token[]>([]);
+  const tailTokens = useSignal<Token[]>([]);
 
-    useTask$(({ track }) => {
-      const md = track(() => markdown);
-      const allTokens = marked.setOptions({ gfm: true }).lexer(md) as Token[];
+  useTask$(({ track }) => {
+    const md = track(() => markdown);
+    const allTokens = marked.setOptions({ gfm: true }).lexer(md) as Token[];
 
-      if (props.streaming && allTokens.length > 0) {
-        const newStable = allTokens.slice(0, -1);
-        // Only replace stableTokens when a new complete block is added,
-        // so ElmMarkdownStable skips re-renders between block boundaries.
-        if (newStable.length !== stableTokens.value.length) {
-          stableTokens.value = newStable;
-        }
-        tailTokens.value = allTokens.slice(-1);
-      } else {
-        stableTokens.value = allTokens;
-        tailTokens.value = [];
+    if (props.streaming && allTokens.length > 0) {
+      const newStable = allTokens.slice(0, -1);
+      // Only replace stableTokens when a new complete block is added,
+      // so ElmMarkdownStable skips re-renders between block boundaries.
+      if (newStable.length !== stableTokens.value.length) {
+        stableTokens.value = newStable;
       }
-    });
+      tailTokens.value = allTokens.slice(-1);
+    } else {
+      stableTokens.value = allTokens;
+      tailTokens.value = [];
+    }
+  });
 
-    return (
-      <div class={[styles["markdown-body"], className]} style={style}>
-        <ElmMarkdownStable tokens={stableTokens.value} />
-        {renderByToken(tailTokens.value)}
-      </div>
-    );
-  },
-);
+  return (
+    <div class={[styles["markdown-body"], className]} style={style}>
+      <ElmMarkdownStable tokens={stableTokens.value} />
+      {renderByToken(tailTokens.value)}
+    </div>
+  );
+});

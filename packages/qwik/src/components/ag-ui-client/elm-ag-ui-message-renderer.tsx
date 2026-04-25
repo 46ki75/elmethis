@@ -2,6 +2,7 @@ import { component$, JSX, QRL, type CSSProperties } from "@builder.io/qwik";
 
 import styles from "./elm-ag-ui-message-renderer.module.css";
 import {
+  ActivityMessage,
   Message,
   InputContent,
   EventType,
@@ -16,6 +17,7 @@ import { mdiAccount, mdiCreation, mdiLightbulbOn, mdiRefresh } from "@mdi/js";
 import { ElmAgUiToolExecution } from "./elm-ag-ui-tool-execution";
 import { ElmCopyIcon } from "../icon/elm-copy-icon";
 import { ElmToggle } from "../containments/elm-toggle";
+import { ElmA2uiRenderer } from "../a2ui/elm-a2ui-renderer";
 
 export interface ElmAgUiMessageRendererProps {
   class?: string;
@@ -104,6 +106,11 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
     const render = (message: Message, index: number): JSX.Element | null => {
       switch (message.role) {
         case "activity": {
+          const activity = message as ActivityMessage;
+          if (activity.activityType === "a2ui-surface") {
+            const ops = activity.content["a2ui_operations"] as unknown[];
+            return <ElmA2uiRenderer messages={ops} />;
+          }
           return null;
         }
 
@@ -172,7 +179,11 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
                   ></div>
                 </div>
 
-                <ElmMarkdown markdown={message.content} streaming={true} />
+                <ElmMarkdown
+                  style={{ opacity: 0.5 }}
+                  markdown={message.content}
+                  streaming={true}
+                />
               </ElmToggle>
             </>
           );

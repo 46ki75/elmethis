@@ -264,3 +264,88 @@ export const Reasoning: Story = {
     ],
   },
 };
+
+export const A2UISurfaceUpdate: Story = {
+  args: {
+    messages: [
+      {
+        id: "b59f21e5-26de-4e76-b540-b0b9ba649eea",
+        role: "user",
+        content:
+          "Could you render a `Tabs` component with A2UI?\n\n- catalogId: <https://a2ui.org/specification/v0_9/basic_catalog.json>\n- surfaceId: `my-tabs-surface`",
+      },
+      {
+        id: "zUUCsHTRpE0BxqgS",
+        role: "reasoning",
+        content:
+          "The user wants me to render a Tabs component using A2UI. They've provided:\n- catalogId: https://a2ui.org/specification/v0_9/basic_catalog.json\n- surfaceId: my-tabs-surface\n\nI need to use the render_a2ui function with the proper component format. Let me check what a Tabs component looks like in A2UI v0.9 format.\n\nBased on the guide, I need to:\n1. Create a flat array of components\n2. The root component must have id \"root\"\n3. Use component names from the available catalog\n\nSince the user wants a Tabs component, I'll need to structure it properly. A Tabs component typically has:\n- A root Tabs component\n- Tab items as children\n\nLet me create a simple Tabs example with a few tabs.\n",
+      },
+      {
+        id: "5c26a4a9-2e76-41a9-9b52-19619a6615b2",
+        role: "assistant",
+        toolCalls: [
+          {
+            id: "call_a759ab818b0b4bb685ccdf0c",
+            type: "function",
+            function: {
+              name: "render_a2ui",
+              arguments:
+                '{"catalogId": "https://a2ui.org/specification/v0_9/basic_catalog.json", "components": [{"id": "root", "component": "Tabs", "children": ["tab1", "tab2", "tab3"]}, {"id": "tab1", "component": "Tab", "label": "Tab 1", "child": "content1"}, {"id": "content1", "component": "Text", "text": "Content for Tab 1"}, {"id": "tab2", "component": "Tab", "label": "Tab 2", "child": "content2"}, {"id": "content2", "component": "Text", "text": "Content for Tab 2"}, {"id": "tab3", "component": "Tab", "label": "Tab 3", "child": "content3"}, {"id": "content3", "component": "Text", "text": "Content for Tab 3"}], "surfaceId": "my-tabs-surface"}',
+            },
+          },
+        ],
+      },
+      {
+        id: "a2ui-surface-my-tabs-surface-call_a759ab818b0b4bb685ccdf0c",
+        role: "activity",
+        activityType: "a2ui-surface",
+        content: {
+          a2ui_operations: [
+            {
+              version: "v0.9",
+              createSurface: {
+                surfaceId: "my-tabs-surface",
+                catalogId:
+                  "https://a2ui.org/specification/v0_9/basic_catalog.json",
+              },
+            },
+            {
+              version: "v0.9",
+              updateComponents: {
+                surfaceId: "my-tabs-surface",
+                components: [
+                  {
+                    component: "Tabs",
+                    id: "root",
+                    tabs: [
+                      { title: "Overview", child: "tab1" },
+                      { title: "Details", child: "tab2" },
+                      { title: "History", child: "tab3" },
+                    ],
+                  },
+                  {
+                    component: "Text",
+                    id: "tab1",
+                    text: "Overview content goes here.",
+                  },
+                  {
+                    component: "Text",
+                    id: "tab2",
+                    text: "Detailed information.",
+                  },
+                  { component: "Text", id: "tab3", text: "Historical data." },
+                ],
+              },
+            },
+          ],
+        },
+      },
+      {
+        id: "bd7c7354-0ed0-4d77-a9a7-3e5c34618676",
+        toolCallId: "call_a759ab818b0b4bb685ccdf0c",
+        role: "tool",
+        content: '{"status":"rendered"}',
+      },
+    ],
+  },
+};

@@ -174,6 +174,13 @@ export {
   type ElmTableCellProps,
 } from "./components/table/elm-table-cell";
 
+// | A2UI |
+export { ElmA2ui, type ElmA2uiProps } from "./components/a2ui/elm-a2ui";
+export {
+  ElmA2uiRenderer,
+  type ElmA2uiRendererProps,
+} from "./components/a2ui/elm-a2ui-renderer";
+
 // | Others |
 export { ElmJarkup, type ElmJarkupProps } from "./components/others/elm-jarkup";
 export {
