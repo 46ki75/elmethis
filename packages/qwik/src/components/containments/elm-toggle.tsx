@@ -26,10 +26,19 @@ export interface ElmToggleProps {
 
   /** Called when the toggle open state changes. */
   setIsOpen$?: PropFunction<(value: boolean) => void>;
+
+  monochrome?: boolean;
 }
 
 export const ElmToggle = component$<ElmToggleProps>(
-  ({ class: className, summary, style, isOpen: isOpenProp, setIsOpen$ }) => {
+  ({
+    class: className,
+    summary,
+    style,
+    isOpen: isOpenProp,
+    setIsOpen$,
+    monochrome,
+  }) => {
     const isOpen = useSignal(isOpenProp ?? false);
 
     useTask$(({ track }) => {
@@ -59,7 +68,11 @@ export const ElmToggle = component$<ElmToggleProps>(
         <div class={styles.summary} preventdefault:click onClick$={handleClick}>
           <div class={styles["summary-left"]}>
             <span class={[styles.chevron, { [styles.open]: isOpen.value }]}>
-              <ElmMdiIcon d={mdiChevronRight} color="#59b57c" size="1rem" />
+              <ElmMdiIcon
+                d={mdiChevronRight}
+                color={monochrome ? "#868e9c" : "#59b57c"}
+                size="1rem"
+              />
             </span>
             <div>
               {summary != null ? (
@@ -76,7 +89,9 @@ export const ElmToggle = component$<ElmToggleProps>(
             <ElmMdiIcon
               d={mdiPlus}
               size="1rem"
-              color={isOpen.value ? "#b36472" : "#59b57c"}
+              color={
+                monochrome ? "#868e9c" : isOpen.value ? "#b36472" : "#59b57c"
+              }
             />
           </span>
         </div>

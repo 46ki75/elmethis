@@ -1,0 +1,23 @@
+import { component$, type CSSProperties } from "@builder.io/qwik";
+
+import { useClipboard, UseClipboardOptions } from "../../hooks/useClipboard";
+
+export interface ElmCopyIconProps {
+  class?: string;
+
+  style?: CSSProperties;
+
+  content: UseClipboardOptions["content"];
+}
+
+export const ElmCopyIcon = component$<ElmCopyIconProps>(
+  ({ class: className, style, content }) => {
+    const { CopyButton } = useClipboard({
+      class: className,
+      style: style,
+      content: content,
+    });
+
+    return <CopyButton />;
+  },
+);

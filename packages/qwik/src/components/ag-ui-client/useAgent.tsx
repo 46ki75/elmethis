@@ -17,12 +17,16 @@ import {
   HttpAgent,
   Message,
   randomUUID,
+  UserMessage,
 } from "@ag-ui/client";
 
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import { ElmAgUiMessageRenderer } from "./elm-ag-ui-message-renderer";
 import { ElmAgUiInput } from "./elm-ag-ui-input";
+import { ElmInlineText } from "../typography/elm-inline-text";
+import { ElmMdiIcon } from "../icon/elm-mdi-icon";
+import { mdiForumOutline } from "@mdi/js";
 
 // ---------------------------------------------------------------------------
 // Tool registry
@@ -61,9 +65,16 @@ export interface UseAgentOptions {
     description: string;
   }[];
   headers?: Record<string, string> | undefined;
+  initialMessages?: Message[];
 }
 
-export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
+export function useAgent({
+  url,
+  tools,
+  context,
+  headers,
+  initialMessages,
+}: UseAgentOptions) {
   const httpAgent = useSignal<NoSerialize<HttpAgent> | null>(null);
   const toolsRef = useSignal<NoSerialize<ToolRegistry>>(noSerialize(tools));
 
@@ -75,17 +86,24 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
       description: string;
     }[];
     isRunning: boolean;
+    promptTemplates: { description: string; value: string }[];
   }>({
-    messages: [],
+    messages: initialMessages ?? [],
     events: [],
     context,
     isRunning: false,
+    promptTemplates: [],
   });
 
   // eslint-disable-next-line qwik/no-use-visible-task
-  useVisibleTask$(({ cleanup }) => {
+  useVisibleTask$(({ cleanup, track }) => {
+    const trackedUrl = track(() => url);
+    const trackedHeaders = track(() => headers);
+
     if (!httpAgent.value) {
-      httpAgent.value = noSerialize(new HttpAgent({ url, headers }));
+      httpAgent.value = noSerialize(
+        new HttpAgent({ url: trackedUrl, headers: trackedHeaders }),
+      );
       cleanup(() => {
         httpAgent.value = null;
       });
@@ -110,12 +128,21 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
           event,
         ]);
       },
+
       onTextMessageContentEvent({ event }) {
         const msg = agentStateStore.messages.findLast(
           (m) => m.role === "assistant",
         );
         if (msg) msg.content = (msg.content ?? "") + event.delta;
       },
+
+      onReasoningMessageContentEvent({ event }) {
+        const msg = agentStateStore.messages.findLast(
+          (m) => m.role === "reasoning",
+        );
+        if (msg) msg.content = (msg.content ?? "") + event.delta;
+      },
+
       onToolCallArgsEvent({ event }) {
         const msg = agentStateStore.messages.findLast(
           (m) => m.role === "assistant",
@@ -146,6 +173,10 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
         } as Message);
       },
       async onRunFinalized() {
+        console.log({
+          messages: agentStateStore.messages,
+          events: agentStateStore.events,
+        });
         if (pendingToolMessages.length === 0 || !httpAgent.value) {
           agentStateStore.isRunning = false;
           return;
@@ -169,7 +200,42 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
 
   const send = $(async (content: string) => {
     if (!httpAgent.value) return;
-    httpAgent.value.messages.push({ id: randomUUID(), role: "user", content });
+    const userMessage: UserMessage = {
+      id: randomUUID(),
+      role: "user",
+      content,
+    };
+    httpAgent.value.messages.push(userMessage);
+
+    try {
+      await httpAgent.value.runAgent({
+        tools: getToolDefinitions(toolsRef.value ?? {}),
+        context: agentStateStore.context?.map(({ value, description }) => ({
+          value,
+          description,
+        })),
+      });
+    } catch {
+      agentStateStore.isRunning = false;
+    }
+  });
+
+  const retry = $(async () => {
+    if (!httpAgent.value) return;
+
+    const lastUserMessageIndex = agentStateStore.messages.findLastIndex(
+      (m) => m.role === "user",
+    );
+    if (lastUserMessageIndex === -1) return;
+
+    // Remove all messages after the last user message
+    const newMessages = httpAgent.value.messages.slice(
+      0,
+      lastUserMessageIndex + 1,
+    );
+    httpAgent.value.messages = [...newMessages];
+    agentStateStore.messages = [...newMessages];
+
     try {
       await httpAgent.value.runAgent({
         tools: getToolDefinitions(toolsRef.value ?? {}),
@@ -209,11 +275,30 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
 
       return (
         <div class={[styles["use-agent"], className]} style={style}>
-          <div>
-            <ElmAgUiMessageRenderer messages={agentStateStore.messages} />
+          <div class={styles["messages"]}>
+            <ElmAgUiMessageRenderer
+              isRunning={agentStateStore.isRunning}
+              messages={agentStateStore.messages}
+              handleRetry$={retry}
+            />
           </div>
 
           <div class={styles["agent-input"]}>
+            {!agentStateStore.isRunning && (
+              <div class={styles["prompt-template-container"]}>
+                {agentStateStore.promptTemplates.map((template, index) => (
+                  <span
+                    key={index}
+                    class={styles["prompt-template-tip"]}
+                    onClick$={() => send(template.value)}
+                  >
+                    <ElmMdiIcon d={mdiForumOutline} color="#cdb57b" />
+                    <ElmInlineText>{template.description}</ElmInlineText>
+                  </span>
+                ))}
+              </div>
+            )}
+
             <ElmAgUiInput
               onInput$={onInput$}
               onSubmit$={onSubmit$}
@@ -232,11 +317,19 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
     },
   );
 
+  const setPromptTemplates = $(
+    (templates: { description: string; value: string }[]) => {
+      agentStateStore.promptTemplates = templates;
+    },
+  );
+
   return {
     messages: agentStateStore.messages,
     events: agentStateStore.events,
     context: agentStateStore.context,
     setContext,
+    promptTemplates: agentStateStore.promptTemplates,
+    setPromptTemplates,
     send,
     addTool,
     abort,

@@ -4,11 +4,11 @@
   padding: 0.5rem 4rem 0.5rem 0.5rem;
   min-height: 4rem;
   width: 100%;
-  border: solid 1px oklch(from gray l c h / 0.5);
   border-radius: 0.25rem;
   display: flex;
   align-items: center;
-  background-color: oklch(from white l c h / 0.5);
+  background-color: #f7f7f9;
+  box-shadow: 0 0 2px oklch(from black l c h / 0.25);
 
   .input {
     all: unset;

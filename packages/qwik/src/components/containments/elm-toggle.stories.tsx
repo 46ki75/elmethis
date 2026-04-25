@@ -9,6 +9,9 @@ const meta: Meta<ElmToggleProps> = {
   component: ElmToggle,
   tags: ["autodocs"],
   args: {},
+  argTypes: {
+    monochrome: { control: "boolean" },
+  },
 };
 
 export default meta;

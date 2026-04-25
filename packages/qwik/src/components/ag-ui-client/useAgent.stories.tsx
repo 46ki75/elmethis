@@ -15,11 +15,15 @@ export interface UseAgentProps {
   url?: string;
 }
 
-export const UseAgent = component$<UseAgentProps>(
-  ({ class: className, style, url = "http://localhost:4111/ag-ui" }) => {
+const UseAgent = component$<UseAgentProps>(
+  ({
+    class: className,
+    style,
+    url = "http://localhost:8080/copilotkit/agent/default/run",
+  }) => {
     const context = useStore<Array<{ description: string; value: string }>>([]);
 
-    const { AgentUI, addTool } = useAgent({
+    const { AgentUI, addTool, setPromptTemplates } = useAgent({
       url,
       context: context,
     });
@@ -47,6 +51,21 @@ export const UseAgent = component$<UseAgentProps>(
         description: "Location information",
         value: "Nerima, Tokyo, Japan",
       });
+
+      setPromptTemplates([
+        {
+          description: "Ask about AWS",
+          value: "What is a new feature called Amazon S3 Files?",
+        },
+        {
+          description: "Date and time",
+          value: "What is the current date and time?",
+        },
+        {
+          description: "Location information",
+          value: "What is my current location?",
+        },
+      ]);
     });
 
     return <AgentUI class={className} style={style} />;
@@ -88,6 +107,30 @@ export const Small: Story = {
         style={{ width: "400px", height: "600px", border: "1px solid #ccc" }}
       >
         <UseAgent {...args} />
+      </div>
+    );
+  },
+};
+
+export const Full: Story = {
+  render: (args) => {
+    return (
+      <div
+        style={{
+          width: "100%",
+          height: "calc(100vh - 34px)",
+        }}
+      >
+        <div
+          style={{
+            width: "500px",
+            border: "1px solid #ccc",
+            padding: 0,
+            margin: "0 auto",
+          }}
+        >
+          <UseAgent {...args} />
+        </div>
       </div>
     );
   },

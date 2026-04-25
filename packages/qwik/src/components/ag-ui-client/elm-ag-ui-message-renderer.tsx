@@ -1,4 +1,4 @@
-import { component$, JSX, type CSSProperties } from "@builder.io/qwik";
+import { component$, JSX, QRL, type CSSProperties } from "@builder.io/qwik";
 
 import styles from "./elm-ag-ui-message-renderer.module.css";
 import {
@@ -12,19 +12,25 @@ import { ElmInlineText } from "../typography/elm-inline-text";
 import { ElmBlockImage } from "../media/elm-block-image";
 import { ElmMarkdown } from "../others/elm-markdown";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
-import { mdiAccount, mdiCreation } from "@mdi/js";
+import { mdiAccount, mdiCreation, mdiLightbulbOn, mdiRefresh } from "@mdi/js";
 import { ElmAgUiToolExecution } from "./elm-ag-ui-tool-execution";
+import { ElmCopyIcon } from "../icon/elm-copy-icon";
+import { ElmToggle } from "../containments/elm-toggle";
 
 export interface ElmAgUiMessageRendererProps {
   class?: string;
 
   style?: CSSProperties;
 
+  handleRetry$: QRL<() => void>;
+
+  isRunning: boolean;
+
   messages: Message[];
 }
 
 export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
-  ({ class: className, style, messages }) => {
+  ({ class: className, style, messages, isRunning, handleRetry$ }) => {
     const renderTool = (toolCall: ToolCall, messages: Message[]) => {
       let toolEventType = EventType.TOOL_CALL_START;
 
@@ -95,7 +101,7 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
       }
     };
 
-    const render = (message: Message): JSX.Element | null => {
+    const render = (message: Message, index: number): JSX.Element | null => {
       switch (message.role) {
         case "activity": {
           return null;
@@ -124,6 +130,19 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
                     </div>
 
                     <ElmMarkdown markdown={message.content} streaming={true} />
+
+                    {!isRunning && (
+                      <div class={styles["message-content-assistant-actions"]}>
+                        <ElmCopyIcon content={message.content} />
+
+                        <span
+                          class={styles["clickable-icon"]}
+                          onClick$={handleRetry$}
+                        >
+                          <ElmMdiIcon d={mdiRefresh} size="1.25rem" />
+                        </span>
+                      </div>
+                    )}
                   </div>
                 )}
               </>
@@ -138,7 +157,25 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
         }
 
         case "reasoning": {
-          return null;
+          return (
+            <>
+              <ElmToggle isOpen={messages.length - 1 === index} monochrome>
+                <div q:slot="summary" class={styles["message-content-type"]}>
+                  <ElmMdiIcon
+                    class={styles["message-content-icon"]}
+                    d={mdiLightbulbOn}
+                  />
+                  <ElmInlineText>Reasoning</ElmInlineText>
+                  <div
+                    aria-hidden="true"
+                    class={styles["message-content-spacer"]}
+                  ></div>
+                </div>
+
+                <ElmMarkdown markdown={message.content} streaming={true} />
+              </ElmToggle>
+            </>
+          );
         }
 
         case "system": {
@@ -152,6 +189,24 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
         }
 
         case "user": {
+          const contentToText = () => {
+            if (typeof message.content === "string") return message.content;
+
+            if (Array.isArray(message.content)) {
+              return message.content
+                .map((item) =>
+                  typeof item === "string"
+                    ? item
+                    : item.type === "text"
+                      ? item.text
+                      : "",
+                )
+                .join(" ");
+            }
+
+            return "";
+          };
+
           return (
             <div class={styles["message-content-user-wrapper"]}>
               <div class={styles["message-content-user-inner"]}>
@@ -176,6 +231,10 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
                     ))
                   )}
                 </div>
+
+                <div>
+                  <ElmCopyIcon content={contentToText()} />
+                </div>
               </div>
             </div>
           );
@@ -186,7 +245,7 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
     return (
       <div class={[styles["elm-my-something"], className]} style={style}>
         {messages.map((msg, i) => (
-          <div key={msg.id ?? i}>{render(msg)}</div>
+          <div key={msg.id ?? i}>{render(msg, i)}</div>
         ))}
       </div>
     );
