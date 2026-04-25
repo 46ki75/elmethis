@@ -31,20 +31,14 @@ export interface ElmToggleProps {
 }
 
 export const ElmToggle = component$<ElmToggleProps>(
-  ({
-    class: className,
-    summary,
-    style,
-    isOpen: isOpenProp,
-    setIsOpen$,
-    monochrome,
-  }) => {
-    const isOpen = useSignal(isOpenProp ?? false);
+  (props) => {
+    const { class: className, summary, style, setIsOpen$, monochrome } = props;
+    const isOpen = useSignal(props.isOpen ?? false);
 
     useTask$(({ track }) => {
-      track(() => isOpenProp);
-      if (isOpenProp !== undefined) {
-        isOpen.value = isOpenProp;
+      const value = track(() => props.isOpen);
+      if (value !== undefined) {
+        isOpen.value = value;
       }
     });
 

@@ -25,10 +25,11 @@ export interface ElmKatexProps {
 }
 
 export const ElmKatex = component$<ElmKatexProps>(
-  ({ class: className, style, expression, block = false }) => {
+  (props) => {
+    const { class: className, style } = props;
     const html = useComputed$(() =>
-      renderToString(expression, {
-        displayMode: block,
+      renderToString(props.expression, {
+        displayMode: props.block ?? false,
         output: "mathml",
       }),
     );
