@@ -284,14 +284,20 @@ export function useAgent({
           </div>
 
           <div class={styles["agent-input"]}>
-            <div class={styles["prompt-template-container"]}>
-              {agentStateStore.promptTemplates.map((template, index) => (
-                <span key={index} class={styles["prompt-template-tip"]}>
-                  <ElmMdiIcon d={mdiForumOutline} color="#cdb57b" />
-                  <ElmInlineText>{template.description}</ElmInlineText>
-                </span>
-              ))}
-            </div>
+            {!agentStateStore.isRunning && (
+              <div class={styles["prompt-template-container"]}>
+                {agentStateStore.promptTemplates.map((template, index) => (
+                  <span
+                    key={index}
+                    class={styles["prompt-template-tip"]}
+                    onClick$={() => send(template.value)}
+                  >
+                    <ElmMdiIcon d={mdiForumOutline} color="#cdb57b" />
+                    <ElmInlineText>{template.description}</ElmInlineText>
+                  </span>
+                ))}
+              </div>
+            )}
 
             <ElmAgUiInput
               onInput$={onInput$}
