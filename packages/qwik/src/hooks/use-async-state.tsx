@@ -1,4 +1,10 @@
-import { $, type QRL, useSignal, useStore, useVisibleTask$ } from "@builder.io/qwik";
+import {
+  $,
+  type QRL,
+  useSignal,
+  useStore,
+  useVisibleTask$,
+} from "@builder.io/qwik";
 
 export interface UseAsyncStateOptions<D = unknown> {
   /**
@@ -101,8 +107,11 @@ export const useAsyncState = <Data,>(
 
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(
-    async () => {
-      if (config.immediate) {
+    async ({ track }) => {
+      const immediate = track(() => config.immediate);
+      track(() => promise$);
+
+      if (immediate) {
         await execute(config.delay);
       }
     },
