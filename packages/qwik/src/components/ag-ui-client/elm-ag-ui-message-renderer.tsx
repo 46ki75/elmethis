@@ -1,4 +1,4 @@
-import { component$, JSX, type CSSProperties } from "@builder.io/qwik";
+import { component$, JSX, QRL, type CSSProperties } from "@builder.io/qwik";
 
 import styles from "./elm-ag-ui-message-renderer.module.css";
 import {
@@ -22,13 +22,15 @@ export interface ElmAgUiMessageRendererProps {
 
   style?: CSSProperties;
 
+  handleRetry$: QRL<() => void>;
+
   isRunning: boolean;
 
   messages: Message[];
 }
 
 export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
-  ({ class: className, style, messages, isRunning }) => {
+  ({ class: className, style, messages, isRunning, handleRetry$ }) => {
     const renderTool = (toolCall: ToolCall, messages: Message[]) => {
       let toolEventType = EventType.TOOL_CALL_START;
 
@@ -133,7 +135,10 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
                       <div class={styles["message-content-assistant-actions"]}>
                         <ElmCopyIcon content={message.content} />
 
-                        <span class={styles["clickable-icon"]}>
+                        <span
+                          class={styles["clickable-icon"]}
+                          onClick$={handleRetry$}
+                        >
                           <ElmMdiIcon d={mdiRefresh} size="1.25rem" />
                         </span>
                       </div>
