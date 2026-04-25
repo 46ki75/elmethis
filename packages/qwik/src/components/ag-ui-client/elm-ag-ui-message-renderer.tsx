@@ -2,6 +2,7 @@ import { component$, JSX, QRL, type CSSProperties } from "@builder.io/qwik";
 
 import styles from "./elm-ag-ui-message-renderer.module.css";
 import {
+  ActivityMessage,
   Message,
   InputContent,
   EventType,
@@ -33,22 +34,6 @@ export interface ElmAgUiMessageRendererProps {
 export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
   ({ class: className, style, messages, isRunning, handleRetry$ }) => {
     const renderTool = (toolCall: ToolCall, messages: Message[]) => {
-      if (toolCall.function.name === "render_a2ui") {
-        const args = JSON.parse(toolCall.function.arguments ?? "{}") as {
-          surfaceId: string;
-          catalogId: string;
-          components: unknown[];
-        };
-        return (
-          <ElmA2uiRenderer
-            messages={[
-              { version: "v0.9", createSurface: { surfaceId: args.surfaceId, catalogId: args.catalogId } },
-              { version: "v0.9", updateComponents: { surfaceId: args.surfaceId, components: args.components } },
-            ]}
-          />
-        );
-      }
-
       let toolEventType = EventType.TOOL_CALL_START;
 
       if (toolCall.function.arguments != null)
@@ -121,6 +106,11 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
     const render = (message: Message, index: number): JSX.Element | null => {
       switch (message.role) {
         case "activity": {
+          const activity = message as ActivityMessage;
+          if (activity.activityType === "a2ui-surface") {
+            const ops = activity.content["a2ui_operations"] as unknown[];
+            return <ElmA2uiRenderer messages={ops} />;
+          }
           return null;
         }
 

@@ -61,6 +61,13 @@ const UseAgent = component$<UseAgentProps>(
           description: "Location information",
           value: "What is my current location?",
         },
+        {
+          description: "Render A2UI",
+          value: `Could you render a \`Title\` component with A2UI?
+
+- catalogId: <https://a2ui.org/specification/v0_9/basic_catalog.json>
+- surfaceId: \`my-title-surface\``,
+        },
       ]);
     });
 
