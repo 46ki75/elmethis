@@ -203,6 +203,35 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
     }
   });
 
+  const retry = $(async () => {
+    if (!httpAgent.value) return;
+
+    const lastUserMessageIndex = agentStateStore.messages.findLastIndex(
+      (m) => m.role === "user",
+    );
+    if (lastUserMessageIndex === -1) return;
+
+    // Remove all messages after the last user message
+    const newMessages = httpAgent.value.messages.slice(
+      0,
+      lastUserMessageIndex + 1,
+    );
+    httpAgent.value.messages = [...newMessages];
+    agentStateStore.messages = [...newMessages];
+
+    try {
+      await httpAgent.value.runAgent({
+        tools: getToolDefinitions(toolsRef.value ?? {}),
+        context: agentStateStore.context?.map(({ value, description }) => ({
+          value,
+          description,
+        })),
+      });
+    } catch {
+      agentStateStore.isRunning = false;
+    }
+  });
+
   const addTool = $((name: string, tool: AnyToolDef) => {
     toolsRef.value = noSerialize({ ...(toolsRef.value ?? {}), [name]: tool });
   });
@@ -233,6 +262,7 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
             <ElmAgUiMessageRenderer
               isRunning={agentStateStore.isRunning}
               messages={agentStateStore.messages}
+              handleRetry$={retry}
             />
           </div>
 
