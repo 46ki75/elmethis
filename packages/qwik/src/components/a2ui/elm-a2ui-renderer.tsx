@@ -21,6 +21,7 @@ import {
   BASIC_FUNCTIONS,
 } from "@a2ui/web_core/v0_9/basic_catalog";
 
+import { ElmTabs } from "../containments/elm-tabs";
 import styles from "./elm-a2ui.module.css";
 
 export interface ElmA2uiRendererProps {
@@ -482,20 +483,14 @@ export const ElmA2uiRenderer = component$<ElmA2uiRendererProps>(
             ? (p.tabs as Array<{ title: unknown; child?: string }>)
             : [];
           return (
-            <div class={styles.tabs}>
-              <div class={styles["tabs-bar"]} role="tablist">
-                {tabs.map((tab, i) => (
-                  <button key={i} class={styles["tab-button"]} role="tab">
-                    {resolve(tab.title)}
-                  </button>
-                ))}
-              </div>
-              <div class={styles["tab-content"]} role="tabpanel">
-                {tabs[0]?.child
-                  ? renderTree(tabs[0].child, surface, basePath, depth + 1)
-                  : null}
-              </div>
-            </div>
+            <ElmTabs
+              tabLabels={tabs.map((tab) => <>{resolve(tab.title)}</>)}
+              tabContents={tabs.map((tab) =>
+                tab.child
+                  ? renderTree(tab.child, surface, basePath, depth + 1)
+                  : null,
+              )}
+            />
           );
         }
 
