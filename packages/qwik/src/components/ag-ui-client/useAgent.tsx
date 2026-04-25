@@ -24,6 +24,9 @@ import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import { ElmAgUiMessageRenderer } from "./elm-ag-ui-message-renderer";
 import { ElmAgUiInput } from "./elm-ag-ui-input";
+import { ElmInlineText } from "../typography/elm-inline-text";
+import { ElmMdiIcon } from "../icon/elm-mdi-icon";
+import { mdiForumOutline } from "@mdi/js";
 
 // ---------------------------------------------------------------------------
 // Tool registry
@@ -83,11 +86,13 @@ export function useAgent({
       description: string;
     }[];
     isRunning: boolean;
+    promptTemplates: { description: string; value: string }[];
   }>({
     messages: initialMessages ?? [],
     events: [],
     context,
     isRunning: false,
+    promptTemplates: [],
   });
 
   // eslint-disable-next-line qwik/no-use-visible-task
@@ -279,6 +284,15 @@ export function useAgent({
           </div>
 
           <div class={styles["agent-input"]}>
+            <div class={styles["prompt-template-container"]}>
+              {agentStateStore.promptTemplates.map((template, index) => (
+                <span key={index} class={styles["prompt-template-tip"]}>
+                  <ElmMdiIcon d={mdiForumOutline} color="#cdb57b" />
+                  <ElmInlineText>{template.description}</ElmInlineText>
+                </span>
+              ))}
+            </div>
+
             <ElmAgUiInput
               onInput$={onInput$}
               onSubmit$={onSubmit$}
@@ -297,11 +311,19 @@ export function useAgent({
     },
   );
 
+  const setPromptTemplates = $(
+    (templates: { description: string; value: string }[]) => {
+      agentStateStore.promptTemplates = templates;
+    },
+  );
+
   return {
     messages: agentStateStore.messages,
     events: agentStateStore.events,
     context: agentStateStore.context,
     setContext,
+    promptTemplates: agentStateStore.promptTemplates,
+    setPromptTemplates,
     send,
     addTool,
     abort,

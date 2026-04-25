@@ -23,7 +23,7 @@ const UseAgent = component$<UseAgentProps>(
   }) => {
     const context = useStore<Array<{ description: string; value: string }>>([]);
 
-    const { AgentUI, addTool } = useAgent({
+    const { AgentUI, addTool, setPromptTemplates } = useAgent({
       url,
       context: context,
     });
@@ -51,6 +51,21 @@ const UseAgent = component$<UseAgentProps>(
         description: "Location information",
         value: "Nerima, Tokyo, Japan",
       });
+
+      setPromptTemplates([
+        {
+          description: "Ask about AWS",
+          value: "What is a new feature called Amazon S3 Files?",
+        },
+        {
+          description: "Date and time",
+          value: "What is the current date and time?",
+        },
+        {
+          description: "Location information",
+          value: "What is my current location?",
+        },
+      ]);
     });
 
     return <AgentUI class={className} style={style} />;
