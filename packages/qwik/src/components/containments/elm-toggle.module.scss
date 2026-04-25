@@ -2,7 +2,7 @@
   margin-block-start: var(--elmethis-margin-block-start);
   box-sizing: border-box;
   display: grid;
-  grid-template-rows: 3.5rem 0fr;
+  grid-template-rows: 2rem 0fr;
   grid-template-columns: 1px 1fr;
   grid-template-areas:
     "summary summary"
@@ -12,7 +12,7 @@
   transition: grid-template-rows 200ms;
 
   &.open {
-    grid-template-rows: 3.5rem 1fr;
+    grid-template-rows: 2rem 1fr;
   }
 }
 
@@ -20,7 +20,7 @@
   align-self: center;
   grid-area: summary;
   width: 100%;
-  height: 2.5rem;
+  height: 2rem;
   box-sizing: border-box;
   padding: 0 0.5rem;
   cursor: pointer;
