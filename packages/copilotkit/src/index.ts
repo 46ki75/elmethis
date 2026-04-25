@@ -57,11 +57,6 @@ app.route(
   createCopilotHonoHandler({
     runtime,
     basePath: "/copilotkit",
-    hooks: {
-      onRequest: (ctx) => {
-        console.log(ctx);
-      },
-    },
   }),
 );
 
