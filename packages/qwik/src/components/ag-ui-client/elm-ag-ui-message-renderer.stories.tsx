@@ -1,4 +1,4 @@
-import { component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
+import { $, component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import {
   ElmAgUiMessageRenderer,
@@ -85,6 +85,7 @@ const StreamingWrapper = component$(() => {
       messages={[
         { id: "msg-stream-001", role: "assistant", content: content.value },
       ]}
+      handleRetry$={$(() => {})}
     />
   );
 });
