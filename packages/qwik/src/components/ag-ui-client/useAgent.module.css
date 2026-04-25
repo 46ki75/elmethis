@@ -2,18 +2,25 @@
   position: relative;
   width: 100%;
   height: 100%;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
 
   .messages {
-    overflow-y: auto;
     box-sizing: border-box;
     height: 100%;
-    padding-bottom: 4rem;
+    margin: 0;
+    padding: 0;
+    /* padding-bottom: 4rem; */
   }
 
   .agent-input {
+    box-sizing: border-box;
     padding: clamp(0.25rem, 1%, 0.5rem);
-    position: sticky;
+    width: 100%;
+    position: absolute;
     bottom: 0;
+    left: 0;
 
     .prompt-template-container {
       width: 100%;
