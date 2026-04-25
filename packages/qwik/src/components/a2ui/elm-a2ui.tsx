@@ -103,6 +103,16 @@ export const ElmA2ui = component$<ElmA2uiProps>(
               }
             }
           }
+          // Flush any trailing data that was not followed by a newline
+          const remaining = buf.trim();
+          if (remaining) {
+            try {
+              processor.processMessages([JSON.parse(remaining)]);
+              tick.v++;
+            } catch {
+              /* skip invalid JSON */
+            }
+          }
         })
         .catch((err: unknown) => {
           if (err instanceof Error && err.name !== "AbortError") {
