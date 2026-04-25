@@ -126,9 +126,9 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
         class={[styles["elm-ag-ui-tool-execution"], className]}
         style={{ "--margin-block": "0", ...style }}
       >
-        <ElmToggle isOpen={isOpen.value} setIsOpen$={setIsOpen}>
+        <ElmToggle isOpen={isOpen.value} setIsOpen$={setIsOpen} monochrome>
           <div q:slot="summary" class={styles.summary}>
-            <ElmMdiIcon d={mdiHammerScrewdriver} size="1.25rem" />
+            <ElmMdiIcon d={mdiHammerScrewdriver} size="1rem" />
             <ElmInlineText>{toolName}</ElmInlineText>
           </div>
 
@@ -136,7 +136,7 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
             <div class={styles.summary}>
               <ElmMdiIcon
                 d={mdiFunctionVariant}
-                size="1.25rem"
+                size="1rem"
                 color={
                   toolEventType === EventType.TOOL_CALL_START
                     ? "#6987b8"
@@ -148,12 +148,13 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
           }
 
           {isArgsShown.value && (
-            <ElmToggle isOpen={isArgsOpen.value} setIsOpen$={setIsArgsOpen}>
-              <div
-                q:slot="summary"
-                class={styles.summary}
-              >
-                <ElmMdiIcon d={mdiCodeJson} size="1.25rem" />
+            <ElmToggle
+              isOpen={isArgsOpen.value}
+              setIsOpen$={setIsArgsOpen}
+              monochrome
+            >
+              <div q:slot="summary" class={styles.summary}>
+                <ElmMdiIcon d={mdiCodeJson} size="1rem" />
                 <ElmInlineText>Args</ElmInlineText>
               </div>
 
@@ -167,7 +168,7 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
             <div class={styles.summary}>
               <ElmMdiIcon
                 d={mdiWrenchClock}
-                size="1.25rem"
+                size="1rem"
                 color={
                   toolEventType === EventType.TOOL_CALL_ARGS ||
                   toolEventType === EventType.TOOL_CALL_END
@@ -185,12 +186,13 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
           )}
 
           {isResultShown.value && (
-            <ElmToggle isOpen={isResultOpen.value} setIsOpen$={setIsResultOpen}>
-              <div
-                q:slot="summary"
-                class={styles.summary}
-              >
-                <ElmMdiIcon d={mdiCodeJson} size="1.25rem" />
+            <ElmToggle
+              isOpen={isResultOpen.value}
+              setIsOpen$={setIsResultOpen}
+              monochrome
+            >
+              <div q:slot="summary" class={styles.summary}>
+                <ElmMdiIcon d={mdiCodeJson} size="1rem" />
                 <ElmInlineText>Result</ElmInlineText>
               </div>
 

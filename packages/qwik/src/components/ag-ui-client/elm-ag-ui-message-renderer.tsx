@@ -150,7 +150,7 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
         case "reasoning": {
           return (
             <>
-              <ElmToggle isOpen={messages.length - 1 === index}>
+              <ElmToggle isOpen={messages.length - 1 === index} monochrome>
                 <div q:slot="summary" class={styles["message-content-type"]}>
                   <ElmMdiIcon
                     class={styles["message-content-icon"]}
