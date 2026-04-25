@@ -172,7 +172,11 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
                   ></div>
                 </div>
 
-                <ElmMarkdown markdown={message.content} streaming={true} />
+                <ElmMarkdown
+                  style={{ opacity: 0.5 }}
+                  markdown={message.content}
+                  streaming={true}
+                />
               </ElmToggle>
             </>
           );
