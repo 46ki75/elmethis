@@ -12,15 +12,11 @@ import { useAgent } from "./useAgent";
 export interface UseAgentProps {
   class?: string;
   style?: CSSProperties;
-  url?: string;
+  url: string;
 }
 
 const UseAgent = component$<UseAgentProps>(
-  ({
-    class: className,
-    style,
-    url = "http://localhost:8080/copilotkit/agent/default/run",
-  }) => {
+  ({ class: className, style, url }) => {
     const context = useStore<Array<{ description: string; value: string }>>([]);
 
     const { AgentUI, addTool, setPromptTemplates } = useAgent({
@@ -76,7 +72,9 @@ const meta: Meta<UseAgentProps> = {
   title: "Components/AG-UI/hooks/useAgent",
   component: UseAgent,
   tags: ["autodocs"],
-  args: {},
+  args: {
+    url: "http://localhost:8080/copilotkit/agent/default/run",
+  },
 };
 
 export default meta;

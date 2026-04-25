@@ -43,8 +43,19 @@ const app = new Hono();
 
 app.use("*", cors());
 
-// `/copilotkit/default/run`
-app.route("/", createCopilotHonoHandler({ runtime, basePath: "/copilotkit" }));
+// `/copilotkit/agent/default/run`
+app.route(
+  "/",
+  createCopilotHonoHandler({
+    runtime,
+    basePath: "/copilotkit",
+    hooks: {
+      onRequest: (ctx) => {
+        console.log(ctx);
+      },
+    },
+  }),
+);
 
 const port = parseInt(process.env.PORT || "8080", 10);
 const hostname = process.env.ADDRESS || "0.0.0.0";
