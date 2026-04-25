@@ -80,7 +80,7 @@ const meta: Meta<UseAgentProps> = {
   component: UseAgent,
   tags: ["autodocs"],
   args: {
-    url: "http://localhost:8080/copilotkit/agent/minimax-m2.5/run",
+    url: "http://localhost:8080/copilotkit/agent/minimax-m2.5-free/run",
   },
   argTypes: {
     url: {
