@@ -62,9 +62,16 @@ export interface UseAgentOptions {
     description: string;
   }[];
   headers?: Record<string, string> | undefined;
+  initialMessages?: Message[];
 }
 
-export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
+export function useAgent({
+  url,
+  tools,
+  context,
+  headers,
+  initialMessages,
+}: UseAgentOptions) {
   const httpAgent = useSignal<NoSerialize<HttpAgent> | null>(null);
   const toolsRef = useSignal<NoSerialize<ToolRegistry>>(noSerialize(tools));
 
@@ -77,16 +84,21 @@ export function useAgent({ url, tools, context, headers }: UseAgentOptions) {
     }[];
     isRunning: boolean;
   }>({
-    messages: [],
+    messages: initialMessages ?? [],
     events: [],
     context,
     isRunning: false,
   });
 
   // eslint-disable-next-line qwik/no-use-visible-task
-  useVisibleTask$(({ cleanup }) => {
+  useVisibleTask$(({ cleanup, track }) => {
+    const trackedUrl = track(() => url);
+    const trackedHeaders = track(() => headers);
+
     if (!httpAgent.value) {
-      httpAgent.value = noSerialize(new HttpAgent({ url, headers }));
+      httpAgent.value = noSerialize(
+        new HttpAgent({ url: trackedUrl, headers: trackedHeaders }),
+      );
       cleanup(() => {
         httpAgent.value = null;
       });
