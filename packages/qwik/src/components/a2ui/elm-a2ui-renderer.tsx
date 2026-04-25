@@ -69,7 +69,9 @@ export const ElmA2uiRenderer = component$<ElmA2uiRendererProps>(
         }
       }
       // Always register the standard catalog as a fallback
-      catalogIdSet.add("https://a2ui.org/specification/v0_9/basic_catalog.json");
+      catalogIdSet.add(
+        "https://a2ui.org/specification/v0_9/basic_catalog.json",
+      );
 
       const catalogs = Array.from(catalogIdSet).map(
         (id) =>
@@ -147,8 +149,7 @@ export const ElmA2uiRenderer = component$<ElmA2uiRendererProps>(
         if (!surface || !model) return;
         const bound = model.properties[prop];
         if (bound && typeof bound === "object" && "path" in bound) {
-          const value =
-            el.type === "checkbox" ? el.checked : Number(el.value);
+          const value = el.type === "checkbox" ? el.checked : Number(el.value);
           new ComponentContext(surface, cid).dataContext.set(
             bound.path as string,
             value,
@@ -194,9 +195,7 @@ export const ElmA2uiRenderer = component$<ElmA2uiRendererProps>(
 
     // ---- rendering ----
 
-    const findRootId = (
-      surface: SurfaceModel<ComponentApi>,
-    ): string | null => {
+    const findRootId = (surface: SurfaceModel<ComponentApi>): string | null => {
       const all = new Set<string>();
       const referenced = new Set<string>();
       for (const [id, model] of surface.componentsModel.entries) {
@@ -233,15 +232,11 @@ export const ElmA2uiRenderer = component$<ElmA2uiRendererProps>(
       const resolve = (v: unknown): string => {
         if (typeof v === "string") return v;
         if (v && typeof v === "object")
-          return String(
-            ctx.dataContext.resolveDynamicValue(v as never) ?? "",
-          );
+          return String(ctx.dataContext.resolveDynamicValue(v as never) ?? "");
         return String(v ?? "");
       };
 
-      const childRefs = (
-        children: unknown,
-      ): { id: string; path: string }[] => {
+      const childRefs = (children: unknown): { id: string; path: string }[] => {
         if (Array.isArray(children))
           return children
             .filter((id): id is string => typeof id === "string")
@@ -282,34 +277,20 @@ export const ElmA2uiRenderer = component$<ElmA2uiRendererProps>(
           const text = resolve(p.text);
           const v = (p.variant as string) ?? "body";
           if (v === "h1")
-            return (
-              <h1 class={[styles.text, styles["text-h1"]]}>{text}</h1>
-            );
+            return <h1 class={[styles.text, styles["text-h1"]]}>{text}</h1>;
           if (v === "h2")
-            return (
-              <h2 class={[styles.text, styles["text-h2"]]}>{text}</h2>
-            );
+            return <h2 class={[styles.text, styles["text-h2"]]}>{text}</h2>;
           if (v === "h3")
-            return (
-              <h3 class={[styles.text, styles["text-h3"]]}>{text}</h3>
-            );
+            return <h3 class={[styles.text, styles["text-h3"]]}>{text}</h3>;
           if (v === "h4")
-            return (
-              <h4 class={[styles.text, styles["text-h4"]]}>{text}</h4>
-            );
+            return <h4 class={[styles.text, styles["text-h4"]]}>{text}</h4>;
           if (v === "h5")
-            return (
-              <h5 class={[styles.text, styles["text-h5"]]}>{text}</h5>
-            );
+            return <h5 class={[styles.text, styles["text-h5"]]}>{text}</h5>;
           if (v === "caption")
             return (
-              <span class={[styles.text, styles["text-caption"]]}>
-                {text}
-              </span>
+              <span class={[styles.text, styles["text-caption"]]}>{text}</span>
             );
-          return (
-            <p class={[styles.text, styles["text-body"]]}>{text}</p>
-          );
+          return <p class={[styles.text, styles["text-body"]]}>{text}</p>;
         }
 
         case "Row":
@@ -319,8 +300,7 @@ export const ElmA2uiRenderer = component$<ElmA2uiRendererProps>(
               style={{
                 justifyContent:
                   jc[(p.distribution as string) ?? "start"] ?? "flex-start",
-                alignItems:
-                  ai[(p.alignment as string) ?? "center"] ?? "center",
+                alignItems: ai[(p.alignment as string) ?? "center"] ?? "center",
               }}
             >
               {childRefs(p.children).map(({ id, path }, i) => (
@@ -457,9 +437,8 @@ export const ElmA2uiRenderer = component$<ElmA2uiRendererProps>(
               ? checkedVal
               : checkedVal && typeof checkedVal === "object"
                 ? Boolean(
-                    ctx.dataContext.resolveDynamicValue(
-                      checkedVal as never,
-                    ) ?? false,
+                    ctx.dataContext.resolveDynamicValue(checkedVal as never) ??
+                    false,
                   )
                 : false;
           return (
@@ -470,9 +449,7 @@ export const ElmA2uiRenderer = component$<ElmA2uiRendererProps>(
                 data-a2ui-change={`${sid}:${cid}:checked`}
               />
               {p.label ? (
-                <span class={styles["checkbox-label"]}>
-                  {resolve(p.label)}
-                </span>
+                <span class={styles["checkbox-label"]}>{resolve(p.label)}</span>
               ) : null}
             </label>
           );
@@ -532,14 +509,10 @@ export const ElmA2uiRenderer = component$<ElmA2uiRendererProps>(
           );
 
         case "Video":
-          return (
-            <video class={styles.video} controls src={resolve(p.url)} />
-          );
+          return <video class={styles.video} controls src={resolve(p.url)} />;
 
         case "AudioPlayer":
-          return (
-            <audio class={styles.audio} controls src={resolve(p.url)} />
-          );
+          return <audio class={styles.audio} controls src={resolve(p.url)} />;
 
         default:
           return null;
