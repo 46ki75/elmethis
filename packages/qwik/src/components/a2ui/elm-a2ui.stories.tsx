@@ -36,55 +36,149 @@ const meta: Meta<ElmA2uiProps> = {
 export default meta;
 type Story = StoryObj<ElmA2uiProps>;
 
-// ---- Mock blob-URL story ----
+// ---- Streaming mock story ----
 
-const CATALOG_ID =
-  "https://a2ui.org/specification/v0_9/standard_catalog_definition.json";
-
-const MOCK_JSONL = [
-  JSON.stringify({
-    version: "v0.9",
-    createSurface: { surfaceId: "demo", catalogId: CATALOG_ID },
-  }),
-  JSON.stringify({
-    version: "v0.9",
-    updateComponents: {
-      surfaceId: "demo",
-      components: [
-        { component: "Column", id: "root", children: ["heading", "body", "row"] },
-        { component: "Text",   id: "heading", variant: "h2", text: "ElmA2ui — Live stream demo" },
-        {
-          component: "Text",
-          id: "body",
-          text: "This surface was rendered from a static Blob URL that simulates a JSONL stream.",
-        },
-        { component: "Row",    id: "row",     children: ["btn1", "btn2"] },
-        { component: "Button", id: "btn1",    child: "lbl1" },
-        { component: "Text",   id: "lbl1",    text: "Cancel" },
-        { component: "Button", id: "btn2",    child: "lbl2", primary: true },
-        { component: "Text",   id: "lbl2",    text: "Confirm" },
-      ],
-    },
-  }),
-].join("\n");
+const MOCK_STREAM_URL = "mock://a2ui-stream";
 
 /**
- * Generates a Blob URL from a static JSONL string so the component can be
- * exercised inside Storybook without a real server.
+ * Intercepts `window.fetch` for `MOCK_STREAM_URL` and returns a
+ * `ReadableStream` that enqueues one JSONL line every 800 ms, simulating a
+ * real server-sent JSONL stream without any network dependency.
  */
 const MockStreamStory = component$(() => {
-  const blobUrl = useSignal<string | null>(null);
+  const ready = useSignal(false);
 
   // eslint-disable-next-line qwik/no-use-visible-task
-  useVisibleTask$(() => {
-    const blob = new Blob([MOCK_JSONL], { type: "text/plain" });
-    blobUrl.value = URL.createObjectURL(blob);
-    return () => {
-      if (blobUrl.value) URL.revokeObjectURL(blobUrl.value);
+  useVisibleTask$(({ cleanup }) => {
+    const CATALOG =
+      "https://a2ui.org/specification/v0_9/standard_catalog_definition.json";
+    const SID = "demo";
+    const DELAY = 800;
+
+    // Each entry is one JSONL line that arrives after DELAY ms.
+    // The UI builds up progressively as messages stream in.
+    const messages = [
+      // 1. Create the surface (nothing visible yet)
+      {
+        version: "v0.9",
+        createSurface: { surfaceId: SID, catalogId: CATALOG },
+      },
+      // 2. Heading appears
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: SID,
+          components: [
+            { component: "Column", id: "root", children: ["heading"] },
+            {
+              component: "Text",
+              id: "heading",
+              variant: "h2",
+              text: "Streaming UI",
+            },
+          ],
+        },
+      },
+      // 3. Body text appears
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: SID,
+          components: [
+            { component: "Column", id: "root", children: ["heading", "body"] },
+            {
+              component: "Text",
+              id: "body",
+              text: "Each message arrives 800 ms after the previous one.",
+            },
+          ],
+        },
+      },
+      // 4. Buttons appear
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: SID,
+          components: [
+            {
+              component: "Column",
+              id: "root",
+              children: ["heading", "body", "row"],
+            },
+            { component: "Row", id: "row", children: ["btn1", "btn2"] },
+            { component: "Button", id: "btn1", child: "lbl1" },
+            { component: "Text", id: "lbl1", text: "Cancel" },
+            { component: "Button", id: "btn2", child: "lbl2", primary: true },
+            { component: "Text", id: "lbl2", text: "Confirm" },
+          ],
+        },
+      },
+    ];
+
+    const enc = new TextEncoder();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const original = (window as any).fetch as typeof fetch;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (window as any).fetch = (
+      url: unknown,
+      init?: RequestInit,
+    ): Promise<Response> => {
+      if (String(url) !== MOCK_STREAM_URL) {
+        return original(url as RequestInfo | URL, init);
+      }
+
+      const signal = init?.signal;
+      let idx = 0;
+
+      const stream = new ReadableStream<Uint8Array>({
+        async pull(controller) {
+          // All messages delivered — close the stream
+          if (idx >= messages.length) {
+            controller.close();
+            return;
+          }
+
+          // Wait DELAY ms (or bail early on abort)
+          await new Promise<void>((resolve) => {
+            const timer = setTimeout(resolve, DELAY);
+            signal?.addEventListener(
+              "abort",
+              () => {
+                clearTimeout(timer);
+                resolve();
+              },
+              { once: true },
+            );
+          });
+
+          if (signal?.aborted) {
+            controller.close();
+            return;
+          }
+
+          controller.enqueue(
+            enc.encode(JSON.stringify(messages[idx++]) + "\n"),
+          );
+        },
+      });
+
+      return Promise.resolve(new Response(stream, { status: 200 }));
     };
+
+    ready.value = true;
+
+    cleanup(() => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (window as any).fetch = original;
+    });
   });
 
-  return blobUrl.value ? <ElmA2ui url={blobUrl.value} /> : null;
+  return ready.value ? (
+    <>
+      <ElmA2ui url={MOCK_STREAM_URL} />
+    </>
+  ) : null;
 });
 
 export const MockStream: Story = {
@@ -92,8 +186,9 @@ export const MockStream: Story = {
     docs: {
       description: {
         story:
-          "Renders `ElmA2ui` with a static Blob URL that serves pre-built " +
-          "JSONL messages — no real server required.",
+          "Intercepts `fetch` for a fake URL and returns a `ReadableStream` " +
+          "that enqueues one JSONL message every 800 ms. The UI builds up " +
+          "progressively as each message arrives, without any real server.",
       },
     },
   },
