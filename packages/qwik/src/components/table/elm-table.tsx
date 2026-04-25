@@ -25,9 +25,9 @@ export interface ElmTableProps {
 }
 
 export const ElmTable = component$<ElmTableProps>((props) => {
-  const { caption, hasRowHeader = false, style } = props;
+  const { caption, style } = props;
 
-  const hasRowHeaderComputed = useComputed$(() => hasRowHeader);
+  const hasRowHeaderComputed = useComputed$(() => props.hasRowHeader ?? false);
   useContextProvider(HasRowHeaderContext, hasRowHeaderComputed);
 
   return (

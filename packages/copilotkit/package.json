@@ -16,11 +16,9 @@
         "@ai-sdk/openai": "^3.0.52",
         "@copilotkit/runtime": "^1.55.3",
         "@copilotkit/shared": "^1.55.3",
-        "@fastify/cors": "^9.0.1",
         "@hono/node-server": "^1.19.14",
         "@openrouter/ai-sdk-provider": "^2.5.1",
         "dotenv": "^16.4.5",
-        "fastify": "^4.28.1",
         "hono": "^4.12.12",
         "openai": "^4.104.0"
     },

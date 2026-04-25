@@ -1,6 +1,5 @@
 packages:
   - "packages/copilotkit"
-  - "packages/mastra"
   - "packages/qwik"
   - "packages/react"
   - "packages/vue"

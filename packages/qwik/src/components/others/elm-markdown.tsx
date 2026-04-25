@@ -226,7 +226,8 @@ const ElmMarkdownStable = component$<{ tokens: Token[] }>(({ tokens }) => (
 ));
 
 export const ElmMarkdown = component$<ElmMarkdownProps>(
-  ({ class: className, markdown, style, streaming }) => {
+  (props) => {
+    const { class: className, markdown, style } = props;
     const stableTokens = useSignal<Token[]>([]);
     const tailTokens = useSignal<Token[]>([]);
 
@@ -234,7 +235,7 @@ export const ElmMarkdown = component$<ElmMarkdownProps>(
       const md = track(() => markdown);
       const allTokens = marked.setOptions({ gfm: true }).lexer(md) as Token[];
 
-      if (streaming && allTokens.length > 0) {
+      if (props.streaming && allTokens.length > 0) {
         const newStable = allTokens.slice(0, -1);
         // Only replace stableTokens when a new complete block is added,
         // so ElmMarkdownStable skips re-renders between block boundaries.

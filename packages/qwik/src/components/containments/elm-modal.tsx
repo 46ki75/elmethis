@@ -21,16 +21,17 @@ export interface ElmModalProps {
 }
 
 export const ElmModal = component$<ElmModalProps>(
-  ({ class: className, style, isOpen, onClose$ }) => {
+  (props) => {
+    const { class: className, style, onClose$ } = props;
     const dialogRef = useSignal<HTMLDialogElement>();
     const isShown = useSignal(false);
 
     // eslint-disable-next-line qwik/no-use-visible-task
     useVisibleTask$(
       ({ track, cleanup }) => {
-        track(() => isOpen);
+        track(() => props.isOpen);
         if (!dialogRef.value) return;
-        if (isOpen) {
+        if (props.isOpen) {
           dialogRef.value.showModal();
           isShown.value = true;
         } else {
@@ -62,7 +63,7 @@ export const ElmModal = component$<ElmModalProps>(
         ]}
         style={style}
         onClick$={handleClose}
-        closedBy="none"
+        {...({ closedBy: "none" } as object)}
       >
         <div onClick$={(e) => e.stopPropagation()}>
           <Slot />
