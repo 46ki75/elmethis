@@ -11,13 +11,7 @@ import {
 
 import styles from "./useAgent.module.css";
 
-import {
-  BaseEvent,
-  HttpAgent,
-  Message,
-  randomUUID,
-  UserMessage,
-} from "@ag-ui/client";
+import { BaseEvent, HttpAgent, Message, UserMessage } from "@ag-ui/client";
 import { compactEventsExtended } from "./compactEventsExtended";
 
 import { z } from "zod";
@@ -27,6 +21,8 @@ import { ElmAgUiInput } from "./elm-ag-ui-input";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { mdiForumOutline } from "@mdi/js";
+
+import { v7 } from "uuid";
 
 // ---------------------------------------------------------------------------
 // Tool registry
@@ -182,7 +178,7 @@ export function useAgent({
           ? JSON.parse(toolCall.function.arguments)
           : {};
         pendingToolMessages.push({
-          id: randomUUID(),
+          id: v7(),
           role: "tool",
           content: JSON.stringify(await tool.execute(args)),
           toolCallId: event.toolCallId,
@@ -207,7 +203,7 @@ export function useAgent({
   const send = $(async (content: string) => {
     if (!httpAgent.value) return;
     const userMessage: UserMessage = {
-      id: randomUUID(),
+      id: v7(),
       role: "user",
       content,
     };
