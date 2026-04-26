@@ -44,9 +44,7 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap = {
     if (v === "h5")
       return <h5 class={[styles.text, styles["text-h5"]]}>{text}</h5>;
     if (v === "caption")
-      return (
-        <span class={[styles.text, styles["text-caption"]]}>{text}</span>
-      );
+      return <span class={[styles.text, styles["text-caption"]]}>{text}</span>;
     return <p class={[styles.text, styles["text-body"]]}>{text}</p>;
   },
 
@@ -223,7 +221,9 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap = {
       : [];
     return (
       <ElmTabs
-        tabLabels={tabs.map((tab) => <>{resolve(tab.title)}</>)}
+        tabLabels={tabs.map((tab) => (
+          <>{resolve(tab.title)}</>
+        ))}
         tabContents={tabs.map((tab) =>
           tab.child ? renderChild(tab.child) : null,
         )}
@@ -233,9 +233,7 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap = {
 
   Modal: ({ props, renderChild }: RenderContext) => (
     <div class={styles.modal}>
-      {typeof props.trigger === "string"
-        ? renderChild(props.trigger)
-        : null}
+      {typeof props.trigger === "string" ? renderChild(props.trigger) : null}
     </div>
   ),
 

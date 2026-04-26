@@ -153,7 +153,12 @@ const DefaultStory = component$(() => {
         id: "root",
         children: ["heading", "body", "card"],
       },
-      { component: "Text", id: "heading", variant: "h2", text: "Default Catalog" },
+      {
+        component: "Text",
+        id: "heading",
+        variant: "h2",
+        text: "Default Catalog",
+      },
       {
         component: "Text",
         id: "body",

@@ -436,65 +436,117 @@ const MockStreamStory = component$(() => {
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(({ cleanup }) => {
     const SID = "demo";
-    cleanup(scheduleMessages(
-      (m) => { msgs.value = m; },
-      [
-        // 1. Create the surface
-        { version: "v0.9", createSurface: { surfaceId: SID, catalogId: CATALOG_ID } },
-        // 2. Heading
-        {
-          version: "v0.9",
-          updateComponents: {
-            surfaceId: SID,
-            components: [
-              { component: "Column", id: "root", children: ["heading"] },
-              { component: "Text", id: "heading", variant: "h2", text: "Streaming UI" },
-            ],
-          },
+    cleanup(
+      scheduleMessages(
+        (m) => {
+          msgs.value = m;
         },
-        // 3. Body text
-        {
-          version: "v0.9",
-          updateComponents: {
-            surfaceId: SID,
-            components: [
-              { component: "Column", id: "root", children: ["heading", "body"] },
-              { component: "Text", id: "body", text: "Each message arrives 800 ms after the previous one." },
-            ],
+        [
+          // 1. Create the surface
+          {
+            version: "v0.9",
+            createSurface: { surfaceId: SID, catalogId: CATALOG_ID },
           },
-        },
-        // 4. Buttons
-        {
-          version: "v0.9",
-          updateComponents: {
-            surfaceId: SID,
-            components: [
-              { component: "Column", id: "root", children: ["heading", "body", "row"] },
-              { component: "Row", id: "row", children: ["btn1", "btn2"] },
-              { component: "Button", id: "btn1", child: "lbl1" },
-              { component: "Text", id: "lbl1", text: "Cancel" },
-              { component: "Button", id: "btn2", child: "lbl2", primary: true },
-              { component: "Text", id: "lbl2", text: "Confirm" },
-            ],
+          // 2. Heading
+          {
+            version: "v0.9",
+            updateComponents: {
+              surfaceId: SID,
+              components: [
+                { component: "Column", id: "root", children: ["heading"] },
+                {
+                  component: "Text",
+                  id: "heading",
+                  variant: "h2",
+                  text: "Streaming UI",
+                },
+              ],
+            },
           },
-        },
-        // 5. Pre-fill data model, then add a bound TextField
-        { version: "v0.9", updateDataModel: { surfaceId: SID, path: "/form/name", value: "Ada Lovelace" } },
-        {
-          version: "v0.9",
-          updateComponents: {
-            surfaceId: SID,
-            components: [
-              { component: "Column", id: "root", children: ["heading", "body", "row", "field"] },
-              { component: "TextField", id: "field", label: "Name", text: { path: "/form/name" } },
-            ],
+          // 3. Body text
+          {
+            version: "v0.9",
+            updateComponents: {
+              surfaceId: SID,
+              components: [
+                {
+                  component: "Column",
+                  id: "root",
+                  children: ["heading", "body"],
+                },
+                {
+                  component: "Text",
+                  id: "body",
+                  text: "Each message arrives 800 ms after the previous one.",
+                },
+              ],
+            },
           },
-        },
-        // 6. Server pushes a new value — TextField re-renders via data binding
-        { version: "v0.9", updateDataModel: { surfaceId: SID, path: "/form/name", value: "Grace Hopper" } },
-      ],
-      800,
-    ));
+          // 4. Buttons
+          {
+            version: "v0.9",
+            updateComponents: {
+              surfaceId: SID,
+              components: [
+                {
+                  component: "Column",
+                  id: "root",
+                  children: ["heading", "body", "row"],
+                },
+                { component: "Row", id: "row", children: ["btn1", "btn2"] },
+                { component: "Button", id: "btn1", child: "lbl1" },
+                { component: "Text", id: "lbl1", text: "Cancel" },
+                {
+                  component: "Button",
+                  id: "btn2",
+                  child: "lbl2",
+                  primary: true,
+                },
+                { component: "Text", id: "lbl2", text: "Confirm" },
+              ],
+            },
+          },
+          // 5. Pre-fill data model, then add a bound TextField
+          {
+            version: "v0.9",
+            updateDataModel: {
+              surfaceId: SID,
+              path: "/form/name",
+              value: "Ada Lovelace",
+            },
+          },
+          {
+            version: "v0.9",
+            updateComponents: {
+              surfaceId: SID,
+              components: [
+                {
+                  component: "Column",
+                  id: "root",
+                  children: ["heading", "body", "row", "field"],
+                },
+                {
+                  component: "TextField",
+                  id: "field",
+                  label: "Name",
+                  text: { path: "/form/name" },
+                },
+              ],
+            },
+          },
+          // 6. Server pushes a new value — TextField re-renders via data binding
+          {
+            version: "v0.9",
+            updateDataModel: {
+              surfaceId: SID,
+              path: "/form/name",
+              value: "Grace Hopper",
+            },
+          },
+        ],
+        800,
+      ),
+    );
   });
 
   return <ElmA2uiRenderer messages={msgs.value} />;
@@ -532,32 +584,51 @@ const StreamingTextStory = component$(() => {
       "Streaming text is rendered word by word",
       "Streaming text is rendered word by word via repeated updateDataModel messages.",
     ];
-    cleanup(scheduleMessages(
-      (m) => { msgs.value = m; },
-      [
-        { version: "v0.9", createSurface: { surfaceId: SID, catalogId: CATALOG_ID } },
-        // Initialise binding target before the Text component mounts
-        { version: "v0.9", updateDataModel: { surfaceId: SID, path: "/output", value: "" } },
-        {
-          version: "v0.9",
-          updateComponents: {
-            surfaceId: SID,
-            components: [
-              { component: "Column", id: "root", children: ["prompt", "div", "output"] },
-              { component: "Text", id: "prompt", variant: "h4", text: "Prompt: What is A2UI streaming?" },
-              { component: "Divider", id: "div" },
-              // text is a dynamic binding — each updateDataModel below updates this value
-              { component: "Text", id: "output", text: { path: "/output" } },
-            ],
-          },
+    cleanup(
+      scheduleMessages(
+        (m) => {
+          msgs.value = m;
         },
-        ...words.map((value) => ({
-          version: "v0.9",
-          updateDataModel: { surfaceId: SID, path: "/output", value },
-        })),
-      ],
-      400,
-    ));
+        [
+          {
+            version: "v0.9",
+            createSurface: { surfaceId: SID, catalogId: CATALOG_ID },
+          },
+          // Initialise binding target before the Text component mounts
+          {
+            version: "v0.9",
+            updateDataModel: { surfaceId: SID, path: "/output", value: "" },
+          },
+          {
+            version: "v0.9",
+            updateComponents: {
+              surfaceId: SID,
+              components: [
+                {
+                  component: "Column",
+                  id: "root",
+                  children: ["prompt", "div", "output"],
+                },
+                {
+                  component: "Text",
+                  id: "prompt",
+                  variant: "h4",
+                  text: "Prompt: What is A2UI streaming?",
+                },
+                { component: "Divider", id: "div" },
+                // text is a dynamic binding — each updateDataModel below updates this value
+                { component: "Text", id: "output", text: { path: "/output" } },
+              ],
+            },
+          },
+          ...words.map((value) => ({
+            version: "v0.9",
+            updateDataModel: { surfaceId: SID, path: "/output", value },
+          })),
+        ],
+        400,
+      ),
+    );
   });
 
   return <ElmA2uiRenderer messages={msgs.value} />;
@@ -588,42 +659,90 @@ const GrowingListStory = component$(() => {
   useVisibleTask$(({ cleanup }) => {
     const SID = "growing-list";
     const results = [
-      { title: "Introduction to A2UI", desc: "Overview of the agent-driven UI protocol." },
-      { title: "Dynamic Data Binding", desc: "How { path } bindings connect components to the DataModel." },
-      { title: "Streaming Patterns", desc: "Progressive rendering via JSONL streams." },
-      { title: "Component Lifecycle", desc: "createSurface, updateComponents, and deleteSurface." },
+      {
+        title: "Introduction to A2UI",
+        desc: "Overview of the agent-driven UI protocol.",
+      },
+      {
+        title: "Dynamic Data Binding",
+        desc: "How { path } bindings connect components to the DataModel.",
+      },
+      {
+        title: "Streaming Patterns",
+        desc: "Progressive rendering via JSONL streams.",
+      },
+      {
+        title: "Component Lifecycle",
+        desc: "createSurface, updateComponents, and deleteSurface.",
+      },
     ];
-    cleanup(scheduleMessages(
-      (m) => { msgs.value = m; },
-      [
-        { version: "v0.9", createSurface: { surfaceId: SID, catalogId: CATALOG_ID } },
-        // Start with an empty array so the List renders immediately (empty)
-        { version: "v0.9", updateDataModel: { surfaceId: SID, path: "/results", value: [] } },
-        {
-          version: "v0.9",
-          updateComponents: {
-            surfaceId: SID,
-            components: [
-              { component: "Column", id: "root", children: ["heading", "list"] },
-              { component: "Text", id: "heading", variant: "h3", text: "Search Results" },
-              // List template: one "row" component is instantiated per /results element
-              { component: "List", id: "list", children: { componentId: "row", path: "/results" } },
-              { component: "Card", id: "row", child: "rowInner" },
-              { component: "Column", id: "rowInner", children: ["rowTitle", "rowDesc"] },
-              // Relative paths resolve within each item's basePath (e.g. /results/0)
-              { component: "Text", id: "rowTitle", variant: "h5", text: { path: "title" } },
-              { component: "Text", id: "rowDesc", text: { path: "desc" } },
-            ],
-          },
+    cleanup(
+      scheduleMessages(
+        (m) => {
+          msgs.value = m;
         },
-        // Grow the array one item at a time — the List re-renders with each update
-        ...results.map((_, i) => ({
-          version: "v0.9",
-          updateDataModel: { surfaceId: SID, path: "/results", value: results.slice(0, i + 1) },
-        })),
-      ],
-      900,
-    ));
+        [
+          {
+            version: "v0.9",
+            createSurface: { surfaceId: SID, catalogId: CATALOG_ID },
+          },
+          // Start with an empty array so the List renders immediately (empty)
+          {
+            version: "v0.9",
+            updateDataModel: { surfaceId: SID, path: "/results", value: [] },
+          },
+          {
+            version: "v0.9",
+            updateComponents: {
+              surfaceId: SID,
+              components: [
+                {
+                  component: "Column",
+                  id: "root",
+                  children: ["heading", "list"],
+                },
+                {
+                  component: "Text",
+                  id: "heading",
+                  variant: "h3",
+                  text: "Search Results",
+                },
+                // List template: one "row" component is instantiated per /results element
+                {
+                  component: "List",
+                  id: "list",
+                  children: { componentId: "row", path: "/results" },
+                },
+                { component: "Card", id: "row", child: "rowInner" },
+                {
+                  component: "Column",
+                  id: "rowInner",
+                  children: ["rowTitle", "rowDesc"],
+                },
+                // Relative paths resolve within each item's basePath (e.g. /results/0)
+                {
+                  component: "Text",
+                  id: "rowTitle",
+                  variant: "h5",
+                  text: { path: "title" },
+                },
+                { component: "Text", id: "rowDesc", text: { path: "desc" } },
+              ],
+            },
+          },
+          // Grow the array one item at a time — the List re-renders with each update
+          ...results.map((_, i) => ({
+            version: "v0.9",
+            updateDataModel: {
+              surfaceId: SID,
+              path: "/results",
+              value: results.slice(0, i + 1),
+            },
+          })),
+        ],
+        900,
+      ),
+    );
   });
 
   return <ElmA2uiRenderer messages={msgs.value} />;
@@ -653,47 +772,77 @@ const ComponentSwapStory = component$(() => {
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(({ cleanup }) => {
     const SID = "swap";
-    cleanup(scheduleMessages(
-      (m) => { msgs.value = m; },
-      [
-        { version: "v0.9", createSurface: { surfaceId: SID, catalogId: CATALOG_ID } },
-        // 1. Loading placeholder
-        {
-          version: "v0.9",
-          updateComponents: {
-            surfaceId: SID,
-            components: [
-              { component: "Column", id: "root", children: ["loading"] },
-              { component: "Text", id: "loading", variant: "caption", text: "Loading…" },
-            ],
-          },
+    cleanup(
+      scheduleMessages(
+        (m) => {
+          msgs.value = m;
         },
-        // 2. Replace placeholder with real content in a single updateComponents
-        {
-          version: "v0.9",
-          updateComponents: {
-            surfaceId: SID,
-            components: [
-              { component: "Column", id: "root", children: ["card"] },
-              { component: "Card", id: "card", child: "cardInner" },
-              { component: "Column", id: "cardInner", children: ["title", "body", "actions"] },
-              { component: "Text", id: "title", variant: "h3", text: "Content Loaded" },
-              {
-                component: "Text",
-                id: "body",
-                text: "The agent replaced the loading placeholder with real content in a single updateComponents message.",
-              },
-              { component: "Row", id: "actions", children: ["btnDismiss", "btnView"] },
-              { component: "Button", id: "btnDismiss", child: "lblDismiss" },
-              { component: "Text", id: "lblDismiss", text: "Dismiss" },
-              { component: "Button", id: "btnView", child: "lblView", primary: true },
-              { component: "Text", id: "lblView", text: "View Details" },
-            ],
+        [
+          {
+            version: "v0.9",
+            createSurface: { surfaceId: SID, catalogId: CATALOG_ID },
           },
-        },
-      ],
-      1200,
-    ));
+          // 1. Loading placeholder
+          {
+            version: "v0.9",
+            updateComponents: {
+              surfaceId: SID,
+              components: [
+                { component: "Column", id: "root", children: ["loading"] },
+                {
+                  component: "Text",
+                  id: "loading",
+                  variant: "caption",
+                  text: "Loading…",
+                },
+              ],
+            },
+          },
+          // 2. Replace placeholder with real content in a single updateComponents
+          {
+            version: "v0.9",
+            updateComponents: {
+              surfaceId: SID,
+              components: [
+                { component: "Column", id: "root", children: ["card"] },
+                { component: "Card", id: "card", child: "cardInner" },
+                {
+                  component: "Column",
+                  id: "cardInner",
+                  children: ["title", "body", "actions"],
+                },
+                {
+                  component: "Text",
+                  id: "title",
+                  variant: "h3",
+                  text: "Content Loaded",
+                },
+                {
+                  component: "Text",
+                  id: "body",
+                  text: "The agent replaced the loading placeholder with real content in a single updateComponents message.",
+                },
+                {
+                  component: "Row",
+                  id: "actions",
+                  children: ["btnDismiss", "btnView"],
+                },
+                { component: "Button", id: "btnDismiss", child: "lblDismiss" },
+                { component: "Text", id: "lblDismiss", text: "Dismiss" },
+                {
+                  component: "Button",
+                  id: "btnView",
+                  child: "lblView",
+                  primary: true,
+                },
+                { component: "Text", id: "lblView", text: "View Details" },
+              ],
+            },
+          },
+        ],
+        1200,
+      ),
+    );
   });
 
   return <ElmA2uiRenderer messages={msgs.value} />;
@@ -706,7 +855,7 @@ export const ComponentSwap: Story = {
         story:
           "Demonstrates how an agent replaces a loading placeholder with real " +
           "content. The first `updateComponents` renders a caption text " +
-          "(`\"Loading…\"`). After 1.2 s a second `updateComponents` rewrites the " +
+          '(`"Loading…"`). After 1.2 s a second `updateComponents` rewrites the ' +
           "root's `children` list entirely, swapping in a `Card` subtree with a " +
           "title, body, and action buttons — no `updateDataModel` needed.",
       },

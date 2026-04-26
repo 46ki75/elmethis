@@ -24,7 +24,10 @@ import { type CatalogRendererMap } from "./elm-a2ui-catalog-renderer";
 import { elmBasicCatalogRendererMap } from "./elm-a2ui-basic-catalog-renderer";
 import styles from "./elm-a2ui.module.css";
 
-export type { CatalogRendererMap, RenderContext } from "./elm-a2ui-catalog-renderer";
+export type {
+  CatalogRendererMap,
+  RenderContext,
+} from "./elm-a2ui-catalog-renderer";
 
 export interface ElmA2uiRendererProps {
   class?: string;
@@ -53,8 +56,7 @@ export function findRootId(surface: SurfaceModel<ComponentApi>): string | null {
     if (typeof p.child === "string") referenced.add(p.child);
     if (typeof p.trigger === "string") referenced.add(p.trigger);
     if (Array.isArray(p.children))
-      for (const c of p.children)
-        if (typeof c === "string") referenced.add(c);
+      for (const c of p.children) if (typeof c === "string") referenced.add(c);
     if (Array.isArray(p.tabs))
       for (const tab of p.tabs as Array<{ child?: string }>)
         if (typeof tab.child === "string") referenced.add(tab.child);
@@ -89,11 +91,7 @@ export function renderTree(
       return children
         .filter((id): id is string => typeof id === "string")
         .map((id) => ({ id, path: basePath }));
-    if (
-      children &&
-      typeof children === "object" &&
-      "componentId" in children
-    ) {
+    if (children && typeof children === "object" && "componentId" in children) {
       const tmpl = children as { componentId: string; path: string };
       const items = surface.dataModel.get(tmpl.path);
       if (!Array.isArray(items)) return [];
@@ -110,7 +108,17 @@ export function renderTree(
 
   const renderer = catalog[model.type];
   return renderer
-    ? renderer({ componentId, surface, basePath, depth, props, ctx, resolve, childRefs, renderChild })
+    ? renderer({
+        componentId,
+        surface,
+        basePath,
+        depth,
+        props,
+        ctx,
+        resolve,
+        childRefs,
+        renderChild,
+      })
     : null;
 }
 
@@ -186,15 +194,13 @@ const SurfaceView = component$<SurfaceViewProps>(({ surface, catalog }) => {
       if (!model) return;
       const bound = model.properties[prop];
       if (bound && typeof bound === "object" && "path" in bound) {
-        const value =
-          el.type === "checkbox" ? el.checked : Number(el.value);
+        const value = el.type === "checkbox" ? el.checked : Number(el.value);
         new ComponentContext(surface, cid).dataContext.set(
           bound.path as string,
           value,
         );
       }
-      const action =
-        model.properties.onChange ?? model.properties.onChangeEnd;
+      const action = model.properties.onChange ?? model.properties.onChangeEnd;
       if (action) {
         const ctx = new ComponentContext(surface, cid);
         surface
