@@ -113,6 +113,46 @@ const MockStreamStory = component$(() => {
           ],
         },
       },
+      // 5. A TextField bound to /form/name appears; initial value comes from
+      //    the data model so the label already shows the placeholder text.
+      {
+        version: "v0.9",
+        updateDataModel: {
+          surfaceId: SID,
+          path: "/form/name",
+          value: "Ada Lovelace",
+        },
+      },
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: SID,
+          components: [
+            {
+              component: "Column",
+              id: "root",
+              children: ["heading", "body", "row", "field"],
+            },
+            {
+              component: "TextField",
+              id: "field",
+              label: "Name",
+              // Dynamic binding — value is read from /form/name in the DataModel.
+              text: { path: "/form/name" },
+            },
+          ],
+        },
+      },
+      // 6. The server pushes an updated value into the DataModel; the TextField
+      //    re-renders with the new value, demonstrating live data binding.
+      {
+        version: "v0.9",
+        updateDataModel: {
+          surfaceId: SID,
+          path: "/form/name",
+          value: "Grace Hopper",
+        },
+      },
     ];
 
     const enc = new TextEncoder();
@@ -188,7 +228,11 @@ export const MockStream: Story = {
         story:
           "Intercepts `fetch` for a fake URL and returns a `ReadableStream` " +
           "that enqueues one JSONL message every 800 ms. The UI builds up " +
-          "progressively as each message arrives, without any real server.",
+          "progressively as each message arrives, without any real server. " +
+          "Steps 5–6 demonstrate dynamic data binding: a `TextField` is added " +
+          "with its `text` prop bound to `/form/name` in the `DataModel`, then " +
+          "a subsequent `updateDataModel` message changes the value to show " +
+          "that the server can push data updates independently of component structure.",
       },
     },
   },
