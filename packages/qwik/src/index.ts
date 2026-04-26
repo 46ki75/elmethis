@@ -179,13 +179,9 @@ export { ElmA2ui, type ElmA2uiProps } from "./components/a2ui/elm-a2ui";
 export {
   ElmA2uiRenderer,
   type ElmA2uiRendererProps,
-} from "./components/a2ui/elm-a2ui-renderer";
-export {
-  ElmA2uiSurfaceRenderer,
-  type ElmA2uiSurfaceRendererProps,
   findRootId,
   renderTree,
-} from "./components/a2ui/elm-a2ui-surface-renderer";
+} from "./components/a2ui/elm-a2ui-renderer";
 export {
   type CatalogRendererMap,
   type RenderContext,
