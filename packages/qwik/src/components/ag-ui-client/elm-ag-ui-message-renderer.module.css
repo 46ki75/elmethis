@@ -68,3 +68,8 @@
     background-color: oklch(from gray l c h / 0.25);
   }
 }
+
+.reasoning-running {
+  max-height: 16rem;
+  overflow-y: scroll;
+}

@@ -1,4 +1,11 @@
-import { component$, JSX, QRL, type CSSProperties } from "@builder.io/qwik";
+import {
+  component$,
+  JSX,
+  QRL,
+  useSignal,
+  useVisibleTask$,
+  type CSSProperties,
+} from "@builder.io/qwik";
 
 import styles from "./elm-ag-ui-message-renderer.module.css";
 import {
@@ -165,9 +172,26 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
 
         case "reasoning": {
           const Reasoning = component$(
-            ({ isOpen, markdown }: { isOpen: boolean; markdown: string }) => {
+            ({
+              isReasoningRunning,
+              markdown,
+            }: {
+              isReasoningRunning: boolean;
+              markdown: string;
+            }) => {
+              const reasoningRef = useSignal<HTMLElement>();
+
+              // eslint-disable-next-line qwik/no-use-visible-task
+              useVisibleTask$(({ track }) => {
+                track(() => markdown);
+                reasoningRef.value?.scrollTo({
+                  behavior: "smooth",
+                  top: reasoningRef.value.scrollHeight,
+                });
+              });
+
               return (
-                <ElmToggle isOpen={isOpen} monochrome>
+                <ElmToggle isOpen={isReasoningRunning} monochrome>
                   <div q:slot="summary" class={styles["message-content-type"]}>
                     <ElmMdiIcon
                       class={styles["message-content-icon"]}
@@ -180,11 +204,20 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
                     ></div>
                   </div>
 
-                  <ElmMarkdown
-                    style={{ opacity: 0.5 }}
-                    markdown={markdown}
-                    streaming={true}
-                  />
+                  <div
+                    ref={reasoningRef}
+                    class={[
+                      {
+                        [styles["reasoning-running"]]: isReasoningRunning,
+                      },
+                    ]}
+                  >
+                    <ElmMarkdown
+                      style={{ opacity: 0.5 }}
+                      markdown={markdown}
+                      streaming={true}
+                    />
+                  </div>
                 </ElmToggle>
               );
             },
@@ -192,7 +225,7 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
 
           return (
             <Reasoning
-              isOpen={messages.length - 1 === index}
+              isReasoningRunning={messages.length - 1 === index}
               markdown={message.content}
             />
           );
