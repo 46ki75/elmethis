@@ -166,36 +166,6 @@
   cursor: pointer;
 }
 
-/* ---- tabs ---- */
-
-.tabs {
-  display: flex;
-  flex-direction: column;
-}
-
-.tabs-bar {
-  display: flex;
-  border-bottom: 2px solid #e0e0e0;
-  gap: 4px;
-}
-
-.tab-button {
-  padding: 8px 16px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  font-size: 0.875rem;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -2px;
-  transition: border-color 0.15s;
-}
-
-.tab-button:hover { border-bottom-color: #bbb; }
-
-.tab-content {
-  padding: 16px 0;
-}
-
 /* ---- modal ---- */
 
 .modal {

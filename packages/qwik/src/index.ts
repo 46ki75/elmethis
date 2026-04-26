@@ -180,6 +180,17 @@ export {
   ElmA2uiRenderer,
   type ElmA2uiRendererProps,
 } from "./components/a2ui/elm-a2ui-renderer";
+export {
+  ElmA2uiSurfaceRenderer,
+  type ElmA2uiSurfaceRendererProps,
+  findRootId,
+  renderTree,
+} from "./components/a2ui/elm-a2ui-surface-renderer";
+export {
+  type CatalogRendererMap,
+  type RenderContext,
+} from "./components/a2ui/elm-a2ui-catalog-renderer";
+export { elmBasicCatalogRendererMap } from "./components/a2ui/elm-a2ui-basic-catalog-renderer";
 
 // | Others |
 export { ElmJarkup, type ElmJarkupProps } from "./components/others/elm-jarkup";

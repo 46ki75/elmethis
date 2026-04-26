@@ -6,6 +6,7 @@ import {
 } from "@builder.io/qwik";
 
 import { ElmA2uiRenderer } from "./elm-a2ui-renderer";
+import { type CatalogRendererMap } from "./elm-a2ui-catalog-renderer";
 
 export interface ElmA2uiProps {
   class?: string;
@@ -22,13 +23,19 @@ export interface ElmA2uiProps {
    * Pre-registers the catalog before the first message arrives.
    */
   catalogId?: string;
+
+  /**
+   * Optional custom catalog renderer map. Falls back to the built-in basic
+   * catalog renderer when not provided.
+   */
+  catalog?: CatalogRendererMap;
 }
 
 /**
  * Fetches a JSONL stream and delegates rendering to `ElmA2uiRenderer`.
  */
 export const ElmA2ui = component$<ElmA2uiProps>(
-  ({ class: className, style, url, headers, catalogId }) => {
+  ({ class: className, style, url, headers, catalogId, catalog }) => {
     const messagesStore = useStore<{ list: unknown[] }>({ list: [] });
 
     // eslint-disable-next-line qwik/no-use-visible-task
@@ -78,6 +85,7 @@ export const ElmA2ui = component$<ElmA2uiProps>(
       <ElmA2uiRenderer
         messages={messagesStore.list}
         catalogId={catalogId}
+        catalog={catalog}
         class={className}
         style={style}
       />
