@@ -95,25 +95,41 @@ export function useAgent({
     promptTemplates: [],
   });
 
+  const executeRun = $(async (withContext: boolean) => {
+    if (!httpAgent.value) return;
+    try {
+      await httpAgent.value.runAgent({
+        tools: getToolDefinitions(toolsRef.value ?? {}),
+        ...(withContext && {
+          context: agentStateStore.context?.map(({ value, description }) => ({
+            value,
+            description,
+          })),
+        }),
+      });
+    } catch {
+      agentStateStore.isRunning = false;
+    }
+  });
+
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(({ cleanup, track }) => {
     const trackedUrl = track(() => url);
     const trackedHeaders = track(() => headers);
 
-    if (!httpAgent.value) {
-      httpAgent.value = noSerialize(
-        new HttpAgent({ url: trackedUrl, headers: trackedHeaders }),
-      );
-      cleanup(() => {
-        httpAgent.value = null;
-      });
-    }
+    httpAgent.value = noSerialize(
+      new HttpAgent({ url: trackedUrl, headers: trackedHeaders }),
+    );
+    cleanup(() => {
+      httpAgent.value = null;
+    });
 
-    if (!httpAgent.value) return;
+    const agent = httpAgent.value;
+    if (!agent) return;
 
     let pendingToolMessages: Message[] = [];
 
-    const subscription = httpAgent.value.subscribe({
+    const subscription = agent.subscribe({
       onRunInitialized() {
         agentStateStore.isRunning = true;
       },
@@ -173,23 +189,13 @@ export function useAgent({
         } as Message);
       },
       async onRunFinalized() {
-        console.log({
-          messages: agentStateStore.messages,
-          events: agentStateStore.events,
-        });
         if (pendingToolMessages.length === 0 || !httpAgent.value) {
           agentStateStore.isRunning = false;
           return;
         }
         httpAgent.value.messages.push(...pendingToolMessages);
         pendingToolMessages = [];
-        try {
-          await httpAgent.value.runAgent({
-            tools: getToolDefinitions(toolsRef.value ?? {}),
-          });
-        } catch {
-          agentStateStore.isRunning = false;
-        }
+        await executeRun(false);
       },
     });
 
@@ -206,18 +212,8 @@ export function useAgent({
       content,
     };
     httpAgent.value.messages.push(userMessage);
-
-    try {
-      await httpAgent.value.runAgent({
-        tools: getToolDefinitions(toolsRef.value ?? {}),
-        context: agentStateStore.context?.map(({ value, description }) => ({
-          value,
-          description,
-        })),
-      });
-    } catch {
-      agentStateStore.isRunning = false;
-    }
+    agentStateStore.messages.push(userMessage);
+    await executeRun(true);
   });
 
   const retry = $(async () => {
@@ -235,18 +231,7 @@ export function useAgent({
     );
     httpAgent.value.messages = [...newMessages];
     agentStateStore.messages = [...newMessages];
-
-    try {
-      await httpAgent.value.runAgent({
-        tools: getToolDefinitions(toolsRef.value ?? {}),
-        context: agentStateStore.context?.map(({ value, description }) => ({
-          value,
-          description,
-        })),
-      });
-    } catch {
-      agentStateStore.isRunning = false;
-    }
+    await executeRun(true);
   });
 
   const addTool = $((name: string, tool: AnyToolDef) => {
