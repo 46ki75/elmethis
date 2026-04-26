@@ -1,7 +1,9 @@
 import {
+  $,
   component$,
   JSX,
   QRL,
+  useOn,
   useSignal,
   useVisibleTask$,
   type CSSProperties,
@@ -194,6 +196,32 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
                 });
               });
 
+              const ReasoningMarkdown = component$(
+                ({ markdown }: { markdown: string }) => {
+                  const markdownRef = useSignal<HTMLElement>();
+
+                  useOn(
+                    "resize",
+                    $(() => {
+                      scrollTo({
+                        behavior: "smooth",
+                        top: markdownRef.value?.scrollHeight ?? 0,
+                      });
+                    }),
+                  );
+
+                  return (
+                    <div ref={markdownRef}>
+                      <ElmMarkdown
+                        style={{ opacity: 0.5 }}
+                        markdown={markdown}
+                        streaming={true}
+                      />
+                    </div>
+                  );
+                },
+              );
+
               return (
                 <ElmToggle isOpen={isReasoningRunning} monochrome>
                   <div q:slot="summary" class={styles["message-content-type"]}>
@@ -216,11 +244,7 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
                       },
                     ]}
                   >
-                    <ElmMarkdown
-                      style={{ opacity: 0.5 }}
-                      markdown={markdown}
-                      streaming={true}
-                    />
+                    <ReasoningMarkdown markdown={markdown} />
                   </div>
                 </ElmToggle>
               );
