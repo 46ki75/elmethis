@@ -3,7 +3,6 @@ import {
   noSerialize,
   type NoSerialize,
   useSignal,
-  useStore,
   useVisibleTask$,
   type CSSProperties,
 } from "@builder.io/qwik";
@@ -20,6 +19,7 @@ import {
 } from "@a2ui/web_core/v0_9/basic_catalog";
 
 import { ElmA2uiSurfaceRenderer } from "./elm-a2ui-surface-renderer";
+import { type CatalogRendererMap } from "./elm-a2ui-catalog-renderer";
 import styles from "./elm-a2ui.module.css";
 
 export interface ElmA2uiRendererProps {
@@ -33,16 +33,21 @@ export interface ElmA2uiRendererProps {
    * If omitted, catalog IDs are extracted from the messages array.
    */
   catalogId?: string;
+  /**
+   * Optional custom catalog renderer map. Falls back to the built-in basic
+   * catalog renderer when not provided.
+   */
+  catalog?: CatalogRendererMap;
 }
 
 /** Processes A2UI v0.9 messages and renders each surface via ElmA2uiSurfaceRenderer. */
 export const ElmA2uiRenderer = component$<ElmA2uiRendererProps>(
-  ({ class: className, style, messages, catalogId }) => {
+  ({ class: className, style, messages, catalogId, catalog }) => {
     const surfaceMapSig = useSignal<
       NoSerialize<Map<string, SurfaceModel<ComponentApi>>> | undefined
     >();
-    const tick = useStore<{ v: number }>({ v: 0 });
-    const internalRef = useSignal<
+    const tick = useSignal(0);
+    const processorRef = useSignal<
       | NoSerialize<{
           processor: MessageProcessor<ComponentApi>;
           processed: number;
@@ -78,15 +83,15 @@ export const ElmA2uiRenderer = component$<ElmA2uiRendererProps>(
       const subCreated = processor.model.onSurfaceCreated.subscribe(
         (surface) => {
           surfaceMap.set(surface.id, surface);
-          tick.v++;
+          tick.value++;
         },
       );
       const subDeleted = processor.model.onSurfaceDeleted.subscribe((id) => {
         surfaceMap.delete(id);
-        tick.v++;
+        tick.value++;
       });
 
-      internalRef.value = noSerialize({ processor, processed: 0 });
+      processorRef.value = noSerialize({ processor, processed: 0 });
 
       cleanup(() => {
         subCreated.unsubscribe();
@@ -99,23 +104,26 @@ export const ElmA2uiRenderer = component$<ElmA2uiRendererProps>(
     // eslint-disable-next-line qwik/no-use-visible-task
     useVisibleTask$(({ track }) => {
       track(() => messages.length);
-      const internal = internalRef.value;
+      const internal = processorRef.value;
       if (!internal) return;
       const newMsgs = messages.slice(internal.processed);
       if (!newMsgs.length) return;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       internal.processor.processMessages(newMsgs as any[]);
       internal.processed = messages.length;
-      tick.v++;
+      tick.value++;
     });
 
     return (
       <div class={[styles["elm-a2ui"], className]} style={style}>
-        {tick.v >= 0 &&
+        {/* tick establishes a reactive dependency so Qwik re-renders when
+            surfaceMapSig (NoSerialize) is mutated by subscription callbacks */}
+        {tick.value >= 0 &&
           Array.from(surfaceMapSig.value?.values() ?? []).map((surface) => (
             <ElmA2uiSurfaceRenderer
               key={surface.id}
               surface={noSerialize(surface)}
+              catalog={catalog}
             />
           ))}
       </div>

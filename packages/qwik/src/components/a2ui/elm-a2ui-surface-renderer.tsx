@@ -2,7 +2,6 @@ import {
   component$,
   type NoSerialize,
   useSignal,
-  useStore,
   useVisibleTask$,
   type JSX,
 } from "@builder.io/qwik";
@@ -21,6 +20,11 @@ export type { CatalogRendererMap, RenderContext } from "./elm-a2ui-catalog-rende
 
 export interface ElmA2uiSurfaceRendererProps {
   surface: NoSerialize<SurfaceModel<ComponentApi>>;
+  /**
+   * Optional custom catalog renderer map. Falls back to the built-in basic
+   * catalog renderer when not provided.
+   */
+  catalog?: CatalogRendererMap;
 }
 
 export function findRootId(surface: SurfaceModel<ComponentApi>): string | null {
@@ -95,22 +99,22 @@ export function renderTree(
 
 /** Renders all components within a single A2UI surface. */
 export const ElmA2uiSurfaceRenderer = component$<ElmA2uiSurfaceRendererProps>(
-  ({ surface }) => {
+  ({ surface, catalog }) => {
     const containerRef = useSignal<HTMLDivElement | undefined>(undefined);
-    const tick = useStore<{ v: number }>({ v: 0 });
+    const tick = useSignal(0);
 
     // eslint-disable-next-line qwik/no-use-visible-task
     useVisibleTask$(({ cleanup }) => {
       if (!surface) return;
 
       const subCreated = surface.componentsModel.onCreated.subscribe(() => {
-        tick.v++;
+        tick.value++;
       });
       const subDeleted = surface.componentsModel.onDeleted.subscribe(() => {
-        tick.v++;
+        tick.value++;
       });
 
-      const container = containerRef.value!;
+      const container = containerRef.value;
 
       const handleClick = (e: MouseEvent) => {
         const el = (e.target as HTMLElement).closest(
@@ -169,24 +173,30 @@ export const ElmA2uiSurfaceRenderer = component$<ElmA2uiSurfaceRendererProps>(
         }
       };
 
-      container.addEventListener("click", handleClick);
-      container.addEventListener("input", handleInput);
-      container.addEventListener("change", handleChange);
+      if (container) {
+        container.addEventListener("click", handleClick);
+        container.addEventListener("input", handleInput);
+        container.addEventListener("change", handleChange);
+      }
 
       cleanup(() => {
         subCreated.unsubscribe();
         subDeleted.unsubscribe();
-        container.removeEventListener("click", handleClick);
-        container.removeEventListener("input", handleInput);
-        container.removeEventListener("change", handleChange);
+        if (container) {
+          container.removeEventListener("click", handleClick);
+          container.removeEventListener("input", handleInput);
+          container.removeEventListener("change", handleChange);
+        }
       });
     });
 
-    const rootId = tick.v >= 0 && surface ? findRootId(surface) : null;
+    // tick establishes a reactive dependency so Qwik re-renders when
+    // componentsModel (NoSerialize) is mutated by subscription callbacks.
+    const rootId = tick.value >= 0 && surface ? findRootId(surface) : null;
 
     return (
       <div ref={containerRef} class={styles.surface}>
-        {rootId && surface ? renderTree(rootId, surface) : null}
+        {rootId && surface ? renderTree(rootId, surface, catalog) : null}
       </div>
     );
   },
