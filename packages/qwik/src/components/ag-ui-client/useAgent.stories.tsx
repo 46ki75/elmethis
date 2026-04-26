@@ -63,10 +63,10 @@ const UseAgent = component$<UseAgentProps>(
         },
         {
           description: "Render A2UI",
-          value: `Could you render a \`Tabs\` component with A2UI?
+          value: `Could you render a \`Card\` and \`Text\` component with A2UI?
 
 - catalogId: <https://a2ui.org/specification/v0_9/basic_catalog.json>
-- surfaceId: \`my-tabs-surface\``,
+- surfaceId: \`my-card-surface\``,
         },
       ]);
     });
