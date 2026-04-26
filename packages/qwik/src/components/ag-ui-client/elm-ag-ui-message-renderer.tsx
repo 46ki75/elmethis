@@ -180,10 +180,14 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
               markdown: string;
             }) => {
               const reasoningRef = useSignal<HTMLElement>();
+              const lastScrollTime = useSignal(0);
 
               // eslint-disable-next-line qwik/no-use-visible-task
               useVisibleTask$(({ track }) => {
                 track(() => markdown);
+                const now = Date.now();
+                if (now - lastScrollTime.value < 500) return;
+                lastScrollTime.value = now;
                 reasoningRef.value?.scrollTo({
                   behavior: "smooth",
                   top: reasoningRef.value.scrollHeight,

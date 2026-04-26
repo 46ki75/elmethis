@@ -70,6 +70,10 @@
 }
 
 .reasoning-running {
-  max-height: 16rem;
+  max-height: 12rem;
   overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
 }
