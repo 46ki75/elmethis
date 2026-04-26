@@ -141,6 +141,7 @@ export const Full: Story = {
         <div
           style={{
             width: "500px",
+            height: "100%",
             border: "1px solid #ccc",
             padding: 0,
             margin: "0 auto",
