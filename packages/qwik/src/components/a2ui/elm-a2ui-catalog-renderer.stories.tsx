@@ -16,10 +16,8 @@ import {
   BASIC_COMPONENTS,
   BASIC_FUNCTIONS,
 } from "@a2ui/web_core/v0_9/basic_catalog";
-import {
-  elmBasicCatalogRendererMap,
-  type CatalogRendererMap,
-} from "./elm-a2ui-catalog-renderer";
+import { type CatalogRendererMap } from "./elm-a2ui-catalog-renderer";
+import { elmBasicCatalogRendererMap } from "./elm-a2ui-basic-catalog-renderer";
 import { renderTree, findRootId } from "./elm-a2ui-surface-renderer";
 
 const CATALOG_ID = "https://a2ui.org/specification/v0_9/basic_catalog.json";

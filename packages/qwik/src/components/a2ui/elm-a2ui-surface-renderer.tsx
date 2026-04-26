@@ -13,10 +13,8 @@ import {
   type SurfaceModel,
 } from "@a2ui/web_core/v0_9";
 
-import {
-  elmBasicCatalogRendererMap,
-  type CatalogRendererMap,
-} from "./elm-a2ui-catalog-renderer";
+import { type CatalogRendererMap } from "./elm-a2ui-catalog-renderer";
+import { elmBasicCatalogRendererMap } from "./elm-a2ui-basic-catalog-renderer";
 import styles from "./elm-a2ui.module.css";
 
 export type { CatalogRendererMap, RenderContext } from "./elm-a2ui-catalog-renderer";
