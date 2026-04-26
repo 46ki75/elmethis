@@ -1,3 +1,5 @@
+// Built-in catalog renderer map for standard A2UI component types.
+// Each entry maps a component type name to a render function.
 import { type CSSProperties } from "@builder.io/qwik";
 
 import { ElmTabs } from "../containments/elm-tabs";
@@ -7,6 +9,7 @@ import {
   type RenderContext,
 } from "./elm-a2ui-catalog-renderer";
 
+// Maps A2UI `distribution` prop values to CSS `justify-content` values.
 const jc: Record<string, string> = {
   start: "flex-start",
   end: "flex-end",
@@ -16,6 +19,7 @@ const jc: Record<string, string> = {
   spaceEvenly: "space-evenly",
 };
 
+// Maps A2UI `alignment` prop values to CSS `align-items` values.
 const ai: Record<string, string> = {
   start: "flex-start",
   end: "flex-end",
@@ -25,6 +29,8 @@ const ai: Record<string, string> = {
 
 export const elmBasicCatalogRendererMap: CatalogRendererMap = {
   Text: ({ props, resolve }: RenderContext) => {
+    // resolve() converts a prop to a string, handling both static strings and
+    // dynamic data bindings (e.g. { path: "/user/name" } resolved at runtime).
     const text = resolve(props.text);
     const v = (props.variant as string) ?? "body";
     if (v === "h1")
