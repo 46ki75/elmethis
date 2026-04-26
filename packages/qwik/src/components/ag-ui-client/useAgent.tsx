@@ -192,6 +192,12 @@ export function useAgent({
         } as Message);
       },
       async onRunFinalized() {
+        if (import.meta.env.DEV)
+          console.log({
+            messages: agentStateStore.messages,
+            events: agentStateStore.events,
+          });
+
         if (pendingToolMessages.length === 0 || !httpAgent.value) {
           agentStateStore.isRunning = false;
           return;
