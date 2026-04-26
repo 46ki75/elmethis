@@ -199,8 +199,8 @@ const renderByToken = (tokens: Token[]): JSXOutput[] => {
 
         results.push(
           <ElmTable key={i}>
-            <ElmTableHeader q:slot="header">{headerRow}</ElmTableHeader>
-            <ElmTableBody q:slot="body">{bodyRows}</ElmTableBody>
+            <ElmTableHeader>{headerRow}</ElmTableHeader>
+            <ElmTableBody>{bodyRows}</ElmTableBody>
           </ElmTable>,
         );
         break;

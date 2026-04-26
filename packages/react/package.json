@@ -40,7 +40,7 @@
     "build.types": "tsc --project tsconfig.lib.json && tsc-alias --project tsconfig.lib.json",
     "lint": "eslint .",
     "format": "prettier --write ./src",
-    "storybook": "storybook dev -p 6006 --no-open",
+    "dev": "storybook dev -p 19221 --no-open",
     "build-storybook": "storybook build"
   },
   "dependencies": {

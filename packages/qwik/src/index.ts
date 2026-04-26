@@ -179,7 +179,14 @@ export { ElmA2ui, type ElmA2uiProps } from "./components/a2ui/elm-a2ui";
 export {
   ElmA2uiRenderer,
   type ElmA2uiRendererProps,
+  findRootId,
+  renderTree,
 } from "./components/a2ui/elm-a2ui-renderer";
+export {
+  type CatalogRendererMap,
+  type RenderContext,
+} from "./components/a2ui/elm-a2ui-catalog-renderer";
+export { elmBasicCatalogRendererMap } from "./components/a2ui/elm-a2ui-basic-catalog-renderer";
 
 // | Others |
 export { ElmJarkup, type ElmJarkupProps } from "./components/others/elm-jarkup";

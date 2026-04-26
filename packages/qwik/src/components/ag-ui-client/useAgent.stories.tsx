@@ -80,17 +80,17 @@ const meta: Meta<UseAgentProps> = {
   component: UseAgent,
   tags: ["autodocs"],
   args: {
-    url: "http://localhost:8080/copilotkit/agent/minimax-m2.5-free/run",
+    url: "http://localhost:19101/copilotkit/agent/minimax-m2.5-free/run",
   },
   argTypes: {
     url: {
       description: "The URL of the agent endpoint to connect to.",
       control: "radio",
       options: [
-        "http://localhost:8080/copilotkit/agent/gpt-5.4-nano/run",
-        "http://localhost:8080/copilotkit/agent/minimax-m2.5/run",
-        "http://localhost:8080/copilotkit/agent/minimax-m2.5-free/run",
-        "http://localhost:8080/copilotkit/agent/kimi-k2.6/run",
+        "http://localhost:19101/copilotkit/agent/gpt-5.4-nano/run",
+        "http://localhost:19101/copilotkit/agent/minimax-m2.5/run",
+        "http://localhost:19101/copilotkit/agent/minimax-m2.5-free/run",
+        "http://localhost:19101/copilotkit/agent/kimi-k2.6/run",
       ],
     },
   },
