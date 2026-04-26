@@ -164,28 +164,37 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
         }
 
         case "reasoning": {
-          return (
-            <>
-              <ElmToggle isOpen={messages.length - 1 === index} monochrome>
-                <div q:slot="summary" class={styles["message-content-type"]}>
-                  <ElmMdiIcon
-                    class={styles["message-content-icon"]}
-                    d={mdiLightbulbOn}
-                  />
-                  <ElmInlineText>Reasoning</ElmInlineText>
-                  <div
-                    aria-hidden="true"
-                    class={styles["message-content-spacer"]}
-                  ></div>
-                </div>
+          const Reasoning = component$(
+            ({ isOpen, markdown }: { isOpen: boolean; markdown: string }) => {
+              return (
+                <ElmToggle isOpen={isOpen} monochrome>
+                  <div q:slot="summary" class={styles["message-content-type"]}>
+                    <ElmMdiIcon
+                      class={styles["message-content-icon"]}
+                      d={mdiLightbulbOn}
+                    />
+                    <ElmInlineText>Reasoning</ElmInlineText>
+                    <div
+                      aria-hidden="true"
+                      class={styles["message-content-spacer"]}
+                    ></div>
+                  </div>
 
-                <ElmMarkdown
-                  style={{ opacity: 0.5 }}
-                  markdown={message.content}
-                  streaming={true}
-                />
-              </ElmToggle>
-            </>
+                  <ElmMarkdown
+                    style={{ opacity: 0.5 }}
+                    markdown={markdown}
+                    streaming={true}
+                  />
+                </ElmToggle>
+              );
+            },
+          );
+
+          return (
+            <Reasoning
+              isOpen={messages.length - 1 === index}
+              markdown={message.content}
+            />
           );
         }
 
