@@ -155,6 +155,13 @@ export function useAgent({
         if (msg) msg.content = (msg.content ?? "") + event.delta;
       },
 
+      onActivityDeltaEvent({ activityMessage }) {
+        const msg = agentStateStore.messages.findLast(
+          (m) => m.role === "activity",
+        );
+        if (msg && activityMessage) msg.content = activityMessage.content;
+      },
+
       onToolCallArgsEvent({ event }) {
         const msg = agentStateStore.messages.findLast(
           (m) => m.role === "assistant",
