@@ -113,6 +113,14 @@ export const ElmA2uiSurfaceRenderer = component$<ElmA2uiSurfaceRendererProps>(
       const subDeleted = surface.componentsModel.onDeleted.subscribe(() => {
         tick.value++;
       });
+      // Subscribe to any DataModel change so that components with dynamic
+      // bindings (e.g. text: { path: "/form/name" }) re-render when the
+      // server pushes an updateDataModel message.
+      // Subscribing to "/" fires for every path because notifySignals() always
+      // walks up to the root signal when any nested path is updated.
+      const subData = surface.dataModel.subscribe("/", () => {
+        tick.value++;
+      });
 
       const container = containerRef.value;
 
@@ -182,6 +190,7 @@ export const ElmA2uiSurfaceRenderer = component$<ElmA2uiSurfaceRendererProps>(
       cleanup(() => {
         subCreated.unsubscribe();
         subDeleted.unsubscribe();
+        subData.unsubscribe();
         if (container) {
           container.removeEventListener("click", handleClick);
           container.removeEventListener("input", handleInput);
