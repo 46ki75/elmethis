@@ -54,6 +54,10 @@ const UseAgent = component$<UseAgentProps>(
           value: "What is a new feature called Amazon S3 Files?",
         },
         {
+          description: "Generate UUID v7",
+          value: "Generate a UUID v7 string",
+        },
+        {
           description: "Date and time",
           value: "What is the current date and time?",
         },
