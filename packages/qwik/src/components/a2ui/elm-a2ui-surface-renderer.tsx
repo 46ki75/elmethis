@@ -190,6 +190,8 @@ export const ElmA2uiSurfaceRenderer = component$<ElmA2uiSurfaceRendererProps>(
       });
     });
 
+    // tick establishes a reactive dependency so Qwik re-renders when
+    // componentsModel (NoSerialize) is mutated by subscription callbacks.
     const rootId = tick.value >= 0 && surface ? findRootId(surface) : null;
 
     return (

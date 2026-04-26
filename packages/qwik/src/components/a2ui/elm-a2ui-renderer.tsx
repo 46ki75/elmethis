@@ -116,6 +116,8 @@ export const ElmA2uiRenderer = component$<ElmA2uiRendererProps>(
 
     return (
       <div class={[styles["elm-a2ui"], className]} style={style}>
+        {/* tick establishes a reactive dependency so Qwik re-renders when
+            surfaceMapSig (NoSerialize) is mutated by subscription callbacks */}
         {tick.value >= 0 &&
           Array.from(surfaceMapSig.value?.values() ?? []).map((surface) => (
             <ElmA2uiSurfaceRenderer
