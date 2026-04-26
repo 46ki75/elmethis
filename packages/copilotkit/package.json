@@ -5,7 +5,7 @@
     "main": "index.ts",
     "type": "module",
     "scripts": {
-        "dev": "node --env-file=.env --watch ./src/index.ts",
+        "dev": "PORT=19101 node --env-file=.env --watch ./src/index.ts",
         "prestart": "pnpm run build",
         "start": "node ./dist/index.js",
         "build": "node build.ts",
