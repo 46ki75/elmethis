@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
+import { component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import {
   ElmA2uiRenderer,
   type ElmA2uiRendererProps,
@@ -401,4 +402,315 @@ export const Tabs: Story = {
       ]}
     />
   ),
+};
+
+// ---- Streaming stories ----
+// These stories demonstrate progressive message delivery using ElmA2uiRenderer's
+// incremental processing: messages.length is tracked, and only newly appended
+// entries are processed on each render.
+
+/**
+ * Schedules messages to be appended one by one at `delay` ms intervals.
+ * Returns a cleanup function that cancels pending timers.
+ */
+function scheduleMessages(
+  onUpdate: (msgs: object[]) => void,
+  messages: object[],
+  delay: number,
+): () => void {
+  let current: object[] = [];
+  const timers = messages.map((msg, i) =>
+    setTimeout(() => {
+      current = [...current, msg];
+      onUpdate(current);
+    }, i * delay),
+  );
+  return () => timers.forEach(clearTimeout);
+}
+
+// ---- MockStream ----
+
+const MockStreamStory = component$(() => {
+  const msgs = useSignal<object[]>([]);
+
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(({ cleanup }) => {
+    const SID = "demo";
+    cleanup(scheduleMessages(
+      (m) => { msgs.value = m; },
+      [
+        // 1. Create the surface
+        { version: "v0.9", createSurface: { surfaceId: SID, catalogId: CATALOG_ID } },
+        // 2. Heading
+        {
+          version: "v0.9",
+          updateComponents: {
+            surfaceId: SID,
+            components: [
+              { component: "Column", id: "root", children: ["heading"] },
+              { component: "Text", id: "heading", variant: "h2", text: "Streaming UI" },
+            ],
+          },
+        },
+        // 3. Body text
+        {
+          version: "v0.9",
+          updateComponents: {
+            surfaceId: SID,
+            components: [
+              { component: "Column", id: "root", children: ["heading", "body"] },
+              { component: "Text", id: "body", text: "Each message arrives 800 ms after the previous one." },
+            ],
+          },
+        },
+        // 4. Buttons
+        {
+          version: "v0.9",
+          updateComponents: {
+            surfaceId: SID,
+            components: [
+              { component: "Column", id: "root", children: ["heading", "body", "row"] },
+              { component: "Row", id: "row", children: ["btn1", "btn2"] },
+              { component: "Button", id: "btn1", child: "lbl1" },
+              { component: "Text", id: "lbl1", text: "Cancel" },
+              { component: "Button", id: "btn2", child: "lbl2", primary: true },
+              { component: "Text", id: "lbl2", text: "Confirm" },
+            ],
+          },
+        },
+        // 5. Pre-fill data model, then add a bound TextField
+        { version: "v0.9", updateDataModel: { surfaceId: SID, path: "/form/name", value: "Ada Lovelace" } },
+        {
+          version: "v0.9",
+          updateComponents: {
+            surfaceId: SID,
+            components: [
+              { component: "Column", id: "root", children: ["heading", "body", "row", "field"] },
+              { component: "TextField", id: "field", label: "Name", text: { path: "/form/name" } },
+            ],
+          },
+        },
+        // 6. Server pushes a new value — TextField re-renders via data binding
+        { version: "v0.9", updateDataModel: { surfaceId: SID, path: "/form/name", value: "Grace Hopper" } },
+      ],
+      800,
+    ));
+  });
+
+  return <ElmA2uiRenderer messages={msgs.value} />;
+});
+
+export const MockStream: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Progressive component build-up: one message arrives every 800 ms. " +
+          "Steps 5–6 demonstrate dynamic data binding — a `TextField` is bound " +
+          "to `/form/name` in the `DataModel`, then a subsequent `updateDataModel` " +
+          "message updates the value without touching component structure.",
+      },
+    },
+  },
+  render: () => <MockStreamStory />,
+};
+
+// ---- StreamingText ----
+
+const StreamingTextStory = component$(() => {
+  const msgs = useSignal<object[]>([]);
+
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(({ cleanup }) => {
+    const SID = "stream-text";
+    const words = [
+      "Streaming",
+      "Streaming text",
+      "Streaming text is",
+      "Streaming text is rendered",
+      "Streaming text is rendered word",
+      "Streaming text is rendered word by word",
+      "Streaming text is rendered word by word via repeated updateDataModel messages.",
+    ];
+    cleanup(scheduleMessages(
+      (m) => { msgs.value = m; },
+      [
+        { version: "v0.9", createSurface: { surfaceId: SID, catalogId: CATALOG_ID } },
+        // Initialise binding target before the Text component mounts
+        { version: "v0.9", updateDataModel: { surfaceId: SID, path: "/output", value: "" } },
+        {
+          version: "v0.9",
+          updateComponents: {
+            surfaceId: SID,
+            components: [
+              { component: "Column", id: "root", children: ["prompt", "div", "output"] },
+              { component: "Text", id: "prompt", variant: "h4", text: "Prompt: What is A2UI streaming?" },
+              { component: "Divider", id: "div" },
+              // text is a dynamic binding — each updateDataModel below updates this value
+              { component: "Text", id: "output", text: { path: "/output" } },
+            ],
+          },
+        },
+        ...words.map((value) => ({
+          version: "v0.9",
+          updateDataModel: { surfaceId: SID, path: "/output", value },
+        })),
+      ],
+      400,
+    ));
+  });
+
+  return <ElmA2uiRenderer messages={msgs.value} />;
+});
+
+export const StreamingText: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Simulates an AI agent streaming a response token by token. " +
+          "A single `Text` component is bound to `/output`; the server sends " +
+          "repeated `updateDataModel` messages every 400 ms that grow the string " +
+          "one word at a time. Component structure never changes after the initial " +
+          "`updateComponents`.",
+      },
+    },
+  },
+  render: () => <StreamingTextStory />,
+};
+
+// ---- GrowingList ----
+
+const GrowingListStory = component$(() => {
+  const msgs = useSignal<object[]>([]);
+
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(({ cleanup }) => {
+    const SID = "growing-list";
+    const results = [
+      { title: "Introduction to A2UI", desc: "Overview of the agent-driven UI protocol." },
+      { title: "Dynamic Data Binding", desc: "How { path } bindings connect components to the DataModel." },
+      { title: "Streaming Patterns", desc: "Progressive rendering via JSONL streams." },
+      { title: "Component Lifecycle", desc: "createSurface, updateComponents, and deleteSurface." },
+    ];
+    cleanup(scheduleMessages(
+      (m) => { msgs.value = m; },
+      [
+        { version: "v0.9", createSurface: { surfaceId: SID, catalogId: CATALOG_ID } },
+        // Start with an empty array so the List renders immediately (empty)
+        { version: "v0.9", updateDataModel: { surfaceId: SID, path: "/results", value: [] } },
+        {
+          version: "v0.9",
+          updateComponents: {
+            surfaceId: SID,
+            components: [
+              { component: "Column", id: "root", children: ["heading", "list"] },
+              { component: "Text", id: "heading", variant: "h3", text: "Search Results" },
+              // List template: one "row" component is instantiated per /results element
+              { component: "List", id: "list", children: { componentId: "row", path: "/results" } },
+              { component: "Card", id: "row", child: "rowInner" },
+              { component: "Column", id: "rowInner", children: ["rowTitle", "rowDesc"] },
+              // Relative paths resolve within each item's basePath (e.g. /results/0)
+              { component: "Text", id: "rowTitle", variant: "h5", text: { path: "title" } },
+              { component: "Text", id: "rowDesc", text: { path: "desc" } },
+            ],
+          },
+        },
+        // Grow the array one item at a time — the List re-renders with each update
+        ...results.map((_, i) => ({
+          version: "v0.9",
+          updateDataModel: { surfaceId: SID, path: "/results", value: results.slice(0, i + 1) },
+        })),
+      ],
+      900,
+    ));
+  });
+
+  return <ElmA2uiRenderer messages={msgs.value} />;
+});
+
+export const GrowingList: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Simulates search results streaming in one item at a time. " +
+          "A `List` uses a template binding (`children.componentId` + `path`) " +
+          "driven entirely by the `/results` array. Every 900 ms one more item " +
+          "is appended via `updateDataModel` — no `updateComponents` needed after " +
+          "the initial setup.",
+      },
+    },
+  },
+  render: () => <GrowingListStory />,
+};
+
+// ---- ComponentSwap ----
+
+const ComponentSwapStory = component$(() => {
+  const msgs = useSignal<object[]>([]);
+
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(({ cleanup }) => {
+    const SID = "swap";
+    cleanup(scheduleMessages(
+      (m) => { msgs.value = m; },
+      [
+        { version: "v0.9", createSurface: { surfaceId: SID, catalogId: CATALOG_ID } },
+        // 1. Loading placeholder
+        {
+          version: "v0.9",
+          updateComponents: {
+            surfaceId: SID,
+            components: [
+              { component: "Column", id: "root", children: ["loading"] },
+              { component: "Text", id: "loading", variant: "caption", text: "Loading…" },
+            ],
+          },
+        },
+        // 2. Replace placeholder with real content in a single updateComponents
+        {
+          version: "v0.9",
+          updateComponents: {
+            surfaceId: SID,
+            components: [
+              { component: "Column", id: "root", children: ["card"] },
+              { component: "Card", id: "card", child: "cardInner" },
+              { component: "Column", id: "cardInner", children: ["title", "body", "actions"] },
+              { component: "Text", id: "title", variant: "h3", text: "Content Loaded" },
+              {
+                component: "Text",
+                id: "body",
+                text: "The agent replaced the loading placeholder with real content in a single updateComponents message.",
+              },
+              { component: "Row", id: "actions", children: ["btnDismiss", "btnView"] },
+              { component: "Button", id: "btnDismiss", child: "lblDismiss" },
+              { component: "Text", id: "lblDismiss", text: "Dismiss" },
+              { component: "Button", id: "btnView", child: "lblView", primary: true },
+              { component: "Text", id: "lblView", text: "View Details" },
+            ],
+          },
+        },
+      ],
+      1200,
+    ));
+  });
+
+  return <ElmA2uiRenderer messages={msgs.value} />;
+});
+
+export const ComponentSwap: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Demonstrates how an agent replaces a loading placeholder with real " +
+          "content. The first `updateComponents` renders a caption text " +
+          "(`\"Loading…\"`). After 1.2 s a second `updateComponents` rewrites the " +
+          "root's `children` list entirely, swapping in a `Card` subtree with a " +
+          "title, body, and action buttons — no `updateDataModel` needed.",
+      },
+    },
+  },
+  render: () => <ComponentSwapStory />,
 };
