@@ -3,9 +3,9 @@ import {
   noSerialize,
   type NoSerialize,
   useSignal,
-  useVisibleTask$,
   type CSSProperties,
   type JSX,
+  useTask$,
 } from "@builder.io/qwik";
 
 import {
@@ -133,8 +133,7 @@ const SurfaceView = component$<SurfaceViewProps>(({ surface, catalog }) => {
   const containerRef = useSignal<HTMLDivElement | undefined>(undefined);
   const tick = useSignal(0);
 
-  // eslint-disable-next-line qwik/no-use-visible-task
-  useVisibleTask$(({ cleanup }) => {
+  useTask$(({ cleanup }) => {
     if (!surface) return;
 
     const subCreated = surface.componentsModel.onCreated.subscribe(() => {
@@ -255,8 +254,7 @@ export const ElmA2uiRenderer = component$<ElmA2uiRendererProps>(
 
     // ---- setup (runs once on mount) ----
 
-    // eslint-disable-next-line qwik/no-use-visible-task
-    useVisibleTask$(({ cleanup }) => {
+    useTask$(({ cleanup }) => {
       const catalogIdSet = new Set<string>();
       if (catalogId) catalogIdSet.add(catalogId);
       for (const m of messages) {
@@ -299,8 +297,7 @@ export const ElmA2uiRenderer = component$<ElmA2uiRendererProps>(
 
     // ---- incremental processing (initial batch + streaming updates) ----
 
-    // eslint-disable-next-line qwik/no-use-visible-task
-    useVisibleTask$(({ track }) => {
+    useTask$(({ track }) => {
       track(() => messages.length);
       const internal = processorRef.value;
       if (!internal) return;
