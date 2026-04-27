@@ -3,7 +3,6 @@ import { MastraAgent } from "@ag-ui/mastra";
 import { Agent } from "@mastra/core/agent";
 import { Mastra } from "@mastra/core";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
-import { RequestContext } from "@mastra/core/request-context";
 
 const openrouter = createOpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY,
