@@ -18,7 +18,7 @@ app.route(
   "/",
   createCopilotHonoHandler({
     runtime: copilotkitBuiltinRuntime,
-    basePath: "/copilotkit",
+    basePath: "/copilotkit/builtin",
   }),
 );
 
