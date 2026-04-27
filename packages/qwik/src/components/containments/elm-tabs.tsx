@@ -43,7 +43,10 @@ export const ElmTabs = component$<ElmTabsProps>(
         <div class={styles["tab-content-container"]}>
           {tabContents.map((content, index) => (
             <div key={index} class={styles["tab-content"]}>
-              <ElmCollapse isOpen={selectedTabIndex.value === index}>
+              <ElmCollapse
+                direction="both"
+                isOpen={selectedTabIndex.value === index}
+              >
                 {content}
               </ElmCollapse>
             </div>
