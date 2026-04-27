@@ -4,7 +4,7 @@
 
 .tooltip {
   box-sizing: border-box;
-  position: fixed;
+  position: absolute;
   z-index: 1000;
   max-width: min(32rem, calc(100vw - 2rem));
   padding: 0.5rem 0;
