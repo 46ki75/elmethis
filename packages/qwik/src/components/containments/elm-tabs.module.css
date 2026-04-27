@@ -57,17 +57,16 @@
 .tab-content {
   width: 100%;
   margin: 0;
-  transition:
-    transform 200ms,
-    opacity 200ms;
-  display: none;
+  transition: opacity 200ms;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 200ms;
 
-  &.active {
-    display: block;
+  .tab-content-inner {
+    overflow: hidden;
   }
 
-  @starting-style {
-    transform: translateY(-8px);
-    opacity: 0;
+  &.active {
+    grid-template-rows: 1fr;
   }
 }

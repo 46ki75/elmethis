@@ -50,7 +50,7 @@ export const ElmTabs = component$<ElmTabsProps>(
                 },
               ]}
             >
-              {content}
+              <div class={styles["tab-content-inner"]}>{content}</div>
             </div>
           ))}
         </div>
