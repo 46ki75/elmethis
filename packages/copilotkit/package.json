@@ -5,8 +5,7 @@
     "main": "index.ts",
     "type": "module",
     "scripts": {
-        "dev": "PORT=19101 node --env-file=.env --watch ./src/copilotkit-builtin.ts",
-        "dev.mastra": "PORT=19101 node --env-file=.env --watch ./src/copilotkit-mastra.ts",
+        "dev": "PORT=19101 node --env-file=.env --watch ./src/server.ts",
         "prestart": "pnpm run build",
         "start": "node ./dist/copilotkit-builtin.mjs",
         "build": "node build.ts",

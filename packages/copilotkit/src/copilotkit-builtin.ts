@@ -35,7 +35,7 @@ const generateAgent = (modelId: string): BuiltInAgent =>
     tools: [],
   });
 
-const runtime = new CopilotRuntime({
+export const copilotkitBuiltinRuntime = new CopilotRuntime({
   agents: {
     "gpt-5.4-nano": generateAgent("openai/gpt-5.4-nano"),
     "minimax-m2.5": generateAgent("minimax/minimax-m2.5"),
@@ -46,29 +46,4 @@ const runtime = new CopilotRuntime({
   a2ui: {
     injectA2UITool: true,
   },
-});
-
-const app = new Hono();
-
-app.use("*", cors());
-
-// `/copilotkit/agent/default/run`
-// `/copilotkit/agent/gpt-5.4-nano/run`
-// `/copilotkit/agent/minimax-m2.5/run`
-// `/copilotkit/agent/kimi-k2.6/run`
-app.route(
-  "/",
-  createCopilotHonoHandler({
-    runtime,
-    basePath: "/copilotkit",
-  }),
-);
-
-const port = parseInt(process.env.PORT || "8080", 10);
-const hostname = process.env.ADDRESS || "0.0.0.0";
-
-serve({ fetch: app.fetch, port, hostname }, (info) => {
-  console.log(
-    `CopilotKit backend running on http://${info.address}:${info.port}`,
-  );
 });
