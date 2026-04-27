@@ -29,12 +29,12 @@ export const ElmTooltip = component$<ElmTooltipProps>(
 
       if (rect.x > windowWidth / 2) {
         position.value = {
-          top: `${rect.y + rect.height}px`,
+          top: `${rect.y}px`,
           right: `${windowWidth - rect.x - rect.width}px`,
         };
       } else {
         position.value = {
-          top: `${rect.y + rect.height}px`,
+          top: `${rect.y}px`,
           left: `${rect.x}px`,
         };
       }
