@@ -68,3 +68,12 @@
     background-color: oklch(from gray l c h / 0.25);
   }
 }
+
+.reasoning-running {
+  max-height: 12rem;
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+}

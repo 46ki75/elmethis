@@ -1,4 +1,13 @@
-import { component$, JSX, QRL, type CSSProperties } from "@builder.io/qwik";
+import {
+  $,
+  component$,
+  JSX,
+  QRL,
+  useOn,
+  useSignal,
+  useVisibleTask$,
+  type CSSProperties,
+} from "@builder.io/qwik";
 
 import styles from "./elm-ag-ui-message-renderer.module.css";
 import {
@@ -164,28 +173,89 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
         }
 
         case "reasoning": {
-          return (
-            <>
-              <ElmToggle isOpen={messages.length - 1 === index} monochrome>
-                <div q:slot="summary" class={styles["message-content-type"]}>
-                  <ElmMdiIcon
-                    class={styles["message-content-icon"]}
-                    d={mdiLightbulbOn}
-                  />
-                  <ElmInlineText>Reasoning</ElmInlineText>
-                  <div
-                    aria-hidden="true"
-                    class={styles["message-content-spacer"]}
-                  ></div>
-                </div>
+          const Reasoning = component$(
+            ({
+              isReasoningRunning,
+              markdown,
+            }: {
+              isReasoningRunning: boolean;
+              markdown: string;
+            }) => {
+              const reasoningRef = useSignal<HTMLElement>();
+              const lastScrollTime = useSignal(0);
 
-                <ElmMarkdown
-                  style={{ opacity: 0.5 }}
-                  markdown={message.content}
-                  streaming={true}
-                />
-              </ElmToggle>
-            </>
+              // eslint-disable-next-line qwik/no-use-visible-task
+              useVisibleTask$(({ track }) => {
+                track(() => markdown);
+                const now = Date.now();
+                if (now - lastScrollTime.value < 500) return;
+                lastScrollTime.value = now;
+                reasoningRef.value?.scrollTo({
+                  behavior: "smooth",
+                  top: reasoningRef.value.scrollHeight,
+                });
+              });
+
+              const ReasoningMarkdown = component$(
+                ({ markdown }: { markdown: string }) => {
+                  const markdownRef = useSignal<HTMLElement>();
+
+                  useOn(
+                    "resize",
+                    $(() => {
+                      scrollTo({
+                        behavior: "smooth",
+                        top: markdownRef.value?.scrollHeight ?? 0,
+                      });
+                    }),
+                  );
+
+                  return (
+                    <div ref={markdownRef}>
+                      <ElmMarkdown
+                        style={{ opacity: 0.5 }}
+                        markdown={markdown}
+                        streaming={true}
+                      />
+                    </div>
+                  );
+                },
+              );
+
+              return (
+                <ElmToggle isOpen={isReasoningRunning} monochrome>
+                  <div q:slot="summary" class={styles["message-content-type"]}>
+                    <ElmMdiIcon
+                      class={styles["message-content-icon"]}
+                      d={mdiLightbulbOn}
+                    />
+                    <ElmInlineText>Reasoning</ElmInlineText>
+                    <div
+                      aria-hidden="true"
+                      class={styles["message-content-spacer"]}
+                    ></div>
+                  </div>
+
+                  <div
+                    ref={reasoningRef}
+                    class={[
+                      {
+                        [styles["reasoning-running"]]: isReasoningRunning,
+                      },
+                    ]}
+                  >
+                    <ReasoningMarkdown markdown={markdown} />
+                  </div>
+                </ElmToggle>
+              );
+            },
+          );
+
+          return (
+            <Reasoning
+              isReasoningRunning={messages.length - 1 === index}
+              markdown={message.content}
+            />
           );
         }
 

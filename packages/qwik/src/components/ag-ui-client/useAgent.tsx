@@ -11,13 +11,7 @@ import {
 
 import styles from "./useAgent.module.css";
 
-import {
-  BaseEvent,
-  HttpAgent,
-  Message,
-  randomUUID,
-  UserMessage,
-} from "@ag-ui/client";
+import { BaseEvent, HttpAgent, Message, UserMessage } from "@ag-ui/client";
 import { compactEventsExtended } from "./compactEventsExtended";
 
 import { z } from "zod";
@@ -27,6 +21,8 @@ import { ElmAgUiInput } from "./elm-ag-ui-input";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { mdiForumOutline } from "@mdi/js";
+
+import { v7 } from "uuid";
 
 // ---------------------------------------------------------------------------
 // Tool registry
@@ -95,25 +91,41 @@ export function useAgent({
     promptTemplates: [],
   });
 
+  const executeRun = $(async (withContext: boolean) => {
+    if (!httpAgent.value) return;
+    try {
+      await httpAgent.value.runAgent({
+        tools: getToolDefinitions(toolsRef.value ?? {}),
+        ...(withContext && {
+          context: agentStateStore.context?.map(({ value, description }) => ({
+            value,
+            description,
+          })),
+        }),
+      });
+    } catch {
+      agentStateStore.isRunning = false;
+    }
+  });
+
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(({ cleanup, track }) => {
     const trackedUrl = track(() => url);
     const trackedHeaders = track(() => headers);
 
-    if (!httpAgent.value) {
-      httpAgent.value = noSerialize(
-        new HttpAgent({ url: trackedUrl, headers: trackedHeaders }),
-      );
-      cleanup(() => {
-        httpAgent.value = null;
-      });
-    }
+    httpAgent.value = noSerialize(
+      new HttpAgent({ url: trackedUrl, headers: trackedHeaders }),
+    );
+    cleanup(() => {
+      httpAgent.value = null;
+    });
 
-    if (!httpAgent.value) return;
+    const agent = httpAgent.value;
+    if (!agent) return;
 
     let pendingToolMessages: Message[] = [];
 
-    const subscription = httpAgent.value.subscribe({
+    const subscription = agent.subscribe({
       onRunInitialized() {
         agentStateStore.isRunning = true;
       },
@@ -143,6 +155,13 @@ export function useAgent({
         if (msg) msg.content = (msg.content ?? "") + event.delta;
       },
 
+      onActivityDeltaEvent({ activityMessage }) {
+        const msg = agentStateStore.messages.findLast(
+          (m) => m.role === "activity",
+        );
+        if (msg && activityMessage) msg.content = activityMessage.content;
+      },
+
       onToolCallArgsEvent({ event }) {
         const msg = agentStateStore.messages.findLast(
           (m) => m.role === "assistant",
@@ -166,30 +185,26 @@ export function useAgent({
           ? JSON.parse(toolCall.function.arguments)
           : {};
         pendingToolMessages.push({
-          id: randomUUID(),
+          id: v7(),
           role: "tool",
           content: JSON.stringify(await tool.execute(args)),
           toolCallId: event.toolCallId,
         } as Message);
       },
       async onRunFinalized() {
-        console.log({
-          messages: agentStateStore.messages,
-          events: agentStateStore.events,
-        });
+        if (import.meta.env.DEV)
+          console.log({
+            messages: agentStateStore.messages,
+            events: agentStateStore.events,
+          });
+
         if (pendingToolMessages.length === 0 || !httpAgent.value) {
           agentStateStore.isRunning = false;
           return;
         }
         httpAgent.value.messages.push(...pendingToolMessages);
         pendingToolMessages = [];
-        try {
-          await httpAgent.value.runAgent({
-            tools: getToolDefinitions(toolsRef.value ?? {}),
-          });
-        } catch {
-          agentStateStore.isRunning = false;
-        }
+        await executeRun(false);
       },
     });
 
@@ -201,23 +216,13 @@ export function useAgent({
   const send = $(async (content: string) => {
     if (!httpAgent.value) return;
     const userMessage: UserMessage = {
-      id: randomUUID(),
+      id: v7(),
       role: "user",
       content,
     };
     httpAgent.value.messages.push(userMessage);
-
-    try {
-      await httpAgent.value.runAgent({
-        tools: getToolDefinitions(toolsRef.value ?? {}),
-        context: agentStateStore.context?.map(({ value, description }) => ({
-          value,
-          description,
-        })),
-      });
-    } catch {
-      agentStateStore.isRunning = false;
-    }
+    agentStateStore.messages.push(userMessage);
+    await executeRun(true);
   });
 
   const retry = $(async () => {
@@ -235,18 +240,7 @@ export function useAgent({
     );
     httpAgent.value.messages = [...newMessages];
     agentStateStore.messages = [...newMessages];
-
-    try {
-      await httpAgent.value.runAgent({
-        tools: getToolDefinitions(toolsRef.value ?? {}),
-        context: agentStateStore.context?.map(({ value, description }) => ({
-          value,
-          description,
-        })),
-      });
-    } catch {
-      agentStateStore.isRunning = false;
-    }
+    await executeRun(true);
   });
 
   const addTool = $((name: string, tool: AnyToolDef) => {

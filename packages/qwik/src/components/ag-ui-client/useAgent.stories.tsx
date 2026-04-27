@@ -54,6 +54,10 @@ const UseAgent = component$<UseAgentProps>(
           value: "What is a new feature called Amazon S3 Files?",
         },
         {
+          description: "Generate UUID v7",
+          value: "Generate a UUID v7 string",
+        },
+        {
           description: "Date and time",
           value: "What is the current date and time?",
         },
@@ -80,17 +84,21 @@ const meta: Meta<UseAgentProps> = {
   component: UseAgent,
   tags: ["autodocs"],
   args: {
-    url: "http://localhost:19101/copilotkit/agent/minimax-m2.5-free/run",
+    url: "http://localhost:19101/copilotkit/builtin/agent/minimax-m2.5-free/run",
   },
   argTypes: {
     url: {
       description: "The URL of the agent endpoint to connect to.",
       control: "radio",
       options: [
-        "http://localhost:19101/copilotkit/agent/gpt-5.4-nano/run",
-        "http://localhost:19101/copilotkit/agent/minimax-m2.5/run",
-        "http://localhost:19101/copilotkit/agent/minimax-m2.5-free/run",
-        "http://localhost:19101/copilotkit/agent/kimi-k2.6/run",
+        "http://localhost:19101/copilotkit/builtin/agent/gpt-5.4-nano/run",
+        "http://localhost:19101/copilotkit/builtin/agent/minimax-m2.5/run",
+        "http://localhost:19101/copilotkit/builtin/agent/minimax-m2.5-free/run",
+        "http://localhost:19101/copilotkit/builtin/agent/kimi-k2.6/run",
+        "http://localhost:19101/copilotkit/mastra/agent/gpt-5.4-nano/run",
+        "http://localhost:19101/copilotkit/mastra/agent/minimax-m2.5/run",
+        "http://localhost:19101/copilotkit/mastra/agent/minimax-m2.5-free/run",
+        "http://localhost:19101/copilotkit/mastra/agent/kimi-k2.6/run",
       ],
     },
   },
@@ -141,6 +149,7 @@ export const Full: Story = {
         <div
           style={{
             width: "500px",
+            height: "100%",
             border: "1px solid #ccc",
             padding: 0,
             margin: "0 auto",

@@ -5,19 +5,22 @@
     "main": "index.ts",
     "type": "module",
     "scripts": {
-        "dev": "PORT=19101 node --env-file=.env --watch ./src/index.ts",
+        "dev": "PORT=19101 node --env-file=.env --watch ./src/server.ts",
         "prestart": "pnpm run build",
-        "start": "node ./dist/index.js",
+        "start": "node ./dist/copilotkit-builtin.mjs",
         "build": "node build.ts",
         "prebuild:container": "pnpm run build",
         "build:container": "docker buildx build -t copilotkit-minimal --platform linux/arm64 ."
     },
     "dependencies": {
+        "@ag-ui/mastra": "^1.0.2",
         "@ai-sdk/openai": "^3.0.52",
         "@copilotkit/runtime": "^1.55.3",
         "@copilotkit/shared": "^1.55.3",
         "@hono/node-server": "^1.19.14",
+        "@mastra/core": "^1.28.0",
         "@openrouter/ai-sdk-provider": "^2.5.1",
+        "agent": "link:@mastra/core/agent",
         "dotenv": "^16.4.5",
         "hono": "^4.12.12",
         "openai": "^4.104.0"
