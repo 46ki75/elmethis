@@ -1,15 +1,47 @@
 .elm-collapse {
+  width: 100%;
   display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows
-    var(--elmethis-scoped-collapse-transition-duration, 200ms)
-    var(--elmethis-scoped-collapse-transition-timing-function, ease);
+
+  &.row {
+    grid-template-rows: 0fr;
+    transition: grid-template-rows
+      var(--elmethis-scoped-collapse-transition-duration, 200ms)
+      var(--elmethis-scoped-collapse-transition-timing-function, ease);
+
+    &.open {
+      grid-template-rows: 1fr;
+    }
+  }
+
+  &.column {
+    grid-template-columns: 0fr;
+    transition: grid-template-columns
+      var(--elmethis-scoped-collapse-transition-duration, 200ms)
+      var(--elmethis-scoped-collapse-transition-timing-function, ease);
+
+    &.open {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &.both {
+    grid-template-columns: 0fr;
+    grid-template-rows: 0fr;
+    transition:
+      grid-template-columns
+        var(--elmethis-scoped-collapse-transition-duration, 200ms)
+        var(--elmethis-scoped-collapse-transition-timing-function, ease),
+      grid-template-rows
+        var(--elmethis-scoped-collapse-transition-duration, 200ms)
+        var(--elmethis-scoped-collapse-transition-timing-function, ease);
+
+    &.open {
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+    }
+  }
 
   .inner {
     overflow: hidden;
-  }
-
-  &.open {
-    grid-template-rows: 1fr;
   }
 }

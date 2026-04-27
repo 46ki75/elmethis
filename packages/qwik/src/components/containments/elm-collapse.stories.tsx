@@ -16,27 +16,41 @@ const meta: Meta<ElmCollapseProps> = {
 export default meta;
 type Story = StoryObj<ElmCollapseProps>;
 
-const PrimaryRender = component$(() => {
-  const isOpen = useSignal(false);
-  const toggle = $(() => {
-    isOpen.value = !isOpen.value;
-  });
+const PrimaryRender = component$(
+  ({ direction = "row" }: { direction?: "row" | "column" | "both" }) => {
+    const isOpen = useSignal(false);
+    const toggle = $(() => {
+      isOpen.value = !isOpen.value;
+    });
 
-  return (
-    <div>
-      <ElmButton block onClick$={toggle}>
-        {isOpen.value ? "Close" : "Open"} Collapse
-      </ElmButton>
+    return (
+      <div>
+        <ElmButton block onClick$={toggle}>
+          {isOpen.value ? "Close" : "Open"} Collapse
+        </ElmButton>
 
-      <ElmCollapse isOpen={isOpen.value}>
-        <ElmCodeBlock language="tsx" code={code} />
-      </ElmCollapse>
-    </div>
-  );
-});
+        <ElmCollapse isOpen={isOpen.value} direction={direction}>
+          <ElmCodeBlock language="tsx" code={code} />
+        </ElmCollapse>
+      </div>
+    );
+  },
+);
 
-export const Primary: Story = {
+export const Row: Story = {
   render() {
-    return <PrimaryRender />;
+    return <PrimaryRender direction="row" />;
+  },
+};
+
+export const Column: Story = {
+  render() {
+    return <PrimaryRender direction="column" />;
+  },
+};
+
+export const Both: Story = {
+  render() {
+    return <PrimaryRender direction="both" />;
   },
 };

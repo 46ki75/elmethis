@@ -1,4 +1,10 @@
-import { $, component$, Slot, useSignal, type CSSProperties } from "@builder.io/qwik";
+import {
+  $,
+  component$,
+  Slot,
+  useSignal,
+  type CSSProperties,
+} from "@builder.io/qwik";
 
 import styles from "./elm-tooltip.module.css";
 
@@ -8,52 +14,73 @@ export interface ElmTooltipProps {
   style?: CSSProperties;
 }
 
-export const ElmTooltip = component$<ElmTooltipProps>(({ class: className, style }) => {
-  const elRef = useSignal<HTMLSpanElement>();
-  const isHover = useSignal(false);
-  const position = useSignal<CSSProperties>({});
+export const ElmTooltip = component$<ElmTooltipProps>(
+  ({ class: className, style }) => {
+    const elRef = useSignal<HTMLSpanElement>();
+    const isHover = useSignal(false);
+    const isHideSchedule = useSignal(false);
+    const hideTimerId = useSignal<number>();
+    const position = useSignal<CSSProperties>({});
 
-  const handleMouseOver = $(() => {
-    const el = elRef.value;
-    if (!el) return;
+    const handleMouseOver = $(() => {
+      const el = elRef.value;
+      if (!el) return;
 
-    const rect = el.getBoundingClientRect();
-    const windowWidth = window.innerWidth;
+      if (isHideSchedule.value) {
+        window.clearTimeout(hideTimerId.value);
+        isHideSchedule.value = false;
+      }
 
-    if (rect.x > windowWidth / 2) {
-      position.value = {
-        top: `${rect.y + rect.height}px`,
-        right: `${windowWidth - rect.x - rect.width}px`,
-      };
-    } else {
-      position.value = {
-        top: `${rect.y + rect.height}px`,
-        left: `${rect.x}px`,
-      };
-    }
+      const rect = el.getBoundingClientRect();
+      const windowWidth = window.innerWidth;
 
-    isHover.value = true;
-  });
+      if (rect.x > windowWidth / 2) {
+        position.value = {
+          top: `${rect.y}px`,
+          right: `${windowWidth - rect.x - rect.width}px`,
+        };
+      } else {
+        position.value = {
+          top: `${rect.y}px`,
+          left: `${rect.x}px`,
+        };
+      }
 
-  const handleMouseLeave = $(() => {
-    isHover.value = false;
-  });
+      isHover.value = true;
+    });
 
-  return (
-    <span
-      ref={elRef}
-      class={[styles.original, className]}
-      onMouseOver$={handleMouseOver}
-      onMouseLeave$={handleMouseLeave}
-      style={style}
-    >
-      <Slot name="original" />
+    const handleMouseLeave = $(() => {
+      if (isHideSchedule.value) return;
+      isHideSchedule.value = true;
 
-      {isHover.value && (
-        <div class={`${styles.tooltip} ${styles["tooltip-enter"]}`} style={position.value}>
+      hideTimerId.value = window.setTimeout(() => {
+        isHideSchedule.value = false;
+        isHover.value = false;
+      }, 250);
+    });
+
+    return (
+      <span
+        ref={elRef}
+        class={[styles.original, className]}
+        onMouseOver$={handleMouseOver}
+        onMouseLeave$={handleMouseLeave}
+        style={style}
+      >
+        <Slot name="original" />
+
+        <div
+          class={[
+            styles.tooltip,
+            {
+              [styles.show]: isHover.value,
+            },
+          ]}
+          style={position.value}
+        >
           <Slot name="tooltip" />
         </div>
-      )}
-    </span>
-  );
-});
+      </span>
+    );
+  },
+);

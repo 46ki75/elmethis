@@ -8,23 +8,30 @@ export interface ElmCollapseProps {
   style?: CSSProperties;
 
   isOpen?: boolean;
+
+  direction?: "row" | "column" | "both";
 }
 
-export const ElmCollapse = component$<ElmCollapseProps>(({ class: className, style, isOpen }) => {
-  return (
-    <div
-      class={[
-        styles["elm-collapse"],
-        {
-          [styles["open"]]: isOpen,
-        },
-        className,
-      ]}
-      style={style}
-    >
-      <div class={styles["inner"]}>
-        <Slot />
+export const ElmCollapse = component$<ElmCollapseProps>(
+  ({ class: className, style, isOpen, direction = "row" }) => {
+    return (
+      <div
+        class={[
+          styles["elm-collapse"],
+          {
+            [styles["open"]]: isOpen,
+            [styles["row"]]: direction === "row",
+            [styles["column"]]: direction === "column",
+            [styles["both"]]: direction === "both",
+          },
+          className,
+        ]}
+        style={style}
+      >
+        <div class={styles["inner"]}>
+          <Slot />
+        </div>
       </div>
-    </div>
-  );
-});
+    );
+  },
+);
