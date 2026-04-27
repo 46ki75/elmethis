@@ -42,18 +42,39 @@ export const Primary: Story = {
           surfaceId: "rich_text",
           components: [
             {
-              component: "Paragraph",
+              component: "Column",
               id: "root",
-              children: ["greeting-1", "greeting-2"],
+              children: ["p1", "p2"],
+            },
+            {
+              component: "Paragraph",
+              id: "p1",
+              children: ["greeting-p1-1", "greeting-p1-2"],
             },
             {
               component: "RichText",
-              id: "greeting-1",
+              id: "greeting-p1-1",
               text: "Hello, ",
             },
             {
               component: "RichText",
-              id: "greeting-2",
+              id: "greeting-p1-2",
+              text: "world!",
+              decoration: ["bold"],
+            },
+            {
+              component: "Paragraph",
+              id: "p2",
+              children: ["greeting-p2-1", "greeting-p2-2"],
+            },
+            {
+              component: "RichText",
+              id: "greeting-p2-1",
+              text: "Hello, ",
+            },
+            {
+              component: "RichText",
+              id: "greeting-p2-2",
               text: "world!",
               decoration: ["bold"],
             },
