@@ -78,7 +78,7 @@
     "storybook": "^10.3.5",
     "tsc-alias": "^1.8.16",
     "typescript": "~6.0.3",
-    "typescript-eslint": "^8.59.0",
+    "typescript-eslint": "^8.59.1",
     "vite": "^8.0.4"
   }
 }
