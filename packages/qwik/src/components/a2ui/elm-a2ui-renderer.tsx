@@ -3,9 +3,9 @@ import {
   noSerialize,
   type NoSerialize,
   useSignal,
-  useVisibleTask$,
   type CSSProperties,
   type JSX,
+  useTask$,
 } from "@builder.io/qwik";
 
 import {
@@ -133,8 +133,7 @@ const SurfaceView = component$<SurfaceViewProps>(({ surface, catalog }) => {
   const containerRef = useSignal<HTMLDivElement | undefined>(undefined);
   const tick = useSignal(0);
 
-  // eslint-disable-next-line qwik/no-use-visible-task
-  useVisibleTask$(({ cleanup }) => {
+  useTask$(({ cleanup }) => {
     if (!surface) return;
 
     const subCreated = surface.componentsModel.onCreated.subscribe(() => {
@@ -176,7 +175,8 @@ const SurfaceView = component$<SurfaceViewProps>(({ surface, catalog }) => {
       const cid = el.dataset.a2uiInput ?? "";
       const model = surface.componentsModel.get(cid);
       if (!model) return;
-      const bound = model.properties.text;
+      // TextFieldApi and DateTimeInputApi both use `value` as the bound property.
+      const bound = model.properties.value;
       if (bound && typeof bound === "object" && "path" in bound) {
         new ComponentContext(surface, cid).dataContext.set(
           bound.path as string,
@@ -186,7 +186,7 @@ const SurfaceView = component$<SurfaceViewProps>(({ surface, catalog }) => {
     };
 
     const handleChange = (e: Event) => {
-      const el = e.target as HTMLInputElement;
+      const el = e.target as HTMLInputElement | HTMLSelectElement;
       const parts = (el.dataset.a2uiChange ?? "").split(":");
       if (parts.length < 2) return;
       const [cid, prop] = parts;
@@ -194,18 +194,48 @@ const SurfaceView = component$<SurfaceViewProps>(({ surface, catalog }) => {
       if (!model) return;
       const bound = model.properties[prop];
       if (bound && typeof bound === "object" && "path" in bound) {
-        const value = el.type === "checkbox" ? el.checked : Number(el.value);
+        let value: unknown;
+        if (el instanceof HTMLInputElement && el.type === "checkbox") {
+          value = el.checked;
+        } else if (el instanceof HTMLSelectElement && el.multiple) {
+          value = Array.from(el.selectedOptions).map((o) => o.value);
+        } else if (el instanceof HTMLInputElement && el.type === "range") {
+          value = Number(el.value);
+        } else {
+          value = el.value;
+        }
         new ComponentContext(surface, cid).dataContext.set(
           bound.path as string,
           value,
         );
       }
-      const action = model.properties.onChange ?? model.properties.onChangeEnd;
-      if (action) {
-        const ctx = new ComponentContext(surface, cid);
-        surface
-          .dispatchAction(ctx.dataContext.resolveAction(action), cid)
-          .catch(console.error);
+    };
+
+    // Handles value updates for ChoicePicker components.
+    const handleChoiceChange = (e: Event) => {
+      const el = e.target as HTMLInputElement;
+      const container = el.closest("[data-a2ui-choice]") as HTMLElement | null;
+      if (!container) return;
+      const cid = container.dataset.a2uiChoice ?? "";
+      const model = surface.componentsModel.get(cid);
+      if (!model) return;
+      const bound = model.properties.value;
+      if (bound && typeof bound === "object" && "path" in bound) {
+        const isMultipleSelection = model.properties.variant === "multipleSelection";
+        let selected: string[];
+        if (isMultipleSelection) {
+          selected = Array.from(
+            container.querySelectorAll<HTMLInputElement>(
+              "input[type=checkbox]:checked",
+            ),
+          ).map((i) => i.value);
+        } else {
+          selected = el.value ? [el.value] : [];
+        }
+        new ComponentContext(surface, cid).dataContext.set(
+          bound.path as string,
+          selected,
+        );
       }
     };
 
@@ -213,6 +243,7 @@ const SurfaceView = component$<SurfaceViewProps>(({ surface, catalog }) => {
       container.addEventListener("click", handleClick);
       container.addEventListener("input", handleInput);
       container.addEventListener("change", handleChange);
+      container.addEventListener("change", handleChoiceChange);
     }
 
     cleanup(() => {
@@ -223,6 +254,7 @@ const SurfaceView = component$<SurfaceViewProps>(({ surface, catalog }) => {
         container.removeEventListener("click", handleClick);
         container.removeEventListener("input", handleInput);
         container.removeEventListener("change", handleChange);
+        container.removeEventListener("change", handleChoiceChange);
       }
     });
   });
@@ -255,8 +287,7 @@ export const ElmA2uiRenderer = component$<ElmA2uiRendererProps>(
 
     // ---- setup (runs once on mount) ----
 
-    // eslint-disable-next-line qwik/no-use-visible-task
-    useVisibleTask$(({ cleanup }) => {
+    useTask$(({ cleanup }) => {
       const catalogIdSet = new Set<string>();
       if (catalogId) catalogIdSet.add(catalogId);
       for (const m of messages) {
@@ -299,8 +330,7 @@ export const ElmA2uiRenderer = component$<ElmA2uiRendererProps>(
 
     // ---- incremental processing (initial batch + streaming updates) ----
 
-    // eslint-disable-next-line qwik/no-use-visible-task
-    useVisibleTask$(({ track }) => {
+    useTask$(({ track }) => {
       track(() => messages.length);
       const internal = processorRef.value;
       if (!internal) return;

@@ -23,7 +23,7 @@ import {
  * `resolve` for scalar text/url props, `childRefs` + `renderChild` for child
  * trees, and `ctx.dataContext` when you need reactive or non-string values.
  */
-export interface RenderContext {
+export interface RenderContext<TProps extends Record<string, unknown> = Record<string, unknown>> {
   /** Unique ID of the component instance within the surface. */
   componentId: string;
   /**
@@ -46,7 +46,8 @@ export interface RenderContext {
    */
   depth: number;
   /**
-   * Raw property bag from the component model. Each value may be:
+   * Typed property bag from the component model, shaped by the component's
+   * schema (e.g. `z.infer<typeof TextApi.schema>`). Each value may be:
    * - A **static literal** (`string`, `number`, `boolean`, `array`)
    * - A **data binding** (`{ path: "..." }`) resolved from the `DataModel`
    * - A **function call** (`{ call: "...", args: {...} }`) evaluated at render time
@@ -54,7 +55,7 @@ export interface RenderContext {
    * Pass values through `resolve` to normalise them into a plain string, or
    * call `ctx.dataContext.resolveDynamicValue` directly for non-string types.
    */
-  props: Record<string, unknown>;
+  props: TProps;
   /**
    * Instance-level A2UI context for this component. Provides:
    * - `dataContext` — resolves data bindings, subscribes to reactive updates,
@@ -113,5 +114,6 @@ export interface RenderContext {
  */
 export type CatalogRendererMap = Record<
   string,
-  (ctx: RenderContext) => JSX.Element | null
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (ctx: RenderContext<any>) => JSX.Element | null
 >;
