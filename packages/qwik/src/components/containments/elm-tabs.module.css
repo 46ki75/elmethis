@@ -57,16 +57,4 @@
 .tab-content {
   width: 100%;
   margin: 0;
-  transition: opacity 200ms;
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 200ms;
-
-  .tab-content-inner {
-    overflow: hidden;
-  }
-
-  &.active {
-    grid-template-rows: 1fr;
-  }
 }

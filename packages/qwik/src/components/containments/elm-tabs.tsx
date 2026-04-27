@@ -2,6 +2,7 @@ import { $, component$, useSignal, type CSSProperties } from "@builder.io/qwik";
 import type { JSXOutput } from "@builder.io/qwik";
 
 import styles from "./elm-tabs.module.css";
+import { ElmCollapse } from "./elm-collapse";
 
 export interface ElmTabsProps {
   class?: string;
@@ -41,16 +42,10 @@ export const ElmTabs = component$<ElmTabsProps>(
 
         <div class={styles["tab-content-container"]}>
           {tabContents.map((content, index) => (
-            <div
-              key={index}
-              class={[
-                styles["tab-content"],
-                {
-                  [styles["active"]]: selectedTabIndex.value === index,
-                },
-              ]}
-            >
-              <div class={styles["tab-content-inner"]}>{content}</div>
+            <div key={index} class={styles["tab-content"]}>
+              <ElmCollapse isOpen={selectedTabIndex.value === index}>
+                {content}
+              </ElmCollapse>
             </div>
           ))}
         </div>
