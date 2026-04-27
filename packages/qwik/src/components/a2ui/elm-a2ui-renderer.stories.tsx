@@ -192,7 +192,12 @@ export const Buttons: Story = {
               { component: "Row", id: "root", children: ["btn1", "btn2"] },
               { component: "Button", id: "btn1", child: "lbl1" },
               { component: "Text", id: "lbl1", text: "Default" },
-              { component: "Button", id: "btn2", child: "lbl2", variant: "primary" },
+              {
+                component: "Button",
+                id: "btn2",
+                child: "lbl2",
+                variant: "primary",
+              },
               { component: "Text", id: "lbl2", text: "Primary" },
             ],
           },
@@ -387,6 +392,7 @@ export const Tabs: Story = {
                   { title: "Overview", child: "tab1" },
                   { title: "Details", child: "tab2" },
                   { title: "History", child: "tab3" },
+                  { title: "Nested", child: "tab4" },
                 ],
               },
               {
@@ -396,6 +402,15 @@ export const Tabs: Story = {
               },
               { component: "Text", id: "tab2", text: "Detailed information." },
               { component: "Text", id: "tab3", text: "Historical data." },
+              {
+                component: "Tabs",
+                id: "tab4",
+                tabs: [
+                  { title: "Overview", child: "tab1" },
+                  { title: "Details", child: "tab2" },
+                  { title: "History", child: "tab3" },
+                ],
+              },
             ],
           },
         },
