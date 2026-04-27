@@ -21,7 +21,7 @@
         "@mastra/core": "^1.28.0",
         "@openrouter/ai-sdk-provider": "^2.5.1",
         "agent": "link:@mastra/core/agent",
-        "dotenv": "^16.4.5",
+        "dotenv": "^17.4.2",
         "hono": "^4.12.12",
         "openai": "^4.104.0"
     },
