@@ -44,6 +44,26 @@ export const RichTextApi = {
     .strict(),
 } satisfies ComponentApi;
 
+export const ParagraphApi = {
+  name: "Paragraph",
+  schema: z
+    .object({
+      ...CommonProps,
+      children: z
+        .union([
+          z.array(z.string()),
+          z.object({
+            componentId: z.string(),
+            path: z.string(),
+          }),
+        ])
+        .describe(
+          "Ordered list of inline component IDs (RichText, LinkText, etc.), or a list template.",
+        ),
+    })
+    .strict(),
+} satisfies ComponentApi;
+
 export const LinkTextApi = {
   name: "LinkText",
   schema: z

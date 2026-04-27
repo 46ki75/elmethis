@@ -1,9 +1,12 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { elmBasicCatalogRendererMap } from "./n2ui-components-renderer";
+import { elmBasicCatalogRendererMap as elmN2uiMap } from "./n2ui-components-renderer";
+import { elmBasicCatalogRendererMap as elmBasicMap } from "../elm-a2ui-basic-catalog-renderer";
 import { component$, noSerialize } from "@builder.io/qwik";
 import { ElmA2uiRenderer, ElmA2uiRendererProps } from "../elm-a2ui-renderer";
 
 const CATALOG_ID = "TODO";
+
+const mergedCatalog = noSerialize({ ...elmBasicMap, ...elmN2uiMap });
 
 const meta: Meta<ElmA2uiRendererProps> = {
   title: "Components/A2UI/Catalog/n2ui-components-renderer",
@@ -11,7 +14,7 @@ const meta: Meta<ElmA2uiRendererProps> = {
   tags: ["autodocs"],
   args: {
     catalogId: CATALOG_ID,
-    catalog: noSerialize(elmBasicCatalogRendererMap),
+    catalog: mergedCatalog,
     messages: [{}],
   },
   render: (args) => {
@@ -39,9 +42,20 @@ export const Primary: Story = {
           surfaceId: "rich_text",
           components: [
             {
-              component: "RichText",
+              component: "Paragraph",
               id: "root",
-              text: "Hello, world!",
+              children: ["greeting-1", "greeting-2"],
+            },
+            {
+              component: "RichText",
+              id: "greeting-1",
+              text: "Hello, ",
+            },
+            {
+              component: "RichText",
+              id: "greeting-2",
+              text: "world!",
+              decoration: ["bold"],
             },
           ],
         },
