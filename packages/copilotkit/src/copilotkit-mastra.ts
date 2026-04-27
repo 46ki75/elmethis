@@ -3,6 +3,7 @@ import { MastraAgent } from "@ag-ui/mastra";
 import { Agent } from "@mastra/core/agent";
 import { Mastra } from "@mastra/core";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
+import { RequestContext } from "@mastra/core/request-context";
 
 const openrouter = createOpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY,
@@ -12,7 +13,14 @@ const generateAgent = (id: string, name: string, modelId: string): Agent =>
   new Agent({
     id,
     name,
-    instructions: "You are a helpful assistant!",
+    instructions: ({ requestContext }) => {
+      const entries = [...requestContext.entries()]
+        .map(([k, v]) => `- ${k}: ${v}`)
+        .join("\n");
+      return entries
+        ? `You are a helpful assistant!\n\n## Context\n${entries}`
+        : "You are a helpful assistant!";
+    },
     model: openrouter(modelId),
   });
 
@@ -42,7 +50,12 @@ const mastra = new Mastra({
 });
 
 export const copilotkitMastraRuntime = new CopilotRuntime({
-  agents: MastraAgent.getLocalAgents({ mastra, resourceId: "default" }),
+  agents: async ({ request }) => {
+    return MastraAgent.getLocalAgents({
+      mastra,
+      resourceId: "default",
+    });
+  },
   runner: new InMemoryAgentRunner(),
   a2ui: {
     injectA2UITool: true,
