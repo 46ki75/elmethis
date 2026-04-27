@@ -1,6 +1,25 @@
 // Built-in catalog renderer map for standard A2UI component types.
 // Each entry maps a component type name to a render function.
 import { type CSSProperties } from "@builder.io/qwik";
+import { z } from "zod";
+import {
+  AudioPlayerApi,
+  ButtonApi,
+  CardApi,
+  CheckBoxApi,
+  ColumnApi,
+  DividerApi,
+  IconApi,
+  ImageApi,
+  ListApi,
+  ModalApi,
+  RowApi,
+  SliderApi,
+  TabsApi,
+  TextApi,
+  TextFieldApi,
+  VideoApi,
+} from "@a2ui/web_core/v0_9/basic_catalog";
 
 import { ElmTabs } from "../containments/elm-tabs";
 import styles from "./elm-a2ui.module.css";
@@ -9,7 +28,10 @@ import {
   type RenderContext,
 } from "./elm-a2ui-catalog-renderer";
 
-// Maps A2UI `distribution` prop values to CSS `justify-content` values.
+type Props<T extends { schema: z.ZodTypeAny }> = z.infer<T["schema"]>;
+type Ctx<T extends { schema: z.ZodTypeAny }> = RenderContext<Props<T>>;
+
+// Maps A2UI `justify` prop values to CSS `justify-content` values.
 const jc: Record<string, string> = {
   start: "flex-start",
   end: "flex-end",
@@ -17,9 +39,10 @@ const jc: Record<string, string> = {
   spaceBetween: "space-between",
   spaceAround: "space-around",
   spaceEvenly: "space-evenly",
+  stretch: "stretch",
 };
 
-// Maps A2UI `alignment` prop values to CSS `align-items` values.
+// Maps A2UI `align` prop values to CSS `align-items` values.
 const ai: Record<string, string> = {
   start: "flex-start",
   end: "flex-end",
@@ -27,12 +50,19 @@ const ai: Record<string, string> = {
   stretch: "stretch",
 };
 
+// Maps A2UI `fit` prop values to CSS `object-fit` values.
+const fitMap: Record<string, CSSProperties["objectFit"]> = {
+  contain: "contain",
+  cover: "cover",
+  fill: "fill",
+  none: "none",
+  scaleDown: "scale-down",
+};
+
 export const elmBasicCatalogRendererMap: CatalogRendererMap = {
-  Text: ({ props, resolve }: RenderContext) => {
-    // resolve() converts a prop to a string, handling both static strings and
-    // dynamic data bindings (e.g. { path: "/user/name" } resolved at runtime).
+  Text: ({ props, resolve }: Ctx<typeof TextApi>) => {
     const text = resolve(props.text);
-    const v = (props.variant as string) ?? "body";
+    const v = props.variant ?? "body";
     if (v === "h1")
       return <h1 class={[styles.text, styles["text-h1"]]}>{text}</h1>;
     if (v === "h2")
@@ -48,13 +78,12 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap = {
     return <p class={[styles.text, styles["text-body"]]}>{text}</p>;
   },
 
-  Row: ({ props, childRefs, renderChild }: RenderContext) => (
+  Row: ({ props, childRefs, renderChild }: Ctx<typeof RowApi>) => (
     <div
       class={styles.row}
       style={{
-        justifyContent:
-          jc[(props.distribution as string) ?? "start"] ?? "flex-start",
-        alignItems: ai[(props.alignment as string) ?? "center"] ?? "center",
+        justifyContent: jc[props.justify ?? "start"] ?? "flex-start",
+        alignItems: ai[props.align ?? "center"] ?? "center",
       }}
     >
       {childRefs(props.children).map(({ id, path }, i) => (
@@ -65,13 +94,12 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap = {
     </div>
   ),
 
-  Column: ({ props, childRefs, renderChild }: RenderContext) => (
+  Column: ({ props, childRefs, renderChild }: Ctx<typeof ColumnApi>) => (
     <div
       class={styles.column}
       style={{
-        justifyContent:
-          jc[(props.distribution as string) ?? "start"] ?? "flex-start",
-        alignItems: ai[(props.alignment as string) ?? "stretch"] ?? "stretch",
+        justifyContent: jc[props.justify ?? "start"] ?? "flex-start",
+        alignItems: ai[props.align ?? "stretch"] ?? "stretch",
       }}
     >
       {childRefs(props.children).map(({ id, path }, i) => (
@@ -82,7 +110,7 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap = {
     </div>
   ),
 
-  List: ({ props, childRefs, renderChild }: RenderContext) => (
+  List: ({ props, childRefs, renderChild }: Ctx<typeof ListApi>) => (
     <div
       class={[
         styles.list,
@@ -97,38 +125,36 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap = {
     </div>
   ),
 
-  Card: ({ props, renderChild }: RenderContext) => (
-    <div class={styles.card}>
-      {typeof props.child === "string" ? renderChild(props.child) : null}
-    </div>
+  Card: ({ props, renderChild }: Ctx<typeof CardApi>) => (
+    <div class={styles.card}>{renderChild(props.child)}</div>
   ),
 
-  Button: ({ props, componentId, renderChild }: RenderContext) => (
+  Button: ({ props, componentId, renderChild }: Ctx<typeof ButtonApi>) => (
     <button
       class={[
         styles.button,
-        props.primary === true && styles["button-primary"],
+        props.variant === "primary" && styles["button-primary"],
       ]}
       data-a2ui-action={props.action ? componentId : undefined}
     >
-      {typeof props.child === "string" ? renderChild(props.child) : null}
+      {renderChild(props.child)}
     </button>
   ),
 
-  Image: ({ props, resolve }: RenderContext) => (
-    <img
-      class={styles.image}
-      src={resolve(props.url)}
-      alt={resolve(props.alt ?? "")}
-      width={props.width as number | undefined}
-      height={props.height as number | undefined}
-      style={{
-        objectFit: (props.fit ?? "cover") as CSSProperties["objectFit"],
-      }}
-    />
-  ),
+  Image: ({ props, resolve }: Ctx<typeof ImageApi>) => {
+    // ImageApi has no width/height props; sizing is controlled via styles.image and the variant CSS class.
+    return (
+      // eslint-disable-next-line qwik/jsx-img
+      <img
+        class={styles.image}
+        src={resolve(props.url)}
+        alt={props.description ? resolve(props.description) : ""}
+        style={{ objectFit: fitMap[props.fit ?? "cover"] ?? "cover" }}
+      />
+    );
+  },
 
-  Icon: ({ props, resolve }: RenderContext) => (
+  Icon: ({ props, resolve }: Ctx<typeof IconApi>) => (
     <span
       class={styles.icon}
       aria-label={resolve(props.name)}
@@ -136,7 +162,7 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap = {
     />
   ),
 
-  Divider: ({ props }: RenderContext) => (
+  Divider: ({ props }: Ctx<typeof DividerApi>) => (
     <div
       class={[
         styles.divider,
@@ -146,102 +172,78 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap = {
     />
   ),
 
-  TextField: ({ props, componentId, resolve }: RenderContext) => {
+  TextField: ({ props, componentId, resolve }: Ctx<typeof TextFieldApi>) => {
     const inputTypes: Record<string, string> = {
       shortText: "text",
       longText: "text",
       number: "number",
       obscured: "password",
-      date: "date",
     };
     return (
       <div class={styles["text-field"]}>
-        {props.label ? (
-          <label class={styles.label}>{resolve(props.label)}</label>
-        ) : null}
+        <label class={styles.label}>{resolve(props.label)}</label>
         <input
           class={styles.input}
-          type={
-            inputTypes[(props.textFieldType as string) ?? "shortText"] ?? "text"
-          }
-          value={resolve(props.text ?? "")}
+          type={inputTypes[props.variant ?? "shortText"] ?? "text"}
+          value={props.value ? resolve(props.value) : ""}
           data-a2ui-input={componentId}
         />
       </div>
     );
   },
 
-  CheckBox: ({ props, componentId, ctx, resolve }: RenderContext) => {
-    const checkedVal = props.checked;
+  CheckBox: ({ props, componentId, ctx, resolve }: Ctx<typeof CheckBoxApi>) => {
+    const val = props.value;
     const checked =
-      typeof checkedVal === "boolean"
-        ? checkedVal
-        : checkedVal && typeof checkedVal === "object"
-          ? Boolean(
-              ctx.dataContext.resolveDynamicValue(checkedVal as never) ?? false,
-            )
-          : false;
+      typeof val === "boolean"
+        ? val
+        : Boolean(ctx.dataContext.resolveDynamicValue(val as never) ?? false);
     return (
       <label class={styles.checkbox}>
         <input
           type="checkbox"
           checked={checked}
-          data-a2ui-change={`${componentId}:checked`}
+          data-a2ui-change={`${componentId}:value`}
         />
-        {props.label ? (
-          <span class={styles["checkbox-label"]}>{resolve(props.label)}</span>
-        ) : null}
+        <span class={styles["checkbox-label"]}>{resolve(props.label)}</span>
       </label>
     );
   },
 
-  Slider: ({ props, componentId, ctx }: RenderContext) => {
-    const valRaw = props.value;
+  Slider: ({ props, componentId, ctx }: Ctx<typeof SliderApi>) => {
+    const val = props.value;
     const sliderVal =
-      typeof valRaw === "number"
-        ? valRaw
-        : valRaw && typeof valRaw === "object"
-          ? Number(ctx.dataContext.resolveDynamicValue(valRaw as never) ?? 0)
-          : 0;
+      typeof val === "number"
+        ? val
+        : Number(ctx.dataContext.resolveDynamicValue(val as never) ?? 0);
     return (
       <input
         class={styles.slider}
         type="range"
         value={sliderVal}
-        min={(props.minValue as number) ?? 0}
-        max={(props.maxValue as number) ?? 100}
+        min={props.min ?? 0}
+        max={props.max}
         data-a2ui-change={`${componentId}:value`}
       />
     );
   },
 
-  Tabs: ({ props, resolve, renderChild }: RenderContext) => {
-    const tabs = Array.isArray(props.tabs)
-      ? (props.tabs as Array<{ title: unknown; child?: string }>)
-      : [];
-    return (
-      <ElmTabs
-        tabLabels={tabs.map((tab) => (
-          <>{resolve(tab.title)}</>
-        ))}
-        tabContents={tabs.map((tab) =>
-          tab.child ? renderChild(tab.child) : null,
-        )}
-      />
-    );
-  },
-
-  Modal: ({ props, renderChild }: RenderContext) => (
-    <div class={styles.modal}>
-      {typeof props.trigger === "string" ? renderChild(props.trigger) : null}
-    </div>
+  Tabs: ({ props, resolve, renderChild }: Ctx<typeof TabsApi>) => (
+    <ElmTabs
+      tabLabels={props.tabs.map((tab) => <>{resolve(tab.title)}</>)}
+      tabContents={props.tabs.map((tab) => renderChild(tab.child))}
+    />
   ),
 
-  Video: ({ props, resolve }: RenderContext) => (
+  Modal: ({ props, renderChild }: Ctx<typeof ModalApi>) => (
+    <div class={styles.modal}>{renderChild(props.trigger)}</div>
+  ),
+
+  Video: ({ props, resolve }: Ctx<typeof VideoApi>) => (
     <video class={styles.video} controls src={resolve(props.url)} />
   ),
 
-  AudioPlayer: ({ props, resolve }: RenderContext) => (
+  AudioPlayer: ({ props, resolve }: Ctx<typeof AudioPlayerApi>) => (
     <audio class={styles.audio} controls src={resolve(props.url)} />
   ),
 };
