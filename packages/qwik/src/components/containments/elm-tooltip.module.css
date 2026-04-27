@@ -12,16 +12,14 @@
   transition:
     opacity 200ms,
     transform 200ms;
-}
 
-.tooltip-enter {
-  transform: scale(1);
-  opacity: 1;
-}
+  transform: scale(0);
+  opacity: 0;
+  pointer-events: none;
 
-@starting-style {
-  .tooltip-enter {
-    transform: scale(0.95);
-    opacity: 0;
+  &.show {
+    transform: scale(1);
+    opacity: 1;
+    pointer-events: auto;
   }
 }

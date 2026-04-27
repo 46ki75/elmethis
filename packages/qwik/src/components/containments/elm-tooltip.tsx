@@ -56,14 +56,17 @@ export const ElmTooltip = component$<ElmTooltipProps>(
       >
         <Slot name="original" />
 
-        {isHover.value && (
-          <div
-            class={`${styles.tooltip} ${styles["tooltip-enter"]}`}
-            style={position.value}
-          >
-            <Slot name="tooltip" />
-          </div>
-        )}
+        <div
+          class={[
+            styles.tooltip,
+            {
+              [styles.show]: isHover.value,
+            },
+          ]}
+          style={position.value}
+        >
+          <Slot name="tooltip" />
+        </div>
       </span>
     );
   },
