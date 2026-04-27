@@ -1,16 +1,6 @@
-import { serve } from "@hono/node-server";
-import { Hono } from "hono";
-import { cors } from "hono/cors";
-import dotenv from "dotenv";
-import {
-  CopilotRuntime,
-  InMemoryAgentRunner,
-  createCopilotHonoHandler,
-} from "@copilotkit/runtime/v2";
+import { CopilotRuntime, InMemoryAgentRunner } from "@copilotkit/runtime/v2";
 import { BuiltInAgent } from "@copilotkit/runtime/v2";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
-
-dotenv.config();
 
 const openrouter = createOpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY,
