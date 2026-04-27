@@ -44,6 +44,23 @@ export const RichTextApi = {
     .strict(),
 } satisfies ComponentApi;
 
+export const LinkTextApi = {
+  name: "LinkText",
+  schema: z
+    .object({
+      ...CommonProps,
+      text: DynamicStringSchema.describe(""),
+      href: z.string().describe("The URL to link to."),
+      favicon: z
+        .string()
+        .describe("The URL of the favicon to show before the text.")
+        .optional(),
+    })
+    .strict(),
+} satisfies ComponentApi;
+
+export { ColumnApi } from "@a2ui/web_core/v0_9/basic_catalog";
+
 export const ParagraphApi = {
   name: "Paragraph",
   schema: z
@@ -60,21 +77,6 @@ export const ParagraphApi = {
         .describe(
           "Ordered list of inline component IDs (RichText, LinkText, etc.), or a list template.",
         ),
-    })
-    .strict(),
-} satisfies ComponentApi;
-
-export const LinkTextApi = {
-  name: "LinkText",
-  schema: z
-    .object({
-      ...CommonProps,
-      text: DynamicStringSchema.describe(""),
-      href: z.string().describe("The URL to link to."),
-      favicon: z
-        .string()
-        .describe("The URL of the favicon to show before the text.")
-        .optional(),
     })
     .strict(),
 } satisfies ComponentApi;

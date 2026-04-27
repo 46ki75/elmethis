@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { elmBasicCatalogRendererMap as elmN2uiMap } from "./n2ui-components-renderer";
+import { elmN2UICatalogRendererMap as elmN2uiMap } from "./n2ui-components-renderer";
 import { elmBasicCatalogRendererMap as elmBasicMap } from "../elm-a2ui-basic-catalog-renderer";
 import { component$, noSerialize } from "@builder.io/qwik";
 import { ElmA2uiRenderer, ElmA2uiRendererProps } from "../elm-a2ui-renderer";
