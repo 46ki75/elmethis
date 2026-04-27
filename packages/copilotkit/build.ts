@@ -20,7 +20,6 @@ const result = await build({
   platform: "node",
   target: "es2024",
   format: "esm",
-  external: ["@copilotkit/runtime"],
   banner: {
     js: `import { createRequire as __cjsRequire } from "module"; const require = __cjsRequire(import.meta.url);`,
   },
