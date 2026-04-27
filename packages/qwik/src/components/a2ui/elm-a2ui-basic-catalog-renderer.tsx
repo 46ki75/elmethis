@@ -7,7 +7,9 @@ import {
   ButtonApi,
   CardApi,
   CheckBoxApi,
+  ChoicePickerApi,
   ColumnApi,
+  DateTimeInputApi,
   DividerApi,
   IconApi,
   ImageApi,
@@ -236,7 +238,10 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap = {
   ),
 
   Modal: ({ props, renderChild }: Ctx<typeof ModalApi>) => (
-    <div class={styles.modal}>{renderChild(props.trigger)}</div>
+    <div class={styles.modal}>
+      {renderChild(props.trigger)}
+      <div class={styles["modal-content"]}>{renderChild(props.content)}</div>
+    </div>
   ),
 
   Video: ({ props, resolve }: Ctx<typeof VideoApi>) => (
@@ -246,4 +251,73 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap = {
   AudioPlayer: ({ props, resolve }: Ctx<typeof AudioPlayerApi>) => (
     <audio class={styles.audio} controls src={resolve(props.url)} />
   ),
+
+  ChoicePicker: ({
+    props,
+    componentId,
+    ctx,
+    resolve,
+  }: Ctx<typeof ChoicePickerApi>) => {
+    const rawValue = props.value;
+    const resolvedValue = Array.isArray(rawValue)
+      ? rawValue
+      : (ctx.dataContext.resolveDynamicValue(rawValue as never) ?? []);
+    const selectedValues: string[] = Array.isArray(resolvedValue)
+      ? (resolvedValue as string[])
+      : [];
+    const isMultipleSelection =
+      (props.variant ?? "mutuallyExclusive") === "multipleSelection";
+    return (
+      <div class={styles["choice-picker"]} data-a2ui-choice={componentId}>
+        {props.label ? (
+          <span class={styles["choice-picker-label"]}>{resolve(props.label)}</span>
+        ) : null}
+        <div class={styles["choice-picker-options"]}>
+          {props.options.map((opt) => {
+            const optLabel = resolve(opt.label);
+            const checked = selectedValues.includes(opt.value);
+            return (
+              <label key={opt.value} class={styles["choice-picker-option"]}>
+                <input
+                  type={isMultipleSelection ? "checkbox" : "radio"}
+                  name={componentId}
+                  value={opt.value}
+                  checked={checked}
+                />
+                <span>{optLabel}</span>
+              </label>
+            );
+          })}
+        </div>
+      </div>
+    );
+  },
+
+  DateTimeInput: ({
+    props,
+    componentId,
+    resolve,
+  }: Ctx<typeof DateTimeInputApi>) => {
+    const enableDate = props.enableDate ?? false;
+    const enableTime = props.enableTime ?? false;
+    let inputType = "text";
+    if (enableDate && enableTime) inputType = "datetime-local";
+    else if (enableDate) inputType = "date";
+    else if (enableTime) inputType = "time";
+    return (
+      <div class={styles["datetime-input"]}>
+        {props.label ? (
+          <label class={styles.label}>{resolve(props.label)}</label>
+        ) : null}
+        <input
+          class={styles.input}
+          type={inputType}
+          value={props.value ? resolve(props.value) : ""}
+          min={props.min != null ? String(props.min) : undefined}
+          max={props.max != null ? String(props.max) : undefined}
+          data-a2ui-input={componentId}
+        />
+      </div>
+    );
+  },
 };

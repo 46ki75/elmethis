@@ -172,10 +172,51 @@
   display: contents;
 }
 
+.modal-content {
+  display: contents;
+}
+
 /* ---- media ---- */
 
 .video,
 .audio {
   max-width: 100%;
   display: block;
+}
+
+/* ---- choice picker ---- */
+
+.choice-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.choice-picker-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #555;
+}
+
+.choice-picker-options {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.choice-picker-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  user-select: none;
+}
+
+/* ---- datetime input ---- */
+
+.datetime-input {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }

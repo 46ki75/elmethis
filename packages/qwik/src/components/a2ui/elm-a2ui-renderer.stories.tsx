@@ -108,7 +108,7 @@ export const Layout: Story = {
               {
                 component: "Row",
                 id: "row",
-                distribution: "spaceBetween",
+                justify: "spaceBetween",
                 children: ["a", "b", "c"],
               },
               { component: "Text", id: "a", text: "Alpha" },
@@ -192,7 +192,7 @@ export const Buttons: Story = {
               { component: "Row", id: "root", children: ["btn1", "btn2"] },
               { component: "Button", id: "btn1", child: "lbl1" },
               { component: "Text", id: "lbl1", text: "Default" },
-              { component: "Button", id: "btn2", child: "lbl2", primary: true },
+              { component: "Button", id: "btn2", child: "lbl2", variant: "primary" },
               { component: "Text", id: "lbl2", text: "Primary" },
             ],
           },
@@ -231,34 +231,34 @@ export const FormFields: Story = {
                 component: "TextField",
                 id: "tf1",
                 label: "Short text",
-                text: "",
-                textFieldType: "shortText",
+                value: "",
+                variant: "shortText",
               },
               {
                 component: "TextField",
                 id: "tf2",
                 label: "Password",
-                text: "",
-                textFieldType: "obscured",
+                value: "",
+                variant: "obscured",
               },
               {
                 component: "TextField",
                 id: "tf3",
                 label: "Number",
-                text: "42",
-                textFieldType: "number",
+                value: "42",
+                variant: "number",
               },
               {
                 component: "CheckBox",
                 id: "check",
                 label: "Enable feature",
-                checked: true,
+                value: true,
               },
               {
                 component: "Slider",
                 id: "slider",
-                minValue: 0,
-                maxValue: 100,
+                min: 0,
+                max: 100,
                 value: 60,
               },
             ],
@@ -404,6 +404,171 @@ export const Tabs: Story = {
   ),
 };
 
+export const ChoicePicker: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "ChoicePicker component — mutually exclusive (radio) and multiple selection (checkbox) variants. " +
+          "The `value` prop is a string array bound to the data model.",
+      },
+    },
+  },
+  render: () => (
+    <ElmA2uiRenderer
+      messages={[
+        {
+          version: "v0.9",
+          createSurface: { surfaceId: "choice", catalogId: CATALOG_ID },
+        },
+        {
+          version: "v0.9",
+          updateDataModel: {
+            surfaceId: "choice",
+            path: "/form/color",
+            value: ["blue"],
+          },
+        },
+        {
+          version: "v0.9",
+          updateDataModel: {
+            surfaceId: "choice",
+            path: "/form/toppings",
+            value: ["cheese"],
+          },
+        },
+        {
+          version: "v0.9",
+          updateComponents: {
+            surfaceId: "choice",
+            components: [
+              {
+                component: "Column",
+                id: "root",
+                children: ["label1", "single", "label2", "multi"],
+              },
+              {
+                component: "Text",
+                id: "label1",
+                variant: "h5",
+                text: "Mutually exclusive",
+              },
+              {
+                component: "ChoicePicker",
+                id: "single",
+                variant: "mutuallyExclusive",
+                options: [
+                  { label: "Red", value: "red" },
+                  { label: "Green", value: "green" },
+                  { label: "Blue", value: "blue" },
+                ],
+                value: { path: "/form/color" },
+              },
+              {
+                component: "Text",
+                id: "label2",
+                variant: "h5",
+                text: "Multiple selection",
+              },
+              {
+                component: "ChoicePicker",
+                id: "multi",
+                variant: "multipleSelection",
+                options: [
+                  { label: "Cheese", value: "cheese" },
+                  { label: "Mushrooms", value: "mushrooms" },
+                  { label: "Peppers", value: "peppers" },
+                ],
+                value: { path: "/form/toppings" },
+              },
+            ],
+          },
+        },
+      ]}
+    />
+  ),
+};
+
+export const DateTimeInput: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "DateTimeInput component — date-only, time-only, and combined datetime-local variants.",
+      },
+    },
+  },
+  render: () => (
+    <ElmA2uiRenderer
+      messages={[
+        {
+          version: "v0.9",
+          createSurface: { surfaceId: "datetime", catalogId: CATALOG_ID },
+        },
+        {
+          version: "v0.9",
+          updateDataModel: {
+            surfaceId: "datetime",
+            path: "/form/date",
+            value: "2025-01-15",
+          },
+        },
+        {
+          version: "v0.9",
+          updateDataModel: {
+            surfaceId: "datetime",
+            path: "/form/time",
+            value: "09:30",
+          },
+        },
+        {
+          version: "v0.9",
+          updateDataModel: {
+            surfaceId: "datetime",
+            path: "/form/datetime",
+            value: "2025-01-15T09:30",
+          },
+        },
+        {
+          version: "v0.9",
+          updateComponents: {
+            surfaceId: "datetime",
+            components: [
+              {
+                component: "Column",
+                id: "root",
+                children: ["dateField", "timeField", "datetimeField"],
+              },
+              {
+                component: "DateTimeInput",
+                id: "dateField",
+                label: "Date",
+                enableDate: true,
+                value: { path: "/form/date" },
+              },
+              {
+                component: "DateTimeInput",
+                id: "timeField",
+                label: "Time",
+                enableTime: true,
+                value: { path: "/form/time" },
+              },
+              {
+                component: "DateTimeInput",
+                id: "datetimeField",
+                label: "Date & Time",
+                enableDate: true,
+                enableTime: true,
+                value: { path: "/form/datetime" },
+              },
+            ],
+          },
+        },
+      ]}
+    />
+  ),
+};
+
 // ---- Streaming stories ----
 // These stories demonstrate progressive message delivery using ElmA2uiRenderer's
 // incremental processing: messages.length is tracked, and only newly appended
@@ -500,7 +665,7 @@ const MockStreamStory = component$(() => {
                   component: "Button",
                   id: "btn2",
                   child: "lbl2",
-                  primary: true,
+                  variant: "primary",
                 },
                 { component: "Text", id: "lbl2", text: "Confirm" },
               ],
@@ -529,7 +694,7 @@ const MockStreamStory = component$(() => {
                   component: "TextField",
                   id: "field",
                   label: "Name",
-                  text: { path: "/form/name" },
+                  value: { path: "/form/name" },
                 },
               ],
             },
@@ -833,7 +998,7 @@ const ComponentSwapStory = component$(() => {
                   component: "Button",
                   id: "btnView",
                   child: "lblView",
-                  primary: true,
+                  variant: "primary",
                 },
                 { component: "Text", id: "lblView", text: "View Details" },
               ],
