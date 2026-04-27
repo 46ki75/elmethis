@@ -17,7 +17,7 @@ export default meta;
 type Story = StoryObj<ElmCollapseProps>;
 
 const PrimaryRender = component$(
-  ({ direction = "row" }: { direction?: "row" | "column" }) => {
+  ({ direction = "row" }: { direction?: "row" | "column" | "both" }) => {
     const isOpen = useSignal(false);
     const toggle = $(() => {
       isOpen.value = !isOpen.value;
@@ -46,5 +46,11 @@ export const Row: Story = {
 export const Column: Story = {
   render() {
     return <PrimaryRender direction="column" />;
+  },
+};
+
+export const Both: Story = {
+  render() {
+    return <PrimaryRender direction="both" />;
   },
 };

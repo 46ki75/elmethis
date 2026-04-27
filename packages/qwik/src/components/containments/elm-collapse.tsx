@@ -9,7 +9,7 @@ export interface ElmCollapseProps {
 
   isOpen?: boolean;
 
-  direction?: "row" | "column";
+  direction?: "row" | "column" | "both";
 }
 
 export const ElmCollapse = component$<ElmCollapseProps>(
@@ -20,7 +20,9 @@ export const ElmCollapse = component$<ElmCollapseProps>(
           styles["elm-collapse"],
           {
             [styles["open"]]: isOpen,
-            [styles[direction]]: true,
+            [styles["row"]]: direction === "row",
+            [styles["column"]]: direction === "column",
+            [styles["both"]]: direction === "both",
           },
           className,
         ]}
