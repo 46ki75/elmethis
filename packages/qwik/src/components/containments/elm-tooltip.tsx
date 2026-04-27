@@ -18,11 +18,18 @@ export const ElmTooltip = component$<ElmTooltipProps>(
   ({ class: className, style }) => {
     const elRef = useSignal<HTMLSpanElement>();
     const isHover = useSignal(false);
+    const isHideSchedule = useSignal(false);
+    const hideTimerId = useSignal<number>();
     const position = useSignal<CSSProperties>({});
 
     const handleMouseOver = $(() => {
       const el = elRef.value;
       if (!el) return;
+
+      if (isHideSchedule.value) {
+        window.clearTimeout(hideTimerId.value);
+        isHideSchedule.value = false;
+      }
 
       const rect = el.getBoundingClientRect();
       const windowWidth = window.innerWidth;
@@ -43,7 +50,13 @@ export const ElmTooltip = component$<ElmTooltipProps>(
     });
 
     const handleMouseLeave = $(() => {
-      isHover.value = false;
+      if (isHideSchedule.value) return;
+      isHideSchedule.value = true;
+
+      hideTimerId.value = window.setTimeout(() => {
+        isHideSchedule.value = false;
+        isHover.value = false;
+      }, 250);
     });
 
     return (
