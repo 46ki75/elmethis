@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmRectangleWave , type ElmRectangleWaveProps} from "./elm-rectangle-wave";
+import {
+  ElmRectangleWave,
+  type ElmRectangleWaveProps,
+} from "./elm-rectangle-wave";
 
 const meta: Meta<ElmRectangleWaveProps> = {
   title: "Components/Fallback/elm-rectangle-wave",

@@ -1,4 +1,10 @@
-import { $, component$, useSignal, type CSSProperties, type Signal } from "@builder.io/qwik";
+import {
+  $,
+  component$,
+  useSignal,
+  type CSSProperties,
+  type Signal,
+} from "@builder.io/qwik";
 
 import styles from "./elm-switch.module.scss";
 

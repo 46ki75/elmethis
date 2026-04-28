@@ -97,9 +97,7 @@ export const ColumnApi = {
   schema: z
     .object({
       ...CommonProps,
-      children: childrenSchema.describe(
-        "Ordered list of child component IDs.",
-      ),
+      children: childrenSchema.describe("Ordered list of child component IDs."),
       justify: z
         .enum([
           "start",
@@ -327,10 +325,7 @@ export const BlockImageApi = {
       ...CommonProps,
       src: z.string().describe("The source URL of the image."),
       alt: z.string().describe("Accessible alt text for the image.").optional(),
-      width: z
-        .number()
-        .describe("Intrinsic image width in pixels.")
-        .optional(),
+      width: z.number().describe("Intrinsic image width in pixels.").optional(),
       height: z
         .number()
         .describe("Intrinsic image height in pixels.")

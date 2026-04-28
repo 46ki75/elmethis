@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmInlineText , type ElmInlineTextProps} from "./elm-inline-text";
+import { ElmInlineText, type ElmInlineTextProps } from "./elm-inline-text";
 import { opacify } from "polished";
 
 const meta: Meta<ElmInlineTextProps> = {

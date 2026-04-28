@@ -30,7 +30,12 @@ export const ElmHeading = component$<ElmHeadingProps>(
     const Tag = `h${level}` as "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
     return (
       <Tag
-        class={[styles["heading-common"], textStyles.text, styles[`h${level}`], className]}
+        class={[
+          styles["heading-common"],
+          textStyles.text,
+          styles[`h${level}`],
+          className,
+        ]}
         style={{ "--font-size": `${SIZE_MAP[level]}em`, ...style }}
       >
         <span>{text}</span>

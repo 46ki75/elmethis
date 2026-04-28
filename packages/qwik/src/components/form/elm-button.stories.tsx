@@ -1,7 +1,7 @@
 import { mdiSquareEditOutline } from "@mdi/js";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
-import { ElmButton , type ElmButtonProps} from "./elm-button";
+import { ElmButton, type ElmButtonProps } from "./elm-button";
 
 const meta: Meta<ElmButtonProps> = {
   title: "Components/Form/elm-button",

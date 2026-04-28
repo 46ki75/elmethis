@@ -27,7 +27,11 @@ export const ElmFragmentIdentifier = component$<ElmFragmentIdentifierProps>(
     });
 
     return (
-      <span class={[styles.fragment, className]} style={style} onClick$={() => handleHashClick(id)}>
+      <span
+        class={[styles.fragment, className]}
+        style={style}
+        onClick$={() => handleHashClick(id)}
+      >
         #
       </span>
     );

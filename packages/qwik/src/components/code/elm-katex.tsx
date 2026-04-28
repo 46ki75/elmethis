@@ -25,18 +25,24 @@ export interface ElmKatexProps {
   block?: boolean;
 }
 
-export const ElmKatex = component$<ElmKatexProps>(
-  (props) => {
-    const { class: className, style } = props;
-    const html = useComputed$(() =>
-      renderToString(props.expression, {
-        displayMode: props.block ?? false,
-        output: "mathml",
-      }),
-    );
+export const ElmKatex = component$<ElmKatexProps>((props) => {
+  const { class: className, style } = props;
+  const html = useComputed$(() =>
+    renderToString(props.expression, {
+      displayMode: props.block ?? false,
+      output: "mathml",
+    }),
+  );
 
-    return (
-      <div class={[textStyle.text, props.block ? styles.katex : undefined, className]} style={style} dangerouslySetInnerHTML={html.value ?? ""} />
-    );
-  },
-);
+  return (
+    <div
+      class={[
+        textStyle.text,
+        props.block ? styles.katex : undefined,
+        className,
+      ]}
+      style={style}
+      dangerouslySetInnerHTML={html.value ?? ""}
+    />
+  );
+});

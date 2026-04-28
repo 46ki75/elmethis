@@ -1,7 +1,7 @@
 import { component$, useComputed$, useSignal } from "@builder.io/qwik";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { ElmTextField } from "./elm-text-field";
-import { ElmValidation , type ElmValidationProps} from "./elm-validation";
+import { ElmValidation, type ElmValidationProps } from "./elm-validation";
 
 const meta: Meta<ElmValidationProps> = {
   title: "Components/Form/elm-validation",

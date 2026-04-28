@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmCheckbox , type ElmCheckboxProps} from "./elm-checkbox";
+import { ElmCheckbox, type ElmCheckboxProps } from "./elm-checkbox";
 
 const meta: Meta<ElmCheckboxProps> = {
   title: "Components/Form/elm-checkbox",

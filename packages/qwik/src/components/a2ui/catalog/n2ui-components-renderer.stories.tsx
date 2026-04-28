@@ -56,15 +56,30 @@ export const RichText: Story = {
               children: ["t1", "t2", "t3"],
             },
             { component: "RichText", id: "t1", text: "Hello, " },
-            { component: "RichText", id: "t2", text: "world!", decoration: ["bold"] },
-            { component: "RichText", id: "t3", text: " (italic)", decoration: ["italic"] },
+            {
+              component: "RichText",
+              id: "t2",
+              text: "world!",
+              decoration: ["bold"],
+            },
+            {
+              component: "RichText",
+              id: "t3",
+              text: " (italic)",
+              decoration: ["italic"],
+            },
             {
               component: "Paragraph",
               id: "p2",
               children: ["t4", "t5", "t6"],
             },
             { component: "RichText", id: "t4", text: "Inline " },
-            { component: "RichText", id: "t5", text: "code", decoration: ["code"] },
+            {
+              component: "RichText",
+              id: "t5",
+              text: "code",
+              decoration: ["code"],
+            },
             {
               component: "LinkText",
               id: "t6",
@@ -155,7 +170,12 @@ export const List: Story = {
               children: ["li1-t1", "li1-t2"],
             },
             { component: "RichText", id: "li1-t1", text: "First item — " },
-            { component: "RichText", id: "li1-t2", text: "bold", decoration: ["bold"] },
+            {
+              component: "RichText",
+              id: "li1-t2",
+              text: "bold",
+              decoration: ["bold"],
+            },
             {
               component: "ListItem",
               id: "li2",
@@ -240,7 +260,11 @@ export const Callout: Story = {
               id: "note-p",
               children: ["note-t"],
             },
-            { component: "RichText", id: "note-t", text: "This is a note callout." },
+            {
+              component: "RichText",
+              id: "note-t",
+              text: "This is a note callout.",
+            },
             {
               component: "Callout",
               id: "warning",
@@ -252,7 +276,11 @@ export const Callout: Story = {
               id: "warn-p",
               children: ["warn-t"],
             },
-            { component: "RichText", id: "warn-t", text: "This is a warning callout." },
+            {
+              component: "RichText",
+              id: "warn-t",
+              text: "This is a warning callout.",
+            },
             {
               component: "Callout",
               id: "tip",
@@ -264,7 +292,11 @@ export const Callout: Story = {
               id: "tip-p",
               children: ["tip-t"],
             },
-            { component: "RichText", id: "tip-t", text: "This is a tip callout." },
+            {
+              component: "RichText",
+              id: "tip-t",
+              text: "This is a tip callout.",
+            },
           ],
         },
       },
@@ -494,8 +526,7 @@ export const Katex: Story = {
             {
               component: "Katex",
               id: "root",
-              expression:
-                "E = mc^2",
+              expression: "E = mc^2",
             },
           ],
         },
@@ -566,7 +597,11 @@ export const ContentTabs: Story = {
               id: "tab1-body",
               children: ["tab1-t"],
             },
-            { component: "RichText", id: "tab1-t", text: "Content of the first tab." },
+            {
+              component: "RichText",
+              id: "tab1-t",
+              text: "Content of the first tab.",
+            },
             {
               component: "ContentTab",
               id: "tab2",

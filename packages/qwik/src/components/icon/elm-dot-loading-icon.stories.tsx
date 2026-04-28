@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmDotLoadingIcon , type ElmDotLoadingIconProps} from "./elm-dot-loading-icon";
+import {
+  ElmDotLoadingIcon,
+  type ElmDotLoadingIconProps,
+} from "./elm-dot-loading-icon";
 
 const meta: Meta<ElmDotLoadingIconProps> = {
   title: "Components/Icon/elm-dot-loading-icon",

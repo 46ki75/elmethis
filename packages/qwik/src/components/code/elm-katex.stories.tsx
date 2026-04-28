@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmKatex , type ElmKatexProps} from "./elm-katex";
+import { ElmKatex, type ElmKatexProps } from "./elm-katex";
 
 const meta: Meta<ElmKatexProps> = {
   title: "Components/Code/elm-katex",

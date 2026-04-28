@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmBreadcrumb , type ElmBreadcrumbProps} from "./elm-breadcrumb";
+import { ElmBreadcrumb, type ElmBreadcrumbProps } from "./elm-breadcrumb";
 
 const meta: Meta<ElmBreadcrumbProps> = {
   title: "Components/Navigation/elm-breadcrumb",

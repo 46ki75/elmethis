@@ -145,14 +145,22 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
 
         case "BlockQuote":
           return (
-            <ElmBlockQuote key={key} cite={component.props?.cite} style={firstStyle}>
+            <ElmBlockQuote
+              key={key}
+              cite={component.props?.cite}
+              style={firstStyle}
+            >
               {render(component.slots.default)}
             </ElmBlockQuote>
           );
 
         case "Callout":
           return (
-            <ElmCallout key={key} type={component.props?.type} style={firstStyle}>
+            <ElmCallout
+              key={key}
+              type={component.props?.type}
+              style={firstStyle}
+            >
               {render(component.slots.default)}
             </ElmCallout>
           );
@@ -284,11 +292,7 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
 
         case "ColumnList":
           return (
-            <div
-              key={key}
-              class={styles["column-list"]}
-              style={firstStyle}
-            >
+            <div key={key} class={styles["column-list"]} style={firstStyle}>
               {render(component.slots.default)}
             </div>
           );

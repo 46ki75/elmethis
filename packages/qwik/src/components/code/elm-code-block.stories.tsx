@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 
-import { ElmCodeBlock , type ElmCodeBlockProps} from "./elm-code-block";
+import { ElmCodeBlock, type ElmCodeBlockProps } from "./elm-code-block";
 import { ElmInlineText } from "../typography/elm-inline-text";
 
 import rustCode from "./seed/main.rs?raw";

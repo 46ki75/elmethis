@@ -15,7 +15,10 @@ export interface ElmBlockFallbackProps {
 export const ElmBlockFallback = component$<ElmBlockFallbackProps>(
   ({ class: className, style, height = "16rem" }) => {
     return (
-      <div class={[styles["block-fallback"], className]} style={{ "--height": height, ...style }}>
+      <div
+        class={[styles["block-fallback"], className]}
+        style={{ "--height": height, ...style }}
+      >
         <ElmDotLoadingIcon />
         <ElmRectangleWave />
       </div>

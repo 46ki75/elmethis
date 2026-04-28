@@ -8,6 +8,8 @@ export type ElmDividerProps = {
   style?: CSSProperties;
 };
 
-export const ElmDivider = component$<ElmDividerProps>(({ class: className, style }) => {
-  return <hr class={[styles.hr, className]} style={style} />;
-});
+export const ElmDivider = component$<ElmDividerProps>(
+  ({ class: className, style }) => {
+    return <hr class={[styles.hr, className]} style={style} />;
+  },
+);

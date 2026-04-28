@@ -26,14 +26,22 @@ function compactReasoningMessageEvents(events: BaseEvent[]): BaseEvent[] {
   const result: BaseEvent[] = [];
   const activeGroups = new Map<
     string,
-    { delta: string; template: ReasoningContentEvent | null; interleaved: BaseEvent[] }
+    {
+      delta: string;
+      template: ReasoningContentEvent | null;
+      interleaved: BaseEvent[];
+    }
   >();
 
   for (const event of events) {
     if (event.type === EventType.REASONING_MESSAGE_START) {
       const { messageId } = event as ReasoningBoundaryEvent;
       if (completeIds.has(messageId)) {
-        activeGroups.set(messageId, { delta: "", template: null, interleaved: [] });
+        activeGroups.set(messageId, {
+          delta: "",
+          template: null,
+          interleaved: [],
+        });
       }
       result.push(event);
     } else if (event.type === EventType.REASONING_MESSAGE_CONTENT) {

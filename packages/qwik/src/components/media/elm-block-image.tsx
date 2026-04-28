@@ -41,104 +41,113 @@ export interface ElmBlockImageProps {
   style?: CSSProperties;
 }
 
-export const ElmBlockImage = component$<ElmBlockImageProps>(
-  (props) => {
-    const { class: className, src, alt, caption, width, height, srcset, sizes, style } = props;
-    const isLoading = useSignal(true);
-    const isShowModal = useSignal(false);
+export const ElmBlockImage = component$<ElmBlockImageProps>((props) => {
+  const {
+    class: className,
+    src,
+    alt,
+    caption,
+    width,
+    height,
+    srcset,
+    sizes,
+    style,
+  } = props;
+  const isLoading = useSignal(true);
+  const isShowModal = useSignal(false);
 
-    const handleImageLoad = $(() => {
+  const handleImageLoad = $(() => {
+    isLoading.value = false;
+  });
+
+  const handleToggleModal = $(() => {
+    if ((props.enableModal ?? true) && !isLoading.value) {
+      isShowModal.value = !isShowModal.value;
+    }
+  });
+
+  const imgRef = useSignal<HTMLImageElement>();
+
+  /**
+   * @see {@link https://qwik.dev/docs/cookbook/detect-img-tag-onload/}
+   */
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(() => {
+    imgRef.value!.decode().then(() => {
       isLoading.value = false;
     });
+  });
 
-    const handleToggleModal = $(() => {
-      if ((props.enableModal ?? true) && !isLoading.value) {
-        isShowModal.value = !isShowModal.value;
-      }
-    });
-
-    const imgRef = useSignal<HTMLImageElement>();
-
-    /**
-     * @see {@link https://qwik.dev/docs/cookbook/detect-img-tag-onload/}
-     */
-    // eslint-disable-next-line qwik/no-use-visible-task
-    useVisibleTask$(() => {
-      imgRef.value!.decode().then(() => {
-        isLoading.value = false;
-      });
-    });
-
-    const ImageComponent = (isModal: boolean) => (
-      <img
-        ref={imgRef}
-        class={styles.image}
-        src={src}
-        alt={alt ?? caption ?? "Image"}
-        srcset={isModal ? undefined : srcset}
-        sizes={isModal ? undefined : sizes}
-        width={width}
-        height={height}
-        loading={isModal ? "lazy" : undefined}
-        fetchPriority={isModal ? "low" : "auto"}
-        onLoad$={handleImageLoad}
-        style={{
-          "--opacity": isLoading.value ? 0.01 : 1,
-          "--cursor": (props.enableModal ?? true)
+  const ImageComponent = (isModal: boolean) => (
+    <img
+      ref={imgRef}
+      class={styles.image}
+      src={src}
+      alt={alt ?? caption ?? "Image"}
+      srcset={isModal ? undefined : srcset}
+      sizes={isModal ? undefined : sizes}
+      width={width}
+      height={height}
+      loading={isModal ? "lazy" : undefined}
+      fetchPriority={isModal ? "low" : "auto"}
+      onLoad$={handleImageLoad}
+      style={{
+        "--opacity": isLoading.value ? 0.01 : 1,
+        "--cursor":
+          (props.enableModal ?? true)
             ? isShowModal.value
               ? "zoom-out"
               : "zoom-in"
             : "default",
-          "--aspect-ratio": width && height ? `${width} / ${height}` : "auto",
-        }}
-      />
-    );
+        "--aspect-ratio": width && height ? `${width} / ${height}` : "auto",
+      }}
+    />
+  );
 
-    const Modal = (
+  const Modal = (
+    <div
+      class={styles["modal-container"]}
+      style={{
+        pointerEvents: isShowModal.value ? "auto" : "none",
+        "--opacity": isShowModal.value ? 1 : 0,
+      }}
+      onClick$={handleToggleModal}
+    >
+      {isShowModal.value && ImageComponent(true)}
+    </div>
+  );
+
+  return (
+    <figure class={[styles["block-image"], className]} style={style}>
       <div
-        class={styles["modal-container"]}
-        style={{
-          pointerEvents: isShowModal.value ? "auto" : "none",
-          "--opacity": isShowModal.value ? 1 : 0,
-        }}
+        class={styles["image-container"]}
+        style={{ "--opacity": isLoading.value ? 1 : 0.01 }}
         onClick$={handleToggleModal}
       >
-        {isShowModal.value && ImageComponent(true)}
-      </div>
-    );
+        {ImageComponent(false)}
 
-    return (
-      <figure class={[styles["block-image"], className]} style={style}>
-        <div
-          class={styles["image-container"]}
-          style={{ "--opacity": isLoading.value ? 1 : 0.01 }}
-          onClick$={handleToggleModal}
-        >
-          {ImageComponent(false)}
-
-          <div class={styles.fallback}>
-            <ElmRectangleWave />
-          </div>
+        <div class={styles.fallback}>
+          <ElmRectangleWave />
         </div>
+      </div>
 
-        {caption && (
-          <figcaption
-            class={styles["caption-box"]}
-            style={{ "--opacity": isLoading.value ? 0.01 : 1 }}
-          >
-            <span style={{ flex: "1" }}>
-              <ElmMdiIcon
-                d={mdiMessageImageOutline}
-                color="#cdb57b"
-                size="1.25rem"
-              />
-            </span>
-            <ElmInlineText size="1rem">{caption}</ElmInlineText>
-          </figcaption>
-        )}
+      {caption && (
+        <figcaption
+          class={styles["caption-box"]}
+          style={{ "--opacity": isLoading.value ? 0.01 : 1 }}
+        >
+          <span style={{ flex: "1" }}>
+            <ElmMdiIcon
+              d={mdiMessageImageOutline}
+              color="#cdb57b"
+              size="1.25rem"
+            />
+          </span>
+          <ElmInlineText size="1rem">{caption}</ElmInlineText>
+        </figcaption>
+      )}
 
-        {Modal}
-      </figure>
-    );
-  },
-);
+      {Modal}
+    </figure>
+  );
+});

@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmShikiHighlighter , type ElmShikiHighlighterProps} from "./elm-shiki-highlighter";
+import {
+  ElmShikiHighlighter,
+  type ElmShikiHighlighterProps,
+} from "./elm-shiki-highlighter";
 
 import code from "./seed/main.rs?raw";
 

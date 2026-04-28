@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmParagraph , type ElmParagraphProps} from "./elm-paragraph";
+import { ElmParagraph, type ElmParagraphProps } from "./elm-paragraph";
 
 const meta: Meta<ElmParagraphProps> = {
   title: "Components/Typography/elm-paragraph",
