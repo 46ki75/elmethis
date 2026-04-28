@@ -10,6 +10,9 @@ export interface ElmColorTableProps {
   colors: { name: string; code: string }[];
 }
 
+// Darkness amounts passed to polished's darken(). Negative values lighten the
+// color (polished clamps HSL lightness to [0, 1]). -3 intentionally produces
+// the fully-lightened (near-white) shade at the start of each row.
 const DARKNESS_VALUES = [
   -3, -0.25, -0.2, -0.15, -0.1, -0.05, 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3,
 ];
@@ -26,7 +29,7 @@ export const ElmColorTable = component$<ElmColorTableProps>(({ colors }) => {
             {color.name}
           </div>
           {DARKNESS_VALUES.map((darkness) => {
-            const sampledColor = darken(Math.max(0, darkness), color.code);
+            const sampledColor = darken(darkness, color.code);
             return (
               <div
                 key={darkness}
