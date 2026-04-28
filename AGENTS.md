@@ -7,6 +7,7 @@
 
 ## Directory Structure
 
+- `packages/copilotkit`: For internal testing. Speaks the AG-UI protocol.
 - `packages/core`: (`@elmethis/core`) a common framework agnostic package which is used by each SPA component library.
 - `packages/vue`: (`@elmethis/vue`) Vue 3 component library and Storybook package.
 - `packages/react`: (`@elmethis/react`) React component library.
