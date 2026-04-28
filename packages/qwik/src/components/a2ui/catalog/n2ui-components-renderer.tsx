@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Fragment } from "@builder.io/qwik/jsx-runtime";
+import { Fragment, type CSSProperties } from "@builder.io/qwik";
 import { ElmKatex } from "../../code/elm-katex";
 import { ElmInlineText } from "../../typography/elm-inline-text";
 import { ElmInlineIcon } from "../../icon/elm-inline-icon";
@@ -63,7 +63,7 @@ type Ctx<T extends { schema: z.ZodTypeAny }> = RenderContext<Props<T>>;
 // CSS helpers (mirrors elm-jarkup.module.scss layout)
 // ---------------------------------------------------------------------------
 
-const columnListStyle: Record<string, string> = {
+const columnListStyle: CSSProperties = {
   boxSizing: "content-box",
   paddingBlock: "0.25rem",
   width: "100%",
@@ -340,7 +340,10 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
     const tabLabels = tabIds.map((tabId) => {
       const tabModel = surface.componentsModel.get(tabId);
       if (!tabModel) return null;
-      const labelIds = (tabModel.properties.labels as string[]) ?? [];
+      const rawLabels = tabModel.properties.labels;
+      const labelIds = Array.isArray(rawLabels)
+        ? rawLabels.filter((id): id is string => typeof id === "string")
+        : [];
       return (
         <>
           {labelIds.map((lid, i) => (
@@ -353,7 +356,10 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
     const tabContents = tabIds.map((tabId) => {
       const tabModel = surface.componentsModel.get(tabId);
       if (!tabModel) return null;
-      const contentIds = (tabModel.properties.contents as string[]) ?? [];
+      const rawContents = tabModel.properties.contents;
+      const contentIds = Array.isArray(rawContents)
+        ? rawContents.filter((id): id is string => typeof id === "string")
+        : [];
       return (
         <>
           {contentIds.map((cid, i) => (

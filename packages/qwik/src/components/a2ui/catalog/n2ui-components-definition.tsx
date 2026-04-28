@@ -473,7 +473,7 @@ export const TableApi = {
       hasColumnHeader: z
         .boolean()
         .describe(
-          "When true, the first column cells are treated as row-header cells.",
+          "When true, the cells in the first column are treated as row-header (<th>) cells. Use this when each row has a leading label cell (e.g. a property name in a comparison table).",
         )
         .optional(),
       hasRowHeader: z
