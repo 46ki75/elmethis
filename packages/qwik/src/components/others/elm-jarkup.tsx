@@ -211,6 +211,7 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
               key={key}
               code={component.props.code}
               language={component.props.language}
+              style={firstStyle}
             >
               {component.slots?.default && render(component.slots.default)}
             </ElmCodeBlock>
@@ -222,6 +223,7 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
               key={key}
               expression={component.props.expression}
               block={true}
+              style={firstStyle}
             />
           );
 

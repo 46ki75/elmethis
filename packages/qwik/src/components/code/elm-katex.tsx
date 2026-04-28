@@ -1,6 +1,7 @@
 import { component$, useComputed$, type CSSProperties } from "@builder.io/qwik";
 
 import textStyle from "../../styles/text.module.scss";
+import styles from "./elm-katex.module.scss";
 
 import { renderToString } from "katex";
 
@@ -35,7 +36,7 @@ export const ElmKatex = component$<ElmKatexProps>(
     );
 
     return (
-      <div class={[textStyle.text, className]} style={style} dangerouslySetInnerHTML={html.value ?? ""} />
+      <div class={[textStyle.text, props.block ? styles.katex : undefined, className]} style={style} dangerouslySetInnerHTML={html.value ?? ""} />
     );
   },
 );
