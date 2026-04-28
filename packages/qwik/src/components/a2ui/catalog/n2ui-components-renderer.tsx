@@ -35,9 +35,7 @@ import {
   CodeBlockApi,
   ColumnApi,
   ColumnListApi,
-  ContentTabApi,
   ContentTabsApi,
-  DividerApi,
   FileApi,
   HeadingApi,
   IconApi,
@@ -242,7 +240,7 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
     </ElmCallout>
   ),
 
-  Divider: (_ctx: Ctx<typeof DividerApi>) => <ElmDivider />,
+  Divider: () => <ElmDivider />,
 
   Toggle: ({ props, childRefs, renderChild }: Ctx<typeof ToggleApi>) => (
     <ElmToggle>
@@ -325,7 +323,7 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
    * ContentTabs accesses Tab models from the surface and renders them as a
    * tabbed panel. Returning null here prevents double-rendering.
    */
-  ContentTab: (_ctx: Ctx<typeof ContentTabApi>) => null,
+  ContentTab: () => null,
 
   ContentTabs: ({
     props,

@@ -36,7 +36,7 @@ export interface ElmA2uiProps<T extends string = string> {
  */
 export const ElmA2ui = component$<ElmA2uiProps>(
   ({ class: className, style, url, headers, catalogId, catalog }) => {
-    const messagesStore = useStore<{ list: unknown[] }>({ list: [] });
+    const messagesStore = useStore<{ list: object[] }>({ list: [] });
 
     // eslint-disable-next-line qwik/no-use-visible-task
     useVisibleTask$(async ({ cleanup }) => {
