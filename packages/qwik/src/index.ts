@@ -189,6 +189,10 @@ export {
 export { elmBasicCatalogRendererMap } from "./components/a2ui/elm-a2ui-basic-catalog-renderer";
 
 // | Others |
+export {
+  ElmColorTable,
+  type ElmColorTableProps,
+} from "./components/others/elm-color-table";
 export { ElmJarkup, type ElmJarkupProps } from "./components/others/elm-jarkup";
 export {
   ElmMarkdown,
