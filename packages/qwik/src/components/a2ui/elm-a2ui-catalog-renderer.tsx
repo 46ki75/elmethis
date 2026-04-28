@@ -114,8 +114,13 @@ export interface RenderContext<
  *   CustomBanner: ({ props, resolve }) => <Banner text={resolve(props.text)} />,
  * };
  */
-export type CatalogRendererMap<T extends string> = Record<
-  T,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (ctx: RenderContext<any>) => JSX.Element | null
->;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type RendererFn = (ctx: RenderContext<any>) => JSX.Element | null;
+
+// When T = string (the default / widened case), produce an index-signature type that
+// also allows `boolean` values so that noSerialize's `__no_serialize__: true` property
+// doesn't conflict. For specific string unions (e.g. "Text" | "Row"), produce a
+// plain mapped type with no index signature.
+export type CatalogRendererMap<T extends string = string> = string extends T
+  ? { [key: string]: RendererFn | boolean }
+  : { [K in T]: RendererFn };
