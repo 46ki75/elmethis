@@ -17,7 +17,7 @@ type Props<T extends { schema: z.ZodTypeAny }> = z.infer<T["schema"]>;
 type Ctx<T extends { schema: z.ZodTypeAny }> = RenderContext<Props<T>>;
 
 export const elmN2UICatalogRendererMap: CatalogRendererMap<
-  "RichText" | "LinkText" | "Column" | "Paragraph"
+  "RichText" | "LinkText" | "Row" | "Column" | "Paragraph"
 > = {
   RichText: ({ props, resolve }: Ctx<typeof RichTextApi>) => {
     const text = resolve(props.text);
@@ -56,6 +56,7 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
     );
   },
 
+  Row: elmBasicCatalogRendererMap.Row,
   Column: elmBasicCatalogRendererMap.Column,
 
   Paragraph: ({ props, childRefs, renderChild }: Ctx<typeof ParagraphApi>) => (

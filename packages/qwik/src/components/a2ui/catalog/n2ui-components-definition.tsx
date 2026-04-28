@@ -59,6 +59,9 @@ export const LinkTextApi = {
     .strict(),
 } satisfies ComponentApi;
 
+import { RowApi } from "@a2ui/web_core/v0_9/basic_catalog";
+export { RowApi };
+
 import { ColumnApi } from "@a2ui/web_core/v0_9/basic_catalog";
 export { ColumnApi };
 
