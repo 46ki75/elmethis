@@ -36,8 +36,8 @@ importers:
         specifier: ^1.28.0
         version: 1.28.0(@cfworker/json-schema@4.1.1)(@standard-community/standard-json@0.3.5(@standard-schema/spec@1.1.0)(@types/json-schema@7.0.15)(quansync@0.2.6)(valibot@1.2.0(typescript@5.9.3))(zod-to-json-schema@3.25.2(zod@3.25.76))(zod@3.25.76))(@standard-community/standard-openapi@0.2.9(@standard-community/standard-json@0.3.5(@standard-schema/spec@1.1.0)(@types/json-schema@7.0.15)(quansync@0.2.6)(valibot@1.2.0(typescript@5.9.3))(zod-to-json-schema@3.25.2(zod@3.25.76))(zod@3.25.76))(@standard-schema/spec@1.1.0)(openapi-types@12.1.3)(valibot@1.2.0(typescript@5.9.3))(zod@3.25.76))(@types/json-schema@7.0.15)(openapi-types@12.1.3)(zod@3.25.76)
       '@openrouter/ai-sdk-provider':
-        specifier: ^2.5.1
-        version: 2.8.0(ai@6.0.168(zod@3.25.76))(zod@3.25.76)
+        specifier: ^2.8.1
+        version: 2.8.1(ai@6.0.168(zod@3.25.76))(zod@3.25.76)
       agent:
         specifier: link:@mastra/core/agent
         version: link:@mastra/core/agent
@@ -2118,8 +2118,8 @@ packages:
     resolution: {integrity: sha512-9R93Yt6/OB3MP5h29WhnvIBWYVq4mzxOYn9oh0Ut642NWxOTTouv7vkwKnMj5LGAYTlot0fhmL8OK5Su5zEzCw==}
     engines: {node: '>=18'}
 
-  '@openrouter/ai-sdk-provider@2.8.0':
-    resolution: {integrity: sha512-oDDW/0KMqz4suHVloB9sNv0YyKLGNYf1FTevXH6adDkid5dsmbbcYuiEsbIhpZSZtHa6o5AVjK1jEAfePOLxww==}
+  '@openrouter/ai-sdk-provider@2.8.1':
+    resolution: {integrity: sha512-Y6j3yivgoEUf/kutD/k5GX/mzZfioRFoSx0gbQ+mIOzMaH/vJv1rCkztiuvlLw5xRYQil7oxHUZvmSfXqOx1NQ==}
     engines: {node: '>=18'}
     peerDependencies:
       ai: ^6.0.0
@@ -10672,7 +10672,7 @@ snapshots:
 
   '@notionhq/client@5.19.0': {}
 
-  '@openrouter/ai-sdk-provider@2.8.0(ai@6.0.168(zod@3.25.76))(zod@3.25.76)':
+  '@openrouter/ai-sdk-provider@2.8.1(ai@6.0.168(zod@3.25.76))(zod@3.25.76)':
     dependencies:
       ai: 6.0.168(zod@3.25.76)
       zod: 3.25.76
