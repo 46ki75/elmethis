@@ -1,6 +1,8 @@
 import { component$ } from "@builder.io/qwik";
 import { darken } from "polished";
 
+import { ElmColorSample } from "./elm-color-sample";
+
 import styles from "./elm-color-table.module.css";
 
 export interface ElmColorTableProps {
@@ -28,21 +30,12 @@ export const ElmColorTable = component$<ElmColorTableProps>(({ colors }) => {
           >
             {color.name}
           </div>
-          {DARKNESS_VALUES.map((darkness) => {
-            const sampledColor = darken(darkness, color.code);
-            return (
-              <div
-                key={darkness}
-                class={styles["color-sample"]}
-                style={
-                  { "--color-sample-bg": sampledColor } as Record<
-                    string,
-                    string
-                  >
-                }
-              />
-            );
-          })}
+          {DARKNESS_VALUES.map((darkness) => (
+            <ElmColorSample
+              key={darkness}
+              color={darken(darkness, color.code)}
+            />
+          ))}
         </div>
       ))}
     </div>

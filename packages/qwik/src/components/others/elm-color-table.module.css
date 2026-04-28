@@ -23,10 +23,3 @@
   background-color: var(--color);
   color: white;
 }
-
-.color-sample {
-  width: 5rem;
-  height: 2rem;
-  border-radius: 0.25rem;
-  background-color: var(--color-sample-bg);
-}

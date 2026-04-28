@@ -190,6 +190,10 @@ export { elmBasicCatalogRendererMap } from "./components/a2ui/elm-a2ui-basic-cat
 
 // | Others |
 export {
+  ElmColorSample,
+  type ElmColorSampleProps,
+} from "./components/others/elm-color-sample";
+export {
   ElmColorTable,
   type ElmColorTableProps,
 } from "./components/others/elm-color-table";
