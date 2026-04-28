@@ -27,8 +27,8 @@ importers:
         specifier: ^1.56.4
         version: 1.56.4(j5chnu7xox42od4oyvgsvplxfq)
       '@copilotkit/shared':
-        specifier: ^1.55.3
-        version: 1.56.3(@ag-ui/core@0.0.52)
+        specifier: ^1.56.4
+        version: 1.56.4(@ag-ui/core@0.0.52)
       '@hono/node-server':
         specifier: ^2.0.0
         version: 2.0.0(hono@4.12.14)
