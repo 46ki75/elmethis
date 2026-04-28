@@ -145,7 +145,7 @@ export const ElmInlineText = component$<ElmInlineTextProps>((props) => {
         {props.favicon && (
           <ElmInlineIcon src={props.favicon} alt={`Favicon of ${props.text}`} />
         )}
-        {props.text}
+        {props.text ? <span>{props.text}</span> : <Slot />}
       </a>
     );
   }
