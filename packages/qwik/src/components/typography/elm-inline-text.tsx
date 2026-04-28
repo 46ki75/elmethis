@@ -145,7 +145,7 @@ export const ElmInlineText = component$<ElmInlineTextProps>((props) => {
         {props.favicon && (
           <ElmInlineIcon src={props.favicon} alt={`Favicon of ${props.text}`} />
         )}
-        {wrappedVnode}
+        {props.text}
       </a>
     );
   }
