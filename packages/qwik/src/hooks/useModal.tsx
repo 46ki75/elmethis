@@ -11,31 +11,38 @@ export interface UseModalOptions {
 
 /**
  * ## show
- * 1. `isOpen = true`
- * 2. `isShow = true`
+ * 1. Cancel any pending hide timer
+ * 2. `isOpen = true`
+ * 3. `isShown = true`
  *
  * ## hide
- * 1. `isShow = false`
+ * 1. `isShown = false`
  * 2. `setTimeout(() => { isOpen = false }, delay)`
  */
 export const useModal = ({ delay = 200 }: UseModalOptions) => {
   const isOpen = useSignal(false);
   const isShown = useSignal(false);
+  const hideTimer = useSignal<number | null>(null);
 
   const show = $(() => {
+    if (hideTimer.value !== null) {
+      clearTimeout(hideTimer.value);
+      hideTimer.value = null;
+    }
     isOpen.value = true;
     isShown.value = true;
   });
 
   const hide = $(() => {
     isShown.value = false;
-    setTimeout(() => {
+    hideTimer.value = setTimeout(() => {
       isOpen.value = false;
-    }, delay);
+      hideTimer.value = null;
+    }, delay) as unknown as number;
   });
 
   const toggle = $(() => {
-    if (isOpen.value) {
+    if (isShown.value) {
       hide();
     } else {
       show();
