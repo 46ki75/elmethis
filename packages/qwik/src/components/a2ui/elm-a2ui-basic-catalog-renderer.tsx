@@ -124,13 +124,7 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap<
   ),
 
   Column: ({ props, childRefs, renderChild }: Ctx<typeof ColumnApi>) => (
-    <div
-      class={styles.column}
-      style={{
-        justifyContent: jc[props.justify ?? "start"] ?? "flex-start",
-        alignItems: ai[props.align ?? "stretch"] ?? "stretch",
-      }}
-    >
+    <div class={styles.column} style={{ "--margin-block": "2rem" }}>
       {childRefs(props.children).map(({ id, path }, i) => (
         <span key={`${id}:${i}`} class={styles["child-wrap"]}>
           {renderChild(id, path)}

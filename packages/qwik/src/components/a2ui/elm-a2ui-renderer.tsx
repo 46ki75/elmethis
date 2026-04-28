@@ -33,7 +33,7 @@ export interface ElmA2uiRendererProps<T extends string = string> {
   class?: string;
   style?: CSSProperties;
   /** A2UI v0.9 protocol messages to render. */
-  messages: unknown[];
+  messages: object[];
   /**
    * Catalog ID to pre-register before messages arrive — useful for streaming
    * where the catalogId is known upfront but createSurface hasn't arrived yet.

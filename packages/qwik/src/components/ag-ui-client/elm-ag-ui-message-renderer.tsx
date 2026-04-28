@@ -117,7 +117,7 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
         case "activity": {
           const activity = message as ActivityMessage;
           if (activity.activityType === "a2ui-surface") {
-            const ops = activity.content["a2ui_operations"] as unknown[];
+            const ops = activity.content["a2ui_operations"] as object[];
             return <ElmA2uiRenderer messages={ops} />;
           }
           return null;
