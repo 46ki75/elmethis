@@ -29,7 +29,7 @@ import {
   type CatalogRendererMap,
   type RenderContext,
 } from "./elm-a2ui-catalog-renderer";
-import { ElmInlineText } from "../..";
+import { ElmHeading, ElmInlineText, ElmParagraph } from "../..";
 
 type Props<T extends { schema: z.ZodTypeAny }> = z.infer<T["schema"]>;
 type Ctx<T extends { schema: z.ZodTypeAny }> = RenderContext<Props<T>>;
@@ -86,17 +86,25 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap<
     const text = resolve(props.text);
     const v = props.variant ?? "body";
     if (v === "caption") return <ElmInlineText>{text}</ElmInlineText>;
-    if (v === "h1")
-      return <h1 class={[styles.text, styles["text-h1"]]}>{text}</h1>;
-    if (v === "h2")
-      return <h2 class={[styles.text, styles["text-h2"]]}>{text}</h2>;
-    if (v === "h3")
-      return <h3 class={[styles.text, styles["text-h3"]]}>{text}</h3>;
-    if (v === "h4")
-      return <h4 class={[styles.text, styles["text-h4"]]}>{text}</h4>;
-    if (v === "h5")
-      return <h5 class={[styles.text, styles["text-h5"]]}>{text}</h5>;
-    return <p class={[styles.text, styles["text-body"]]}>{text}</p>;
+    if (v === "body") return <ElmParagraph>{text}</ElmParagraph>;
+
+    const level = () => {
+      switch (v) {
+        case "h1":
+          return 1;
+        case "h2":
+          return 2;
+        case "h3":
+          return 3;
+        case "h4":
+          return 4;
+        case "h5":
+          return 5;
+        default:
+          return 1;
+      }
+    };
+    return <ElmHeading level={level()}>{text}</ElmHeading>;
   },
 
   Row: ({ props, childRefs, renderChild }: Ctx<typeof RowApi>) => (
