@@ -1,11 +1,4 @@
-import {
-  $,
-  component$,
-  noSerialize,
-  NoSerialize,
-  Slot,
-  useSignal,
-} from "@builder.io/qwik";
+import { $, component$, Slot, useSignal } from "@builder.io/qwik";
 
 import styles from "./useModal.module.css";
 
@@ -18,37 +11,33 @@ export interface UseModalOptions {
 
 /**
  * ## show
- * 1. Cancel any pending hide timer
+ * 1. `hideGen++` (invalidates any pending hide timeout)
  * 2. `isOpen = true`
  * 3. `isShown = true`
  *
  * ## hide
  * 1. `isShown = false`
- * 2. `setTimeout(() => { isOpen = false }, delay)`
+ * 2. `setTimeout(() => { if gen matches: isOpen = false }, delay)`
  */
 export const useModal = ({ delay = 200 }: UseModalOptions) => {
   const isOpen = useSignal(false);
   const isShown = useSignal(false);
-  const hideTimer =
-    useSignal<NoSerialize<ReturnType<typeof setTimeout>> | null>(null);
+  const hideGen = useSignal(0);
 
   const show = $(() => {
-    if (hideTimer.value != null) {
-      clearTimeout(hideTimer.value);
-      hideTimer.value = null;
-    }
+    hideGen.value++;
     isOpen.value = true;
     isShown.value = true;
   });
 
   const hide = $(() => {
+    const gen = ++hideGen.value;
     isShown.value = false;
-    hideTimer.value = noSerialize(
-      setTimeout(() => {
+    setTimeout(() => {
+      if (hideGen.value === gen) {
         isOpen.value = false;
-        hideTimer.value = null;
-      }, delay),
-    );
+      }
+    }, delay);
   });
 
   const toggle = $(() => {
