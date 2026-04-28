@@ -2,6 +2,7 @@
   transition: opacity 800ms;
   color: var(--color, #606875);
   background-color: var(--background-color, inherit);
+  margin: 0;
   margin-block-start: var(--elmethis-margin-block-start);
 
   &::selection {
