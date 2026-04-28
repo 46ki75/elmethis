@@ -1,5 +1,5 @@
 .file {
-  margin-block: var(--margin-block, 0);
+  margin-block-start: var(--elmethis-margin-block-start);
   padding: 1rem;
   display: grid;
   grid-template-columns: 1.5rem 1fr 1fr 1.5rem;
