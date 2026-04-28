@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 0.25rem;
+}
+
+.row-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: row;
+  gap: 0.25rem;
+}
+
+.color-name {
+  width: 6rem;
+  color: var(--color);
+}
+
+.color-name::selection {
+  background-color: var(--color);
+  color: white;
+}
