@@ -36,18 +36,20 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "prepublishOnly": "pnpm run build",
     "build": "qwik build",
     "build-storybook": "storybook build",
     "build.lib": "vite build --mode lib",
     "build.types": "tsc --emitDeclarationOnly --incremental false",
+    "dev": "storybook dev -p 19211 --no-open",
     "fmt": "prettier --write .",
     "fmt.check": "prettier --check .",
     "lint": "eslint \"src/**/*.ts*\"",
+    "prepublishOnly": "pnpm run build",
     "release": "np",
     "start": "vite --open --mode ssr",
-    "dev": "storybook dev -p 19211 --no-open",
     "test": "echo \"No test specified\" && exit 0",
+    "test.unit": "vitest components",
+    "test.unit.ui": "vitest --ui components",
     "qwik": "qwik"
   },
   "devDependencies": {
@@ -56,6 +58,7 @@
     "@storybook/addon-docs": "^10.3.5",
     "@types/lodash-es": "^4.17.12",
     "@types/node": "25.5.0",
+    "@vitest/ui": "^0.34.6",
     "eslint": "10.2.1",
     "eslint-plugin-qwik": "1.19.2",
     "globals": "17.5.0",
@@ -69,7 +72,8 @@
     "typescript-eslint": "8.59.1",
     "undici": "*",
     "vite": "^7",
-    "vite-tsconfig-paths": "^6.1.1"
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^0.34.6"
   },
   "dependencies": {
     "@a2ui/web_core": "^0.9.2",
