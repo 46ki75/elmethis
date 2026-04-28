@@ -36,6 +36,7 @@ import {
   ColumnApi,
   ColumnListApi,
   ContentTabsApi,
+  DividerApi,
   FileApi,
   HeadingApi,
   IconApi,
@@ -183,7 +184,12 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
     </div>
   ),
 
-  ColumnList: ({ props, childRefs, renderChild, index }: Ctx<typeof ColumnListApi>) => (
+  ColumnList: ({
+    props,
+    childRefs,
+    renderChild,
+    index,
+  }: Ctx<typeof ColumnListApi>) => (
     <div
       style={{
         ...columnListStyle,
@@ -202,7 +208,12 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
   // Block typography
   // -------------------------------------------------------------------------
 
-  Heading: ({ props, childRefs, renderChild, index }: Ctx<typeof HeadingApi>) => (
+  Heading: ({
+    props,
+    childRefs,
+    renderChild,
+    index,
+  }: Ctx<typeof HeadingApi>) => (
     <ElmHeading
       level={props.level}
       style={
@@ -217,7 +228,12 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
     </ElmHeading>
   ),
 
-  Paragraph: ({ props, childRefs, renderChild, index }: Ctx<typeof ParagraphApi>) => (
+  Paragraph: ({
+    props,
+    childRefs,
+    renderChild,
+    index,
+  }: Ctx<typeof ParagraphApi>) => (
     <ElmParagraph
       color={props.color}
       backgroundColor={props.backgroundColor}
@@ -256,7 +272,12 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
     </>
   ),
 
-  BlockQuote: ({ props, childRefs, renderChild, index }: Ctx<typeof BlockQuoteApi>) => (
+  BlockQuote: ({
+    props,
+    childRefs,
+    renderChild,
+    index,
+  }: Ctx<typeof BlockQuoteApi>) => (
     <ElmBlockQuote
       cite={props.cite}
       style={
@@ -271,7 +292,12 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
     </ElmBlockQuote>
   ),
 
-  Callout: ({ props, childRefs, renderChild, index }: Ctx<typeof CalloutApi>) => (
+  Callout: ({
+    props,
+    childRefs,
+    renderChild,
+    index,
+  }: Ctx<typeof CalloutApi>) => (
     <ElmCallout
       type={props.type}
       style={
@@ -442,7 +468,9 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
       return (
         <>
           {labelIds.map((lid, i) => (
-            <Fragment key={`${lid}:${i}`}>{renderChild(lid, basePath, i)}</Fragment>
+            <Fragment key={`${lid}:${i}`}>
+              {renderChild(lid, basePath, i)}
+            </Fragment>
           ))}
         </>
       );
@@ -458,7 +486,9 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
       return (
         <>
           {contentIds.map((cid, i) => (
-            <Fragment key={`${cid}:${i}`}>{renderChild(cid, basePath, i)}</Fragment>
+            <Fragment key={`${cid}:${i}`}>
+              {renderChild(cid, basePath, i)}
+            </Fragment>
           ))}
         </>
       );
