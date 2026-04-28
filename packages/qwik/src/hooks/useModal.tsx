@@ -1,4 +1,11 @@
-import { $, component$, Slot, useSignal } from "@builder.io/qwik";
+import {
+  $,
+  component$,
+  noSerialize,
+  NoSerialize,
+  Slot,
+  useSignal,
+} from "@builder.io/qwik";
 
 import styles from "./useModal.module.css";
 
@@ -22,10 +29,11 @@ export interface UseModalOptions {
 export const useModal = ({ delay = 200 }: UseModalOptions) => {
   const isOpen = useSignal(false);
   const isShown = useSignal(false);
-  const hideTimer = useSignal<number | null>(null);
+  const hideTimer =
+    useSignal<NoSerialize<ReturnType<typeof setTimeout>> | null>(null);
 
   const show = $(() => {
-    if (hideTimer.value !== null) {
+    if (hideTimer.value != null) {
       clearTimeout(hideTimer.value);
       hideTimer.value = null;
     }
@@ -35,10 +43,12 @@ export const useModal = ({ delay = 200 }: UseModalOptions) => {
 
   const hide = $(() => {
     isShown.value = false;
-    hideTimer.value = setTimeout(() => {
-      isOpen.value = false;
-      hideTimer.value = null;
-    }, delay) as unknown as number;
+    hideTimer.value = noSerialize(
+      setTimeout(() => {
+        isOpen.value = false;
+        hideTimer.value = null;
+      }, delay),
+    );
   });
 
   const toggle = $(() => {
