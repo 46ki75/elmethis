@@ -152,3 +152,29 @@ export const List: Story = {
     ],
   },
 };
+
+export const CodeBlock: Story = {
+  args: {
+    messages: [
+      {
+        version: "v0.9",
+        createSurface: { surfaceId: "code_block", catalogId: CATALOG_ID },
+      },
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: "code_block",
+          components: [
+            {
+              component: "CodeBlock",
+              id: "code1",
+              code: `function greet(name) {\n  return \`Hello, \${name}!\`;\n}`,
+              language: "javascript",
+              caption: "Example JavaScript function",
+            },
+          ],
+        },
+      },
+    ],
+  },
+};

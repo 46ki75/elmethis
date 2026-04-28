@@ -87,17 +87,19 @@ export const ParagraphApi = {
 
 export const ListApi = {
   name: "List",
-  schema: z.object({
-    ...CommonProps,
-    children: z
-      .array(z.string())
-      .describe("Ordered list of child component IDs."),
-    style: z
-      .enum(["unordered", "ordered"])
-      .default("unordered")
-      .describe("The style of the list.")
-      .optional(),
-  }),
+  schema: z
+    .object({
+      ...CommonProps,
+      children: z
+        .array(z.string())
+        .describe("Ordered list of child component IDs."),
+      style: z
+        .enum(["unordered", "ordered"])
+        .default("unordered")
+        .describe("The style of the list.")
+        .optional(),
+    })
+    .strict(),
 } satisfies ComponentApi;
 
 export const ListItemApi = {
@@ -108,4 +110,24 @@ export const ListItemApi = {
       .array(z.string())
       .describe("Ordered list of child component IDs."),
   }),
+} satisfies ComponentApi;
+
+export const CodeBlockApi = {
+  name: "CodeBlock",
+  schema: z
+    .object({
+      ...CommonProps,
+      code: z.string().describe("The code to display."),
+      language: z
+        .string()
+        .describe(
+          "The programming language of the code block, for syntax highlighting.",
+        )
+        .optional(),
+      caption: z
+        .string()
+        .describe("An optional caption to display above the code block.")
+        .optional(),
+    })
+    .strict(),
 } satisfies ComponentApi;

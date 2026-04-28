@@ -6,6 +6,7 @@ import {
   RenderContext,
 } from "../elm-a2ui-catalog-renderer";
 import {
+  CodeBlockApi,
   LinkTextApi,
   ListApi,
   ListItemApi,
@@ -16,12 +17,20 @@ import { ElmParagraph } from "../../typography/elm-paragraph";
 import { elmBasicCatalogRendererMap } from "../elm-a2ui-basic-catalog-renderer";
 import { ElmList } from "../../typography/elm-list";
 import { Fragment } from "@builder.io/qwik/jsx-runtime";
+import { ElmCodeBlock } from "../../code/elm-code-block";
 
 type Props<T extends { schema: z.ZodTypeAny }> = z.infer<T["schema"]>;
 type Ctx<T extends { schema: z.ZodTypeAny }> = RenderContext<Props<T>>;
 
 export const elmN2UICatalogRendererMap: CatalogRendererMap<
-  "RichText" | "LinkText" | "Row" | "Column" | "Paragraph" | "List" | "ListItem"
+  | "RichText"
+  | "LinkText"
+  | "Row"
+  | "Column"
+  | "Paragraph"
+  | "List"
+  | "ListItem"
+  | "CodeBlock"
 > = {
   RichText: ({ props, resolve }: Ctx<typeof RichTextApi>) => {
     const text = resolve(props.text);
@@ -89,5 +98,12 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
         ))}
       </>
     );
+  },
+
+  CodeBlock: ({ props, resolve }: Ctx<typeof CodeBlockApi>) => {
+    const code = resolve(props.code);
+    const language = props.language ? resolve(props.language) : undefined;
+    const caption = props.caption ? resolve(props.caption) : undefined;
+    return <ElmCodeBlock code={code} language={language} caption={caption} />;
   },
 };
