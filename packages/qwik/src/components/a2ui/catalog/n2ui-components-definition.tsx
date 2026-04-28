@@ -84,3 +84,28 @@ export const ParagraphApi = {
     })
     .strict(),
 } satisfies ComponentApi;
+
+export const ListApi = {
+  name: "List",
+  schema: z.object({
+    ...CommonProps,
+    children: z
+      .array(z.string())
+      .describe("Ordered list of child component IDs."),
+    style: z
+      .enum(["unordered", "ordered"])
+      .default("unordered")
+      .describe("The style of the list.")
+      .optional(),
+  }),
+} satisfies ComponentApi;
+
+export const ListItemApi = {
+  name: "ListItem",
+  schema: z.object({
+    ...CommonProps,
+    children: z
+      .array(z.string())
+      .describe("Ordered list of child component IDs."),
+  }),
+} satisfies ComponentApi;

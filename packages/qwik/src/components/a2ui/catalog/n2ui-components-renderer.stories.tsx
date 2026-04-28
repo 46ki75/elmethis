@@ -90,3 +90,65 @@ export const Primary: Story = {
     ],
   },
 };
+
+export const List: Story = {
+  args: {
+    messages: [
+      {
+        version: "v0.9",
+        createSurface: { surfaceId: "rich_text", catalogId: CATALOG_ID },
+      },
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: "rich_text",
+          components: [
+            {
+              component: "List",
+              id: "root",
+              children: ["p1", "p2"],
+            },
+            {
+              component: "ListItem",
+              id: "p1",
+              children: ["greeting-p1-1", "greeting-p1-2"],
+            },
+            {
+              component: "ListItem",
+              id: "p2",
+              children: ["greeting-p2-1", "greeting-p2-2", "greeting-p2-3"],
+            },
+            {
+              component: "RichText",
+              id: "greeting-p1-1",
+              text: "Hello, ",
+            },
+            {
+              component: "RichText",
+              id: "greeting-p1-2",
+              text: "world!",
+              decoration: ["bold"],
+            },
+            {
+              component: "RichText",
+              id: "greeting-p2-1",
+              text: "Hello, ",
+            },
+            {
+              component: "RichText",
+              id: "greeting-p2-2",
+              text: "world!",
+              decoration: ["bold"],
+            },
+            {
+              component: "LinkText",
+              id: "greeting-p2-3",
+              text: "A2UI",
+              href: "https://a2ui.org/",
+            },
+          ],
+        },
+      },
+    ],
+  },
+};

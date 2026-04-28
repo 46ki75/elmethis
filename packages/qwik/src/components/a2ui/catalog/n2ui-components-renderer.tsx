@@ -7,17 +7,21 @@ import {
 } from "../elm-a2ui-catalog-renderer";
 import {
   LinkTextApi,
+  ListApi,
+  ListItemApi,
   ParagraphApi,
   RichTextApi,
 } from "./n2ui-components-definition";
 import { ElmParagraph } from "../../typography/elm-paragraph";
 import { elmBasicCatalogRendererMap } from "../elm-a2ui-basic-catalog-renderer";
+import { ElmList } from "../../typography/elm-list";
+import { Fragment } from "@builder.io/qwik/jsx-runtime";
 
 type Props<T extends { schema: z.ZodTypeAny }> = z.infer<T["schema"]>;
 type Ctx<T extends { schema: z.ZodTypeAny }> = RenderContext<Props<T>>;
 
 export const elmN2UICatalogRendererMap: CatalogRendererMap<
-  "RichText" | "LinkText" | "Row" | "Column" | "Paragraph"
+  "RichText" | "LinkText" | "Row" | "Column" | "Paragraph" | "List" | "ListItem"
 > = {
   RichText: ({ props, resolve }: Ctx<typeof RichTextApi>) => {
     const text = resolve(props.text);
@@ -66,4 +70,24 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
       ))}
     </ElmParagraph>
   ),
+
+  List: ({ props, childRefs, renderChild }: Ctx<typeof ListApi>) => {
+    return (
+      <ElmList listStyle={props.style ?? "unordered"}>
+        {childRefs(props.children).map(({ id, path }, i) => (
+          <li key={`${id}:${i}`}>{renderChild(id, path)}</li>
+        ))}
+      </ElmList>
+    );
+  },
+
+  ListItem: ({ props, childRefs, renderChild }: Ctx<typeof ListItemApi>) => {
+    return (
+      <>
+        {childRefs(props.children).map(({ id, path }, i) => (
+          <Fragment key={`${id}:${i}`}>{renderChild(id, path)}</Fragment>
+        ))}
+      </>
+    );
+  },
 };
