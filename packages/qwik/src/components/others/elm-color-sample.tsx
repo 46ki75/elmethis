@@ -18,7 +18,7 @@ export const ElmColorSample = component$<ElmColorSampleProps>(({ color }) => {
   const { red, green, blue } = parseToRgb(color);
   const { hue, saturation, lightness } = parseToHsl(color);
 
-  const hex = rgbToColorString(parseToRgb(color));
+  const hex = rgbToColorString({ red, green, blue });
   const rgb = `rgb(${red}, ${green}, ${blue})`;
   const hsl = `hsl(${Math.floor(hue)}, ${Math.floor(saturation * 100)}%, ${Math.floor(lightness * 100)}%)`;
 
