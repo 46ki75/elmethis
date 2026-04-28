@@ -8,7 +8,7 @@ import {
 import { ElmA2uiRenderer } from "./elm-a2ui-renderer";
 import { type CatalogRendererMap } from "./elm-a2ui-catalog-renderer";
 
-export interface ElmA2uiProps {
+export interface ElmA2uiProps<T extends string = string> {
   class?: string;
   style?: CSSProperties;
 
@@ -28,7 +28,7 @@ export interface ElmA2uiProps {
    * Optional custom catalog renderer map. Falls back to the built-in basic
    * catalog renderer when not provided.
    */
-  catalog?: CatalogRendererMap;
+  catalog?: CatalogRendererMap<T>;
 }
 
 /**
