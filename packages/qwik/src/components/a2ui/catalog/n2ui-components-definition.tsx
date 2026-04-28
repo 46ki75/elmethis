@@ -59,7 +59,8 @@ export const LinkTextApi = {
     .strict(),
 } satisfies ComponentApi;
 
-export { ColumnApi } from "@a2ui/web_core/v0_9/basic_catalog";
+import { ColumnApi } from "@a2ui/web_core/v0_9/basic_catalog";
+export { ColumnApi };
 
 export const ParagraphApi = {
   name: "Paragraph",

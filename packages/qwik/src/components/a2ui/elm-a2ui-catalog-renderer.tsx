@@ -23,7 +23,9 @@ import {
  * `resolve` for scalar text/url props, `childRefs` + `renderChild` for child
  * trees, and `ctx.dataContext` when you need reactive or non-string values.
  */
-export interface RenderContext<TProps extends Record<string, unknown> = Record<string, unknown>> {
+export interface RenderContext<
+  TProps extends Record<string, unknown> = Record<string, unknown>,
+> {
   /** Unique ID of the component instance within the surface. */
   componentId: string;
   /**
@@ -112,8 +114,8 @@ export interface RenderContext<TProps extends Record<string, unknown> = Record<s
  *   CustomBanner: ({ props, resolve }) => <Banner text={resolve(props.text)} />,
  * };
  */
-export type CatalogRendererMap = Record<
-  string,
+export type CatalogRendererMap<T extends string> = Record<
+  T,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (ctx: RenderContext<any>) => JSX.Element | null
 >;

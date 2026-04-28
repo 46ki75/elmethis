@@ -61,7 +61,26 @@ const fitMap: Record<string, CSSProperties["objectFit"]> = {
   scaleDown: "scale-down",
 };
 
-export const elmBasicCatalogRendererMap: CatalogRendererMap = {
+export const elmBasicCatalogRendererMap: CatalogRendererMap<
+  | "Text"
+  | "Row"
+  | "Column"
+  | "List"
+  | "Card"
+  | "Button"
+  | "Image"
+  | "Icon"
+  | "Divider"
+  | "TextField"
+  | "CheckBox"
+  | "Slider"
+  | "Tabs"
+  | "Modal"
+  | "Video"
+  | "AudioPlayer"
+  | "ChoicePicker"
+  | "DateTimeInput"
+> = {
   Text: ({ props, resolve }: Ctx<typeof TextApi>) => {
     const text = resolve(props.text);
     const v = props.variant ?? "body";
@@ -232,7 +251,9 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap = {
 
   Tabs: ({ props, resolve, renderChild }: Ctx<typeof TabsApi>) => (
     <ElmTabs
-      tabLabels={props.tabs.map((tab) => <>{resolve(tab.title)}</>)}
+      tabLabels={props.tabs.map((tab) => (
+        <>{resolve(tab.title)}</>
+      ))}
       tabContents={props.tabs.map((tab) => renderChild(tab.child))}
     />
   ),
@@ -270,7 +291,9 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap = {
     return (
       <div class={styles["choice-picker"]} data-a2ui-choice={componentId}>
         {props.label ? (
-          <span class={styles["choice-picker-label"]}>{resolve(props.label)}</span>
+          <span class={styles["choice-picker-label"]}>
+            {resolve(props.label)}
+          </span>
         ) : null}
         <div class={styles["choice-picker-options"]}>
           {props.options.map((opt) => {

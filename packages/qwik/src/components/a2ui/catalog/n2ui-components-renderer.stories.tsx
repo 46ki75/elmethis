@@ -65,7 +65,7 @@ export const Primary: Story = {
             {
               component: "Paragraph",
               id: "p2",
-              children: ["greeting-p2-1", "greeting-p2-2"],
+              children: ["greeting-p2-1", "greeting-p2-2", "greeting-p2-3"],
             },
             {
               component: "RichText",
@@ -77,6 +77,12 @@ export const Primary: Story = {
               id: "greeting-p2-2",
               text: "world!",
               decoration: ["bold"],
+            },
+            {
+              component: "LinkText",
+              id: "greeting-p2-3",
+              text: "A2UI",
+              href: "https://a2ui.org/",
             },
           ],
         },

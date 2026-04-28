@@ -5,14 +5,20 @@ import {
   CatalogRendererMap,
   RenderContext,
 } from "../elm-a2ui-catalog-renderer";
-import { ParagraphApi, RichTextApi } from "./n2ui-components-definition";
+import {
+  LinkTextApi,
+  ParagraphApi,
+  RichTextApi,
+} from "./n2ui-components-definition";
 import { ElmParagraph } from "../../typography/elm-paragraph";
 import { elmBasicCatalogRendererMap } from "../elm-a2ui-basic-catalog-renderer";
 
 type Props<T extends { schema: z.ZodTypeAny }> = z.infer<T["schema"]>;
 type Ctx<T extends { schema: z.ZodTypeAny }> = RenderContext<Props<T>>;
 
-export const elmN2UICatalogRendererMap: CatalogRendererMap = {
+export const elmN2UICatalogRendererMap: CatalogRendererMap<
+  "RichText" | "LinkText" | "Column" | "Paragraph"
+> = {
   RichText: ({ props, resolve }: Ctx<typeof RichTextApi>) => {
     const text = resolve(props.text);
     const katex = props.decoration?.includes("katex");
@@ -36,6 +42,15 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap = {
         code={code}
         color={props.color}
       >
+        {text}
+      </ElmInlineText>
+    );
+  },
+
+  LinkText: ({ props, resolve }: Ctx<typeof LinkTextApi>) => {
+    const text = resolve(props.text);
+    return (
+      <ElmInlineText href={props.href} favicon={props.favicon}>
         {text}
       </ElmInlineText>
     );
