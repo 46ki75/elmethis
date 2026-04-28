@@ -29,6 +29,7 @@ import {
   type CatalogRendererMap,
   type RenderContext,
 } from "./elm-a2ui-catalog-renderer";
+import { ElmInlineText } from "../..";
 
 type Props<T extends { schema: z.ZodTypeAny }> = z.infer<T["schema"]>;
 type Ctx<T extends { schema: z.ZodTypeAny }> = RenderContext<Props<T>>;
@@ -84,6 +85,7 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap<
   Text: ({ props, resolve }: Ctx<typeof TextApi>) => {
     const text = resolve(props.text);
     const v = props.variant ?? "body";
+    if (v === "caption") return <ElmInlineText>{text}</ElmInlineText>;
     if (v === "h1")
       return <h1 class={[styles.text, styles["text-h1"]]}>{text}</h1>;
     if (v === "h2")
@@ -94,8 +96,6 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap<
       return <h4 class={[styles.text, styles["text-h4"]]}>{text}</h4>;
     if (v === "h5")
       return <h5 class={[styles.text, styles["text-h5"]]}>{text}</h5>;
-    if (v === "caption")
-      return <span class={[styles.text, styles["text-caption"]]}>{text}</span>;
     return <p class={[styles.text, styles["text-body"]]}>{text}</p>;
   },
 
