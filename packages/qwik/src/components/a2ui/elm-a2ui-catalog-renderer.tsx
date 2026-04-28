@@ -48,6 +48,12 @@ export interface RenderContext<
    */
   depth: number;
   /**
+   * Zero-based sibling index of this component within its parent's children
+   * list. Use this to apply first-child overrides, e.g.:
+   * `style={index === 0 ? { "--elmethis-margin-block-start": "0" } : undefined}`
+   */
+  index: number;
+  /**
    * Typed property bag from the component model, shaped by the component's
    * schema (e.g. `z.infer<typeof TextApi.schema>`). Each value may be:
    * - A **static literal** (`string`, `number`, `boolean`, `array`)
@@ -96,8 +102,11 @@ export interface RenderContext<
    * Recursively renders a child component by its ID, passing along the surface,
    * catalog, and an incremented depth counter. Returns `null` if the component
    * ID is not found in the model or the depth limit is reached.
+   *
+   * Pass the sibling index as the third argument so the child receives the
+   * correct `index` in its `RenderContext` (used for first-child style overrides).
    */
-  renderChild: (componentId: string, path?: string) => JSX.Element | null;
+  renderChild: (componentId: string, path?: string, index?: number) => JSX.Element | null;
 }
 
 /**
