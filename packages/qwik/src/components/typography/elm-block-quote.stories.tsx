@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmBlockQuote , type ElmBlockQuoteProps} from "./elm-block-quote";
+import { ElmBlockQuote, type ElmBlockQuoteProps } from "./elm-block-quote";
 
 const meta: Meta<ElmBlockQuoteProps> = {
   title: "Components/Typography/elm-block-quote",

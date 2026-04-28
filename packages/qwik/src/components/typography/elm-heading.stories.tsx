@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 
-import { ElmHeading , type ElmHeadingProps} from "./elm-heading";
+import { ElmHeading, type ElmHeadingProps } from "./elm-heading";
 import { ElmInlineText } from "./elm-inline-text";
 
 const meta: Meta<ElmHeadingProps> = {

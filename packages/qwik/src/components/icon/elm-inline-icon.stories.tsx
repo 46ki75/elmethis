@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmInlineIcon , type ElmInlineIconProps} from "./elm-inline-icon";
+import { ElmInlineIcon, type ElmInlineIconProps } from "./elm-inline-icon";
 
 const meta: Meta<ElmInlineIconProps> = {
   title: "Components/Icon/elm-inline-icon",

@@ -1,5 +1,5 @@
 import { type Meta, type StoryObj } from "storybook-framework-qwik";
-import { ElmMdiIcon , type ElmMdiIconProps} from "./elm-mdi-icon";
+import { ElmMdiIcon, type ElmMdiIconProps } from "./elm-mdi-icon";
 import { mdiTag } from "@mdi/js";
 
 const meta: Meta<ElmMdiIconProps> = {

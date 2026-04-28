@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmBookmark , type ElmBookmarkProps} from "./elm-bookmark";
+import { ElmBookmark, type ElmBookmarkProps } from "./elm-bookmark";
 
 const meta: Meta<ElmBookmarkProps> = {
   title: "Components/Navigation/elm-bookmark",

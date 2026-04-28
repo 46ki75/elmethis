@@ -1,4 +1,9 @@
-import { component$, Slot, useContext, type CSSProperties } from "@builder.io/qwik";
+import {
+  component$,
+  Slot,
+  useContext,
+  type CSSProperties,
+} from "@builder.io/qwik";
 import styles from "./elm-table-cell.module.scss";
 import { HasHeaderContext } from "./elm-table-header";
 
@@ -28,9 +33,13 @@ export const ElmTableCell = component$<ElmTableCellProps>((props) => {
   return (
     <>
       {isHeader ? (
-        <th class={[styles.common, styles.th, className]} style={style}>{text ? text : <Slot />}</th>
+        <th class={[styles.common, styles.th, className]} style={style}>
+          {text ? text : <Slot />}
+        </th>
       ) : (
-        <td class={[styles.common, styles.td, className]} style={style}>{text ? text : <Slot />}</td>
+        <td class={[styles.common, styles.td, className]} style={style}>
+          {text ? text : <Slot />}
+        </td>
       )}
     </>
   );

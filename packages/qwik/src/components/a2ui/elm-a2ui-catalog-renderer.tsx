@@ -106,7 +106,11 @@ export interface RenderContext<
    * Pass the sibling index as the third argument so the child receives the
    * correct `index` in its `RenderContext` (used for first-child style overrides).
    */
-  renderChild: (componentId: string, path?: string, index?: number) => JSX.Element | null;
+  renderChild: (
+    componentId: string,
+    path?: string,
+    index?: number,
+  ) => JSX.Element | null;
 }
 
 /**

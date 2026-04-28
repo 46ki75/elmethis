@@ -15,7 +15,15 @@ export interface ElmMdiIconProps {
 }
 
 export const ElmMdiIcon = component$<ElmMdiIconProps>(
-  ({ class: className, style, d, size = "1em", color, lightColor, darkColor }) => {
+  ({
+    class: className,
+    style,
+    d,
+    size = "1em",
+    color,
+    lightColor,
+    darkColor,
+  }) => {
     return (
       <svg
         class={[styles.icon, className]}

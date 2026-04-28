@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmFragmentIdentifier , type ElmFragmentIdentifierProps} from "./elm-fragment-identifier";
+import {
+  ElmFragmentIdentifier,
+  type ElmFragmentIdentifierProps,
+} from "./elm-fragment-identifier";
 
 const meta: Meta<ElmFragmentIdentifierProps> = {
   title: "Components/Typography/elm-fragment-identifier",

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmCallout , type ElmCalloutProps} from "./elm-callout";
+import { ElmCallout, type ElmCalloutProps } from "./elm-callout";
 import { ElmInlineText } from "./elm-inline-text";
 
 const lorem =

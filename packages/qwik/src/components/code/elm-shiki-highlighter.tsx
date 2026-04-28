@@ -1,4 +1,9 @@
-import { component$, useSignal, useTask$, type CSSProperties } from "@builder.io/qwik";
+import {
+  component$,
+  useSignal,
+  useTask$,
+  type CSSProperties,
+} from "@builder.io/qwik";
 
 import styles from "./elm-shiki-highlighter.module.scss";
 import { codeToHtml } from "shiki";
@@ -43,6 +48,12 @@ export const ElmShikiHighlighter = component$<ElmShikiHighlighterProps>(
       }
     });
 
-    return <pre class={[styles.code, className]} style={style} dangerouslySetInnerHTML={rawHtml.value} />;
+    return (
+      <pre
+        class={[styles.code, className]}
+        style={style}
+        dangerouslySetInnerHTML={rawHtml.value}
+      />
+    );
   },
 );

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmTable , type ElmTableProps} from "./elm-table";
+import { ElmTable, type ElmTableProps } from "./elm-table";
 import { ElmTableHeader } from "./elm-table-header";
 import { ElmTableBody } from "./elm-table-body";
 import { ElmTableRow } from "./elm-table-row";

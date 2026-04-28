@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmList , type ElmListProps} from "./elm-list";
+import { ElmList, type ElmListProps } from "./elm-list";
 
 const meta: Meta<ElmListProps> = {
   title: "Components/Typography/elm-list",

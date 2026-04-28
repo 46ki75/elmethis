@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmFile , type ElmFileProps} from "./elm-file";
+import { ElmFile, type ElmFileProps } from "./elm-file";
 
 import file from "../../assets/vite.svg";
 

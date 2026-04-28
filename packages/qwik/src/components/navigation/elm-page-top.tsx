@@ -1,4 +1,10 @@
-import { component$, useSignal, useVisibleTask$, $, type CSSProperties } from "@builder.io/qwik";
+import {
+  component$,
+  useSignal,
+  useVisibleTask$,
+  $,
+  type CSSProperties,
+} from "@builder.io/qwik";
 
 import styles from "./elm-page-top.module.scss";
 

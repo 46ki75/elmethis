@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmBlockImage , type ElmBlockImageProps} from "./elm-block-image";
+import { ElmBlockImage, type ElmBlockImageProps } from "./elm-block-image";
 
 import landscape from "../../assets/images/lamdscape.svg?url";
 import portrait from "../../assets/images/portrait.svg?url";

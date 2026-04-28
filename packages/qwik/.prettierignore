@@ -4,3 +4,11 @@
 *.
 dist
 node_modules
+
+tsconfig.json
+tsconfig.*.json
+eslint.config.js
+prettier.config.js
+
+package-lock.json
+package.json

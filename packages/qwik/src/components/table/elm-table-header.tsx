@@ -15,12 +15,14 @@ export interface ElmTableHeaderProps {
   style?: CSSProperties;
 }
 
-export const ElmTableHeader = component$<ElmTableHeaderProps>(({ class: className, style }) => {
-  useContextProvider(HasHeaderContext, true);
+export const ElmTableHeader = component$<ElmTableHeaderProps>(
+  ({ class: className, style }) => {
+    useContextProvider(HasHeaderContext, true);
 
-  return (
-    <thead class={[styles.thead, className]} style={style}>
-      <Slot />
-    </thead>
-  );
-});
+    return (
+      <thead class={[styles.thead, className]} style={style}>
+        <Slot />
+      </thead>
+    );
+  },
+);

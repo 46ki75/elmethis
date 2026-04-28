@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmTabs , type ElmTabsProps} from "./elm-tabs";
+import { ElmTabs, type ElmTabsProps } from "./elm-tabs";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { ElmParagraph } from "../typography/elm-paragraph";
 import { ElmLanguageIcon } from "../icon/elm-language-icon";

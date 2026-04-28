@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmParallax , type ElmParallaxProps} from "./elm-parallax";
+import { ElmParallax, type ElmParallaxProps } from "./elm-parallax";
 
 import img1 from "../../assets/bg1.webp";
 import img2 from "../../assets/bg2.webp";

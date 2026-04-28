@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmPageTop , type ElmPageTopProps} from "./elm-page-top";
+import { ElmPageTop, type ElmPageTopProps } from "./elm-page-top";
 
 const meta: Meta<ElmPageTopProps> = {
   title: "Components/Navigation/elm-page-top",

@@ -10,6 +10,14 @@ export interface ElmRectangleWaveProps {
   placeholder?: string;
 }
 
-export const ElmRectangleWave = component$<ElmRectangleWaveProps>(({ class: className, style }) => {
-  return <div aria-hidden="true" class={[styles["rectangle-wave"], className]} style={style}></div>;
-});
+export const ElmRectangleWave = component$<ElmRectangleWaveProps>(
+  ({ class: className, style }) => {
+    return (
+      <div
+        aria-hidden="true"
+        class={[styles["rectangle-wave"], className]}
+        style={style}
+      ></div>
+    );
+  },
+);

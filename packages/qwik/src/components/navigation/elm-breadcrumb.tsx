@@ -1,4 +1,8 @@
-import { component$, type CSSProperties, type QRLEventHandlerMulti } from "@builder.io/qwik";
+import {
+  component$,
+  type CSSProperties,
+  type QRLEventHandlerMulti,
+} from "@builder.io/qwik";
 
 import styles from "./elm-breadcrumb.module.scss";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
@@ -28,50 +32,52 @@ export interface ElmBreadcrumbProps {
   }>;
 }
 
-export const ElmBreadcrumb = component$<ElmBreadcrumbProps>(({ class: className, style, links }) => {
-  return (
-    <nav class={[styles.container, className]} style={style}>
-      {links.map((link, index) => (
-        <>
-          <span class={styles["link-container"]} onClick$={link.onClick$}>
-            <span
-              class={styles.icon}
-              style={{
-                "--delay": `${index * 100}ms`,
-              }}
-            >
-              <ElmMdiIcon
-                d={
-                  index === 0
-                    ? mdiHome
-                    : index === links.length - 1
-                      ? mdiApplicationOutline
-                      : mdiFolderOpen
-                }
-                size="1.25em"
-              />
+export const ElmBreadcrumb = component$<ElmBreadcrumbProps>(
+  ({ class: className, style, links }) => {
+    return (
+      <nav class={[styles.container, className]} style={style}>
+        {links.map((link, index) => (
+          <>
+            <span class={styles["link-container"]} onClick$={link.onClick$}>
+              <span
+                class={styles.icon}
+                style={{
+                  "--delay": `${index * 100}ms`,
+                }}
+              >
+                <ElmMdiIcon
+                  d={
+                    index === 0
+                      ? mdiHome
+                      : index === links.length - 1
+                        ? mdiApplicationOutline
+                        : mdiFolderOpen
+                  }
+                  size="1.25em"
+                />
+              </span>
+
+              <span
+                class={styles.text}
+                style={{
+                  "--delay": `${index * 100 + 50}ms`,
+                }}
+              >
+                <ElmInlineText>{link.text}</ElmInlineText>
+              </span>
             </span>
 
-            <span
-              class={styles.text}
-              style={{
-                "--delay": `${index * 100 + 50}ms`,
-              }}
-            >
-              <ElmInlineText>{link.text}</ElmInlineText>
-            </span>
-          </span>
-
-          {links.length !== index + 1 && (
-            <span
-              class={styles.text}
-              style={{ "--delay": `${index * 100 + 100}ms` }}
-            >
-              <ElmMdiIcon d={mdiChevronRight} size="1em" color="#b69545" />
-            </span>
-          )}
-        </>
-      ))}
-    </nav>
-  );
-});
+            {links.length !== index + 1 && (
+              <span
+                class={styles.text}
+                style={{ "--delay": `${index * 100 + 100}ms` }}
+              >
+                <ElmMdiIcon d={mdiChevronRight} size="1em" color="#b69545" />
+              </span>
+            )}
+          </>
+        ))}
+      </nav>
+    );
+  },
+);
