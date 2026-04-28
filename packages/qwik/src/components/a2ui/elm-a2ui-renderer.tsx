@@ -29,11 +29,11 @@ export type {
   RenderContext,
 } from "./elm-a2ui-catalog-renderer";
 
-export interface ElmA2uiRendererProps {
+export interface ElmA2uiRendererProps<T extends string = string> {
   class?: string;
   style?: CSSProperties;
   /** A2UI v0.9 protocol messages to render. */
-  messages: unknown[];
+  messages: object[];
   /**
    * Catalog ID to pre-register before messages arrive — useful for streaming
    * where the catalogId is known upfront but createSurface hasn't arrived yet.
@@ -44,7 +44,7 @@ export interface ElmA2uiRendererProps {
    * Optional custom catalog renderer map. Falls back to the built-in basic
    * catalog renderer when not provided.
    */
-  catalog?: CatalogRendererMap;
+  catalog?: CatalogRendererMap<T>;
 }
 
 export function findRootId(surface: SurfaceModel<ComponentApi>): string | null {
@@ -68,9 +68,10 @@ export function findRootId(surface: SurfaceModel<ComponentApi>): string | null {
 export function renderTree(
   componentId: string,
   surface: SurfaceModel<ComponentApi>,
-  catalog: CatalogRendererMap = elmBasicCatalogRendererMap,
+  catalog: CatalogRendererMap<string> = elmBasicCatalogRendererMap,
   basePath = "/",
   depth = 0,
+  index = 0,
 ): JSX.Element | null {
   if (depth > 50) return null;
   const model = surface.componentsModel.get(componentId);
@@ -103,16 +104,17 @@ export function renderTree(
     return [];
   };
 
-  const renderChild = (cid: string, path = basePath) =>
-    renderTree(cid, surface, catalog, path, depth + 1);
+  const renderChild = (cid: string, path = basePath, childIndex = 0) =>
+    renderTree(cid, surface, catalog, path, depth + 1, childIndex);
 
   const renderer = catalog[model.type];
-  return renderer
+  return typeof renderer === "function"
     ? renderer({
         componentId,
         surface,
         basePath,
         depth,
+        index,
         props,
         ctx,
         resolve,
@@ -126,7 +128,7 @@ export function renderTree(
 // Handles per-surface subscriptions and DOM event delegation.
 interface SurfaceViewProps {
   surface: NoSerialize<SurfaceModel<ComponentApi>>;
-  catalog?: CatalogRendererMap;
+  catalog?: CatalogRendererMap<string>;
 }
 
 const SurfaceView = component$<SurfaceViewProps>(({ surface, catalog }) => {
@@ -221,7 +223,8 @@ const SurfaceView = component$<SurfaceViewProps>(({ surface, catalog }) => {
       if (!model) return;
       const bound = model.properties.value;
       if (bound && typeof bound === "object" && "path" in bound) {
-        const isMultipleSelection = model.properties.variant === "multipleSelection";
+        const isMultipleSelection =
+          model.properties.variant === "multipleSelection";
         let selected: string[];
         if (isMultipleSelection) {
           selected = Array.from(
@@ -264,7 +267,11 @@ const SurfaceView = component$<SurfaceViewProps>(({ surface, catalog }) => {
   const rootId = tick.value >= 0 && surface ? findRootId(surface) : null;
 
   return (
-    <div ref={containerRef} class={styles.surface}>
+    <div
+      ref={containerRef}
+      class={styles.surface}
+      style={{ "--elmethis-margin-block-start": "2rem" }}
+    >
       {rootId && surface ? renderTree(rootId, surface, catalog) : null}
     </div>
   );

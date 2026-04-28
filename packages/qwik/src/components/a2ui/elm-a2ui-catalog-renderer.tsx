@@ -23,7 +23,9 @@ import {
  * `resolve` for scalar text/url props, `childRefs` + `renderChild` for child
  * trees, and `ctx.dataContext` when you need reactive or non-string values.
  */
-export interface RenderContext<TProps extends Record<string, unknown> = Record<string, unknown>> {
+export interface RenderContext<
+  TProps extends Record<string, unknown> = Record<string, unknown>,
+> {
   /** Unique ID of the component instance within the surface. */
   componentId: string;
   /**
@@ -45,6 +47,12 @@ export interface RenderContext<TProps extends Record<string, unknown> = Record<s
    * prevent infinite loops caused by circular child references in the model.
    */
   depth: number;
+  /**
+   * Zero-based sibling index of this component within its parent's children
+   * list. Use this to apply first-child overrides, e.g.:
+   * `style={index === 0 ? { "--elmethis-margin-block-start": "0" } : undefined}`
+   */
+  index: number;
   /**
    * Typed property bag from the component model, shaped by the component's
    * schema (e.g. `z.infer<typeof TextApi.schema>`). Each value may be:
@@ -94,8 +102,11 @@ export interface RenderContext<TProps extends Record<string, unknown> = Record<s
    * Recursively renders a child component by its ID, passing along the surface,
    * catalog, and an incremented depth counter. Returns `null` if the component
    * ID is not found in the model or the depth limit is reached.
+   *
+   * Pass the sibling index as the third argument so the child receives the
+   * correct `index` in its `RenderContext` (used for first-child style overrides).
    */
-  renderChild: (componentId: string, path?: string) => JSX.Element | null;
+  renderChild: (componentId: string, path?: string, index?: number) => JSX.Element | null;
 }
 
 /**
@@ -112,8 +123,13 @@ export interface RenderContext<TProps extends Record<string, unknown> = Record<s
  *   CustomBanner: ({ props, resolve }) => <Banner text={resolve(props.text)} />,
  * };
  */
-export type CatalogRendererMap = Record<
-  string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (ctx: RenderContext<any>) => JSX.Element | null
->;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type RendererFn = (ctx: RenderContext<any>) => JSX.Element | null;
+
+// When T = string (the default / widened case), produce an index-signature type that
+// also allows `boolean` values so that noSerialize's `__no_serialize__: true` property
+// doesn't conflict. For specific string unions (e.g. "Text" | "Row"), produce a
+// plain mapped type with no index signature.
+export type CatalogRendererMap<T extends string = string> = string extends T
+  ? { [key: string]: RendererFn | boolean }
+  : { [K in T]: RendererFn };

@@ -74,7 +74,7 @@ function buildSurface(
 // ---- custom catalogs (module-level constants) ----
 
 /** Overrides the Text renderer to show a colored type badge before headings. */
-const badgedTextCatalog: CatalogRendererMap = {
+const badgedTextCatalog: CatalogRendererMap<string> = {
   ...elmBasicCatalogRendererMap,
   Text: ({ props, resolve }) => {
     const text = resolve(props.text);
@@ -121,7 +121,7 @@ const badgedTextCatalog: CatalogRendererMap = {
 };
 
 /** Overrides the Card renderer with an accent border and tinted background. */
-const accentCardCatalog: CatalogRendererMap = {
+const accentCardCatalog: CatalogRendererMap<string> = {
   ...elmBasicCatalogRendererMap,
   Card: ({ props, renderChild }) => (
     <div

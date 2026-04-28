@@ -13,13 +13,29 @@
   line-height: 1.5;
 }
 
-.text-h1 { font-size: 2rem;   font-weight: 700; }
-.text-h2 { font-size: 1.5rem; font-weight: 600; }
-.text-h3 { font-size: 1.25rem; font-weight: 600; }
-.text-h4 { font-size: 1.125rem; font-weight: 500; }
-.text-h5 { font-size: 1rem;   font-weight: 500; }
-.text-body { font-size: 1rem; }
-.text-caption { font-size: 0.75rem; color: #666; }
+.text-h1 {
+  font-size: 2rem;
+  font-weight: 700;
+}
+.text-h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.text-h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+.text-h4 {
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+.text-h5 {
+  font-size: 1rem;
+  font-weight: 500;
+}
+.text-body {
+  font-size: 1rem;
+}
 
 /* ---- layout ---- */
 
@@ -83,7 +99,9 @@
   transition: background 0.15s;
 }
 
-.button:hover { background: rgba(0, 0, 0, 0.05); }
+.button:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
 
 .button-primary {
   background: var(--a2ui-primary, #1976d2);
@@ -91,7 +109,9 @@
   color: #fff;
 }
 
-.button-primary:hover { background: var(--a2ui-primary-hover, #1565c0); }
+.button-primary:hover {
+  background: var(--a2ui-primary-hover, #1565c0);
+}
 
 /* ---- image ---- */
 
@@ -149,7 +169,9 @@
   transition: border-color 0.15s;
 }
 
-.input:focus { border-color: var(--a2ui-primary, #1976d2); }
+.input:focus {
+  border-color: var(--a2ui-primary, #1976d2);
+}
 
 .checkbox {
   display: inline-flex;
@@ -159,7 +181,9 @@
   font-size: 0.875rem;
 }
 
-.checkbox-label { user-select: none; }
+.checkbox-label {
+  user-select: none;
+}
 
 .slider {
   width: 100%;

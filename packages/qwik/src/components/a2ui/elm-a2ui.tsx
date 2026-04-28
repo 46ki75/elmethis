@@ -8,7 +8,7 @@ import {
 import { ElmA2uiRenderer } from "./elm-a2ui-renderer";
 import { type CatalogRendererMap } from "./elm-a2ui-catalog-renderer";
 
-export interface ElmA2uiProps {
+export interface ElmA2uiProps<T extends string = string> {
   class?: string;
   style?: CSSProperties;
 
@@ -28,7 +28,7 @@ export interface ElmA2uiProps {
    * Optional custom catalog renderer map. Falls back to the built-in basic
    * catalog renderer when not provided.
    */
-  catalog?: CatalogRendererMap;
+  catalog?: CatalogRendererMap<T>;
 }
 
 /**
@@ -36,7 +36,7 @@ export interface ElmA2uiProps {
  */
 export const ElmA2ui = component$<ElmA2uiProps>(
   ({ class: className, style, url, headers, catalogId, catalog }) => {
-    const messagesStore = useStore<{ list: unknown[] }>({ list: [] });
+    const messagesStore = useStore<{ list: object[] }>({ list: [] });
 
     // eslint-disable-next-line qwik/no-use-visible-task
     useVisibleTask$(async ({ cleanup }) => {

@@ -29,6 +29,7 @@ import {
   type CatalogRendererMap,
   type RenderContext,
 } from "./elm-a2ui-catalog-renderer";
+import { ElmHeading, ElmInlineText, ElmParagraph } from "../..";
 
 type Props<T extends { schema: z.ZodTypeAny }> = z.infer<T["schema"]>;
 type Ctx<T extends { schema: z.ZodTypeAny }> = RenderContext<Props<T>>;
@@ -61,23 +62,49 @@ const fitMap: Record<string, CSSProperties["objectFit"]> = {
   scaleDown: "scale-down",
 };
 
-export const elmBasicCatalogRendererMap: CatalogRendererMap = {
+export const elmBasicCatalogRendererMap: CatalogRendererMap<
+  | "Text"
+  | "Row"
+  | "Column"
+  | "List"
+  | "Card"
+  | "Button"
+  | "Image"
+  | "Icon"
+  | "Divider"
+  | "TextField"
+  | "CheckBox"
+  | "Slider"
+  | "Tabs"
+  | "Modal"
+  | "Video"
+  | "AudioPlayer"
+  | "ChoicePicker"
+  | "DateTimeInput"
+> = {
   Text: ({ props, resolve }: Ctx<typeof TextApi>) => {
     const text = resolve(props.text);
     const v = props.variant ?? "body";
-    if (v === "h1")
-      return <h1 class={[styles.text, styles["text-h1"]]}>{text}</h1>;
-    if (v === "h2")
-      return <h2 class={[styles.text, styles["text-h2"]]}>{text}</h2>;
-    if (v === "h3")
-      return <h3 class={[styles.text, styles["text-h3"]]}>{text}</h3>;
-    if (v === "h4")
-      return <h4 class={[styles.text, styles["text-h4"]]}>{text}</h4>;
-    if (v === "h5")
-      return <h5 class={[styles.text, styles["text-h5"]]}>{text}</h5>;
-    if (v === "caption")
-      return <span class={[styles.text, styles["text-caption"]]}>{text}</span>;
-    return <p class={[styles.text, styles["text-body"]]}>{text}</p>;
+    if (v === "caption") return <ElmInlineText>{text}</ElmInlineText>;
+    if (v === "body") return <ElmParagraph>{text}</ElmParagraph>;
+
+    const level = () => {
+      switch (v) {
+        case "h1":
+          return 1;
+        case "h2":
+          return 2;
+        case "h3":
+          return 3;
+        case "h4":
+          return 4;
+        case "h5":
+          return 5;
+        default:
+          return 1;
+      }
+    };
+    return <ElmHeading level={level()}>{text}</ElmHeading>;
   },
 
   Row: ({ props, childRefs, renderChild }: Ctx<typeof RowApi>) => (
@@ -90,23 +117,17 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap = {
     >
       {childRefs(props.children).map(({ id, path }, i) => (
         <span key={`${id}:${i}`} class={styles["child-wrap"]}>
-          {renderChild(id, path)}
+          {renderChild(id, path, i)}
         </span>
       ))}
     </div>
   ),
 
   Column: ({ props, childRefs, renderChild }: Ctx<typeof ColumnApi>) => (
-    <div
-      class={styles.column}
-      style={{
-        justifyContent: jc[props.justify ?? "start"] ?? "flex-start",
-        alignItems: ai[props.align ?? "stretch"] ?? "stretch",
-      }}
-    >
+    <div class={styles.column} style={{ "--margin-block": "2rem" }}>
       {childRefs(props.children).map(({ id, path }, i) => (
         <span key={`${id}:${i}`} class={styles["child-wrap"]}>
-          {renderChild(id, path)}
+          {renderChild(id, path, i)}
         </span>
       ))}
     </div>
@@ -121,7 +142,7 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap = {
     >
       {childRefs(props.children).map(({ id, path }, i) => (
         <div key={`${id}:${i}`} class={styles["list-item"]}>
-          {renderChild(id, path)}
+          {renderChild(id, path, i)}
         </div>
       ))}
     </div>
@@ -232,7 +253,9 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap = {
 
   Tabs: ({ props, resolve, renderChild }: Ctx<typeof TabsApi>) => (
     <ElmTabs
-      tabLabels={props.tabs.map((tab) => <>{resolve(tab.title)}</>)}
+      tabLabels={props.tabs.map((tab) => (
+        <>{resolve(tab.title)}</>
+      ))}
       tabContents={props.tabs.map((tab) => renderChild(tab.child))}
     />
   ),
@@ -270,7 +293,9 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap = {
     return (
       <div class={styles["choice-picker"]} data-a2ui-choice={componentId}>
         {props.label ? (
-          <span class={styles["choice-picker-label"]}>{resolve(props.label)}</span>
+          <span class={styles["choice-picker-label"]}>
+            {resolve(props.label)}
+          </span>
         ) : null}
         <div class={styles["choice-picker-options"]}>
           {props.options.map((opt) => {
