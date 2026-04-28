@@ -35,7 +35,7 @@ export interface ElmJarkupProps {
 
   skipUnsupportedComponentWarning?: boolean;
 
-  style?: CSSProperties;
+  style?: CSSProperties & { "--elmethis-margin-block-start"?: string };
 }
 
 const convertInlineComponentsToPlainText = (
@@ -56,6 +56,11 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
   const render = (jsonComponents: Component[]): JSXOutput[] => {
     return jsonComponents.map((component, index) => {
       const key = component.id || index;
+
+      const firstStyle =
+        index === 0
+          ? ({ "--elmethis-margin-block-start": "0" } as CSSProperties)
+          : undefined;
 
       switch (component.type) {
         case "Text": {
@@ -102,6 +107,7 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
               id={kebabCase(
                 convertInlineComponentsToPlainText(component.slots.default),
               )}
+              style={firstStyle}
             >
               {render(component.slots.default)}
             </ElmHeading>
@@ -113,6 +119,7 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
               key={key}
               color={component.props?.color}
               backgroundColor={component.props?.backgroundColor}
+              style={firstStyle}
             >
               {render(component.slots.default)}
             </ElmParagraph>
@@ -130,6 +137,7 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
                   ? "unordered"
                   : "ordered"
               }
+              style={firstStyle}
             >
               {render(component.slots.default)}
             </ElmList>
@@ -137,24 +145,24 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
 
         case "BlockQuote":
           return (
-            <ElmBlockQuote key={key} cite={component.props?.cite}>
+            <ElmBlockQuote key={key} cite={component.props?.cite} style={firstStyle}>
               {render(component.slots.default)}
             </ElmBlockQuote>
           );
 
         case "Callout":
           return (
-            <ElmCallout key={key} type={component.props?.type}>
+            <ElmCallout key={key} type={component.props?.type} style={firstStyle}>
               {render(component.slots.default)}
             </ElmCallout>
           );
 
         case "Divider":
-          return <ElmDivider key={key} />;
+          return <ElmDivider key={key} style={firstStyle} />;
 
         case "Toggle":
           return (
-            <ElmToggle key={key}>
+            <ElmToggle key={key} style={firstStyle}>
               <div q:slot="summary">{render(component.slots.summary)}</div>
               {render(component.slots.default)}
             </ElmToggle>
@@ -168,6 +176,7 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
               title={component.props.title}
               description={component.props.description}
               image={component.props.image}
+              style={firstStyle}
             />
           );
 
@@ -177,6 +186,7 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
               key={key}
               src={component.props.src}
               name={component.props.name}
+              style={firstStyle}
             />
           );
 
@@ -191,6 +201,7 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
               srcset={component.props.srcset}
               sizes={component.props.sizes}
               enableModal={true}
+              style={firstStyle}
             />
           );
 
@@ -200,6 +211,7 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
               key={key}
               code={component.props.code}
               language={component.props.language}
+              style={firstStyle}
             >
               {component.slots?.default && render(component.slots.default)}
             </ElmCodeBlock>
@@ -211,6 +223,7 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
               key={key}
               expression={component.props.expression}
               block={true}
+              style={firstStyle}
             />
           );
 
@@ -244,6 +257,7 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
               key={key}
               caption={component.props?.caption}
               hasRowHeader={component.props?.hasRowHeader}
+              style={firstStyle}
             >
               {component.slots.header && (
                 <ElmTableHeader>
@@ -270,7 +284,11 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
 
         case "ColumnList":
           return (
-            <div key={key} class={styles["column-list"]}>
+            <div
+              key={key}
+              class={styles["column-list"]}
+              style={firstStyle}
+            >
               {render(component.slots.default)}
             </div>
           );
@@ -285,6 +303,7 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
                 width: component.props?.widthRatio
                   ? `${component.props.widthRatio * 100}%`
                   : undefined,
+                ...firstStyle,
               }}
             >
               {render(component.slots.default)}
@@ -298,6 +317,7 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
             <ElmUnsupportedBlock
               key={key}
               details={`Unsupported component type: ${component.props?.details || component.type}`}
+              style={firstStyle}
             />
           );
         }
@@ -309,6 +329,7 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
             <ElmUnsupportedBlock
               key={key}
               details={`Unsupported component type: ${component.type}`}
+              style={firstStyle}
             />
           );
       }
@@ -318,7 +339,7 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
   return (
     <div
       class={props.class}
-      style={{ "--margin-block": "3rem", ...props.style }}
+      style={{ "--elmethis-margin-block-start": "2.5rem", ...props.style }}
     >
       {render(props.jsonComponents)}
     </div>

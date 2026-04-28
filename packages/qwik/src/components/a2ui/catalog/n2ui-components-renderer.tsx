@@ -36,6 +36,7 @@ import {
   ColumnApi,
   ColumnListApi,
   ContentTabsApi,
+  DividerApi,
   FileApi,
   HeadingApi,
   IconApi,
@@ -162,7 +163,7 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
 
   Row: elmBasicCatalogRendererMap.Row,
 
-  Column: ({ props, childRefs, renderChild }: Ctx<typeof ColumnApi>) => (
+  Column: ({ props, childRefs, renderChild, index }: Ctx<typeof ColumnApi>) => (
     <div
       style={{
         display: "flex",
@@ -172,18 +173,33 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
         flex: props.widthRatio != null ? String(props.widthRatio) : undefined,
         boxSizing: "border-box",
         padding: "0.125rem",
+        ...(index === 0
+          ? ({ "--elmethis-margin-block-start": "0" } as CSSProperties)
+          : undefined),
       }}
     >
       {childRefs(props.children).map(({ id, path }, i) => (
-        <span key={`${id}:${i}`}>{renderChild(id, path)}</span>
+        <span key={`${id}:${i}`}>{renderChild(id, path, i)}</span>
       ))}
     </div>
   ),
 
-  ColumnList: ({ props, childRefs, renderChild }: Ctx<typeof ColumnListApi>) => (
-    <div style={columnListStyle}>
+  ColumnList: ({
+    props,
+    childRefs,
+    renderChild,
+    index,
+  }: Ctx<typeof ColumnListApi>) => (
+    <div
+      style={{
+        ...columnListStyle,
+        ...(index === 0
+          ? ({ "--elmethis-margin-block-start": "0" } as CSSProperties)
+          : undefined),
+      }}
+    >
       {childRefs(props.children).map(({ id, path }, i) => (
-        <Fragment key={`${id}:${i}`}>{renderChild(id, path)}</Fragment>
+        <Fragment key={`${id}:${i}`}>{renderChild(id, path, i)}</Fragment>
       ))}
     </div>
   ),
@@ -192,26 +208,58 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
   // Block typography
   // -------------------------------------------------------------------------
 
-  Heading: ({ props, childRefs, renderChild }: Ctx<typeof HeadingApi>) => (
-    <ElmHeading level={props.level}>
+  Heading: ({
+    props,
+    childRefs,
+    renderChild,
+    index,
+  }: Ctx<typeof HeadingApi>) => (
+    <ElmHeading
+      level={props.level}
+      style={
+        index === 0
+          ? ({ "--elmethis-margin-block-start": "0" } as CSSProperties)
+          : undefined
+      }
+    >
       {childRefs(props.children).map(({ id, path }, i) => (
-        <Fragment key={`${id}:${i}`}>{renderChild(id, path)}</Fragment>
+        <Fragment key={`${id}:${i}`}>{renderChild(id, path, i)}</Fragment>
       ))}
     </ElmHeading>
   ),
 
-  Paragraph: ({ props, childRefs, renderChild }: Ctx<typeof ParagraphApi>) => (
-    <ElmParagraph color={props.color} backgroundColor={props.backgroundColor}>
+  Paragraph: ({
+    props,
+    childRefs,
+    renderChild,
+    index,
+  }: Ctx<typeof ParagraphApi>) => (
+    <ElmParagraph
+      color={props.color}
+      backgroundColor={props.backgroundColor}
+      style={
+        index === 0
+          ? ({ "--elmethis-margin-block-start": "0" } as CSSProperties)
+          : undefined
+      }
+    >
       {childRefs(props.children).map(({ id, path }, i) => (
-        <span key={`${id}:${i}`}>{renderChild(id, path)}</span>
+        <span key={`${id}:${i}`}>{renderChild(id, path, i)}</span>
       ))}
     </ElmParagraph>
   ),
 
-  List: ({ props, childRefs, renderChild }: Ctx<typeof ListApi>) => (
-    <ElmList listStyle={props.style ?? "unordered"}>
+  List: ({ props, childRefs, renderChild, index }: Ctx<typeof ListApi>) => (
+    <ElmList
+      listStyle={props.style ?? "unordered"}
+      style={
+        index === 0
+          ? ({ "--elmethis-margin-block-start": "0" } as CSSProperties)
+          : undefined
+      }
+    >
       {childRefs(props.children).map(({ id, path }, i) => (
-        <li key={`${id}:${i}`}>{renderChild(id, path)}</li>
+        <li key={`${id}:${i}`}>{renderChild(id, path, i)}</li>
       ))}
     </ElmList>
   ),
@@ -219,38 +267,76 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
   ListItem: ({ props, childRefs, renderChild }: Ctx<typeof ListItemApi>) => (
     <>
       {childRefs(props.children).map(({ id, path }, i) => (
-        <Fragment key={`${id}:${i}`}>{renderChild(id, path)}</Fragment>
+        <Fragment key={`${id}:${i}`}>{renderChild(id, path, i)}</Fragment>
       ))}
     </>
   ),
 
-  BlockQuote: ({ props, childRefs, renderChild }: Ctx<typeof BlockQuoteApi>) => (
-    <ElmBlockQuote cite={props.cite}>
+  BlockQuote: ({
+    props,
+    childRefs,
+    renderChild,
+    index,
+  }: Ctx<typeof BlockQuoteApi>) => (
+    <ElmBlockQuote
+      cite={props.cite}
+      style={
+        index === 0
+          ? ({ "--elmethis-margin-block-start": "0" } as CSSProperties)
+          : undefined
+      }
+    >
       {childRefs(props.children).map(({ id, path }, i) => (
-        <Fragment key={`${id}:${i}`}>{renderChild(id, path)}</Fragment>
+        <Fragment key={`${id}:${i}`}>{renderChild(id, path, i)}</Fragment>
       ))}
     </ElmBlockQuote>
   ),
 
-  Callout: ({ props, childRefs, renderChild }: Ctx<typeof CalloutApi>) => (
-    <ElmCallout type={props.type}>
+  Callout: ({
+    props,
+    childRefs,
+    renderChild,
+    index,
+  }: Ctx<typeof CalloutApi>) => (
+    <ElmCallout
+      type={props.type}
+      style={
+        index === 0
+          ? ({ "--elmethis-margin-block-start": "0" } as CSSProperties)
+          : undefined
+      }
+    >
       {childRefs(props.children).map(({ id, path }, i) => (
-        <Fragment key={`${id}:${i}`}>{renderChild(id, path)}</Fragment>
+        <Fragment key={`${id}:${i}`}>{renderChild(id, path, i)}</Fragment>
       ))}
     </ElmCallout>
   ),
 
-  Divider: () => <ElmDivider />,
+  Divider: ({ index }: Ctx<typeof DividerApi>) => (
+    <ElmDivider
+      style={
+        index === 0
+          ? ({ "--elmethis-margin-block-start": "0" } as CSSProperties)
+          : undefined
+      }
+    />
+  ),
 
-  Toggle: ({ props, childRefs, renderChild }: Ctx<typeof ToggleApi>) => (
-    <ElmToggle>
+  Toggle: ({ props, childRefs, renderChild, index }: Ctx<typeof ToggleApi>) => (
+    <ElmToggle
+      style={
+        index === 0
+          ? ({ "--elmethis-margin-block-start": "0" } as CSSProperties)
+          : undefined
+      }
+    >
       <div q:slot="summary">
         {childRefs(props.summary).map(({ id, path }, i) => (
-          <span key={`${id}:${i}`}>{renderChild(id, path)}</span>
+          <span key={`${id}:${i}`}>{renderChild(id, path, i)}</span>
         ))}
       </div>
       {childRefs(props.children).map(({ id, path }, i) => (
-        <Fragment key={`${id}:${i}`}>{renderChild(id, path)}</Fragment>
+        <Fragment key={`${id}:${i}`}>{renderChild(id, path, i)}</Fragment>
       ))}
     </ElmToggle>
   ),
@@ -259,23 +345,33 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
   // Media / embed
   // -------------------------------------------------------------------------
 
-  Bookmark: ({ props, resolve }: Ctx<typeof BookmarkApi>) => (
+  Bookmark: ({ props, resolve, index }: Ctx<typeof BookmarkApi>) => (
     <ElmBookmark
       url={resolve(props.url)}
       title={props.title ? resolve(props.title) : undefined}
       description={props.description ? resolve(props.description) : undefined}
       image={props.image ? resolve(props.image) : undefined}
+      style={
+        index === 0
+          ? ({ "--elmethis-margin-block-start": "0" } as CSSProperties)
+          : undefined
+      }
     />
   ),
 
-  File: ({ props, resolve }: Ctx<typeof FileApi>) => (
+  File: ({ props, resolve, index }: Ctx<typeof FileApi>) => (
     <ElmFile
       src={resolve(props.src)}
       name={props.name ? resolve(props.name) : undefined}
+      style={
+        index === 0
+          ? ({ "--elmethis-margin-block-start": "0" } as CSSProperties)
+          : undefined
+      }
     />
   ),
 
-  BlockImage: ({ props, resolve }: Ctx<typeof BlockImageApi>) => (
+  BlockImage: ({ props, resolve, index }: Ctx<typeof BlockImageApi>) => (
     <ElmBlockImage
       src={resolve(props.src)}
       alt={props.alt ? resolve(props.alt) : undefined}
@@ -285,6 +381,11 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
       sizes={props.sizes ? resolve(props.sizes) : undefined}
       caption={props.caption ? resolve(props.caption) : undefined}
       enableModal={true}
+      style={
+        index === 0
+          ? ({ "--elmethis-margin-block-start": "0" } as CSSProperties)
+          : undefined
+      }
     />
   ),
 
@@ -292,16 +393,29 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
   // Code / math / diagram
   // -------------------------------------------------------------------------
 
-  CodeBlock: ({ props, resolve }: Ctx<typeof CodeBlockApi>) => (
+  CodeBlock: ({ props, resolve, index }: Ctx<typeof CodeBlockApi>) => (
     <ElmCodeBlock
       code={resolve(props.code)}
       language={props.language ? resolve(props.language) : undefined}
       caption={props.caption ? resolve(props.caption) : undefined}
+      style={
+        index === 0
+          ? ({ "--elmethis-margin-block-start": "0" } as CSSProperties)
+          : undefined
+      }
     />
   ),
 
-  Katex: ({ props, resolve }: Ctx<typeof KatexApi>) => (
-    <ElmKatex expression={resolve(props.expression)} block={true} />
+  Katex: ({ props, resolve, index }: Ctx<typeof KatexApi>) => (
+    <ElmKatex
+      expression={resolve(props.expression)}
+      block={true}
+      style={
+        index === 0
+          ? ({ "--elmethis-margin-block-start": "0" } as CSSProperties)
+          : undefined
+      }
+    />
   ),
 
   /**
@@ -310,8 +424,16 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
    * definition string is fully preserved so a host application can post-process
    * the output if needed.
    */
-  Mermaid: ({ props, resolve }: Ctx<typeof MermaidApi>) => (
-    <ElmCodeBlock code={resolve(props.code)} language="mermaid" />
+  Mermaid: ({ props, resolve, index }: Ctx<typeof MermaidApi>) => (
+    <ElmCodeBlock
+      code={resolve(props.code)}
+      language="mermaid"
+      style={
+        index === 0
+          ? ({ "--elmethis-margin-block-start": "0" } as CSSProperties)
+          : undefined
+      }
+    />
   ),
 
   // -------------------------------------------------------------------------
@@ -330,6 +452,7 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
     surface,
     basePath,
     renderChild,
+    index,
   }: Ctx<typeof ContentTabsApi>) => {
     const tabIds = Array.isArray(props.children)
       ? (props.children as string[])
@@ -345,7 +468,9 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
       return (
         <>
           {labelIds.map((lid, i) => (
-            <Fragment key={`${lid}:${i}`}>{renderChild(lid, basePath)}</Fragment>
+            <Fragment key={`${lid}:${i}`}>
+              {renderChild(lid, basePath, i)}
+            </Fragment>
           ))}
         </>
       );
@@ -361,34 +486,51 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
       return (
         <>
           {contentIds.map((cid, i) => (
-            <Fragment key={`${cid}:${i}`}>{renderChild(cid, basePath)}</Fragment>
+            <Fragment key={`${cid}:${i}`}>
+              {renderChild(cid, basePath, i)}
+            </Fragment>
           ))}
         </>
       );
     });
 
-    return <ElmTabs tabLabels={tabLabels} tabContents={tabContents} />;
+    return (
+      <ElmTabs
+        tabLabels={tabLabels}
+        tabContents={tabContents}
+        style={
+          index === 0
+            ? ({ "--elmethis-margin-block-start": "0" } as CSSProperties)
+            : undefined
+        }
+      />
+    );
   },
 
   // -------------------------------------------------------------------------
   // Table
   // -------------------------------------------------------------------------
 
-  Table: ({ props, childRefs, renderChild }: Ctx<typeof TableApi>) => (
+  Table: ({ props, childRefs, renderChild, index }: Ctx<typeof TableApi>) => (
     <ElmTable
       caption={props.caption ? String(props.caption) : undefined}
       hasRowHeader={props.hasRowHeader}
+      style={
+        index === 0
+          ? ({ "--elmethis-margin-block-start": "0" } as CSSProperties)
+          : undefined
+      }
     >
       {props.header && props.header.length > 0 && (
         <ElmTableHeader>
           {childRefs(props.header).map(({ id, path }, i) => (
-            <Fragment key={`${id}:${i}`}>{renderChild(id, path)}</Fragment>
+            <Fragment key={`${id}:${i}`}>{renderChild(id, path, i)}</Fragment>
           ))}
         </ElmTableHeader>
       )}
       <ElmTableBody>
         {childRefs(props.body).map(({ id, path }, i) => (
-          <Fragment key={`${id}:${i}`}>{renderChild(id, path)}</Fragment>
+          <Fragment key={`${id}:${i}`}>{renderChild(id, path, i)}</Fragment>
         ))}
       </ElmTableBody>
     </ElmTable>
@@ -397,7 +539,7 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
   TableRow: ({ props, childRefs, renderChild }: Ctx<typeof TableRowApi>) => (
     <ElmTableRow>
       {childRefs(props.children).map(({ id, path }, i) => (
-        <Fragment key={`${id}:${i}`}>{renderChild(id, path)}</Fragment>
+        <Fragment key={`${id}:${i}`}>{renderChild(id, path, i)}</Fragment>
       ))}
     </ElmTableRow>
   ),
@@ -405,7 +547,7 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
   TableCell: ({ props, childRefs, renderChild }: Ctx<typeof TableCellApi>) => (
     <ElmTableCell hasHeader={props.isHeader}>
       {childRefs(props.children).map(({ id, path }, i) => (
-        <span key={`${id}:${i}`}>{renderChild(id, path)}</span>
+        <span key={`${id}:${i}`}>{renderChild(id, path, i)}</span>
       ))}
     </ElmTableCell>
   ),
@@ -414,12 +556,17 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
   // Fallback
   // -------------------------------------------------------------------------
 
-  Unsupported: ({ props }: Ctx<typeof UnsupportedApi>) => (
+  Unsupported: ({ props, index }: Ctx<typeof UnsupportedApi>) => (
     <ElmUnsupportedBlock
       details={
         props.details
           ? `Unsupported component type: ${String(props.details)}`
           : "Unsupported component type"
+      }
+      style={
+        index === 0
+          ? ({ "--elmethis-margin-block-start": "0" } as CSSProperties)
+          : undefined
       }
     />
   ),

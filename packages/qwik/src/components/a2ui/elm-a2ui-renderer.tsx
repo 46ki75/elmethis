@@ -71,6 +71,7 @@ export function renderTree(
   catalog: CatalogRendererMap<string> = elmBasicCatalogRendererMap,
   basePath = "/",
   depth = 0,
+  index = 0,
 ): JSX.Element | null {
   if (depth > 50) return null;
   const model = surface.componentsModel.get(componentId);
@@ -103,8 +104,8 @@ export function renderTree(
     return [];
   };
 
-  const renderChild = (cid: string, path = basePath) =>
-    renderTree(cid, surface, catalog, path, depth + 1);
+  const renderChild = (cid: string, path = basePath, childIndex = 0) =>
+    renderTree(cid, surface, catalog, path, depth + 1, childIndex);
 
   const renderer = catalog[model.type];
   return typeof renderer === "function"
@@ -113,6 +114,7 @@ export function renderTree(
         surface,
         basePath,
         depth,
+        index,
         props,
         ctx,
         resolve,
@@ -265,7 +267,11 @@ const SurfaceView = component$<SurfaceViewProps>(({ surface, catalog }) => {
   const rootId = tick.value >= 0 && surface ? findRootId(surface) : null;
 
   return (
-    <div ref={containerRef} class={styles.surface}>
+    <div
+      ref={containerRef}
+      class={styles.surface}
+      style={{ "--elmethis-margin-block-start": "2rem" }}
+    >
       {rootId && surface ? renderTree(rootId, surface, catalog) : null}
     </div>
   );

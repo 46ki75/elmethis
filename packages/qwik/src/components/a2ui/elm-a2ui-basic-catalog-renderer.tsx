@@ -117,7 +117,7 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap<
     >
       {childRefs(props.children).map(({ id, path }, i) => (
         <span key={`${id}:${i}`} class={styles["child-wrap"]}>
-          {renderChild(id, path)}
+          {renderChild(id, path, i)}
         </span>
       ))}
     </div>
@@ -127,7 +127,7 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap<
     <div class={styles.column} style={{ "--margin-block": "2rem" }}>
       {childRefs(props.children).map(({ id, path }, i) => (
         <span key={`${id}:${i}`} class={styles["child-wrap"]}>
-          {renderChild(id, path)}
+          {renderChild(id, path, i)}
         </span>
       ))}
     </div>
@@ -142,7 +142,7 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap<
     >
       {childRefs(props.children).map(({ id, path }, i) => (
         <div key={`${id}:${i}`} class={styles["list-item"]}>
-          {renderChild(id, path)}
+          {renderChild(id, path, i)}
         </div>
       ))}
     </div>
