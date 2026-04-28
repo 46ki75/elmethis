@@ -265,7 +265,11 @@ const SurfaceView = component$<SurfaceViewProps>(({ surface, catalog }) => {
   const rootId = tick.value >= 0 && surface ? findRootId(surface) : null;
 
   return (
-    <div ref={containerRef} class={styles.surface}>
+    <div
+      ref={containerRef}
+      class={styles.surface}
+      style={{ "--elmethis-margin-block-start": "2rem" }}
+    >
       {rootId && surface ? renderTree(rootId, surface, catalog) : null}
     </div>
   );
