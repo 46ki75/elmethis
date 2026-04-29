@@ -31,7 +31,7 @@ importers:
         version: 1.56.4(@ag-ui/core@0.0.52)
       '@hono/node-server':
         specifier: ^2.0.0
-        version: 2.0.0(hono@4.12.14)
+        version: 2.0.0(hono@4.12.15)
       '@mastra/core':
         specifier: ^1.28.0
         version: 1.28.0(@cfworker/json-schema@4.1.1)(@standard-community/standard-json@0.3.5(@standard-schema/spec@1.1.0)(@types/json-schema@7.0.15)(quansync@0.2.6)(valibot@1.2.0(typescript@5.9.3))(zod-to-json-schema@3.25.2(zod@3.25.76))(zod@3.25.76))(@standard-community/standard-openapi@0.2.9(@standard-community/standard-json@0.3.5(@standard-schema/spec@1.1.0)(@types/json-schema@7.0.15)(quansync@0.2.6)(valibot@1.2.0(typescript@5.9.3))(zod-to-json-schema@3.25.2(zod@3.25.76))(zod@3.25.76))(@standard-schema/spec@1.1.0)(openapi-types@12.1.3)(valibot@1.2.0(typescript@5.9.3))(zod@3.25.76))(@types/json-schema@7.0.15)(openapi-types@12.1.3)(zod@3.25.76)
@@ -45,8 +45,8 @@ importers:
         specifier: ^17.4.2
         version: 17.4.2
       hono:
-        specifier: ^4.12.12
-        version: 4.12.14
+        specifier: ^4.12.15
+        version: 4.12.15
       openai:
         specifier: ^6.35.0
         version: 6.35.0(ws@8.20.0)(zod@3.25.76)
@@ -5717,8 +5717,8 @@ packages:
       hono:
         optional: true
 
-  hono@4.12.14:
-    resolution: {integrity: sha512-am5zfg3yu6sqn5yjKBNqhnTX7Cv+m00ox+7jbaKkrLMRJ4rAdldd1xPd/JzbBWspqaQv6RSTrgFN95EsfhC+7w==}
+  hono@4.12.15:
+    resolution: {integrity: sha512-qM0jDhFEaCBb4TxoW7f53Qrpv9RBiayUHo0S52JudprkhvpjIrGoU1mnnr29Fvd1U335ZFPZQY1wlkqgfGXyLg==}
     engines: {node: '>=16.9.0'}
 
   hosted-git-info@9.0.2:
@@ -9617,7 +9617,7 @@ snapshots:
       '@copilotkit/license-verifier': 0.2.0
       '@copilotkit/shared': 1.56.4(@ag-ui/core@0.0.52)
       '@graphql-yoga/plugin-defer-stream': 3.21.0(graphql-yoga@5.21.0(graphql@16.13.2))(graphql@16.13.2)
-      '@hono/node-server': 1.19.14(hono@4.12.14)
+      '@hono/node-server': 1.19.14(hono@4.12.15)
       '@langchain/core': 1.1.42(@opentelemetry/api@1.9.1)(@opentelemetry/exporter-trace-otlp-proto@0.203.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.7.0(@opentelemetry/api@1.9.1))(openai@6.35.0(ws@8.20.0)(zod@3.25.76))(ws@8.20.0)
       '@modelcontextprotocol/sdk': 1.29.0(@cfworker/json-schema@4.1.1)(zod@3.25.76)
       '@remix-run/node-fetch-server': 0.13.0
@@ -9632,7 +9632,7 @@ snapshots:
       graphql: 16.13.2
       graphql-scalars: 1.25.0(graphql@16.13.2)
       graphql-yoga: 5.21.0(graphql@16.13.2)
-      hono: 4.12.14
+      hono: 4.12.15
       partial-json: 0.1.7
       phoenix: 1.8.5
       pino: 9.14.0
@@ -10470,13 +10470,13 @@ snapshots:
       '@repeaterjs/repeater': 3.0.6
       tslib: 2.8.1
 
-  '@hono/node-server@1.19.14(hono@4.12.14)':
+  '@hono/node-server@1.19.14(hono@4.12.15)':
     dependencies:
-      hono: 4.12.14
+      hono: 4.12.15
 
-  '@hono/node-server@2.0.0(hono@4.12.14)':
+  '@hono/node-server@2.0.0(hono@4.12.15)':
     dependencies:
-      hono: 4.12.14
+      hono: 4.12.15
 
   '@humanfs/core@0.19.2':
     dependencies:
@@ -10884,8 +10884,8 @@ snapshots:
       dotenv: 17.4.2
       execa: 9.6.1
       gray-matter: 4.0.3
-      hono: 4.12.14
-      hono-openapi: 1.3.0(@standard-community/standard-json@0.3.5(@standard-schema/spec@1.1.0)(@types/json-schema@7.0.15)(quansync@0.2.6)(valibot@1.2.0(typescript@5.9.3))(zod-to-json-schema@3.25.2(zod@3.25.76))(zod@3.25.76))(@standard-community/standard-openapi@0.2.9(@standard-community/standard-json@0.3.5(@standard-schema/spec@1.1.0)(@types/json-schema@7.0.15)(quansync@0.2.6)(valibot@1.2.0(typescript@5.9.3))(zod-to-json-schema@3.25.2(zod@3.25.76))(zod@3.25.76))(@standard-schema/spec@1.1.0)(openapi-types@12.1.3)(valibot@1.2.0(typescript@5.9.3))(zod@3.25.76))(@types/json-schema@7.0.15)(hono@4.12.14)(openapi-types@12.1.3)
+      hono: 4.12.15
+      hono-openapi: 1.3.0(@standard-community/standard-json@0.3.5(@standard-schema/spec@1.1.0)(@types/json-schema@7.0.15)(quansync@0.2.6)(valibot@1.2.0(typescript@5.9.3))(zod-to-json-schema@3.25.2(zod@3.25.76))(zod@3.25.76))(@standard-community/standard-openapi@0.2.9(@standard-community/standard-json@0.3.5(@standard-schema/spec@1.1.0)(@types/json-schema@7.0.15)(quansync@0.2.6)(valibot@1.2.0(typescript@5.9.3))(zod-to-json-schema@3.25.2(zod@3.25.76))(zod@3.25.76))(@standard-schema/spec@1.1.0)(openapi-types@12.1.3)(valibot@1.2.0(typescript@5.9.3))(zod@3.25.76))(@types/json-schema@7.0.15)(hono@4.12.15)(openapi-types@12.1.3)
       ignore: 7.0.5
       js-tiktoken: 1.0.21
       json-schema: 0.4.0
@@ -10997,7 +10997,7 @@ snapshots:
 
   '@modelcontextprotocol/sdk@1.29.0(@cfworker/json-schema@4.1.1)(zod@3.25.76)':
     dependencies:
-      '@hono/node-server': 1.19.14(hono@4.12.14)
+      '@hono/node-server': 1.19.14(hono@4.12.15)
       ajv: 8.20.0
       ajv-formats: 3.0.1(ajv@8.20.0)
       content-type: 1.0.5
@@ -11007,7 +11007,7 @@ snapshots:
       eventsource-parser: 3.0.8
       express: 5.2.1
       express-rate-limit: 8.4.1(express@5.2.1)
-      hono: 4.12.14
+      hono: 4.12.15
       jose: 6.2.3
       json-schema-typed: 8.0.2
       pkce-challenge: 5.0.1
@@ -15081,16 +15081,16 @@ snapshots:
     dependencies:
       hermes-estree: 0.25.1
 
-  hono-openapi@1.3.0(@standard-community/standard-json@0.3.5(@standard-schema/spec@1.1.0)(@types/json-schema@7.0.15)(quansync@0.2.6)(valibot@1.2.0(typescript@5.9.3))(zod-to-json-schema@3.25.2(zod@3.25.76))(zod@3.25.76))(@standard-community/standard-openapi@0.2.9(@standard-community/standard-json@0.3.5(@standard-schema/spec@1.1.0)(@types/json-schema@7.0.15)(quansync@0.2.6)(valibot@1.2.0(typescript@5.9.3))(zod-to-json-schema@3.25.2(zod@3.25.76))(zod@3.25.76))(@standard-schema/spec@1.1.0)(openapi-types@12.1.3)(valibot@1.2.0(typescript@5.9.3))(zod@3.25.76))(@types/json-schema@7.0.15)(hono@4.12.14)(openapi-types@12.1.3):
+  hono-openapi@1.3.0(@standard-community/standard-json@0.3.5(@standard-schema/spec@1.1.0)(@types/json-schema@7.0.15)(quansync@0.2.6)(valibot@1.2.0(typescript@5.9.3))(zod-to-json-schema@3.25.2(zod@3.25.76))(zod@3.25.76))(@standard-community/standard-openapi@0.2.9(@standard-community/standard-json@0.3.5(@standard-schema/spec@1.1.0)(@types/json-schema@7.0.15)(quansync@0.2.6)(valibot@1.2.0(typescript@5.9.3))(zod-to-json-schema@3.25.2(zod@3.25.76))(zod@3.25.76))(@standard-schema/spec@1.1.0)(openapi-types@12.1.3)(valibot@1.2.0(typescript@5.9.3))(zod@3.25.76))(@types/json-schema@7.0.15)(hono@4.12.15)(openapi-types@12.1.3):
     dependencies:
       '@standard-community/standard-json': 0.3.5(@standard-schema/spec@1.1.0)(@types/json-schema@7.0.15)(quansync@0.2.6)(valibot@1.2.0(typescript@5.9.3))(zod-to-json-schema@3.25.2(zod@3.25.76))(zod@3.25.76)
       '@standard-community/standard-openapi': 0.2.9(@standard-community/standard-json@0.3.5(@standard-schema/spec@1.1.0)(@types/json-schema@7.0.15)(quansync@0.2.6)(valibot@1.2.0(typescript@5.9.3))(zod-to-json-schema@3.25.2(zod@3.25.76))(zod@3.25.76))(@standard-schema/spec@1.1.0)(openapi-types@12.1.3)(valibot@1.2.0(typescript@5.9.3))(zod@3.25.76)
       '@types/json-schema': 7.0.15
       openapi-types: 12.1.3
     optionalDependencies:
-      hono: 4.12.14
+      hono: 4.12.15
 
-  hono@4.12.14: {}
+  hono@4.12.15: {}
 
   hosted-git-info@9.0.2:
     dependencies:
