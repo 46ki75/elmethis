@@ -17,8 +17,9 @@ export const ElmTabs = component$<ElmTabsProps>(
   ({ class: className, style, tabLabels, tabContents }) => {
     const selectedTabIndex = useSignal(0);
 
-    const selectTab = $((index: number) => {
-      selectedTabIndex.value = index;
+    const handleTabClick = $((_event: MouseEvent, el: HTMLElement) => {
+      const idx = el.getAttribute("data-tab-index");
+      selectedTabIndex.value = idx !== null ? parseInt(idx, 10) : 0;
     });
 
     return (
@@ -27,13 +28,14 @@ export const ElmTabs = component$<ElmTabsProps>(
           {tabLabels.map((tabLabel, index) => (
             <div
               key={index}
+              data-tab-index={String(index)}
               class={[
                 styles["tab"],
                 {
                   [styles["active"]]: selectedTabIndex.value === index,
                 },
               ]}
-              onClick$={() => selectTab(index)}
+              onClick$={handleTabClick}
             >
               {tabLabel}
             </div>
