@@ -1,3 +1,9 @@
+// | AG-UI |
+export {
+  useAgent,
+  type UseAgentOptions,
+} from "./components/ag-ui-client/useAgent";
+
 // | Code |
 export {
   ElmCodeBlock,
