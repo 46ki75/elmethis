@@ -18,7 +18,7 @@
         "@copilotkit/runtime": "^1.56.4",
         "@copilotkit/shared": "^1.56.4",
         "@hono/node-server": "^2.0.0",
-        "@mastra/core": "^1.29.0",
+        "@mastra/core": "^1.30.0",
         "@openrouter/ai-sdk-provider": "^2.8.1",
         "agent": "link:@mastra/core/agent",
         "dotenv": "^17.4.2",
