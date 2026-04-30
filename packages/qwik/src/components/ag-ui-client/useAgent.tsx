@@ -111,7 +111,7 @@ export function useAgent({
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(({ cleanup, track }) => {
     const trackedUrl = track(() => url);
-    const trackedHeaders = track(() => headers);
+    const trackedHeaders = track(() => (headers ? { ...headers } : undefined));
 
     httpAgent.value = noSerialize(
       new HttpAgent({ url: trackedUrl, headers: trackedHeaders }),
