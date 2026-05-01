@@ -44,7 +44,6 @@
     .agent-input {
       width: var(--agent-ui-width);
       box-sizing: border-box;
-      padding: clamp(0.25rem, 1%, 0.5rem);
       height: min-content;
       margin: 0 auto;
 
