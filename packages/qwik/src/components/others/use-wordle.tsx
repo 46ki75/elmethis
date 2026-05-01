@@ -222,21 +222,25 @@ export const useWordle = (options?: UseWordleOptions) => {
 
     return (
       <div class={styles["wordle"]}>
-        {errorMessage.value && (
-          <div class={styles["error-message"]}>{errorMessage.value}</div>
-        )}
-
-        {gameStatus.value === "won" && (
-          <div
-            class={styles["status-message"]}
-          >{`🎉 You won in ${board.value.length} ${board.value.length === 1 ? "guess" : "guesses"}!`}</div>
-        )}
-
-        {gameStatus.value === "lost" && (
-          <div
-            class={styles["status-message"]}
-          >{`😢 The word was "${answer.value.toUpperCase()}"`}</div>
-        )}
+        <div
+          class={[
+            styles["message-area"],
+            errorMessage.value
+              ? styles["message-area--error"]
+              : gameStatus.value !== "playing"
+                ? styles["message-area--status"]
+                : undefined,
+          ]}
+          aria-live="polite"
+        >
+          {errorMessage.value
+            ? errorMessage.value
+            : gameStatus.value === "won"
+              ? `🎉 You won in ${board.value.length} ${board.value.length === 1 ? "guess" : "guesses"}!`
+              : gameStatus.value === "lost"
+                ? `😢 The word was "${answer.value.toUpperCase()}"`
+                : null}
+        </div>
 
         <div class={styles["board"]}>{rows}</div>
 
@@ -275,13 +279,16 @@ export const useWordle = (options?: UseWordleOptions) => {
           ))}
         </div>
 
-        {gameStatus.value !== "playing" && (
-          <div class={styles["reset-container"]}>
-            <button class={styles["reset-button"]} onClick$={reset}>
-              Play Again
-            </button>
-          </div>
-        )}
+        <div
+          class={[
+            styles["reset-container"],
+            gameStatus.value === "playing" && styles["reset-container--hidden"],
+          ]}
+        >
+          <button class={styles["reset-button"]} onClick$={reset}>
+            Play Again
+          </button>
+        </div>
       </div>
     );
   });

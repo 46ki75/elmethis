@@ -7,23 +7,32 @@
   font-family: inherit;
 }
 
-/* ── Status messages ──────────────────────────────────────────── */
-.error-message {
-  background-color: #1a1a1b;
-  color: #ffffff;
-  padding: 0.5rem 1rem;
+/* ── Status / error message banner ───────────────────────────── */
+.message-area {
+  min-height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
   border-radius: 0.25rem;
   font-weight: bold;
   font-size: 0.875rem;
+  color: transparent;
+  background-color: transparent;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.message-area--error {
+  background-color: #1a1a1b;
+  color: #ffffff;
   animation: fade-in 0.15s ease;
 }
 
-.status-message {
+.message-area--status {
   background-color: #538d4e;
   color: #ffffff;
-  padding: 0.5rem 1.25rem;
-  border-radius: 0.25rem;
-  font-weight: bold;
   font-size: 1rem;
   animation: fade-in 0.15s ease;
 }
@@ -146,6 +155,10 @@
 /* ── Reset button ─────────────────────────────────────────────── */
 .reset-container {
   margin-top: 0.5rem;
+}
+
+.reset-container--hidden {
+  visibility: hidden;
 }
 
 .reset-button {
