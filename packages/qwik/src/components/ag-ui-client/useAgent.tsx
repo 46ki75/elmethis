@@ -20,7 +20,7 @@ import { ElmAgUiMessageRenderer } from "./elm-ag-ui-message-renderer";
 import { ElmAgUiInput } from "./elm-ag-ui-input";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
-import { mdiForumOutline } from "@mdi/js";
+import { mdiAlert, mdiForumOutline, mdiRefresh } from "@mdi/js";
 
 import { v7 } from "uuid";
 
@@ -75,6 +75,7 @@ export function useAgent({
   const toolsRef = useSignal<NoSerialize<ToolRegistry>>(noSerialize(tools));
 
   const agentStateStore = useStore<{
+    error: string | null;
     messages: Message[];
     events: BaseEvent[];
     context?: {
@@ -84,6 +85,7 @@ export function useAgent({
     isRunning: boolean;
     promptTemplates: { description: string; value: string }[];
   }>({
+    error: null,
     messages: initialMessages ?? [],
     events: [],
     context,
@@ -93,6 +95,7 @@ export function useAgent({
 
   const executeRun = $(async (withContext: boolean) => {
     if (!httpAgent.value) return;
+    agentStateStore.error = null;
     try {
       await httpAgent.value.runAgent({
         tools: getToolDefinitions(toolsRef.value ?? {}),
@@ -206,6 +209,14 @@ export function useAgent({
         pendingToolMessages = [];
         await executeRun(false);
       },
+
+      onRunFailed({ error }) {
+        agentStateStore.error = error.message;
+      },
+
+      onRunErrorEvent({ event }) {
+        agentStateStore.error = event.message;
+      },
     });
 
     cleanup(() => {
@@ -275,6 +286,21 @@ export function useAgent({
               messages={agentStateStore.messages}
               handleRetry$={retry}
             />
+
+            {agentStateStore.error && (
+              <>
+                <div class={styles["error"]}>
+                  <ElmMdiIcon d={mdiAlert} color="#c56565" />
+                  <ElmInlineText color="#c56565">
+                    {agentStateStore.error}
+                  </ElmInlineText>
+                </div>
+
+                <span class={styles["clickable-icon"]} onClick$={retry}>
+                  <ElmMdiIcon d={mdiRefresh} size="1.25rem" />
+                </span>
+              </>
+            )}
           </div>
 
           <div class={styles["agent-input"]}>
