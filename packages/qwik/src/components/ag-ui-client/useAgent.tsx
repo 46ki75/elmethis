@@ -319,28 +319,32 @@ export function useAgent({
 
       return (
         <div class={[styles["use-agent"], className]} style={style}>
-          <div class={styles["messages"]}>
-            <ElmAgUiMessageRenderer
-              isRunning={agentStateStore.isRunning}
-              messages={agentStateStore.messages}
-              handleRetry$={retry}
-            />
+          <div class={styles["agent-container"]}>
+            <div class={styles["messages"]}>
+              <ElmAgUiMessageRenderer
+                isRunning={agentStateStore.isRunning}
+                messages={agentStateStore.messages}
+                handleRetry$={retry}
+              />
 
-            {agentStateStore.error && (
-              <>
-                <div class={styles["error"]}>
-                  <ElmMdiIcon d={mdiAlert} color="#c56565" />
-                  <ElmInlineText color="#c56565">
-                    {agentStateStore.error}
-                  </ElmInlineText>
-                </div>
+              {agentStateStore.error && (
+                <>
+                  <div class={styles["error"]}>
+                    <ElmMdiIcon d={mdiAlert} color="#c56565" />
+                    <ElmInlineText color="#c56565">
+                      {agentStateStore.error}
+                    </ElmInlineText>
+                  </div>
 
-                <span class={styles["clickable-icon"]} onClick$={retry}>
-                  <ElmMdiIcon d={mdiRefresh} size="1.25rem" />
-                </span>
-              </>
-            )}
+                  <span class={styles["clickable-icon"]} onClick$={retry}>
+                    <ElmMdiIcon d={mdiRefresh} size="1.25rem" />
+                  </span>
+                </>
+              )}
+            </div>
+          </div>
 
+          <div class={styles["agent-input-container"]}>
             <div class={styles["agent-input"]}>
               {!agentStateStore.isRunning && (
                 <div class={styles["prompt-template-container"]}>
