@@ -85,6 +85,7 @@ export interface UseAgentOptions {
   }[];
   headers?: Record<string, string> | undefined;
   initialMessages?: Message[];
+  enableAutoScroll?: boolean;
 }
 
 export function useAgent({
@@ -93,7 +94,10 @@ export function useAgent({
   context,
   headers,
   initialMessages,
+  enableAutoScroll,
 }: UseAgentOptions) {
+  const enableAutoScrollSignal = useSignal(enableAutoScroll);
+
   const httpAgent = useSignal<NoSerialize<HttpAgent> | null>(null);
   const toolsRef = useSignal<NoSerialize<ToolRegistry>>(noSerialize(tools));
 
@@ -310,13 +314,16 @@ export function useAgent({
       // eslint-disable-next-line qwik/no-use-visible-task
       useVisibleTask$(({ track }) => {
         track(() => agentStateStore.messages.length);
-        const now = Date.now();
-        if (now - lastScrollTime.value < 500) return;
-        lastScrollTime.value = now;
-        containerRef.value?.scrollTo({
-          behavior: "smooth",
-          top: containerRef.value.scrollHeight,
-        });
+        track(() => enableAutoScrollSignal.value);
+        if (enableAutoScrollSignal.value) {
+          const now = Date.now();
+          if (now - lastScrollTime.value < 500) return;
+          lastScrollTime.value = now;
+          containerRef.value?.scrollTo({
+            behavior: "smooth",
+            top: containerRef.value.scrollHeight,
+          });
+        }
       });
 
       const onInput$ = $((_event: InputEvent, element: HTMLTextAreaElement) => {

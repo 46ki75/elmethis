@@ -34,6 +34,7 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 const WithLLMRender = component$((args: UseWordleOptions) => {
   const { AgentUI, addTool, setPromptTemplates } = useAgent({
     url: "http://localhost:19101/copilotkit/wordle/agent/default/run",
+    enableAutoScroll: true,
   });
 
   const {
