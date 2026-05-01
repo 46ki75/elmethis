@@ -27,92 +27,120 @@ export const FixedWord: Story = {
   render: () => <Render initialWord="which" />,
 };
 
+const WithLLMRender = component$((args: UseWordleOptions) => {
+  const { AgentUI, addTool } = useAgent({
+    url: "http://localhost:19101/copilotkit/builtin/agent/gpt-5.4-nano/run",
+  });
+  const {
+    Wordle,
+    removeLetter,
+    addLetter,
+    submit,
+    errorMessage,
+    letterStatuses,
+    board,
+    gameStatus,
+  } = useWordle(args);
+
+  addTool(
+    "submit_guess",
+    defineTool({
+      description:
+        "Submit a 5-letter guess to the Wordle game. " +
+        "Returns the per-position result for the guess and the accumulated known letter statuses.",
+      schema: z.object({
+        guess: z
+          .string()
+          .length(5)
+          .describe("A 5-letter lowercase word to guess (a-z only)."),
+      }),
+      async execute({ guess }) {
+        if (!/^[a-z]{5}$/.test(guess)) {
+          return {
+            success: false,
+            error: "Guess must be exactly 5 lowercase letters (a-z).",
+          };
+        }
+
+        // Clear any partially-typed letters before entering the new guess
+        for (let i = 0; i < 5; i++) removeLetter();
+
+        for (const letter of guess) {
+          await new Promise((resolve) => setTimeout(resolve, 100));
+          addLetter(letter);
+        }
+
+        submit();
+
+        if (errorMessage.value.trim() !== "") {
+          return { success: false, error: errorMessage.value };
+        }
+
+        // Position-by-position result for this guess (1-indexed for LLM readability)
+        const lastRow = board.value.at(-1)!;
+        const guessResult = lastRow.map(({ letter, status }, i) => ({
+          position: i + 1,
+          letter,
+          // "correct"  = right letter, right position (green)
+          // "present"  = right letter, wrong position (yellow)
+          // "absent"   = letter not in the word (gray)
+          status,
+        }));
+
+        const guessesUsed = board.value.length;
+
+        if (gameStatus.value === "won") {
+          return {
+            success: true,
+            gameStatus: "won",
+            guessResult,
+            guessesUsed,
+          };
+        }
+
+        if (gameStatus.value === "lost") {
+          return {
+            success: true,
+            gameStatus: "lost",
+            guessResult,
+            guessesUsed,
+          };
+        }
+
+        // Group accumulated letter knowledge by category
+        const knownLetters: Record<"correct" | "present" | "absent", string[]> =
+          { correct: [], present: [], absent: [] };
+        for (const [letter, status] of Object.entries(letterStatuses.value)) {
+          knownLetters[status].push(letter);
+        }
+
+        return {
+          success: true,
+          gameStatus: "playing",
+          guessResult,
+          guessesRemaining: 6 - guessesUsed,
+          knownLetters,
+        };
+      },
+    }),
+  );
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        gap: "20px",
+        height: "calc(100dvh - 34px)",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Wordle />
+      <AgentUI />
+    </div>
+  );
+});
+
 export const WithLLM: Story = {
-  render: (args) => {
-    const Render = component$((args: UseWordleOptions) => {
-      const { AgentUI, addTool } = useAgent({
-        url: "http://localhost:19101/copilotkit/builtin/agent/gpt-5.4-nano/run",
-      });
-      const {
-        Wordle,
-        removeLetter,
-        addLetter,
-        submit,
-        errorMessage,
-        letterStatuses,
-        gameStatus,
-      } = useWordle(args);
-
-      addTool(
-        "submit_guess",
-        defineTool({
-          description:
-            "Submit a guess to the Wordle game. The guess must be a valid 5-letter word.",
-          schema: z.object({
-            guess: z.string().length(5),
-          }),
-          async execute(args) {
-            if (!/^[a-z]{5}$/.test(args.guess)) {
-              return {
-                success: false,
-                message: "Guess must be a lowercase 5-letter word.",
-              };
-            }
-
-            removeLetter();
-
-            for (const letter of args.guess) {
-              await new Promise((resolve) => setTimeout(resolve, 100));
-              addLetter(letter);
-            }
-
-            submit();
-
-            if (errorMessage.value.trim() !== "") {
-              return {
-                success: false,
-                message: errorMessage.value,
-              };
-            } else if (gameStatus.value === "won") {
-              return {
-                success: true,
-                message: "Congratulations! You've won the game.",
-              };
-            } else if (gameStatus.value === "lost") {
-              return {
-                success: true,
-                message: "Game over. You've lost the game.",
-              };
-            } else {
-              const statuses = Object.entries(letterStatuses.value);
-              const statusMessage = statuses
-                .map(([letter, status]) => `${letter}: ${status}`)
-                .join(", ");
-              return {
-                success: true,
-                message: `Guess submitted successfully. Letter statuses: ${statusMessage}`,
-              };
-            }
-          },
-        }),
-      );
-
-      return (
-        <div
-          style={{
-            display: "flex",
-            gap: "20px",
-            height: "calc(100dvh - 34px)",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Wordle />
-          <AgentUI />
-        </div>
-      );
-    });
-
-    return <Render {...args} />;
-  },
+  render: (args) => <WithLLMRender {...args} />,
 };
