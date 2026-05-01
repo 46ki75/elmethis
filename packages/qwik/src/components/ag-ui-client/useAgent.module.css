@@ -1,8 +1,9 @@
 .use-agent {
   --agent-ui-width: clamp(300px, 100%, 500px);
 
+  box-sizing: border-box;
   margin: 0;
-  padding: 0;
+  padding: 0.25rem;
   width: 100%;
   height: 100%;
   overflow-y: auto;

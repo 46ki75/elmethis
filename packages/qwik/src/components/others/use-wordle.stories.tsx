@@ -151,14 +151,18 @@ const WithLLMRender = component$((args: UseWordleOptions) => {
     <div
       style={{
         display: "flex",
-        gap: "20px",
+        gap: "128px",
         height: "calc(100dvh - 34px)",
         justifyContent: "center",
         alignItems: "center",
       }}
     >
-      <Wordle />
-      <AgentUI />
+      <div style={{ flex: 1, maxWidth: "500px" }}>
+        <Wordle />
+      </div>
+      <div style={{ flex: 1, height: "100%", maxWidth: "500px" }}>
+        <AgentUI />
+      </div>
     </div>
   );
 });
