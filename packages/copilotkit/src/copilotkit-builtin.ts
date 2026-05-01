@@ -33,7 +33,14 @@ export const copilotkitBuiltinRuntime = new CopilotRuntime({
     "kimi-k2.6": generateAgent("moonshotai/kimi-k2.6"),
   },
   runner: new InMemoryAgentRunner(),
-  // a2ui: {
-  //   injectA2UITool: true,
-  // },
+  a2ui: {
+    injectA2UITool: true,
+  },
+});
+
+export const wordleRuntime = new CopilotRuntime({
+  agents: {
+    default: generateAgent("openai/gpt-5.4-mini"),
+  },
+  runner: new InMemoryAgentRunner(),
 });
