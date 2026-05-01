@@ -46,6 +46,7 @@ const WithLLMRender = component$((args: UseWordleOptions) => {
     letterStatuses,
     board,
     gameStatus,
+    answer,
   } = useWordle(args);
 
   useTask$(() => {
@@ -121,6 +122,7 @@ const WithLLMRender = component$((args: UseWordleOptions) => {
               gameStatus: "lost",
               guessResult,
               guessesUsed,
+              answer: answer.value,
             };
           }
 
