@@ -4,6 +4,8 @@ import { useWordle, type UseWordleOptions } from "./use-wordle";
 import { defineTool, useAgent } from "../ag-ui-client/useAgent";
 import z from "zod";
 
+import prompt from "./wordle/prompt.md?raw";
+
 const meta: Meta<UseWordleOptions> = {
   title: "Components/Others/use-wordle",
   tags: ["autodocs"],
@@ -28,9 +30,10 @@ export const FixedWord: Story = {
 };
 
 const WithLLMRender = component$((args: UseWordleOptions) => {
-  const { AgentUI, addTool } = useAgent({
+  const { AgentUI, addTool, setPromptTemplates } = useAgent({
     url: "http://localhost:19101/copilotkit/builtin/agent/gpt-5.4-nano/run",
   });
+
   const {
     Wordle,
     removeLetter,
@@ -43,6 +46,13 @@ const WithLLMRender = component$((args: UseWordleOptions) => {
   } = useWordle(args);
 
   useTask$(() => {
+    setPromptTemplates([
+      {
+        description: "Solve wordle",
+        value: prompt,
+      },
+    ]);
+
     addTool(
       "submit_guess",
       defineTool({
