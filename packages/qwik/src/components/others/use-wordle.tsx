@@ -1,4 +1,4 @@
-import { $, component$, useSignal } from "@builder.io/qwik";
+import { $, component$, useOnDocument, useSignal } from "@builder.io/qwik";
 
 import styles from "./use-wordle.module.css";
 
@@ -363,6 +363,21 @@ export const useWordle = (options?: UseWordleOptions) => {
   });
 
   const Wordle = component$(() => {
+    useOnDocument(
+      "keydown",
+      $((e: Event) => {
+        const { key, ctrlKey, altKey, metaKey } = e as KeyboardEvent;
+        if (ctrlKey || altKey || metaKey) return;
+        if (key === "Enter") {
+          submit();
+        } else if (key === "Backspace") {
+          removeLetter();
+        } else if (/^[a-zA-Z]$/.test(key)) {
+          addLetter(key);
+        }
+      }),
+    );
+
     const rows = Array.from({ length: MAX_CHALLENGES }, (_, rowIndex) => {
       const submitted = board.value[rowIndex];
       const isCurrentRow = rowIndex === board.value.length && gameStatus.value === "playing";
