@@ -1,9 +1,7 @@
 import {
-  $,
   component$,
   JSX,
   QRL,
-  useOn,
   useSignal,
   useVisibleTask$,
   type CSSProperties,
@@ -199,16 +197,6 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
               const ReasoningMarkdown = component$(
                 ({ markdown }: { markdown: string }) => {
                   const markdownRef = useSignal<HTMLElement>();
-
-                  useOn(
-                    "resize",
-                    $(() => {
-                      scrollTo({
-                        behavior: "smooth",
-                        top: markdownRef.value?.scrollHeight ?? 0,
-                      });
-                    }),
-                  );
 
                   return (
                     <div ref={markdownRef}>
