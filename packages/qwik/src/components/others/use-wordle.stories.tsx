@@ -75,7 +75,11 @@ const WithLLMRender = component$((args: UseWordleOptions) => {
             };
           }
 
-          for (let i = 0; i < 5; i++) await removeLetter();
+          await sleep(100);
+          for (let i = 0; i < 5; i++) {
+            await removeLetter();
+            await sleep(100);
+          }
           for (const letter of guess) {
             await addLetter(letter);
             await sleep(100);
