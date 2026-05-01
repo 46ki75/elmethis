@@ -340,30 +340,30 @@ export function useAgent({
                 </span>
               </>
             )}
-          </div>
 
-          <div class={styles["agent-input"]}>
-            {!agentStateStore.isRunning && (
-              <div class={styles["prompt-template-container"]}>
-                {agentStateStore.promptTemplates.map((template, index) => (
-                  <span
-                    key={index}
-                    class={styles["prompt-template-tip"]}
-                    onClick$={() => send(template.value)}
-                  >
-                    <ElmMdiIcon d={mdiForumOutline} color="#cdb57b" />
-                    <ElmInlineText>{template.description}</ElmInlineText>
-                  </span>
-                ))}
-              </div>
-            )}
+            <div class={styles["agent-input"]}>
+              {!agentStateStore.isRunning && (
+                <div class={styles["prompt-template-container"]}>
+                  {agentStateStore.promptTemplates.map((template, index) => (
+                    <span
+                      key={index}
+                      class={styles["prompt-template-tip"]}
+                      onClick$={() => send(template.value)}
+                    >
+                      <ElmMdiIcon d={mdiForumOutline} color="#cdb57b" />
+                      <ElmInlineText>{template.description}</ElmInlineText>
+                    </span>
+                  ))}
+                </div>
+              )}
 
-            <ElmAgUiInput
-              onInput$={onInput$}
-              onSubmit$={onSubmit$}
-              onAbort$={abort}
-              isRunning={agentStateStore.isRunning}
-            />
+              <ElmAgUiInput
+                onInput$={onInput$}
+                onSubmit$={onSubmit$}
+                onAbort$={abort}
+                isRunning={agentStateStore.isRunning}
+              />
+            </div>
           </div>
         </div>
       );
