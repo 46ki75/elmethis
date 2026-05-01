@@ -127,12 +127,9 @@ export function useAgent({
     if (!agent) return;
 
     let pendingToolMessages: Message[] = [];
-    let runInitCount = 0;
-    let runFinalCount = 0;
 
     const subscription = agent.subscribe({
       onRunInitialized() {
-        runInitCount++;
         agentStateStore.isRunning = true;
       },
       onEvent({ messages: newMessages, event }) {
@@ -198,13 +195,6 @@ export function useAgent({
         } as Message);
       },
       async onRunFinalized() {
-        runFinalCount++;
-        const myGen = runFinalCount;
-
-        // Stale check: if a newer run has been initialized since this run's
-        // finalization turn, this callback belongs to an old (aborted) run.
-        if (runInitCount > myGen) return;
-
         if (import.meta.env.DEV)
           console.log({
             messages: agentStateStore.messages,
