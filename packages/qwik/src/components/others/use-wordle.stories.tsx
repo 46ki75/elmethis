@@ -73,15 +73,9 @@ const WithLLMRender = component$((args: UseWordleOptions) => {
             };
           }
 
-          // Clear any partially-typed letters before entering the new guess
-          for (let i = 0; i < 5; i++) removeLetter();
-
-          for (const letter of guess) {
-            await new Promise((resolve) => setTimeout(resolve, 100));
-            addLetter(letter);
-          }
-
-          submit();
+          for (let i = 0; i < 5; i++) await removeLetter();
+          for (const letter of guess) await addLetter(letter);
+          await submit();
 
           if (errorMessage.value.trim() !== "") {
             return { success: false, error: errorMessage.value };
