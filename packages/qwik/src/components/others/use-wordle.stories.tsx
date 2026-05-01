@@ -29,6 +29,8 @@ export const FixedWord: Story = {
   render: () => <Render initialWord="which" />,
 };
 
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 const WithLLMRender = component$((args: UseWordleOptions) => {
   const { AgentUI, addTool, setPromptTemplates } = useAgent({
     url: "http://localhost:19101/copilotkit/builtin/agent/gpt-5.4-nano/run",
@@ -74,8 +76,13 @@ const WithLLMRender = component$((args: UseWordleOptions) => {
           }
 
           for (let i = 0; i < 5; i++) await removeLetter();
-          for (const letter of guess) await addLetter(letter);
+          for (const letter of guess) {
+            await addLetter(letter);
+            await sleep(100);
+          }
+
           await submit();
+          await sleep(100);
 
           if (errorMessage.value.trim() !== "") {
             return { success: false, error: errorMessage.value };

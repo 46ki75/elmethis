@@ -19,7 +19,7 @@ const generateAgent = (modelId: string): BuiltInAgent =>
     ],
     providerOptions: {
       openrouter: {
-        reasoning: { effort: "high" },
+        reasoning: { effort: "low" },
       },
     },
     tools: [],
