@@ -12,4 +12,4 @@ How to apply it each turn:
 4. Tiebreak: prefer guesses that are themselves still in the candidate set (small chance of an immediate win).
 5. Switch to candidate-only when remaining candidates ≤ guesses left, or on turn 6.
 
-Opener: start every game with "salet" — Jonathan Olson's exhaustive search shows it minimizes average guesses (~3.42). After the first feedback, resume the entropy search above.Opener: start every game with "salet" — Jonathan Olson's exhaustive search shows it minimizes average guesses (~3.42). After the first feedback, resume the entropy search above.
+Opener: start every game with "salet" — exhaustive tree search shows it minimizes average guesses (~3.42). After the first feedback, resume the entropy search above.
