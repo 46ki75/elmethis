@@ -304,6 +304,20 @@ export function useAgent({
   const AgentUI = component$<{ class?: string; style?: CSSProperties }>(
     ({ class: className, style }) => {
       const input = useSignal("");
+      const containerRef = useSignal<HTMLElement>();
+      const lastScrollTime = useSignal(0);
+
+      // eslint-disable-next-line qwik/no-use-visible-task
+      useVisibleTask$(({ track }) => {
+        track(() => agentStateStore.messages.length);
+        const now = Date.now();
+        if (now - lastScrollTime.value < 500) return;
+        lastScrollTime.value = now;
+        containerRef.value?.scrollTo({
+          behavior: "smooth",
+          top: containerRef.value.scrollHeight,
+        });
+      });
 
       const onInput$ = $((_event: InputEvent, element: HTMLTextAreaElement) => {
         input.value = element.value;
@@ -318,7 +332,11 @@ export function useAgent({
       });
 
       return (
-        <div class={[styles["use-agent"], className]} style={style}>
+        <div
+          ref={containerRef}
+          class={[styles["use-agent"], className]}
+          style={style}
+        >
           <div class={styles["agent-container"]}>
             <div class={styles["messages"]}>
               <ElmAgUiMessageRenderer
