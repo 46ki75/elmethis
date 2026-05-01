@@ -49,13 +49,16 @@
   font-size: 2rem;
   font-weight: bold;
   border: 2px solid transparent;
+  border-radius: 0.25rem;
   text-transform: uppercase;
   user-select: none;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .cell--empty {
-  border-color: #3a3a3c;
+  border-color: gray;
   background-color: transparent;
   color: transparent;
 }
@@ -63,7 +66,7 @@
 .cell--tbd {
   border-color: #565758;
   background-color: transparent;
-  color: #ffffff;
+  color: #6c7483;
 }
 
 .cell--correct {
@@ -111,7 +114,9 @@
   font-weight: bold;
   cursor: pointer;
   user-select: none;
-  transition: background-color 0.1s ease, transform 0.05s ease;
+  transition:
+    background-color 0.1s ease,
+    transform 0.05s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -152,7 +157,9 @@
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.15s ease, transform 0.05s ease;
+  transition:
+    background-color 0.15s ease,
+    transform 0.05s ease;
 }
 
 .reset-button:hover {

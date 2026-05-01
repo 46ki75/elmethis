@@ -10,7 +10,9 @@ import { VALIDGUESSES } from "./wordle/validGuesses";
 const MAX_WORD_LENGTH = 5;
 const MAX_CHALLENGES = 6;
 
-const WORD_SET: ReadonlySet<string> = Object.freeze(new Set(VALIDGUESSES));
+const WORD_SET: ReadonlySet<string> = Object.freeze(
+  new Set([...VALIDGUESSES, ...WORDS]),
+);
 
 // ---------------------------------------------------------------------------
 // Types
