@@ -3,7 +3,10 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { createCopilotHonoHandler } from "@copilotkit/runtime/v2";
 
-import { copilotkitBuiltinRuntime } from "./copilotkit-builtin.ts";
+import {
+  copilotkitBuiltinRuntime,
+  wordleRuntime,
+} from "./copilotkit-builtin.ts";
 import { copilotkitMastraRuntime } from "./copilotkit-mastra.ts";
 
 import "dotenv/config";
@@ -21,6 +24,15 @@ app.route(
   createCopilotHonoHandler({
     runtime: copilotkitBuiltinRuntime,
     basePath: "/copilotkit/builtin",
+  }),
+);
+
+// `/copilotkit/wordle/agent/default/run`
+app.route(
+  "/",
+  createCopilotHonoHandler({
+    runtime: wordleRuntime,
+    basePath: "/copilotkit/wordle",
   }),
 );
 

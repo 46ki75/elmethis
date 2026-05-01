@@ -1,9 +1,16 @@
-import { $, component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
+import {
+  $,
+  component$,
+  useSignal,
+  useStore,
+  useVisibleTask$,
+} from "@builder.io/qwik";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import {
   ElmAgUiMessageRenderer,
   type ElmAgUiMessageRendererProps,
 } from "./elm-ag-ui-message-renderer";
+import { Message } from "@ag-ui/client";
 
 const meta: Meta<ElmAgUiMessageRendererProps> = {
   title: "Components/AG-UI/elm-ag-ui-message-renderer",
@@ -347,5 +354,46 @@ export const A2UISurfaceUpdate: Story = {
         content: '{"status":"rendered"}',
       },
     ],
+  },
+};
+
+const LOREM_IPSUM =
+  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
+
+export const ReasoningStreaming: Story = {
+  render(args) {
+    const Render = component$((args: ElmAgUiMessageRendererProps) => {
+      const message = useStore<Message>({
+        role: "reasoning",
+        content: "I am thinking ",
+        id: "cbc03766-f03a-42e8-a27d-998f55828de1",
+      });
+
+      // eslint-disable-next-line qwik/no-use-visible-task
+      useVisibleTask$(async () => {
+        async function* streamReasoning(): AsyncGenerator<
+          string,
+          void,
+          unknown
+        > {
+          for (;;) {
+            yield "\n\n";
+
+            for (const word of LOREM_IPSUM.split(" ")) {
+              yield word + " ";
+              await new Promise((resolve) => setTimeout(resolve, 20));
+            }
+          }
+        }
+
+        for await (const chunk of streamReasoning()) {
+          message.content += chunk;
+        }
+      });
+
+      return <ElmAgUiMessageRenderer {...args} messages={[message]} />;
+    });
+
+    return <Render {...args} />;
   },
 };

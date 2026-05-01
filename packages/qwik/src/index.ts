@@ -196,6 +196,13 @@ export { elmBasicCatalogRendererMap } from "./components/a2ui/elm-a2ui-basic-cat
 
 // | Others |
 export {
+  useWordle,
+  type UseWordleOptions,
+  type LetterResult,
+  type LetterStatus,
+  type GameStatus,
+} from "./components/others/use-wordle";
+export {
   ElmColorSample,
   type ElmColorSampleProps,
 } from "./components/others/elm-color-sample";

@@ -37,6 +37,29 @@ export interface ToolDef<T extends z.ZodObject<z.ZodRawShape>> {
 export type AnyToolDef = ToolDef<z.ZodObject<z.ZodRawShape>>;
 export type ToolRegistry = Record<string, AnyToolDef>;
 
+/**
+ * Define a tool with full type inference on the `execute` callback args.
+ *
+ * TypeScript infers `T` from the `schema` field, so `execute` receives the
+ * exact shape produced by `z.infer<T>` rather than the erased `ZodRawShape`.
+ * The result is cast to {@link AnyToolDef} so it can be passed directly to
+ * {@link addTool}.
+ *
+ * @example
+ * ```ts
+ * defineTool({
+ *   description: "Generate a random UUID",
+ *   schema: z.object({ version: z.enum(["v4", "v7"]) }),
+ *   execute: async ({ version }) => ({ uuid: version === "v4" ? v4() : v7() }),
+ * });
+ * ```
+ */
+export function defineTool<T extends z.ZodObject<z.ZodRawShape>>(
+  tool: ToolDef<T>,
+): AnyToolDef {
+  return tool as unknown as AnyToolDef;
+}
+
 export function getToolDefinitions(registry: ToolRegistry) {
   return Object.entries(registry).map(([name, { description, schema }]) => ({
     name,
@@ -62,6 +85,7 @@ export interface UseAgentOptions {
   }[];
   headers?: Record<string, string> | undefined;
   initialMessages?: Message[];
+  enableAutoScroll?: boolean;
 }
 
 export function useAgent({
@@ -70,7 +94,10 @@ export function useAgent({
   context,
   headers,
   initialMessages,
+  enableAutoScroll,
 }: UseAgentOptions) {
+  const enableAutoScrollSignal = useSignal(enableAutoScroll);
+
   const httpAgent = useSignal<NoSerialize<HttpAgent> | null>(null);
   const toolsRef = useSignal<NoSerialize<ToolRegistry>>(noSerialize(tools));
 
@@ -254,6 +281,22 @@ export function useAgent({
     await executeRun(true);
   });
 
+  /**
+   * Register a tool that the agent can call during a run.
+   * Wrap the tool definition with {@link defineTool} to get typed `execute` args.
+   *
+   * @example
+   * ```ts
+   * addTool(
+   *   "generateUuid",
+   *   defineTool({
+   *     description: "Generate a random UUID",
+   *     schema: z.object({ version: z.enum(["v4", "v7"]) }),
+   *     execute: async ({ version }) => ({ uuid: version === "v4" ? v4() : v7() }),
+   *   }),
+   * );
+   * ```
+   */
   const addTool = $((name: string, tool: AnyToolDef) => {
     toolsRef.value = noSerialize({ ...(toolsRef.value ?? {}), [name]: tool });
   });
@@ -265,6 +308,23 @@ export function useAgent({
   const AgentUI = component$<{ class?: string; style?: CSSProperties }>(
     ({ class: className, style }) => {
       const input = useSignal("");
+      const containerRef = useSignal<HTMLElement>();
+      const lastScrollTime = useSignal(0);
+
+      // eslint-disable-next-line qwik/no-use-visible-task
+      useVisibleTask$(({ track }) => {
+        track(() => agentStateStore.messages.length);
+        track(() => enableAutoScrollSignal.value);
+        if (enableAutoScrollSignal.value) {
+          const now = Date.now();
+          if (now - lastScrollTime.value < 500) return;
+          lastScrollTime.value = now;
+          containerRef.value?.scrollTo({
+            behavior: "smooth",
+            top: containerRef.value.scrollHeight,
+          });
+        }
+      });
 
       const onInput$ = $((_event: InputEvent, element: HTMLTextAreaElement) => {
         input.value = element.value;
@@ -279,52 +339,60 @@ export function useAgent({
       });
 
       return (
-        <div class={[styles["use-agent"], className]} style={style}>
-          <div class={styles["messages"]}>
-            <ElmAgUiMessageRenderer
-              isRunning={agentStateStore.isRunning}
-              messages={agentStateStore.messages}
-              handleRetry$={retry}
-            />
+        <div
+          ref={containerRef}
+          class={[styles["use-agent"], className]}
+          style={style}
+        >
+          <div class={styles["agent-container"]}>
+            <div class={styles["messages"]}>
+              <ElmAgUiMessageRenderer
+                isRunning={agentStateStore.isRunning}
+                messages={agentStateStore.messages}
+                handleRetry$={retry}
+              />
 
-            {agentStateStore.error && (
-              <>
-                <div class={styles["error"]}>
-                  <ElmMdiIcon d={mdiAlert} color="#c56565" />
-                  <ElmInlineText color="#c56565">
-                    {agentStateStore.error}
-                  </ElmInlineText>
-                </div>
+              {agentStateStore.error && (
+                <>
+                  <div class={styles["error"]}>
+                    <ElmMdiIcon d={mdiAlert} color="#c56565" />
+                    <ElmInlineText color="#c56565">
+                      {agentStateStore.error}
+                    </ElmInlineText>
+                  </div>
 
-                <span class={styles["clickable-icon"]} onClick$={retry}>
-                  <ElmMdiIcon d={mdiRefresh} size="1.25rem" />
-                </span>
-              </>
-            )}
+                  <span class={styles["clickable-icon"]} onClick$={retry}>
+                    <ElmMdiIcon d={mdiRefresh} size="1.25rem" />
+                  </span>
+                </>
+              )}
+            </div>
           </div>
 
-          <div class={styles["agent-input"]}>
-            {!agentStateStore.isRunning && (
-              <div class={styles["prompt-template-container"]}>
-                {agentStateStore.promptTemplates.map((template, index) => (
-                  <span
-                    key={index}
-                    class={styles["prompt-template-tip"]}
-                    onClick$={() => send(template.value)}
-                  >
-                    <ElmMdiIcon d={mdiForumOutline} color="#cdb57b" />
-                    <ElmInlineText>{template.description}</ElmInlineText>
-                  </span>
-                ))}
-              </div>
-            )}
+          <div class={styles["agent-input-container"]}>
+            <div class={styles["agent-input"]}>
+              {!agentStateStore.isRunning && (
+                <div class={styles["prompt-template-container"]}>
+                  {agentStateStore.promptTemplates.map((template, index) => (
+                    <span
+                      key={index}
+                      class={styles["prompt-template-tip"]}
+                      onClick$={() => send(template.value)}
+                    >
+                      <ElmMdiIcon d={mdiForumOutline} color="#cdb57b" />
+                      <ElmInlineText>{template.description}</ElmInlineText>
+                    </span>
+                  ))}
+                </div>
+              )}
 
-            <ElmAgUiInput
-              onInput$={onInput$}
-              onSubmit$={onSubmit$}
-              onAbort$={abort}
-              isRunning={agentStateStore.isRunning}
-            />
+              <ElmAgUiInput
+                onInput$={onInput$}
+                onSubmit$={onSubmit$}
+                onAbort$={abort}
+                isRunning={agentStateStore.isRunning}
+              />
+            </div>
           </div>
         </div>
       );

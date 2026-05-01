@@ -72,8 +72,7 @@
 .reasoning-running {
   max-height: 12rem;
   overflow-y: scroll;
-  scrollbar-width: none; /* Firefox */
-  &::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Edge */
-  }
+  scrollbar-width: none;
+  box-sizing: border-box;
+  padding: 1rem 0;
 }
