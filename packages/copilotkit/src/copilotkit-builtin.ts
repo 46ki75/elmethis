@@ -40,7 +40,7 @@ export const copilotkitBuiltinRuntime = new CopilotRuntime({
 
 export const wordleRuntime = new CopilotRuntime({
   agents: {
-    default: generateAgent("openai/gpt-5.4-mini"),
+    default: generateAgent("openai/gpt-5.4-nano:nitro"),
   },
   runner: new InMemoryAgentRunner(),
 });
