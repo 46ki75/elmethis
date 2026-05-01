@@ -1,4 +1,4 @@
-# Solve the wordle with tools and following strats
+# Solve the Wordle using tools and following strategies
 
 Wordle strategy: maximize information with entropy.
 
