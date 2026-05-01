@@ -37,6 +37,29 @@ export interface ToolDef<T extends z.ZodObject<z.ZodRawShape>> {
 export type AnyToolDef = ToolDef<z.ZodObject<z.ZodRawShape>>;
 export type ToolRegistry = Record<string, AnyToolDef>;
 
+/**
+ * Define a tool with full type inference on the `execute` callback args.
+ *
+ * TypeScript infers `T` from the `schema` field, so `execute` receives the
+ * exact shape produced by `z.infer<T>` rather than the erased `ZodRawShape`.
+ * The result is cast to {@link AnyToolDef} so it can be passed directly to
+ * {@link addTool}.
+ *
+ * @example
+ * ```ts
+ * defineTool({
+ *   description: "Generate a random UUID",
+ *   schema: z.object({ version: z.enum(["v4", "v7"]) }),
+ *   execute: async ({ version }) => ({ uuid: version === "v4" ? v4() : v7() }),
+ * });
+ * ```
+ */
+export function defineTool<T extends z.ZodObject<z.ZodRawShape>>(
+  tool: ToolDef<T>,
+): AnyToolDef {
+  return tool as unknown as AnyToolDef;
+}
+
 export function getToolDefinitions(registry: ToolRegistry) {
   return Object.entries(registry).map(([name, { description, schema }]) => ({
     name,
@@ -254,6 +277,22 @@ export function useAgent({
     await executeRun(true);
   });
 
+  /**
+   * Register a tool that the agent can call during a run.
+   * Wrap the tool definition with {@link defineTool} to get typed `execute` args.
+   *
+   * @example
+   * ```ts
+   * addTool(
+   *   "generateUuid",
+   *   defineTool({
+   *     description: "Generate a random UUID",
+   *     schema: z.object({ version: z.enum(["v4", "v7"]) }),
+   *     execute: async ({ version }) => ({ uuid: version === "v4" ? v4() : v7() }),
+   *   }),
+   * );
+   * ```
+   */
   const addTool = $((name: string, tool: AnyToolDef) => {
     toolsRef.value = noSerialize({ ...(toolsRef.value ?? {}), [name]: tool });
   });
