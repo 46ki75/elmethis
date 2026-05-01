@@ -78,6 +78,13 @@ export function getToolDefinitions(registry: ToolRegistry) {
 
 export interface UseAgentOptions {
   url: string;
+  /**
+   * The width of the agent UI. Can be any valid CSS width value,
+   * such as `400px`, `50%`, or `clamp(300px, 100%, 600px)`.
+   *
+   * @default "clamp(300px, 100%, 600px)"
+   */
+  width?: CSSProperties["width"];
   tools?: ToolRegistry;
   context?: {
     value: string;
@@ -90,6 +97,7 @@ export interface UseAgentOptions {
 
 export function useAgent({
   url,
+  width = "clamp(300px, 100%, 600px)",
   tools,
   context,
   headers,
@@ -342,7 +350,10 @@ export function useAgent({
         <div
           ref={containerRef}
           class={[styles["use-agent"], className]}
-          style={style}
+          style={{
+            "--agent-ui-width": width,
+            ...style,
+          }}
         >
           <div class={styles["agent-container"]}>
             <div class={styles["messages"]}>
