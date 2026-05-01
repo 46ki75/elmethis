@@ -1,0 +1,176 @@
+.wordle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  font-family: inherit;
+}
+
+/* ── Status messages ──────────────────────────────────────────── */
+.error-message {
+  background-color: #1a1a1b;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-weight: bold;
+  font-size: 0.875rem;
+  animation: fade-in 0.15s ease;
+}
+
+.status-message {
+  background-color: #538d4e;
+  color: #ffffff;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.25rem;
+  font-weight: bold;
+  font-size: 1rem;
+  animation: fade-in 0.15s ease;
+}
+
+/* ── Board ────────────────────────────────────────────────────── */
+.board {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3125rem;
+}
+
+.row {
+  display: flex;
+  gap: 0.3125rem;
+}
+
+.cell {
+  width: 3.5rem;
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+  border: 2px solid transparent;
+  text-transform: uppercase;
+  user-select: none;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.cell--empty {
+  border-color: #3a3a3c;
+  background-color: transparent;
+  color: transparent;
+}
+
+.cell--tbd {
+  border-color: #565758;
+  background-color: transparent;
+  color: #ffffff;
+}
+
+.cell--correct {
+  background-color: #538d4e;
+  border-color: #538d4e;
+  color: #ffffff;
+}
+
+.cell--present {
+  background-color: #b59f3b;
+  border-color: #b59f3b;
+  color: #ffffff;
+}
+
+.cell--absent {
+  background-color: #3a3a3c;
+  border-color: #3a3a3c;
+  color: #ffffff;
+}
+
+/* ── Keyboard ─────────────────────────────────────────────────── */
+.keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 31rem;
+}
+
+.keyboard-row {
+  display: flex;
+  justify-content: center;
+  gap: 0.375rem;
+}
+
+.key {
+  height: 3.5rem;
+  min-width: 2.625rem;
+  padding: 0 0.25rem;
+  border: none;
+  border-radius: 0.25rem;
+  background-color: #818384;
+  color: #ffffff;
+  font-size: 0.8125rem;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.1s ease, transform 0.05s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.key:active {
+  transform: scale(0.95);
+}
+
+.key--wide {
+  min-width: 4rem;
+  font-size: 0.75rem;
+}
+
+.key--correct {
+  background-color: #538d4e;
+}
+
+.key--present {
+  background-color: #b59f3b;
+}
+
+.key--absent {
+  background-color: #3a3a3c;
+}
+
+/* ── Reset button ─────────────────────────────────────────────── */
+.reset-container {
+  margin-top: 0.5rem;
+}
+
+.reset-button {
+  padding: 0.625rem 1.5rem;
+  border: none;
+  border-radius: 0.25rem;
+  background-color: #538d4e;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.05s ease;
+}
+
+.reset-button:hover {
+  background-color: #6aaa64;
+}
+
+.reset-button:active {
+  transform: scale(0.97);
+}
+
+/* ── Animation ────────────────────────────────────────────────── */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
