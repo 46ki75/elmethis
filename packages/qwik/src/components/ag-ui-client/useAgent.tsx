@@ -124,7 +124,10 @@ export function useAgent({
       description: string;
     }[];
     isRunning: boolean;
-    promptTemplates: { description: string; value: string }[];
+    promptTemplates: {
+      description: string;
+      content: InputContent[];
+    }[];
   }>({
     error: null,
     messages: initialMessages ?? [],
@@ -394,9 +397,7 @@ export function useAgent({
                     <span
                       key={index}
                       class={styles["prompt-template-tip"]}
-                      onClick$={() =>
-                        send([{ type: "text", text: template.value }])
-                      }
+                      onClick$={() => send(template.content)}
                     >
                       <ElmMdiIcon d={mdiForumOutline} color="#cdb57b" />
                       <ElmInlineText>{template.description}</ElmInlineText>
@@ -425,7 +426,7 @@ export function useAgent({
   );
 
   const setPromptTemplates = $(
-    (templates: { description: string; value: string }[]) => {
+    (templates: { description: string; content: InputContent[] }[]) => {
       agentStateStore.promptTemplates = templates;
     },
   );

@@ -53,7 +53,7 @@ const WithLLMRender = component$((args: UseWordleOptions) => {
     setPromptTemplates([
       {
         description: "Solve wordle",
-        value: prompt,
+        content: prompt,
       },
     ]);
 
