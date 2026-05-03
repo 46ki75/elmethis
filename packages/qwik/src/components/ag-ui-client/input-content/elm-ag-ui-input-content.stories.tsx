@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "storybook-framework-qwik";
 import {
   ElmAgUiInputContentImage,
   type ElmAgUiInputContentImageProps,
-} from "./elm-ag-ui-input-content-image";
+} from "./elm-ag-ui-input-content";
 
 import ViteIcon from "../../../assets/vite.svg?url";
 import ViteIconRaw from "../../../assets/vite.svg?raw";
@@ -10,7 +10,7 @@ import ViteIconRaw from "../../../assets/vite.svg?raw";
 import md from "../../../../README.md?raw";
 
 const meta: Meta<ElmAgUiInputContentImageProps> = {
-  title: "Components/AG-UI/InputContent/elm-ag-ui-input-content-image",
+  title: "Components/AG-UI/InputContent/elm-ag-ui-input-content",
   component: ElmAgUiInputContentImage,
   tags: ["autodocs"],
   args: {},

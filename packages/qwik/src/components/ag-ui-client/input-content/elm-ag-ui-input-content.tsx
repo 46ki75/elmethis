@@ -1,6 +1,6 @@
 import { component$, type CSSProperties } from "@builder.io/qwik";
 
-import styles from "./elm-ag-ui-input-content-image.module.css";
+import styles from "./elm-ag-ui-input-content.module.css";
 
 import { ElmMdiIcon } from "../../icon/elm-mdi-icon";
 import { mdiImage, mdiTextBox } from "@mdi/js";
@@ -22,10 +22,10 @@ export const ElmAgUiInputContentImage =
           return (
             <>
               <div
-                class={[styles["elm-ag-ui-input-content-image"], className]}
+                class={[styles["elm-ag-ui-input-content"], className]}
                 style={style}
               >
-                <ElmMdiIcon class={styles["image-icon"]} d={mdiTextBox} />
+                <ElmMdiIcon class={styles["type-icon"]} d={mdiTextBox} />
                 <div>
                   <pre class={styles.text}>{inputContent.text}</pre>
                 </div>
@@ -57,10 +57,10 @@ export const ElmAgUiInputContentImage =
 
           return (
             <div
-              class={[styles["elm-ag-ui-input-content-image"], className]}
+              class={[styles["elm-ag-ui-input-content"], className]}
               style={style}
             >
-              <ElmMdiIcon class={styles["image-icon"]} d={mdiImage} />
+              <ElmMdiIcon class={styles["type-icon"]} d={mdiImage} />
               <img class={styles.image} width={96} height={96} src={url} />
               {source.mimeType && (
                 <div class={styles["mime-type-label"]}>{source.mimeType}</div>

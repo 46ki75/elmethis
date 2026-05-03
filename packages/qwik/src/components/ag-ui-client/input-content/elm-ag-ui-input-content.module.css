@@ -1,4 +1,4 @@
-.elm-ag-ui-input-content-image {
+.elm-ag-ui-input-content {
   position: relative;
   box-sizing: border-box;
   padding: 0.25rem;
@@ -33,7 +33,7 @@
     }
   }
 
-  .image-icon {
+  .type-icon {
     position: absolute;
     content: "";
     top: 0.25rem;
