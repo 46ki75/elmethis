@@ -49,7 +49,9 @@ export const ElmAgUiInputContent = component$<ElmAgUiInputContentImageProps>(
                   <div>
                     <pre class={styles.text}>{content.source.value}</pre>
                   </div>
-                  <div class={styles["mime-type-label"]}>Text</div>
+                  <div class={styles["mime-type-label"]}>
+                    {content.source.mimeType}
+                  </div>
                 </div>
               </>
             );
