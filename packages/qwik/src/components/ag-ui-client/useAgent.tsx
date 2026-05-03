@@ -11,7 +11,13 @@ import {
 
 import styles from "./useAgent.module.css";
 
-import { BaseEvent, HttpAgent, Message, UserMessage } from "@ag-ui/client";
+import {
+  BaseEvent,
+  HttpAgent,
+  InputContent,
+  Message,
+  UserMessage,
+} from "@ag-ui/client";
 import { compactEventsExtended } from "./compactEventsExtended";
 
 import { z } from "zod";
@@ -118,7 +124,10 @@ export function useAgent({
       description: string;
     }[];
     isRunning: boolean;
-    promptTemplates: { description: string; value: string }[];
+    promptTemplates: {
+      description: string;
+      content: InputContent[];
+    }[];
   }>({
     error: null,
     messages: initialMessages ?? [],
@@ -259,7 +268,7 @@ export function useAgent({
     });
   });
 
-  const send = $(async (content: string) => {
+  const send = $(async (content: InputContent[]) => {
     if (!httpAgent.value) return;
     const userMessage: UserMessage = {
       id: v7(),
@@ -340,7 +349,7 @@ export function useAgent({
 
       const onSubmit$ = $((_event: Event, element: Element) => {
         if (input.value.trim() === "") return;
-        send(input.value);
+        send([{ type: "text", text: input.value }]);
         input.value = "";
         const textarea = element.querySelector("textarea");
         if (textarea) textarea.value = "";
@@ -388,7 +397,16 @@ export function useAgent({
                     <span
                       key={index}
                       class={styles["prompt-template-tip"]}
-                      onClick$={() => send(template.value)}
+                      onClick$={() =>
+                        // Spread each item to create plain objects — HttpAgent calls
+                        // structuredClone() on messages before sending, which throws
+                        // a DataCloneError on Qwik reactive store proxies.
+                        send(
+                          agentStateStore.promptTemplates[index].content.map(
+                            (item) => ({ ...item }) as InputContent,
+                          ),
+                        )
+                      }
                     >
                       <ElmMdiIcon d={mdiForumOutline} color="#cdb57b" />
                       <ElmInlineText>{template.description}</ElmInlineText>
@@ -417,8 +435,29 @@ export function useAgent({
   );
 
   const setPromptTemplates = $(
-    (templates: { description: string; value: string }[]) => {
-      agentStateStore.promptTemplates = templates;
+    (
+      templates: { description: string; content: string | InputContent[] }[],
+    ) => {
+      agentStateStore.promptTemplates = templates.map(
+        ({ description, content }) => {
+          if (typeof content === "string") {
+            return {
+              description,
+              content: [
+                {
+                  type: "text" as const,
+                  text: content,
+                },
+              ] satisfies InputContent[],
+            };
+          } else {
+            return {
+              description,
+              content: content satisfies InputContent[],
+            };
+          }
+        },
+      );
     },
   );
 

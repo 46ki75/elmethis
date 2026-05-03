@@ -54,23 +54,23 @@ const UseAgent = component$<UseAgentProps>(
       setPromptTemplates([
         {
           description: "Ask about AWS",
-          value: "What is a new feature called Amazon S3 Files?",
+          content: "What is a new feature called Amazon S3 Files?",
         },
         {
           description: "Generate UUID v7",
-          value: "Generate a UUID v7 string",
+          content: "Generate a UUID v7 string",
         },
         {
           description: "Date and time",
-          value: "What is the current date and time?",
+          content: "What is the current date and time?",
         },
         {
           description: "Location information",
-          value: "What is my current location?",
+          content: "What is my current location?",
         },
         {
           description: "Render A2UI",
-          value: `Could you render a \`Card\` and \`Text\` component with A2UI?
+          content: `Could you render a \`Card\` and \`Text\` component with A2UI?
 
 - catalogId: <https://a2ui.org/specification/v0_9/basic_catalog.json>
 - surfaceId: \`my-card-surface\``,
