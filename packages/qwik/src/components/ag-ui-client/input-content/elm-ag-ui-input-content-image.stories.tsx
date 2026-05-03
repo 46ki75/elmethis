@@ -7,6 +7,8 @@ import {
 import ViteIcon from "../../../assets/vite.svg?url";
 import ViteIconRaw from "../../../assets/vite.svg?raw";
 
+import md from "../../../../README.md?raw";
+
 const meta: Meta<ElmAgUiInputContentImageProps> = {
   title: "Components/AG-UI/InputContent/elm-ag-ui-input-content-image",
   component: ElmAgUiInputContentImage,
@@ -40,6 +42,15 @@ export const WithDataUrl: Story = {
         mimeType: "image/svg+xml",
         value: base64Image,
       },
+    },
+  },
+};
+
+export const TextInputContent: Story = {
+  args: {
+    inputContent: {
+      type: "text",
+      text: md,
     },
   },
 };

@@ -3,7 +3,7 @@ import { component$, type CSSProperties } from "@builder.io/qwik";
 import styles from "./elm-ag-ui-input-content-image.module.css";
 
 import { ElmMdiIcon } from "../../icon/elm-mdi-icon";
-import { mdiImage } from "@mdi/js";
+import { mdiImage, mdiTextBox } from "@mdi/js";
 import { InputContent } from "@ag-ui/client";
 
 export interface ElmAgUiInputContentImageProps {
@@ -19,7 +19,20 @@ export const ElmAgUiInputContentImage =
     ({ class: className, style, inputContent }) => {
       switch (inputContent.type) {
         case "text": {
-          return <></>;
+          return (
+            <>
+              <div
+                class={[styles["elm-ag-ui-input-content-image"], className]}
+                style={style}
+              >
+                <ElmMdiIcon class={styles["image-icon"]} d={mdiTextBox} />
+                <div>
+                  <pre class={styles.text}>{inputContent.text}</pre>
+                </div>
+                <div class={styles["mime-type-label"]}>Text</div>
+              </div>
+            </>
+          );
         }
         case "audio": {
           return <></>;

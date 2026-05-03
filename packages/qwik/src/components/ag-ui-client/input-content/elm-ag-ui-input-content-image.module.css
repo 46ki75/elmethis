@@ -7,6 +7,7 @@
   border: solid 1px oklch(from gray l c h / 0.25);
   border-radius: 0.25rem;
   background-color: oklch(from white l c h / 0.25);
+  overflow: hidden;
 
   [data-theme="dark"] & {
     background-color: oklch(from black l c h / 0.25);
@@ -16,6 +17,20 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  .text {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    white-space: wrap;
+    font-size: 0.25rem;
+    color: oklch(from gray l c h / 0.75);
+    user-select: none;
+
+    [data-theme="dark"] & {
+      color: oklch(from white l c h / 0.75);
+    }
   }
 
   .image-icon {
