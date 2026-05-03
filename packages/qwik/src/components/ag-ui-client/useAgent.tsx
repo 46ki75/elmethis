@@ -426,8 +426,29 @@ export function useAgent({
   );
 
   const setPromptTemplates = $(
-    (templates: { description: string; content: InputContent[] }[]) => {
-      agentStateStore.promptTemplates = templates;
+    (
+      templates: { description: string; content: string | InputContent[] }[],
+    ) => {
+      agentStateStore.promptTemplates = templates.map(
+        ({ description, content }) => {
+          if (typeof content === "string") {
+            return {
+              description,
+              content: [
+                {
+                  type: "text" as const,
+                  text: content,
+                },
+              ] satisfies InputContent[],
+            };
+          } else {
+            return {
+              description,
+              content: content satisfies InputContent[],
+            };
+          }
+        },
+      );
     },
   );
 
