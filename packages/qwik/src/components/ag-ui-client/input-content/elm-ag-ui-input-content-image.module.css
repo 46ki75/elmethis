@@ -35,7 +35,7 @@
     font-family: monospace;
     font-size: 0.65rem;
     border-radius: 0.125rem;
-    background-color: oklch(from gray l c h / 0.125);
+    background-color: oklch(from white l c h / 0.8);
     backdrop-filter: blur(0.25rem);
 
     color: var(--color, #606875);
