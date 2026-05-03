@@ -70,3 +70,10 @@
     }
   }
 }
+
+.message-content-user-content {
+  box-sizing: border-box;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  background-color: oklch(from grey l c h / 0.1);
+}
