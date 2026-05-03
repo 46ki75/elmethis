@@ -19,7 +19,7 @@ type Story = StoryObj<ElmAgUiInputContentImageProps>;
 
 export const Primary: Story = {
   args: {
-    imageInputContent: {
+    inputContent: {
       type: "image",
       source: {
         type: "url",
@@ -33,7 +33,7 @@ const base64Image = btoa(ViteIconRaw);
 
 export const WithDataUrl: Story = {
   args: {
-    imageInputContent: {
+    inputContent: {
       type: "image",
       source: {
         type: "data",
