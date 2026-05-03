@@ -23,7 +23,7 @@ import { ElmAgUiToolExecution } from "./elm-ag-ui-tool-execution";
 import { ElmCopyIcon } from "../icon/elm-copy-icon";
 import { ElmToggle } from "../containments/elm-toggle";
 import { ElmA2uiRenderer } from "../a2ui/elm-a2ui-renderer";
-import { ElmAgUiInputContentImage } from "./input-content/elm-ag-ui-input-content";
+import { ElmAgUiInputContent } from "./input-content/elm-ag-ui-input-content";
 
 export interface ElmAgUiMessageRendererProps {
   class?: string;
@@ -246,7 +246,7 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
                   ></div>
                 </div>
 
-                <ElmAgUiInputContentImage inputContent={message.content} />
+                <ElmAgUiInputContent inputContent={message.content} />
 
                 <div>
                   <ElmCopyIcon content={contentToText()} />

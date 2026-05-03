@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import {
-  ElmAgUiInputContentImage,
+  ElmAgUiInputContent,
   type ElmAgUiInputContentImageProps,
 } from "./elm-ag-ui-input-content";
 
@@ -11,7 +11,7 @@ import md from "../../../../README.md?raw";
 
 const meta: Meta<ElmAgUiInputContentImageProps> = {
   title: "Components/AG-UI/InputContent/elm-ag-ui-input-content",
-  component: ElmAgUiInputContentImage,
+  component: ElmAgUiInputContent,
   tags: ["autodocs"],
   args: {},
 };
@@ -38,6 +38,14 @@ const base64Image = btoa(ViteIconRaw);
 export const WithDataUrl: Story = {
   args: {
     inputContent: [
+      {
+        type: "image",
+        source: {
+          type: "data",
+          mimeType: "image/svg+xml",
+          value: base64Image,
+        },
+      },
       {
         type: "image",
         source: {
