@@ -1,4 +1,19 @@
 .elm-ag-ui-input-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-end;
+}
+
+.media-component-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.media-component {
   position: relative;
   box-sizing: border-box;
   padding: 0.25rem;
@@ -73,6 +88,7 @@
 
 .message-content-user-content {
   box-sizing: border-box;
+  width: fit-content;
   padding: 0.5rem;
   border-radius: 0.25rem;
   background-color: oklch(from grey l c h / 0.1);

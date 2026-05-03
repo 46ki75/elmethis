@@ -39,6 +39,10 @@ export const WithDataUrl: Story = {
   args: {
     inputContent: [
       {
+        type: "text",
+        text: "This is an image:",
+      },
+      {
         type: "image",
         source: {
           type: "data",

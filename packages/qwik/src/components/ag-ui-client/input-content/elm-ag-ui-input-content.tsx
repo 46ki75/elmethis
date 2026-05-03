@@ -23,25 +23,13 @@ export const ElmAgUiInputContent = component$<ElmAgUiInputContentImageProps>(
     if (typeof inputContent === "string") {
       return renderTextContent(inputContent);
     } else {
-      const components = [];
+      const mediaComponents = [];
+      const texts: string[] = [];
 
       for (const content of inputContent) {
         switch (content.type) {
           case "text": {
-            components.push(
-              <>
-                <div
-                  class={[styles["elm-ag-ui-input-content"], className]}
-                  style={style}
-                >
-                  <ElmMdiIcon class={styles["type-icon"]} d={mdiTextBox} />
-                  <div>
-                    <pre class={styles.text}>{content.text}</pre>
-                  </div>
-                  <div class={styles["mime-type-label"]}>Text</div>
-                </div>
-              </>,
-            );
+            texts.push(content.text);
             break;
           }
           case "audio": {
@@ -54,7 +42,7 @@ export const ElmAgUiInputContent = component$<ElmAgUiInputContentImageProps>(
             return (
               <>
                 <div
-                  class={[styles["elm-ag-ui-input-content"], className]}
+                  class={[styles["media-component"], className]}
                   style={style}
                 >
                   <ElmMdiIcon class={styles["type-icon"]} d={mdiTextBox} />
@@ -78,11 +66,8 @@ export const ElmAgUiInputContent = component$<ElmAgUiInputContentImageProps>(
                 ? `data:${source.mimeType};base64,${source.value}`
                 : source.value;
 
-            components.push(
-              <div
-                class={[styles["elm-ag-ui-input-content"], className]}
-                style={style}
-              >
+            mediaComponents.push(
+              <div class={[styles["media-component"], className]} style={style}>
                 <ElmMdiIcon class={styles["type-icon"]} d={mdiImage} />
                 <img class={styles.image} width={96} height={96} src={url} />
                 {source.mimeType && (
@@ -96,7 +81,14 @@ export const ElmAgUiInputContent = component$<ElmAgUiInputContentImageProps>(
         }
       }
 
-      return <div>{components}</div>;
+      return (
+        <div class={styles["elm-ag-ui-input-content"]}>
+          <div class={styles["media-component-container"]}>
+            {mediaComponents}
+          </div>
+          {texts.length > 0 && renderTextContent(texts.join("\n"))}
+        </div>
+      );
     }
   },
 );
