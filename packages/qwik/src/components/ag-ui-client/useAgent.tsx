@@ -11,7 +11,13 @@ import {
 
 import styles from "./useAgent.module.css";
 
-import { BaseEvent, HttpAgent, Message, UserMessage } from "@ag-ui/client";
+import {
+  BaseEvent,
+  HttpAgent,
+  InputContent,
+  Message,
+  UserMessage,
+} from "@ag-ui/client";
 import { compactEventsExtended } from "./compactEventsExtended";
 
 import { z } from "zod";
@@ -259,7 +265,7 @@ export function useAgent({
     });
   });
 
-  const send = $(async (content: string) => {
+  const send = $(async (content: InputContent[]) => {
     if (!httpAgent.value) return;
     const userMessage: UserMessage = {
       id: v7(),
@@ -340,7 +346,7 @@ export function useAgent({
 
       const onSubmit$ = $((_event: Event, element: Element) => {
         if (input.value.trim() === "") return;
-        send(input.value);
+        send([{ type: "text", text: input.value }]);
         input.value = "";
         const textarea = element.querySelector("textarea");
         if (textarea) textarea.value = "";
@@ -388,7 +394,9 @@ export function useAgent({
                     <span
                       key={index}
                       class={styles["prompt-template-tip"]}
-                      onClick$={() => send(template.value)}
+                      onClick$={() =>
+                        send([{ type: "text", text: template.value }])
+                      }
                     >
                       <ElmMdiIcon d={mdiForumOutline} color="#cdb57b" />
                       <ElmInlineText>{template.description}</ElmInlineText>
