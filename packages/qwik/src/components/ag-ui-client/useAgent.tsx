@@ -397,7 +397,16 @@ export function useAgent({
                     <span
                       key={index}
                       class={styles["prompt-template-tip"]}
-                      onClick$={() => send(template.content)}
+                      onClick$={() =>
+                        // Spread each item to create plain objects — HttpAgent calls
+                        // structuredClone() on messages before sending, which throws
+                        // a DataCloneError on Qwik reactive store proxies.
+                        send(
+                          agentStateStore.promptTemplates[index].content.map(
+                            (item) => ({ ...item }) as InputContent,
+                          ),
+                        )
+                      }
                     >
                       <ElmMdiIcon d={mdiForumOutline} color="#cdb57b" />
                       <ElmInlineText>{template.description}</ElmInlineText>
