@@ -1,0 +1,137 @@
+{
+  "skill_name": "qwik",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I'm building a Qwik app and I need a counter component. It should have an increment and a decrement button, and display the current count. Show me how to do this correctly using Qwik's reactivity primitives.",
+      "expected_output": "A correct Qwik component using useSignal for the count, with onClick$ handlers on both buttons, demonstrating Qwik's fine-grained reactivity.",
+      "files": [],
+      "assertions": [
+        {
+          "name": "uses-useSignal",
+          "description": "Response uses useSignal() to create reactive state",
+          "type": "contains_text",
+          "value": "useSignal"
+        },
+        {
+          "name": "uses-onClick-dollar",
+          "description": "Event handlers use the onClick$ QRL syntax",
+          "type": "contains_text",
+          "value": "onClick$"
+        },
+        {
+          "name": "accesses-dot-value",
+          "description": "Signal value is read/written via .value property",
+          "type": "contains_text",
+          "value": ".value"
+        },
+        {
+          "name": "uses-component-dollar",
+          "description": "Component is defined with component$()",
+          "type": "contains_text",
+          "value": "component$"
+        },
+        {
+          "name": "imports-from-qwik",
+          "description": "Imports come from @builder.io/qwik",
+          "type": "contains_text",
+          "value": "@builder.io/qwik"
+        },
+        {
+          "name": "has-decrement",
+          "description": "Response includes a decrement operation",
+          "type": "llm_judge",
+          "value": "Does the response show a decrement button or handler that decrements the counter?"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "In my Qwik City app I have a product detail page at src/routes/product/[id]/index.tsx. I want to fetch the product from my database on the server before rendering, so it's available in SSR. How do I do that, and how do I handle the case where the product isn't found?",
+      "expected_output": "Shows routeLoader$ with params.id, async fetch/db call, fail() for 404, and how to consume the loader in the component with signal.value.",
+      "files": [],
+      "assertions": [
+        {
+          "name": "uses-routeLoader-dollar",
+          "description": "Response uses routeLoader$ for server-side data fetching",
+          "type": "contains_text",
+          "value": "routeLoader$"
+        },
+        {
+          "name": "imports-from-qwik-city",
+          "description": "routeLoader$ is imported from @builder.io/qwik-city",
+          "type": "contains_text",
+          "value": "@builder.io/qwik-city"
+        },
+        {
+          "name": "accesses-params-id",
+          "description": "Response shows how to access the dynamic [id] param",
+          "type": "llm_judge",
+          "value": "Does the response show accessing params.id inside the loader?"
+        },
+        {
+          "name": "handles-not-found",
+          "description": "Response covers the not-found / 404 case",
+          "type": "llm_judge",
+          "value": "Does the response show how to handle the case when a product is not found?"
+        },
+        {
+          "name": "consumes-in-component",
+          "description": "Response shows consuming the loader result in the component",
+          "type": "llm_judge",
+          "value": "Does the response show calling the loader hook inside a component and using the signal value?"
+        },
+        {
+          "name": "server-side-note",
+          "description": "Response notes that routeLoader$ runs on the server",
+          "type": "llm_judge",
+          "value": "Does the response explain or mention that routeLoader$ runs on the server?"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I'm migrating from React and I don't understand why my code is breaking. I have a useEffect that runs only on the client to set up a third-party chart library, but in Qwik it seems like things work differently. Can you explain the Qwik lifecycle and show me the right way to initialize a non-serializable third-party library?",
+      "expected_output": "Explanation of resumability vs hydration, the useTask$/useVisibleTask$ lifecycle, and a concrete example of noSerialize() + useVisibleTask$ for the chart lib.",
+      "files": [],
+      "assertions": [
+        {
+          "name": "explains-resumability",
+          "description": "Response explains resumability or the key difference from React hydration",
+          "type": "llm_judge",
+          "value": "Does the response explain Qwik's resumability model or the fundamental difference from React hydration?"
+        },
+        {
+          "name": "recommends-useVisibleTask",
+          "description": "Response recommends useVisibleTask$ for client-only initialization",
+          "type": "contains_text",
+          "value": "useVisibleTask$"
+        },
+        {
+          "name": "uses-noSerialize",
+          "description": "Response mentions noSerialize() for non-serializable values",
+          "type": "contains_text",
+          "value": "noSerialize"
+        },
+        {
+          "name": "shows-lifecycle-stages",
+          "description": "Response shows or explains the three lifecycle stages",
+          "type": "llm_judge",
+          "value": "Does the response describe the Qwik lifecycle with useTask$, render, and useVisibleTask$ stages?"
+        },
+        {
+          "name": "provides-code-example",
+          "description": "Response includes a concrete code example for the third-party lib case",
+          "type": "llm_judge",
+          "value": "Does the response include a Qwik code example showing how to initialize a non-serializable third-party library?"
+        },
+        {
+          "name": "maps-useEffect-to-useVisibleTask",
+          "description": "Response maps React useEffect to Qwik useVisibleTask$",
+          "type": "llm_judge",
+          "value": "Does the response explicitly say that useVisibleTask$ is the Qwik equivalent of React's useEffect?"
+        }
+      ]
+    }
+  ]
+}

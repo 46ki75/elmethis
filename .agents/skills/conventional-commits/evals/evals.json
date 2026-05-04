@@ -1,0 +1,70 @@
+{
+  "skill_name": "conventional-commits",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I just added pagination support to the /users API endpoint. It accepts `page` and `limit` query params and returns a `meta` object with total count. Can you write a commit message for this?",
+      "expected_output": "A conventional commit message with type 'feat', an appropriate scope like 'api', an imperative lowercase description, no trailing period, and header under 72 chars.",
+      "files": [],
+      "assertions": [
+        "The commit message header starts with 'feat'",
+        "The commit message header uses imperative mood (e.g. 'add', not 'added' or 'adds')",
+        "The commit message header is 72 characters or fewer",
+        "The commit message header first word after the colon+space is lowercase",
+        "The commit message header does not end with a period"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Fixed a bug where the password reset link expired too early — it was using seconds instead of milliseconds when calculating the expiry. Write me a commit for this.",
+      "expected_output": "A conventional commit message with type 'fix', appropriate scope (e.g. 'auth'), imperative description, header under 72 chars.",
+      "files": [],
+      "assertions": [
+        "The commit message header starts with 'fix'",
+        "The commit message header uses imperative mood (e.g. 'use', 'fix', not 'fixed' or 'fixes')",
+        "The commit message header is 72 characters or fewer",
+        "The commit message header first word after the colon+space is lowercase",
+        "The commit message header does not end with a period"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "We're renaming the `getUser()` function to `fetchUser()` across the entire codebase. This is a public API that our SDK consumers use, so it's a breaking change. Write the commit message.",
+      "expected_output": "A conventional commit message with type 'refactor', breaking change marked with '!' and/or a 'BREAKING CHANGE:' footer explaining what callers need to do.",
+      "files": [],
+      "assertions": [
+        "The commit message header starts with 'refactor'",
+        "The commit message marks the breaking change with '!' after the type/scope OR includes a 'BREAKING CHANGE:' footer",
+        "The commit message mentions 'fetchUser' (the new name) or references the rename",
+        "The commit message header is 72 characters or fewer",
+        "If a BREAKING CHANGE footer is present, it explains what callers need to change"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I updated the README to add a section on environment variables and fixed a couple of typos in the contributing guide. What's the right commit message?",
+      "expected_output": "A conventional commit message with type 'docs', imperative description, header under 72 chars.",
+      "files": [],
+      "assertions": [
+        "The commit message header starts with 'docs'",
+        "The commit message header is 72 characters or fewer",
+        "The commit message header uses imperative mood (e.g. 'add', not 'added')",
+        "The commit message header first word after the colon+space is lowercase",
+        "The response either provides a single docs: commit covering both changes OR suggests splitting into two separate commits"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Is this commit message ok? 'Updated the login page to fix issues with the forgot password flow and also added some tests'",
+      "expected_output": "The skill should identify problems: missing type prefix, past tense 'Updated', trailing period would be wrong, mixing multiple concerns (fix + test), and suggest a corrected version or ask the user to split the commits.",
+      "files": [],
+      "assertions": [
+        "The response identifies that the message is missing a type prefix (feat/fix/etc.)",
+        "The response identifies that the description uses past tense ('Updated') instead of imperative mood",
+        "The response provides at least one corrected commit message with a proper type prefix",
+        "The corrected commit message(s) in the response use imperative mood",
+        "The response notes that the message mixes multiple concerns (bug fix + tests) and suggests splitting OR uses the dominant type correctly"
+      ]
+    }
+  ]
+}
