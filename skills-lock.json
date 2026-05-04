@@ -1,10 +1,22 @@
 {
   "version": 1,
   "skills": {
+    "conventional-commits": {
+      "source": "46ki75/skills",
+      "sourceType": "github",
+      "skillPath": "skills/conventional-commits/SKILL.md",
+      "computedHash": "f34d84085fb0b72c235908587986931fe79ced8228e64cdb6196dcb95d4e98ac"
+    },
     "mastra": {
       "source": "mastra-ai/skills",
       "sourceType": "github",
       "computedHash": "b42f583342dfee7deb541f4d094f03e8748898257f1f884fa71de1fdba9f38a2"
+    },
+    "qwik": {
+      "source": "46ki75/skills",
+      "sourceType": "github",
+      "skillPath": "skills/qwik/SKILL.md",
+      "computedHash": "8975ae936f528d94e369d0dcec54c2ffeaf73cd10eeba74986c0b6bb2c5b668a"
     }
   }
 }
