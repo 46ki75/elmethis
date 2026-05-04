@@ -61,7 +61,7 @@
     "@vitest/ui": "^0.34.6",
     "eslint": "10.3.0",
     "eslint-plugin-qwik": "1.19.2",
-    "globals": "17.5.0",
+    "globals": "17.6.0",
     "jarkup-ts": "^0.14.0",
     "np": "^11.2.0",
     "prettier": "3.8.3",
