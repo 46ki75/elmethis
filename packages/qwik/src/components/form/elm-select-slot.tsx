@@ -18,6 +18,7 @@ import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { useControllableState } from "../../hooks/use-controllable-state";
 import styles from "./elm-select.module.scss";
 import textStyles from "../../styles/text.module.scss";
+import { ElmCollapse } from "../containments/elm-collapse";
 
 export interface ElmSelectSlotOption {
   id: string;
@@ -133,28 +134,22 @@ export const ElmSelectSlot = component$<ElmSelectSlotProps>((props) => {
 
           <ElmMdiIcon d={mdiMenuDown} size="1.5rem" />
 
-          {isOpen.value && (
-            <div class={styles.pulldown}>
-              {props.options.map((option) => (
-                <div
-                  key={option.id}
-                  class={[styles.option, textStyles.text]}
-                  onClick$={(e) => {
-                    e.stopPropagation();
-                    setSelectedOption(option);
-                    setIsOpen(false);
-                  }}
-                >
-                  <ElmMdiIcon
-                    d={mdiChevronRight}
-                    color="#868e9c"
-                    size="0.75em"
-                  />
-                  {option.slot}
-                </div>
-              ))}
-            </div>
-          )}
+          <ElmCollapse isOpen={isOpen.value} class={styles.pulldown}>
+            {props.options.map((option) => (
+              <div
+                key={option.id}
+                class={[styles.option, textStyles.text]}
+                onClick$={(e) => {
+                  e.stopPropagation();
+                  setSelectedOption(option);
+                  setIsOpen(false);
+                }}
+              >
+                <ElmMdiIcon d={mdiChevronRight} color="#868e9c" size="0.75em" />
+                {option.slot}
+              </div>
+            ))}
+          </ElmCollapse>
         </div>
       </div>
     </div>
