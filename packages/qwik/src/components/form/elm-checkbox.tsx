@@ -1,12 +1,13 @@
 import {
   $,
   component$,
-  useSignal,
+  useComputed$,
   type CSSProperties,
-  type Signal,
+  type PropFunction,
 } from "@builder.io/qwik";
 
 import { ElmInlineText } from "../typography/elm-inline-text";
+import { useControllableState } from "../../hooks/use-controllable-state";
 import styles from "./elm-checkbox.module.scss";
 
 export interface ElmCheckboxProps {
@@ -30,19 +31,26 @@ export interface ElmCheckboxProps {
   disable?: boolean;
 
   /**
-   * Checkbox state
+   * Controlled checked state. When provided the parent owns the state.
    */
-  checked?: Signal<boolean>;
+  checked?: boolean;
+
+  /**
+   * Initial checked state when uncontrolled.
+   */
+  defaultChecked?: boolean;
+
+  /**
+   * Called whenever the checked state changes.
+   */
+  onCheckedChange$?: PropFunction<(checked: boolean) => void>;
 }
 
 export const ElmCheckbox = component$<ElmCheckboxProps>((props) => {
-  const internalChecked = useSignal(false);
-  const isChecked = props.checked ?? internalChecked;
-
-  const toggleCheck = $(() => {
-    if (!props.loading && !props.disable) {
-      isChecked.value = !isChecked.value;
-    }
+  const [isChecked, setIsChecked] = useControllableState({
+    prop: useComputed$(() => props.checked),
+    defaultProp: props.defaultChecked ?? false,
+    onChange: props.onCheckedChange$,
   });
 
   return (
@@ -53,7 +61,11 @@ export const ElmCheckbox = component$<ElmCheckboxProps>((props) => {
         props.class,
       ]}
       style={props.style}
-      onClick$={toggleCheck}
+      onClick$={$(() => {
+        if (!props.loading && !props.disable) {
+          setIsChecked(!isChecked.value);
+        }
+      })}
     >
       <div
         style={{
@@ -135,68 +147,13 @@ export const ElmCheckbox = component$<ElmCheckboxProps>((props) => {
             />
           )}
 
-          <line
-            x1="0"
-            y1="1"
-            x2="4"
-            y2="1"
-            stroke-width="2"
-            fill="transparent"
-          />
-
-          <line
-            x1="4"
-            y1="0"
-            x2="24"
-            y2="0"
-            stroke-width="1"
-            fill="transparent"
-          />
-
-          <line
-            x1="0"
-            y1="4"
-            x2="0"
-            y2="16"
-            stroke-width="1"
-            fill="transparent"
-          />
-
-          <line
-            x1="0"
-            y1="18"
-            x2="0"
-            y2="20"
-            stroke-width="1"
-            fill="transparent"
-          />
-
-          <line
-            x1="0"
-            y1="24"
-            x2="20"
-            y2="24"
-            stroke-width="1"
-            fill="transparent"
-          />
-
-          <line
-            x1="20"
-            y1="23"
-            x2="24"
-            y2="23"
-            stroke-width="1.5"
-            fill="transparent"
-          />
-
-          <line
-            x1="24"
-            y1="4"
-            x2="24"
-            y2="20"
-            style={{ strokeWidth: "1px" }}
-            fill="transparent"
-          />
+          <line x1="0" y1="1" x2="4" y2="1" stroke-width="2" fill="transparent" />
+          <line x1="4" y1="0" x2="24" y2="0" stroke-width="1" fill="transparent" />
+          <line x1="0" y1="4" x2="0" y2="16" stroke-width="1" fill="transparent" />
+          <line x1="0" y1="18" x2="0" y2="20" stroke-width="1" fill="transparent" />
+          <line x1="0" y1="24" x2="20" y2="24" stroke-width="1" fill="transparent" />
+          <line x1="20" y1="23" x2="24" y2="23" stroke-width="1.5" fill="transparent" />
+          <line x1="24" y1="4" x2="24" y2="20" style={{ strokeWidth: "1px" }} fill="transparent" />
         </svg>
         <ElmInlineText text={props.label} />
       </div>

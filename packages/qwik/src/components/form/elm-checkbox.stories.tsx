@@ -1,3 +1,4 @@
+import { $, component$, useSignal } from "@builder.io/qwik";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { ElmCheckbox, type ElmCheckboxProps } from "./elm-checkbox";
 
@@ -15,8 +16,45 @@ const meta: Meta<ElmCheckboxProps> = {
 export default meta;
 type Story = StoryObj<ElmCheckboxProps>;
 
+// Uncontrolled: the checkbox manages its own checked state.
 export const Primary: Story = {
   render() {
     return <ElmCheckbox {...(this.args as ElmCheckboxProps)} />;
   },
+};
+
+export const DefaultChecked: Story = {
+  render() {
+    return (
+      <ElmCheckbox
+        {...(this.args as ElmCheckboxProps)}
+        defaultChecked={true}
+      />
+    );
+  },
+};
+
+// Controlled: parent owns the checked state.
+const ControlledCheckbox = component$(() => {
+  const checked = useSignal(false);
+
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+      <ElmCheckbox
+        label="Controlled checkbox"
+        checked={checked.value}
+        onCheckedChange$={$((v) => {
+          checked.value = v;
+        })}
+      />
+      <span style={{ fontFamily: "monospace" }}>
+        checked: {String(checked.value)}
+      </span>
+      <button onClick$={() => (checked.value = false)}>Reset</button>
+    </div>
+  );
+});
+
+export const Controlled: Story = {
+  render: () => <ControlledCheckbox />,
 };
