@@ -15,27 +15,34 @@ describe("[CSR]", () => {
     const { screen, render } = await createDOM();
     await render(
       <ElmTabs
-        tabLabels={[
-          <ElmInlineText key={1}>Tab 1</ElmInlineText>,
-          <ElmInlineText key={2}>Tab 2</ElmInlineText>,
-          <ElmInlineText key={3}>Tab 3</ElmInlineText>,
-          <span
-            key={4}
-            style={{ display: "flex", alignItems: "center", gap: "8px" }}
-          >
-            <ElmLanguageIcon language="rust" size={16} />
-            <ElmInlineText>Code</ElmInlineText>
-          </span>,
-        ]}
-        tabContents={[
-          <ElmInlineText key={1}>Content 1</ElmInlineText>,
-          <ElmInlineText key={2}>Content 2</ElmInlineText>,
-          <div key={3} style={{ "--margin-block": "32px" }}>
-            <ElmParagraph>Content 3-A</ElmParagraph>
-            <ElmParagraph>Content 3-B</ElmParagraph>
-            <ElmParagraph>Content 3-C</ElmParagraph>
-          </div>,
-          <ElmCodeBlock key={4} language="rust" code={code} />,
+        tabs={[
+          {
+            label: <ElmInlineText>Tab 1</ElmInlineText>,
+            content: <ElmInlineText>Content 1</ElmInlineText>,
+          },
+          {
+            label: <ElmInlineText>Tab 2</ElmInlineText>,
+            content: <ElmInlineText>Content 2</ElmInlineText>,
+          },
+          {
+            label: <ElmInlineText>Tab 3</ElmInlineText>,
+            content: (
+              <div style={{ "--margin-block": "32px" }}>
+                <ElmParagraph>Content 3-A</ElmParagraph>
+                <ElmParagraph>Content 3-B</ElmParagraph>
+                <ElmParagraph>Content 3-C</ElmParagraph>
+              </div>
+            ),
+          },
+          {
+            label: (
+              <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <ElmLanguageIcon language="rust" size={16} />
+                <ElmInlineText>Code</ElmInlineText>
+              </span>
+            ),
+            content: <ElmCodeBlock language="rust" code={code} />,
+          },
         ]}
       />,
     );
@@ -55,27 +62,34 @@ describe("[SSR]", () => {
   test("should render", async () => {
     const renderResult = await renderToString(
       <ElmTabs
-        tabLabels={[
-          <ElmInlineText key={1}>Tab 1</ElmInlineText>,
-          <ElmInlineText key={2}>Tab 2</ElmInlineText>,
-          <ElmInlineText key={3}>Tab 3</ElmInlineText>,
-          <span
-            key={4}
-            style={{ display: "flex", alignItems: "center", gap: "8px" }}
-          >
-            <ElmLanguageIcon language="rust" size={16} />
-            <ElmInlineText>Code</ElmInlineText>
-          </span>,
-        ]}
-        tabContents={[
-          <ElmInlineText key={1}>Content 1</ElmInlineText>,
-          <ElmInlineText key={2}>Content 2</ElmInlineText>,
-          <div key={3} style={{ "--margin-block": "32px" }}>
-            <ElmParagraph>Content 3-A</ElmParagraph>
-            <ElmParagraph>Content 3-B</ElmParagraph>
-            <ElmParagraph>Content 3-C</ElmParagraph>
-          </div>,
-          <ElmCodeBlock key={4} language="rust" code={code} />,
+        tabs={[
+          {
+            label: <ElmInlineText>Tab 1</ElmInlineText>,
+            content: <ElmInlineText>Content 1</ElmInlineText>,
+          },
+          {
+            label: <ElmInlineText>Tab 2</ElmInlineText>,
+            content: <ElmInlineText>Content 2</ElmInlineText>,
+          },
+          {
+            label: <ElmInlineText>Tab 3</ElmInlineText>,
+            content: (
+              <div style={{ "--margin-block": "32px" }}>
+                <ElmParagraph>Content 3-A</ElmParagraph>
+                <ElmParagraph>Content 3-B</ElmParagraph>
+                <ElmParagraph>Content 3-C</ElmParagraph>
+              </div>
+            ),
+          },
+          {
+            label: (
+              <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <ElmLanguageIcon language="rust" size={16} />
+                <ElmInlineText>Code</ElmInlineText>
+              </span>
+            ),
+            content: <ElmCodeBlock language="rust" code={code} />,
+          },
         ]}
       />,
       {

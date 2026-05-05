@@ -5,6 +5,7 @@ import {
   useOnDocument,
   useSignal,
   type CSSProperties,
+  type JSXOutput,
   type PropFunction,
 } from "@builder.io/qwik";
 import {
@@ -17,14 +18,14 @@ import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { useControllableState } from "../../hooks/use-controllable-state";
 import styles from "./elm-select.module.scss";
 import textStyles from "../../styles/text.module.scss";
+import { ElmCollapse } from "../containments/elm-collapse";
 
-export interface ElmSelectOption {
+export interface ElmSelectSlotOption {
   id: string;
-  label: string;
-  description?: string;
+  slot: JSXOutput;
 }
 
-export interface ElmSelectProps {
+export interface ElmSelectSlotProps {
   class?: string;
 
   style?: CSSProperties;
@@ -33,24 +34,24 @@ export interface ElmSelectProps {
   placeholder?: string;
   disabled?: boolean;
   loading?: boolean;
-  options: ElmSelectOption[];
+  options: ElmSelectSlotOption[];
 
   /**
    * Controlled selected option. When provided the parent owns the state.
    * Pass `null` to explicitly clear the selection in controlled mode.
    */
-  selectedOption?: ElmSelectOption | null;
+  selectedOption?: ElmSelectSlotOption | null;
 
   /**
    * Initial selected option when uncontrolled.
    */
-  defaultSelectedOption?: ElmSelectOption | null;
+  defaultSelectedOption?: ElmSelectSlotOption | null;
 
   /**
    * Called whenever the selected option changes.
    */
   onSelectedOptionChange$?: PropFunction<
-    (option: ElmSelectOption | null) => void
+    (option: ElmSelectSlotOption | null) => void
   >;
 
   /**
@@ -69,7 +70,7 @@ export interface ElmSelectProps {
   onOpenChange$?: PropFunction<(open: boolean) => void>;
 }
 
-export const ElmSelect = component$<ElmSelectProps>((props) => {
+export const ElmSelectSlot = component$<ElmSelectSlotProps>((props) => {
   const [selectedOption, setSelectedOption] = useControllableState({
     prop: useComputed$(() => props.selectedOption),
     defaultProp: props.defaultSelectedOption ?? null,
@@ -121,12 +122,7 @@ export const ElmSelect = component$<ElmSelectProps>((props) => {
           <div class={[styles.selected, textStyles.text]}>
             {selectedOption.value ? (
               <div key={selectedOption.value.id}>
-                <span>{selectedOption.value.label}</span>
-                {selectedOption.value.description && (
-                  <span class={styles.description}>
-                    {selectedOption.value.description}
-                  </span>
-                )}
+                {selectedOption.value.slot}
               </div>
             ) : (
               <div class={styles.fallback}>
@@ -138,31 +134,22 @@ export const ElmSelect = component$<ElmSelectProps>((props) => {
 
           <ElmMdiIcon d={mdiMenuDown} size="1.5rem" />
 
-          {isOpen.value && (
-            <div class={styles.pulldown}>
-              {props.options.map((option) => (
-                <div
-                  key={option.id}
-                  class={[styles.option, textStyles.text]}
-                  onClick$={(e) => {
-                    e.stopPropagation();
-                    setSelectedOption(option);
-                    setIsOpen(false);
-                  }}
-                >
-                  <ElmMdiIcon
-                    d={mdiChevronRight}
-                    color="#868e9c"
-                    size="0.75em"
-                  />
-                  <span>{option.label}</span>
-                  {option.description && (
-                    <span class={styles.description}>{option.description}</span>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
+          <ElmCollapse isOpen={isOpen.value} class={styles.pulldown}>
+            {props.options.map((option) => (
+              <div
+                key={option.id}
+                class={[styles.option, textStyles.text]}
+                onClick$={(e) => {
+                  e.stopPropagation();
+                  setSelectedOption(option);
+                  setIsOpen(false);
+                }}
+              >
+                <ElmMdiIcon d={mdiChevronRight} color="#868e9c" size="0.75em" />
+                {option.slot}
+              </div>
+            ))}
+          </ElmCollapse>
         </div>
       </div>
     </div>

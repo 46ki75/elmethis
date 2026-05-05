@@ -4,14 +4,14 @@ import {
   type CSSProperties,
   type PropFunction,
   Slot,
-  useSignal,
-  useTask$,
+  useComputed$,
 } from "@builder.io/qwik";
 
 import styles from "./elm-toggle.module.scss";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { mdiChevronRight, mdiPlus } from "@mdi/js";
 import { ElmInlineText } from "../typography/elm-inline-text";
+import { useControllableState } from "../../hooks/use-controllable-state";
 
 export interface ElmToggleProps {
   class?: string;
@@ -21,30 +21,25 @@ export interface ElmToggleProps {
   /** The summary text of the toggle. */
   summary?: string;
 
-  /** Whether the toggle is open. */
+  /** Initial open state for uncontrolled usage. */
+  defaultIsOpen?: boolean;
+
+  /** Controlled open state. When provided the parent owns the state. */
   isOpen?: boolean;
 
-  /** Called when the toggle open state changes. */
+  /** Called when the open state changes. */
   setIsOpen$?: PropFunction<(value: boolean) => void>;
 
   monochrome?: boolean;
 }
 
 export const ElmToggle = component$<ElmToggleProps>((props) => {
-  const { class: className, summary, style, setIsOpen$, monochrome } = props;
-  const isOpen = useSignal(props.isOpen ?? false);
+  const { class: className, summary, style, monochrome } = props;
 
-  useTask$(({ track }) => {
-    const value = track(() => props.isOpen);
-    if (value !== undefined) {
-      isOpen.value = value;
-    }
-  });
-
-  const handleClick = $(async () => {
-    const next = !isOpen.value;
-    isOpen.value = next;
-    if (setIsOpen$) await setIsOpen$(next);
+  const [isOpen, setIsOpen] = useControllableState({
+    prop: useComputed$(() => props.isOpen),
+    defaultProp: props.defaultIsOpen ?? false,
+    onChange: props.setIsOpen$,
   });
 
   return (
@@ -58,7 +53,11 @@ export const ElmToggle = component$<ElmToggleProps>((props) => {
       ]}
       style={style}
     >
-      <div class={styles.summary} preventdefault:click onClick$={handleClick}>
+      <div
+        class={styles.summary}
+        preventdefault:click
+        onClick$={$(() => setIsOpen(!isOpen.value))}
+      >
         <div class={styles["summary-left"]}>
           <span class={[styles.chevron, { [styles.open]: isOpen.value }]}>
             <ElmMdiIcon
