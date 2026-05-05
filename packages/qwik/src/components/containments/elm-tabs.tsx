@@ -1,8 +1,15 @@
-import { $, component$, useSignal, type CSSProperties } from "@builder.io/qwik";
+import {
+  $,
+  component$,
+  useComputed$,
+  type CSSProperties,
+  type PropFunction,
+} from "@builder.io/qwik";
 import type { JSXOutput } from "@builder.io/qwik";
 
 import styles from "./elm-tabs.module.css";
 import { ElmCollapse } from "./elm-collapse";
+import { useControllableState } from "../../hooks/use-controllable-state";
 
 export interface ElmTabsProps {
   class?: string;
@@ -11,50 +18,64 @@ export interface ElmTabsProps {
 
   tabLabels: JSXOutput[];
   tabContents: JSXOutput[];
+
+  /**
+   * Controlled selected tab index. When provided the parent owns the state.
+   */
+  selectedTabIndex?: number;
+
+  /**
+   * Initial selected tab index when uncontrolled.
+   * @default 0
+   */
+  defaultSelectedTabIndex?: number;
+
+  /**
+   * Called whenever the selected tab changes.
+   */
+  onSelectedTabIndexChange$?: PropFunction<(index: number) => void>;
 }
 
-export const ElmTabs = component$<ElmTabsProps>(
-  ({ class: className, style, tabLabels, tabContents }) => {
-    const selectedTabIndex = useSignal(0);
+export const ElmTabs = component$<ElmTabsProps>((props) => {
+  const { class: className, style, tabLabels, tabContents } = props;
 
-    const handleTabClick = $((_event: MouseEvent, el: HTMLElement) => {
-      const idx = el.getAttribute("data-tab-index");
-      selectedTabIndex.value = idx !== null ? parseInt(idx, 10) : 0;
-    });
+  const [selectedTabIndex, setSelectedTabIndex] = useControllableState({
+    prop: useComputed$(() => props.selectedTabIndex),
+    defaultProp: props.defaultSelectedTabIndex ?? 0,
+    onChange: props.onSelectedTabIndexChange$,
+  });
 
-    return (
-      <div class={[styles["elm-tabs"], className]} style={style}>
-        <div class={styles["tab-container"]}>
-          {tabLabels.map((tabLabel, index) => (
-            <div
-              key={index}
-              data-tab-index={String(index)}
-              class={[
-                styles["tab"],
-                {
-                  [styles["active"]]: selectedTabIndex.value === index,
-                },
-              ]}
-              onClick$={handleTabClick}
-            >
-              {tabLabel}
-            </div>
-          ))}
-        </div>
-
-        <div class={styles["tab-content-container"]}>
-          {tabContents.map((content, index) => (
-            <div key={index} class={styles["tab-content"]}>
-              <ElmCollapse
-                direction="both"
-                isOpen={selectedTabIndex.value === index}
-              >
-                {content}
-              </ElmCollapse>
-            </div>
-          ))}
-        </div>
+  return (
+    <div class={[styles["elm-tabs"], className]} style={style}>
+      <div class={styles["tab-container"]}>
+        {tabLabels.map((tabLabel, index) => (
+          <div
+            key={index}
+            class={[
+              styles["tab"],
+              {
+                [styles["active"]]: selectedTabIndex.value === index,
+              },
+            ]}
+            onClick$={$(() => setSelectedTabIndex(index))}
+          >
+            {tabLabel}
+          </div>
+        ))}
       </div>
-    );
-  },
-);
+
+      <div class={styles["tab-content-container"]}>
+        {tabContents.map((content, index) => (
+          <div key={index} class={styles["tab-content"]}>
+            <ElmCollapse
+              direction="both"
+              isOpen={selectedTabIndex.value === index}
+            >
+              {content}
+            </ElmCollapse>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+});
