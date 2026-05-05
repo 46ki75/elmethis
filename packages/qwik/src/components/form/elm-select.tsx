@@ -1,10 +1,11 @@
 import {
   $,
   component$,
+  useComputed$,
   useOnDocument,
   useSignal,
   type CSSProperties,
-  type Signal,
+  type PropFunction,
 } from "@builder.io/qwik";
 import {
   mdiArrowDownDropCircleOutline,
@@ -13,6 +14,7 @@ import {
 } from "@mdi/js";
 
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
+import { useControllableState } from "../../hooks/use-controllable-state";
 import styles from "./elm-select.module.scss";
 import textStyles from "../../styles/text.module.scss";
 
@@ -31,41 +33,64 @@ export interface ElmSelectProps {
   placeholder?: string;
   disabled?: boolean;
   loading?: boolean;
-  options: ElmSelectOption[]; // Pass as plain array, Qwik tracks changes
-  selectedOption?: Signal<ElmSelectOption | null>;
+  options: ElmSelectOption[];
+
+  /**
+   * Controlled selected option. When provided the parent owns the state.
+   * Pass `null` to explicitly clear the selection in controlled mode.
+   */
+  selectedOption?: ElmSelectOption | null;
+
+  /**
+   * Initial selected option when uncontrolled.
+   */
+  defaultSelectedOption?: ElmSelectOption | null;
+
+  /**
+   * Called whenever the selected option changes.
+   */
+  onSelectedOptionChange$?: PropFunction<
+    (option: ElmSelectOption | null) => void
+  >;
+
+  /**
+   * Controlled open state of the dropdown.
+   */
+  open?: boolean;
+
+  /**
+   * Initial open state when uncontrolled.
+   */
+  defaultOpen?: boolean;
+
+  /**
+   * Called whenever the dropdown open state changes.
+   */
+  onOpenChange$?: PropFunction<(open: boolean) => void>;
 }
 
 export const ElmSelect = component$<ElmSelectProps>((props) => {
-  const internalSelected = useSignal<ElmSelectOption | null>(null);
-  const selectedOption = props.selectedOption ?? internalSelected;
+  const [selectedOption, setSelectedOption] = useControllableState({
+    prop: useComputed$(() => props.selectedOption),
+    defaultProp: props.defaultSelectedOption ?? null,
+    onChange: props.onSelectedOptionChange$,
+  });
 
-  const isActive = useSignal(false);
+  const [isOpen, setIsOpen] = useControllableState({
+    prop: useComputed$(() => props.open),
+    defaultProp: props.defaultOpen ?? false,
+    onChange: props.onOpenChange$,
+  });
+
   const containerRef = useSignal<Element>();
-
-  const handleToggle = $(() => {
-    if (!props.disabled && !props.loading) {
-      isActive.value = !isActive.value;
-    }
-  });
-
-  const handleSelect = $((id: string) => {
-    if (props.options) {
-      const selected = props.options.find((option) => option.id === id);
-      if (selected) {
-        selectedOption.value = selected;
-        // Close on select
-        // isActive.value = false; // Optional: close immediately or keep open? Usually close.
-      }
-    }
-  });
 
   useOnDocument(
     "click",
     $((event) => {
-      if (isActive.value && containerRef.value) {
+      if (isOpen.value && containerRef.value) {
         const target = event.target as Node;
         if (!containerRef.value.contains(target)) {
-          isActive.value = false;
+          setIsOpen(false);
         }
       }
     }),
@@ -74,14 +99,18 @@ export const ElmSelect = component$<ElmSelectProps>((props) => {
   return (
     <div
       ref={containerRef}
-      class={[styles.wrapper, isActive.value && styles.active, props.class]}
+      class={[styles.wrapper, isOpen.value && styles.active, props.class]}
       style={{
         backgroundColor:
           props.disabled || props.loading ? "rgba(0,0,0,0.15)" : undefined,
-        "--highlight-color": isActive.value ? "#bfa056" : undefined,
+        "--highlight-color": isOpen.value ? "#bfa056" : undefined,
         ...props.style,
       }}
-      onClick$={handleToggle}
+      onClick$={$(() => {
+        if (!props.disabled && !props.loading) {
+          setIsOpen(!isOpen.value);
+        }
+      })}
     >
       <div class={styles.header}>
         <span class={[styles.label, textStyles.text]}>{props.label}</span>
@@ -109,19 +138,16 @@ export const ElmSelect = component$<ElmSelectProps>((props) => {
 
           <ElmMdiIcon d={mdiMenuDown} size="1.5rem" />
 
-          {isActive.value && (
+          {isOpen.value && (
             <div class={styles.pulldown}>
               {props.options.map((option) => (
                 <div
                   key={option.id}
                   class={[styles.option, textStyles.text]}
                   onClick$={(e) => {
-                    e.stopPropagation(); // Prevent closing immediately due to toggle? No, toggle handles click on wrapper.
-                    // Wait, wrapper click triggers toggle. If I click option, event bubbles to wrapper -> toggle.
-                    // So if open, clicking wrapper toggles it closed.
-                    // I need to handle selection.
-                    handleSelect(option.id);
-                    isActive.value = false;
+                    e.stopPropagation();
+                    setSelectedOption(option);
+                    setIsOpen(false);
                   }}
                 >
                   <ElmMdiIcon

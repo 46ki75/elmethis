@@ -1,11 +1,12 @@
 import {
   $,
   component$,
-  useSignal,
+  useComputed$,
   type CSSProperties,
-  type Signal,
+  type PropFunction,
 } from "@builder.io/qwik";
 
+import { useControllableState } from "../../hooks/use-controllable-state";
 import styles from "./elm-switch.module.scss";
 
 export interface ElmSwitchProps {
@@ -29,27 +30,38 @@ export interface ElmSwitchProps {
   disabled?: boolean;
 
   /**
-   * Checked state.
+   * Controlled checked state. When provided the parent owns the state.
    */
-  checked?: Signal<boolean>;
+  checked?: boolean;
+
+  /**
+   * Initial checked state when uncontrolled.
+   */
+  defaultChecked?: boolean;
+
+  /**
+   * Called whenever the checked state changes.
+   */
+  onCheckedChange$?: PropFunction<(checked: boolean) => void>;
 }
 
 export const ElmSwitch = component$<ElmSwitchProps>((props) => {
   const color = props.color ?? "#bfa056";
   const size = props.size ?? "18px";
 
-  const internalChecked = useSignal(false);
-  const checked = props.checked ?? internalChecked;
-
-  const handleClick = $(() => {
-    if (!props.disabled) {
-      checked.value = !checked.value;
-    }
+  const [checked, setChecked] = useControllableState({
+    prop: useComputed$(() => props.checked),
+    defaultProp: props.defaultChecked ?? false,
+    onChange: props.onCheckedChange$,
   });
 
   return (
     <div
-      onClick$={handleClick}
+      onClick$={$(() => {
+        if (!props.disabled) {
+          setChecked(!checked.value);
+        }
+      })}
       class={props.class}
       style={{
         "--color": color,
