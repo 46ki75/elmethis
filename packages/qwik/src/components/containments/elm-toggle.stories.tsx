@@ -1,3 +1,4 @@
+import { $, component$, useSignal } from "@builder.io/qwik";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { ElmToggle, type ElmToggleProps } from "./elm-toggle";
 import { ElmHeading } from "../typography/elm-heading";
@@ -47,13 +48,47 @@ export const CustomSummary: Story = {
   },
 };
 
+const ControlledToggle = component$(() => {
+  const isOpen = useSignal(false);
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+        <span style={{ fontFamily: "monospace" }}>
+          isOpen: {String(isOpen.value)}
+        </span>
+        <button onClick$={() => (isOpen.value = !isOpen.value)}>
+          Toggle from outside
+        </button>
+      </div>
+      <ElmToggle
+        summary="Controlled toggle"
+        isOpen={isOpen.value}
+        setIsOpen$={$((v) => {
+          isOpen.value = v;
+        })}
+      >
+        <ElmHeading level={2}>Body</ElmHeading>
+        <ElmParagraph>
+          This toggle's open state is controlled by the parent component.
+          You can toggle it from outside using the button above.
+        </ElmParagraph>
+      </ElmToggle>
+    </div>
+  );
+});
+
+export const Controlled: Story = {
+  render: () => <ControlledToggle />,
+};
+
 import code from "./elm-collapse?raw";
 import { ElmCodeBlock } from "../code/elm-code-block";
 
 export const DefaultOpen: Story = {
   render() {
     return (
-      <ElmToggle summary="Open by default" isOpen={true} {...this.args}>
+      <ElmToggle summary="Open by default" defaultIsOpen={true} {...this.args}>
         <ElmCodeBlock language="tsx" code={code} />
       </ElmToggle>
     );
