@@ -22,7 +22,7 @@
         "@openrouter/ai-sdk-provider": "^2.9.0",
         "agent": "link:@mastra/core/agent",
         "dotenv": "^17.4.2",
-        "hono": "^4.12.16",
+        "hono": "^4.12.17",
         "openai": "^6.35.0"
     },
     "devDependencies": {
