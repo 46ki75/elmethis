@@ -15,14 +15,14 @@
   &:hover {
     opacity: 0.8;
   }
+}
 
-  &--disable {
+.container--disable {
+  opacity: 0.45;
+  cursor: not-allowed;
+
+  &:hover {
     opacity: 0.45;
-    cursor: not-allowed;
-
-    &:hover {
-      opacity: 0.45;
-    }
   }
 }
 
@@ -37,16 +37,16 @@
 
 .rect {
   transition: all 0.2s;
+}
 
-  &--loading {
-    opacity: 0.3;
-  }
+.rect--loading {
+  opacity: 0.3;
+}
 
-  &--checked {
-    fill: rgba(0, 0, 0, 0.8);
-    [data-theme="dark"] & {
-      fill: rgba(255, 255, 255, 0.8);
-    }
+.rect--checked {
+  fill: rgba(0, 0, 0, 0.8);
+  [data-theme="dark"] & {
+    fill: rgba(255, 255, 255, 0.8);
   }
 }
 
