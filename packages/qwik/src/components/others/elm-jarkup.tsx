@@ -244,19 +244,12 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
           }
 
           // Render synchronously OUTSIDE the $ boundary
-          const renderedLabels = labels.map((label, index) => (
-            <span key={index}>{render(label)}</span>
-          ));
-          const renderedContents = contents.map((content, index) => (
-            <div key={index}>{render(content)}</div>
-          ));
+          const tabs = labels.map((label, index) => ({
+            label: <span key={index}>{render(label)}</span>,
+            content: <div key={index}>{render(contents[index])}</div>,
+          }));
 
-          return (
-            <ElmTabs
-              tabLabels={renderedLabels}
-              tabContents={renderedContents}
-            />
-          );
+          return <ElmTabs tabs={tabs} />;
         }
 
         case "Table":

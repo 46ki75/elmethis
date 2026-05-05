@@ -458,46 +458,41 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
       ? (props.children as string[])
       : [];
 
-    const tabLabels = tabIds.map((tabId) => {
+    const tabs = tabIds.map((tabId) => {
       const tabModel = surface.componentsModel.get(tabId);
-      if (!tabModel) return null;
-      const rawLabels = tabModel.properties.labels;
+      const rawLabels = tabModel?.properties.labels;
       const labelIds = Array.isArray(rawLabels)
         ? rawLabels.filter((id): id is string => typeof id === "string")
         : [];
-      return (
-        <>
-          {labelIds.map((lid, i) => (
-            <Fragment key={`${lid}:${i}`}>
-              {renderChild(lid, basePath, i)}
-            </Fragment>
-          ))}
-        </>
-      );
-    });
-
-    const tabContents = tabIds.map((tabId) => {
-      const tabModel = surface.componentsModel.get(tabId);
-      if (!tabModel) return null;
-      const rawContents = tabModel.properties.contents;
+      const rawContents = tabModel?.properties.contents;
       const contentIds = Array.isArray(rawContents)
         ? rawContents.filter((id): id is string => typeof id === "string")
         : [];
-      return (
-        <>
-          {contentIds.map((cid, i) => (
-            <Fragment key={`${cid}:${i}`}>
-              {renderChild(cid, basePath, i)}
-            </Fragment>
-          ))}
-        </>
-      );
+      return {
+        label: (
+          <>
+            {labelIds.map((lid, i) => (
+              <Fragment key={`${lid}:${i}`}>
+                {renderChild(lid, basePath, i)}
+              </Fragment>
+            ))}
+          </>
+        ),
+        content: (
+          <>
+            {contentIds.map((cid, i) => (
+              <Fragment key={`${cid}:${i}`}>
+                {renderChild(cid, basePath, i)}
+              </Fragment>
+            ))}
+          </>
+        ),
+      };
     });
 
     return (
       <ElmTabs
-        tabLabels={tabLabels}
-        tabContents={tabContents}
+        tabs={tabs}
         style={
           index === 0
             ? ({ "--elmethis-margin-block-start": "0" } as CSSProperties)

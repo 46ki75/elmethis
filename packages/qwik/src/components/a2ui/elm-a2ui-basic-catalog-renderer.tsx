@@ -253,10 +253,10 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap<
 
   Tabs: ({ props, resolve, renderChild }: Ctx<typeof TabsApi>) => (
     <ElmTabs
-      tabLabels={props.tabs.map((tab) => (
-        <>{resolve(tab.title)}</>
-      ))}
-      tabContents={props.tabs.map((tab) => renderChild(tab.child))}
+      tabs={props.tabs.map((tab) => ({
+        label: <>{resolve(tab.title)}</>,
+        content: renderChild(tab.child),
+      }))}
     />
   ),
 

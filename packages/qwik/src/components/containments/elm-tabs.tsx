@@ -16,8 +16,10 @@ export interface ElmTabsProps {
 
   style?: CSSProperties;
 
-  tabLabels: JSXOutput[];
-  tabContents: JSXOutput[];
+  tabs: Array<{
+    label: JSXOutput;
+    content: JSXOutput;
+  }>;
 
   /**
    * Controlled selected tab index. When provided the parent owns the state.
@@ -37,7 +39,7 @@ export interface ElmTabsProps {
 }
 
 export const ElmTabs = component$<ElmTabsProps>((props) => {
-  const { class: className, style, tabLabels, tabContents } = props;
+  const { class: className, style, tabs } = props;
 
   const [selectedTabIndex, setSelectedTabIndex] = useControllableState({
     prop: useComputed$(() => props.selectedTabIndex),
@@ -48,7 +50,7 @@ export const ElmTabs = component$<ElmTabsProps>((props) => {
   return (
     <div class={[styles["elm-tabs"], className]} style={style}>
       <div class={styles["tab-container"]}>
-        {tabLabels.map((tabLabel, index) => (
+        {tabs.map(({ label }, index) => (
           <div
             key={index}
             class={[
@@ -59,13 +61,13 @@ export const ElmTabs = component$<ElmTabsProps>((props) => {
             ]}
             onClick$={$(() => setSelectedTabIndex(index))}
           >
-            {tabLabel}
+            {label}
           </div>
         ))}
       </div>
 
       <div class={styles["tab-content-container"]}>
-        {tabContents.map((content, index) => (
+        {tabs.map(({ content }, index) => (
           <div key={index} class={styles["tab-content"]}>
             <ElmCollapse
               direction="both"
