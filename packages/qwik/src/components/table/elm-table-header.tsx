@@ -5,7 +5,7 @@ import {
   useContextProvider,
   type CSSProperties,
 } from "@builder.io/qwik";
-import styles from "./elm-table-header.module.scss";
+import styles from "./elm-table-header.module.css";
 
 export const HasHeaderContext = createContextId<boolean>("HasHeaderContext");
 

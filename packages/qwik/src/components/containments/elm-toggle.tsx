@@ -7,7 +7,7 @@ import {
   useComputed$,
 } from "@builder.io/qwik";
 
-import styles from "./elm-toggle.module.scss";
+import styles from "./elm-toggle.module.css";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { mdiChevronRight, mdiPlus } from "@mdi/js";
 import { ElmInlineText } from "../typography/elm-inline-text";

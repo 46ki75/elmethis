@@ -1,6 +1,6 @@
 import { $, component$, CSSProperties } from "@builder.io/qwik";
 
-import styles from "./elm-file.module.scss";
+import styles from "./elm-file.module.css";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { mdiDownload, mdiFile } from "@mdi/js";
 import { ElmInlineText } from "../typography/elm-inline-text";

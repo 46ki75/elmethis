@@ -59,7 +59,7 @@ type Props<T extends { schema: z.ZodTypeAny }> = z.infer<T["schema"]>;
 type Ctx<T extends { schema: z.ZodTypeAny }> = RenderContext<Props<T>>;
 
 // ---------------------------------------------------------------------------
-// CSS helpers (mirrors elm-jarkup.module.scss layout)
+// CSS helpers (mirrors elm-jarkup.module.css layout)
 // ---------------------------------------------------------------------------
 
 const columnListStyle: CSSProperties = {

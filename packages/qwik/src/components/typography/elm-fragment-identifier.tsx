@@ -1,6 +1,6 @@
 import { $, component$, type CSSProperties } from "@builder.io/qwik";
 
-import styles from "./elm-fragment-identifier.module.scss";
+import styles from "./elm-fragment-identifier.module.css";
 
 export interface ElmFragmentIdentifierProps {
   class?: string;

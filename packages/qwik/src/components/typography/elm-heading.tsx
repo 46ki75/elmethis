@@ -1,7 +1,7 @@
 import { component$, CSSProperties, Slot } from "@builder.io/qwik";
 
-import styles from "./elm-heading.module.scss";
-import textStyles from "../../styles/text.module.scss";
+import styles from "./elm-heading.module.css";
+import textStyles from "../../styles/text.module.css";
 import { ElmFragmentIdentifier } from "./elm-fragment-identifier";
 
 export interface ElmHeadingProps {

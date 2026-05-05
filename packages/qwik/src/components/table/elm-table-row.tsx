@@ -4,7 +4,7 @@ import {
   useContext,
   type CSSProperties,
 } from "@builder.io/qwik";
-import styles from "./elm-table-row.module.scss";
+import styles from "./elm-table-row.module.css";
 import { HasRowHeaderContext } from "./elm-table";
 
 export interface ElmTableRowProps {

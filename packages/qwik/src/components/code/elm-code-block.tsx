@@ -6,7 +6,7 @@ import {
   useSignal,
 } from "@builder.io/qwik";
 
-import styles from "./elm-code-block.module.scss";
+import styles from "./elm-code-block.module.css";
 
 import { ElmLanguageIcon } from "../icon/elm-language-icon";
 import { ElmInlineText } from "../typography/elm-inline-text";

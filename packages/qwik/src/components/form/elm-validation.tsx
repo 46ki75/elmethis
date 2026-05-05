@@ -4,7 +4,7 @@ import { mdiCheckCircle, mdiCheckCircleOutline } from "@mdi/js";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { ElmInlineText } from "../typography/elm-inline-text";
 
-import styles from "./elm-validation.module.scss";
+import styles from "./elm-validation.module.css";
 
 export interface ElmValidationProps {
   class?: string;

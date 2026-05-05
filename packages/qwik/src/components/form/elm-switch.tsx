@@ -7,7 +7,7 @@ import {
 } from "@builder.io/qwik";
 
 import { useControllableState } from "../../hooks/use-controllable-state";
-import styles from "./elm-switch.module.scss";
+import styles from "./elm-switch.module.css";
 
 export interface ElmSwitchProps {
   class?: string;
@@ -80,15 +80,15 @@ export const ElmSwitch = component$<ElmSwitchProps>((props) => {
       <div
         class={[
           styles.bar,
-          checked.value && styles["bar--checked"],
-          props.disabled && styles["bar--disabled"],
+          checked.value && styles.checked,
+          props.disabled && styles.disabled,
         ]}
       >
         <div
           class={[
             styles.circle,
-            checked.value && styles["circle--checked"],
-            props.disabled && styles["circle--disabled"],
+            checked.value && styles.checked,
+            props.disabled && styles.disabled,
           ]}
         ></div>
       </div>

@@ -8,7 +8,7 @@ import {
 
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { useControllableState } from "../../hooks/use-controllable-state";
-import styles from "./elm-checkbox.module.scss";
+import styles from "./elm-checkbox.module.css";
 
 export interface ElmCheckboxProps {
   class?: string;

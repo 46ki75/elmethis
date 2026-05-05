@@ -16,8 +16,8 @@ import {
 
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { useControllableState } from "../../hooks/use-controllable-state";
-import styles from "./elm-select.module.scss";
-import textStyles from "../../styles/text.module.scss";
+import styles from "./elm-select.module.css";
+import textStyles from "../../styles/text.module.css";
 import { ElmCollapse } from "../containments/elm-collapse";
 
 export interface ElmSelectSlotOption {

@@ -136,9 +136,6 @@ importers:
       prettier:
         specifier: 3.8.3
         version: 3.8.3
-      sass:
-        specifier: ^1.99.0
-        version: 1.99.0
       storybook:
         specifier: ^10.3.6
         version: 10.3.6(@testing-library/dom@10.4.0)(prettier@3.8.3)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)

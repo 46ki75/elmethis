@@ -18,7 +18,7 @@
     transform 100ms;
 
   &:hover {
-    background-color: rgba(#868e9c, 0.2);
+    background-color: rgba(134, 142, 156, 0.2);
   }
 
   &:active {

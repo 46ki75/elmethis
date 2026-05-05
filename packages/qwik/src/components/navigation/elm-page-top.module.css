@@ -11,7 +11,7 @@
   width: var(--size);
   height: var(--size);
   left: var(--left, auto);
-  right: var(---right, auto);
+  right: var(--right, auto);
   opacity: 1;
 
   cursor: pointer;
@@ -24,42 +24,12 @@
 
   transform: translateY(250%) rotate(180deg);
 
-  &--visible {
-    transition:
-      transform 700ms,
-      opacity 200ms;
-    transform: translateY(0%) rotate(0deg);
-  }
-
   &:hover {
     opacity: 0.8;
   }
 
   &:active {
     opacity: 0.4;
-  }
-
-  @keyframes move {
-    0% {
-      opacity: 0;
-      transform: translateY(600%);
-    }
-    25% {
-      opacity: 1;
-      transform: translateY(220%);
-    }
-    42% {
-      opacity: 1;
-      transform: translateY(200%);
-    }
-    67% {
-      opacity: 1;
-      transform: translateY(0%);
-    }
-    100% {
-      opacity: 0;
-      transform: translateY(-50%) scale(0.5);
-    }
   }
 
   .partial {
@@ -114,7 +84,7 @@
     white-space: nowrap;
     user-select: none;
 
-    // From text.scoped.scss
+    /* From text.scoped.scss */
     color: var(--color, #606875);
 
     &::selection {
@@ -131,4 +101,34 @@
       }
     }
   }
+}
+
+@keyframes move {
+  0% {
+    opacity: 0;
+    transform: translateY(600%);
+  }
+  25% {
+    opacity: 1;
+    transform: translateY(220%);
+  }
+  42% {
+    opacity: 1;
+    transform: translateY(200%);
+  }
+  67% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.5);
+  }
+}
+
+.wrapper--visible {
+  transition:
+    transform 700ms,
+    opacity 200ms;
+  transform: translateY(0%) rotate(0deg);
 }

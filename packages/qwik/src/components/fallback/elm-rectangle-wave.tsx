@@ -1,6 +1,6 @@
 import { component$, type CSSProperties } from "@builder.io/qwik";
 
-import styles from "./elm-rectangle-wave.module.scss";
+import styles from "./elm-rectangle-wave.module.css";
 
 export interface ElmRectangleWaveProps {
   class?: string;

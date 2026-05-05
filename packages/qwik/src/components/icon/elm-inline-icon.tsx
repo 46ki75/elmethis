@@ -1,6 +1,6 @@
 import { component$, Numberish, type CSSProperties } from "@builder.io/qwik";
 
-import styles from "./elm-inline-icon.module.scss";
+import styles from "./elm-inline-icon.module.css";
 
 export interface ElmInlineIconProps {
   class?: string;

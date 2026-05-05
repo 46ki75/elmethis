@@ -3,7 +3,7 @@
   display: block;
   container-type: inline-size;
   border-radius: 0.25rem;
-  box-shadow: 0 0 0.125rem rgba(black, 0.1);
+  box-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.1);
   overflow: hidden;
   margin-block-start: var(--elmethis-margin-block-start);
 
@@ -12,12 +12,12 @@
     transform 200ms;
 
   &:hover {
-    background-color: rgba(#6987b8, 0.1);
+    background-color: rgba(105, 135, 184, 0.1);
     transform: translateX(-0.125rem) translateY(-0.125rem);
   }
 
   &:active {
-    background-color: rgba(#59b57c, 0.1);
+    background-color: rgba(89, 181, 124, 0.1);
     transform: translateX(0) translateY(0);
   }
 }
@@ -69,7 +69,7 @@
   justify-content: space-between;
 
   transition: background-color 200ms;
-  background-color: rgba(white, 0.4);
+  background-color: rgba(255, 255, 255, 0.4);
 
   @container (max-width: 700px) {
     & {
@@ -78,7 +78,7 @@
   }
 
   [data-theme="dark"] & {
-    background-color: rgba(black, 0.2);
+    background-color: rgba(0, 0, 0, 0.2);
   }
 
   .title {

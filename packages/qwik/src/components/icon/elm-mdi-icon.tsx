@@ -1,6 +1,6 @@
 import { component$, type CSSProperties } from "@builder.io/qwik";
 
-import styles from "./elm-mdi-icon.module.scss";
+import styles from "./elm-mdi-icon.module.css";
 
 export interface ElmMdiIconProps {
   class?: string;

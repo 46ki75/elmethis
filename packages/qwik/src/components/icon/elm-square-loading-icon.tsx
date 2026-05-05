@@ -1,6 +1,6 @@
 import { component$, CSSProperties } from "@builder.io/qwik";
 
-import styles from "./elm-square-loading-icon.module.scss";
+import styles from "./elm-square-loading-icon.module.css";
 
 export interface ElmSquareLoadingIconProps {
   class?: string;

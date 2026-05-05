@@ -5,7 +5,7 @@ import {
   type CSSProperties,
 } from "@builder.io/qwik";
 
-import styles from "./elm-shiki-highlighter.module.scss";
+import styles from "./elm-shiki-highlighter.module.css";
 import { codeToHtml } from "shiki";
 
 export interface ElmShikiHighlighterProps {

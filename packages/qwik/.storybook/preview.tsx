@@ -1,7 +1,7 @@
 import type { Preview, StoryContext } from "storybook-framework-qwik";
 import type { Component } from "@builder.io/qwik";
 
-import "./sb.scss";
+import "./sb.css";
 
 export const preview: Preview = {
   parameters: {

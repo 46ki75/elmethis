@@ -1,6 +1,6 @@
 import { component$, type CSSProperties } from "@builder.io/qwik";
 
-import styles from "./elm-block-fallback.module.scss";
+import styles from "./elm-block-fallback.module.css";
 import { ElmDotLoadingIcon } from "../icon/elm-dot-loading-icon";
 import { ElmRectangleWave } from "./elm-rectangle-wave";
 

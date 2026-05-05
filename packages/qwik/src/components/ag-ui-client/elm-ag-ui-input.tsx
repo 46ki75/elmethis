@@ -7,7 +7,7 @@ import {
 } from "@builder.io/qwik";
 
 import styles from "./elm-ag-ui-input.module.css";
-import textStyle from "../../styles/text.module.scss";
+import textStyle from "../../styles/text.module.css";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { mdiSend, mdiStop } from "@mdi/js";
 
