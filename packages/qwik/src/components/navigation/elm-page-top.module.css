@@ -11,7 +11,7 @@
   width: var(--size);
   height: var(--size);
   left: var(--left, auto);
-  right: var(---right, auto);
+  right: var(--right, auto);
   opacity: 1;
 
   cursor: pointer;
@@ -23,13 +23,6 @@
   transform-origin: 50% 50%;
 
   transform: translateY(250%) rotate(180deg);
-
-  &--visible {
-    transition:
-      transform 700ms,
-      opacity 200ms;
-    transform: translateY(0%) rotate(0deg);
-  }
 
   &:hover {
     opacity: 0.8;
@@ -131,4 +124,11 @@
       }
     }
   }
+}
+
+.wrapper--visible {
+  transition:
+    transform 700ms,
+    opacity 200ms;
+  transform: translateY(0%) rotate(0deg);
 }
