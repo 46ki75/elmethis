@@ -41,7 +41,6 @@ const meta: Meta<ElmSelectProps> = {
 export default meta;
 type Story = StoryObj<ElmSelectProps>;
 
-// Uncontrolled: the component manages its own selected option and open state.
 export const Primary: Story = {
   render() {
     return (
@@ -76,7 +75,6 @@ export const Loading: Story = {
   },
 };
 
-// Controlled: parent owns both the selected option and the open state.
 const ControlledSelect = component$(() => {
   const selected = useSignal<ElmSelectOption | null>(null);
   const open = useSignal(false);

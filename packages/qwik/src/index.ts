@@ -63,6 +63,11 @@ export {
   type ElmSelectOption,
   type ElmSelectProps,
 } from "./components/form/elm-select";
+export {
+  ElmSelectSlot,
+  type ElmSelectSlotOption,
+  type ElmSelectSlotProps,
+} from "./components/form/elm-select-slot";
 export { ElmSwitch, type ElmSwitchProps } from "./components/form/elm-switch";
 export {
   ElmTextField,
