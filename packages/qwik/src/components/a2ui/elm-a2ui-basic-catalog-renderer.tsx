@@ -29,7 +29,9 @@ import {
   type CatalogRendererMap,
   type RenderContext,
 } from "./elm-a2ui-catalog-renderer";
-import { ElmHeading, ElmInlineText, ElmParagraph } from "../..";
+import { ElmHeading } from "../typography/elm-heading";
+import { ElmInlineText } from "../typography/elm-inline-text";
+import { ElmParagraph } from "../typography/elm-paragraph";
 
 type Props<T extends { schema: z.ZodTypeAny }> = z.infer<T["schema"]>;
 type Ctx<T extends { schema: z.ZodTypeAny }> = RenderContext<Props<T>>;
