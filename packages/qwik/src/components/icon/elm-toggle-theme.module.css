@@ -11,10 +11,6 @@
   :global([data-theme="dark"]) & {
     box-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.6);
     background-color: rgba(0, 0, 0, 0.2);
-    box-sizing: border-box;
-    padding: 0.25rem;
     color: #b0b5be;
-    border-radius: 50%;
-    cursor: pointer;
   }
 }
