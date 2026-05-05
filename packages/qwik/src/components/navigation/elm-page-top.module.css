@@ -32,29 +32,6 @@
     opacity: 0.4;
   }
 
-  @keyframes move {
-    0% {
-      opacity: 0;
-      transform: translateY(600%);
-    }
-    25% {
-      opacity: 1;
-      transform: translateY(220%);
-    }
-    42% {
-      opacity: 1;
-      transform: translateY(200%);
-    }
-    67% {
-      opacity: 1;
-      transform: translateY(0%);
-    }
-    100% {
-      opacity: 0;
-      transform: translateY(-50%) scale(0.5);
-    }
-  }
-
   .partial {
     position: absolute;
     width: var(--size);
@@ -123,6 +100,29 @@
         background-color: var(--color, #cccfd5);
       }
     }
+  }
+}
+
+@keyframes move {
+  0% {
+    opacity: 0;
+    transform: translateY(600%);
+  }
+  25% {
+    opacity: 1;
+    transform: translateY(220%);
+  }
+  42% {
+    opacity: 1;
+    transform: translateY(200%);
+  }
+  67% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.5);
   }
 }
 
