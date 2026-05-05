@@ -1,11 +1,11 @@
 import {
   $,
   component$,
-  QRLEventHandlerMulti,
+  useComputed$,
   useId,
   useSignal,
   type CSSProperties,
-  type Signal,
+  type PropFunction,
 } from "@builder.io/qwik";
 import {
   mdiAccount,
@@ -26,6 +26,7 @@ import {
 
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { ElmInlineText } from "../typography/elm-inline-text";
+import { useControllableState } from "../../hooks/use-controllable-state";
 
 import styles from "./elm-text-field.module.scss";
 
@@ -40,7 +41,22 @@ export interface ElmTextFieldProps {
   placeholder?: string;
   disabled?: boolean;
   loading?: boolean;
-  value?: Signal<string>;
+
+  /**
+   * Controlled value. When provided the parent owns the state.
+   */
+  value?: string;
+
+  /**
+   * Initial value when uncontrolled.
+   */
+  defaultValue?: string;
+
+  /**
+   * Called whenever the input value changes.
+   */
+  onValueChange$?: PropFunction<(value: string) => void>;
+
   icon?:
     | "text"
     | "pen"
@@ -56,26 +72,18 @@ export interface ElmTextFieldProps {
   isPassword?: boolean;
   required?: boolean;
 
-  onInput$?: QRLEventHandlerMulti<InputEvent, HTMLInputElement>;
+  onInput$?: PropFunction<(event: InputEvent, element: HTMLInputElement) => void>;
 }
 
 export const ElmTextField = component$<ElmTextFieldProps>((props) => {
   const id = useId();
   const isFocused = useSignal(false);
   const inputType = useSignal(props.isPassword ? "password" : "text");
-  const internalValue = useSignal("");
-  const input = props.value ?? internalValue;
 
-  const handleDelete = $(() => {
-    if (!props.loading && !props.disabled) {
-      input.value = "";
-    }
-  });
-
-  const handleVisibleSwitch = $(() => {
-    if (!props.loading && !props.disabled) {
-      inputType.value = inputType.value === "text" ? "password" : "text";
-    }
+  const [value, setValue] = useControllableState({
+    prop: useComputed$(() => props.value),
+    defaultProp: props.defaultValue ?? "",
+    onChange: props.onValueChange$,
   });
 
   const iconMap: Record<NonNullable<ElmTextFieldProps["icon"]>, string> = {
@@ -109,8 +117,8 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
         </label>
         {props.maxLength != null && (
           <ElmInlineText
-            text={`${input.value.length} / ${props.maxLength}`}
-            color={input.value.length > props.maxLength ? "#c56565" : "gray"}
+            text={`${value.value.length} / ${props.maxLength}`}
+            color={value.value.length > props.maxLength ? "#c56565" : "gray"}
             size="0.75rem"
           />
         )}
@@ -123,7 +131,7 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
 
         <input
           id={id}
-          bind:value={input}
+          value={value.value}
           type={inputType.value}
           class={styles.input}
           placeholder={props.placeholder}
@@ -138,7 +146,10 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
                 : "auto",
           }}
           aria-required={props.required}
-          onInput$={props.onInput$}
+          onInput$={[
+            $((_, el: HTMLInputElement) => setValue(el.value)),
+            props.onInput$,
+          ]}
         />
 
         <div class={styles["icon-box"]}>
@@ -146,7 +157,15 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
             {props.suffix != null && <ElmInlineText text={props.suffix} />}
           </span>
 
-          <div class={styles.icon} onClick$={handleVisibleSwitch}>
+          <div
+            class={styles.icon}
+            onClick$={$(() => {
+              if (!props.loading && !props.disabled) {
+                inputType.value =
+                  inputType.value === "text" ? "password" : "text";
+              }
+            })}
+          >
             <ElmMdiIcon
               d={inputType.value === "text" ? mdiEyeOutline : mdiEyeOffOutline}
               size="1.75em"
@@ -154,7 +173,14 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
             />
           </div>
 
-          <div class={styles.icon} onClick$={handleDelete}>
+          <div
+            class={styles.icon}
+            onClick$={$(() => {
+              if (!props.loading && !props.disabled) {
+                setValue("");
+              }
+            })}
+          >
             <ElmMdiIcon d={mdiBackspaceOutline} size="1.75em" color="gray" />
           </div>
         </div>
