@@ -1,7 +1,7 @@
 import { component$, Slot, type CSSProperties } from "@builder.io/qwik";
 
-import styles from "./elm-inline-text.module.scss";
-import textStyles from "../../styles/text.module.scss";
+import styles from "./elm-inline-text.module.css";
+import textStyles from "../../styles/text.module.css";
 
 import { ElmInlineIcon } from "../icon/elm-inline-icon";
 

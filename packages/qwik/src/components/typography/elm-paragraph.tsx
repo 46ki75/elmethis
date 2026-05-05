@@ -1,7 +1,7 @@
 import { type CSSProperties, component$, Slot } from "@builder.io/qwik";
 
-import styles from "./elm-paragraph.module.scss";
-import textStyles from "../../styles/text.module.scss";
+import styles from "./elm-paragraph.module.css";
+import textStyles from "../../styles/text.module.css";
 
 export interface ElmParagraphProps {
   class?: string;

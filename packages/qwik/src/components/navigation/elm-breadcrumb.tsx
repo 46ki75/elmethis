@@ -4,7 +4,7 @@ import {
   type QRLEventHandlerMulti,
 } from "@builder.io/qwik";
 
-import styles from "./elm-breadcrumb.module.scss";
+import styles from "./elm-breadcrumb.module.css";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import {
   mdiApplicationOutline,

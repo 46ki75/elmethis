@@ -1,7 +1,7 @@
 /* eslint-disable qwik/jsx-img */
 import { $, component$, CSSProperties, useSignal } from "@builder.io/qwik";
 
-import styles from "./elm-bookmark.module.scss";
+import styles from "./elm-bookmark.module.css";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { mdiLinkVariant } from "@mdi/js";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";

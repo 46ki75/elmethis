@@ -38,11 +38,11 @@
     width: 100%;
     background-color: #ccc;
     border-radius: 0 0 0.125rem 0.125rem;
-    box-shadow: 0 0 0.125em rgba(black, 0.5);
+    box-shadow: 0 0 0.125em rgba(0, 0, 0, 0.5);
 
     [data-theme="dark"] & {
       background-color: #595959;
-      box-shadow: 0 0 0.125em rgba(white, 0.5);
+      box-shadow: 0 0 0.125em rgba(255, 255, 255, 0.5);
     }
   }
 }
@@ -88,12 +88,12 @@
   overflow: hidden;
 
   border-radius: 0.25rem;
-  box-shadow: 0 0 0.125rem rgba(black, 0.3);
+  box-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.3);
 
-  background-color: rgba(white, 0.8);
+  background-color: rgba(255, 255, 255, 0.8);
 
   [data-theme="dark"] & {
-    background-color: rgba(white, 0.1);
+    background-color: rgba(255, 255, 255, 0.1);
   }
 }
 

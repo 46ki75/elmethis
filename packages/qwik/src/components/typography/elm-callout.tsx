@@ -1,6 +1,6 @@
 import { component$, CSSProperties, Slot } from "@builder.io/qwik";
 
-import styles from "./elm-callout.module.scss";
+import styles from "./elm-callout.module.css";
 import {
   mdiAlert,
   mdiAlertOctagram,

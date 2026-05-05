@@ -1,6 +1,6 @@
 import { component$, CSSProperties } from "@builder.io/qwik";
 
-import styles from "./elm-divider.module.scss";
+import styles from "./elm-divider.module.css";
 
 export type ElmDividerProps = {
   class?: string;

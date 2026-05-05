@@ -2,7 +2,7 @@ import { component$, CSSProperties, type JSXOutput } from "@builder.io/qwik";
 import type { Component, InlineComponent } from "jarkup-ts";
 import { kebabCase } from "es-toolkit";
 
-import styles from "./elm-jarkup.module.scss";
+import styles from "./elm-jarkup.module.css";
 
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { ElmKatex } from "../code/elm-katex";

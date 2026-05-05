@@ -1,6 +1,6 @@
 import { component$, type CSSProperties } from "@builder.io/qwik";
 
-import styles from "./elm-dot-loading-icon.module.scss";
+import styles from "./elm-dot-loading-icon.module.css";
 
 export interface ElmDotLoadingIconProps {
   class?: string;

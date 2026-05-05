@@ -1,7 +1,7 @@
 import { component$, CSSProperties, Slot } from "@builder.io/qwik";
 
-import styles from "./elm-block-quote.module.scss";
-import textStyles from "../../styles/text.module.scss";
+import styles from "./elm-block-quote.module.css";
+import textStyles from "../../styles/text.module.css";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { mdiFormatQuoteClose, mdiFormatQuoteOpen } from "@mdi/js";
 

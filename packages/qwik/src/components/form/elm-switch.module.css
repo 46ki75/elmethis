@@ -10,12 +10,12 @@
   border-radius: calc((var(--size) + var(--padding)) / 2);
   position: relative;
   cursor: pointer;
-  box-shadow: 0 0 2px rgba(black, 0.1);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
 
   transition:
     opacity 300ms,
     background-color 300ms;
-  background-color: rgba(gray, 0.25);
+  background-color: rgba(128, 128, 128, 0.25);
 
   &--checked {
     background-color: var(--color);
@@ -39,7 +39,7 @@
     transform 300ms,
     opacity 300ms,
     background-color 300ms;
-  background-color: rgba(white, 0.9);
+  background-color: rgba(255, 255, 255, 0.9);
 
   &--checked {
     transform: translateX(calc(var(--width) - var(--size)));

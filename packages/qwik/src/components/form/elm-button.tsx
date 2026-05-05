@@ -8,7 +8,7 @@ import {
 } from "@builder.io/qwik";
 
 import { ElmDotLoadingIcon } from "../icon/elm-dot-loading-icon";
-import styles from "./elm-button.module.scss";
+import styles from "./elm-button.module.css";
 
 export interface ElmButtonProps {
   class?: string;

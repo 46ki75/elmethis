@@ -1,7 +1,7 @@
 import { component$, useComputed$, type CSSProperties } from "@builder.io/qwik";
 
-import textStyle from "../../styles/text.module.scss";
-import styles from "./elm-katex.module.scss";
+import textStyle from "../../styles/text.module.css";
+import styles from "./elm-katex.module.css";
 
 import { renderToString } from "katex";
 

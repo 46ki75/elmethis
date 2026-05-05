@@ -1,6 +1,6 @@
 import { component$, useSignal, type CSSProperties } from "@builder.io/qwik";
 
-import styles from "./elm-parallax.module.scss";
+import styles from "./elm-parallax.module.css";
 
 export interface ElmParallaxProps {
   class?: string;

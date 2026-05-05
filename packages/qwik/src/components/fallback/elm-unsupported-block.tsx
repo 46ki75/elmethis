@@ -1,6 +1,6 @@
 import { component$, type CSSProperties } from "@builder.io/qwik";
 import { ElmInlineText } from "../typography/elm-inline-text";
-import styles from "./elm-unsupported-block.module.scss";
+import styles from "./elm-unsupported-block.module.css";
 
 export interface ElmUnsupportedBlockProps {
   class?: string;

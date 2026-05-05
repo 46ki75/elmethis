@@ -28,7 +28,7 @@ import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { useControllableState } from "../../hooks/use-controllable-state";
 
-import styles from "./elm-text-field.module.scss";
+import styles from "./elm-text-field.module.css";
 
 export interface ElmTextFieldProps {
   class?: string;

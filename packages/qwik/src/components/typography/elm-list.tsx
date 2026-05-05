@@ -1,8 +1,8 @@
 import { component$, CSSProperties, Slot } from "@builder.io/qwik";
 
-import styles from "./elm-list.module.scss";
+import styles from "./elm-list.module.css";
 
-import textStyle from "../../styles/text.module.scss";
+import textStyle from "../../styles/text.module.css";
 
 export interface ElmListProps {
   class?: string;

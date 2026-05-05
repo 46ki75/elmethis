@@ -7,7 +7,7 @@ import {
 } from "@builder.io/qwik";
 
 import { useControllableState } from "../../hooks/use-controllable-state";
-import styles from "./elm-switch.module.scss";
+import styles from "./elm-switch.module.css";
 
 export interface ElmSwitchProps {
   class?: string;

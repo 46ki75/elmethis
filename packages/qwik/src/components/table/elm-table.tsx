@@ -6,8 +6,8 @@ import {
   useComputed$,
 } from "@builder.io/qwik";
 import type { CSSProperties } from "@builder.io/qwik";
-import styles from "./elm-table.module.scss";
-import textStyles from "../../styles/text.module.scss";
+import styles from "./elm-table.module.css";
+import textStyles from "../../styles/text.module.css";
 import { ElmInlineText } from "../typography/elm-inline-text";
 
 export const HasRowHeaderContext = createContextId<

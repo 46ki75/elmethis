@@ -6,7 +6,7 @@ import {
   type CSSProperties,
 } from "@builder.io/qwik";
 
-import styles from "./elm-page-top.module.scss";
+import styles from "./elm-page-top.module.css";
 
 export interface ElmPageTopProps {
   class?: string;

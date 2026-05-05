@@ -6,16 +6,16 @@
   }
 
   &:nth-child(even) {
-    background-color: rgba(black, 0.015);
+    background-color: rgba(0, 0, 0, 0.015);
     [data-theme="dark"] & {
-      background-color: rgba(white, 0.015);
+      background-color: rgba(255, 255, 255, 0.015);
     }
   }
 
   &:hover {
-    background-color: rgba(#6987b8, 0.15);
+    background-color: rgba(105, 135, 184, 0.15);
     [data-theme="dark"] & {
-      background-color: rgba(#6987b8, 0.15);
+      background-color: rgba(105, 135, 184, 0.15);
     }
   }
 }
@@ -23,6 +23,6 @@
 .has-row-header {
   td:first-child,
   tr:first-child {
-    background-color: rgba(gray, 0.15);
+    background-color: rgba(128, 128, 128, 0.15);
   }
 }

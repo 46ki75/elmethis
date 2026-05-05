@@ -1,5 +1,5 @@
 import { component$ } from "@builder.io/qwik";
-import styles from "./bash.module.scss";
+import styles from "./bash.module.css";
 import type { CommonLanguageProps } from "./language-interface";
 
 export const Bash = component$<CommonLanguageProps>(
