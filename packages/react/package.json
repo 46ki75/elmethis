@@ -57,7 +57,7 @@
     "mermaid": "^11.14.0",
     "polished": "^4.3.1",
     "react": "^19.2.5",
-    "react-dom": "^19.2.5",
+    "react-dom": "^19.2.6",
     "shiki": "^4.0.2"
   },
   "devDependencies": {
