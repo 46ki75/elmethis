@@ -1,12 +1,8 @@
-import { component$, Numberish, type CSSProperties } from "@builder.io/qwik";
+import { component$, PropsOf, type Numberish } from "@builder.io/qwik";
 
 import styles from "./elm-inline-icon.module.css";
 
-export interface ElmInlineIconProps {
-  class?: string;
-
-  style?: CSSProperties;
-
+export interface ElmInlineIconProps extends PropsOf<"span"> {
   /**
    * The source URL of the icon.
    */
@@ -25,9 +21,9 @@ export interface ElmInlineIconProps {
 }
 
 export const ElmInlineIcon = component$<ElmInlineIconProps>(
-  ({ class: className, style, src, alt, width, height, size = 16 }) => {
+  ({ class: className, src, alt, width, height, size = 16, ...props }) => {
     return (
-      <span class={[styles.icon, className]} style={style}>
+      <span class={[styles.icon, className]} {...props}>
         <img
           src={src}
           alt={alt}

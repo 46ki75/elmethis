@@ -1,20 +1,16 @@
 import {
   component$,
+  PropsOf,
   Slot,
   useContext,
-  type CSSProperties,
 } from "@builder.io/qwik";
 import styles from "./elm-table-row.module.css";
 import { HasRowHeaderContext } from "./elm-table";
 
-export interface ElmTableRowProps {
-  class?: string;
+export type ElmTableRowProps = PropsOf<"tr">;
 
-  style?: CSSProperties;
-}
-
-export const ElmTableRow = component$<ElmTableRowProps>(
-  ({ class: className, style }) => {
+export const ElmTableRow = component$<PropsOf<"tr">>(
+  ({ class: className, ...props }) => {
     const hasRowHeader = useContext(HasRowHeaderContext);
 
     return (
@@ -24,7 +20,7 @@ export const ElmTableRow = component$<ElmTableRowProps>(
           hasRowHeader.value && styles["has-row-header"],
           className,
         ]}
-        style={style}
+        {...props}
       >
         <Slot />
       </tr>

@@ -1,8 +1,8 @@
 import {
   $,
   component$,
+  PropsOf,
   useComputed$,
-  type CSSProperties,
   type PropFunction,
 } from "@builder.io/qwik";
 import type { JSXOutput } from "@builder.io/qwik";
@@ -11,11 +11,7 @@ import styles from "./elm-tabs.module.css";
 import { ElmCollapse } from "./elm-collapse";
 import { useControllableState } from "../../hooks/use-controllable-state";
 
-export interface ElmTabsProps {
-  class?: string;
-
-  style?: CSSProperties;
-
+export interface ElmTabsProps extends PropsOf<"div"> {
   tabs: Array<{
     label: JSXOutput;
     content: JSXOutput;
@@ -39,16 +35,16 @@ export interface ElmTabsProps {
 }
 
 export const ElmTabs = component$<ElmTabsProps>((props) => {
-  const { class: className, style, tabs } = props;
+  const { class: className, tabs, selectedTabIndex: selectedTabIndexProp, defaultSelectedTabIndex, onSelectedTabIndexChange$, ...rest } = props;
 
   const [selectedTabIndex, setSelectedTabIndex] = useControllableState({
-    prop: useComputed$(() => props.selectedTabIndex),
-    defaultProp: props.defaultSelectedTabIndex ?? 0,
-    onChange: props.onSelectedTabIndexChange$,
+    prop: useComputed$(() => selectedTabIndexProp),
+    defaultProp: defaultSelectedTabIndex ?? 0,
+    onChange: onSelectedTabIndexChange$,
   });
 
   return (
-    <div class={[styles["elm-tabs"], className]} style={style}>
+    <div class={[styles["elm-tabs"], className]} {...rest}>
       <div class={styles["tab-container"]}>
         {tabs.map(({ label }, index) => (
           <div

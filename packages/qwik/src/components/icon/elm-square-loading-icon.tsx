@@ -1,18 +1,14 @@
-import { component$, CSSProperties } from "@builder.io/qwik";
+import { component$, PropsOf, type CSSProperties } from "@builder.io/qwik";
 
 import styles from "./elm-square-loading-icon.module.css";
 
-export interface ElmSquareLoadingIconProps {
-  class?: string;
-
-  style?: CSSProperties;
-
+export interface ElmSquareLoadingIconProps extends PropsOf<"div"> {
   size?: CSSProperties["width"];
   dimensions?: number;
 }
 
 export const ElmSquareLoadingIcon = component$<ElmSquareLoadingIconProps>(
-  ({ class: className, style, size = "3rem", dimensions = 4 }) => {
+  ({ class: className, style, size = "3rem", dimensions = 4, ...props }) => {
     const DURATION = 1200;
     const DELAY = DURATION / (dimensions * 3);
 
@@ -23,8 +19,9 @@ export const ElmSquareLoadingIcon = component$<ElmSquareLoadingIconProps>(
           "--size": size,
           "--dimensions": dimensions,
           "--duration": `${DURATION}ms`,
-          ...style,
-        }}
+          ...(style as CSSProperties),
+        } as CSSProperties}
+        {...props}
       >
         {new Array(dimensions)
           .fill(null)

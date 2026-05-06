@@ -1,15 +1,11 @@
-import { component$, CSSProperties } from "@builder.io/qwik";
+import { component$, PropsOf } from "@builder.io/qwik";
 
 import styles from "./elm-divider.module.css";
 
-export type ElmDividerProps = {
-  class?: string;
+export type ElmDividerProps = PropsOf<"hr">;
 
-  style?: CSSProperties;
-};
-
-export const ElmDivider = component$<ElmDividerProps>(
-  ({ class: className, style }) => {
-    return <hr class={[styles.hr, className]} style={style} />;
+export const ElmDivider = component$<PropsOf<"hr">>(
+  ({ class: className, ...props }) => {
+    return <hr class={[styles.hr, className]} {...props} />;
   },
 );

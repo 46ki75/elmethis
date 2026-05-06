@@ -1,21 +1,11 @@
-import {
-  $,
-  component$,
-  Slot,
-  useSignal,
-  type CSSProperties,
-} from "@builder.io/qwik";
+import { $, component$, PropsOf, Slot, useSignal, type CSSProperties } from "@builder.io/qwik";
 
 import styles from "./elm-tooltip.module.css";
 
-export interface ElmTooltipProps {
-  class?: string;
+export type ElmTooltipProps = PropsOf<"span">;
 
-  style?: CSSProperties;
-}
-
-export const ElmTooltip = component$<ElmTooltipProps>(
-  ({ class: className, style }) => {
+export const ElmTooltip = component$<PropsOf<"span">>(
+  ({ class: className, ...props }) => {
     const elRef = useSignal<HTMLSpanElement>();
     const isHover = useSignal(false);
     const isHideSchedule = useSignal(false);
@@ -65,7 +55,7 @@ export const ElmTooltip = component$<ElmTooltipProps>(
         class={[styles.original, className]}
         onMouseOver$={handleMouseOver}
         onMouseLeave$={handleMouseLeave}
-        style={style}
+        {...props}
       >
         <Slot name="original" />
 

@@ -1,4 +1,4 @@
-import { component$, CSSProperties, Slot } from "@builder.io/qwik";
+import { component$, PropsOf, Slot, type CSSProperties } from "@builder.io/qwik";
 
 import styles from "./elm-callout.module.css";
 import {
@@ -22,23 +22,20 @@ const COLOR_MAP: Record<AlertType, { code: string; icon: string }> =
     caution: { code: "#b36472", icon: mdiAlertOctagram },
   } as const);
 
-export interface ElmCalloutProps {
-  class?: string;
-
+export interface ElmCalloutProps extends PropsOf<"aside"> {
   /**
    * Type of alert
    */
   type?: AlertType;
-
-  style?: CSSProperties;
 }
 
 export const ElmCallout = component$<ElmCalloutProps>(
-  ({ class: className, type = "note", style }) => {
+  ({ class: className, type = "note", style, ...props }) => {
     return (
       <aside
         class={[styles.callout, className]}
-        style={{ "--callout-color": COLOR_MAP[type].code, ...style }}
+        style={{ "--callout-color": COLOR_MAP[type].code, ...(style as CSSProperties) } as CSSProperties}
+        {...props}
       >
         <div class={styles.header}>
           <ElmMdiIcon

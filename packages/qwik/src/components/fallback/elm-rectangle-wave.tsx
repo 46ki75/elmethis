@@ -1,22 +1,16 @@
-import { component$, type CSSProperties } from "@builder.io/qwik";
+import { component$, PropsOf } from "@builder.io/qwik";
 
 import styles from "./elm-rectangle-wave.module.css";
 
-export interface ElmRectangleWaveProps {
-  class?: string;
+export type ElmRectangleWaveProps = PropsOf<"div">;
 
-  style?: CSSProperties;
-
-  placeholder?: string;
-}
-
-export const ElmRectangleWave = component$<ElmRectangleWaveProps>(
-  ({ class: className, style }) => {
+export const ElmRectangleWave = component$<PropsOf<"div">>(
+  ({ class: className, ...props }) => {
     return (
       <div
         aria-hidden="true"
         class={[styles["rectangle-wave"], className]}
-        style={style}
+        {...props}
       ></div>
     );
   },

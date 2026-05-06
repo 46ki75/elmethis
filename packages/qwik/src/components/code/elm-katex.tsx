@@ -1,15 +1,11 @@
-import { component$, useComputed$, type CSSProperties } from "@builder.io/qwik";
+import { component$, PropsOf, useComputed$ } from "@builder.io/qwik";
 
 import textStyle from "../../styles/text.module.css";
 import styles from "./elm-katex.module.css";
 
 import { renderToString } from "katex";
 
-export interface ElmKatexProps {
-  class?: string;
-
-  style?: CSSProperties;
-
+export interface ElmKatexProps extends PropsOf<"div"> {
   /**
    * The KaTex expression.
    */
@@ -26,7 +22,7 @@ export interface ElmKatexProps {
 }
 
 export const ElmKatex = component$<ElmKatexProps>((props) => {
-  const { class: className, style } = props;
+  const { class: className, expression: _expression, block, ...rest } = props;
   const html = useComputed$(() =>
     renderToString(props.expression, {
       displayMode: props.block ?? false,
@@ -38,11 +34,11 @@ export const ElmKatex = component$<ElmKatexProps>((props) => {
     <div
       class={[
         textStyle.text,
-        props.block ? styles.katex : undefined,
+        block ? styles.katex : undefined,
         className,
       ]}
-      style={style}
       dangerouslySetInnerHTML={html.value ?? ""}
+      {...rest}
     />
   );
 });

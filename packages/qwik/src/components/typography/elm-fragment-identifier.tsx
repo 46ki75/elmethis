@@ -1,12 +1,8 @@
-import { $, component$, type CSSProperties } from "@builder.io/qwik";
+import { $, component$, PropsOf } from "@builder.io/qwik";
 
 import styles from "./elm-fragment-identifier.module.css";
 
-export interface ElmFragmentIdentifierProps {
-  class?: string;
-
-  style?: CSSProperties;
-
+export interface ElmFragmentIdentifierProps extends PropsOf<"span"> {
   /**
    * ID of the heading element.
    */
@@ -14,7 +10,7 @@ export interface ElmFragmentIdentifierProps {
 }
 
 export const ElmFragmentIdentifier = component$<ElmFragmentIdentifierProps>(
-  ({ class: className, style, id }) => {
+  ({ class: className, id, ...props }) => {
     const handleHashClick = $((id: string) => {
       const url = new URL(window.location.href);
       url.hash = id;
@@ -29,8 +25,8 @@ export const ElmFragmentIdentifier = component$<ElmFragmentIdentifierProps>(
     return (
       <span
         class={[styles.fragment, className]}
-        style={style}
         onClick$={() => handleHashClick(id)}
+        {...props}
       >
         #
       </span>

@@ -1,20 +1,14 @@
 /* eslint-disable qwik/jsx-img */
-import { $, component$, CSSProperties, useSignal } from "@builder.io/qwik";
+import { $, component$, PropsOf, useSignal } from "@builder.io/qwik";
 
 import styles from "./elm-bookmark.module.css";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { mdiLinkVariant } from "@mdi/js";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { ElmInlineIcon } from "../icon/elm-inline-icon";
+import type { CSSProperties } from "@builder.io/qwik";
 
-export interface ElmBookmarkProps {
-  class?: string;
-
-  /**
-   * The title of the bookmark.
-   */
-  title?: string;
-
+export interface ElmBookmarkProps extends PropsOf<"div"> {
   /**
    * The description of the bookmark.
    */
@@ -35,12 +29,10 @@ export interface ElmBookmarkProps {
    * The URL of the favicon.
    */
   favicon?: string;
-
-  style?: CSSProperties;
 }
 
 export const ElmBookmark = component$<ElmBookmarkProps>(
-  ({ class: className, url, image, title, description, favicon, style }) => {
+  ({ class: className, title, url, image, description, favicon, ...props }) => {
     const isError = useSignal(false);
 
     const handleImageOnError = $(() => {
@@ -53,7 +45,7 @@ export const ElmBookmark = component$<ElmBookmarkProps>(
     };
 
     return (
-      <div class={[styles.bookmark, className]} style={style}>
+      <div class={[styles.bookmark, className]} {...props}>
         <a
           class={styles.container}
           href={url}

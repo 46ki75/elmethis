@@ -1,27 +1,23 @@
 import {
   $,
   component$,
+  PropsOf,
   QRL,
   Slot,
   useSignal,
   useVisibleTask$,
-  type CSSProperties,
 } from "@builder.io/qwik";
 
 import styles from "./elm-modal.module.css";
 
-export interface ElmModalProps {
-  class?: string;
-
-  style?: CSSProperties;
-
+export interface ElmModalProps extends PropsOf<"dialog"> {
   isOpen?: boolean;
 
   onClose$?: QRL<(event: Event, element: HTMLDialogElement) => void>;
 }
 
 export const ElmModal = component$<ElmModalProps>((props) => {
-  const { class: className, style, onClose$ } = props;
+  const { class: className, isOpen: _isOpen, onClose$, ...rest } = props;
   const dialogRef = useSignal<HTMLDialogElement>();
   const isShown = useSignal(false);
 
@@ -60,9 +56,9 @@ export const ElmModal = component$<ElmModalProps>((props) => {
           [styles["shown"]]: isShown.value,
         },
       ]}
-      style={style}
       onClick$={handleClose}
       {...({ closedBy: "none" } as object)}
+      {...rest}
     >
       <div onClick$={(e) => e.stopPropagation()}>
         <Slot />

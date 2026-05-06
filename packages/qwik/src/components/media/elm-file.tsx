@@ -1,13 +1,11 @@
-import { $, component$, CSSProperties } from "@builder.io/qwik";
+import { $, component$, PropsOf } from "@builder.io/qwik";
 
 import styles from "./elm-file.module.css";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { mdiDownload, mdiFile } from "@mdi/js";
 import { ElmInlineText } from "../typography/elm-inline-text";
 
-export interface ElmFileProps {
-  class?: string;
-
+export interface ElmFileProps extends PropsOf<"div"> {
   /**
    * The name of the file.
    */
@@ -22,8 +20,6 @@ export interface ElmFileProps {
    * The size of the file in bytes.
    */
   filesize?: string;
-
-  style?: CSSProperties;
 }
 
 function getLastPathSegmentWithoutQueryOrHash(
@@ -35,7 +31,7 @@ function getLastPathSegmentWithoutQueryOrHash(
 }
 
 export const ElmFile = component$<ElmFileProps>(
-  ({ class: className, name, src, filesize, style }) => {
+  ({ class: className, name, src, filesize, ...props }) => {
     const downloadFile = $(async () => {
       let link;
       try {
@@ -57,7 +53,7 @@ export const ElmFile = component$<ElmFileProps>(
     });
 
     return (
-      <div class={[styles.file, className]} style={style}>
+      <div class={[styles.file, className]} {...props}>
         <div>
           <ElmMdiIcon d={mdiFile} size="1.25rem" />
         </div>

@@ -1,6 +1,6 @@
 import {
   component$,
-  CSSProperties,
+  PropsOf,
   JSXOutput,
   useSignal,
   useTask$,
@@ -23,9 +23,7 @@ import { ElmTableCell } from "../table/elm-table-cell";
 
 import styles from "./elm-markdown.module.css";
 
-export interface ElmMarkdownProps {
-  class?: string;
-
+export interface ElmMarkdownProps extends PropsOf<"div"> {
   markdown: string;
 
   /**
@@ -33,8 +31,6 @@ export interface ElmMarkdownProps {
    * Keeps completed blocks stable and only re-renders the trailing block on each token.
    */
   streaming?: boolean;
-
-  style?: CSSProperties;
 }
 
 const renderByToken = (tokens: Token[]): JSXOutput[] => {
@@ -226,12 +222,12 @@ const ElmMarkdownStable = component$<{ tokens: Token[] }>(({ tokens }) => (
 ));
 
 export const ElmMarkdown = component$<ElmMarkdownProps>((props) => {
-  const { class: className, markdown, style } = props;
+  const { class: className, markdown: _markdown, streaming: _streaming, ...rest } = props;
   const stableTokens = useSignal<Token[]>([]);
   const tailTokens = useSignal<Token[]>([]);
 
   useTask$(({ track }) => {
-    const md = track(() => markdown);
+    const md = track(() => props.markdown);
     const allTokens = marked.setOptions({ gfm: true }).lexer(md) as Token[];
 
     if (props.streaming && allTokens.length > 0) {
@@ -249,7 +245,7 @@ export const ElmMarkdown = component$<ElmMarkdownProps>((props) => {
   });
 
   return (
-    <div class={[styles["markdown-body"], className]} style={style}>
+    <div class={[styles["markdown-body"], className]} {...rest}>
       <ElmMarkdownStable tokens={stableTokens.value} />
       {renderByToken(tailTokens.value)}
     </div>

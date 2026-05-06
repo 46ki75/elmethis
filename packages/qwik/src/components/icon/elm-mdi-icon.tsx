@@ -1,12 +1,8 @@
-import { component$, type CSSProperties } from "@builder.io/qwik";
+import { component$, PropsOf, type CSSProperties } from "@builder.io/qwik";
 
 import styles from "./elm-mdi-icon.module.css";
 
-export interface ElmMdiIconProps {
-  class?: string;
-
-  style?: CSSProperties;
-
+export interface ElmMdiIconProps extends PropsOf<"svg"> {
   d: string;
   size?: string;
   color?: string;
@@ -23,6 +19,7 @@ export const ElmMdiIcon = component$<ElmMdiIconProps>(
     color,
     lightColor,
     darkColor,
+    ...props
   }) => {
     return (
       <svg
@@ -30,8 +27,8 @@ export const ElmMdiIcon = component$<ElmMdiIconProps>(
         style={{
           "--color": lightColor ?? color,
           "--dark-color": darkColor ?? color,
-          ...style,
-        }}
+          ...(style as CSSProperties),
+        } as CSSProperties}
         width={size}
         height={size}
         viewBox="0 0 24 24"
@@ -39,6 +36,7 @@ export const ElmMdiIcon = component$<ElmMdiIconProps>(
         xmlns="http://www.w3.org/2000/svg"
         focusable="false"
         role="img"
+        {...props}
       >
         <path d={d} />
       </svg>

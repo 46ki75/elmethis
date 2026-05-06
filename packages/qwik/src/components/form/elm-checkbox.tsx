@@ -1,8 +1,8 @@
 import {
   $,
   component$,
+  PropsOf,
   useComputed$,
-  type CSSProperties,
   type PropFunction,
 } from "@builder.io/qwik";
 
@@ -10,11 +10,7 @@ import { ElmInlineText } from "../typography/elm-inline-text";
 import { useControllableState } from "../../hooks/use-controllable-state";
 import styles from "./elm-checkbox.module.css";
 
-export interface ElmCheckboxProps {
-  class?: string;
-
-  style?: CSSProperties;
-
+export interface ElmCheckboxProps extends PropsOf<"div"> {
   /**
    * The label displayed.
    */
@@ -47,25 +43,27 @@ export interface ElmCheckboxProps {
 }
 
 export const ElmCheckbox = component$<ElmCheckboxProps>((props) => {
+  const { class: className, label, loading, disable, checked: _checked, defaultChecked, onCheckedChange$, ...rest } = props;
+
   const [isChecked, setIsChecked] = useControllableState({
     prop: useComputed$(() => props.checked),
-    defaultProp: props.defaultChecked ?? false,
-    onChange: props.onCheckedChange$,
+    defaultProp: defaultChecked ?? false,
+    onChange: onCheckedChange$,
   });
 
   return (
     <div
       class={[
         styles.container,
-        props.disable && styles["container--disable"],
-        props.class,
+        disable && styles["container--disable"],
+        className,
       ]}
-      style={props.style}
       onClick$={$(() => {
         if (!props.loading && !props.disable) {
           setIsChecked(!isChecked.value);
         }
       })}
+      {...rest}
     >
       <div
         style={{
@@ -80,7 +78,7 @@ export const ElmCheckbox = component$<ElmCheckboxProps>((props) => {
             cy="0"
             r="2"
             class={styles.loading}
-            style={{ opacity: props.loading ? 1 : 0 }}
+            style={{ opacity: loading ? 1 : 0 }}
           >
             <animate
               attributeName="cx"
@@ -105,7 +103,7 @@ export const ElmCheckbox = component$<ElmCheckboxProps>((props) => {
             cy="20"
             r="2"
             class={styles.loading}
-            style={{ opacity: props.loading ? 1 : 0 }}
+            style={{ opacity: loading ? 1 : 0 }}
           >
             <animate
               attributeName="cx"
@@ -133,7 +131,7 @@ export const ElmCheckbox = component$<ElmCheckboxProps>((props) => {
             class={[
               styles.rect,
               isChecked.value && styles["rect--checked"],
-              props.loading && styles["rect--loading"],
+              loading && styles["rect--loading"],
             ]}
             stroke-width="0.8"
           />
@@ -155,7 +153,7 @@ export const ElmCheckbox = component$<ElmCheckboxProps>((props) => {
           <line x1="20" y1="23" x2="24" y2="23" stroke-width="1.5" fill="transparent" />
           <line x1="24" y1="4" x2="24" y2="20" style={{ strokeWidth: "1px" }} fill="transparent" />
         </svg>
-        <ElmInlineText text={props.label} />
+        <ElmInlineText text={label} />
       </div>
     </div>
   );

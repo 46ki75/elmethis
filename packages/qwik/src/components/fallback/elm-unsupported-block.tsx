@@ -1,19 +1,15 @@
-import { component$, type CSSProperties } from "@builder.io/qwik";
+import { component$, PropsOf } from "@builder.io/qwik";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import styles from "./elm-unsupported-block.module.css";
 
-export interface ElmUnsupportedBlockProps {
-  class?: string;
-
-  style?: CSSProperties;
-
+export interface ElmUnsupportedBlockProps extends PropsOf<"div"> {
   details?: string;
 }
 
 export const ElmUnsupportedBlock = component$<ElmUnsupportedBlockProps>(
-  (props) => {
+  ({ class: className, details, ...props }) => {
     return (
-      <div class={[styles.unsupported, props.class]} style={props.style}>
+      <div class={[styles.unsupported, className]} {...props}>
         <div class={styles.message}>
           <svg
             viewBox="0 0 24 24"
@@ -25,9 +21,9 @@ export const ElmUnsupportedBlock = component$<ElmUnsupportedBlockProps>(
           </svg>
           <ElmInlineText text="UNSUPPORTED BLOCK" color="#868e9c" />
         </div>
-        {props.details && (
+        {details && (
           <div class={styles.details}>
-            <ElmInlineText text={props.details} color="#868e9c" />
+            <ElmInlineText text={details} color="#868e9c" />
           </div>
         )}
       </div>

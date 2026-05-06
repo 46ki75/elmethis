@@ -1,6 +1,7 @@
 import {
   $,
   component$,
+  PropsOf,
   Slot,
   useSignal,
   type CSSProperties,
@@ -10,11 +11,7 @@ import {
 import { ElmDotLoadingIcon } from "../icon/elm-dot-loading-icon";
 import styles from "./elm-button.module.css";
 
-export interface ElmButtonProps {
-  class?: string;
-
-  style?: CSSProperties;
-
+export interface ElmButtonProps extends PropsOf<"button"> {
   /**
    * Whether the button is in loading state.
    */
@@ -24,11 +21,6 @@ export interface ElmButtonProps {
    * Whether the button is block.
    */
   block?: boolean;
-
-  /**
-   * Whether the button is disabled.
-   */
-  disabled?: boolean;
 
   color?: string;
 
@@ -45,13 +37,14 @@ export interface ElmButtonProps {
 
 export const ElmButton = component$<ElmButtonProps>((props) => {
   const clicked = useSignal(false);
+  const { class: className, onClick$, style, loading, block, color, primary, ...rest } = props;
 
   const handleClick = $(async () => {
     if (!props.loading && !props.disabled) {
-      if (props.onClick$) {
+      if (onClick$) {
         clicked.value = true;
         setTimeout(() => (clicked.value = false), 300);
-        await props.onClick$();
+        await onClick$();
       }
     }
   });
@@ -61,28 +54,29 @@ export const ElmButton = component$<ElmButtonProps>((props) => {
       onClick$={handleClick}
       class={[
         styles.button,
-        !props.loading && !props.disabled && styles.enable,
-        props.color && styles.colored,
-        !props.color && !props.primary && styles.normal,
-        !props.color && props.primary && styles.primary,
-        props.class,
+        !loading && !rest.disabled && styles.enable,
+        color && styles.colored,
+        !color && !primary && styles.normal,
+        !color && primary && styles.primary,
+        className,
       ]}
       style={{
-        display: props.block ? "flex" : "inline-flex",
-        width: props.block ? "100%" : "auto",
-        cursor: props.disabled
+        display: block ? "flex" : "inline-flex",
+        width: block ? "100%" : "auto",
+        cursor: rest.disabled
           ? "not-allowed"
-          : props.loading
+          : loading
             ? "progress"
             : "pointer",
-        "--opacity": props.disabled || props.loading ? 0.6 : undefined,
-        "--color": props.color,
-        ...props.style,
-      }}
+        "--opacity": rest.disabled || loading ? 0.6 : undefined,
+        "--color": color,
+        ...(style as CSSProperties),
+      } as CSSProperties}
+      {...rest}
     >
       {clicked.value && <div class={styles.ripple}></div>}
 
-      {props.loading ? (
+      {loading ? (
         <ElmDotLoadingIcon size="1.5rem" />
       ) : (
         <span class={styles.flex}>
