@@ -1,6 +1,7 @@
 import {
   $,
   component$,
+  PropsOf,
   useComputed$,
   useOnDocument,
   useSignal,
@@ -24,11 +25,7 @@ export interface ElmSelectOption {
   description?: string;
 }
 
-export interface ElmSelectProps {
-  class?: string;
-
-  style?: CSSProperties;
-
+export interface ElmSelectProps extends PropsOf<"div"> {
   label: string;
   placeholder?: string;
   disabled?: boolean;
@@ -70,16 +67,33 @@ export interface ElmSelectProps {
 }
 
 export const ElmSelect = component$<ElmSelectProps>((props) => {
+  const {
+    class: className,
+    style,
+    label,
+    placeholder,
+    disabled,
+    loading,
+    options,
+    selectedOption: _selectedOptionProp,
+    defaultSelectedOption,
+    onSelectedOptionChange$,
+    open: _open,
+    defaultOpen,
+    onOpenChange$,
+    ...rest
+  } = props;
+
   const [selectedOption, setSelectedOption] = useControllableState({
     prop: useComputed$(() => props.selectedOption),
-    defaultProp: props.defaultSelectedOption ?? null,
-    onChange: props.onSelectedOptionChange$,
+    defaultProp: defaultSelectedOption ?? null,
+    onChange: onSelectedOptionChange$,
   });
 
   const [isOpen, setIsOpen] = useControllableState({
     prop: useComputed$(() => props.open),
-    defaultProp: props.defaultOpen ?? false,
-    onChange: props.onOpenChange$,
+    defaultProp: defaultOpen ?? false,
+    onChange: onOpenChange$,
   });
 
   const containerRef = useSignal<Element>();
@@ -99,21 +113,22 @@ export const ElmSelect = component$<ElmSelectProps>((props) => {
   return (
     <div
       ref={containerRef}
-      class={[styles.wrapper, isOpen.value && styles.active, props.class]}
+      class={[styles.wrapper, isOpen.value && styles.active, className]}
       style={{
         backgroundColor:
-          props.disabled || props.loading ? "rgba(0,0,0,0.15)" : undefined,
+          disabled || loading ? "rgba(0,0,0,0.15)" : undefined,
         "--highlight-color": isOpen.value ? "#bfa056" : undefined,
-        ...props.style,
-      }}
+        ...(style as CSSProperties),
+      } as CSSProperties}
       onClick$={$(() => {
         if (!props.disabled && !props.loading) {
           setIsOpen(!isOpen.value);
         }
       })}
+      {...rest}
     >
       <div class={styles.header}>
-        <span class={[styles.label, textStyles.text]}>{props.label}</span>
+        <span class={[styles.label, textStyles.text]}>{label}</span>
       </div>
 
       <div class={styles.body}>
@@ -131,7 +146,7 @@ export const ElmSelect = component$<ElmSelectProps>((props) => {
             ) : (
               <div class={styles.fallback}>
                 <ElmMdiIcon d={mdiArrowDownDropCircleOutline} />
-                <span>{props.placeholder ?? "Select an option"}</span>
+                <span>{placeholder ?? "Select an option"}</span>
               </div>
             )}
           </div>
@@ -140,7 +155,7 @@ export const ElmSelect = component$<ElmSelectProps>((props) => {
 
           {isOpen.value && (
             <div class={styles.pulldown}>
-              {props.options.map((option) => (
+              {options.map((option) => (
                 <div
                   key={option.id}
                   class={[styles.option, textStyles.text]}

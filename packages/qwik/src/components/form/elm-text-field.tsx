@@ -1,6 +1,7 @@
 import {
   $,
   component$,
+  PropsOf,
   useComputed$,
   useId,
   useSignal,
@@ -30,11 +31,7 @@ import { useControllableState } from "../../hooks/use-controllable-state";
 
 import styles from "./elm-text-field.module.css";
 
-export interface ElmTextFieldProps {
-  class?: string;
-
-  style?: CSSProperties;
-
+export interface ElmTextFieldProps extends PropsOf<"div"> {
   label: string;
   maxLength?: number;
   suffix?: string;
@@ -76,14 +73,33 @@ export interface ElmTextFieldProps {
 }
 
 export const ElmTextField = component$<ElmTextFieldProps>((props) => {
+  const {
+    class: className,
+    style,
+    label,
+    maxLength,
+    suffix,
+    placeholder,
+    disabled,
+    loading,
+    value: valueProp,
+    defaultValue,
+    onValueChange$,
+    icon,
+    isPassword,
+    required,
+    onInput$,
+    ...rest
+  } = props;
+
   const id = useId();
   const isFocused = useSignal(false);
-  const inputType = useSignal(props.isPassword ? "password" : "text");
+  const inputType = useSignal(isPassword ? "password" : "text");
 
   const [value, setValue] = useControllableState({
-    prop: useComputed$(() => props.value),
-    defaultProp: props.defaultValue ?? "",
-    onChange: props.onValueChange$,
+    prop: useComputed$(() => valueProp),
+    defaultProp: defaultValue ?? "",
+    onChange: onValueChange$,
   });
 
   const iconMap: Record<NonNullable<ElmTextFieldProps["icon"]>, string> = {
@@ -102,31 +118,32 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
 
   return (
     <div
-      class={[styles.wrapper, isFocused.value && styles.active, props.class]}
+      class={[styles.wrapper, isFocused.value && styles.active, className]}
       style={{
         backgroundColor:
-          props.disabled || props.loading ? "rgba(0,0,0,0.15)" : undefined,
+          disabled || loading ? "rgba(0,0,0,0.15)" : undefined,
         "--highlight-color": isFocused.value ? "#bfa056" : undefined,
-        ...props.style,
-      }}
+        ...(style as CSSProperties),
+      } as CSSProperties}
+      {...rest}
     >
       <div class={styles.header}>
         <label for={id} class={styles.label}>
-          <span>{props.label}</span>
-          {props.required && <span class={styles.requierd}>*</span>}
+          <span>{label}</span>
+          {required && <span class={styles.requierd}>*</span>}
         </label>
-        {props.maxLength != null && (
+        {maxLength != null && (
           <ElmInlineText
-            text={`${value.value.length} / ${props.maxLength}`}
-            color={value.value.length > props.maxLength ? "#c56565" : "gray"}
+            text={`${value.value.length} / ${maxLength}`}
+            color={value.value.length > maxLength ? "#c56565" : "gray"}
             size="0.75rem"
           />
         )}
       </div>
 
       <div class={styles.body}>
-        {props.icon && (
-          <ElmMdiIcon d={iconMap[props.icon]} size="1.5rem" color="gray" />
+        {icon && (
+          <ElmMdiIcon d={iconMap[icon]} size="1.5rem" color="gray" />
         )}
 
         <input
@@ -134,27 +151,27 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
           value={value.value}
           type={inputType.value}
           class={styles.input}
-          placeholder={props.placeholder}
+          placeholder={placeholder}
           onFocus$={() => (isFocused.value = true)}
           onBlur$={() => (isFocused.value = false)}
-          disabled={props.disabled || props.loading}
+          disabled={disabled || loading}
           style={{
-            cursor: props.disabled
+            cursor: disabled
               ? "not-allowed"
-              : props.loading
+              : loading
                 ? "progress"
                 : "auto",
           }}
-          aria-required={props.required}
+          aria-required={required}
           onInput$={[
             $((_, el: HTMLInputElement) => setValue(el.value)),
-            props.onInput$,
+            onInput$,
           ]}
         />
 
         <div class={styles["icon-box"]}>
           <span class={styles.suffix}>
-            {props.suffix != null && <ElmInlineText text={props.suffix} />}
+            {suffix != null && <ElmInlineText text={suffix} />}
           </span>
 
           <div
@@ -189,7 +206,7 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
       <div
         class={styles.loading}
         style={{
-          opacity: props.loading ? 0.2 : 0,
+          opacity: loading ? 0.2 : 0,
         }}
       ></div>
     </div>

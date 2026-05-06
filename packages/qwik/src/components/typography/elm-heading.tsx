@@ -1,19 +1,13 @@
-import { component$, CSSProperties, Slot } from "@builder.io/qwik";
+import { component$, PropsOf, Slot, type CSSProperties } from "@builder.io/qwik";
 
 import styles from "./elm-heading.module.css";
 import textStyles from "../../styles/text.module.css";
 import { ElmFragmentIdentifier } from "./elm-fragment-identifier";
 
-export interface ElmHeadingProps {
-  class?: string;
-
+export interface ElmHeadingProps extends PropsOf<"h1"> {
   level: 1 | 2 | 3 | 4 | 5 | 6;
 
   text?: string;
-
-  id?: string;
-
-  style?: CSSProperties;
 }
 
 const SIZE_MAP: Record<1 | 2 | 3 | 4 | 5 | 6, number> = Object.freeze({
@@ -26,7 +20,7 @@ const SIZE_MAP: Record<1 | 2 | 3 | 4 | 5 | 6, number> = Object.freeze({
 } as const);
 
 export const ElmHeading = component$<ElmHeadingProps>(
-  ({ class: className, level, text, id, style }) => {
+  ({ class: className, level, text, id, style, ...props }) => {
     const Tag = `h${level}` as "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
     return (
       <Tag
@@ -36,7 +30,9 @@ export const ElmHeading = component$<ElmHeadingProps>(
           styles[`h${level}`],
           className,
         ]}
-        style={{ "--font-size": `${SIZE_MAP[level]}em`, ...style }}
+        style={{ "--font-size": `${SIZE_MAP[level]}em`, ...(style as CSSProperties) }}
+        id={id}
+        {...props}
       >
         <span>{text}</span>
         <Slot />

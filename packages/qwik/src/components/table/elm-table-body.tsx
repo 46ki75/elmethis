@@ -1,23 +1,19 @@
 import {
   component$,
+  PropsOf,
   Slot,
   useContextProvider,
-  type CSSProperties,
 } from "@builder.io/qwik";
 import { HasHeaderContext } from "./elm-table-header";
 
-export interface ElmTableBodyProps {
-  class?: string;
+export type ElmTableBodyProps = PropsOf<"tbody">;
 
-  style?: CSSProperties;
-}
-
-export const ElmTableBody = component$<ElmTableBodyProps>(
-  ({ class: className, style }) => {
+export const ElmTableBody = component$<PropsOf<"tbody">>(
+  ({ class: className, ...props }) => {
     useContextProvider(HasHeaderContext, false);
 
     return (
-      <tbody class={className} style={style}>
+      <tbody class={className} {...props}>
         <Slot />
       </tbody>
     );

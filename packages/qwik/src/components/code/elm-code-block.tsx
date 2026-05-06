@@ -1,7 +1,7 @@
 import {
   $,
   component$,
-  CSSProperties,
+  PropsOf,
   Slot,
   useSignal,
 } from "@builder.io/qwik";
@@ -18,9 +18,7 @@ import {
 } from "@mdi/js";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 
-export interface ElmCodeBlockProps {
-  class?: string;
-
+export interface ElmCodeBlockProps extends PropsOf<"figure"> {
   /**
    * The code to display.
    */
@@ -36,12 +34,10 @@ export interface ElmCodeBlockProps {
    * If not provided, the language will be used.
    */
   caption?: string;
-
-  style?: CSSProperties;
 }
 
 export const ElmCodeBlock = component$<ElmCodeBlockProps>(
-  ({ class: className, code, language = "txt", caption, style }) => {
+  ({ class: className, code, language = "txt", caption, ...props }) => {
     const timerId = useSignal<number | null>(null);
 
     const copyToClipboard = $(async () => {
@@ -59,7 +55,7 @@ export const ElmCodeBlock = component$<ElmCodeBlockProps>(
     });
 
     return (
-      <figure class={[styles["code-block"], className]} style={style}>
+      <figure class={[styles["code-block"], className]} {...props}>
         <span class={styles["language-icon"]}>
           <ElmLanguageIcon language={language} />
         </span>

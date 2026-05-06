@@ -1,6 +1,7 @@
 import {
   $,
   component$,
+  PropsOf,
   type CSSProperties,
   type PropFunction,
   Slot,
@@ -13,11 +14,7 @@ import { mdiChevronRight, mdiPlus } from "@mdi/js";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { useControllableState } from "../../hooks/use-controllable-state";
 
-export interface ElmToggleProps {
-  class?: string;
-
-  style?: CSSProperties & { "--elmethis-margin-block-start"?: string };
-
+export interface ElmToggleProps extends PropsOf<"div"> {
   /** The summary text of the toggle. */
   summary?: string;
 
@@ -34,12 +31,12 @@ export interface ElmToggleProps {
 }
 
 export const ElmToggle = component$<ElmToggleProps>((props) => {
-  const { class: className, summary, style, monochrome } = props;
+  const { class: className, summary, style, monochrome, isOpen: _isOpenProp, defaultIsOpen, setIsOpen$, ...rest } = props;
 
   const [isOpen, setIsOpen] = useControllableState({
     prop: useComputed$(() => props.isOpen),
-    defaultProp: props.defaultIsOpen ?? false,
-    onChange: props.setIsOpen$,
+    defaultProp: defaultIsOpen ?? false,
+    onChange: setIsOpen$,
   });
 
   return (
@@ -51,7 +48,8 @@ export const ElmToggle = component$<ElmToggleProps>((props) => {
         },
         className,
       ]}
-      style={style}
+      style={style as CSSProperties}
+      {...rest}
     >
       <div
         class={styles.summary}

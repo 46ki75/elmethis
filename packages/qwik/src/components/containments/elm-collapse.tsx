@@ -1,19 +1,15 @@
-import { component$, Slot, type CSSProperties } from "@builder.io/qwik";
+import { component$, PropsOf, Slot } from "@builder.io/qwik";
 
 import styles from "./elm-collapse.module.css";
 
-export interface ElmCollapseProps {
-  class?: string;
-
-  style?: CSSProperties;
-
+export interface ElmCollapseProps extends PropsOf<"div"> {
   isOpen?: boolean;
 
   direction?: "row" | "column" | "both";
 }
 
 export const ElmCollapse = component$<ElmCollapseProps>(
-  ({ class: className, style, isOpen, direction = "row" }) => {
+  ({ class: className, isOpen, direction = "row", ...props }) => {
     return (
       <div
         class={[
@@ -26,7 +22,7 @@ export const ElmCollapse = component$<ElmCollapseProps>(
           },
           className,
         ]}
-        style={style}
+        {...props}
       >
         <div class={styles["inner"]}>
           <Slot />

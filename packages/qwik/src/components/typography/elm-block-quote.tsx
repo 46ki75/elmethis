@@ -1,25 +1,18 @@
-import { component$, CSSProperties, Slot } from "@builder.io/qwik";
+import { component$, PropsOf, Slot } from "@builder.io/qwik";
 
 import styles from "./elm-block-quote.module.css";
 import textStyles from "../../styles/text.module.css";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { mdiFormatQuoteClose, mdiFormatQuoteOpen } from "@mdi/js";
 
-export interface ElmBlockQuoteProps {
-  class?: string;
+export type ElmBlockQuoteProps = PropsOf<"blockquote">;
 
-  cite?: string;
-
-  style?: string | CSSProperties;
-}
-
-export const ElmBlockQuote = component$<ElmBlockQuoteProps>(
-  ({ class: className, cite, style }) => {
+export const ElmBlockQuote = component$<PropsOf<"blockquote">>(
+  ({ class: className, ...props }) => {
     return (
       <blockquote
         class={[styles.blockquote, textStyles.text, className]}
-        cite={cite}
-        style={style}
+        {...props}
       >
         <div
           class={styles.icon}

@@ -1,26 +1,22 @@
 import {
   component$,
+  PropsOf,
   Slot,
   createContextId,
   useContextProvider,
-  type CSSProperties,
 } from "@builder.io/qwik";
 import styles from "./elm-table-header.module.css";
 
 export const HasHeaderContext = createContextId<boolean>("HasHeaderContext");
 
-export interface ElmTableHeaderProps {
-  class?: string;
+export type ElmTableHeaderProps = PropsOf<"thead">;
 
-  style?: CSSProperties;
-}
-
-export const ElmTableHeader = component$<ElmTableHeaderProps>(
-  ({ class: className, style }) => {
+export const ElmTableHeader = component$<PropsOf<"thead">>(
+  ({ class: className, ...props }) => {
     useContextProvider(HasHeaderContext, true);
 
     return (
-      <thead class={[styles.thead, className]} style={style}>
+      <thead class={[styles.thead, className]} {...props}>
         <Slot />
       </thead>
     );

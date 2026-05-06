@@ -1,6 +1,6 @@
 import {
   component$,
-  type CSSProperties,
+  PropsOf,
   type QRLEventHandlerMulti,
 } from "@builder.io/qwik";
 
@@ -14,11 +14,7 @@ import {
 } from "@mdi/js";
 import { ElmInlineText } from "../typography/elm-inline-text";
 
-export interface ElmBreadcrumbProps {
-  class?: string;
-
-  style?: CSSProperties;
-
+export interface ElmBreadcrumbProps extends PropsOf<"nav"> {
   links: Array<{
     /**
      * The text to display.
@@ -33,9 +29,9 @@ export interface ElmBreadcrumbProps {
 }
 
 export const ElmBreadcrumb = component$<ElmBreadcrumbProps>(
-  ({ class: className, style, links }) => {
+  ({ class: className, links, ...props }) => {
     return (
-      <nav class={[styles.container, className]} style={style}>
+      <nav class={[styles.container, className]} {...props}>
         {links.map((link, index) => (
           <>
             <span class={styles["link-container"]} onClick$={link.onClick$}>

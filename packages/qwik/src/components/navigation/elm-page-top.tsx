@@ -1,5 +1,6 @@
 import {
   component$,
+  PropsOf,
   useSignal,
   useVisibleTask$,
   $,
@@ -8,11 +9,7 @@ import {
 
 import styles from "./elm-page-top.module.css";
 
-export interface ElmPageTopProps {
-  class?: string;
-
-  style?: CSSProperties;
-
+export interface ElmPageTopProps extends PropsOf<"nav"> {
   /**
    * Specifies the position of the button.
    */
@@ -20,7 +17,7 @@ export interface ElmPageTopProps {
 }
 
 export const ElmPageTop = component$<ElmPageTopProps>(
-  ({ class: className, style, position = "right" }) => {
+  ({ class: className, style, position = "right", ...props }) => {
     const isVisible = useSignal(false);
 
     // Initial check and scroll listener
@@ -54,9 +51,10 @@ export const ElmPageTop = component$<ElmPageTopProps>(
           "--size": `${64}px`,
           left: position === "left" ? "0" : "auto",
           right: position === "right" ? "0" : "auto",
-          ...style,
-        }}
+          ...(style as CSSProperties),
+        } as CSSProperties}
         onClick$={toTop}
+        {...props}
       >
         <div aria-hidden="true" class={styles.partial}></div>
         <div aria-hidden="true" class={styles.partial}></div>

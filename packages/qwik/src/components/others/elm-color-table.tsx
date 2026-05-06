@@ -1,11 +1,11 @@
-import { component$ } from "@builder.io/qwik";
+import { component$, PropsOf } from "@builder.io/qwik";
 import { darken } from "polished";
 
 import { ElmColorSample } from "./elm-color-sample";
 
 import styles from "./elm-color-table.module.css";
 
-export interface ElmColorTableProps {
+export interface ElmColorTableProps extends PropsOf<"div"> {
   /**
    * The colors to display.
    */
@@ -19,9 +19,9 @@ const DARKNESS_VALUES = [
   -3, -0.25, -0.2, -0.15, -0.1, -0.05, 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3,
 ];
 
-export const ElmColorTable = component$<ElmColorTableProps>(({ colors }) => {
+export const ElmColorTable = component$<ElmColorTableProps>(({ colors, class: className, ...props }) => {
   return (
-    <div class={styles.container}>
+    <div class={[styles.container, className]} {...props}>
       {colors.map((color) => (
         <div key={color.name} class={styles["row-container"]}>
           <div

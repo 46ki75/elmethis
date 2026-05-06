@@ -1,7 +1,7 @@
 import {
   $,
   component$,
-  CSSProperties,
+  PropsOf,
   useSignal,
   useVisibleTask$,
   type Numberish,
@@ -13,9 +13,7 @@ import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { ElmRectangleWave } from "../fallback/elm-rectangle-wave";
 import { mdiMessageImageOutline } from "@mdi/js";
 
-export interface ElmBlockImageProps {
-  class?: string;
-
+export interface ElmBlockImageProps extends PropsOf<"figure"> {
   /**
    * Image source URL
    */
@@ -37,8 +35,6 @@ export interface ElmBlockImageProps {
   width?: Numberish;
 
   height?: Numberish;
-
-  style?: CSSProperties;
 }
 
 export const ElmBlockImage = component$<ElmBlockImageProps>((props) => {
@@ -51,7 +47,8 @@ export const ElmBlockImage = component$<ElmBlockImageProps>((props) => {
     height,
     srcset,
     sizes,
-    style,
+    enableModal,
+    ...rest
   } = props;
   const isLoading = useSignal(true);
   const isShowModal = useSignal(false);
@@ -94,7 +91,7 @@ export const ElmBlockImage = component$<ElmBlockImageProps>((props) => {
       style={{
         "--opacity": isLoading.value ? 0.01 : 1,
         "--cursor":
-          (props.enableModal ?? true)
+          (enableModal ?? true)
             ? isShowModal.value
               ? "zoom-out"
               : "zoom-in"
@@ -118,7 +115,7 @@ export const ElmBlockImage = component$<ElmBlockImageProps>((props) => {
   );
 
   return (
-    <figure class={[styles["block-image"], className]} style={style}>
+    <figure class={[styles["block-image"], className]} {...rest}>
       <div
         class={styles["image-container"]}
         style={{ "--opacity": isLoading.value ? 1 : 0.01 }}

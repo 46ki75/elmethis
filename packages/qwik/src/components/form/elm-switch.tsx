@@ -1,6 +1,7 @@
 import {
   $,
   component$,
+  PropsOf,
   useComputed$,
   type CSSProperties,
   type PropFunction,
@@ -9,11 +10,7 @@ import {
 import { useControllableState } from "../../hooks/use-controllable-state";
 import styles from "./elm-switch.module.css";
 
-export interface ElmSwitchProps {
-  class?: string;
-
-  style?: CSSProperties;
-
+export interface ElmSwitchProps extends PropsOf<"div"> {
   /**
    * The color of the switch when checked.
    */
@@ -46,49 +43,51 @@ export interface ElmSwitchProps {
 }
 
 export const ElmSwitch = component$<ElmSwitchProps>((props) => {
-  const color = props.color ?? "#bfa056";
-  const size = props.size ?? "18px";
+  const { class: className, style, color, size, disabled, checked: _checked, defaultChecked, onCheckedChange$, ...rest } = props;
+  const resolvedColor = color ?? "#bfa056";
+  const resolvedSize = size ?? "18px";
 
-  const [checked, setChecked] = useControllableState({
+  const [isChecked, setIsChecked] = useControllableState({
     prop: useComputed$(() => props.checked),
-    defaultProp: props.defaultChecked ?? false,
-    onChange: props.onCheckedChange$,
+    defaultProp: defaultChecked ?? false,
+    onChange: onCheckedChange$,
   });
 
   return (
     <div
       onClick$={$(() => {
         if (!props.disabled) {
-          setChecked(!checked.value);
+          setIsChecked(!isChecked.value);
         }
       })}
-      class={props.class}
+      class={className}
       style={{
-        "--color": color,
+        "--color": resolvedColor,
         "--padding": "2px",
-        "--size": size,
+        "--size": resolvedSize,
         "--width": "calc(var(--size) * 2 + var(--padding) * 2)",
-        ...props.style,
-      }}
+        ...(style as CSSProperties),
+      } as CSSProperties}
+      {...rest}
     >
       <input
         class={styles.switch}
         type="checkbox"
-        checked={checked.value}
-        disabled={props.disabled}
+        checked={isChecked.value}
+        disabled={disabled}
       />
       <div
         class={[
           styles.bar,
-          checked.value && styles.checked,
-          props.disabled && styles.disabled,
+          isChecked.value && styles.checked,
+          disabled && styles.disabled,
         ]}
       >
         <div
           class={[
             styles.circle,
-            checked.value && styles.checked,
-            props.disabled && styles.disabled,
+            isChecked.value && styles.checked,
+            disabled && styles.disabled,
           ]}
         ></div>
       </div>

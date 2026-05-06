@@ -1,18 +1,14 @@
 import {
   component$,
+  PropsOf,
   useSignal,
   useTask$,
-  type CSSProperties,
 } from "@builder.io/qwik";
 
 import styles from "./elm-shiki-highlighter.module.css";
 import { codeToHtml } from "shiki";
 
-export interface ElmShikiHighlighterProps {
-  class?: string;
-
-  style?: CSSProperties;
-
+export interface ElmShikiHighlighterProps extends PropsOf<"pre"> {
   /**
    * The code to display.
    */
@@ -25,7 +21,7 @@ export interface ElmShikiHighlighterProps {
 }
 
 export const ElmShikiHighlighter = component$<ElmShikiHighlighterProps>(
-  ({ class: className, style, code, language = "txt" }) => {
+  ({ class: className, code, language = "txt", ...props }) => {
     const rawHtml = useSignal("");
 
     useTask$(async ({ track }) => {
@@ -51,8 +47,8 @@ export const ElmShikiHighlighter = component$<ElmShikiHighlighterProps>(
     return (
       <pre
         class={[styles.code, className]}
-        style={style}
         dangerouslySetInnerHTML={rawHtml.value}
+        {...props}
       />
     );
   },

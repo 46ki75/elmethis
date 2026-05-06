@@ -1,4 +1,4 @@
-import { component$, CSSProperties, type JSXOutput } from "@builder.io/qwik";
+import { component$, PropsOf, type CSSProperties, type JSXOutput } from "@builder.io/qwik";
 import type { Component, InlineComponent } from "jarkup-ts";
 import { kebabCase } from "es-toolkit";
 
@@ -28,14 +28,10 @@ import {
 import { ElmTabs } from "../containments/elm-tabs";
 import { ElmUnsupportedBlock } from "../fallback/elm-unsupported-block";
 
-export interface ElmJarkupProps {
-  class?: string;
-
+export interface ElmJarkupProps extends PropsOf<"div"> {
   jsonComponents: Component[];
 
   skipUnsupportedComponentWarning?: boolean;
-
-  style?: CSSProperties & { "--elmethis-margin-block-start"?: string };
 }
 
 const convertInlineComponentsToPlainText = (
@@ -53,6 +49,8 @@ const convertInlineComponentsToPlainText = (
 };
 
 export const ElmJarkup = component$<ElmJarkupProps>((props) => {
+  const { class: className, style, jsonComponents, skipUnsupportedComponentWarning, ...rest } = props;
+
   const render = (jsonComponents: Component[]): JSXOutput[] => {
     return jsonComponents.map((component, index) => {
       const key = component.id || index;
@@ -308,7 +306,7 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
           );
 
         case "Unsupported": {
-          if (props.skipUnsupportedComponentWarning) return null;
+          if (skipUnsupportedComponentWarning) return null;
 
           return (
             <ElmUnsupportedBlock
@@ -320,7 +318,7 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
         }
 
         default:
-          if (props.skipUnsupportedComponentWarning) return null;
+          if (skipUnsupportedComponentWarning) return null;
 
           return (
             <ElmUnsupportedBlock
@@ -335,10 +333,11 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
 
   return (
     <div
-      class={props.class}
-      style={{ "--elmethis-margin-block-start": "2.5rem", ...props.style }}
+      class={className}
+      style={{ "--elmethis-margin-block-start": "2.5rem", ...(style as CSSProperties) } as CSSProperties}
+      {...rest}
     >
-      {render(props.jsonComponents)}
+      {render(jsonComponents)}
     </div>
   );
 });

@@ -1,12 +1,8 @@
-import { component$, type CSSProperties } from "@builder.io/qwik";
+import { component$, PropsOf, type CSSProperties } from "@builder.io/qwik";
 
 import styles from "./elm-dot-loading-icon.module.css";
 
-export interface ElmDotLoadingIconProps {
-  class?: string;
-
-  style?: CSSProperties;
-
+export interface ElmDotLoadingIconProps extends PropsOf<"div"> {
   /**
    * Specifies the color of the dot.
    *
@@ -21,15 +17,16 @@ export interface ElmDotLoadingIconProps {
 }
 
 export const ElmDotLoadingIcon = component$<ElmDotLoadingIconProps>(
-  ({ class: className, style, size = "4em", color = "#606875" }) => {
+  ({ class: className, style, size = "4em", color = "#606875", ...props }) => {
     return (
       <div
         class={[styles.wrapper, className]}
         style={{
           "--size": size,
           "--color": color,
-          ...style,
-        }}
+          ...(style as CSSProperties),
+        } as CSSProperties}
+        {...props}
       >
         <div class={styles.dot} aria-hidden="true"></div>
         <div class={styles.dot} aria-hidden="true"></div>
