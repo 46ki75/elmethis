@@ -375,7 +375,11 @@ export function useAgent({
               {agentStateStore.error && (
                 <>
                   <div class={styles["error"]}>
-                    <ElmMdiIcon d={mdiAlert} color="#c56565" />
+                    <ElmMdiIcon
+                      d={mdiAlert}
+                      color="#c56565"
+                      style={{ flexShrink: 0 }}
+                    />
                     <ElmInlineText color="#c56565">
                       {agentStateStore.error}
                     </ElmInlineText>
