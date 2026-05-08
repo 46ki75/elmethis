@@ -33,6 +33,8 @@ export interface ElmSelectSlotProps extends PropsOf<"div"> {
   loading?: boolean;
   options: ElmSelectSlotOption[];
 
+  icon?: JSXOutput;
+
   /**
    * Controlled selected option. When provided the parent owns the state.
    * Pass `null` to explicitly clear the selection in controlled mode.
@@ -76,6 +78,7 @@ export const ElmSelectSlot = component$<ElmSelectSlotProps>((props) => {
     disabled,
     loading,
     options,
+    icon,
     selectedOption: _selectedOptionProp,
     defaultSelectedOption,
     onSelectedOptionChange$,
@@ -132,6 +135,11 @@ export const ElmSelectSlot = component$<ElmSelectSlotProps>((props) => {
         <span
           class={[styles.label, { [styles["label-active"]]: isOpen.value }]}
         >
+          {icon ? (
+            <div class={styles.icon}>{icon}</div>
+          ) : (
+            <ElmMdiIcon d={mdiArrowDownDropCircleOutline} size="0.75rem" />
+          )}
           {label}
         </span>
       </div>
@@ -142,7 +150,6 @@ export const ElmSelectSlot = component$<ElmSelectSlotProps>((props) => {
             <div key={selectedOption.value.id}>{selectedOption.value.slot}</div>
           ) : (
             <div class={styles.fallback}>
-              <ElmMdiIcon d={mdiArrowDownDropCircleOutline} />
               <span>{placeholder ?? "Select an option"}</span>
             </div>
           )}

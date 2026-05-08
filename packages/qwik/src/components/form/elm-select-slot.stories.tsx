@@ -11,6 +11,8 @@ import { ElmInlineText } from "../typography/elm-inline-text";
 import MiniMax from "../../assets/images/minimax.svg?url";
 import OpenAI from "../../assets/images/openai.svg?url";
 import Claude from "../../assets/images/claude.svg?url";
+import { mdiAccountOutline } from "@mdi/js";
+import { ElmMdiIcon } from "../..";
 
 const Model = component$((props: { icon: string; text: string }) => {
   return (
@@ -61,6 +63,21 @@ export default meta;
 type Story = StoryObj<ElmSelectSlotProps>;
 
 export const Primary: Story = {
+  render() {
+    return (
+      <ElmSelectSlot
+        {...this.args}
+        label={this.args?.label ?? "Select"}
+        options={OPTIONS}
+      />
+    );
+  },
+};
+
+export const WithIcon: Story = {
+  args: {
+    icon: <ElmMdiIcon d={mdiAccountOutline} />,
+  },
   render() {
     return (
       <ElmSelectSlot
