@@ -123,15 +123,10 @@ export {
   type ElmCheckboxProps,
 } from "./components/form/elm-checkbox";
 export {
-  ElmSelect,
-  type ElmSelectOption,
-  type ElmSelectProps,
+  ElmSelect as ElmSelectSlot,
+  type ElmSelectOption as ElmSelectSlotOption,
+  type ElmSelectProps as ElmSelectSlotProps,
 } from "./components/form/elm-select";
-export {
-  ElmSelectSlot,
-  type ElmSelectSlotOption,
-  type ElmSelectSlotProps,
-} from "./components/form/elm-select-slot";
 export { ElmSwitch, type ElmSwitchProps } from "./components/form/elm-switch";
 export {
   ElmTextField,
@@ -162,10 +157,7 @@ export {
   useSessionStorage,
   type UseSessionStorageOptions,
 } from "./hooks/useStorage";
-export {
-  useThrottledQueue,
-  ThrottledQueue,
-} from "./hooks/useThrottledQueue";
+export { useThrottledQueue, ThrottledQueue } from "./hooks/useThrottledQueue";
 
 // | Icon |
 export {
