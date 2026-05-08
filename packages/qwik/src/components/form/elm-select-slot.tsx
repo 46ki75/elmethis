@@ -27,13 +27,39 @@ export interface ElmSelectSlotOption {
 }
 
 export interface ElmSelectSlotProps extends PropsOf<"div"> {
+  /**
+   * Label for the select component.
+   */
   label: string;
-  placeholder?: string;
-  disabled?: boolean;
-  loading?: boolean;
-  options: ElmSelectSlotOption[];
 
+  /**
+   * Icon for the select component.
+   * This is displayed on the left side of the label.
+   * If not provided, a default dropdown icon is used.
+   *
+   * @example <ElmSelectSlot icon={<ElmInlineIcon src={url} />} />
+   */
   icon?: JSXOutput;
+
+  /**
+   * Placeholder text shown when no option is selected.
+   */
+  placeholder?: string;
+
+  /**
+   * Whether the select is disabled.
+   */
+  disabled?: boolean;
+
+  /**
+   * Whether the select is in a loading state.
+   */
+  loading?: boolean;
+
+  /**
+   * Options to display in the dropdown.
+   */
+  options: ElmSelectSlotOption[];
 
   /**
    * Controlled selected option. When provided the parent owns the state.
