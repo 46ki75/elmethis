@@ -132,18 +132,14 @@ export const ElmSelectSlot = component$<ElmSelectSlotProps>((props) => {
       })}
       {...rest}
     >
-      <div class={styles.header}>
-        <span
-          class={[styles.label, { [styles["label-active"]]: isOpen.value }]}
-        >
-          {icon ? (
-            <div class={styles.icon}>{icon}</div>
-          ) : (
-            <ElmMdiIcon d={mdiArrowDownDropCircleOutline} size="0.75rem" />
-          )}
-          {label}
-        </span>
-      </div>
+      <span class={[styles.label, { [styles["label-active"]]: isOpen.value }]}>
+        {icon ? (
+          <div class={styles.icon}>{icon}</div>
+        ) : (
+          <ElmMdiIcon d={mdiArrowDownDropCircleOutline} size="0.75rem" />
+        )}
+        {label}
+      </span>
 
       <div class={styles.body}>
         <div class={[styles["selected-option"], textStyles.text]}>
