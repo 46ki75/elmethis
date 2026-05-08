@@ -9,6 +9,7 @@
   display: inline-flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 0.125rem;
 
   border-style: solid;
   border-width: 1px;
