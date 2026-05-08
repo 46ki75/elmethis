@@ -18,6 +18,7 @@ import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { useControllableState } from "../../hooks/use-controllable-state";
 import styles from "./elm-select.module.css";
 import textStyles from "../../styles/text.module.css";
+import { ElmCollapse } from "../containments/elm-collapse";
 
 export interface ElmSelectOption {
   id: string;
@@ -31,6 +32,8 @@ export interface ElmSelectProps extends PropsOf<"div"> {
   disabled?: boolean;
   loading?: boolean;
   options: ElmSelectOption[];
+
+  variant?: "default" | "small";
 
   /**
    * Controlled selected option. When provided the parent owns the state.
@@ -115,11 +118,10 @@ export const ElmSelect = component$<ElmSelectProps>((props) => {
       ref={containerRef}
       class={[styles.wrapper, isOpen.value && styles.active, className]}
       style={{
-        backgroundColor:
-          disabled || loading ? "rgba(0,0,0,0.15)" : undefined,
+        backgroundColor: disabled || loading ? "rgba(0,0,0,0.15)" : undefined,
         "--highlight-color": isOpen.value ? "#bfa056" : undefined,
         ...(style as CSSProperties),
-      } as CSSProperties}
+      }}
       onClick$={$(() => {
         if (!props.disabled && !props.loading) {
           setIsOpen(!isOpen.value);
@@ -153,31 +155,25 @@ export const ElmSelect = component$<ElmSelectProps>((props) => {
 
           <ElmMdiIcon d={mdiMenuDown} size="1.5rem" />
 
-          {isOpen.value && (
-            <div class={styles.pulldown}>
-              {options.map((option) => (
-                <div
-                  key={option.id}
-                  class={[styles.option, textStyles.text]}
-                  onClick$={(e) => {
-                    e.stopPropagation();
-                    setSelectedOption(option);
-                    setIsOpen(false);
-                  }}
-                >
-                  <ElmMdiIcon
-                    d={mdiChevronRight}
-                    color="#868e9c"
-                    size="0.75em"
-                  />
-                  <span>{option.label}</span>
-                  {option.description && (
-                    <span class={styles.description}>{option.description}</span>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
+          <ElmCollapse isOpen={isOpen.value} class={styles.pulldown}>
+            {options.map((option) => (
+              <div
+                key={option.id}
+                class={[styles.option, textStyles.text]}
+                onClick$={(e) => {
+                  e.stopPropagation();
+                  setSelectedOption(option);
+                  setIsOpen(false);
+                }}
+              >
+                <ElmMdiIcon d={mdiChevronRight} color="#868e9c" size="0.75em" />
+                <span>{option.label}</span>
+                {option.description && (
+                  <span class={styles.description}>{option.description}</span>
+                )}
+              </div>
+            ))}
+          </ElmCollapse>
         </div>
       </div>
     </div>
