@@ -102,7 +102,7 @@
 
       .option {
         overflow: hidden;
-        width: max-content;
+        width: 100%;
         padding: 0.5rem;
         box-sizing: border-box;
         border-radius: 0.25rem;
