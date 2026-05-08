@@ -1,4 +1,6 @@
 .wrapper {
+  --highlight-color: #bfa056;
+
   user-select: none;
   position: relative;
   box-sizing: border-box;
@@ -46,7 +48,11 @@
       vertical-align: top;
       transition: color 200ms;
       user-select: none;
-      color: var(--highlight-color);
+      color: gray;
+
+      &.label-active {
+        color: var(--highlight-color);
+      }
     }
   }
 

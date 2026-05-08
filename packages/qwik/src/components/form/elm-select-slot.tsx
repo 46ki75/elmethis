@@ -118,7 +118,6 @@ export const ElmSelectSlot = component$<ElmSelectSlotProps>((props) => {
       style={
         {
           backgroundColor: disabled || loading ? "rgba(0,0,0,0.15)" : undefined,
-          "--highlight-color": isOpen.value ? "#bfa056" : undefined,
           ...(style as CSSProperties),
         } as CSSProperties
       }
@@ -130,7 +129,11 @@ export const ElmSelectSlot = component$<ElmSelectSlotProps>((props) => {
       {...rest}
     >
       <div class={styles.header}>
-        <span class={[styles.label, textStyles.text]}>{label}</span>
+        <span
+          class={[styles.label, { [styles["label-active"]]: isOpen.value }]}
+        >
+          {label}
+        </span>
       </div>
 
       <div class={styles.body}>
