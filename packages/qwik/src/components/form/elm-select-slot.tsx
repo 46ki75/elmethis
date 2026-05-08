@@ -3,8 +3,8 @@ import {
   component$,
   PropsOf,
   useComputed$,
-  useOnDocument,
   useSignal,
+  useVisibleTask$,
   type CSSProperties,
   type JSXOutput,
   type PropFunction,
@@ -102,17 +102,18 @@ export const ElmSelectSlot = component$<ElmSelectSlotProps>((props) => {
 
   const containerRef = useSignal<Element>();
 
-  useOnDocument(
-    "click",
-    $((event) => {
-      if (isOpen.value && containerRef.value) {
-        const target = event.target as Node;
-        if (!containerRef.value.contains(target)) {
-          setIsOpen(false);
-        }
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(({ cleanup }) => {
+    const handler = (event: MouseEvent) => {
+      if (!isOpen.value || !containerRef.value) return;
+      const target = event.target as Node;
+      if (!containerRef.value.contains(target)) {
+        void setIsOpen(false);
       }
-    }),
-  );
+    };
+    document.addEventListener("click", handler);
+    cleanup(() => document.removeEventListener("click", handler));
+  });
 
   return (
     <div
