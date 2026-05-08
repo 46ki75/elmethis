@@ -17,7 +17,7 @@ import {
 
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { useControllableState } from "../../hooks/use-controllable-state";
-import styles from "./elm-select.module.css";
+import styles from "./elm-select-slot.module.css";
 import textStyles from "../../styles/text.module.css";
 import { ElmCollapse } from "../containments/elm-collapse";
 
@@ -115,12 +115,13 @@ export const ElmSelectSlot = component$<ElmSelectSlotProps>((props) => {
     <div
       ref={containerRef}
       class={[styles.wrapper, isOpen.value && styles.active, className]}
-      style={{
-        backgroundColor:
-          disabled || loading ? "rgba(0,0,0,0.15)" : undefined,
-        "--highlight-color": isOpen.value ? "#bfa056" : undefined,
-        ...(style as CSSProperties),
-      } as CSSProperties}
+      style={
+        {
+          backgroundColor: disabled || loading ? "rgba(0,0,0,0.15)" : undefined,
+          "--highlight-color": isOpen.value ? "#bfa056" : undefined,
+          ...(style as CSSProperties),
+        } as CSSProperties
+      }
       onClick$={$(() => {
         if (!props.disabled && !props.loading) {
           setIsOpen(!isOpen.value);
@@ -133,39 +134,35 @@ export const ElmSelectSlot = component$<ElmSelectSlotProps>((props) => {
       </div>
 
       <div class={styles.body}>
-        <div class={styles.select}>
-          <div class={[styles.selected, textStyles.text]}>
-            {selectedOption.value ? (
-              <div key={selectedOption.value.id}>
-                {selectedOption.value.slot}
-              </div>
-            ) : (
-              <div class={styles.fallback}>
-                <ElmMdiIcon d={mdiArrowDownDropCircleOutline} />
-                <span>{placeholder ?? "Select an option"}</span>
-              </div>
-            )}
-          </div>
-
-          <ElmMdiIcon d={mdiMenuDown} size="1.5rem" />
-
-          <ElmCollapse isOpen={isOpen.value} class={styles.pulldown}>
-            {options.map((option) => (
-              <div
-                key={option.id}
-                class={[styles.option, textStyles.text]}
-                onClick$={(e) => {
-                  e.stopPropagation();
-                  setSelectedOption(option);
-                  setIsOpen(false);
-                }}
-              >
-                <ElmMdiIcon d={mdiChevronRight} color="#868e9c" size="0.75em" />
-                {option.slot}
-              </div>
-            ))}
-          </ElmCollapse>
+        <div class={[styles["selected-option"], textStyles.text]}>
+          {selectedOption.value ? (
+            <div key={selectedOption.value.id}>{selectedOption.value.slot}</div>
+          ) : (
+            <div class={styles.fallback}>
+              <ElmMdiIcon d={mdiArrowDownDropCircleOutline} />
+              <span>{placeholder ?? "Select an option"}</span>
+            </div>
+          )}
         </div>
+
+        <ElmMdiIcon d={mdiMenuDown} size="1.5rem" />
+
+        <ElmCollapse isOpen={isOpen.value} class={styles.pulldown}>
+          {options.map((option) => (
+            <div
+              key={option.id}
+              class={[styles.option, textStyles.text]}
+              onClick$={(e) => {
+                e.stopPropagation();
+                setSelectedOption(option);
+                setIsOpen(false);
+              }}
+            >
+              <ElmMdiIcon d={mdiChevronRight} color="#868e9c" size="0.75em" />
+              {option.slot}
+            </div>
+          ))}
+        </ElmCollapse>
       </div>
     </div>
   );
