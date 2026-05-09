@@ -5,27 +5,48 @@ import {
   type ElmSelectOption,
   type ElmSelectProps,
 } from "./elm-select";
+import { ElmInlineIcon } from "../icon/elm-inline-icon";
+import { ElmInlineText } from "../typography/elm-inline-text";
+
+import MiniMax from "../../assets/images/minimax.svg?url";
+import OpenAI from "../../assets/images/openai.svg?url";
+import Claude from "../../assets/images/claude.svg?url";
+import { mdiAccountOutline } from "@mdi/js";
+import { ElmMdiIcon } from "../..";
+
+const Model = component$((props: { icon: string; text: string }) => {
+  return (
+    <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+      <ElmInlineIcon src={props.icon} />
+      <ElmInlineText>{props.text}</ElmInlineText>
+    </div>
+  );
+});
 
 const OPTIONS: ElmSelectOption[] = [
   {
-    id: "1",
-    label: "banana",
-    description: "A yellow fruit that's high in potassium.",
+    id: "minimax/minimax-m2.5",
+    slot: <Model icon={MiniMax} text="MiniMax: MiniMax M2.5" />,
   },
   {
-    id: "2",
-    label: "apple",
-    description: "A sweet red or green fruit often eaten raw.",
+    id: "minimax/minimax-m2.7",
+    slot: <Model icon={MiniMax} text="MiniMax: MiniMax M2.7" />,
   },
   {
-    id: "3",
-    label: "orange",
-    description: "A citrus fruit known for its vitamin C content.",
+    id: "openai/gpt-5.4-nano",
+    slot: <Model icon={OpenAI} text="OpenAI: GPT-5.4 Nano" />,
   },
   {
-    id: "4",
-    label: "grape",
-    description: "A small, juicy fruit often used to make wine.",
+    id: "openai/gpt-5.4-mini",
+    slot: <Model icon={OpenAI} text="OpenAI: GPT-5.4 Mini" />,
+  },
+  {
+    id: "anthropic/claude-sonnet-4.6",
+    slot: <Model icon={Claude} text="Anthropic: Claude Sonnet 4.6" />,
+  },
+  {
+    id: "anthropic/claude-opus-4.7",
+    slot: <Model icon={Claude} text="Anthropic: Claude Opus 4.7" />,
   },
 ];
 
@@ -44,8 +65,23 @@ type Story = StoryObj<ElmSelectProps>;
 export const Primary: Story = {
   render() {
     return (
-      <ElmSelect {...this.args} label={this.args?.label ?? "Select"} options={OPTIONS} />
+      <ElmSelect
+        {...this.args}
+        label={this.args?.label ?? "Select"}
+        options={OPTIONS}
+      />
     );
+  },
+};
+
+export const WithIcon: Story = {
+  args: {
+    label: "Select with icon",
+    icon: <ElmMdiIcon d={mdiAccountOutline} />,
+    options: OPTIONS,
+  },
+  render(args) {
+    return <ElmSelect {...args} />;
   },
 };
 
@@ -95,10 +131,7 @@ const ControlledSelect = component$(() => {
       />
       <div style={{ fontFamily: "monospace", fontSize: "0.85rem" }}>
         <div>open: {String(open.value)}</div>
-        <div>
-          selected:{" "}
-          {selected.value ? selected.value.label : "none"}
-        </div>
+        <div>selected: {selected.value ? selected.value.id : "none"}</div>
       </div>
       <button
         onClick$={() => {
