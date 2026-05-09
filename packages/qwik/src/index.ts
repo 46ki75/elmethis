@@ -147,7 +147,11 @@ export {
   useControllableState,
   type ControllableStateSetter,
 } from "./hooks/use-controllable-state";
+export { useDebouncedSignal } from "./hooks/use-debounced-signal";
+export { useDebouncedStore } from "./hooks/use-debounced-store";
 export { useDelayedSignal } from "./hooks/useDelayedSignal";
+export { useThrottledSignal } from "./hooks/use-throttled-signal";
+export { useThrottledStore } from "./hooks/use-throttled-store";
 export { useElmethisTheme } from "./hooks/useElmethisTheme";
 export { useInView } from "./hooks/useInView";
 export { useModal, type UseModalOptions } from "./hooks/useModal";
