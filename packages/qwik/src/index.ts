@@ -147,6 +147,7 @@ export {
   useControllableState,
   type ControllableStateSetter,
 } from "./hooks/use-controllable-state";
+export { useDebouncedSignal } from "./hooks/use-debounced-signal";
 export { useDelayedSignal } from "./hooks/useDelayedSignal";
 export { useElmethisTheme } from "./hooks/useElmethisTheme";
 export { useInView } from "./hooks/useInView";

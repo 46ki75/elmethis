@@ -48,8 +48,8 @@
     "release": "np",
     "start": "vite --open --mode ssr",
     "test": "echo \"No test specified\" && exit 0",
-    "test.unit": "vitest components",
-    "test.unit.ui": "vitest --ui components",
+    "test.unit": "vitest src/components src/hooks",
+    "test.unit.ui": "vitest --ui src/components src/hooks",
     "qwik": "qwik"
   },
   "devDependencies": {
