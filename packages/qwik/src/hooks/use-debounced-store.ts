@@ -11,9 +11,9 @@ import {
  * Returns a store pair and a debounced setter.
  *
  * `store` is a deep-reactive proxy that reflects the most recently patched
- * state immediately. `debouncedStore` is a shallow copy of `store` that
- * is only updated after `delay` ms have elapsed since the last call to
- * `set`. Rapid successive calls reset the timer so only the final patch
+ * state immediately. `debouncedStore` is a separate reactive proxy that
+ * receives the same patches only after `delay` ms have elapsed since the last
+ * call to `set`. Rapid successive calls reset the timer so only the final patch
  * propagates to `debouncedStore`.
  *
  * When `delay` is 0 or negative, `debouncedStore` is updated
@@ -52,10 +52,9 @@ export const useDebouncedStore = <T extends object>(
       Object.assign(debouncedStore, patch);
       timeoutId.value = undefined;
     } else {
-      const snapshot = { ...patch };
       timeoutId.value = noSerialize(
         setTimeout(() => {
-          Object.assign(debouncedStore, snapshot);
+          Object.assign(debouncedStore, patch);
           timeoutId.value = undefined;
         }, delay),
       );
