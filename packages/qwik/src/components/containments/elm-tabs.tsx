@@ -5,7 +5,7 @@ import {
   useComputed$,
   type PropFunction,
 } from "@builder.io/qwik";
-import type { JSXOutput } from "@builder.io/qwik";
+import type { CSSProperties, JSXOutput } from "@builder.io/qwik";
 
 import styles from "./elm-tabs.module.css";
 import { ElmCollapse } from "./elm-collapse";
@@ -32,10 +32,19 @@ export interface ElmTabsProps extends PropsOf<"div"> {
    * Called whenever the selected tab changes.
    */
   onSelectedTabIndexChange$?: PropFunction<(index: number) => void>;
+
+  transitionTimingFunction?: CSSProperties["transition-timing-function"];
 }
 
 export const ElmTabs = component$<ElmTabsProps>((props) => {
-  const { class: className, tabs, selectedTabIndex: selectedTabIndexProp, defaultSelectedTabIndex, onSelectedTabIndexChange$, ...rest } = props;
+  const {
+    class: className,
+    tabs,
+    selectedTabIndex: selectedTabIndexProp,
+    defaultSelectedTabIndex,
+    onSelectedTabIndexChange$,
+    ...rest
+  } = props;
 
   const [selectedTabIndex, setSelectedTabIndex] = useControllableState({
     prop: useComputed$(() => selectedTabIndexProp),
@@ -66,8 +75,9 @@ export const ElmTabs = component$<ElmTabsProps>((props) => {
         {tabs.map(({ content }, index) => (
           <div key={index} class={styles["tab-content"]}>
             <ElmCollapse
-              direction="both"
+              direction="row"
               isOpen={selectedTabIndex.value === index}
+              transitionTimingFunction="linear"
             >
               {content}
             </ElmCollapse>
