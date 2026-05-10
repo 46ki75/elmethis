@@ -88,6 +88,9 @@ importers:
       '@ag-ui/core':
         specifier: ^0.0.53
         version: 0.0.53
+      '@formkit/auto-animate':
+        specifier: ^0.9.0
+        version: 0.9.0
       '@mdi/js':
         specifier: ^7.4.47
         version: 7.4.47
@@ -1629,6 +1632,9 @@ packages:
 
   '@floating-ui/utils@0.2.11':
     resolution: {integrity: sha512-RiB/yIh78pcIxl6lLMG0CgBXAZ2Y0eVHqMPYugu+9U0AeT6YBeiJpf7lbdJNIugFP5SIjwNRgo4DhR1Qxi26Gg==}
+
+  '@formkit/auto-animate@0.9.0':
+    resolution: {integrity: sha512-VhP4zEAacXS3dfTpJpJ88QdLqMTcabMg0jwpOSxZ/VzfQVfl3GkZSCZThhGC5uhq/TxPHPzW0dzr4H9Bb1OgKA==}
 
   '@graphql-tools/executor@1.5.3':
     resolution: {integrity: sha512-mgBFC0bsrZPZLu9EnydpMnAuQ8Iiq0CEbUcsmvXsm2/iYektGHDN/+bmb7hicA6dWZtdPfklYJmr21WD0GnOfA==}
@@ -10241,6 +10247,8 @@ snapshots:
       react-dom: 19.2.6(react@19.2.6)
 
   '@floating-ui/utils@0.2.11': {}
+
+  '@formkit/auto-animate@0.9.0': {}
 
   '@graphql-tools/executor@1.5.3(graphql@16.14.0)':
     dependencies:
