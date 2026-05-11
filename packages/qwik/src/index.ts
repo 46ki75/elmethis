@@ -142,6 +142,10 @@ export {
   useAsyncState,
   type UseAsyncStateOptions,
 } from "./hooks/use-async-state";
+export {
+  useAutoAnimate,
+  type UseAutoAnimateOptions,
+} from "./hooks/use-auto-animate";
 export { useClipboard, type UseClipboardOptions } from "./hooks/useClipboard";
 export {
   useControllableState,
