@@ -58,15 +58,21 @@ export const useModal = ({ delay = 200 }: UseModalOptions) => {
           },
         ]}
         style={{ "--delay": `${delay}ms` }}
-        onClick$={hide}
+        /**
+         * Closes the modal only when the backdrop itself is clicked directly.
+         * Checking `e.target === e.currentTarget` instead of relying on
+         * `stopPropagation()` in the dialog, because Qwik's document-level
+         * event delegation collects the full event path before any handler runs,
+         * making `stopPropagation()` ineffective for preventing parent handlers.
+         */
+        onClick$={(e) => {
+          if (e.target === e.currentTarget) {
+            hide();
+          }
+        }}
       >
         {isOpen.value && (
-          <div
-            role="dialog"
-            onClick$={(e) => {
-              e.stopPropagation();
-            }}
-          >
+          <div role="dialog">
             {<Slot />}
           </div>
         )}
