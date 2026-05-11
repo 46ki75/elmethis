@@ -3,7 +3,6 @@ import {
   component$,
   PropsOf,
   useComputed$,
-  useId,
   useSignal,
   type CSSProperties,
   type PropFunction,
@@ -31,7 +30,7 @@ import { useControllableState } from "../../hooks/use-controllable-state";
 
 import styles from "./elm-text-field.module.css";
 
-export interface ElmTextFieldProps extends PropsOf<"div"> {
+export interface ElmTextFieldProps extends Omit<PropsOf<"label">, "onInput$"> {
   label: string;
   maxLength?: number;
   suffix?: string;
@@ -92,7 +91,6 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
     ...rest
   } = props;
 
-  const id = useId();
   const isFocused = useSignal(false);
   const inputType = useSignal(isPassword ? "password" : "text");
 
@@ -117,7 +115,7 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
   };
 
   return (
-    <div
+    <label
       class={[styles.wrapper, isFocused.value && styles.active, className]}
       style={{
         backgroundColor:
@@ -128,10 +126,10 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
       {...rest}
     >
       <div class={styles.header}>
-        <label for={id} class={styles.label}>
+        <span class={styles.label}>
           <span>{label}</span>
           {required && <span class={styles.requierd}>*</span>}
-        </label>
+        </span>
         {maxLength != null && (
           <ElmInlineText
             text={`${value.value.length} / ${maxLength}`}
@@ -147,7 +145,6 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
         )}
 
         <input
-          id={id}
           value={value.value}
           type={inputType.value}
           class={styles.input}
@@ -209,6 +206,6 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
           opacity: loading ? 0.2 : 0,
         }}
       ></div>
-    </div>
+    </label>
   );
 });
