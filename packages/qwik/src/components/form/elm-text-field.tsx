@@ -30,7 +30,7 @@ import { useControllableState } from "../../hooks/use-controllable-state";
 
 import styles from "./elm-text-field.module.css";
 
-export interface ElmTextFieldProps extends PropsOf<"label"> {
+export interface ElmTextFieldProps extends Omit<PropsOf<"label">, "onInput$"> {
   label: string;
   maxLength?: number;
   suffix?: string;
