@@ -61,12 +61,7 @@ export const useModal = ({ delay = 200 }: UseModalOptions) => {
         onClick$={hide}
       >
         {isOpen.value && (
-          <div
-            role="dialog"
-            onClick$={(e) => {
-              e.stopPropagation();
-            }}
-          >
+          <div role="dialog" stoppropagation:click>
             {<Slot />}
           </div>
         )}
