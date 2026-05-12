@@ -2,12 +2,12 @@ import {
   $,
   component$,
   PropsOf,
+  Signal,
   useComputed$,
   useSignal,
   useVisibleTask$,
   type CSSProperties,
   type JSXOutput,
-  type PropFunction,
 } from "@builder.io/qwik";
 import {
   mdiArrowDownDropCircleOutline,
@@ -16,7 +16,6 @@ import {
 } from "@mdi/js";
 
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
-import { useControllableState } from "../../hooks/use-controllable-state";
 import styles from "./elm-select.module.css";
 import textStyles from "../../styles/text.module.css";
 import { ElmCollapse } from "../containments/elm-collapse";
@@ -61,38 +60,7 @@ export interface ElmSelectProps extends PropsOf<"div"> {
    */
   options: ElmSelectOption[];
 
-  /**
-   * Controlled selected option. When provided the parent owns the state.
-   * Pass `null` to explicitly clear the selection in controlled mode.
-   */
-  selectedOption?: ElmSelectOption | null;
-
-  /**
-   * Initial selected option when uncontrolled.
-   */
-  defaultSelectedOption?: ElmSelectOption | null;
-
-  /**
-   * Called whenever the selected option changes.
-   */
-  onSelectedOptionChange$?: PropFunction<
-    (option: ElmSelectOption | null) => void
-  >;
-
-  /**
-   * Controlled open state of the dropdown.
-   */
-  open?: boolean;
-
-  /**
-   * Initial open state when uncontrolled.
-   */
-  defaultOpen?: boolean;
-
-  /**
-   * Called whenever the dropdown open state changes.
-   */
-  onOpenChange$?: PropFunction<(open: boolean) => void>;
+  selectedOptionId: Signal<string | null>;
 }
 
 export const ElmSelect = component$<ElmSelectProps>((props) => {
@@ -105,26 +73,15 @@ export const ElmSelect = component$<ElmSelectProps>((props) => {
     loading,
     options,
     icon,
-    selectedOption: _selectedOptionProp,
-    defaultSelectedOption,
-    onSelectedOptionChange$,
-    open: _open,
-    defaultOpen,
-    onOpenChange$,
+    selectedOptionId,
     ...rest
   } = props;
 
-  const [selectedOption, setSelectedOption] = useControllableState({
-    prop: useComputed$(() => props.selectedOption),
-    defaultProp: defaultSelectedOption ?? null,
-    onChange: onSelectedOptionChange$,
-  });
+  const selectedOption = useComputed$(() =>
+    options.find((o) => o.id === selectedOptionId.value) ?? null,
+  );
 
-  const [isOpen, setIsOpen] = useControllableState({
-    prop: useComputed$(() => props.open),
-    defaultProp: defaultOpen ?? false,
-    onChange: onOpenChange$,
-  });
+  const isOpen = useSignal(false);
 
   const containerRef = useSignal<Element>();
 
@@ -134,7 +91,7 @@ export const ElmSelect = component$<ElmSelectProps>((props) => {
       if (!isOpen.value || !containerRef.value) return;
       const target = event.target as Node;
       if (!containerRef.value.contains(target)) {
-        void setIsOpen(false);
+        isOpen.value = false;
       }
     };
     document.addEventListener("click", handler);
@@ -153,7 +110,7 @@ export const ElmSelect = component$<ElmSelectProps>((props) => {
       }
       onClick$={$(() => {
         if (!props.disabled && !props.loading) {
-          setIsOpen(!isOpen.value);
+          isOpen.value = !isOpen.value;
         }
       })}
       {...rest}
@@ -187,8 +144,8 @@ export const ElmSelect = component$<ElmSelectProps>((props) => {
               class={[styles.option, textStyles.text]}
               onClick$={(e) => {
                 e.stopPropagation();
-                setSelectedOption(option);
-                setIsOpen(false);
+                selectedOptionId.value = option.id;
+                isOpen.value = false;
               }}
             >
               <ElmMdiIcon d={mdiChevronRight} color="#868e9c" size="0.75em" />
