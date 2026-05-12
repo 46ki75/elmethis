@@ -326,8 +326,8 @@ importers:
         specifier: ^0.0.53
         version: 0.0.53
       '@notionhq/client':
-        specifier: ^5.19.0
-        version: 5.19.0
+        specifier: ^5.21.0
+        version: 5.21.0
       '@storybook/addon-docs':
         specifier: ^10.3.6
         version: 10.3.6(@types/react@19.2.14)(esbuild@0.28.0)(rollup@4.60.2)(storybook@10.3.6(@testing-library/dom@10.4.0)(prettier@3.8.3)(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(vite@8.0.7(@types/node@25.6.0)(esbuild@0.28.0)(jiti@2.4.2)(sass@1.99.0)(terser@5.39.0)(tsx@4.19.3)(yaml@2.8.3))
@@ -2188,8 +2188,8 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
-  '@notionhq/client@5.19.0':
-    resolution: {integrity: sha512-9R93Yt6/OB3MP5h29WhnvIBWYVq4mzxOYn9oh0Ut642NWxOTTouv7vkwKnMj5LGAYTlot0fhmL8OK5Su5zEzCw==}
+  '@notionhq/client@5.21.0':
+    resolution: {integrity: sha512-X+T+hzaQFleOUGm4xUOUm51pOpdZ1+6T4BsRjGlcdEOTJLNkUEv8nZATq9O3ZY4NQEgICc0qwQ0I25OdYprX0w==}
     engines: {node: '>=18'}
 
   '@openrouter/ai-sdk-provider@2.9.0':
@@ -10956,7 +10956,7 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.20.1
 
-  '@notionhq/client@5.19.0': {}
+  '@notionhq/client@5.21.0': {}
 
   '@openrouter/ai-sdk-provider@2.9.0(ai@6.0.176(zod@3.25.76))(zod@3.25.76)':
     dependencies:
