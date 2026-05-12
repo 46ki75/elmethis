@@ -123,9 +123,9 @@ export {
   type ElmCheckboxProps,
 } from "./components/form/elm-checkbox";
 export {
-  ElmSelect as ElmSelectSlot,
-  type ElmSelectOption as ElmSelectSlotOption,
-  type ElmSelectProps as ElmSelectSlotProps,
+  ElmSelect,
+  type ElmSelectOption,
+  type ElmSelectProps,
 } from "./components/form/elm-select";
 export { ElmSwitch, type ElmSwitchProps } from "./components/form/elm-switch";
 export {
