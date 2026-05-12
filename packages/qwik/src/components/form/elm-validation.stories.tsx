@@ -25,8 +25,7 @@ const ValidationWrapper = component$((props: Record<string, unknown>) => {
     <>
       <ElmTextField
         {...props}
-        value={input.value}
-        onValueChange$={(v) => (input.value = v)}
+        value={input}
         label="Password"
         isPassword
         placeholder="Enter password..."
