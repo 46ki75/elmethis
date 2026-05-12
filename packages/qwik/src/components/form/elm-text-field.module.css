@@ -71,23 +71,17 @@
 }
 
 .header {
-  box-sizing: border-box;
-  height: 0.75rem;
-  padding: 0 0.25rem;
-  display: flex;
-  justify-content: space-between;
-}
-
-.label {
-  display: inline;
+  display: grid;
+  grid-template-columns: 1rem 1fr max-content;
+  align-items: center;
   margin: 0;
   padding: 0;
   font-size: 0.75rem;
   line-height: 0.75rem;
   height: 0.75rem;
-  vertical-align: top;
   transition: color 200ms;
   color: gray;
+  user-select: none;
 
   &.label-active {
     color: var(--highlight-color);
@@ -106,18 +100,6 @@
   align-items: center;
   padding: 0 0.25rem;
   height: 1.25rem;
-}
-
-.left-icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 0.25rem;
-  opacity: 0.7;
-
-  [data-theme="dark"] & {
-    filter: invert(1);
-  }
 }
 
 .input {

@@ -7,7 +7,12 @@ import {
   type JSXOutput,
   type Signal,
 } from "@builder.io/qwik";
-import { mdiBackspaceOutline, mdiEyeOffOutline, mdiEyeOutline } from "@mdi/js";
+import {
+  mdiBackspaceOutline,
+  mdiEyeOffOutline,
+  mdiEyeOutline,
+  mdiText,
+} from "@mdi/js";
 
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { ElmInlineText } from "../typography/elm-inline-text";
@@ -68,14 +73,16 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
       }
       {...rest}
     >
-      <div class={styles.header}>
-        <span
-          class={[
-            styles.label,
-            { [styles["label-active"]]: isFocused.value },
-          ]}
-        >
-          <span>{label}</span>
+      <span
+        class={[styles.header, { [styles["label-active"]]: isFocused.value }]}
+      >
+        {icon ? (
+          <div class={styles.icon}>{icon}</div>
+        ) : (
+          <ElmMdiIcon d={mdiText} size="0.75rem" />
+        )}
+        <span>
+          {label}
           {required && <span class={styles.requierd}>*</span>}
         </span>
         {maxLength != null && (
@@ -85,11 +92,9 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
             size="0.75rem"
           />
         )}
-      </div>
+      </span>
 
       <div class={styles.body}>
-        {icon && <div class={styles["left-icon"]}>{icon}</div>}
-
         <input
           value={value?.value}
           type={inputType.value}
@@ -123,7 +128,7 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
           >
             <ElmMdiIcon
               d={inputType.value === "text" ? mdiEyeOutline : mdiEyeOffOutline}
-              size="1.75em"
+              size="1.25rem"
               color="gray"
             />
           </div>
@@ -136,7 +141,7 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
               }
             })}
           >
-            <ElmMdiIcon d={mdiBackspaceOutline} size="1.75em" color="gray" />
+            <ElmMdiIcon d={mdiBackspaceOutline} size="1.25rem" color="gray" />
           </div>
         </div>
       </div>

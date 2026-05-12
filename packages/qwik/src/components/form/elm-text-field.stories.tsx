@@ -20,24 +20,24 @@ const meta: Meta<ElmTextFieldProps> = {
 export default meta;
 type Story = StoryObj<ElmTextFieldProps>;
 
-const PrimaryTextField = component$(() => {
+const PrimaryTextField = component$((props: ElmTextFieldProps) => {
   const text = useSignal<string>("");
   return (
     <div>
-      <ElmTextField
-        label="Email"
-        maxLength={20}
-        suffix="@46ki75.com"
-        placeholder="Enter your email"
-        value={text}
-      />
+      <ElmTextField {...props} value={text} />
       <ElmInlineText text={text.value} />
     </div>
   );
 });
 
 export const Primary: Story = {
-  render: () => <PrimaryTextField />,
+  args: {
+    label: "Email",
+    maxLength: 20,
+    suffix: "@ikuma.cloud",
+    placeholder: "Enter your email",
+  },
+  render: (props) => <PrimaryTextField {...props} />,
 };
 
 const WithIconTextField = component$(() => {
