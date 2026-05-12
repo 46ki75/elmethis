@@ -3,6 +3,7 @@ import {
   component$,
   PropsOf,
   useSignal,
+  type Signal,
   type CSSProperties,
 } from "@builder.io/qwik";
 import {
@@ -26,7 +27,6 @@ import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { ElmInlineText } from "../typography/elm-inline-text";
 
 import styles from "./elm-text-field.module.css";
-import { Signal } from "@a2ui/web_core/v0_9";
 
 export interface ElmTextFieldProps extends Omit<PropsOf<"label">, "onInput$"> {
   label: string;
