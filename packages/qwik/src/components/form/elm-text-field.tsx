@@ -3,24 +3,15 @@ import {
   component$,
   PropsOf,
   useSignal,
-  type Signal,
   type CSSProperties,
+  type JSXOutput,
+  type Signal,
 } from "@builder.io/qwik";
 import {
-  mdiAccount,
-  mdiArchive,
-  mdiBackspaceOutline,
-  mdiEarth,
-  mdiEmail,
   mdiEyeOffOutline,
   mdiEyeOutline,
-  mdiKey,
-  mdiLinkVariant,
-  mdiLock,
-  mdiMagnify,
-  mdiPen,
-  mdiTag,
   mdiText,
+  mdiTrashCanOutline,
 } from "@mdi/js";
 
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
@@ -31,6 +22,7 @@ import styles from "./elm-text-field.module.css";
 export interface ElmTextFieldProps extends Omit<PropsOf<"label">, "onInput$"> {
   label: string;
   maxLength?: number;
+  prefix?: string;
   suffix?: string;
   placeholder?: string;
   disabled?: boolean;
@@ -41,18 +33,12 @@ export interface ElmTextFieldProps extends Omit<PropsOf<"label">, "onInput$"> {
    */
   value?: Signal<string>;
 
-  icon?:
-    | "text"
-    | "pen"
-    | "email"
-    | "user"
-    | "lock"
-    | "key"
-    | "earth"
-    | "tag"
-    | "archive"
-    | "link"
-    | "search";
+  /**
+   * Icon displayed on the left side of the input.
+   *
+   * @example <ElmTextField icon={<ElmInlineIcon src={url} />} label="..." />
+   */
+  icon?: JSXOutput;
   isPassword?: boolean;
   required?: boolean;
 }
@@ -63,6 +49,7 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
     style,
     label,
     maxLength,
+    prefix,
     suffix,
     placeholder,
     disabled,
@@ -77,35 +64,27 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
   const isFocused = useSignal(false);
   const inputType = useSignal(isPassword ? "password" : "text");
 
-  const iconMap: Record<NonNullable<ElmTextFieldProps["icon"]>, string> = {
-    text: mdiText,
-    pen: mdiPen,
-    email: mdiEmail,
-    user: mdiAccount,
-    lock: mdiLock,
-    key: mdiKey,
-    earth: mdiEarth,
-    tag: mdiTag,
-    archive: mdiArchive,
-    link: mdiLinkVariant,
-    search: mdiMagnify,
-  };
-
   return (
     <label
       class={[styles.wrapper, isFocused.value && styles.active, className]}
       style={
         {
           backgroundColor: disabled || loading ? "rgba(0,0,0,0.15)" : undefined,
-          "--highlight-color": isFocused.value ? "#bfa056" : undefined,
           ...(style as CSSProperties),
         } as CSSProperties
       }
       {...rest}
     >
-      <div class={styles.header}>
-        <span class={styles.label}>
-          <span>{label}</span>
+      <span
+        class={[styles.header, { [styles["label-active"]]: isFocused.value }]}
+      >
+        {icon ? (
+          <div class={styles.icon}>{icon}</div>
+        ) : (
+          <ElmMdiIcon d={mdiText} size="0.75rem" />
+        )}
+        <span>
+          {label}
           {required && <span class={styles.requierd}>*</span>}
         </span>
         {maxLength != null && (
@@ -115,11 +94,10 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
             size="0.75rem"
           />
         )}
-      </div>
+      </span>
 
       <div class={styles.body}>
-        {icon && <ElmMdiIcon d={iconMap[icon]} size="1.5rem" color="gray" />}
-
+        {prefix && <span class={styles["prefix-suffix"]}>{prefix}</span>}
         <input
           value={value?.value}
           type={inputType.value}
@@ -137,13 +115,13 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
           })}
         />
 
-        <div class={styles["icon-box"]}>
-          <span class={styles.suffix}>
+        <div class={styles["right-icon-box"]}>
+          <span class={styles["prefix-suffix"]}>
             {suffix != null && <ElmInlineText text={suffix} />}
           </span>
 
           <div
-            class={styles.icon}
+            class={styles["clickable-icon"]}
             onClick$={$(() => {
               if (!props.loading && !props.disabled) {
                 inputType.value =
@@ -153,20 +131,20 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
           >
             <ElmMdiIcon
               d={inputType.value === "text" ? mdiEyeOutline : mdiEyeOffOutline}
-              size="1.75em"
+              size="1.25rem"
               color="gray"
             />
           </div>
 
           <div
-            class={styles.icon}
+            class={styles["clickable-icon"]}
             onClick$={$(() => {
               if (!props.loading && !props.disabled && value) {
                 value.value = "";
               }
             })}
           >
-            <ElmMdiIcon d={mdiBackspaceOutline} size="1.75em" color="gray" />
+            <ElmMdiIcon d={mdiTrashCanOutline} size="1.25rem" color="gray" />
           </div>
         </div>
       </div>
