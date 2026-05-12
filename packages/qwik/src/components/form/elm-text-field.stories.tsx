@@ -2,6 +2,7 @@ import { $, component$, useSignal } from "@builder.io/qwik";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { ElmButton } from "./elm-button";
 import { ElmTextField, type ElmTextFieldProps } from "./elm-text-field";
+import { ElmInlineText } from "../typography/elm-inline-text";
 
 const meta: Meta<ElmTextFieldProps> = {
   title: "Components/Form/elm-text-field",
@@ -39,51 +40,20 @@ export default meta;
 type Story = StoryObj<ElmTextFieldProps>;
 
 // Uncontrolled: the field manages its own value.
-export const Primary: Story = {};
+export const Primary: Story = {
+  render: (props) => {
+    const Render = component$((props: ElmTextFieldProps) => {
+      const text = useSignal<string>("");
 
-const FocusWrapper = component$(
-  (props: Partial<ElmTextFieldProps> & { label?: string }) => {
-    const handleClick = $(async () => {
-      console.log("Focus requested - this requires component implementation");
+      return (
+        <div>
+          <ElmTextField {...props} value={text} />
+
+          <ElmInlineText>{text.value}</ElmInlineText>
+        </div>
+      );
     });
 
-    return (
-      <>
-        <ElmTextField label={props.label || "Focus Field"} {...props} />
-        <ElmButton onClick$={handleClick}>Focus</ElmButton>
-      </>
-    );
+    return <Render {...props} />;
   },
-);
-
-export const Focus: Story = {
-  render() {
-    return <FocusWrapper {...this.args} />;
-  },
-};
-
-// Controlled: parent owns the value.
-const ControlledTextField = component$(() => {
-  const value = useSignal("");
-
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-      <ElmTextField
-        label="Controlled field"
-        value={value.value}
-        onValueChange$={$((v) => {
-          value.value = v;
-        })}
-        placeholder="Type something..."
-      />
-      <div style={{ fontFamily: "monospace", fontSize: "0.85rem" }}>
-        value: {JSON.stringify(value.value)}
-      </div>
-      <button onClick$={() => (value.value = "")}>Clear</button>
-    </div>
-  );
-});
-
-export const Controlled: Story = {
-  render: () => <ControlledTextField />,
 };
