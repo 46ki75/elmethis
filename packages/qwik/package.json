@@ -88,5 +88,8 @@
     "uuid": "^14.0.0",
     "zod": "^3",
     "zod-to-json-schema": "^3.25.2"
+  },
+  "peerDependencies": {
+    "@builder.io/qwik": ">=1.0.0"
   }
 }
