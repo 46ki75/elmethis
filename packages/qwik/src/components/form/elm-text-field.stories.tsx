@@ -36,6 +36,7 @@ export const Primary: Story = {
     maxLength: 20,
     suffix: "@ikuma.cloud",
     placeholder: "Enter your email",
+    required: false,
   },
   render: (props) => <PrimaryTextField {...props} />,
 };
