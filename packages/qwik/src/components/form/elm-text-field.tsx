@@ -8,10 +8,10 @@ import {
   type Signal,
 } from "@builder.io/qwik";
 import {
-  mdiBackspaceOutline,
   mdiEyeOffOutline,
   mdiEyeOutline,
   mdiText,
+  mdiTrashCanOutline,
 } from "@mdi/js";
 
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
@@ -112,13 +112,13 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
           })}
         />
 
-        <div class={styles["icon-box"]}>
+        <div class={styles["right-icon-box"]}>
           <span class={styles.suffix}>
             {suffix != null && <ElmInlineText text={suffix} />}
           </span>
 
           <div
-            class={styles.icon}
+            class={styles["clickable-icon"]}
             onClick$={$(() => {
               if (!props.loading && !props.disabled) {
                 inputType.value =
@@ -134,14 +134,14 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
           </div>
 
           <div
-            class={styles.icon}
+            class={styles["clickable-icon"]}
             onClick$={$(() => {
               if (!props.loading && !props.disabled && value) {
                 value.value = "";
               }
             })}
           >
-            <ElmMdiIcon d={mdiBackspaceOutline} size="1.25rem" color="gray" />
+            <ElmMdiIcon d={mdiTrashCanOutline} size="1.25rem" color="gray" />
           </div>
         </div>
       </div>
