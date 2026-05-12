@@ -105,10 +105,10 @@
 .input {
   all: unset;
   box-sizing: border-box;
-  padding: 0 0.5rem;
+  padding: 0;
   width: 100%;
-  color: rgba(0, 0, 0, 0.7);
-  caret-color: rgba(0, 0, 0, 0.7);
+  color: oklch(from black l c h / 70%);
+  caret-color: var(--highlight-color);
 
   &::placeholder {
     opacity: 0.5;
@@ -119,17 +119,16 @@
   }
 
   &::selection {
-    background-color: rgba(0, 0, 0, 0.7);
-    color: rgba(255, 255, 255, 0.7);
+    background-color: oklch(from black l c h / 70%);
+    color: oklch(from white l c h / 70%);
   }
 
   [data-theme="dark"] & {
-    color: rgba(255, 255, 255, 0.7);
-    caret-color: rgba(255, 255, 255, 0.7);
+    color: oklch(from white l c h / 70%);
 
     &::selection {
-      background-color: rgba(255, 255, 255, 0.7);
-      color: rgba(0, 0, 0, 0.7);
+      background-color: oklch(from white l c h / 70%);
+      color: oklch(from black l c h / 70%);
     }
   }
 }
