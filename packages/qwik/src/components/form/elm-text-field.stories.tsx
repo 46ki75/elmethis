@@ -34,6 +34,7 @@ export const Primary: Story = {
   args: {
     label: "Email",
     maxLength: 20,
+    prefix: "user",
     suffix: "@ikuma.cloud",
     placeholder: "Enter your email",
     required: false,

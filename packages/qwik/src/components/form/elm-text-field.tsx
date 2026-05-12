@@ -22,6 +22,7 @@ import styles from "./elm-text-field.module.css";
 export interface ElmTextFieldProps extends Omit<PropsOf<"label">, "onInput$"> {
   label: string;
   maxLength?: number;
+  prefix?: string;
   suffix?: string;
   placeholder?: string;
   disabled?: boolean;
@@ -48,6 +49,7 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
     style,
     label,
     maxLength,
+    prefix,
     suffix,
     placeholder,
     disabled,
@@ -95,6 +97,7 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
       </span>
 
       <div class={styles.body}>
+        {prefix && <span class={styles["prefix-suffix"]}>{prefix}</span>}
         <input
           value={value?.value}
           type={inputType.value}
@@ -113,7 +116,7 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
         />
 
         <div class={styles["right-icon-box"]}>
-          <span class={styles.suffix}>
+          <span class={styles["prefix-suffix"]}>
             {suffix != null && <ElmInlineText text={suffix} />}
           </span>
 
