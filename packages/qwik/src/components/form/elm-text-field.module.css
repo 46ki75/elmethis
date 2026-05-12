@@ -36,6 +36,8 @@
 }
 
 .wrapper {
+  --highlight-color: #bfa056;
+
   overflow: hidden;
   position: relative;
   box-sizing: border-box;
@@ -45,6 +47,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 0.25rem;
 
   transition:
     border-color 200ms,
@@ -57,14 +60,14 @@
   background-color: rgba(255, 255, 255, 0.8);
   box-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.15);
 
+  &.active {
+    border-color: var(--highlight-color);
+  }
+
   [data-theme="dark"] & {
     background-color: rgba(255, 255, 255, 0.15);
     box-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.75);
   }
-}
-
-.active {
-  border-color: var(--highlight-color);
 }
 
 .header {
@@ -84,11 +87,10 @@
   height: 0.75rem;
   vertical-align: top;
   transition: color 200ms;
+  color: gray;
 
-  color: var(--highlight-color, rgba(0, 0, 0, 0.65));
-
-  [data-theme="dark"] & {
-    color: var(--highlight-color, rgba(255, 255, 255, 0.65));
+  &.label-active {
+    color: var(--highlight-color);
   }
 }
 
@@ -102,17 +104,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-right: 0.25rem;
-  padding-left: 0.25rem;
+  padding: 0 0.25rem;
+  height: 1.25rem;
 }
 
 .left-icon {
-  margin: auto 0.25rem;
-  width: 24px;
-  height: 24px;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: 0.25rem;
   opacity: 0.7;
 
   [data-theme="dark"] & {
@@ -123,7 +123,7 @@
 .input {
   all: unset;
   box-sizing: border-box;
-  padding: 0.5rem;
+  padding: 0 0.5rem;
   width: 100%;
   color: rgba(0, 0, 0, 0.7);
   caret-color: rgba(0, 0, 0, 0.7);

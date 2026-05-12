@@ -3,25 +3,11 @@ import {
   component$,
   PropsOf,
   useSignal,
-  type Signal,
   type CSSProperties,
+  type JSXOutput,
+  type Signal,
 } from "@builder.io/qwik";
-import {
-  mdiAccount,
-  mdiArchive,
-  mdiBackspaceOutline,
-  mdiEarth,
-  mdiEmail,
-  mdiEyeOffOutline,
-  mdiEyeOutline,
-  mdiKey,
-  mdiLinkVariant,
-  mdiLock,
-  mdiMagnify,
-  mdiPen,
-  mdiTag,
-  mdiText,
-} from "@mdi/js";
+import { mdiBackspaceOutline, mdiEyeOffOutline, mdiEyeOutline } from "@mdi/js";
 
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { ElmInlineText } from "../typography/elm-inline-text";
@@ -41,18 +27,12 @@ export interface ElmTextFieldProps extends Omit<PropsOf<"label">, "onInput$"> {
    */
   value?: Signal<string>;
 
-  icon?:
-    | "text"
-    | "pen"
-    | "email"
-    | "user"
-    | "lock"
-    | "key"
-    | "earth"
-    | "tag"
-    | "archive"
-    | "link"
-    | "search";
+  /**
+   * Icon displayed on the left side of the input.
+   *
+   * @example <ElmTextField icon={<ElmInlineIcon src={url} />} label="..." />
+   */
+  icon?: JSXOutput;
   isPassword?: boolean;
   required?: boolean;
 }
@@ -77,34 +57,24 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
   const isFocused = useSignal(false);
   const inputType = useSignal(isPassword ? "password" : "text");
 
-  const iconMap: Record<NonNullable<ElmTextFieldProps["icon"]>, string> = {
-    text: mdiText,
-    pen: mdiPen,
-    email: mdiEmail,
-    user: mdiAccount,
-    lock: mdiLock,
-    key: mdiKey,
-    earth: mdiEarth,
-    tag: mdiTag,
-    archive: mdiArchive,
-    link: mdiLinkVariant,
-    search: mdiMagnify,
-  };
-
   return (
     <label
       class={[styles.wrapper, isFocused.value && styles.active, className]}
       style={
         {
           backgroundColor: disabled || loading ? "rgba(0,0,0,0.15)" : undefined,
-          "--highlight-color": isFocused.value ? "#bfa056" : undefined,
           ...(style as CSSProperties),
         } as CSSProperties
       }
       {...rest}
     >
       <div class={styles.header}>
-        <span class={styles.label}>
+        <span
+          class={[
+            styles.label,
+            { [styles["label-active"]]: isFocused.value },
+          ]}
+        >
           <span>{label}</span>
           {required && <span class={styles.requierd}>*</span>}
         </span>
@@ -118,7 +88,7 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
       </div>
 
       <div class={styles.body}>
-        {icon && <ElmMdiIcon d={iconMap[icon]} size="1.5rem" color="gray" />}
+        {icon && <div class={styles["left-icon"]}>{icon}</div>}
 
         <input
           value={value?.value}
