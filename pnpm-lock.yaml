@@ -80,8 +80,8 @@ importers:
   packages/qwik:
     dependencies:
       '@a2ui/web_core':
-        specifier: ^0.9.2
-        version: 0.9.2
+        specifier: ^0.10.0
+        version: 0.10.0
       '@ag-ui/client':
         specifier: ^0.0.53
         version: 0.0.53
@@ -418,11 +418,11 @@ packages:
       express:
         optional: true
 
+  '@a2ui/web_core@0.10.0':
+    resolution: {integrity: sha512-pSieKxaB6aZWBL2LjZfKo4/1v4xMWylczpzte1ehuGH0kfNGf/iTd73PKsIKYx3b0FNWTbD8gAloOM4JCVqUig==}
+
   '@a2ui/web_core@0.9.0':
     resolution: {integrity: sha512-TsMWuEeuVDsScGIGPy/fWIZu+EOBRfhx6KwjKh3VwY1AwysRenQM8zDr8VrSk14Wck/aBgVxk2zWVrMCK2/s6A==}
-
-  '@a2ui/web_core@0.9.2':
-    resolution: {integrity: sha512-EOfhLOF7tnpPmNq4y116k3gxWdrXQW8h3dhKF0pC++21zLZnCSLSHl6zgQFG+kPeVAZb64t+sQiRXlnyS8+RBg==}
 
   '@adobe/css-tools@4.4.4':
     resolution: {integrity: sha512-Elp+iwUx5rN5+Y8xLt5/GRoG20WGoDCQ/1Fb+1LiGtvwbDavuSk0jhD/eZdckHAuzcDzccnkv+rEjyWfRx18gg==}
@@ -2372,8 +2372,8 @@ packages:
   '@polka/url@1.0.0-next.29':
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
 
-  '@preact/signals-core@1.14.1':
-    resolution: {integrity: sha512-vxPpfXqrwUe9lpjqfYNjAF/0RF/eFGeLgdJzdmIIZjpOnTmGmAB4BjWone562mJGMRP4frU6iZ6ei3PDsu52Ng==}
+  '@preact/signals-core@1.14.2':
+    resolution: {integrity: sha512-RZHdBj9ZF4n40Rp4jS052EHHjBWf96P9oNdXPfhQTovCuWY9iQn3Gq+gOTJSgBO9A/JBuPfMOWsSX/lIU9Pc/A==}
 
   '@protobuf-ts/protoc@2.11.1':
     resolution: {integrity: sha512-mUZJaV0daGO6HUX90o/atzQ6A7bbN2RSuHtdwo8SSF2Qoe3zHwa4IHyCN1evftTeHfLmdz+45qo47sL+5P8nyg==}
@@ -8991,16 +8991,16 @@ snapshots:
       '@bufbuild/protobuf': 2.12.0
       express: 5.2.1
 
-  '@a2ui/web_core@0.9.0':
+  '@a2ui/web_core@0.10.0':
     dependencies:
-      '@preact/signals-core': 1.14.1
+      '@preact/signals-core': 1.14.2
       date-fns: 4.1.0
       zod: 3.25.76
       zod-to-json-schema: 3.25.2(zod@3.25.76)
 
-  '@a2ui/web_core@0.9.2':
+  '@a2ui/web_core@0.9.0':
     dependencies:
-      '@preact/signals-core': 1.14.1
+      '@preact/signals-core': 1.14.2
       date-fns: 4.1.0
       zod: 3.25.76
       zod-to-json-schema: 3.25.2(zod@3.25.76)
@@ -11081,7 +11081,7 @@ snapshots:
 
   '@polka/url@1.0.0-next.29': {}
 
-  '@preact/signals-core@1.14.1': {}
+  '@preact/signals-core@1.14.2': {}
 
   '@protobuf-ts/protoc@2.11.1': {}
 
