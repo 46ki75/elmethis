@@ -1,15 +1,15 @@
-import { $, type NoSerialize, noSerialize, type QRL, useSignal } from "@builder.io/qwik";
+import { useSignal, useTask$ } from "@builder.io/qwik";
 
 /**
- * Returns a signal pair and a debounced setter.
+ * Returns a reactive signal pair where writing to `signal` drives a debounced
+ * update to `debouncedSignal`.
  *
- * `signal` reflects the most recently written value immediately.
+ * `signal` reflects every write immediately.
  * `debouncedSignal` reflects the same value only after `delay` ms have
- * elapsed since the last call to `set`. Rapid successive calls reset
+ * elapsed since the last write to `signal`. Rapid successive writes reset
  * the timer so only the final value propagates to `debouncedSignal`.
  *
- * When `delay` is 0 or negative, `debouncedSignal` is updated
- * synchronously (no timer).
+ * When `delay` is 0 or negative, `debouncedSignal` is updated synchronously.
  *
  * @param initialValue - The initial value for both signals.
  * @param delay - Debounce delay in milliseconds.
@@ -20,29 +20,31 @@ export const useDebouncedSignal = <T>(
 ) => {
   const signal = useSignal<T>(initialValue);
   const debouncedSignal = useSignal<T>(initialValue);
-  const timeoutId = useSignal<
-    NoSerialize<ReturnType<typeof setTimeout>> | undefined
-  >(undefined);
+  const isPending = useSignal(false);
 
-  const set: QRL<(value: T) => void> = $((value: T) => {
-    signal.value = value;
-
-    if (timeoutId.value !== undefined) {
-      clearTimeout(timeoutId.value);
-    }
+  useTask$(({ track, cleanup }) => {
+    const value = track(() => signal.value);
 
     if (delay <= 0) {
       debouncedSignal.value = value;
-      timeoutId.value = undefined;
-    } else {
-      timeoutId.value = noSerialize(
-        setTimeout(() => {
-          debouncedSignal.value = value;
-          timeoutId.value = undefined;
-        }, delay),
-      );
+      isPending.value = false;
+      return;
     }
+
+    if (value === debouncedSignal.value) {
+      isPending.value = false;
+      return;
+    }
+
+    isPending.value = true;
+
+    const id = setTimeout(() => {
+      debouncedSignal.value = value;
+      isPending.value = false;
+    }, delay);
+
+    cleanup(() => clearTimeout(id));
   });
 
-  return { signal, debouncedSignal, set };
+  return { signal, debouncedSignal, isPending };
 };

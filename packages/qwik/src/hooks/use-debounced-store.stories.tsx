@@ -27,7 +27,7 @@ const preStyle = {
  * stops typing. `debouncedStore` is what you'd pass to an API call.
  */
 const BasicDemo = component$(() => {
-  const { store, debouncedStore, set } = useDebouncedStore(
+  const { store, debouncedStore } = useDebouncedStore(
     { query: "" },
     500,
   );
@@ -41,7 +41,7 @@ const BasicDemo = component$(() => {
       <input
         style={inputStyle}
         placeholder="Search…"
-        onInput$={(_, t) => set({ query: t.value })}
+        onInput$={(_, t) => (store.query = t.value)}
       />
       <p>
         <strong>store (immediate):</strong>
@@ -60,7 +60,7 @@ const BasicDemo = component$(() => {
  * mirrors the final state of all fields after 600 ms of inactivity.
  */
 const MultiFieldDemo = component$(() => {
-  const { store, debouncedStore, set } = useDebouncedStore(
+  const { store, debouncedStore } = useDebouncedStore(
     { first: "", last: "", email: "" },
     600,
   );
@@ -76,7 +76,7 @@ const MultiFieldDemo = component$(() => {
         <input
           style={inputStyle}
           placeholder="First"
-          onInput$={(_, t) => set({ first: t.value })}
+          onInput$={(_, t) => (store.first = t.value)}
         />
       </label>
       <label style={{ display: "block", marginBottom: "0.25rem" }}>
@@ -84,7 +84,7 @@ const MultiFieldDemo = component$(() => {
         <input
           style={inputStyle}
           placeholder="Last"
-          onInput$={(_, t) => set({ last: t.value })}
+          onInput$={(_, t) => (store.last = t.value)}
         />
       </label>
       <label style={{ display: "block", marginBottom: "0.5rem" }}>
@@ -92,7 +92,7 @@ const MultiFieldDemo = component$(() => {
         <input
           style={inputStyle}
           placeholder="Email"
-          onInput$={(_, t) => set({ email: t.value })}
+          onInput$={(_, t) => (store.email = t.value)}
         />
       </label>
       <p>
@@ -112,14 +112,14 @@ const MultiFieldDemo = component$(() => {
  * `debouncedStore`. Shows that the timer resets on every call to `set`.
  */
 const CounterDemo = component$(() => {
-  const { store, debouncedStore, set } = useDebouncedStore({ count: 0 }, 400);
+  const { store, debouncedStore } = useDebouncedStore({ count: 0 }, 400);
 
   return (
     <div style={boxStyle}>
       <p>Click +1 rapidly — only the last value is debounced.</p>
       <div style={rowStyle}>
-        <button onClick$={() => set({ count: store.count + 1 })}>+1</button>
-        <button onClick$={() => set({ count: 0 })}>Reset</button>
+        <button onClick$={() => store.count++}>+1</button>
+        <button onClick$={() => (store.count = 0)}>Reset</button>
       </div>
       <p>
         <strong>store (immediate):</strong>
@@ -138,7 +138,7 @@ const CounterDemo = component$(() => {
  * synchronously — both stores behave identically.
  */
 const ZeroDelayDemo = component$(() => {
-  const { store, debouncedStore, set } = useDebouncedStore({ query: "" }, 0);
+  const { store, debouncedStore } = useDebouncedStore({ query: "" }, 0);
 
   return (
     <div style={boxStyle}>
@@ -149,7 +149,7 @@ const ZeroDelayDemo = component$(() => {
       <input
         style={inputStyle}
         placeholder="Type here…"
-        onInput$={(_, t) => set({ query: t.value })}
+        onInput$={(_, t) => (store.query = t.value)}
       />
       <p>
         <strong>store:</strong>

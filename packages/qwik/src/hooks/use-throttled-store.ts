@@ -1,21 +1,22 @@
-import {
-  $,
-  type NoSerialize,
-  noSerialize,
-  type QRL,
-  useSignal,
-  useStore,
-} from "@builder.io/qwik";
+import { useSignal, useStore, useTask$ } from "@builder.io/qwik";
+
+const shallowEqual = <T extends object>(a: T, b: T): boolean => {
+  const keys = Object.keys(a) as (keyof T)[];
+  return (
+    keys.length === Object.keys(b).length && keys.every((k) => a[k] === b[k])
+  );
+};
 
 /**
- * Returns a store pair and a throttled setter.
+ * Returns a store pair with leading-edge throttled reactivity.
  *
- * `store` is a deep-reactive proxy that reflects the most recently patched
- * state immediately. `throttledStore` is a separate reactive proxy that
- * receives patches on the *leading edge* of each throttle window: the first
- * call within any `interval` ms window fires at once; subsequent calls
- * within the same window are suppressed. Once the window expires the next
- * call will fire immediately again.
+ * `store` is a deep-reactive proxy that reflects every write immediately.
+ * `throttledStore` receives the same state on the *leading edge* of each
+ * throttle window: the first write within any `interval` ms window fires at
+ * once; subsequent writes within the same window are suppressed. Once the
+ * window expires the next write fires immediately again.
+ *
+ * `isCooling` is `true` while the throttle cooldown window is active.
  *
  * When `interval` is 0 or negative, `throttledStore` is updated
  * synchronously alongside `store` (no throttling).
@@ -25,11 +26,11 @@ import {
  *
  * @example
  * ```tsx
- * const { store, throttledStore, set } = useThrottledStore({ x: 0, y: 0 }, 100);
+ * const { store, throttledStore, isCooling } = useThrottledStore({ x: 0, y: 0 }, 100);
  *
  * // store.x / store.y update on every mousemove
  * // throttledStore updates at most once every 100 ms
- * <div onMouseMove$={(e) => set({ x: e.clientX, y: e.clientY })} />
+ * <div onMouseMove$={(e) => { store.x = e.clientX; store.y = e.clientY; }} />
  * ```
  */
 export const useThrottledStore = <T extends object>(
@@ -38,28 +39,32 @@ export const useThrottledStore = <T extends object>(
 ) => {
   const store = useStore<T>({ ...initialValue });
   const throttledStore = useStore<T>({ ...initialValue });
-  const timeoutId = useSignal<
-    NoSerialize<ReturnType<typeof setTimeout>> | undefined
-  >(undefined);
+  // Not passed to track() — read as a plain gate, not a reactive dependency.
+  const isCooling = useSignal(false);
 
-  const set: QRL<(patch: Partial<T>) => void> = $((patch: Partial<T>) => {
-    Object.assign(store, patch);
+  useTask$(({ track }) => {
+    const snapshot = track(() => ({ ...store }));
 
     if (interval <= 0) {
-      Object.assign(throttledStore, patch);
+      Object.assign(throttledStore, snapshot);
       return;
     }
 
-    // Leading edge: only fire if the cooldown window is not active.
-    if (timeoutId.value === undefined) {
-      Object.assign(throttledStore, patch);
-      timeoutId.value = noSerialize(
-        setTimeout(() => {
-          timeoutId.value = undefined;
-        }, interval),
-      );
+    // Skip the initial run when both stores are in sync and no cooldown is active.
+    if (shallowEqual(snapshot, throttledStore) && !isCooling.value) {
+      return;
     }
+
+    // Leading edge: fire only if the cooldown window is not active.
+    if (!isCooling.value) {
+      Object.assign(throttledStore, snapshot);
+      isCooling.value = true;
+      setTimeout(() => {
+        isCooling.value = false;
+      }, interval);
+    }
+    // else: suppressed within the cooldown window
   });
 
-  return { store, throttledStore, set };
+  return { store, throttledStore, isCooling };
 };
