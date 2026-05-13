@@ -20,15 +20,15 @@ const InitialWrapper = component$(() => {
 });
 
 const SetterWrapper = component$(() => {
-  const { signal, debouncedSignal, set } = useDebouncedSignal("", 50);
+  const { signal, debouncedSignal } = useDebouncedSignal("", 50);
   return (
     <div>
       <span id="signal">{signal.value}</span>
       <span id="debounced">{debouncedSignal.value}</span>
-      <button id="btn-a" onClick$={() => set("a")}>
+      <button id="btn-a" onClick$={() => (signal.value = "a")}>
         Set A
       </button>
-      <button id="btn-b" onClick$={() => set("b")}>
+      <button id="btn-b" onClick$={() => (signal.value = "b")}>
         Set B
       </button>
     </div>
@@ -36,12 +36,12 @@ const SetterWrapper = component$(() => {
 });
 
 const ZeroDelayWrapper = component$(() => {
-  const { signal, debouncedSignal, set } = useDebouncedSignal("", 0);
+  const { signal, debouncedSignal } = useDebouncedSignal("", 0);
   return (
     <div>
       <span id="signal">{signal.value}</span>
       <span id="debounced">{debouncedSignal.value}</span>
-      <button id="btn" onClick$={() => set("immediate")}>
+      <button id="btn" onClick$={() => (signal.value = "immediate")}>
         Set
       </button>
     </div>

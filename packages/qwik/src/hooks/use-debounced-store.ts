@@ -1,34 +1,34 @@
-import {
-  $,
-  type NoSerialize,
-  noSerialize,
-  type QRL,
-  useSignal,
-  useStore,
-} from "@builder.io/qwik";
+import { useSignal, useStore, useTask$ } from "@builder.io/qwik";
+
+const shallowEqual = <T extends object>(a: T, b: T): boolean => {
+  const keys = Object.keys(a) as (keyof T)[];
+  return (
+    keys.length === Object.keys(b).length && keys.every((k) => a[k] === b[k])
+  );
+};
 
 /**
- * Returns a store pair and a debounced setter.
+ * Returns a store pair with debounced reactivity.
  *
- * `store` is a deep-reactive proxy that reflects the most recently patched
- * state immediately. `debouncedStore` is a separate reactive proxy that
- * receives the same patches only after `delay` ms have elapsed since the last
- * call to `set`. Rapid successive calls reset the timer so only the final patch
- * propagates to `debouncedStore`.
+ * `store` is a deep-reactive proxy that reflects every write immediately.
+ * `debouncedStore` receives the same state only after `delay` ms have elapsed
+ * since the last write to `store`. Rapid successive writes reset the timer so
+ * only the final state propagates to `debouncedStore`.
  *
- * When `delay` is 0 or negative, `debouncedStore` is updated
- * synchronously alongside `store` (no timer).
+ * `isPending` is `true` while the debounce timer is active.
+ *
+ * When `delay` is 0 or negative, `debouncedStore` is updated synchronously.
  *
  * @param initialValue - The initial value for both stores.
  * @param delay - Debounce delay in milliseconds.
  *
  * @example
  * ```tsx
- * const { store, debouncedStore, set } = useDebouncedStore({ query: "" }, 500);
+ * const { store, debouncedStore, isPending } = useDebouncedStore({ query: "" }, 500);
  *
  * // store.query updates on every keystroke
  * // debouncedStore.query updates 500 ms after the user stops typing
- * <input onInput$={(_, t) => set({ query: t.value })} />
+ * <input onInput$={(_, t) => (store.query = t.value)} />
  * ```
  */
 export const useDebouncedStore = <T extends object>(
@@ -37,29 +37,31 @@ export const useDebouncedStore = <T extends object>(
 ) => {
   const store = useStore<T>({ ...initialValue });
   const debouncedStore = useStore<T>({ ...initialValue });
-  const timeoutId = useSignal<
-    NoSerialize<ReturnType<typeof setTimeout>> | undefined
-  >(undefined);
+  const isPending = useSignal(false);
 
-  const set: QRL<(patch: Partial<T>) => void> = $((patch: Partial<T>) => {
-    Object.assign(store, patch);
-
-    if (timeoutId.value !== undefined) {
-      clearTimeout(timeoutId.value);
-    }
+  useTask$(({ track, cleanup }) => {
+    const snapshot = track(() => ({ ...store }));
 
     if (delay <= 0) {
-      Object.assign(debouncedStore, patch);
-      timeoutId.value = undefined;
-    } else {
-      timeoutId.value = noSerialize(
-        setTimeout(() => {
-          Object.assign(debouncedStore, patch);
-          timeoutId.value = undefined;
-        }, delay),
-      );
+      Object.assign(debouncedStore, snapshot);
+      isPending.value = false;
+      return;
     }
+
+    if (shallowEqual(snapshot, debouncedStore)) {
+      isPending.value = false;
+      return;
+    }
+
+    isPending.value = true;
+
+    const id = setTimeout(() => {
+      Object.assign(debouncedStore, snapshot);
+      isPending.value = false;
+    }, delay);
+
+    cleanup(() => clearTimeout(id));
   });
 
-  return { store, debouncedStore, set };
+  return { store, debouncedStore, isPending };
 };

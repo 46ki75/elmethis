@@ -21,7 +21,7 @@ const rowStyle = { display: "flex", gap: "0.5rem", marginBottom: "0.5rem" };
  * This is the canonical search-as-you-type pattern.
  */
 const BasicDemo = component$(() => {
-  const { signal, debouncedSignal, set } = useDebouncedSignal("", 500);
+  const { signal, debouncedSignal } = useDebouncedSignal("", 500);
 
   return (
     <div style={boxStyle}>
@@ -32,7 +32,7 @@ const BasicDemo = component$(() => {
       <input
         style={inputStyle}
         placeholder="Type here…"
-        onInput$={(_, t) => set(t.value)}
+        onInput$={(_, t) => (signal.value = t.value)}
       />
       <p>
         <strong>signal (immediate):</strong> {signal.value}
@@ -49,7 +49,7 @@ const BasicDemo = component$(() => {
  * API calls that should fire only after the user has clearly paused.
  */
 const LongDelayDemo = component$(() => {
-  const { signal, debouncedSignal, set } = useDebouncedSignal("", 1000);
+  const { signal, debouncedSignal } = useDebouncedSignal("", 1000);
 
   return (
     <div style={boxStyle}>
@@ -57,7 +57,7 @@ const LongDelayDemo = component$(() => {
       <input
         style={inputStyle}
         placeholder="Type here…"
-        onInput$={(_, t) => set(t.value)}
+        onInput$={(_, t) => (signal.value = t.value)}
       />
       <p>
         <strong>signal (immediate):</strong> {signal.value}
@@ -74,14 +74,14 @@ const LongDelayDemo = component$(() => {
  * debounced signal.  Shows that the timer resets on every call to `set`.
  */
 const CounterDemo = component$(() => {
-  const { signal, debouncedSignal, set } = useDebouncedSignal(0, 400);
+  const { signal, debouncedSignal } = useDebouncedSignal(0, 400);
 
   return (
     <div style={boxStyle}>
       <p>Click +1 rapidly — only the last value is debounced.</p>
       <div style={rowStyle}>
-        <button onClick$={() => set(signal.value + 1)}>+1</button>
-        <button onClick$={() => set(0)}>Reset</button>
+        <button onClick$={() => signal.value++}>+1</button>
+        <button onClick$={() => (signal.value = 0)}>Reset</button>
       </div>
       <p>
         <strong>signal (immediate):</strong> {signal.value}
@@ -98,7 +98,7 @@ const CounterDemo = component$(() => {
  * synchronously — both signals behave identically.
  */
 const ZeroDelayDemo = component$(() => {
-  const { signal, debouncedSignal, set } = useDebouncedSignal("", 0);
+  const { signal, debouncedSignal } = useDebouncedSignal("", 0);
 
   return (
     <div style={boxStyle}>
@@ -109,7 +109,7 @@ const ZeroDelayDemo = component$(() => {
       <input
         style={inputStyle}
         placeholder="Type here…"
-        onInput$={(_, t) => set(t.value)}
+        onInput$={(_, t) => (signal.value = t.value)}
       />
       <p>
         <strong>signal:</strong> {signal.value}

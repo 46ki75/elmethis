@@ -4,6 +4,8 @@ import { ElmTextField, type ElmTextFieldProps } from "./elm-text-field";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { mdiEmail } from "@mdi/js";
+import { ElmHeading } from "../typography/elm-heading";
+import { useDebouncedSignal } from "../../hooks/use-debounced-signal";
 
 const meta: Meta<ElmTextFieldProps> = {
   title: "Components/Form/elm-text-field",
@@ -24,6 +26,7 @@ const PrimaryTextField = component$((props: ElmTextFieldProps) => {
   const text = useSignal<string>("");
   return (
     <div>
+      <ElmTextField {...props} value={text} />
       <ElmTextField {...props} value={text} />
       <ElmInlineText text={text.value} />
     </div>
@@ -107,4 +110,25 @@ const LoadingTextField = component$(() => {
 
 export const Loading: Story = {
   render: () => <LoadingTextField />,
+};
+
+export const Debounced: Story = {
+  render: (props) => {
+    const Render = component$((props: ElmTextFieldProps) => {
+      const { signal, debouncedSignal } = useDebouncedSignal("", 500);
+
+      return (
+        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+          <ElmHeading level={2}>Immediate Value: {signal.value}</ElmHeading>
+          <ElmTextField {...props} value={signal} />
+          <ElmHeading level={2}>
+            Debounced Value: {debouncedSignal.value}
+          </ElmHeading>
+          <ElmTextField {...props} value={debouncedSignal} />
+        </div>
+      );
+    });
+
+    return <Render {...props} />;
+  },
 };

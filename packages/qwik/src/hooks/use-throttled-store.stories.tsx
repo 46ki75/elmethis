@@ -28,7 +28,7 @@ const preStyle = {
  * of downstream effects such as API calls.
  */
 const BasicDemo = component$(() => {
-  const { store, throttledStore, set } = useThrottledStore({ query: "" }, 500);
+  const { store, throttledStore } = useThrottledStore({ query: "" }, 500);
 
   return (
     <div style={boxStyle}>
@@ -39,7 +39,7 @@ const BasicDemo = component$(() => {
       <input
         style={inputStyle}
         placeholder="Search…"
-        onInput$={(_, t) => set({ query: t.value })}
+        onInput$={(_, t) => (store.query = t.value)}
       />
       <p>
         <strong>store (immediate):</strong>
@@ -58,7 +58,7 @@ const BasicDemo = component$(() => {
  * captures only the leading-edge patch per 600 ms window.
  */
 const MultiFieldDemo = component$(() => {
-  const { store, throttledStore, set } = useThrottledStore(
+  const { store, throttledStore } = useThrottledStore(
     { first: "", last: "", email: "" },
     600,
   );
@@ -74,7 +74,7 @@ const MultiFieldDemo = component$(() => {
         <input
           style={inputStyle}
           placeholder="First"
-          onInput$={(_, t) => set({ first: t.value })}
+          onInput$={(_, t) => (store.first = t.value)}
         />
       </label>
       <label style={{ display: "block", marginBottom: "0.25rem" }}>
@@ -82,7 +82,7 @@ const MultiFieldDemo = component$(() => {
         <input
           style={inputStyle}
           placeholder="Last"
-          onInput$={(_, t) => set({ last: t.value })}
+          onInput$={(_, t) => (store.last = t.value)}
         />
       </label>
       <label style={{ display: "block", marginBottom: "0.5rem" }}>
@@ -90,7 +90,7 @@ const MultiFieldDemo = component$(() => {
         <input
           style={inputStyle}
           placeholder="Email"
-          onInput$={(_, t) => set({ email: t.value })}
+          onInput$={(_, t) => (store.email = t.value)}
         />
       </label>
       <p>
@@ -110,7 +110,7 @@ const MultiFieldDemo = component$(() => {
  * click in each 400 ms window.
  */
 const CounterDemo = component$(() => {
-  const { store, throttledStore, set } = useThrottledStore({ count: 0 }, 400);
+  const { store, throttledStore } = useThrottledStore({ count: 0 }, 400);
 
   return (
     <div style={boxStyle}>
@@ -119,8 +119,8 @@ const CounterDemo = component$(() => {
         click in each 400 ms window.
       </p>
       <div style={rowStyle}>
-        <button onClick$={() => set({ count: store.count + 1 })}>+1</button>
-        <button onClick$={() => set({ count: 0 })}>Reset</button>
+        <button onClick$={() => store.count++}>+1</button>
+        <button onClick$={() => (store.count = 0)}>Reset</button>
       </div>
       <p>
         <strong>store (immediate):</strong>
@@ -139,7 +139,7 @@ const CounterDemo = component$(() => {
  * synchronously — same as `store`.
  */
 const ZeroIntervalDemo = component$(() => {
-  const { store, throttledStore, set } = useThrottledStore({ query: "" }, 0);
+  const { store, throttledStore } = useThrottledStore({ query: "" }, 0);
 
   return (
     <div style={boxStyle}>
@@ -150,7 +150,7 @@ const ZeroIntervalDemo = component$(() => {
       <input
         style={inputStyle}
         placeholder="Type here…"
-        onInput$={(_, t) => set({ query: t.value })}
+        onInput$={(_, t) => (store.query = t.value)}
       />
       <p>
         <strong>store:</strong>

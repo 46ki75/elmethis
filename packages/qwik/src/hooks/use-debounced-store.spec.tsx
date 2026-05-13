@@ -25,15 +25,15 @@ const InitialWrapper = component$(() => {
 });
 
 const SetterWrapper = component$(() => {
-  const { store, debouncedStore, set } = useDebouncedStore({ query: "" }, 50);
+  const { store, debouncedStore } = useDebouncedStore({ query: "" }, 50);
   return (
     <div>
       <span id="store-query">{store.query}</span>
       <span id="debounced-query">{debouncedStore.query}</span>
-      <button id="btn-a" onClick$={() => set({ query: "a" })}>
+      <button id="btn-a" onClick$={() => (store.query = "a")}>
         Set A
       </button>
-      <button id="btn-b" onClick$={() => set({ query: "b" })}>
+      <button id="btn-b" onClick$={() => (store.query = "b")}>
         Set B
       </button>
     </div>
@@ -41,12 +41,12 @@ const SetterWrapper = component$(() => {
 });
 
 const ZeroDelayWrapper = component$(() => {
-  const { store, debouncedStore, set } = useDebouncedStore({ query: "" }, 0);
+  const { store, debouncedStore } = useDebouncedStore({ query: "" }, 0);
   return (
     <div>
       <span id="store-query">{store.query}</span>
       <span id="debounced-query">{debouncedStore.query}</span>
-      <button id="btn" onClick$={() => set({ query: "immediate" })}>
+      <button id="btn" onClick$={() => (store.query = "immediate")}>
         Set
       </button>
     </div>
@@ -54,7 +54,7 @@ const ZeroDelayWrapper = component$(() => {
 });
 
 const MultiKeyWrapper = component$(() => {
-  const { store, debouncedStore, set } = useDebouncedStore(
+  const { store, debouncedStore } = useDebouncedStore(
     { first: "", last: "" },
     50,
   );
@@ -64,7 +64,7 @@ const MultiKeyWrapper = component$(() => {
       <span id="store-last">{store.last}</span>
       <span id="debounced-first">{debouncedStore.first}</span>
       <span id="debounced-last">{debouncedStore.last}</span>
-      <button id="btn-patch" onClick$={() => set({ first: "Bob" })}>
+      <button id="btn-patch" onClick$={() => (store.first = "Bob")}>
         Patch first
       </button>
     </div>

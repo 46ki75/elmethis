@@ -1,13 +1,16 @@
-import { $, type NoSerialize, noSerialize, type QRL, useSignal } from "@builder.io/qwik";
+import { useSignal, useTask$ } from "@builder.io/qwik";
 
 /**
- * Returns a signal pair and a throttled setter.
+ * Returns a reactive signal pair where writing to `signal` drives a
+ * leading-edge throttled update to `throttledSignal`.
  *
- * `signal` reflects the most recently written value immediately.
- * `throttledSignal` reflects the value on the *leading edge* of each
- * throttle window: the first call within any `interval` ms window fires
- * at once; subsequent calls within the same window are suppressed.
- * Once the window expires the next call will fire immediately again.
+ * `signal` reflects every write immediately.
+ * `throttledSignal` updates on the *leading edge* of each throttle window:
+ * the first write within any `interval` ms window propagates at once;
+ * subsequent writes within the same window are suppressed.
+ * Once the window expires the next write fires immediately again.
+ *
+ * `isCooling` is `true` while the throttle cooldown window is active.
  *
  * When `interval` is 0 or negative, `throttledSignal` is updated
  * synchronously alongside `signal` (no throttling).
@@ -17,11 +20,11 @@ import { $, type NoSerialize, noSerialize, type QRL, useSignal } from "@builder.
  *
  * @example
  * ```tsx
- * const { signal, throttledSignal, set } = useThrottledSignal(0, 200);
+ * const { signal, throttledSignal, isCooling } = useThrottledSignal(0, 200);
  *
  * // signal.value updates on every mousemove
  * // throttledSignal.value updates at most once every 200 ms
- * <div onMouseMove$={(e) => set(e.clientX)} />
+ * <div onMouseMove$={(e) => (signal.value = e.clientX)} />
  * ```
  */
 export const useThrottledSignal = <T>(
@@ -30,28 +33,32 @@ export const useThrottledSignal = <T>(
 ) => {
   const signal = useSignal<T>(initialValue);
   const throttledSignal = useSignal<T>(initialValue);
-  const timeoutId = useSignal<
-    NoSerialize<ReturnType<typeof setTimeout>> | undefined
-  >(undefined);
+  // Not passed to track() — read as a plain gate, not a reactive dependency.
+  const isCooling = useSignal(false);
 
-  const set: QRL<(value: T) => void> = $((value: T) => {
-    signal.value = value;
+  useTask$(({ track }) => {
+    const value = track(() => signal.value);
 
     if (interval <= 0) {
       throttledSignal.value = value;
       return;
     }
 
-    // Leading edge: only fire if the cooldown window is not active.
-    if (timeoutId.value === undefined) {
-      throttledSignal.value = value;
-      timeoutId.value = noSerialize(
-        setTimeout(() => {
-          timeoutId.value = undefined;
-        }, interval),
-      );
+    // Skip the initial run when both signals are in sync and no cooldown is active.
+    if (value === throttledSignal.value && !isCooling.value) {
+      return;
     }
+
+    // Leading edge: fire only if the cooldown window is not active.
+    if (!isCooling.value) {
+      throttledSignal.value = value;
+      isCooling.value = true;
+      setTimeout(() => {
+        isCooling.value = false;
+      }, interval);
+    }
+    // else: suppressed within the cooldown window
   });
 
-  return { signal, throttledSignal, set };
+  return { signal, throttledSignal, isCooling };
 };

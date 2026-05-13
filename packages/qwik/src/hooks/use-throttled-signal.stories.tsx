@@ -22,7 +22,7 @@ const rowStyle = { display: "flex", gap: "0.5rem", marginBottom: "0.5rem" };
  * the update rate without waiting for the user to stop typing.
  */
 const BasicDemo = component$(() => {
-  const { signal, throttledSignal, set } = useThrottledSignal("", 500);
+  const { signal, throttledSignal } = useThrottledSignal("", 500);
 
   return (
     <div style={boxStyle}>
@@ -33,7 +33,7 @@ const BasicDemo = component$(() => {
       <input
         style={inputStyle}
         placeholder="Type here…"
-        onInput$={(_, t) => set(t.value)}
+        onInput$={(_, t) => (signal.value = t.value)}
       />
       <p>
         <strong>signal (immediate):</strong> {signal.value}
@@ -51,7 +51,7 @@ const BasicDemo = component$(() => {
  * click in each 400 ms window. Illustrates leading-edge throttle behaviour.
  */
 const CounterDemo = component$(() => {
-  const { signal, throttledSignal, set } = useThrottledSignal(0, 400);
+  const { signal, throttledSignal } = useThrottledSignal(0, 400);
 
   return (
     <div style={boxStyle}>
@@ -60,8 +60,8 @@ const CounterDemo = component$(() => {
         click in each 400 ms window.
       </p>
       <div style={rowStyle}>
-        <button onClick$={() => set(signal.value + 1)}>+1</button>
-        <button onClick$={() => set(0)}>Reset</button>
+        <button onClick$={() => signal.value++}>+1</button>
+        <button onClick$={() => (signal.value = 0)}>Reset</button>
       </div>
       <p>
         <strong>signal (immediate):</strong> {signal.value}
@@ -79,7 +79,7 @@ const CounterDemo = component$(() => {
  * scroll or pointer move where you still want frequent but capped updates.
  */
 const ShortIntervalDemo = component$(() => {
-  const { signal, throttledSignal, set } = useThrottledSignal("", 100);
+  const { signal, throttledSignal } = useThrottledSignal("", 100);
 
   return (
     <div style={boxStyle}>
@@ -87,7 +87,7 @@ const ShortIntervalDemo = component$(() => {
       <input
         style={inputStyle}
         placeholder="Type here…"
-        onInput$={(_, t) => set(t.value)}
+        onInput$={(_, t) => (signal.value = t.value)}
       />
       <p>
         <strong>signal (immediate):</strong> {signal.value}
@@ -105,7 +105,7 @@ const ShortIntervalDemo = component$(() => {
  * synchronously — same as `signal`.
  */
 const ZeroIntervalDemo = component$(() => {
-  const { signal, throttledSignal, set } = useThrottledSignal("", 0);
+  const { signal, throttledSignal } = useThrottledSignal("", 0);
 
   return (
     <div style={boxStyle}>
@@ -116,7 +116,7 @@ const ZeroIntervalDemo = component$(() => {
       <input
         style={inputStyle}
         placeholder="Type here…"
-        onInput$={(_, t) => set(t.value)}
+        onInput$={(_, t) => (signal.value = t.value)}
       />
       <p>
         <strong>signal:</strong> {signal.value}

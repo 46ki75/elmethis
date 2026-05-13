@@ -25,15 +25,15 @@ const InitialWrapper = component$(() => {
 });
 
 const SetterWrapper = component$(() => {
-  const { store, throttledStore, set } = useThrottledStore({ query: "" }, 200);
+  const { store, throttledStore } = useThrottledStore({ query: "" }, 200);
   return (
     <div>
       <span id="store-query">{store.query}</span>
       <span id="throttled-query">{throttledStore.query}</span>
-      <button id="btn-a" onClick$={() => set({ query: "a" })}>
+      <button id="btn-a" onClick$={() => (store.query = "a")}>
         Set A
       </button>
-      <button id="btn-b" onClick$={() => set({ query: "b" })}>
+      <button id="btn-b" onClick$={() => (store.query = "b")}>
         Set B
       </button>
     </div>
@@ -41,12 +41,12 @@ const SetterWrapper = component$(() => {
 });
 
 const ZeroIntervalWrapper = component$(() => {
-  const { store, throttledStore, set } = useThrottledStore({ query: "" }, 0);
+  const { store, throttledStore } = useThrottledStore({ query: "" }, 0);
   return (
     <div>
       <span id="store-query">{store.query}</span>
       <span id="throttled-query">{throttledStore.query}</span>
-      <button id="btn" onClick$={() => set({ query: "immediate" })}>
+      <button id="btn" onClick$={() => (store.query = "immediate")}>
         Set
       </button>
     </div>
@@ -54,7 +54,7 @@ const ZeroIntervalWrapper = component$(() => {
 });
 
 const MultiKeyWrapper = component$(() => {
-  const { store, throttledStore, set } = useThrottledStore(
+  const { store, throttledStore } = useThrottledStore(
     { first: "", last: "" },
     200,
   );
@@ -64,7 +64,7 @@ const MultiKeyWrapper = component$(() => {
       <span id="store-last">{store.last}</span>
       <span id="throttled-first">{throttledStore.first}</span>
       <span id="throttled-last">{throttledStore.last}</span>
-      <button id="btn-patch" onClick$={() => set({ first: "Bob" })}>
+      <button id="btn-patch" onClick$={() => (store.first = "Bob")}>
         Patch first
       </button>
     </div>

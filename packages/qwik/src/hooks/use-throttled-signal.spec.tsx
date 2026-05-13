@@ -20,15 +20,15 @@ const InitialWrapper = component$(() => {
 });
 
 const SetterWrapper = component$(() => {
-  const { signal, throttledSignal, set } = useThrottledSignal("", 200);
+  const { signal, throttledSignal } = useThrottledSignal("", 200);
   return (
     <div>
       <span id="signal">{signal.value}</span>
       <span id="throttled">{throttledSignal.value}</span>
-      <button id="btn-a" onClick$={() => set("a")}>
+      <button id="btn-a" onClick$={() => (signal.value = "a")}>
         Set A
       </button>
-      <button id="btn-b" onClick$={() => set("b")}>
+      <button id="btn-b" onClick$={() => (signal.value = "b")}>
         Set B
       </button>
     </div>
@@ -36,12 +36,12 @@ const SetterWrapper = component$(() => {
 });
 
 const ZeroIntervalWrapper = component$(() => {
-  const { signal, throttledSignal, set } = useThrottledSignal("", 0);
+  const { signal, throttledSignal } = useThrottledSignal("", 0);
   return (
     <div>
       <span id="signal">{signal.value}</span>
       <span id="throttled">{throttledSignal.value}</span>
-      <button id="btn" onClick$={() => set("immediate")}>
+      <button id="btn" onClick$={() => (signal.value = "immediate")}>
         Set
       </button>
     </div>
