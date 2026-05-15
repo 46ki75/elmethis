@@ -1,11 +1,5 @@
 import { useSignal, useStore, useTask$ } from "@builder.io/qwik";
-
-const shallowEqual = <T extends object>(a: T, b: T): boolean => {
-  const keys = Object.keys(a) as (keyof T)[];
-  return (
-    keys.length === Object.keys(b).length && keys.every((k) => a[k] === b[k])
-  );
-};
+import { cloneDeep, isEqual } from "es-toolkit";
 
 /**
  * Returns a store pair with debounced reactivity.
@@ -35,12 +29,12 @@ export const useDebouncedStore = <T extends object>(
   initialValue: T,
   delay: number,
 ) => {
-  const store = useStore<T>({ ...initialValue });
-  const debouncedStore = useStore<T>({ ...initialValue });
+  const store = useStore<T>(cloneDeep(initialValue));
+  const debouncedStore = useStore<T>(cloneDeep(initialValue));
   const isPending = useSignal(false);
 
   useTask$(({ track, cleanup }) => {
-    const snapshot = track(() => ({ ...store }));
+    const snapshot = track(() => cloneDeep(store));
 
     if (delay <= 0) {
       Object.assign(debouncedStore, snapshot);
@@ -48,7 +42,7 @@ export const useDebouncedStore = <T extends object>(
       return;
     }
 
-    if (shallowEqual(snapshot, debouncedStore)) {
+    if (isEqual(snapshot, debouncedStore)) {
       isPending.value = false;
       return;
     }

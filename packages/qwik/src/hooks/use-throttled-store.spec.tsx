@@ -53,6 +53,23 @@ const ZeroIntervalWrapper = component$(() => {
   );
 });
 
+const TrailingWrapper = component$(() => {
+  const { store, throttledStore } = useThrottledStore({ query: "" }, 50);
+  return (
+    <div>
+      <span id="store-query">{store.query}</span>
+      <span id="throttled-query">{throttledStore.query}</span>
+      <button id="btn-a" onClick$={() => (store.query = "a")}>
+        Set A
+      </button>
+      <button id="btn-b" onClick$={() => (store.query = "b")}>
+        Set B
+      </button>
+      <button id="btn-flush" onClick$={() => {}} />
+    </div>
+  );
+});
+
 const MultiKeyWrapper = component$(() => {
   const { store, throttledStore } = useThrottledStore(
     { first: "", last: "" },
@@ -146,7 +163,7 @@ describe("[CSR]", () => {
     expect(screen.querySelector("#throttled-query")!.textContent).toBe("a");
   });
 
-  test("rapid successive calls keep throttledStore at first written value", async () => {
+  test("rapid successive calls keep throttledStore at first written value during cooldown", async () => {
     vi.useFakeTimers();
     const { screen, render, userEvent } = await createDOM();
     await render(<SetterWrapper />);
@@ -157,8 +174,30 @@ describe("[CSR]", () => {
 
     // store is up-to-date
     expect(screen.querySelector("#store-query")!.textContent).toBe("a");
-    // throttledStore is still the leading-edge value
+    // throttledStore is still the leading-edge value while the cooldown is active
     expect(screen.querySelector("#throttled-query")!.textContent).toBe("a");
+  });
+
+  test("trailing-edge value is delivered after the cooldown ends", async () => {
+    const { screen, render, userEvent } = await createDOM();
+    await render(<TrailingWrapper />); // 50 ms interval
+
+    await userEvent("#btn-a", "click"); // leading-edge fire → throttled = "a"
+    await userEvent("#btn-b", "click"); // suppressed during cooldown
+
+    expect(screen.querySelector("#store-query")!.textContent).toBe("b");
+    expect(screen.querySelector("#throttled-query")!.textContent).toBe("a");
+
+    // Wait past two full intervals so both the trailing-flush cooldown and
+    // the cooldown it re-arms have fired.
+    await new Promise((resolve) => setTimeout(resolve, 200));
+
+    // Qwik's test platform only flushes pending renders inside userEvent /
+    // render. A no-op click pumps the scheduler so the render queued by the
+    // trailing-edge signal write becomes visible.
+    await userEvent("#btn-flush", "click");
+
+    expect(screen.querySelector("#throttled-query")!.textContent).toBe("b");
   });
 
   test("partial patch does not affect unpatched keys in store", async () => {

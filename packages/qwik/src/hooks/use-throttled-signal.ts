@@ -1,14 +1,20 @@
-import { useSignal, useTask$ } from "@builder.io/qwik";
+import {
+  noSerialize,
+  useSignal,
+  useTask$,
+  type NoSerialize,
+} from "@builder.io/qwik";
 
 /**
  * Returns a reactive signal pair where writing to `signal` drives a
- * leading-edge throttled update to `throttledSignal`.
+ * leading + trailing edge throttled update to `throttledSignal`.
  *
  * `signal` reflects every write immediately.
  * `throttledSignal` updates on the *leading edge* of each throttle window:
- * the first write within any `interval` ms window propagates at once;
- * subsequent writes within the same window are suppressed.
- * Once the window expires the next write fires immediately again.
+ * the first write within any `interval` ms window propagates at once. Further
+ * writes within the same window are suppressed, but the most recent suppressed
+ * value is delivered on the *trailing edge* when the window expires, and a
+ * fresh window starts.
  *
  * `isCooling` is `true` while the throttle cooldown window is active.
  *
@@ -33,8 +39,19 @@ export const useThrottledSignal = <T>(
 ) => {
   const signal = useSignal<T>(initialValue);
   const throttledSignal = useSignal<T>(initialValue);
-  // Not passed to track() — read as a plain gate, not a reactive dependency.
   const isCooling = useSignal(false);
+  const cooldownId = useSignal<
+    NoSerialize<ReturnType<typeof setTimeout>> | undefined
+  >(undefined);
+
+  // Unmount-only cleanup: clears any pending cooldown timer. Kept in its own
+  // task so the cleanup does not fire on every re-run of the tracking task,
+  // which would clobber an in-flight cooldown.
+  useTask$(({ cleanup }) => {
+    cleanup(() => {
+      if (cooldownId.value !== undefined) clearTimeout(cooldownId.value);
+    });
+  });
 
   useTask$(({ track }) => {
     const value = track(() => signal.value);
@@ -44,20 +61,26 @@ export const useThrottledSignal = <T>(
       return;
     }
 
-    // Skip the initial run when both signals are in sync and no cooldown is active.
-    if (value === throttledSignal.value && !isCooling.value) {
-      return;
-    }
-
-    // Leading edge: fire only if the cooldown window is not active.
-    if (!isCooling.value) {
-      throttledSignal.value = value;
+    const arm = () => {
       isCooling.value = true;
-      setTimeout(() => {
-        isCooling.value = false;
-      }, interval);
+      cooldownId.value = noSerialize(
+        setTimeout(() => {
+          cooldownId.value = undefined;
+          isCooling.value = false;
+          if (signal.value !== throttledSignal.value) {
+            throttledSignal.value = signal.value;
+            arm();
+          }
+        }, interval),
+      );
+    };
+
+    if (cooldownId.value === undefined) {
+      if (value === throttledSignal.value) return;
+      throttledSignal.value = value;
+      arm();
     }
-    // else: suppressed within the cooldown window
+    // else: write suppressed; trailing-edge fire will pick it up.
   });
 
   return { signal, throttledSignal, isCooling };

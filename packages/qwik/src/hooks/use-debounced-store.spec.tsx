@@ -53,6 +53,21 @@ const ZeroDelayWrapper = component$(() => {
   );
 });
 
+const NestedWrapper = component$(() => {
+  const { store, debouncedStore } = useDebouncedStore<{
+    user: { name: string };
+  }>({ user: { name: "Alice" } }, 50);
+  return (
+    <div>
+      <span id="store-name">{store.user.name}</span>
+      <span id="debounced-name">{debouncedStore.user.name}</span>
+      <button id="btn" onClick$={() => (store.user.name = "Bob")}>
+        Set
+      </button>
+    </div>
+  );
+});
+
 const MultiKeyWrapper = component$(() => {
   const { store, debouncedStore } = useDebouncedStore(
     { first: "", last: "" },
@@ -165,5 +180,23 @@ describe("[CSR]", () => {
     // store.first is updated; store.last remains empty
     expect(screen.querySelector("#store-first")!.textContent).toBe("Bob");
     expect(screen.querySelector("#store-last")!.textContent).toBe("");
+  });
+
+  test("BUG: nested mutations bypass the debounce window (shared nested ref)", async () => {
+    // Bug: `useStore({ ...initialValue })` only spreads the top level.
+    // `store` and `debouncedStore` therefore share the same nested object,
+    // so mutating `store.user.name` instantly mutates `debouncedStore.user.name`
+    // without ever waiting for the debounce timer.
+    vi.useFakeTimers();
+    const { screen, render, userEvent } = await createDOM();
+    await render(<NestedWrapper />);
+
+    await userEvent("#btn", "click");
+
+    // store reflects the write immediately — expected.
+    expect(screen.querySelector("#store-name")!.textContent).toBe("Bob");
+    // debouncedStore should still hold the initial value because the
+    // 50 ms timer has not fired (fake timers, no advancement).
+    expect(screen.querySelector("#debounced-name")!.textContent).toBe("Alice");
   });
 });
