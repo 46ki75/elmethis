@@ -16,6 +16,13 @@ import { cloneDeep, isEqual } from "es-toolkit";
  *
  * When `delay` is 0 or negative, `debouncedStore` is updated synchronously.
  *
+ * SSR caveat: this hook arms a `setTimeout` inside a `useTask$`. On the
+ * server the timer never fires before HTML serialization, so any write to
+ * `store` that happens *during* SSR (e.g. via a sibling `useTask$`) ships a
+ * stuck `isPending: true` and a stale `debouncedStore` to the client. Seed
+ * the store from `useStore(initial)` / a `routeLoader$` value at
+ * construction instead of writing it from a server task.
+ *
  * @param initialValue - The initial value for both stores.
  * @param delay - Debounce delay in milliseconds.
  *

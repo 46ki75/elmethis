@@ -21,6 +21,13 @@ import {
  * When `interval` is 0 or negative, `throttledSignal` is updated
  * synchronously alongside `signal` (no throttling).
  *
+ * SSR caveat: this hook arms a `setTimeout` inside a `useTask$`. On the
+ * server the timer never fires before HTML serialization, so any write to
+ * `signal` that happens *during* SSR (e.g. via a sibling `useTask$`) ships a
+ * stuck `isCooling: true` and a stale `throttledSignal` to the client. Seed
+ * the signal from `useSignal(initial)` / a `routeLoader$` value at
+ * construction instead of writing it from a server task.
+ *
  * @param initialValue - The initial value for both signals.
  * @param interval - Throttle interval in milliseconds.
  *
@@ -40,8 +47,6 @@ export const useThrottledSignal = <T>(
   const signal = useSignal<T>(initialValue);
   const throttledSignal = useSignal<T>(initialValue);
   const isCooling = useSignal(false);
-  // noSerialize because bare setTimeout returns a non-serializable Timeout
-  // object on the server (only the browser returns a number).
   const cooldownId = useSignal<
     NoSerialize<ReturnType<typeof setTimeout>> | undefined
   >(undefined);
