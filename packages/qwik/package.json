@@ -47,8 +47,8 @@
     "prepublishOnly": "pnpm run build",
     "release": "np",
     "start": "vite --open --mode ssr",
-    "test.unit": "vitest src/components src/hooks --run",
-    "test.unit.ui": "vitest --ui src/components src/hooks",
+    "test.unit": "vitest --run",
+    "test.unit.ui": "vitest --ui",
     "qwik": "qwik"
   },
   "devDependencies": {
