@@ -56,7 +56,7 @@
     "jarkup-ts": "^0.14.0",
     "openapi-types": "^12.1.3",
     "postcss": "^8.5.14",
-    "postcss-preset-env": "^11.2.1",
+    "postcss-preset-env": "^11.3.0",
     "sass": "^1.99.0",
     "storybook": "^10.3.6",
     "typescript": "^6.0.3",
