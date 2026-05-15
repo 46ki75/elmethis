@@ -1,10 +1,18 @@
 import { useSignal, useStore, useTask$ } from "@builder.io/qwik";
+// cloneDeep, not structuredClone: Qwik's useStore proxy is not
+// structured-cloneable (throws DataCloneError). Deep-cloning is required so
+// the two stores don't share nested object references.
+import { cloneDeep, isEqual } from "es-toolkit";
 
-const shallowEqual = <T extends object>(a: T, b: T): boolean => {
-  const keys = Object.keys(a) as (keyof T)[];
-  return (
-    keys.length === Object.keys(b).length && keys.every((k) => a[k] === b[k])
-  );
+// `Object.assign(dst, src)` cannot delete keys that exist on `dst` but not on
+// `src`. Stores allow `delete store.foo`, so we strip those stale keys before
+// copying — otherwise `debouncedStore` would retain forever-stuck keys after
+// the user deletes them from `store`.
+const syncStore = <T extends object>(dst: T, src: T): void => {
+  for (const key of Object.keys(dst)) {
+    if (!(key in src)) delete (dst as Record<string, unknown>)[key];
+  }
+  Object.assign(dst, src);
 };
 
 /**
@@ -18,6 +26,13 @@ const shallowEqual = <T extends object>(a: T, b: T): boolean => {
  * `isPending` is `true` while the debounce timer is active.
  *
  * When `delay` is 0 or negative, `debouncedStore` is updated synchronously.
+ *
+ * SSR caveat: this hook arms a `setTimeout` inside a `useTask$`. On the
+ * server the timer never fires before HTML serialization, so any write to
+ * `store` that happens *during* SSR (e.g. via a sibling `useTask$`) ships a
+ * stuck `isPending: true` and a stale `debouncedStore` to the client. Seed
+ * the store from `useStore(initial)` / a `routeLoader$` value at
+ * construction instead of writing it from a server task.
  *
  * @param initialValue - The initial value for both stores.
  * @param delay - Debounce delay in milliseconds.
@@ -35,20 +50,20 @@ export const useDebouncedStore = <T extends object>(
   initialValue: T,
   delay: number,
 ) => {
-  const store = useStore<T>({ ...initialValue });
-  const debouncedStore = useStore<T>({ ...initialValue });
+  const store = useStore<T>(cloneDeep(initialValue));
+  const debouncedStore = useStore<T>(cloneDeep(initialValue));
   const isPending = useSignal(false);
 
   useTask$(({ track, cleanup }) => {
-    const snapshot = track(() => ({ ...store }));
+    const snapshot = track(() => cloneDeep(store));
 
     if (delay <= 0) {
-      Object.assign(debouncedStore, snapshot);
+      syncStore(debouncedStore, snapshot);
       isPending.value = false;
       return;
     }
 
-    if (shallowEqual(snapshot, debouncedStore)) {
+    if (isEqual(snapshot, debouncedStore)) {
       isPending.value = false;
       return;
     }
@@ -56,7 +71,7 @@ export const useDebouncedStore = <T extends object>(
     isPending.value = true;
 
     const id = setTimeout(() => {
-      Object.assign(debouncedStore, snapshot);
+      syncStore(debouncedStore, snapshot);
       isPending.value = false;
     }, delay);
 

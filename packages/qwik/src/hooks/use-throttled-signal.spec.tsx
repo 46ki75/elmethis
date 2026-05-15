@@ -31,6 +31,24 @@ const SetterWrapper = component$(() => {
       <button id="btn-b" onClick$={() => (signal.value = "b")}>
         Set B
       </button>
+      <button id="btn-flush" onClick$={() => {}} />
+    </div>
+  );
+});
+
+const TrailingWrapper = component$(() => {
+  const { signal, throttledSignal } = useThrottledSignal("", 50);
+  return (
+    <div>
+      <span id="signal">{signal.value}</span>
+      <span id="throttled">{throttledSignal.value}</span>
+      <button id="btn-a" onClick$={() => (signal.value = "a")}>
+        Set A
+      </button>
+      <button id="btn-b" onClick$={() => (signal.value = "b")}>
+        Set B
+      </button>
+      <button id="btn-flush" onClick$={() => {}} />
     </div>
   );
 });
@@ -59,6 +77,7 @@ describe("[SSR]", () => {
     });
     expect(result.html).toContain("hello");
   });
+
 });
 
 // ---------------------------------------------------------------------------
@@ -118,7 +137,7 @@ describe("[CSR]", () => {
     expect(screen.querySelector("#throttled")!.textContent).toBe("a");
   });
 
-  test("rapid successive calls keep throttledSignal at first written value", async () => {
+  test("rapid successive calls keep throttledSignal at first written value during cooldown", async () => {
     vi.useFakeTimers();
     const { screen, render, userEvent } = await createDOM();
     await render(<SetterWrapper />);
@@ -129,7 +148,31 @@ describe("[CSR]", () => {
 
     // signal is up-to-date
     expect(screen.querySelector("#signal")!.textContent).toBe("a");
-    // throttledSignal is still the leading-edge value
+    // throttledSignal is still the leading-edge value while the cooldown is active
     expect(screen.querySelector("#throttled")!.textContent).toBe("a");
+  });
+
+  test("trailing-edge value is delivered after the cooldown ends", async () => {
+    // Short interval keeps the second cooldown (armed by the trailing flush)
+    // finishing inside the test window, so no setTimeout leaks past teardown.
+    const { screen, render, userEvent } = await createDOM();
+    await render(<TrailingWrapper />); // 50 ms interval
+
+    await userEvent("#btn-a", "click"); // leading-edge fire → throttled = "a"
+    await userEvent("#btn-b", "click"); // suppressed during cooldown
+
+    expect(screen.querySelector("#signal")!.textContent).toBe("b");
+    expect(screen.querySelector("#throttled")!.textContent).toBe("a");
+
+    // Wait past two full intervals so both the trailing-flush cooldown and
+    // the cooldown it re-arms have fired.
+    await new Promise((resolve) => setTimeout(resolve, 200));
+
+    // Qwik's test platform only flushes pending renders inside userEvent /
+    // render. A no-op click pumps the scheduler so the render queued by the
+    // trailing-edge signal write becomes visible.
+    await userEvent("#btn-flush", "click");
+
+    expect(screen.querySelector("#throttled")!.textContent).toBe("b");
   });
 });

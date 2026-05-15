@@ -1,6 +1,6 @@
 {
   "name": "@elmethis/qwik",
-  "version": "0.0.87",
+  "version": "0.0.88",
   "publishConfig": {
     "access": "public"
   },
@@ -47,9 +47,8 @@
     "prepublishOnly": "pnpm run build",
     "release": "np",
     "start": "vite --open --mode ssr",
-    "test": "echo \"No test specified\" && exit 0",
-    "test.unit": "vitest src/components src/hooks",
-    "test.unit.ui": "vitest --ui src/components src/hooks",
+    "test.unit": "vitest --run",
+    "test.unit.ui": "vitest --ui",
     "qwik": "qwik"
   },
   "devDependencies": {

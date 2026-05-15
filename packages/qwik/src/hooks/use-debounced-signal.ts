@@ -11,6 +11,13 @@ import { useSignal, useTask$ } from "@builder.io/qwik";
  *
  * When `delay` is 0 or negative, `debouncedSignal` is updated synchronously.
  *
+ * SSR caveat: this hook arms a `setTimeout` inside a `useTask$`. On the
+ * server the timer never fires before HTML serialization, so any write to
+ * `signal` that happens *during* SSR (e.g. via a sibling `useTask$`) ships a
+ * stuck `isPending: true` and a stale `debouncedSignal` to the client. Seed
+ * the signal from `useSignal(initial)` / a `routeLoader$` value at
+ * construction instead of writing it from a server task.
+ *
  * @param initialValue - The initial value for both signals.
  * @param delay - Debounce delay in milliseconds.
  */
@@ -18,8 +25,16 @@ export const useDebouncedSignal = <T>(
   initialValue: Parameters<typeof useSignal<T>>[0],
   delay: number,
 ) => {
-  const signal = useSignal<T>(initialValue);
-  const debouncedSignal = useSignal<T>(initialValue);
+  // Resolve a lazy initializer once. Passing the raw `initialValue` to both
+  // `useSignal` calls would invoke the factory twice (once per call), which
+  // is surprising for callers and breaks any side-effectful initializer.
+  const resolved = (
+    typeof initialValue === "function"
+      ? (initialValue as () => T)()
+      : initialValue
+  ) as T;
+  const signal = useSignal<T>(resolved);
+  const debouncedSignal = useSignal<T>(resolved);
   const isPending = useSignal(false);
 
   useTask$(({ track, cleanup }) => {

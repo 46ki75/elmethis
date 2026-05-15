@@ -29,6 +29,8 @@ storybook-static/
 
 out/
 
+.playwright-mcp/
+
 # pnpm
 .pnpm-store
 

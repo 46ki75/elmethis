@@ -1,25 +1,47 @@
-import { useSignal, useStore, useTask$ } from "@builder.io/qwik";
+import {
+  noSerialize,
+  useSignal,
+  useStore,
+  useTask$,
+  type NoSerialize,
+} from "@builder.io/qwik";
+// cloneDeep, not structuredClone: Qwik's useStore proxy is not
+// structured-cloneable (throws DataCloneError). Deep-cloning is required so
+// the two stores don't share nested object references.
+import { cloneDeep, isEqual } from "es-toolkit";
 
-const shallowEqual = <T extends object>(a: T, b: T): boolean => {
-  const keys = Object.keys(a) as (keyof T)[];
-  return (
-    keys.length === Object.keys(b).length && keys.every((k) => a[k] === b[k])
-  );
+// `Object.assign(dst, src)` cannot delete keys that exist on `dst` but not on
+// `src`. Stores allow `delete store.foo`, so we strip those stale keys before
+// copying — otherwise `throttledStore` would retain forever-stuck keys after
+// the user deletes them from `store`.
+const syncStore = <T extends object>(dst: T, src: T): void => {
+  for (const key of Object.keys(dst)) {
+    if (!(key in src)) delete (dst as Record<string, unknown>)[key];
+  }
+  Object.assign(dst, src);
 };
 
 /**
- * Returns a store pair with leading-edge throttled reactivity.
+ * Returns a store pair with leading + trailing edge throttled reactivity.
  *
  * `store` is a deep-reactive proxy that reflects every write immediately.
  * `throttledStore` receives the same state on the *leading edge* of each
  * throttle window: the first write within any `interval` ms window fires at
- * once; subsequent writes within the same window are suppressed. Once the
- * window expires the next write fires immediately again.
+ * once. Further writes within the same window are suppressed, but the most
+ * recent suppressed snapshot is delivered on the *trailing edge* when the
+ * window expires, and a fresh window starts.
  *
  * `isCooling` is `true` while the throttle cooldown window is active.
  *
  * When `interval` is 0 or negative, `throttledStore` is updated
  * synchronously alongside `store` (no throttling).
+ *
+ * SSR caveat: this hook arms a `setTimeout` inside a `useTask$`. On the
+ * server the timer never fires before HTML serialization, so any write to
+ * `store` that happens *during* SSR (e.g. via a sibling `useTask$`) ships a
+ * stuck `isCooling: true` and a stale `throttledStore` to the client. Seed
+ * the store from `useStore(initial)` / a `routeLoader$` value at
+ * construction instead of writing it from a server task.
  *
  * @param initialValue - The initial value for both stores.
  * @param interval - Throttle interval in milliseconds.
@@ -37,33 +59,51 @@ export const useThrottledStore = <T extends object>(
   initialValue: T,
   interval: number,
 ) => {
-  const store = useStore<T>({ ...initialValue });
-  const throttledStore = useStore<T>({ ...initialValue });
-  // Not passed to track() — read as a plain gate, not a reactive dependency.
+  const store = useStore<T>(cloneDeep(initialValue));
+  const throttledStore = useStore<T>(cloneDeep(initialValue));
   const isCooling = useSignal(false);
+  const cooldownId = useSignal<
+    NoSerialize<ReturnType<typeof setTimeout>> | undefined
+  >(undefined);
+
+  // Unmount-only cleanup: clears any pending cooldown timer. Kept in its own
+  // task so the cleanup does not fire on every re-run of the tracking task,
+  // which would clobber an in-flight cooldown.
+  useTask$(({ cleanup }) => {
+    cleanup(() => {
+      if (cooldownId.value !== undefined) clearTimeout(cooldownId.value);
+    });
+  });
 
   useTask$(({ track }) => {
-    const snapshot = track(() => ({ ...store }));
+    const snapshot = track(() => cloneDeep(store));
 
     if (interval <= 0) {
-      Object.assign(throttledStore, snapshot);
+      syncStore(throttledStore, snapshot);
       return;
     }
 
-    // Skip the initial run when both stores are in sync and no cooldown is active.
-    if (shallowEqual(snapshot, throttledStore) && !isCooling.value) {
-      return;
-    }
-
-    // Leading edge: fire only if the cooldown window is not active.
-    if (!isCooling.value) {
-      Object.assign(throttledStore, snapshot);
+    const arm = () => {
       isCooling.value = true;
-      setTimeout(() => {
-        isCooling.value = false;
-      }, interval);
+      cooldownId.value = noSerialize(
+        setTimeout(() => {
+          cooldownId.value = undefined;
+          isCooling.value = false;
+          const latest = cloneDeep(store);
+          if (!isEqual(latest, throttledStore)) {
+            syncStore(throttledStore, latest);
+            arm();
+          }
+        }, interval),
+      );
+    };
+
+    if (cooldownId.value === undefined) {
+      if (isEqual(snapshot, throttledStore)) return;
+      syncStore(throttledStore, snapshot);
+      arm();
     }
-    // else: suppressed within the cooldown window
+    // else: write suppressed; trailing-edge fire will pick it up.
   });
 
   return { store, throttledStore, isCooling };
