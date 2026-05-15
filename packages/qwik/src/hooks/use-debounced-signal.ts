@@ -25,8 +25,16 @@ export const useDebouncedSignal = <T>(
   initialValue: Parameters<typeof useSignal<T>>[0],
   delay: number,
 ) => {
-  const signal = useSignal<T>(initialValue);
-  const debouncedSignal = useSignal<T>(initialValue);
+  // Resolve a lazy initializer once. Passing the raw `initialValue` to both
+  // `useSignal` calls would invoke the factory twice (once per call), which
+  // is surprising for callers and breaks any side-effectful initializer.
+  const resolved = (
+    typeof initialValue === "function"
+      ? (initialValue as () => T)()
+      : initialValue
+  ) as T;
+  const signal = useSignal<T>(resolved);
+  const debouncedSignal = useSignal<T>(resolved);
   const isPending = useSignal(false);
 
   useTask$(({ track, cleanup }) => {

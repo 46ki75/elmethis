@@ -5,6 +5,10 @@ import { component$ } from "@builder.io/qwik";
 
 import { useDebouncedSignal } from "./use-debounced-signal";
 
+// Module-scoped counter so the lazy initializer can mutate it observably
+// from the test body. Reset at the top of the lazy-initializer test.
+let lazyInitCalls = 0;
+
 // ---------------------------------------------------------------------------
 // Wrapper components used by tests
 // ---------------------------------------------------------------------------
@@ -111,6 +115,33 @@ describe("[CSR]", () => {
     expect(screen.querySelector("#signal")!.textContent).toBe("a");
     // Timer has not fired yet — debouncedSignal remains at its initial value.
     expect(screen.querySelector("#debounced")!.textContent).toBe("");
+  });
+
+  test("lazy initializer is invoked exactly once", async () => {
+    // The hook resolves the initializer once and passes the resolved value
+    // to both `useSignal` calls, so a side-effectful initializer fires once
+    // even though we own two signals.
+    lazyInitCalls = 0;
+
+    const LazyInitWrapper = component$(() => {
+      const { signal, debouncedSignal } = useDebouncedSignal<string>(() => {
+        lazyInitCalls++;
+        return "initial";
+      }, 100);
+      return (
+        <div>
+          <span id="signal">{signal.value}</span>
+          <span id="debounced">{debouncedSignal.value}</span>
+        </div>
+      );
+    });
+
+    const { render, screen } = await createDOM();
+    await render(<LazyInitWrapper />);
+
+    expect(screen.querySelector("#signal")!.textContent).toBe("initial");
+    expect(screen.querySelector("#debounced")!.textContent).toBe("initial");
+    expect(lazyInitCalls).toBe(1);
   });
 
   test("rapid successive calls reset the timer each time", async () => {

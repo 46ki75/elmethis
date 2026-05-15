@@ -10,6 +10,17 @@ import {
 // the two stores don't share nested object references.
 import { cloneDeep, isEqual } from "es-toolkit";
 
+// `Object.assign(dst, src)` cannot delete keys that exist on `dst` but not on
+// `src`. Stores allow `delete store.foo`, so we strip those stale keys before
+// copying — otherwise `throttledStore` would retain forever-stuck keys after
+// the user deletes them from `store`.
+const syncStore = <T extends object>(dst: T, src: T): void => {
+  for (const key of Object.keys(dst)) {
+    if (!(key in src)) delete (dst as Record<string, unknown>)[key];
+  }
+  Object.assign(dst, src);
+};
+
 /**
  * Returns a store pair with leading + trailing edge throttled reactivity.
  *
@@ -68,7 +79,7 @@ export const useThrottledStore = <T extends object>(
     const snapshot = track(() => cloneDeep(store));
 
     if (interval <= 0) {
-      Object.assign(throttledStore, snapshot);
+      syncStore(throttledStore, snapshot);
       return;
     }
 
@@ -80,7 +91,7 @@ export const useThrottledStore = <T extends object>(
           isCooling.value = false;
           const latest = cloneDeep(store);
           if (!isEqual(latest, throttledStore)) {
-            Object.assign(throttledStore, latest);
+            syncStore(throttledStore, latest);
             arm();
           }
         }, interval),
@@ -89,7 +100,7 @@ export const useThrottledStore = <T extends object>(
 
     if (cooldownId.value === undefined) {
       if (isEqual(snapshot, throttledStore)) return;
-      Object.assign(throttledStore, snapshot);
+      syncStore(throttledStore, snapshot);
       arm();
     }
     // else: write suppressed; trailing-edge fire will pick it up.

@@ -183,6 +183,54 @@ describe("[CSR]", () => {
     expect(screen.querySelector("#store-last")!.textContent).toBe("");
   });
 
+  test("deleting a key from `store` also removes it from `debouncedStore`", async () => {
+    const DeleteKeyWrapper = component$(() => {
+      const { store, debouncedStore } = useDebouncedStore<{
+        a: number;
+        b?: number;
+      }>({ a: 1, b: 2 }, 50);
+      return (
+        <div>
+          <span id="store-keys">{JSON.stringify(Object.keys(store))}</span>
+          <span id="debounced-keys">
+            {JSON.stringify(Object.keys(debouncedStore))}
+          </span>
+          <span id="debounced-b">{String(debouncedStore.b)}</span>
+          <button
+            id="btn-delete"
+            onClick$={() => {
+              delete store.b;
+            }}
+          >
+            Delete b
+          </button>
+          <button id="btn-flush" onClick$={() => {}} />
+        </div>
+      );
+    });
+
+    vi.useFakeTimers();
+    const { screen, render, userEvent } = await createDOM();
+    await render(<DeleteKeyWrapper />);
+
+    await userEvent("#btn-delete", "click");
+    expect(screen.querySelector("#store-keys")!.textContent).toBe(
+      JSON.stringify(["a"]),
+    );
+
+    // Advance past the debounce delay so the timer fires under fake-timer
+    // control (no real timer can leak past test teardown).
+    await vi.advanceTimersByTimeAsync(100);
+    await userEvent("#btn-flush", "click");
+
+    // `debouncedStore` no longer has `b` — `syncStore` strips stale keys
+    // before copying the snapshot.
+    expect(screen.querySelector("#debounced-keys")!.textContent).toBe(
+      JSON.stringify(["a"]),
+    );
+    expect(screen.querySelector("#debounced-b")!.textContent).toBe("undefined");
+  });
+
   test("BUG: nested mutations bypass the debounce window (shared nested ref)", async () => {
     // Bug: `useStore({ ...initialValue })` only spreads the top level.
     // `store` and `debouncedStore` therefore share the same nested object,

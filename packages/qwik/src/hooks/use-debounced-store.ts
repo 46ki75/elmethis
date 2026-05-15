@@ -4,6 +4,17 @@ import { useSignal, useStore, useTask$ } from "@builder.io/qwik";
 // the two stores don't share nested object references.
 import { cloneDeep, isEqual } from "es-toolkit";
 
+// `Object.assign(dst, src)` cannot delete keys that exist on `dst` but not on
+// `src`. Stores allow `delete store.foo`, so we strip those stale keys before
+// copying — otherwise `debouncedStore` would retain forever-stuck keys after
+// the user deletes them from `store`.
+const syncStore = <T extends object>(dst: T, src: T): void => {
+  for (const key of Object.keys(dst)) {
+    if (!(key in src)) delete (dst as Record<string, unknown>)[key];
+  }
+  Object.assign(dst, src);
+};
+
 /**
  * Returns a store pair with debounced reactivity.
  *
@@ -47,7 +58,7 @@ export const useDebouncedStore = <T extends object>(
     const snapshot = track(() => cloneDeep(store));
 
     if (delay <= 0) {
-      Object.assign(debouncedStore, snapshot);
+      syncStore(debouncedStore, snapshot);
       isPending.value = false;
       return;
     }
@@ -60,7 +71,7 @@ export const useDebouncedStore = <T extends object>(
     isPending.value = true;
 
     const id = setTimeout(() => {
-      Object.assign(debouncedStore, snapshot);
+      syncStore(debouncedStore, snapshot);
       isPending.value = false;
     }, delay);
 

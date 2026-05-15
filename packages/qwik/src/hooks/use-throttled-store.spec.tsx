@@ -201,6 +201,54 @@ describe("[CSR]", () => {
     expect(screen.querySelector("#throttled-query")!.textContent).toBe("b");
   });
 
+  test("deleting a key from `store` also removes it from `throttledStore`", async () => {
+    const DeleteKeyWrapper = component$(() => {
+      const { store, throttledStore } = useThrottledStore<{
+        a: number;
+        b?: number;
+      }>({ a: 1, b: 2 }, 50);
+      return (
+        <div>
+          <span id="store-keys">{JSON.stringify(Object.keys(store))}</span>
+          <span id="throttled-keys">
+            {JSON.stringify(Object.keys(throttledStore))}
+          </span>
+          <span id="throttled-b">{String(throttledStore.b)}</span>
+          <button
+            id="btn-delete"
+            onClick$={() => {
+              delete store.b;
+            }}
+          >
+            Delete b
+          </button>
+          <button id="btn-flush" onClick$={() => {}} />
+        </div>
+      );
+    });
+
+    vi.useFakeTimers();
+    const { screen, render, userEvent } = await createDOM();
+    await render(<DeleteKeyWrapper />);
+
+    await userEvent("#btn-delete", "click");
+    expect(screen.querySelector("#store-keys")!.textContent).toBe(
+      JSON.stringify(["a"]),
+    );
+
+    // Advance past two intervals (leading + trailing windows) under
+    // fake-timer control so no real timer can leak past test teardown.
+    await vi.advanceTimersByTimeAsync(200);
+    await userEvent("#btn-flush", "click");
+
+    // `throttledStore` no longer has `b` — `syncStore` strips stale keys
+    // before copying the snapshot, on both leading and trailing edge writes.
+    expect(screen.querySelector("#throttled-keys")!.textContent).toBe(
+      JSON.stringify(["a"]),
+    );
+    expect(screen.querySelector("#throttled-b")!.textContent).toBe("undefined");
+  });
+
   test("partial patch does not affect unpatched keys in store", async () => {
     const { screen, render, userEvent } = await createDOM();
     await render(<MultiKeyWrapper />);
