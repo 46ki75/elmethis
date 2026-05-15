@@ -1,4 +1,7 @@
 import { useSignal, useStore, useTask$ } from "@builder.io/qwik";
+// cloneDeep, not structuredClone: Qwik's useStore proxy is not
+// structured-cloneable (throws DataCloneError). Deep-cloning is required so
+// the two stores don't share nested object references.
 import { cloneDeep, isEqual } from "es-toolkit";
 
 /**
