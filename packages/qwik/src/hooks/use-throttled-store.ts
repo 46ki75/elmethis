@@ -44,6 +44,8 @@ export const useThrottledStore = <T extends object>(
   const store = useStore<T>(cloneDeep(initialValue));
   const throttledStore = useStore<T>(cloneDeep(initialValue));
   const isCooling = useSignal(false);
+  // noSerialize because bare setTimeout returns a non-serializable Timeout
+  // object on the server (only the browser returns a number).
   const cooldownId = useSignal<
     NoSerialize<ReturnType<typeof setTimeout>> | undefined
   >(undefined);
