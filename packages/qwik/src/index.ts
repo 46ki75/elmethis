@@ -156,10 +156,6 @@ export {
   type UseAutoAnimateOptions,
 } from "./hooks/use-auto-animate";
 export { useClipboard, type UseClipboardOptions } from "./hooks/useClipboard";
-export {
-  useControllableState,
-  type ControllableStateSetter,
-} from "./hooks/use-controllable-state";
 export { useControllableSignal } from "./hooks/use-controllable-signal";
 export { useControllableStore } from "./hooks/use-controllable-store";
 export { useDebouncedSignal } from "./hooks/use-debounced-signal";

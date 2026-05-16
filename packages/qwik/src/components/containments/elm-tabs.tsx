@@ -4,24 +4,18 @@ import {
   createContextId,
   PropsOf,
   Slot,
-  useComputed$,
   useContext,
   useContextProvider,
   type CSSProperties,
-  type QRL,
   type Signal,
 } from "@qwik.dev/core";
 
 import styles from "./elm-tabs.module.css";
 import { ElmCollapse } from "./elm-collapse";
-import {
-  useControllableState,
-  type ControllableStateSetter,
-} from "../../hooks/use-controllable-state";
+import { useControllableSignal } from "../../hooks/use-controllable-signal";
 
 interface ElmTabsContextValue {
-  selectedValue: Readonly<Signal<string>>;
-  setSelectedValue: ControllableStateSetter<string>;
+  selectedValue: Signal<string>;
   transitionTimingFunction: CSSProperties["transition-timing-function"];
 }
 
@@ -30,19 +24,14 @@ const ElmTabsContext =
 
 export interface ElmTabsProps extends PropsOf<"div"> {
   /**
-   * Controlled selected tab value. When provided, the parent owns the state.
+   * Controlled selected tab value. When provided, the parent owns the signal.
    */
-  value?: string;
+  value?: Signal<string>;
 
   /**
    * Initial selected tab value when uncontrolled.
    */
   defaultValue?: string;
-
-  /**
-   * Called whenever the selected tab changes.
-   */
-  onValueChange$?: QRL<(value: string) => void>;
 
   transitionTimingFunction?: CSSProperties["transition-timing-function"];
 }
@@ -52,20 +41,17 @@ export const ElmTabs = component$<ElmTabsProps>((props) => {
     class: className,
     value,
     defaultValue,
-    onValueChange$,
     transitionTimingFunction = "linear",
     ...rest
   } = props;
 
-  const [selectedValue, setSelectedValue] = useControllableState<string>({
-    prop: useComputed$(() => value),
-    defaultProp: defaultValue ?? "",
-    onChange: onValueChange$,
+  const selectedValue = useControllableSignal<string>({
+    signal: value,
+    defaultValue: defaultValue ?? "",
   });
 
   useContextProvider(ElmTabsContext, {
     selectedValue,
-    setSelectedValue,
     transitionTimingFunction,
   });
 
@@ -94,7 +80,9 @@ export interface ElmTabProps extends PropsOf<"div"> {
 export const ElmTab = component$<ElmTabProps>((props) => {
   const { value, class: className, ...rest } = props;
   const ctx = useContext(ElmTabsContext);
-  const onClick$ = $(() => ctx.setSelectedValue(value));
+  const onClick$ = $(() => {
+    ctx.selectedValue.value = value;
+  });
   return (
     <div
       class={[

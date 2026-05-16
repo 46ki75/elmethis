@@ -1,4 +1,4 @@
-import { $, component$, useSignal } from "@qwik.dev/core";
+import { component$, useSignal } from "@qwik.dev/core";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { ElmCheckbox, type ElmCheckboxProps } from "./elm-checkbox";
 
@@ -40,13 +40,7 @@ const ControlledCheckbox = component$(() => {
 
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-      <ElmCheckbox
-        label="Controlled checkbox"
-        checked={checked.value}
-        onCheckedChange$={$((v) => {
-          checked.value = v;
-        })}
-      />
+      <ElmCheckbox label="Controlled checkbox" checked={checked} />
       <span style={{ fontFamily: "monospace" }}>
         checked: {String(checked.value)}
       </span>

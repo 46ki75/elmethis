@@ -1,4 +1,4 @@
-import { $, component$, useSignal } from "@qwik.dev/core";
+import { component$, useSignal } from "@qwik.dev/core";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import {
   ElmTab,
@@ -92,12 +92,7 @@ const ControlledTabs = component$(() => {
         ))}
       </div>
 
-      <ElmTabs
-        value={selected.value}
-        onValueChange$={$((v) => {
-          selected.value = v;
-        })}
-      >
+      <ElmTabs value={selected}>
         <ElmTabList>
           <ElmTab value="tab1">
             <ElmInlineText>Tab 1</ElmInlineText>

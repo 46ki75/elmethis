@@ -1,5 +1,4 @@
 import {
-  $,
   component$,
   useSignal,
   useVisibleTask$,
@@ -109,24 +108,12 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
       }
     });
 
-    const setIsOpen = $((v: boolean) => {
-      isOpen.value = v;
-    });
-
-    const setIsArgsOpen = $((v: boolean) => {
-      isArgsOpen.value = v;
-    });
-
-    const setIsResultOpen = $((v: boolean) => {
-      isResultOpen.value = v;
-    });
-
     return (
       <div
         class={[styles["elm-ag-ui-tool-execution"], className]}
         style={{ "--margin-block": "0", ...style }}
       >
-        <ElmToggle isOpen={isOpen.value} setIsOpen$={setIsOpen} monochrome>
+        <ElmToggle isOpen={isOpen} monochrome>
           <div q:slot="summary" class={styles.summary}>
             <ElmMdiIcon d={mdiHammerScrewdriver} size="1rem" />
             <ElmInlineText>{toolName}</ElmInlineText>
@@ -148,11 +135,7 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
           }
 
           {isArgsShown.value && (
-            <ElmToggle
-              isOpen={isArgsOpen.value}
-              setIsOpen$={setIsArgsOpen}
-              monochrome
-            >
+            <ElmToggle isOpen={isArgsOpen} monochrome>
               <div q:slot="summary" class={styles.summary}>
                 <ElmMdiIcon d={mdiCodeJson} size="1rem" />
                 <ElmInlineText>Args</ElmInlineText>
@@ -186,11 +169,7 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
           )}
 
           {isResultShown.value && (
-            <ElmToggle
-              isOpen={isResultOpen.value}
-              setIsOpen$={setIsResultOpen}
-              monochrome
-            >
+            <ElmToggle isOpen={isResultOpen} monochrome>
               <div q:slot="summary" class={styles.summary}>
                 <ElmMdiIcon d={mdiCodeJson} size="1rem" />
                 <ElmInlineText>Result</ElmInlineText>

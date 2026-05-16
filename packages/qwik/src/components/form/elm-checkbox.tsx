@@ -1,13 +1,7 @@
-import {
-  $,
-  component$,
-  PropsOf,
-  useComputed$,
-  type QRL,
-} from "@qwik.dev/core";
+import { $, component$, PropsOf, type Signal } from "@qwik.dev/core";
 
 import { ElmInlineText } from "../typography/elm-inline-text";
-import { useControllableState } from "../../hooks/use-controllable-state";
+import { useControllableSignal } from "../../hooks/use-controllable-signal";
 import styles from "./elm-checkbox.module.css";
 
 export interface ElmCheckboxProps extends PropsOf<"div"> {
@@ -27,28 +21,30 @@ export interface ElmCheckboxProps extends PropsOf<"div"> {
   disable?: boolean;
 
   /**
-   * Controlled checked state. When provided the parent owns the state.
+   * Controlled checked state. When provided the parent owns the signal.
    */
-  checked?: boolean;
+  checked?: Signal<boolean>;
 
   /**
    * Initial checked state when uncontrolled.
    */
   defaultChecked?: boolean;
-
-  /**
-   * Called whenever the checked state changes.
-   */
-  onCheckedChange$?: QRL<(checked: boolean) => void>;
 }
 
 export const ElmCheckbox = component$<ElmCheckboxProps>((props) => {
-  const { class: className, label, loading, disable, checked: _checked, defaultChecked, onCheckedChange$, ...rest } = props;
+  const {
+    class: className,
+    label,
+    loading,
+    disable,
+    checked,
+    defaultChecked,
+    ...rest
+  } = props;
 
-  const [isChecked, setIsChecked] = useControllableState({
-    prop: useComputed$(() => props.checked),
-    defaultProp: defaultChecked ?? false,
-    onChange: onCheckedChange$,
+  const isChecked = useControllableSignal({
+    signal: checked,
+    defaultValue: defaultChecked ?? false,
   });
 
   return (
@@ -60,7 +56,7 @@ export const ElmCheckbox = component$<ElmCheckboxProps>((props) => {
       ]}
       onClick$={$(() => {
         if (!props.loading && !props.disable) {
-          setIsChecked(!isChecked.value);
+          isChecked.value = !isChecked.value;
         }
       })}
       {...rest}

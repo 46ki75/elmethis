@@ -166,7 +166,7 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
               );
 
               return (
-                <ElmToggle isOpen={isReasoningRunning} monochrome>
+                <ElmToggle defaultIsOpen={isReasoningRunning} monochrome>
                   <div q:slot="summary" class={styles["message-content-type"]}>
                     <ElmMdiIcon
                       class={styles["message-content-icon"]}

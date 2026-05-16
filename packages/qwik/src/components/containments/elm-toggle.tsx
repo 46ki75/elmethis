@@ -3,16 +3,15 @@ import {
   component$,
   PropsOf,
   type CSSProperties,
-  type QRL,
+  type Signal,
   Slot,
-  useComputed$,
 } from "@qwik.dev/core";
 
 import styles from "./elm-toggle.module.css";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { mdiChevronRight, mdiPlus } from "@mdi/js";
 import { ElmInlineText } from "../typography/elm-inline-text";
-import { useControllableState } from "../../hooks/use-controllable-state";
+import { useControllableSignal } from "../../hooks/use-controllable-signal";
 
 export interface ElmToggleProps extends PropsOf<"div"> {
   /** The summary text of the toggle. */
@@ -21,22 +20,26 @@ export interface ElmToggleProps extends PropsOf<"div"> {
   /** Initial open state for uncontrolled usage. */
   defaultIsOpen?: boolean;
 
-  /** Controlled open state. When provided the parent owns the state. */
-  isOpen?: boolean;
-
-  /** Called when the open state changes. */
-  setIsOpen$?: QRL<(value: boolean) => void>;
+  /** Controlled open state. When provided the parent owns the signal. */
+  isOpen?: Signal<boolean>;
 
   monochrome?: boolean;
 }
 
 export const ElmToggle = component$<ElmToggleProps>((props) => {
-  const { class: className, summary, style, monochrome, isOpen: _isOpenProp, defaultIsOpen, setIsOpen$, ...rest } = props;
+  const {
+    class: className,
+    summary,
+    style,
+    monochrome,
+    isOpen: isOpenProp,
+    defaultIsOpen,
+    ...rest
+  } = props;
 
-  const [isOpen, setIsOpen] = useControllableState({
-    prop: useComputed$(() => props.isOpen),
-    defaultProp: defaultIsOpen ?? false,
-    onChange: setIsOpen$,
+  const isOpen = useControllableSignal({
+    signal: isOpenProp,
+    defaultValue: defaultIsOpen ?? false,
   });
 
   return (
@@ -54,7 +57,7 @@ export const ElmToggle = component$<ElmToggleProps>((props) => {
       <div
         class={styles.summary}
         preventdefault:click
-        onClick$={$(() => setIsOpen(!isOpen.value))}
+        onClick$={$(() => (isOpen.value = !isOpen.value))}
       >
         <div class={styles["summary-left"]}>
           <span class={[styles.chevron, { [styles.open]: isOpen.value }]}>
