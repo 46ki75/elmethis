@@ -66,7 +66,7 @@ export {
 export {
   useAgent,
   type UseAgentOptions,
-} from "./components/ag-ui-client/useAgent";
+} from "./components/ag-ui-client/use-agent";
 
 // | Code |
 export {

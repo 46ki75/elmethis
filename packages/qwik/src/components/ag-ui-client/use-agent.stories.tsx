@@ -7,7 +7,7 @@ import {
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { v4, v7 } from "uuid";
 import { z } from "zod";
-import { defineTool, useAgent } from "./useAgent";
+import { defineTool, useAgent } from "./use-agent";
 
 export interface UseAgentProps {
   class?: string;

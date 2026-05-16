@@ -9,7 +9,7 @@ import {
   type CSSProperties,
 } from "@qwik.dev/core";
 
-import styles from "./useAgent.module.css";
+import styles from "./use-agent.module.css";
 
 import {
   BaseEvent,
