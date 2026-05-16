@@ -7,7 +7,7 @@ import {
   useStore,
   useVisibleTask$,
   type CSSProperties,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 
 import styles from "./useAgent.module.css";
 
@@ -156,117 +156,122 @@ export function useAgent({
   });
 
   // eslint-disable-next-line qwik/no-use-visible-task
-  useVisibleTask$(({ cleanup, track }) => {
-    const trackedUrl = track(() => url);
-    const trackedHeaders = track(() => (headers ? { ...headers } : undefined));
+  useVisibleTask$(
+    ({ cleanup, track }) => {
+      const trackedUrl = track(() => url);
+      const trackedHeaders = track(() =>
+        headers ? { ...headers } : undefined,
+      );
 
-    httpAgent.value = noSerialize(
-      new HttpAgent({ url: trackedUrl, headers: trackedHeaders }),
-    );
-    cleanup(() => {
-      httpAgent.value = null;
-    });
+      httpAgent.value = noSerialize(
+        new HttpAgent({ url: trackedUrl, headers: trackedHeaders }),
+      );
+      cleanup(() => {
+        httpAgent.value = null;
+      });
 
-    const agent = httpAgent.value;
-    if (!agent) return;
+      const agent = httpAgent.value;
+      if (!agent) return;
 
-    let pendingToolMessages: Message[] = [];
+      let pendingToolMessages: Message[] = [];
 
-    const subscription = agent.subscribe({
-      onRunInitialized() {
-        agentStateStore.isRunning = true;
-      },
-      onEvent({ messages: newMessages, event }) {
-        if (agentStateStore.messages.length < newMessages.length) {
-          agentStateStore.messages.push(
-            ...newMessages.slice(agentStateStore.messages.length),
+      const subscription = agent.subscribe({
+        onRunInitialized() {
+          agentStateStore.isRunning = true;
+        },
+        onEvent({ messages: newMessages, event }) {
+          if (agentStateStore.messages.length < newMessages.length) {
+            agentStateStore.messages.push(
+              ...newMessages.slice(agentStateStore.messages.length),
+            );
+          }
+          agentStateStore.events = compactEventsExtended([
+            ...agentStateStore.events,
+            event,
+          ]);
+        },
+
+        onTextMessageContentEvent({ event }) {
+          const msg = agentStateStore.messages.findLast(
+            (m) => m.role === "assistant",
           );
-        }
-        agentStateStore.events = compactEventsExtended([
-          ...agentStateStore.events,
-          event,
-        ]);
-      },
+          if (msg) msg.content = (msg.content ?? "") + event.delta;
+        },
 
-      onTextMessageContentEvent({ event }) {
-        const msg = agentStateStore.messages.findLast(
-          (m) => m.role === "assistant",
-        );
-        if (msg) msg.content = (msg.content ?? "") + event.delta;
-      },
+        onReasoningMessageContentEvent({ event }) {
+          const msg = agentStateStore.messages.findLast(
+            (m) => m.role === "reasoning",
+          );
+          if (msg) msg.content = (msg.content ?? "") + event.delta;
+        },
 
-      onReasoningMessageContentEvent({ event }) {
-        const msg = agentStateStore.messages.findLast(
-          (m) => m.role === "reasoning",
-        );
-        if (msg) msg.content = (msg.content ?? "") + event.delta;
-      },
+        onActivityDeltaEvent({ activityMessage }) {
+          const msg = agentStateStore.messages.findLast(
+            (m) => m.role === "activity",
+          );
+          if (msg && activityMessage) msg.content = activityMessage.content;
+        },
 
-      onActivityDeltaEvent({ activityMessage }) {
-        const msg = agentStateStore.messages.findLast(
-          (m) => m.role === "activity",
-        );
-        if (msg && activityMessage) msg.content = activityMessage.content;
-      },
+        onToolCallArgsEvent({ event }) {
+          const msg = agentStateStore.messages.findLast(
+            (m) => m.role === "assistant",
+          );
+          const toolCall = msg?.toolCalls?.find(
+            (tc) => tc.id === event.toolCallId,
+          );
+          if (toolCall) toolCall.function.arguments += event.delta;
+        },
+        async onToolCallEndEvent({ event, toolCallName }) {
+          const registry: ToolRegistry = toolsRef.value ?? {};
+          const tool = registry[toolCallName];
+          if (!tool) return;
+          const msg = agentStateStore.messages.findLast(
+            (m) => m.role === "assistant",
+          );
+          const toolCall = msg?.toolCalls?.find(
+            (tc) => tc.id === event.toolCallId,
+          );
+          const args = toolCall?.function.arguments
+            ? JSON.parse(toolCall.function.arguments)
+            : {};
+          pendingToolMessages.push({
+            id: v7(),
+            role: "tool",
+            content: JSON.stringify(await tool.execute(args)),
+            toolCallId: event.toolCallId,
+          } as Message);
+        },
+        async onRunFinalized() {
+          if (import.meta.env.DEV)
+            console.log({
+              messages: agentStateStore.messages,
+              events: agentStateStore.events,
+            });
 
-      onToolCallArgsEvent({ event }) {
-        const msg = agentStateStore.messages.findLast(
-          (m) => m.role === "assistant",
-        );
-        const toolCall = msg?.toolCalls?.find(
-          (tc) => tc.id === event.toolCallId,
-        );
-        if (toolCall) toolCall.function.arguments += event.delta;
-      },
-      async onToolCallEndEvent({ event, toolCallName }) {
-        const registry: ToolRegistry = toolsRef.value ?? {};
-        const tool = registry[toolCallName];
-        if (!tool) return;
-        const msg = agentStateStore.messages.findLast(
-          (m) => m.role === "assistant",
-        );
-        const toolCall = msg?.toolCalls?.find(
-          (tc) => tc.id === event.toolCallId,
-        );
-        const args = toolCall?.function.arguments
-          ? JSON.parse(toolCall.function.arguments)
-          : {};
-        pendingToolMessages.push({
-          id: v7(),
-          role: "tool",
-          content: JSON.stringify(await tool.execute(args)),
-          toolCallId: event.toolCallId,
-        } as Message);
-      },
-      async onRunFinalized() {
-        if (import.meta.env.DEV)
-          console.log({
-            messages: agentStateStore.messages,
-            events: agentStateStore.events,
-          });
+          if (pendingToolMessages.length === 0 || !httpAgent.value) {
+            agentStateStore.isRunning = false;
+            return;
+          }
+          httpAgent.value.messages.push(...pendingToolMessages);
+          pendingToolMessages = [];
+          await executeRun(false);
+        },
 
-        if (pendingToolMessages.length === 0 || !httpAgent.value) {
-          agentStateStore.isRunning = false;
-          return;
-        }
-        httpAgent.value.messages.push(...pendingToolMessages);
-        pendingToolMessages = [];
-        await executeRun(false);
-      },
+        onRunFailed({ error }) {
+          agentStateStore.error = error.message;
+        },
 
-      onRunFailed({ error }) {
-        agentStateStore.error = error.message;
-      },
+        onRunErrorEvent({ event }) {
+          agentStateStore.error = event.message;
+        },
+      });
 
-      onRunErrorEvent({ event }) {
-        agentStateStore.error = event.message;
-      },
-    });
-
-    cleanup(() => {
-      subscription.unsubscribe();
-    });
-  });
+      cleanup(() => {
+        subscription.unsubscribe();
+      });
+    },
+    { strategy: "document-ready" },
+  );
 
   const send = $(async (content: InputContent[]) => {
     if (!httpAgent.value) return;
@@ -329,18 +334,34 @@ export function useAgent({
       const lastScrollTime = useSignal(0);
 
       // eslint-disable-next-line qwik/no-use-visible-task
-      useVisibleTask$(({ track }) => {
-        track(() => agentStateStore.messages.length);
-        track(() => enableAutoScrollSignal.value);
-        if (enableAutoScrollSignal.value) {
-          const now = Date.now();
-          if (now - lastScrollTime.value < 500) return;
-          lastScrollTime.value = now;
-          containerRef.value?.scrollTo({
-            behavior: "smooth",
-            top: containerRef.value.scrollHeight,
-          });
-        }
+      useVisibleTask$(
+        ({ track }) => {
+          track(() => agentStateStore.messages.length);
+          track(() => enableAutoScrollSignal.value);
+          if (enableAutoScrollSignal.value) {
+            const now = Date.now();
+            if (now - lastScrollTime.value < 500) return;
+            lastScrollTime.value = now;
+            containerRef.value?.scrollTo({
+              behavior: "smooth",
+              top: containerRef.value.scrollHeight,
+            });
+          }
+        },
+        { strategy: "document-ready" },
+      );
+
+      const onTemplateClick$ = $((_event: Event, element: Element) => {
+        const idx = Number(element.getAttribute("data-template-index"));
+        if (Number.isNaN(idx)) return;
+        // Spread each item to create plain objects — HttpAgent calls
+        // structuredClone() on messages before sending, which throws a
+        // DataCloneError on Qwik reactive store proxies.
+        send(
+          agentStateStore.promptTemplates[idx].content.map(
+            (item) => ({ ...item }) as InputContent,
+          ),
+        );
       });
 
       const onInput$ = $((_event: InputEvent, element: HTMLTextAreaElement) => {
@@ -400,17 +421,9 @@ export function useAgent({
                   {agentStateStore.promptTemplates.map((template, index) => (
                     <span
                       key={index}
+                      data-template-index={index}
                       class={styles["prompt-template-tip"]}
-                      onClick$={() =>
-                        // Spread each item to create plain objects — HttpAgent calls
-                        // structuredClone() on messages before sending, which throws
-                        // a DataCloneError on Qwik reactive store proxies.
-                        send(
-                          agentStateStore.promptTemplates[index].content.map(
-                            (item) => ({ ...item }) as InputContent,
-                          ),
-                        )
-                      }
+                      onClick$={onTemplateClick$}
                     >
                       <ElmMdiIcon d={mdiForumOutline} color="#cdb57b" />
                       <ElmInlineText>{template.description}</ElmInlineText>

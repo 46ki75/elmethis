@@ -1,9 +1,9 @@
 import { describe, expect, test } from "vitest";
-import { createDOM } from "@builder.io/qwik/testing";
+import { createDOM } from "@qwik.dev/core/testing";
 
 import { ElmCollapse } from "./elm-collapse";
-import { renderToString } from "@builder.io/qwik/server";
-import { Fragment } from "@builder.io/qwik/jsx-runtime";
+import { renderToString } from "@qwik.dev/core/server";
+import { Fragment } from "@qwik.dev/core/jsx-runtime";
 
 describe("[CSR]", () => {
   test("Should render", async () => {

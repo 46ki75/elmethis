@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { ElmMarkdown, type ElmMarkdownProps } from "./elm-markdown";
-import { component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
+import { component$, useSignal, useVisibleTask$ } from "@qwik.dev/core";
 
 const meta: Meta<ElmMarkdownProps> = {
   title: "Components/Others/elm-markdown",

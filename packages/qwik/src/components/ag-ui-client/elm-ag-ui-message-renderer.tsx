@@ -5,7 +5,7 @@ import {
   useSignal,
   useVisibleTask$,
   type CSSProperties,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 
 import styles from "./elm-ag-ui-message-renderer.module.css";
 import {

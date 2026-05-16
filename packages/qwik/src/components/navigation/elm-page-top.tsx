@@ -5,7 +5,7 @@ import {
   useVisibleTask$,
   $,
   type CSSProperties,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 
 import styles from "./elm-page-top.module.css";
 

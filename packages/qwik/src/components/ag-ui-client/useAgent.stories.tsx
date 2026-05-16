@@ -3,7 +3,7 @@ import {
   useStore,
   useTask$,
   type CSSProperties,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { v4, v7 } from "uuid";
 import { z } from "zod";

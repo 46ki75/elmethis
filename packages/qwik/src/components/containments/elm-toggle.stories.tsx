@@ -1,4 +1,4 @@
-import { $, component$, useSignal } from "@builder.io/qwik";
+import { $, component$, useSignal } from "@qwik.dev/core";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { ElmToggle, type ElmToggleProps } from "./elm-toggle";
 import { ElmHeading } from "../typography/elm-heading";

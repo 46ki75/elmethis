@@ -1,4 +1,4 @@
-import { $, component$, useOnDocument, useSignal } from "@builder.io/qwik";
+import { $, component$, useOnDocument, useSignal } from "@qwik.dev/core";
 
 import styles from "./use-wordle.module.css";
 import { WORDS } from "./wordle/wordlist";

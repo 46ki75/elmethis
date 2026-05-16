@@ -1,4 +1,4 @@
-import { $, component$, useComputed$, useSignal } from "@builder.io/qwik";
+import { $, component$, useComputed$, useSignal } from "@qwik.dev/core";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { useControllableState } from "./use-controllable-state";
 

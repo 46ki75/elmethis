@@ -4,7 +4,7 @@ import {
   Slot,
   createContextId,
   useContextProvider,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 import styles from "./elm-table-header.module.css";
 
 export const HasHeaderContext = createContextId<boolean>("HasHeaderContext");

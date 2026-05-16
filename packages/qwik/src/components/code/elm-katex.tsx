@@ -1,4 +1,4 @@
-import { component$, PropsOf, useComputed$ } from "@builder.io/qwik";
+import { component$, PropsOf, useComputed$ } from "@qwik.dev/core";
 
 import textStyle from "../../styles/text.module.css";
 import styles from "./elm-katex.module.css";

@@ -1,4 +1,4 @@
-import { $, useOnDocument, useSignal, useVisibleTask$ } from "@builder.io/qwik";
+import { $, useOnDocument, useSignal, useVisibleTask$ } from "@qwik.dev/core";
 
 const LOCAL_STORAGE_KEY = "elmethis-theme";
 

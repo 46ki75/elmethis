@@ -3,7 +3,7 @@ import {
   PropsOf,
   Slot,
   useContext,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 import styles from "./elm-table-row.module.css";
 import { HasRowHeaderContext } from "./elm-table";
 

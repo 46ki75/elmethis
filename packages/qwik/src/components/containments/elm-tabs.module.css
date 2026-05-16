@@ -48,13 +48,12 @@
   }
 }
 
-.tab-content-container {
-  box-sizing: border-box;
-  width: 100%;
-  padding: 1em;
-}
-
 .tab-content {
   width: 100%;
   margin: 0;
+}
+
+.tab-content-inner {
+  box-sizing: border-box;
+  padding: 1em;
 }

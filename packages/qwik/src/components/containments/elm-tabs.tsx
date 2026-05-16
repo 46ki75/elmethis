@@ -1,37 +1,48 @@
 import {
   $,
   component$,
+  createContextId,
   PropsOf,
+  Slot,
   useComputed$,
-  type PropFunction,
-} from "@builder.io/qwik";
-import type { CSSProperties, JSXOutput } from "@builder.io/qwik";
+  useContext,
+  useContextProvider,
+  type CSSProperties,
+  type QRL,
+  type Signal,
+} from "@qwik.dev/core";
 
 import styles from "./elm-tabs.module.css";
 import { ElmCollapse } from "./elm-collapse";
-import { useControllableState } from "../../hooks/use-controllable-state";
+import {
+  useControllableState,
+  type ControllableStateSetter,
+} from "../../hooks/use-controllable-state";
+
+interface ElmTabsContextValue {
+  selectedValue: Readonly<Signal<string>>;
+  setSelectedValue: ControllableStateSetter<string>;
+  transitionTimingFunction: CSSProperties["transition-timing-function"];
+}
+
+const ElmTabsContext =
+  createContextId<ElmTabsContextValue>("elmethis.tabs");
 
 export interface ElmTabsProps extends PropsOf<"div"> {
-  tabs: Array<{
-    label: JSXOutput;
-    content: JSXOutput;
-  }>;
+  /**
+   * Controlled selected tab value. When provided, the parent owns the state.
+   */
+  value?: string;
 
   /**
-   * Controlled selected tab index. When provided the parent owns the state.
+   * Initial selected tab value when uncontrolled.
    */
-  selectedTabIndex?: number;
-
-  /**
-   * Initial selected tab index when uncontrolled.
-   * @default 0
-   */
-  defaultSelectedTabIndex?: number;
+  defaultValue?: string;
 
   /**
    * Called whenever the selected tab changes.
    */
-  onSelectedTabIndexChange$?: PropFunction<(index: number) => void>;
+  onValueChange$?: QRL<(value: string) => void>;
 
   transitionTimingFunction?: CSSProperties["transition-timing-function"];
 }
@@ -39,51 +50,85 @@ export interface ElmTabsProps extends PropsOf<"div"> {
 export const ElmTabs = component$<ElmTabsProps>((props) => {
   const {
     class: className,
-    tabs,
-    selectedTabIndex: selectedTabIndexProp,
-    defaultSelectedTabIndex,
-    onSelectedTabIndexChange$,
+    value,
+    defaultValue,
+    onValueChange$,
+    transitionTimingFunction = "linear",
     ...rest
   } = props;
 
-  const [selectedTabIndex, setSelectedTabIndex] = useControllableState({
-    prop: useComputed$(() => selectedTabIndexProp),
-    defaultProp: defaultSelectedTabIndex ?? 0,
-    onChange: onSelectedTabIndexChange$,
+  const [selectedValue, setSelectedValue] = useControllableState<string>({
+    prop: useComputed$(() => value),
+    defaultProp: defaultValue ?? "",
+    onChange: onValueChange$,
+  });
+
+  useContextProvider(ElmTabsContext, {
+    selectedValue,
+    setSelectedValue,
+    transitionTimingFunction,
   });
 
   return (
     <div class={[styles["elm-tabs"], className]} {...rest}>
-      <div class={styles["tab-container"]}>
-        {tabs.map(({ label }, index) => (
-          <div
-            key={index}
-            class={[
-              styles["tab"],
-              {
-                [styles["active"]]: selectedTabIndex.value === index,
-              },
-            ]}
-            onClick$={$(() => setSelectedTabIndex(index))}
-          >
-            {label}
-          </div>
-        ))}
-      </div>
+      <Slot />
+    </div>
+  );
+});
 
-      <div class={styles["tab-content-container"]}>
-        {tabs.map(({ content }, index) => (
-          <div key={index} class={styles["tab-content"]}>
-            <ElmCollapse
-              direction="row"
-              isOpen={selectedTabIndex.value === index}
-              transitionTimingFunction="linear"
-            >
-              {content}
-            </ElmCollapse>
-          </div>
-        ))}
-      </div>
+export type ElmTabListProps = PropsOf<"div">;
+
+export const ElmTabList = component$<ElmTabListProps>(
+  ({ class: className, ...rest }) => (
+    <div class={[styles["tab-container"], className]} {...rest}>
+      <Slot />
+    </div>
+  ),
+);
+
+export interface ElmTabProps extends PropsOf<"div"> {
+  /** Identifier matching the corresponding ElmTabPanel `value`. */
+  value: string;
+}
+
+export const ElmTab = component$<ElmTabProps>((props) => {
+  const { value, class: className, ...rest } = props;
+  const ctx = useContext(ElmTabsContext);
+  const onClick$ = $(() => ctx.setSelectedValue(value));
+  return (
+    <div
+      class={[
+        styles["tab"],
+        { [styles["active"]]: ctx.selectedValue.value === value },
+        className,
+      ]}
+      onClick$={onClick$}
+      {...rest}
+    >
+      <Slot />
+    </div>
+  );
+});
+
+export interface ElmTabPanelProps extends PropsOf<"div"> {
+  /** Identifier matching the corresponding ElmTab `value`. */
+  value: string;
+}
+
+export const ElmTabPanel = component$<ElmTabPanelProps>((props) => {
+  const { value, class: className, ...rest } = props;
+  const ctx = useContext(ElmTabsContext);
+  return (
+    <div class={[styles["tab-content"], className]} {...rest}>
+      <ElmCollapse
+        direction="row"
+        isOpen={ctx.selectedValue.value === value}
+        transitionTimingFunction={ctx.transitionTimingFunction}
+      >
+        <div class={styles["tab-content-inner"]}>
+          <Slot />
+        </div>
+      </ElmCollapse>
     </div>
   );
 });

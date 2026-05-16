@@ -1,4 +1,4 @@
-import type { CSSProperties } from "@builder.io/qwik";
+import type { CSSProperties } from "@qwik.dev/core";
 
 export interface CommonLanguageProps {
   size?: number | string;

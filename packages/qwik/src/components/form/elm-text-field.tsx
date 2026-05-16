@@ -2,11 +2,11 @@ import {
   $,
   component$,
   PropsOf,
+  Slot,
   useSignal,
   type CSSProperties,
-  type JSXOutput,
   type Signal,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 import {
   mdiEyeOffOutline,
   mdiEyeOutline,
@@ -33,12 +33,6 @@ export interface ElmTextFieldProps extends Omit<PropsOf<"label">, "onInput$"> {
    */
   value?: Signal<string>;
 
-  /**
-   * Icon displayed on the left side of the input.
-   *
-   * @example <ElmTextField icon={<ElmInlineIcon src={url} />} label="..." />
-   */
-  icon?: JSXOutput;
   isPassword?: boolean;
   required?: boolean;
 }
@@ -55,7 +49,6 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
     disabled,
     loading,
     value,
-    icon,
     isPassword,
     required,
     ...rest
@@ -78,11 +71,9 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
       <span
         class={[styles.header, { [styles["label-active"]]: isFocused.value }]}
       >
-        {icon ? (
-          <div class={styles.icon}>{icon}</div>
-        ) : (
+        <Slot name="icon">
           <ElmMdiIcon d={mdiText} size="0.75rem" />
-        )}
+        </Slot>
         <span>
           {label}
           {required && <span class={styles.requierd}>*</span>}

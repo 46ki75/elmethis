@@ -8,7 +8,7 @@
  * registry of component type definitions that both server and client understand,
  * so the server can say "render a Button with these props" without sending code.
  */
-import { type JSX } from "@builder.io/qwik";
+import { type JSX } from "@qwik.dev/core";
 
 import {
   type ComponentContext,

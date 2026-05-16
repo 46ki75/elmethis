@@ -4,7 +4,7 @@ import {
   PropsOf,
   Signal,
   type CSSProperties,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 
 import styles from "./elm-switch.module.css";
 

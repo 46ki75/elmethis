@@ -1,4 +1,4 @@
-import { component$, PropsOf, Slot } from "@builder.io/qwik";
+import { component$, PropsOf, Slot } from "@qwik.dev/core";
 
 import styles from "./elm-block-quote.module.css";
 import textStyles from "../../styles/text.module.css";

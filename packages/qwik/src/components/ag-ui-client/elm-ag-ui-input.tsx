@@ -4,7 +4,7 @@ import {
   useSignal,
   type CSSProperties,
   type QRL,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 
 import styles from "./elm-ag-ui-input.module.css";
 import textStyle from "../../styles/text.module.css";

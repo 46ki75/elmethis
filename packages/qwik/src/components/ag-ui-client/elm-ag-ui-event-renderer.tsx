@@ -1,4 +1,4 @@
-import { component$, JSX, type CSSProperties } from "@builder.io/qwik";
+import { component$, JSX, type CSSProperties } from "@qwik.dev/core";
 
 import styles from "./elm-ag-ui-event-renderer.module.css";
 import {

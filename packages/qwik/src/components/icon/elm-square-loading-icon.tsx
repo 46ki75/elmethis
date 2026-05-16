@@ -1,4 +1,4 @@
-import { component$, PropsOf, type CSSProperties } from "@builder.io/qwik";
+import { component$, PropsOf, type CSSProperties } from "@qwik.dev/core";
 
 import styles from "./elm-square-loading-icon.module.css";
 

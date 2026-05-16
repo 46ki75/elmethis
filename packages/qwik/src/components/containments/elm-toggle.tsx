@@ -3,10 +3,10 @@ import {
   component$,
   PropsOf,
   type CSSProperties,
-  type PropFunction,
+  type QRL,
   Slot,
   useComputed$,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 
 import styles from "./elm-toggle.module.css";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
@@ -25,7 +25,7 @@ export interface ElmToggleProps extends PropsOf<"div"> {
   isOpen?: boolean;
 
   /** Called when the open state changes. */
-  setIsOpen$?: PropFunction<(value: boolean) => void>;
+  setIsOpen$?: QRL<(value: boolean) => void>;
 
   monochrome?: boolean;
 }

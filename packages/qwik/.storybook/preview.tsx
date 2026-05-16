@@ -1,5 +1,5 @@
 import type { Preview, StoryContext } from "storybook-framework-qwik";
-import type { Component } from "@builder.io/qwik";
+import type { Component } from "@qwik.dev/core";
 
 import "./sb.css";
 

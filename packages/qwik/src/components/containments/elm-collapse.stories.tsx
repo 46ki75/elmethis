@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { ElmCollapse, type ElmCollapseProps } from "./elm-collapse";
 
 import code from "./elm-collapse.stories?raw";
-import { $, component$, useSignal } from "@builder.io/qwik";
+import { $, component$, useSignal } from "@qwik.dev/core";
 import { ElmButton } from "../form/elm-button";
 import { ElmCodeBlock } from "../code/elm-code-block";
 

@@ -1,42 +1,18 @@
-import { $, component$, useSignal } from "@builder.io/qwik";
+import { $, component$, useSignal } from "@qwik.dev/core";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { ElmTabs, type ElmTabsProps } from "./elm-tabs";
+import {
+  ElmTab,
+  ElmTabList,
+  ElmTabPanel,
+  ElmTabs,
+  type ElmTabsProps,
+} from "./elm-tabs";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { ElmParagraph } from "../typography/elm-paragraph";
 import { ElmLanguageIcon } from "../icon/elm-language-icon";
 import { ElmCodeBlock } from "../code/elm-code-block";
 
 import code from "../code/seed/main.rs?raw";
-
-const TABS = [
-  {
-    label: <ElmInlineText>Tab 1</ElmInlineText>,
-    content: <ElmInlineText>Content 1</ElmInlineText>,
-  },
-  {
-    label: <ElmInlineText>Tab 2</ElmInlineText>,
-    content: <ElmInlineText>Content 2</ElmInlineText>,
-  },
-  {
-    label: <ElmInlineText>Tab 3</ElmInlineText>,
-    content: (
-      <div style={{ "--margin-block": "32px" }}>
-        <ElmParagraph>Content 3-A</ElmParagraph>
-        <ElmParagraph>Content 3-B</ElmParagraph>
-        <ElmParagraph>Content 3-C</ElmParagraph>
-      </div>
-    ),
-  },
-  {
-    label: (
-      <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-        <ElmLanguageIcon language="rust" size={16} />
-        <ElmInlineText>Code</ElmInlineText>
-      </span>
-    ),
-    content: <ElmCodeBlock language="rust" code={code} />,
-  },
-];
 
 const meta: Meta<ElmTabsProps> = {
   title: "Components/Containments/elm-tabs",
@@ -48,43 +24,117 @@ const meta: Meta<ElmTabsProps> = {
 export default meta;
 type Story = StoryObj<ElmTabsProps>;
 
-// Uncontrolled: the tabs manage the selected index internally.
+const SampleTabs = component$<{ defaultValue?: string }>(
+  ({ defaultValue = "tab1" }) => (
+    <ElmTabs defaultValue={defaultValue}>
+      <ElmTabList>
+        <ElmTab value="tab1">
+          <ElmInlineText>Tab 1</ElmInlineText>
+        </ElmTab>
+        <ElmTab value="tab2">
+          <ElmInlineText>Tab 2</ElmInlineText>
+        </ElmTab>
+        <ElmTab value="tab3">
+          <ElmInlineText>Tab 3</ElmInlineText>
+        </ElmTab>
+        <ElmTab value="code">
+          <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <ElmLanguageIcon language="rust" size={16} />
+            <ElmInlineText>Code</ElmInlineText>
+          </span>
+        </ElmTab>
+      </ElmTabList>
+
+      <ElmTabPanel value="tab1">
+        <ElmInlineText>Content 1</ElmInlineText>
+      </ElmTabPanel>
+      <ElmTabPanel value="tab2">
+        <ElmInlineText>Content 2</ElmInlineText>
+      </ElmTabPanel>
+      <ElmTabPanel value="tab3">
+        <div style={{ "--margin-block": "32px" }}>
+          <ElmParagraph>Content 3-A</ElmParagraph>
+          <ElmParagraph>Content 3-B</ElmParagraph>
+          <ElmParagraph>Content 3-C</ElmParagraph>
+        </div>
+      </ElmTabPanel>
+      <ElmTabPanel value="code">
+        <ElmCodeBlock language="rust" code={code} />
+      </ElmTabPanel>
+    </ElmTabs>
+  ),
+);
+
+// Uncontrolled: the tabs manage the selected value internally.
 export const Primary: Story = {
-  render() {
-    return <ElmTabs tabs={TABS} />;
-  },
+  render: () => <SampleTabs />,
 };
 
 export const DefaultSelected: Story = {
-  render() {
-    return <ElmTabs tabs={TABS} defaultSelectedTabIndex={2} />;
-  },
+  render: () => <SampleTabs defaultValue="tab3" />,
 };
 
-// Controlled: parent owns the selected tab index.
+// Controlled: parent owns the selected tab value.
 const ControlledTabs = component$(() => {
-  const selectedTabIndex = useSignal(0);
+  const selected = useSignal("tab1");
+  const tabs = ["tab1", "tab2", "tab3", "code"] as const;
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
       <div style={{ fontFamily: "monospace", fontSize: "0.85rem" }}>
-        selectedTabIndex: {selectedTabIndex.value}
+        selected: {selected.value}
       </div>
       <div style={{ display: "flex", gap: "0.5rem" }}>
-        {TABS.map((_, i) => (
-          <button key={i} onClick$={() => (selectedTabIndex.value = i)}>
-            Go to tab {i + 1}
+        {tabs.map((value) => (
+          <button key={value} onClick$={() => (selected.value = value)}>
+            Go to {value}
           </button>
         ))}
       </div>
 
       <ElmTabs
-        tabs={TABS}
-        selectedTabIndex={selectedTabIndex.value}
-        onSelectedTabIndexChange$={$((i) => {
-          selectedTabIndex.value = i;
+        value={selected.value}
+        onValueChange$={$((v) => {
+          selected.value = v;
         })}
-      />
+      >
+        <ElmTabList>
+          <ElmTab value="tab1">
+            <ElmInlineText>Tab 1</ElmInlineText>
+          </ElmTab>
+          <ElmTab value="tab2">
+            <ElmInlineText>Tab 2</ElmInlineText>
+          </ElmTab>
+          <ElmTab value="tab3">
+            <ElmInlineText>Tab 3</ElmInlineText>
+          </ElmTab>
+          <ElmTab value="code">
+            <span
+              style={{ display: "flex", alignItems: "center", gap: "8px" }}
+            >
+              <ElmLanguageIcon language="rust" size={16} />
+              <ElmInlineText>Code</ElmInlineText>
+            </span>
+          </ElmTab>
+        </ElmTabList>
+
+        <ElmTabPanel value="tab1">
+          <ElmInlineText>Content 1</ElmInlineText>
+        </ElmTabPanel>
+        <ElmTabPanel value="tab2">
+          <ElmInlineText>Content 2</ElmInlineText>
+        </ElmTabPanel>
+        <ElmTabPanel value="tab3">
+          <div style={{ "--margin-block": "32px" }}>
+            <ElmParagraph>Content 3-A</ElmParagraph>
+            <ElmParagraph>Content 3-B</ElmParagraph>
+            <ElmParagraph>Content 3-C</ElmParagraph>
+          </div>
+        </ElmTabPanel>
+        <ElmTabPanel value="code">
+          <ElmCodeBlock language="rust" code={code} />
+        </ElmTabPanel>
+      </ElmTabs>
     </div>
   );
 });

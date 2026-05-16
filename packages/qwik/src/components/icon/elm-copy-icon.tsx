@@ -1,4 +1,4 @@
-import { component$, type CSSProperties } from "@builder.io/qwik";
+import { component$, type CSSProperties } from "@qwik.dev/core";
 
 import { useClipboard, UseClipboardOptions } from "../../hooks/useClipboard";
 

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Fragment, type CSSProperties } from "@builder.io/qwik";
+import { Fragment, type CSSProperties } from "@qwik.dev/core";
 import { ElmKatex } from "../../code/elm-katex";
 import { ElmInlineText } from "../../typography/elm-inline-text";
 import { ElmInlineIcon } from "../../icon/elm-inline-icon";
@@ -21,7 +21,12 @@ import {
   ElmTableRow,
   ElmTableCell,
 } from "../../table";
-import { ElmTabs } from "../../containments/elm-tabs";
+import {
+  ElmTab,
+  ElmTabList,
+  ElmTabPanel,
+  ElmTabs,
+} from "../../containments/elm-tabs";
 import { ElmUnsupportedBlock } from "../../fallback/elm-unsupported-block";
 import {
   CatalogRendererMap,
@@ -458,47 +463,51 @@ export const elmN2UICatalogRendererMap: CatalogRendererMap<
       ? (props.children as string[])
       : [];
 
-    const tabs = tabIds.map((tabId) => {
+    const tabModels = tabIds.map((tabId) => {
       const tabModel = surface.componentsModel.get(tabId);
       const rawLabels = tabModel?.properties.labels;
-      const labelIds = Array.isArray(rawLabels)
-        ? rawLabels.filter((id): id is string => typeof id === "string")
-        : [];
       const rawContents = tabModel?.properties.contents;
-      const contentIds = Array.isArray(rawContents)
-        ? rawContents.filter((id): id is string => typeof id === "string")
-        : [];
       return {
-        label: (
-          <>
-            {labelIds.map((lid, i) => (
-              <Fragment key={`${lid}:${i}`}>
-                {renderChild(lid, basePath, i)}
-              </Fragment>
-            ))}
-          </>
-        ),
-        content: (
-          <>
-            {contentIds.map((cid, i) => (
-              <Fragment key={`${cid}:${i}`}>
-                {renderChild(cid, basePath, i)}
-              </Fragment>
-            ))}
-          </>
-        ),
+        tabId,
+        labelIds: Array.isArray(rawLabels)
+          ? rawLabels.filter((id): id is string => typeof id === "string")
+          : [],
+        contentIds: Array.isArray(rawContents)
+          ? rawContents.filter((id): id is string => typeof id === "string")
+          : [],
       };
     });
 
     return (
       <ElmTabs
-        tabs={tabs}
+        defaultValue="0"
         style={
           index === 0
             ? ({ "--elmethis-margin-block-start": "0" } as CSSProperties)
             : undefined
         }
-      />
+      >
+        <ElmTabList>
+          {tabModels.map(({ tabId, labelIds }, idx) => (
+            <ElmTab key={tabId} value={String(idx)}>
+              {labelIds.map((lid, i) => (
+                <Fragment key={`${lid}:${i}`}>
+                  {renderChild(lid, basePath, i)}
+                </Fragment>
+              ))}
+            </ElmTab>
+          ))}
+        </ElmTabList>
+        {tabModels.map(({ tabId, contentIds }, idx) => (
+          <ElmTabPanel key={tabId} value={String(idx)}>
+            {contentIds.map((cid, i) => (
+              <Fragment key={`${cid}:${i}`}>
+                {renderChild(cid, basePath, i)}
+              </Fragment>
+            ))}
+          </ElmTabPanel>
+        ))}
+      </ElmTabs>
     );
   },
 

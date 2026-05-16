@@ -5,8 +5,8 @@ import {
   Slot,
   useSignal,
   type CSSProperties,
-  type PropFunction,
-} from "@builder.io/qwik";
+  type QRL,
+} from "@qwik.dev/core";
 
 import { ElmDotLoadingIcon } from "../icon/elm-dot-loading-icon";
 import styles from "./elm-button.module.css";
@@ -32,7 +32,7 @@ export interface ElmButtonProps extends PropsOf<"button"> {
   /**
    * Click handler
    */
-  onClick$?: PropFunction<() => void>;
+  onClick$?: QRL<() => void>;
 }
 
 export const ElmButton = component$<ElmButtonProps>((props) => {

@@ -6,7 +6,7 @@ import {
   type CSSProperties,
   type JSX,
   useTask$,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 
 import {
   MessageProcessor,

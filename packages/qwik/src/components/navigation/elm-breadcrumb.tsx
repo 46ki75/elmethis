@@ -2,7 +2,7 @@ import {
   component$,
   PropsOf,
   type QRLEventHandlerMulti,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 
 import styles from "./elm-breadcrumb.module.css";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";

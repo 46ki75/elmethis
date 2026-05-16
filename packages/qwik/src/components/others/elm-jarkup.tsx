@@ -1,4 +1,4 @@
-import { component$, PropsOf, type CSSProperties, type JSXOutput } from "@builder.io/qwik";
+import { component$, PropsOf, type CSSProperties, type JSXOutput } from "@qwik.dev/core";
 import type { Component, InlineComponent } from "jarkup-ts";
 import { kebabCase } from "es-toolkit";
 
@@ -25,7 +25,12 @@ import {
   ElmTableRow,
   ElmTableCell,
 } from "../table";
-import { ElmTabs } from "../containments/elm-tabs";
+import {
+  ElmTab,
+  ElmTabList,
+  ElmTabPanel,
+  ElmTabs,
+} from "../containments/elm-tabs";
 import { ElmUnsupportedBlock } from "../fallback/elm-unsupported-block";
 
 export interface ElmJarkupProps extends PropsOf<"div"> {
@@ -241,13 +246,22 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
             contents.push(tab.slots.contents);
           }
 
-          // Render synchronously OUTSIDE the $ boundary
-          const tabs = labels.map((label, index) => ({
-            label: <span key={index}>{render(label)}</span>,
-            content: <div key={index}>{render(contents[index])}</div>,
-          }));
-
-          return <ElmTabs tabs={tabs} />;
+          return (
+            <ElmTabs defaultValue="0">
+              <ElmTabList>
+                {labels.map((label, index) => (
+                  <ElmTab key={index} value={String(index)}>
+                    {render(label)}
+                  </ElmTab>
+                ))}
+              </ElmTabList>
+              {labels.map((_, index) => (
+                <ElmTabPanel key={index} value={String(index)}>
+                  {render(contents[index])}
+                </ElmTabPanel>
+              ))}
+            </ElmTabs>
+          );
         }
 
         case "Table":

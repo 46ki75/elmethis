@@ -5,7 +5,7 @@ import {
   type QRL,
   useSignal,
   useVisibleTask$,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 
 export type UseStorageOptions<T> = {
   storageArea: "local" | "session";

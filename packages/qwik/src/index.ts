@@ -92,7 +92,16 @@ export {
   ElmParallax,
   type ElmParallaxProps,
 } from "./components/containments/elm-parallax";
-export { ElmTabs, type ElmTabsProps } from "./components/containments/elm-tabs";
+export {
+  ElmTab,
+  ElmTabList,
+  ElmTabPanel,
+  ElmTabs,
+  type ElmTabListProps,
+  type ElmTabPanelProps,
+  type ElmTabProps,
+  type ElmTabsProps,
+} from "./components/containments/elm-tabs";
 export {
   ElmToggle,
   type ElmToggleProps,

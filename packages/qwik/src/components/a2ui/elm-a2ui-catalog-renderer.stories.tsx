@@ -5,7 +5,7 @@ import {
   type NoSerialize,
   useSignal,
   useVisibleTask$,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 import {
   MessageProcessor,
   Catalog,

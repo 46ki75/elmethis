@@ -3,8 +3,8 @@ import {
   component$,
   PropsOf,
   useComputed$,
-  type PropFunction,
-} from "@builder.io/qwik";
+  type QRL,
+} from "@qwik.dev/core";
 
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { useControllableState } from "../../hooks/use-controllable-state";
@@ -39,7 +39,7 @@ export interface ElmCheckboxProps extends PropsOf<"div"> {
   /**
    * Called whenever the checked state changes.
    */
-  onCheckedChange$?: PropFunction<(checked: boolean) => void>;
+  onCheckedChange$?: QRL<(checked: boolean) => void>;
 }
 
 export const ElmCheckbox = component$<ElmCheckboxProps>((props) => {

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { ElmSwitch, type ElmSwitchProps } from "./elm-switch";
-import { component$, useSignal } from "@builder.io/qwik";
+import { component$, useSignal } from "@qwik.dev/core";
 
 const meta: Meta<ElmSwitchProps> = {
   title: "Components/Form/elm-switch",

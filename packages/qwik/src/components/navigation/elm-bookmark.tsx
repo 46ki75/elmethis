@@ -1,12 +1,12 @@
 /* eslint-disable qwik/jsx-img */
-import { $, component$, PropsOf, useSignal } from "@builder.io/qwik";
+import { $, component$, PropsOf, useSignal } from "@qwik.dev/core";
 
 import styles from "./elm-bookmark.module.css";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { mdiLinkVariant } from "@mdi/js";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { ElmInlineIcon } from "../icon/elm-inline-icon";
-import type { CSSProperties } from "@builder.io/qwik";
+import type { CSSProperties } from "@qwik.dev/core";
 
 export interface ElmBookmarkProps extends PropsOf<"div"> {
   /**

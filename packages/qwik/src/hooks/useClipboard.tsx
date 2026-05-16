@@ -1,4 +1,4 @@
-import { $, component$, useSignal, type CSSProperties } from "@builder.io/qwik";
+import { $, component$, useSignal, type CSSProperties } from "@qwik.dev/core";
 
 import styles from "./useClipboard.module.css";
 

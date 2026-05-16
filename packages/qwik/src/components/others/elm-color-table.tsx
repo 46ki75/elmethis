@@ -1,4 +1,4 @@
-import { component$, PropsOf } from "@builder.io/qwik";
+import { component$, PropsOf } from "@qwik.dev/core";
 import { darken } from "polished";
 
 import { ElmColorSample } from "./elm-color-sample";

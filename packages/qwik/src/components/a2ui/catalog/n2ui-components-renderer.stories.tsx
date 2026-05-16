@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { elmN2UICatalogRendererMap as elmN2uiMap } from "./n2ui-components-renderer";
 import { elmBasicCatalogRendererMap as elmBasicMap } from "../elm-a2ui-basic-catalog-renderer";
-import { component$, noSerialize } from "@builder.io/qwik";
+import { component$, noSerialize } from "@qwik.dev/core";
 import { ElmA2uiRenderer, ElmA2uiRendererProps } from "../elm-a2ui-renderer";
 
 const CATALOG_ID = "https://elmethis.example.com/catalogs/n2ui/v1/catalog.json";

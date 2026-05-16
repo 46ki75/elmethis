@@ -4,8 +4,7 @@ import {
   PropsOf,
   useSignal,
   useVisibleTask$,
-  type Numberish,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 
 import styles from "./elm-block-image.module.css";
 import { ElmInlineText } from "../typography/elm-inline-text";
@@ -32,9 +31,9 @@ export interface ElmBlockImageProps extends PropsOf<"figure"> {
 
   caption?: string;
 
-  width?: Numberish;
+  width?: number | `${number}`;
 
-  height?: Numberish;
+  height?: number | `${number}`;
 }
 
 export const ElmBlockImage = component$<ElmBlockImageProps>((props) => {

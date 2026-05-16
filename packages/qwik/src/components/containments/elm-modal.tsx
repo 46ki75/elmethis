@@ -6,7 +6,7 @@ import {
   Slot,
   useSignal,
   useVisibleTask$,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 
 import styles from "./elm-modal.module.css";
 

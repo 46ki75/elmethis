@@ -1,10 +1,10 @@
 import {
   $,
   type QRL,
-  type ReadonlySignal,
+  type Signal,
   useSignal,
   useTask$,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 
 export type ControllableStateSetter<T> = QRL<
   (value: T | ((prev: T) => T)) => void
@@ -16,7 +16,7 @@ export type ControllableStateSetter<T> = QRL<
  * Supports both controlled (parent manages value via prop + onChange$) and
  * uncontrolled (component manages its own state via defaultProp) modes.
  *
- * The `prop` must be a ReadonlySignal so Qwik can track changes across
+ * The `prop` must be a Readonly<Signal<...>> so Qwik can track changes across
  * the $ boundary. Wrap props access with useComputed$ at the call site:
  *
  *   const [value, setValue] = useControllableState({
@@ -30,11 +30,11 @@ export function useControllableState<T>({
   defaultProp,
   onChange,
 }: {
-  /** ReadonlySignal for the controlled value. Yields undefined when uncontrolled. */
-  prop: ReadonlySignal<T | undefined>;
+  /** Readonly signal for the controlled value. Yields undefined when uncontrolled. */
+  prop: Readonly<Signal<T | undefined>>;
   defaultProp: T;
   onChange?: QRL<(value: T) => void>;
-}): readonly [ReadonlySignal<T>, ControllableStateSetter<T>] {
+}): readonly [Readonly<Signal<T>>, ControllableStateSetter<T>] {
   const internalValue = useSignal<T>(prop.value ?? defaultProp);
   // Stored as a signal so the setter QRL can read it without capturing a plain function.
   const isControlled = useSignal(prop.value !== undefined);
@@ -60,5 +60,5 @@ export function useControllableState<T>({
     onChange?.(resolved);
   });
 
-  return [internalValue as ReadonlySignal<T>, setValue] as const;
+  return [internalValue as Readonly<Signal<T>>, setValue] as const;
 }

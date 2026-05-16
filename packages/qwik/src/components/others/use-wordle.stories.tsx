@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { component$, useTask$ } from "@builder.io/qwik";
+import { component$, useTask$ } from "@qwik.dev/core";
 import { useWordle, type UseWordleOptions } from "./use-wordle";
 import { defineTool, useAgent } from "../ag-ui-client/useAgent";
 import z from "zod";

@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import pkg from "./package.json";
-import { qwikVite } from "@builder.io/qwik/optimizer";
+import { qwikVite } from "@qwik.dev/core/optimizer";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { join } from "node:path";
 
@@ -24,9 +24,9 @@ export default defineConfig(() => {
         // externalize deps that shouldn't be bundled into the library
         external: [
           /^node:.*/,
-          "@builder.io/qwik",
-          "@builder.io/qwik/jsx-runtime",
-          "@builder.io/qwik/build",
+          "@qwik.dev/core",
+          "@qwik.dev/core/jsx-runtime",
+          "@qwik.dev/core/build",
           ...excludeAll(dependencies),
           ...excludeAll(peerDependencies),
         ],

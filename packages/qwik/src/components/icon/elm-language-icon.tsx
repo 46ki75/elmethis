@@ -1,4 +1,4 @@
-import { Component, component$, type CSSProperties } from "@builder.io/qwik";
+import { Component, component$, type CSSProperties } from "@qwik.dev/core";
 
 // import styles from "./elm-language-icon.scoped.scss?inline";
 

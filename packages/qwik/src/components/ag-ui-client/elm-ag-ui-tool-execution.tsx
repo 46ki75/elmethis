@@ -4,7 +4,7 @@ import {
   useSignal,
   useVisibleTask$,
   type CSSProperties,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 
 import styles from "./elm-ag-ui-tool-execution.module.css";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";

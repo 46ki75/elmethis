@@ -3,7 +3,7 @@ import {
   PropsOf,
   Slot,
   useContextProvider,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 import { HasHeaderContext } from "./elm-table-header";
 
 export type ElmTableBodyProps = PropsOf<"tbody">;

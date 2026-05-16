@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { ElmColorTable, type ElmColorTableProps } from "./elm-color-table";
-import { component$ } from "@builder.io/qwik";
+import { component$ } from "@qwik.dev/core";
 
 const meta: Meta<ElmColorTableProps> = {
   title: "Components/Others/elm-color-table",
