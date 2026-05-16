@@ -15,7 +15,7 @@ description: >
 license: MIT
 metadata:
   author: "Ikuma Yamashita"
-  version: "1.3.0"
+  version: "1.4.0"
 ---
 
 # Qwik Skill (v1 & v2)
@@ -29,10 +29,10 @@ and performant Qwik code.
 Qwik v2 is in **beta** (stable as of 2026-05 is still v1). Check the user's
 `package.json` before answering anything API-specific:
 
-| Sees in `package.json`                            | Version |
-| ------------------------------------------------- | ------- |
-| `@builder.io/qwik` + `@builder.io/qwik-city`      | **v1**  |
-| `@qwik.dev/core` + `@qwik.dev/router`             | **v2**  |
+| Sees in `package.json`                       | Version |
+| -------------------------------------------- | ------- |
+| `@builder.io/qwik` + `@builder.io/qwik-city` | **v1**  |
+| `@qwik.dev/core` + `@qwik.dev/router`        | **v2**  |
 
 If unclear, ask. Several APIs differ in non-obvious ways (`useResource$` →
 `useAsync$`, `<Resource>` → `<Suspense>`, `<QwikCityProvider>` →
@@ -41,11 +41,11 @@ or whenever the user mentions migration, read `references/qwik-v2.md`.**
 
 ## Quick orientation
 
-| Package (v1)            | Package (v2)         | Key exports                                                                                                                                                                     |
-| ----------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@builder.io/qwik`      | `@qwik.dev/core`     | `component$`, `useSignal`, `useStore`, `useTask$`, `useVisibleTask$`, `useComputed$`, `useContext`, `useContextProvider`, `createContextId`, `$`, `noSerialize`                 |
-| ↑ same                  | ↑ same               | v1 only: `useResource$`, `<Resource>` &nbsp;·&nbsp; v2 only: `useAsync$`, `<Suspense>`, `<Reveal>`, `useSerializer$`, `createSerializer$`                                       |
-| `@builder.io/qwik-city` | `@qwik.dev/router`   | `routeLoader$`, `routeAction$`, `Form`, `Link`, `useLocation`, `useNavigate`, `RequestHandler` (v1: `QwikCityProvider` &nbsp;·&nbsp; v2: `useQwikRouter`, `QwikRouterProvider`) |
+| Package (v1)            | Package (v2)       | Key exports                                                                                                                                                                     |
+| ----------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@builder.io/qwik`      | `@qwik.dev/core`   | `component$`, `useSignal`, `useStore`, `useTask$`, `useVisibleTask$`, `useComputed$`, `useContext`, `useContextProvider`, `createContextId`, `$`, `noSerialize`                 |
+| ↑ same                  | ↑ same             | v1 only: `useResource$`, `<Resource>` &nbsp;·&nbsp; v2 only: `useAsync$`, `<Suspense>`, `<Reveal>`, `useSerializer$`, `createSerializer$`                                       |
+| `@builder.io/qwik-city` | `@qwik.dev/router` | `routeLoader$`, `routeAction$`, `Form`, `Link`, `useLocation`, `useNavigate`, `RequestHandler` (v1: `QwikCityProvider` &nbsp;·&nbsp; v2: `useQwikRouter`, `QwikRouterProvider`) |
 
 ## Core concepts you must always apply
 
@@ -129,12 +129,12 @@ useTask$ -> RENDER -> useVisibleTask$
      SERVER or BROWSER   BROWSER only
 ```
 
-| Hook                            | When it runs                                                                | Use it for                                                    |
-| ------------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| `useTask$`                      | Before first render (server or browser); re-runs when tracked state changes | Async init, side effects that should run on server AND client |
-| `useVisibleTask$`               | After render, browser only, when element becomes visible                    | DOM manipulation, third-party libs, subscriptions             |
-| `useResource$` (v1)             | Before render, async, non-blocking                                          | Async data that should not block rendering                    |
-| `useAsync$` (v2)                | Before render, async, non-blocking                                          | v2 replacement for `useResource$` — pair with `<Suspense>`    |
+| Hook                | When it runs                                                                | Use it for                                                    |
+| ------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| `useTask$`          | Before first render (server or browser); re-runs when tracked state changes | Async init, side effects that should run on server AND client |
+| `useVisibleTask$`   | After render, browser only, when element becomes visible                    | DOM manipulation, third-party libs, subscriptions             |
+| `useResource$` (v1) | Before render, async, non-blocking                                          | Async data that should not block rendering                    |
+| `useAsync$` (v2)    | Before render, async, non-blocking                                          | v2 replacement for `useResource$` — pair with `<Suspense>`    |
 
 `useTask$` blocks rendering until its promise resolves. Use it for critical
 data. `useResource$`/`useAsync$` do not block — the component renders

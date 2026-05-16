@@ -21,24 +21,24 @@ and `@builder.io/qwik` is being aliased for legacy dependencies.
 The headline change in v2 is dropping the `@builder.io/` scope and splitting
 `qwik-city` into a more generic `router` package.
 
-| v1                                | v2                            |
-| --------------------------------- | ----------------------------- |
-| `@builder.io/qwik`                | `@qwik.dev/core`              |
-| `@builder.io/qwik-city`           | `@qwik.dev/router`            |
-| `@builder.io/qwik-react`          | `@qwik.dev/react`             |
-| `@qwik-city-plan`                 | `@qwik-router-config`         |
-| `@builder.io/qwik/jsx-runtime`    | `@qwik.dev/core/jsx-runtime`  |
+| v1                             | v2                           |
+| ------------------------------ | ---------------------------- |
+| `@builder.io/qwik`             | `@qwik.dev/core`             |
+| `@builder.io/qwik-city`        | `@qwik.dev/router`           |
+| `@builder.io/qwik-react`       | `@qwik.dev/react`            |
+| `@qwik-city-plan`              | `@qwik-router-config`        |
+| `@builder.io/qwik/jsx-runtime` | `@qwik.dev/core/jsx-runtime` |
 
 Identifier renames in user code & Vite config:
 
-| v1                  | v2                    |
-| ------------------- | --------------------- |
-| `QwikCityProvider`  | `QwikRouterProvider`  |
-| `qwikCity`          | `qwikRouter`          |
-| `QwikCityPlugin`    | `QwikRouterPlugin`    |
-| `createQwikCity`    | `createQwikRouter`    |
-| `qwikCityPlan`      | `qwikRouterConfig`    |
-| `jsxs`              | `jsx`                 |
+| v1                 | v2                   |
+| ------------------ | -------------------- |
+| `QwikCityProvider` | `QwikRouterProvider` |
+| `qwikCity`         | `qwikRouter`         |
+| `QwikCityPlugin`   | `QwikRouterPlugin`   |
+| `createQwikCity`   | `createQwikRouter`   |
+| `qwikCityPlan`     | `qwikRouterConfig`   |
+| `jsxs`             | `jsx`                |
 
 There is an automated codemod:
 
@@ -48,6 +48,21 @@ pnpm qwik migrate-v2
 
 It handles package renames, identifier renames, Vite config, and dependency
 updates for most projects.
+
+### Type-symbol removals not covered by the codemod
+
+The codemod handles package renames and most identifier renames, but the
+following type symbols are gone in v2 and must be replaced by hand:
+
+| v1                  | v2                    |
+| ------------------- | --------------------- | -------------- |
+| `PropFunction<T>`   | `QRL<T>`              |
+| `Numberish`         | `` number             | `${number}` `` |
+| `ReadonlySignal<T>` | `Readonly<Signal<T>>` |
+
+`ReadonlySignal` may still resolve under some toolchains as a deprecated
+alias, but new code should use `Readonly<Signal<T>>` — that's what
+`useComputed$`'s own return type is declared as in v2.
 
 ## Behavioural changes you must know
 
@@ -156,6 +171,67 @@ The `eagerness: 'load' | 'idle'` option is gone. Delete it from existing code.
 v2 docs show a `strategy: 'document-ready'` option for cases that need eager
 client execution; the hook is still positioned as a last resort.
 
+### `JSXOutput` as a prop is a v2 footgun
+
+JSX nodes are constructed lazily and their **projection anchor is bound at the
+lexical construction site**. In v2 this becomes load-bearing: a JSX node built
+outside any `component$` (e.g., at module scope) has no anchor, and slot
+resolution silently drops its children on resume — the SSR HTML looks correct,
+then client resumption wipes it.
+
+```tsx
+// ⛔ The footgun. The natural way to feed this API is to construct the
+//    JSX at module scope, where it has no projection anchor.
+interface TabsProps {
+  tabs: Array<{ label: JSXOutput; content: JSXOutput }>;
+}
+
+const TABS = [
+  { label: <span>One</span>, content: <Panel /> }, // ← module scope: broken in v2
+];
+<Tabs tabs={TABS} />;
+```
+
+Even when the consumer dutifully builds the JSX _inside_ a `component$`, the
+prop shape **encourages** module-scope construction (it reads as data) and
+gives no signal that doing so is unsafe. Two refactors avoid the trap:
+
+```tsx
+// ✅ Compositional / slot-based (preferred for content)
+<Tabs defaultValue="a">
+  <TabList>
+    <Tab value="a">One</Tab>
+    <Tab value="b">Two</Tab>
+  </TabList>
+  <TabPanel value="a">
+    <Panel />
+  </TabPanel>
+  <TabPanel value="b">
+    <Panel />
+  </TabPanel>
+</Tabs>
+```
+
+```tsx
+// ✅ Serializable data props (preferred when the content needs to be rendered
+//    in two places, e.g., a Select's pulldown + selected-display)
+interface SelectOption {
+  id: string;
+  label: string;
+  icon?: string;
+}
+<Select options={OPTIONS} selectedId={sig} />;
+```
+
+Rule of thumb for v2 library design: **never expose a `JSXOutput` prop**. Use
+slots for free-form content, or plain serializable data for content the
+component must render multiple times.
+
+`JSXOutput` as an **internal return type** of a render helper inside a
+`component$` (e.g., `const render = (...): JSXOutput[] => …`) is fine — the
+JSX is constructed at the call site, inside a lexical `component$`, and never
+crosses a prop boundary.
+
 ### `@builder.io/qwik-labs` removed
 
 Features migrated out of labs:
@@ -197,9 +273,9 @@ Explicit shallow tracking on a store. Default behaviour is unchanged (deep).
 Application code is unaffected, but custom tooling that parses Qwik's HTML may
 need updates:
 
-| v1                            | v2                                                                                  |
-| ----------------------------- | ----------------------------------------------------------------------------------- |
-| `<script type="qwik/json">…`  | `<script type="qwik/vnode">…` + `<script type="qwik/state">…` (at end of document)  |
+| v1                           | v2                                                                                 |
+| ---------------------------- | ---------------------------------------------------------------------------------- |
+| `<script type="qwik/json">…` | `<script type="qwik/vnode">…` + `<script type="qwik/state">…` (at end of document) |
 
 ## Interop: using v1 libraries from a v2 app
 
@@ -212,9 +288,9 @@ Qwik and a broken app.
 {
   "pnpm": {
     "overrides": {
-      "@builder.io/qwik": "npm:@qwik.dev/core@^2"
-    }
-  }
+      "@builder.io/qwik": "npm:@qwik.dev/core@^2",
+    },
+  },
 }
 ```
 
@@ -227,7 +303,7 @@ process those libraries:
 ```ts
 export default defineConfig({
   // ...
-  ssr: { noExternal: ['some-qwik-lib'] },
+  ssr: { noExternal: ["some-qwik-lib"] },
 });
 ```
 

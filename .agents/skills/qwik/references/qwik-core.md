@@ -184,6 +184,40 @@ export const Card = component$(() => (
 </Card>;
 ```
 
+### Slot fallback content
+
+Any children placed _between_ the opening and closing `<Slot>` tags are used
+as the **fallback** rendered when no `q:slot="<name>"` child is projected.
+This works for both default and named slots.
+
+```tsx
+// Provider
+export const TextField = component$<TextFieldProps>(({ label }) => (
+  <label>
+    <span class="header">
+      <Slot name="icon">
+        {/* Rendered when the consumer does not provide a q:slot="icon" child */}
+        <DefaultIcon />
+      </Slot>
+      {label}
+    </span>
+    <input />
+  </label>
+));
+
+// Consumer A — no icon child → renders the fallback <DefaultIcon/>
+<TextField label="Name" />
+
+// Consumer B — provides an icon → renders <EmailIcon/> instead
+<TextField label="Email">
+  <EmailIcon q:slot="icon" />
+</TextField>
+```
+
+This is the cleanest way to migrate `icon?: JSXOutput` props (and similar
+single-element JSX props) to a slot-based API while keeping a sensible default
+without consumer churn.
+
 ---
 
 ## Events
@@ -411,7 +445,9 @@ await userEvent(btn, "click");
 
 ```tsx
 import { renderToString } from "@builder.io/qwik/server";
-const result = await renderToString(<MyComponent />, { containerTagName: "div" });
+const result = await renderToString(<MyComponent />, {
+  containerTagName: "div",
+});
 expect(result.html).toContain("hello");
 ```
 
@@ -434,7 +470,7 @@ The simplest fix in tests is to give the harness a no-op event to pump:
 
 ```tsx
 // Wrapper exposes a no-op button just to flush the test scheduler.
-<button id="btn-flush" onClick$={() => {}} />
+<button id="btn-flush" onClick$={() => {}} />;
 
 // In the test:
 await new Promise((r) => setTimeout(r, 100));
@@ -460,7 +496,7 @@ enough for all chained cooldowns to settle, or (b) use `vi.useFakeTimers()` so
 `useTask$(({ track, cleanup }) => { ...; cleanup(() => ...); })` registers a
 cleanup that runs **before every re-run** of the task and on unmount.
 Re-runs happen on every tracked-signal change, so cleanup here is the right
-place to cancel work tied to *this run* (e.g. a debounce timer that should
+place to cancel work tied to _this run_ (e.g. a debounce timer that should
 reset on the next write).
 
 If you need a cleanup that survives task re-runs — for instance, a throttle
