@@ -7,7 +7,9 @@ import {
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { v4, v7 } from "uuid";
 import { z } from "zod";
-import { defineTool, useAgent } from "./use-agent";
+import { useAgent } from "./use-agent";
+import { ElmAgUiAgent } from "./elm-ag-ui-agent";
+import { defineTool } from "./tool-registry";
 
 export interface UseAgentProps {
   class?: string;
@@ -19,13 +21,14 @@ const UseAgent = component$<UseAgentProps>(
   ({ class: className, style, url }) => {
     const context = useStore<Array<{ description: string; value: string }>>([]);
 
-    const { AgentUI, addTool, setPromptTemplates } = useAgent({
-      url,
-      context: context,
-    });
+    const { state, send$, retry$, abort$, addTool$, setPromptTemplates$ } =
+      useAgent({
+        url,
+        context: context,
+      });
 
     useTask$(() => {
-      addTool(
+      addTool$(
         "generateUuid",
         defineTool({
           description: "Generate a random UUID v4 string",
@@ -51,7 +54,7 @@ const UseAgent = component$<UseAgentProps>(
         value: "Nerima, Tokyo, Japan",
       });
 
-      setPromptTemplates([
+      setPromptTemplates$([
         {
           description: "Ask about AWS",
           content: "What is a new feature called Amazon S3 Files?",
@@ -78,7 +81,16 @@ const UseAgent = component$<UseAgentProps>(
       ]);
     });
 
-    return <AgentUI class={className} style={style} />;
+    return (
+      <ElmAgUiAgent
+        state={state}
+        send$={send$}
+        retry$={retry$}
+        abort$={abort$}
+        class={className}
+        style={style}
+      />
+    );
   },
 );
 

@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { component$, useTask$ } from "@qwik.dev/core";
 import { useWordle, type UseWordleOptions } from "./use-wordle";
-import { defineTool, useAgent } from "../ag-ui-client/use-agent";
+import { useAgent } from "../ag-ui-client/use-agent";
+import { ElmAgUiAgent } from "../ag-ui-client/elm-ag-ui-agent";
+import { defineTool } from "../ag-ui-client/tool-registry";
 import z from "zod";
 
 import prompt from "./wordle/prompt.md?raw";
@@ -32,10 +34,10 @@ export const FixedWord: Story = {
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const WithLLMRender = component$((args: UseWordleOptions) => {
-  const { AgentUI, addTool, setPromptTemplates } = useAgent({
-    url: "http://localhost:19101/copilotkit/wordle/agent/default/run",
-    enableAutoScroll: true,
-  });
+  const { state, send$, retry$, abort$, addTool$, setPromptTemplates$ } =
+    useAgent({
+      url: "http://localhost:19101/copilotkit/wordle/agent/default/run",
+    });
 
   const {
     Wordle,
@@ -50,14 +52,14 @@ const WithLLMRender = component$((args: UseWordleOptions) => {
   } = useWordle(args);
 
   useTask$(() => {
-    setPromptTemplates([
+    setPromptTemplates$([
       {
         description: "Solve wordle",
         content: prompt,
       },
     ]);
 
-    addTool(
+    addTool$(
       "submit_guess",
       defineTool({
         description:
@@ -161,7 +163,13 @@ const WithLLMRender = component$((args: UseWordleOptions) => {
         <Wordle />
       </div>
       <div style={{ flex: 1, height: "100%", maxWidth: "500px" }}>
-        <AgentUI />
+        <ElmAgUiAgent
+          state={state}
+          send$={send$}
+          retry$={retry$}
+          abort$={abort$}
+          enableAutoScroll
+        />
       </div>
     </div>
   );

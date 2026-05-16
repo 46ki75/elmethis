@@ -64,7 +64,18 @@ export {
   type ElmAgUiInputContentImageProps,
 } from "./components/ag-ui-client/input-content/elm-ag-ui-input-content";
 export {
+  ElmAgUiAgent,
+  type ElmAgUiAgentProps,
+} from "./components/ag-ui-client/elm-ag-ui-agent";
+export {
+  defineTool,
+  type AnyToolDef,
+  type ToolDef,
+  type ToolRegistry,
+} from "./components/ag-ui-client/tool-registry";
+export {
   useAgent,
+  type AgentState,
   type UseAgentOptions,
 } from "./components/ag-ui-client/use-agent";
 
