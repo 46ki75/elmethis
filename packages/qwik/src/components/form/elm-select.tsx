@@ -31,6 +31,11 @@ export interface ElmSelectOption {
   icon?: string;
 }
 
+// Display/form dual-use component: intentionally does NOT adopt
+// `useControllableState`. Used both as a form selector and as a presentation
+// widget reflecting upstream-owned state, so a direct
+// `selectedOptionId: Signal<string | null>` binding is preferred over the
+// controlled/uncontrolled split.
 export interface ElmSelectProps extends PropsOf<"div"> {
   /**
    * Label for the select component.

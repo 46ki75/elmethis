@@ -19,6 +19,11 @@ import { ElmInlineText } from "../typography/elm-inline-text";
 
 import styles from "./elm-text-field.module.css";
 
+// Display/form dual-use component: intentionally does NOT adopt
+// `useControllableState`. The display case (read-only or upstream-driven
+// text) has no "uncontrolled with default" semantic to model, so a direct
+// `value: Signal<string>` binding is preferred over the
+// controlled/uncontrolled split.
 export interface ElmTextFieldProps extends Omit<PropsOf<"label">, "onInput$"> {
   label: string;
   maxLength?: number;
