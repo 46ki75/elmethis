@@ -160,6 +160,8 @@ export {
   useControllableState,
   type ControllableStateSetter,
 } from "./hooks/use-controllable-state";
+export { useControllableSignal } from "./hooks/use-controllable-signal";
+export { useControllableStore } from "./hooks/use-controllable-store";
 export { useDebouncedSignal } from "./hooks/use-debounced-signal";
 export { useDebouncedStore } from "./hooks/use-debounced-store";
 export { useDelayedSignal } from "./hooks/useDelayedSignal";
