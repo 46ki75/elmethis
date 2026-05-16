@@ -12,7 +12,7 @@ import {
 
 import styles from "./elm-tabs.module.css";
 import { ElmCollapse } from "./elm-collapse";
-import { useControllableSignal } from "../../hooks/use-controllable-signal";
+import { useBindableSignal } from "../../hooks/use-bindable-signal";
 
 interface ElmTabsContextValue {
   selectedValue: Signal<string>;
@@ -45,7 +45,7 @@ export const ElmTabs = component$<ElmTabsProps>((props) => {
     ...rest
   } = props;
 
-  const selectedValue = useControllableSignal<string>({
+  const selectedValue = useBindableSignal<string>({
     signal: value,
     defaultValue: defaultValue ?? "",
   });

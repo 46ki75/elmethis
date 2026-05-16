@@ -3,7 +3,7 @@ import { createDOM } from "@qwik.dev/core/testing";
 import { renderToString } from "@qwik.dev/core/server";
 import { component$, useStore } from "@qwik.dev/core";
 
-import { useControllableStore } from "./use-controllable-store";
+import { useBindableStore } from "./use-bindable-store";
 
 // ---------------------------------------------------------------------------
 // Wrapper components used by tests
@@ -15,7 +15,7 @@ interface FormState {
 }
 
 const UncontrolledWrapper = component$(() => {
-  const form = useControllableStore<FormState>({
+  const form = useBindableStore<FormState>({
     defaultValue: { name: "Alice", age: 30 },
   });
   return (
@@ -33,7 +33,7 @@ const UncontrolledWrapper = component$(() => {
 });
 
 const ControlledChild = component$((props: { external: FormState }) => {
-  const form = useControllableStore({
+  const form = useBindableStore({
     store: props.external,
     defaultValue: { name: "ignored", age: -1 },
   });
@@ -67,7 +67,7 @@ interface NestedState {
 }
 
 const NestedChild = component$((props: { external: NestedState }) => {
-  const state = useControllableStore({
+  const state = useBindableStore({
     store: props.external,
     defaultValue: { user: { name: "ignored", profile: { city: "ignored" } } },
   });

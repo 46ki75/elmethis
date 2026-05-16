@@ -11,7 +11,7 @@ import styles from "./elm-toggle.module.css";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { mdiChevronRight, mdiPlus } from "@mdi/js";
 import { ElmInlineText } from "../typography/elm-inline-text";
-import { useControllableSignal } from "../../hooks/use-controllable-signal";
+import { useBindableSignal } from "../../hooks/use-bindable-signal";
 
 export interface ElmToggleProps extends PropsOf<"div"> {
   /** The summary text of the toggle. */
@@ -37,7 +37,7 @@ export const ElmToggle = component$<ElmToggleProps>((props) => {
     ...rest
   } = props;
 
-  const isOpen = useControllableSignal({
+  const isOpen = useBindableSignal({
     signal: isOpenProp,
     defaultValue: defaultIsOpen ?? false,
   });

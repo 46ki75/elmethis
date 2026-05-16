@@ -1,6 +1,6 @@
 import { component$, useSignal, type Signal } from "@qwik.dev/core";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { useControllableSignal } from "./use-controllable-signal";
+import { useBindableSignal } from "./use-bindable-signal";
 
 // ---------------------------------------------------------------------------
 // Shared demo styles
@@ -18,7 +18,7 @@ const rowStyle = { display: "flex", alignItems: "center", gap: "1rem" };
  * with `defaultValue`.
  */
 const UncontrolledToggle = component$(() => {
-  const isOpen = useControllableSignal<boolean>({ defaultValue: false });
+  const isOpen = useBindableSignal<boolean>({ defaultValue: false });
   return (
     <div style={boxStyle}>
       <div style={rowStyle}>
@@ -38,7 +38,7 @@ const UncontrolledToggle = component$(() => {
  */
 const ToggleChild = component$(
   (props: { externalState: Signal<boolean> }) => {
-    const isOpen = useControllableSignal({
+    const isOpen = useBindableSignal({
       signal: props.externalState,
       defaultValue: false,
     });
@@ -73,7 +73,7 @@ const ControlledToggle = component$(() => {
  */
 const CounterChild = component$(
   (props: { external: Signal<number>; name: string }) => {
-    const count = useControllableSignal({
+    const count = useBindableSignal({
       signal: props.external,
       defaultValue: 0,
     });
@@ -106,7 +106,7 @@ const SharedCounter = component$(() => {
 // ---------------------------------------------------------------------------
 
 const meta: Meta = {
-  title: "Hooks/useControllableSignal",
+  title: "Hooks/useBindableSignal",
   tags: ["autodocs"],
 };
 

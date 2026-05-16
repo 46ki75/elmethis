@@ -3,14 +3,14 @@ import { createDOM } from "@qwik.dev/core/testing";
 import { renderToString } from "@qwik.dev/core/server";
 import { component$, useSignal, type Signal } from "@qwik.dev/core";
 
-import { useControllableSignal } from "./use-controllable-signal";
+import { useBindableSignal } from "./use-bindable-signal";
 
 // ---------------------------------------------------------------------------
 // Wrapper components used by tests
 // ---------------------------------------------------------------------------
 
 const UncontrolledWrapper = component$(() => {
-  const bound = useControllableSignal<string>({ defaultValue: "default" });
+  const bound = useBindableSignal<string>({ defaultValue: "default" });
   return (
     <div>
       <span id="bound">{bound.value}</span>
@@ -22,7 +22,7 @@ const UncontrolledWrapper = component$(() => {
 });
 
 const ControlledChild = component$((props: { external: Signal<string> }) => {
-  const bound = useControllableSignal({
+  const bound = useBindableSignal({
     signal: props.external,
     defaultValue: "ignored-when-controlled",
   });

@@ -1,6 +1,6 @@
 import { component$, useStore } from "@qwik.dev/core";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { useControllableStore } from "./use-controllable-store";
+import { useBindableStore } from "./use-bindable-store";
 
 // ---------------------------------------------------------------------------
 // Shared demo styles
@@ -23,7 +23,7 @@ interface FormState {
  * `defaultValue`.
  */
 const UncontrolledForm = component$(() => {
-  const form = useControllableStore<FormState>({
+  const form = useBindableStore<FormState>({
     defaultValue: { name: "Alice", age: 30 },
   });
   return (
@@ -52,7 +52,7 @@ const UncontrolledForm = component$(() => {
  * button) are reflected in the form.
  */
 const FormChild = component$((props: { externalForm: FormState }) => {
-  const form = useControllableStore({
+  const form = useBindableStore({
     store: props.externalForm,
     defaultValue: { name: "", age: 0 },
   });
@@ -100,7 +100,7 @@ interface NestedState {
 }
 
 const NestedChild = component$((props: { external: NestedState }) => {
-  const state = useControllableStore({
+  const state = useBindableStore({
     store: props.external,
     defaultValue: { user: { name: "", profile: { city: "" } } },
   });
@@ -147,7 +147,7 @@ const NestedDemo = component$(() => {
 // ---------------------------------------------------------------------------
 
 const meta: Meta = {
-  title: "Hooks/useControllableStore",
+  title: "Hooks/useBindableStore",
   tags: ["autodocs"],
 };
 

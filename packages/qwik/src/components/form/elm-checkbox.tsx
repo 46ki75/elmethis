@@ -1,7 +1,7 @@
 import { $, component$, PropsOf, type Signal } from "@qwik.dev/core";
 
 import { ElmInlineText } from "../typography/elm-inline-text";
-import { useControllableSignal } from "../../hooks/use-controllable-signal";
+import { useBindableSignal } from "../../hooks/use-bindable-signal";
 import styles from "./elm-checkbox.module.css";
 
 export interface ElmCheckboxProps extends PropsOf<"div"> {
@@ -42,7 +42,7 @@ export const ElmCheckbox = component$<ElmCheckboxProps>((props) => {
     ...rest
   } = props;
 
-  const isChecked = useControllableSignal({
+  const isChecked = useBindableSignal({
     signal: checked,
     defaultValue: defaultChecked ?? false,
   });

@@ -11,7 +11,7 @@ import {
 import styles from "./elm-modal.module.css";
 
 // Display/form dual-use component: intentionally does NOT adopt
-// `useControllableState`. Modals are driven by parent state in nearly all
+// `useBindableSignal`. Modals are driven by parent state in nearly all
 // callsites — including display-only confirmations and externally-triggered
 // dialogs — so a plain controlled `isOpen` prop is preferred over the
 // controlled/uncontrolled split.
