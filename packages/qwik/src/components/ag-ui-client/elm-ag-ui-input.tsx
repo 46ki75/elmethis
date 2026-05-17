@@ -93,6 +93,9 @@ export const ElmAgUiInput = component$<ElmAgUiInputProps>(
       onSubmit$(event, element);
       if (textAreaRef.value) {
         textAreaRef.value.value = "";
+        // Reset the auto-grown height — without this the textarea
+        // would stay tall after sending a long message.
+        textAreaRef.value.style.height = "auto";
       }
     });
 
@@ -182,8 +185,20 @@ export const ElmAgUiInput = component$<ElmAgUiInputProps>(
       }
     });
 
+    // Auto-grow the textarea height to fit its content. Two-step
+    // assignment is required: setting `height = "auto"` first lets
+    // the next read of `scrollHeight` reflect the natural content
+    // height (otherwise it keeps reporting whatever we last set).
+    // The CSS `max-height` caps it; once exceeded, vertical scroll
+    // kicks in (`overflow-y: auto`).
+    const autoGrow$ = $((element: HTMLTextAreaElement) => {
+      element.style.height = "auto";
+      element.style.height = `${element.scrollHeight}px`;
+    });
+
     const handleInput$ = $(
       async (event: InputEvent, element: HTMLTextAreaElement) => {
+        await autoGrow$(element);
         await detectSlash(element);
         await onInput$(event, element);
       },
@@ -253,49 +268,56 @@ export const ElmAgUiInput = component$<ElmAgUiInputProps>(
         </ElmCollapse>
 
         <div class={[styles["elm-ag-ui-input"], textStyle["text"]]}>
-          {hasPicker && (
-            <div
-              class={styles["plus-button"]}
-              // mousedown happens before the button steals focus; preventing
-              // its default keeps the textarea focused throughout the
-              // open/close toggle so the caret stays visible and the
-              // current selection (the insert site) is preserved.
-              onMouseDown$={(event) => event.preventDefault()}
-              onClick$={() => {
-                const willOpen = !isPickerOpen.value;
-                isPickerOpen.value = willOpen;
-                // If the textarea has never been focused, the mousedown
-                // preventDefault above has nothing to preserve — focus it
-                // explicitly on open so the user sees where an inserted
-                // prompt will land.
-                if (willOpen) textAreaRef.value?.focus();
-              }}
-              aria-label={isPickerOpen.value ? "Close prompts" : "Open prompts"}
-            >
-              <ElmMdiIcon
-                d={isPickerOpen.value ? mdiClose : mdiPlus}
-                size="1.25rem"
-                color="white"
-              />
-            </div>
-          )}
-
           <textarea
             ref={textAreaRef}
+            name="prompt"
+            aria-label="Prompt"
             class={styles["input"]}
             onInput$={handleInput$}
             onKeyDown$={handleKeyDown$}
           />
 
-          <div
-            class={[styles["submit-button"]]}
-            onClick$={isRunning ? onAbort$ : onSubmit}
-          >
-            <ElmMdiIcon
-              d={isRunning ? mdiStop : mdiSend}
-              size="1.5rem"
-              color="white"
-            />
+          <div class={styles["button-row"]}>
+            {hasPicker && (
+              <div
+                class={styles["plus-button"]}
+                // mousedown happens before the button steals focus;
+                // preventing its default keeps the textarea focused
+                // throughout the open/close toggle so the caret stays
+                // visible and the current selection (the insert site)
+                // is preserved.
+                onMouseDown$={(event) => event.preventDefault()}
+                onClick$={() => {
+                  const willOpen = !isPickerOpen.value;
+                  isPickerOpen.value = willOpen;
+                  // If the textarea has never been focused, the
+                  // mousedown preventDefault above has nothing to
+                  // preserve — focus it explicitly on open so the
+                  // user sees where an inserted prompt will land.
+                  if (willOpen) textAreaRef.value?.focus();
+                }}
+                aria-label={
+                  isPickerOpen.value ? "Close prompts" : "Open prompts"
+                }
+              >
+                <ElmMdiIcon
+                  d={isPickerOpen.value ? mdiClose : mdiPlus}
+                  size="1rem"
+                  color="white"
+                />
+              </div>
+            )}
+
+            <div
+              class={styles["submit-button"]}
+              onClick$={isRunning ? onAbort$ : onSubmit}
+            >
+              <ElmMdiIcon
+                d={isRunning ? mdiStop : mdiSend}
+                size="1rem"
+                color="white"
+              />
+            </div>
           </div>
         </div>
       </div>
