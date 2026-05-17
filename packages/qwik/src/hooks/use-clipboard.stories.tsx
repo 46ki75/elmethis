@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { useClipboard, type UseClipboardOptions } from "./useClipboard";
+import { useClipboard, type UseClipboardOptions } from "./use-clipboard";
 import { component$ } from "@qwik.dev/core";
 
 import imageUrl from "../assets/bg1.webp?url";

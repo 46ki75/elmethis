@@ -184,24 +184,24 @@ export {
   useAutoAnimate,
   type UseAutoAnimateOptions,
 } from "./hooks/use-auto-animate";
-export { useClipboard, type UseClipboardOptions } from "./hooks/useClipboard";
+export { useClipboard, type UseClipboardOptions } from "./hooks/use-clipboard";
 export { useBindableSignal } from "./hooks/use-bindable-signal";
 export { useBindableStore } from "./hooks/use-bindable-store";
 export { useDebouncedSignal } from "./hooks/use-debounced-signal";
 export { useDebouncedStore } from "./hooks/use-debounced-store";
-export { useDelayedSignal } from "./hooks/useDelayedSignal";
+export { useDelayedSignal } from "./hooks/use-delayed-signal";
 export { useThrottledSignal } from "./hooks/use-throttled-signal";
 export { useThrottledStore } from "./hooks/use-throttled-store";
-export { useElmethisTheme } from "./hooks/useElmethisTheme";
-export { useInView } from "./hooks/useInView";
-export { useModal, type UseModalOptions } from "./hooks/useModal";
+export { useElmethisTheme } from "./hooks/use-elmethis-theme";
+export { useInView } from "./hooks/use-in-view";
+export { useModal, type UseModalOptions } from "./hooks/use-modal";
 export {
   useLocalStorage,
   type UseLocalStorageOptions,
   useSessionStorage,
   type UseSessionStorageOptions,
-} from "./hooks/useStorage";
-export { useThrottledQueue, ThrottledQueue } from "./hooks/useThrottledQueue";
+} from "./hooks/use-storage";
+export { useThrottledQueue, ThrottledQueue } from "./hooks/use-throttled-queue";
 
 // | Icon |
 export {

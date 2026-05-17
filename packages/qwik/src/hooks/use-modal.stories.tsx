@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { useModal, type UseModalOptions } from "./useModal";
+import { useModal, type UseModalOptions } from "./use-modal";
 import { component$, Slot } from "@qwik.dev/core";
 import { ElmTextField } from "../components/form/elm-text-field";
 

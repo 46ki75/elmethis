@@ -17,7 +17,7 @@ import { ElmInlineText } from "../typography/elm-inline-text";
 import { EventType } from "@ag-ui/core";
 import { ElmCodeBlock } from "../code/elm-code-block";
 import { ElmToggle } from "../containments/elm-toggle";
-import { useThrottledQueue } from "../../hooks/useThrottledQueue";
+import { useThrottledQueue } from "../../hooks/use-throttled-queue";
 
 type ToolEventType =
   | EventType.TOOL_CALL_START

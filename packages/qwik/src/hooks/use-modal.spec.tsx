@@ -3,7 +3,7 @@ import { createDOM } from "@qwik.dev/core/testing";
 import { renderToString } from "@qwik.dev/core/server";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
-import { useModal } from "./useModal";
+import { useModal } from "./use-modal";
 import { ElmTextField } from "../components/form/elm-text-field";
 
 // ---------------------------------------------------------------------------
