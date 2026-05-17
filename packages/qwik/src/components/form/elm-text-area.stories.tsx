@@ -56,7 +56,7 @@ const WithIconTextArea = component$(() => {
         <ElmMdiIcon
           q:slot="icon"
           d={mdiCommentTextOutline}
-          size="1.5rem"
+          size="0.75rem"
           color="gray"
         />
       </ElmTextArea>
