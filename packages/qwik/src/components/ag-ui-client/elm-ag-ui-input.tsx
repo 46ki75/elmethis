@@ -15,6 +15,7 @@ import {
   ElmAgUiPromptPicker,
   type ElmAgUiPromptDescriptor,
 } from "./elm-ag-ui-prompt-picker";
+import { ElmCollapse } from "../containments/elm-collapse";
 
 export interface ElmAgUiInputProps {
   class?: string;
@@ -130,14 +131,12 @@ export const ElmAgUiInput = component$<ElmAgUiInputProps>(
 
     return (
       <div class={[styles["elm-ag-ui-input-wrapper"], className]} style={style}>
-        {hasPicker && isPickerOpen.value && (
-          <div class={styles["picker-container"]}>
-            <ElmAgUiPromptPicker
-              prompts={prompts ?? []}
-              onPick$={onPickPrompt}
-            />
-          </div>
-        )}
+        <ElmCollapse
+          isOpen={hasPicker && isPickerOpen.value}
+          class={styles["picker-container"]}
+        >
+          <ElmAgUiPromptPicker prompts={prompts ?? []} onPick$={onPickPrompt} />
+        </ElmCollapse>
 
         <div class={[styles["elm-ag-ui-input"], textStyle["text"]]}>
           {hasPicker && (
