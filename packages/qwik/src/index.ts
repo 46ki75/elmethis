@@ -163,6 +163,10 @@ export {
 } from "./components/form/elm-select";
 export { ElmSwitch, type ElmSwitchProps } from "./components/form/elm-switch";
 export {
+  ElmTextArea,
+  type ElmTextAreaProps,
+} from "./components/form/elm-text-area";
+export {
   ElmTextField,
   type ElmTextFieldProps,
 } from "./components/form/elm-text-field";
