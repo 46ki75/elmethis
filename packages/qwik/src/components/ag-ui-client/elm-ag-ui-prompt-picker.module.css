@@ -169,3 +169,19 @@
 .field-input:focus {
   border-color: oklch(from black l c h / 0.5);
 }
+
+/*
+  Hint line shown under enum <select>s — the `<option>` text only
+  renders one value at a time, so the description goes below to keep
+  it visible after a choice is made.
+*/
+.field-hint {
+  color: gray;
+  font-size: 0.72rem;
+  line-height: 1.3;
+}
+
+select.field-input {
+  appearance: auto;
+  cursor: pointer;
+}

@@ -111,6 +111,30 @@ function validateServers(servers: McpServerConfig[]): void {
  *   if (content) await send$(content);
  * });
  * ```
+ *
+ * @remarks
+ * **MCP argument schema is intentionally minimal.** The MCP spec's
+ * `PromptArgument` only carries `name`, `description`, and `required`
+ * (see `@modelcontextprotocol/sdk` `PromptArgumentSchema` —
+ * a plain `z.object` with no `.passthrough()`, so any extra fields a
+ * server attaches are silently stripped by the client). That means:
+ *
+ * - **No enum, no regex, no min/max** rides the wire. `ElmAgUiPromptArgument`
+ *   has `enum` / `pattern` / `patternMessage` fields, but nothing in
+ *   this hook populates them from the MCP response.
+ * - **Validation errors come back as raw Zod issues.** When the server
+ *   rejects an argument, the failure surfaces as the JSON-RPC error
+ *   payload (e.g. `MCP error -32602: Invalid arguments for prompt X:
+ *   [ { "validation": "regex", "code": "invalid_string", ... } ]`).
+ *   The picker's modal renders that string verbatim — it is not a
+ *   human-friendly message.
+ *
+ * If your end users will ever see this UI, treat MCP prompts as a
+ * developer-facing surface and ship hand-tuned templates in the
+ * production app instead. For internal / power-user surfaces, you can
+ * paper over the constraints by reshaping descriptors at the mapping
+ * layer (inject `enum` / `pattern` based on out-of-band knowledge of
+ * the server's Zod schemas).
  */
 export function useMcpPrompts(
   options: UseMcpPromptsOptions,

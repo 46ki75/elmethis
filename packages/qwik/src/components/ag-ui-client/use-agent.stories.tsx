@@ -46,6 +46,27 @@ const UseAgent = component$<UseAgentProps>(
         servers: [{ id: "weather", url: mcpUrl }],
       });
 
+    // Per-prompt enum / pattern overrides. MCP's `prompts/list` only
+    // carries (name, description, required), so any closed-set or
+    // regex hints from the server's Zod schemas have to be re-applied
+    // here at the mapping layer. See `useMcpPrompts` @remarks for the
+    // full spec limitation; the unavoidable part is that server-side
+    // validation errors still surface as raw Zod issues — these
+    // overrides catch the common cases client-side before they reach
+    // that path. Keyed by `${serverId}::${promptName}::${argName}`.
+    const ENUM_OVERRIDES: Record<string, string[]> = {
+      "weather::weather_report::tone": ["formal", "casual", "poetic"],
+    };
+    const PATTERN_OVERRIDES: Record<
+      string,
+      { pattern: string; message?: string }
+    > = {
+      "weather::trip_planner::days": {
+        pattern: "^\\d+$",
+        message: "Days must be a positive integer.",
+      },
+    };
+
     // Reshape MCP descriptors into the picker's generic shape. We
     // encode `(serverId, name)` into `key` so the resolver can split
     // them back apart without holding extra state.
@@ -54,7 +75,18 @@ const UseAgent = component$<UseAgentProps>(
         key: `${p.serverId}::${p.name}`,
         name: p.name,
         description: p.description,
-        arguments: p.arguments,
+        arguments: p.arguments?.map((a) => {
+          const lookup = `${p.serverId}::${p.name}::${a.name}`;
+          const enumValues = ENUM_OVERRIDES[lookup];
+          const pattern = PATTERN_OVERRIDES[lookup];
+          return {
+            ...a,
+            ...(enumValues ? { enum: enumValues } : {}),
+            ...(pattern
+              ? { pattern: pattern.pattern, patternMessage: pattern.message }
+              : {}),
+          };
+        }),
       })),
     );
 

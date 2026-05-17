@@ -30,11 +30,48 @@ export interface ElmAgUiPromptDescriptor {
    * prompt. Omit (or empty array) for prompts that take no arguments
    * — the picker will pick immediately on click.
    */
-  arguments?: {
-    name: string;
-    description?: string;
-    required?: boolean;
-  }[];
+  arguments?: ElmAgUiPromptArgument[];
+}
+
+export interface ElmAgUiPromptArgument {
+  name: string;
+  description?: string;
+  required?: boolean;
+  /**
+   * Closed set of allowed values. When present, the picker renders a
+   * `<select>` instead of a free-text input. Standard MCP
+   * `prompts/list` does not carry this information — see the remarks
+   * on `useMcpPrompts` for the spec limitation and the workaround
+   * (populate this at the descriptor-mapping layer).
+   */
+  enum?: string[];
+  /**
+   * Optional ECMAScript regex source (no leading/trailing slashes)
+   * that the value must match on submit. Empty optional values are
+   * skipped — the regex only applies to values that are actually
+   * sent. Mirrors `z.string().regex(...)` on the server.
+   *
+   * Stored as a string (not `RegExp`) so the descriptor stays Qwik-
+   * serializable across the resume boundary.
+   *
+   * Standard MCP `prompts/list` does not carry this information —
+   * see the remarks on `useMcpPrompts` for the spec limitation. When
+   * absent, regex constraints fall back to server-side validation
+   * and surface as raw Zod issues in the modal's error line.
+   */
+  pattern?: string;
+  /**
+   * Human-readable error to show when `pattern` fails. Falls back to
+   * a generic "<name> is invalid." Used both for the picker's inline
+   * error and the input's HTML5 `title` attribute.
+   */
+  patternMessage?: string;
+  /**
+   * Optional initial value. For enum arguments this should be one of
+   * the listed values; for free-text it pre-fills the input. Useful
+   * for surfacing a server-side default.
+   */
+  default?: string;
 }
 
 export interface ElmAgUiPromptPickerProps {
@@ -83,7 +120,14 @@ export const ElmAgUiPromptPicker = component$<ElmAgUiPromptPickerProps>(
         return;
       }
       const initial: Record<string, string> = {};
-      for (const a of args) initial[a.name] = "";
+      for (const a of args) {
+        // Prefer the descriptor's default; for enums with no default,
+        // pre-select the first option so the submit path always has a
+        // valid value (otherwise the select shows blank-by-default
+        // which doesn't round-trip cleanly).
+        initial[a.name] =
+          a.default ?? (a.enum && a.enum.length > 0 ? a.enum[0] : "");
+      }
       active.descriptor = descriptor;
       active.values = initial;
       active.submitting = false;
@@ -108,10 +152,45 @@ export const ElmAgUiPromptPicker = component$<ElmAgUiPromptPickerProps>(
           return;
         }
       }
+      // Drop optional fields the user left blank (text inputs they
+      // never typed in, or enums set back to "(none)"). MCP servers
+      // typically validate optional args with Zod — an empty string
+      // fails enum / min(1) parsers, while an omitted key satisfies
+      // `.optional()`. The required-check above already enforces
+      // presence for required fields, so we never strip those.
+      const payload: Record<string, string> = {};
+      for (const a of args) {
+        const value = active.values[a.name] ?? "";
+        if (a.required || value !== "") payload[a.name] = value;
+      }
+      // Regex check runs after the payload trim so optional blank
+      // fields that were just dropped don't fail validation. Anchor
+      // the source with `^...$` if the descriptor's pattern didn't
+      // already — matches Zod's `.regex()` semantics (full-string).
+      for (const a of args) {
+        if (!a.pattern || payload[a.name] === undefined) continue;
+        const source = /^\^|\$$/.test(a.pattern)
+          ? a.pattern
+          : `^(?:${a.pattern})$`;
+        let re: RegExp;
+        try {
+          re = new RegExp(source);
+        } catch {
+          // Malformed descriptor — fail loud rather than silently
+          // letting the value through and surprising the server.
+          active.error = `"${a.name}" has an invalid pattern definition.`;
+          return;
+        }
+        if (!re.test(payload[a.name])) {
+          active.error =
+            a.patternMessage ?? `"${a.name}" is invalid.`;
+          return;
+        }
+      }
       active.error = null;
       active.submitting = true;
       try {
-        await onPick$(descriptor.key, { ...active.values });
+        await onPick$(descriptor.key, payload);
         hide();
       } catch (err) {
         active.error = err instanceof Error ? err.message : String(err);
@@ -169,16 +248,54 @@ export const ElmAgUiPromptPicker = component$<ElmAgUiPromptPickerProps>(
                           <span class={styles["field-required"]}>*</span>
                         )}
                       </span>
-                      <input
-                        class={styles["field-input"]}
-                        type="text"
-                        placeholder={a.description}
-                        value={active.values[a.name] ?? ""}
-                        aria-required={a.required}
-                        onInput$={(_, el: HTMLInputElement) => {
-                          active.values[a.name] = el.value;
-                        }}
-                      />
+                      {a.enum && a.enum.length > 0 ? (
+                        <select
+                          class={styles["field-input"]}
+                          value={active.values[a.name] ?? ""}
+                          aria-required={a.required}
+                          onChange$={(_, el: HTMLSelectElement) => {
+                            active.values[a.name] = el.value;
+                          }}
+                        >
+                          {/*
+                            Optional args render an explicit "(none)"
+                            entry mapped to the empty string so the
+                            user can clear a previously-picked value.
+                            Required args drop it so submit can't fall
+                            into the missing-required error path with
+                            an enum picked.
+                          */}
+                          {!a.required && <option value="">(none)</option>}
+                          {a.enum.map((v) => (
+                            <option key={v} value={v}>
+                              {v}
+                            </option>
+                          ))}
+                        </select>
+                      ) : (
+                        <input
+                          class={styles["field-input"]}
+                          type="text"
+                          placeholder={a.description}
+                          value={active.values[a.name] ?? ""}
+                          aria-required={a.required}
+                          // Forward the regex source as the native
+                          // `pattern` so the field also gets browser
+                          // `:invalid` styling — useful when the user
+                          // hasn't hit Submit yet. The picker still
+                          // re-validates server-style on submit.
+                          pattern={a.pattern}
+                          title={a.patternMessage ?? a.description}
+                          onInput$={(_, el: HTMLInputElement) => {
+                            active.values[a.name] = el.value;
+                          }}
+                        />
+                      )}
+                      {a.enum && a.description && (
+                        <span class={styles["field-hint"]}>
+                          {a.description}
+                        </span>
+                      )}
                     </label>
                   ))}
                   {active.error && (

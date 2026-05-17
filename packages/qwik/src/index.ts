@@ -55,6 +55,7 @@ export {
   ElmAgUiPromptPicker,
   type ElmAgUiPromptPickerProps,
   type ElmAgUiPromptDescriptor,
+  type ElmAgUiPromptArgument,
 } from "./components/ag-ui-client/elm-ag-ui-prompt-picker";
 export {
   ElmAgUiMessageRenderer,
