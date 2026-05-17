@@ -1,6 +1,6 @@
 {
   "name": "@elmethis/qwik",
-  "version": "0.0.88",
+  "version": "0.1.0-alpha.0",
   "publishConfig": {
     "access": "public"
   },
