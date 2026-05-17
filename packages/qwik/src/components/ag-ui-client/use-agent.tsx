@@ -1,10 +1,12 @@
 import {
   $,
+  isSignal,
   noSerialize,
   useSignal,
   useStore,
   useVisibleTask$,
   type NoSerialize,
+  type Signal,
 } from "@qwik.dev/core";
 
 import {
@@ -27,7 +29,19 @@ import { normalizePromptTemplates } from "./normalize-prompt-templates";
 
 export interface UseAgentOptions {
   url: string;
-  tools?: ToolRegistry;
+  /**
+   * Frontend-executed tools the agent may call.
+   *
+   * - Plain `ToolRegistry`: static set. Mutate via the returned
+   *   `addTool$` to add entries at runtime.
+   * - `Signal<NoSerialize<ToolRegistry> | undefined>`: dynamic set
+   *   owned by the caller (e.g., `useMcpTools`). `useAgent` re-reads
+   *   the signal at every `runAgent` call. `addTool$` becomes a no-op
+   *   in this mode — mutate the signal's source instead.
+   */
+  tools?:
+    | ToolRegistry
+    | Signal<NoSerialize<ToolRegistry> | undefined>;
   context?: { value: string; description: string }[];
   headers?: Record<string, string>;
   initialMessages?: Message[];
@@ -59,7 +73,12 @@ export function useAgent({
   agentFactory,
 }: UseAgentOptions) {
   const agentRef = useSignal<NoSerialize<AbstractAgent> | null>(null);
-  const toolsRef = useSignal<NoSerialize<ToolRegistry>>(noSerialize(tools));
+  const toolsSignal = isSignal(tools)
+    ? (tools as Signal<NoSerialize<ToolRegistry> | undefined>)
+    : undefined;
+  const toolsRef = useSignal<NoSerialize<ToolRegistry>>(
+    noSerialize(toolsSignal ? undefined : (tools as ToolRegistry | undefined)),
+  );
   const factoryRef = useSignal<
     NoSerialize<NonNullable<UseAgentOptions["agentFactory"]>>
   >(noSerialize(agentFactory));
@@ -76,9 +95,12 @@ export function useAgent({
   const executeRun = $(async (withContext: boolean) => {
     if (!agentRef.value) return;
     state.error = null;
+    const registry = toolsSignal
+      ? (toolsSignal.value ?? {})
+      : (toolsRef.value ?? {});
     try {
       await agentRef.value.runAgent({
-        tools: getToolDefinitions(toolsRef.value ?? {}),
+        tools: getToolDefinitions(registry),
         ...(withContext && {
           context: state.context?.map(({ value, description }) => ({
             value,
@@ -114,7 +136,8 @@ export function useAgent({
       const subscription = agent.subscribe(
         createAgentSubscriber({
           state,
-          getTools: () => toolsRef.value ?? {},
+          getTools: () =>
+            (toolsSignal ? toolsSignal.value : toolsRef.value) ?? {},
           onNeedsReRun: async (pending) => {
             if (!agentRef.value) return;
             agentRef.value.messages.push(...pending);
@@ -160,6 +183,9 @@ export function useAgent({
   });
 
   const addTool = $((name: string, tool: AnyToolDef) => {
+    // Signal-backed tools are owned by the caller; mutating toolsRef
+    // here would be silently dropped on the next runAgent read.
+    if (toolsSignal) return;
     toolsRef.value = noSerialize({ ...(toolsRef.value ?? {}), [name]: tool });
   });
 

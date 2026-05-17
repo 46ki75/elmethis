@@ -1,13 +1,39 @@
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 
+export type ToolParameters = {
+  type: "object";
+  properties?: Record<string, unknown>;
+  required?: string[];
+  [k: string]: unknown;
+};
+
+/**
+ * Tool definition driven by a Zod schema. `execute` receives args typed
+ * from `z.infer<T>`; the JSON Schema fed to the agent is generated via
+ * `zod-to-json-schema` at call time.
+ */
 export interface ToolDef<T extends z.ZodObject<z.ZodRawShape>> {
   description: string;
   schema: T;
   execute: (args: z.infer<T>) => unknown;
 }
 
-export type AnyToolDef = ToolDef<z.ZodObject<z.ZodRawShape>>;
+/**
+ * Tool definition driven by a prebuilt JSON Schema. Use when the schema
+ * comes from somewhere other than Zod (e.g., an MCP server's
+ * `tools/list` response) and reverse-converting to Zod is unnecessary.
+ */
+export interface JsonSchemaToolDef {
+  description: string;
+  jsonSchema: ToolParameters;
+  execute: (args: Record<string, unknown>) => unknown;
+}
+
+export type AnyToolDef =
+  | ToolDef<z.ZodObject<z.ZodRawShape>>
+  | JsonSchemaToolDef;
+
 export type ToolRegistry = Record<string, AnyToolDef>;
 
 /**
@@ -33,14 +59,22 @@ export function defineTool<T extends z.ZodObject<z.ZodRawShape>>(
   return tool as unknown as AnyToolDef;
 }
 
+/**
+ * Define a tool using a prebuilt JSON Schema. Bypasses
+ * `zod-to-json-schema`. Args are typed as `Record<string, unknown>` —
+ * validate inside `execute` if you need stricter shape guarantees.
+ */
+export function defineJsonSchemaTool(tool: JsonSchemaToolDef): AnyToolDef {
+  return tool;
+}
+
 export function getToolDefinitions(registry: ToolRegistry) {
-  return Object.entries(registry).map(([name, { description, schema }]) => ({
+  return Object.entries(registry).map(([name, tool]) => ({
     name,
-    description,
-    parameters: zodToJsonSchema(schema) as {
-      type: "object";
-      properties: Record<string, unknown>;
-      required: string[];
-    },
+    description: tool.description,
+    parameters:
+      "jsonSchema" in tool
+        ? tool.jsonSchema
+        : (zodToJsonSchema(tool.schema) as ToolParameters),
   }));
 }

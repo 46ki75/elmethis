@@ -69,8 +69,11 @@ export {
 } from "./components/ag-ui-client/elm-ag-ui-agent";
 export {
   defineTool,
+  defineJsonSchemaTool,
   type AnyToolDef,
+  type JsonSchemaToolDef,
   type ToolDef,
+  type ToolParameters,
   type ToolRegistry,
 } from "./components/ag-ui-client/tool-registry";
 export {
@@ -78,6 +81,17 @@ export {
   type AgentState,
   type UseAgentOptions,
 } from "./components/ag-ui-client/use-agent";
+export {
+  useMcpTools,
+  type UseMcpToolsOptions,
+  type UseMcpToolsReturn,
+} from "./components/ag-ui-client/use-mcp-tools";
+export type {
+  McpClientHandle,
+  McpServerConfig,
+  McpServerStatus,
+  McpToolDescriptor,
+} from "./components/ag-ui-client/mcp-types";
 
 // | Code |
 export {

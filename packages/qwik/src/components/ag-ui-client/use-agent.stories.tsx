@@ -1,8 +1,12 @@
 import {
   component$,
+  noSerialize,
+  useSignal,
   useStore,
   useTask$,
+  useVisibleTask$,
   type CSSProperties,
+  type NoSerialize,
 } from "@qwik.dev/core";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { v4, v7 } from "uuid";
@@ -10,28 +14,43 @@ import { z } from "zod";
 import { useAgent } from "./use-agent";
 import { ElmAgUiAgent } from "./elm-ag-ui-agent";
 import { defineTool } from "./tool-registry";
+import type { ToolRegistry } from "./tool-registry";
+import { useMcpTools } from "./use-mcp-tools";
 
 export interface UseAgentProps {
   class?: string;
   style?: CSSProperties;
   url: string;
+  mcpUrl: string;
 }
 
 const UseAgent = component$<UseAgentProps>(
-  ({ class: className, style, url }) => {
+  ({ class: className, style, url, mcpUrl }) => {
     const context = useStore<Array<{ description: string; value: string }>>([]);
 
-    const { state, send$, retry$, abort$, addTool$, setPromptTemplates$ } =
-      useAgent({
-        url,
-        context: context,
-      });
+    // ToDo MCP server: tools are listed asynchronously after connect.
+    // The returned signal grows as the server becomes ready.
+    const { tools: mcpTools } = useMcpTools({
+      servers: [{ id: "todo", url: mcpUrl }],
+    });
 
-    useTask$(() => {
-      addTool$(
-        "generateUuid",
-        defineTool({
-          description: "Generate a random UUID v4 string",
+    // Local tools the agent should always see. The Zod schema is not
+    // serializable, so build it inside a useVisibleTask$ (client-only)
+    // — otherwise the value is constructed during SSR and dropped on
+    // resume, and Qwik also refuses to walk the captured Zod instance
+    // when validating the task's QRL boundary.
+    const localToolsRef = useSignal<NoSerialize<ToolRegistry> | undefined>(
+      undefined,
+    );
+    const mergedTools = useSignal<NoSerialize<ToolRegistry> | undefined>(
+      undefined,
+    );
+
+    // eslint-disable-next-line qwik/no-use-visible-task
+    useVisibleTask$(() => {
+      localToolsRef.value = noSerialize<ToolRegistry>({
+        generateUuid: defineTool({
+          description: "Generate a random UUID v4 or v7 string",
           schema: z.object({
             version: z
               .enum(["v4", "v7"])
@@ -43,8 +62,25 @@ const UseAgent = component$<UseAgentProps>(
             uuid: version === "v4" ? v4() : v7(),
           }),
         }),
-      );
+      });
+    });
 
+    useTask$(({ track }) => {
+      const local = track(() => localToolsRef.value);
+      const mcp = track(() => mcpTools.value);
+      mergedTools.value = noSerialize<ToolRegistry>({
+        ...(local ?? {}),
+        ...(mcp ?? {}),
+      });
+    });
+
+    const { state, send$, retry$, abort$, setPromptTemplates$ } = useAgent({
+      url,
+      context,
+      tools: mergedTools,
+    });
+
+    useTask$(() => {
       context.push({
         description: "Current date and time",
         value: new Date().toString(),
@@ -70,6 +106,21 @@ const UseAgent = component$<UseAgentProps>(
         {
           description: "Location information",
           content: "What is my current location?",
+        },
+        {
+          description: "ToDo: add an item",
+          content:
+            "Add a todo titled 'Buy groceries' using the todo MCP server, then read it back to confirm.",
+        },
+        {
+          description: "ToDo: list pending items",
+          content:
+            "List all the todos that are still pending and summarise them as a numbered list.",
+        },
+        {
+          description: "ToDo: complete and clean up",
+          content:
+            "Add three todos ('Buy milk', 'Write report', 'Call dentist'), then mark 'Write report' as done, then delete 'Call dentist'. Show me the final list afterwards.",
         },
         {
           description: "Render A2UI",
@@ -100,6 +151,7 @@ const meta: Meta<UseAgentProps> = {
   tags: ["autodocs"],
   args: {
     url: "http://localhost:19101/copilotkit/builtin/agent/minimax-m2.5-free/run",
+    mcpUrl: "http://localhost:19102/mcp",
   },
   argTypes: {
     url: {
@@ -115,6 +167,12 @@ const meta: Meta<UseAgentProps> = {
         "http://localhost:19101/copilotkit/mastra/agent/minimax-m2.5-free/run",
         "http://localhost:19101/copilotkit/mastra/agent/kimi-k2.6/run",
       ],
+    },
+    mcpUrl: {
+      description:
+        "Streamable HTTP endpoint for the ToDo MCP server (packages/mcp-server). " +
+        "Its tools are merged into useAgent under the `todo__` prefix.",
+      control: "text",
     },
   },
 };
