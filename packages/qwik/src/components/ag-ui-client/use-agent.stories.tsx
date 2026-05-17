@@ -41,10 +41,9 @@ const UseAgent = component$<UseAgentProps>(
     // Same server, prompts side. We keep tools and prompts as separate
     // hooks so each can be composed independently; the picker UI is
     // rendered by ElmAgUiAgent given the descriptor list + resolve QRL.
-    const { prompts: mcpPrompts, resolve$: resolveMcpPrompt$ } =
-      useMcpPrompts({
-        servers: [{ id: "weather", url: mcpUrl }],
-      });
+    const { prompts: mcpPrompts, resolve$: resolveMcpPrompt$ } = useMcpPrompts({
+      servers: [{ id: "weather", url: mcpUrl }],
+    });
 
     // Per-prompt enum / pattern overrides. MCP's `prompts/list` only
     // carries (name, description, required), so any closed-set or
@@ -172,21 +171,6 @@ const UseAgent = component$<UseAgentProps>(
         {
           description: "Location information",
           content: "What is my current location?",
-        },
-        {
-          description: "Weather: single city",
-          content:
-            "What's the weather like in Tokyo right now? Use the weather MCP tool.",
-        },
-        {
-          description: "Weather: compare two cities",
-          content:
-            "Compare today's weather in Tokyo and London using the weather tool. Which one is warmer, and by how much?",
-        },
-        {
-          description: "Weather: trip planning",
-          content:
-            "I'm picking between Paris, Rome, and Barcelona for a weekend trip. Check the current weather in each city, then recommend one based on the conditions. Show me the data you used.",
         },
         {
           description: "Render A2UI",

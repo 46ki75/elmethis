@@ -1,6 +1,7 @@
 import {
   $,
   component$,
+  useComputed$,
   useSignal,
   type CSSProperties,
   type QRL,
@@ -75,6 +76,19 @@ export const ElmAgUiInput = component$<ElmAgUiInputProps>(
     const textAreaRef = useSignal<HTMLTextAreaElement>();
     const isPickerOpen = useSignal<boolean>(false);
 
+    // Slash mode: when the user types `/` in the textarea, scan back
+    // from the caret. If the current word starts with `/`, treat the
+    // [slash, caret] substring as a live query that filters the picker
+    // and gets replaced when a row is chosen.
+    const slashRange = useSignal<{ start: number; end: number } | null>(null);
+    const slashQuery = useSignal<string>("");
+    const activeIndex = useSignal<number>(0);
+    // Trigger channel into the picker: setting this signal to a
+    // descriptor makes the picker run its row-click flow (modal for
+    // arg prompts, immediate pick for no-arg). The picker resets it
+    // to `null` after handling.
+    const triggerDescriptor = useSignal<ElmAgUiPromptDescriptor | null>(null);
+
     const onSubmit = $((event: Event, element: Element) => {
       onSubmit$(event, element);
       if (textAreaRef.value) {
@@ -84,8 +98,22 @@ export const ElmAgUiInput = component$<ElmAgUiInputProps>(
 
     // Picker visible only when both data and handler are supplied —
     // either alone signals an unfinished wiring on the parent's part
-    // and would render a useless toggle.
+    // and would render a useless toggle. Only referenced in render
+    // (JSX is part of the host component's $-scope and tolerates the
+    // QRL-mixed `&&` result); child QRLs gate on the individual
+    // signals directly to avoid Qwik's lexical-scope analyzer
+    // complaint about this composite value.
     const hasPicker = prompts !== undefined && resolvePrompt$ !== undefined;
+
+    // Filter rows by the slash query when slash mode is active.
+    // Plain "+" mode (slashRange == null + empty query) returns all
+    // rows, preserving today's behavior.
+    const filteredPrompts = useComputed$<ElmAgUiPromptDescriptor[]>(() => {
+      const q = slashQuery.value.trim().toLowerCase();
+      const all = prompts ?? [];
+      if (!q) return all;
+      return all.filter((p) => p.name.toLowerCase().includes(q));
+    });
 
     const onPickPrompt = $(
       async (key: string, args: Record<string, string>) => {
@@ -97,19 +125,22 @@ export const ElmAgUiInput = component$<ElmAgUiInputProps>(
           .join("\n\n");
         if (!text) {
           // Server returned nothing usable — leave the textarea
-          // untouched but close the picker so the user can re-try.
+          // untouched but close both modes so the user can re-try.
           isPickerOpen.value = false;
+          slashRange.value = null;
+          slashQuery.value = "";
           return;
         }
 
         const ta = textAreaRef.value;
         if (ta) {
-          // Insert at the textarea's current cursor / selection. If
-          // the textarea has never been focused, selectionStart is 0
-          // and the prompt lands at the beginning — fine for the
-          // empty-textarea case.
-          const start = ta.selectionStart ?? ta.value.length;
-          const end = ta.selectionEnd ?? ta.value.length;
+          // Slash mode overrides the cursor splice: replace the typed
+          // `/query` substring so the user doesn't have to clean it
+          // up. Otherwise fall back to the textarea's current cursor /
+          // selection.
+          const range = slashRange.value;
+          const start = range?.start ?? ta.selectionStart ?? ta.value.length;
+          const end = range?.end ?? ta.selectionEnd ?? ta.value.length;
           const before = ta.value.slice(0, start);
           const after = ta.value.slice(end);
           const inserted = before + text + after;
@@ -126,16 +157,99 @@ export const ElmAgUiInput = component$<ElmAgUiInputProps>(
         }
 
         isPickerOpen.value = false;
+        slashRange.value = null;
+        slashQuery.value = "";
+      },
+    );
+
+    // Re-evaluate slash mode against the textarea's current value and
+    // caret. Called from both the wrapped onInput$ and the synthetic
+    // input event the pick handler dispatches.
+    const detectSlash = $((ta: HTMLTextAreaElement) => {
+      const caret = ta.selectionStart ?? ta.value.length;
+      const value = ta.value;
+      let i = caret - 1;
+      // Walk back to the start of the current word.
+      while (i >= 0 && !/\s/.test(value[i] ?? "")) i--;
+      // i+1 is the first non-whitespace char before caret (or 0 at BOF).
+      if (value[i + 1] === "/") {
+        slashRange.value = { start: i + 1, end: caret };
+        slashQuery.value = value.slice(i + 2, caret);
+        activeIndex.value = 0;
+      } else {
+        slashRange.value = null;
+        slashQuery.value = "";
+      }
+    });
+
+    const handleInput$ = $(
+      async (event: InputEvent, element: HTMLTextAreaElement) => {
+        await detectSlash(element);
+        await onInput$(event, element);
+      },
+    );
+
+    // Keep this handler synchronous so `event.preventDefault()` runs
+    // before the browser's default-action phase. The lint warning
+    // `qwik/no-async-prevent-default` fires unconditionally for any
+    // `preventDefault()` inside a `$()` boundary (the closure is
+    // lazy-downloaded as a chunk), but in practice Qwik's prefetcher
+    // has the chunk warm before the user's first keystroke. The
+    // async pick path is fired-and-forgotten via `.then()` so the
+    // keystroke suppression doesn't depend on it resolving.
+    const handleKeyDown$ = $(
+      (event: KeyboardEvent, _element: HTMLTextAreaElement) => {
+        // Gate on `slashRange` only — slash mode can only have been
+        // activated when prompts were defined, so the per-key
+        // list-length checks below cover the "no picker wired" case.
+        if (slashRange.value === null) return;
+        const list = filteredPrompts.value;
+        if (event.key === "ArrowDown") {
+          if (list.length === 0) return;
+          event.preventDefault();
+          activeIndex.value = (activeIndex.value + 1) % list.length;
+        } else if (event.key === "ArrowUp") {
+          if (list.length === 0) return;
+          event.preventDefault();
+          activeIndex.value =
+            (activeIndex.value - 1 + list.length) % list.length;
+        } else if (event.key === "Escape") {
+          event.preventDefault();
+          slashRange.value = null;
+          slashQuery.value = "";
+        } else if (event.key === "Enter") {
+          if (list.length === 0) return;
+          const chosen = list[Math.min(activeIndex.value, list.length - 1)];
+          event.preventDefault();
+          // Route both no-arg and arg-bearing prompts through the
+          // picker's trigger signal — it does the right thing for
+          // each case (immediate pick vs modal open). Keeps the
+          // modal-control logic in one place.
+          triggerDescriptor.value = chosen;
+        }
       },
     );
 
     return (
       <div class={[styles["elm-ag-ui-input-wrapper"], className]} style={style}>
         <ElmCollapse
-          isOpen={hasPicker && isPickerOpen.value}
+          isOpen={
+            hasPicker && (isPickerOpen.value || slashRange.value !== null)
+          }
           class={styles["picker-container"]}
         >
-          <ElmAgUiPromptPicker prompts={prompts ?? []} onPick$={onPickPrompt} />
+          <ElmAgUiPromptPicker
+            prompts={
+              slashRange.value !== null
+                ? filteredPrompts.value
+                : (prompts ?? [])
+            }
+            onPick$={onPickPrompt}
+            activeIndex={
+              slashRange.value !== null ? activeIndex.value : undefined
+            }
+            triggerDescriptor={triggerDescriptor}
+          />
         </ElmCollapse>
 
         <div class={[styles["elm-ag-ui-input"], textStyle["text"]]}>
@@ -169,7 +283,8 @@ export const ElmAgUiInput = component$<ElmAgUiInputProps>(
           <textarea
             ref={textAreaRef}
             class={styles["input"]}
-            onInput$={onInput$}
+            onInput$={handleInput$}
+            onKeyDown$={handleKeyDown$}
           />
 
           <div

@@ -2,8 +2,10 @@ import {
   $,
   component$,
   useStore,
+  useTask$,
   type CSSProperties,
   type QRL,
+  type Signal,
 } from "@qwik.dev/core";
 
 import styles from "./elm-ag-ui-prompt-picker.module.css";
@@ -86,6 +88,23 @@ export interface ElmAgUiPromptPickerProps {
   onPick$: QRL<
     (key: string, args: Record<string, string>) => Promise<void> | void
   >;
+  /**
+   * Index (into `prompts` as passed in) of the row that should render
+   * with the active/highlighted style. Driven by the parent's keyboard
+   * navigation when the picker is opened via a slash command. Omit
+   * for plain mouse-only mode.
+   */
+  activeIndex?: number;
+  /**
+   * External trigger to fire the same flow as a row click. When the
+   * parent sets this signal's value to a descriptor, the picker runs
+   * `onRowClick$` against it (no-arg prompts pick immediately,
+   * arg-bearing prompts open the modal) and resets the signal to
+   * `null`. Used by `ElmAgUiInput` to route keyboard Enter from the
+   * textarea into the picker without exposing the modal-control
+   * internals.
+   */
+  triggerDescriptor?: Signal<ElmAgUiPromptDescriptor | null>;
 }
 
 interface ActivePrompt {
@@ -97,7 +116,14 @@ interface ActivePrompt {
 }
 
 export const ElmAgUiPromptPicker = component$<ElmAgUiPromptPickerProps>(
-  ({ class: className, style, prompts, onPick$ }) => {
+  ({
+    class: className,
+    style,
+    prompts,
+    onPick$,
+    activeIndex,
+    triggerDescriptor,
+  }) => {
     const { Modal, show, hide } = useModal({});
 
     // Single in-flight form state. Reset every time a new prompt is
@@ -133,6 +159,18 @@ export const ElmAgUiPromptPicker = component$<ElmAgUiPromptPickerProps>(
       active.submitting = false;
       active.error = null;
       show();
+    });
+
+    // External trigger: when the parent sets `triggerDescriptor.value`
+    // to a descriptor, run the same path as a row click. Reset to
+    // `null` before invoking so a re-trigger on the same descriptor
+    // (e.g. user presses Enter twice on the same row) still fires.
+    useTask$(async ({ track }) => {
+      if (!triggerDescriptor) return;
+      const desc = track(() => triggerDescriptor.value);
+      if (desc === null) return;
+      triggerDescriptor.value = null;
+      await onRowClick$(desc);
     });
 
     const onCancel$ = $(() => {
@@ -205,10 +243,13 @@ export const ElmAgUiPromptPicker = component$<ElmAgUiPromptPickerProps>(
           {prompts.length === 0 ? (
             <div class={styles.empty}>No prompts available.</div>
           ) : (
-            prompts.map((p) => (
+            prompts.map((p, idx) => (
               <div
                 key={p.key}
-                class={styles["prompt-row"]}
+                class={[
+                  styles["prompt-row"],
+                  idx === activeIndex && styles["prompt-row-active"],
+                ]}
                 onClick$={() => onRowClick$(p)}
               >
                 <div class={styles["prompt-head"]}>
