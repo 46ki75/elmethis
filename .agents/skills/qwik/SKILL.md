@@ -15,7 +15,7 @@ description: >
 license: MIT
 metadata:
   author: "Ikuma Yamashita"
-  version: "1.4.0"
+  version: "1.5.0"
 ---
 
 # Qwik Skill (v1 & v2)
@@ -143,6 +143,26 @@ immediately with the pending state.
 > **v2 note:** `useVisibleTask$` no longer accepts `eagerness: 'load' | 'idle'`
 > — remove it when migrating. A `strategy: 'document-ready'` option exists for
 > cases that need eager client execution.
+
+**`intersection-observer` (the default) silently fails in two common cases —
+reach for `{ strategy: "document-ready" }` when:**
+
+- **The host component renders another component, not a direct DOM element.**
+  Qwik can't attach the intersection observer and logs
+  `"You are trying to add the event 'q-e:qvisible' using the useVisibleTask$
+  hook with the 'intersection-observer' strategy, but this only works when the
+  component outputs a DOM element. Falling back to 'document-ready' instead."`
+  Be explicit to silence the warning.
+- **The task lives inside a conditionally-rendered or collapsed subtree** (a
+  closed `ElmCollapse`, a hidden tab panel, a modal that hasn't opened yet).
+  The element is `height: 0` / `display: none`, so the observer never fires —
+  signal writes that would have triggered the task slip past unobserved. This
+  bites focus-on-open patterns: a `useVisibleTask$` that should focus the first
+  field when a modal opens will never subscribe.
+
+Pair with `requestAnimationFrame()` (not `queueMicrotask`) when focusing a
+freshly-mounted ref — gives Qwik a frame to wire the `ref={}` attribute onto
+the just-rendered element.
 
 Important: `useTask$` that tracks no state runs **exactly once**, either on the
 server or the browser, not both. Use `isServer`/`isBrowser` guards only when
@@ -427,6 +447,81 @@ will not pump. In production this Just Works; in tests, click a no-op
 `#btn-flush` button after waiting to flush the scheduler. Details in
 `references/qwik-core.md` ("Testing helper").
 
+### Programmatic value writes on form controls don't fire `onInput$`
+
+Setting `textarea.value = "..."` (or `input.value = "..."`) from JS does
+**not** trigger Qwik's `onInput$` listener. Any parent component that mirrors
+form text into a Signal via that listener will be stale, and the submit path
+will see the old value.
+
+Dispatch a bubbling input event after the write:
+
+```ts
+ta.value = newText;
+ta.focus();
+ta.setSelectionRange(caret, caret);
+ta.dispatchEvent(new Event("input", { bubbles: true }));
+```
+
+The dispatched object is technically `Event`, not `InputEvent` (no `data` /
+`inputType`), but Qwik's listener still fires. Common scenario: splicing
+resolved prompt-template text into a chat input from a side panel; the
+template's content has to reach the parent's input mirror through this synthetic
+event.
+
+### Cross-component imperative actions via Signal + `useTask$`
+
+Qwik has no React-style imperative refs for invoking a child component's
+methods. The clean pattern for "component A asks component B to do something"
+(e.g., a keyboard handler in the parent input asks a sibling picker to open
+its modal):
+
+1. Parent creates `const trigger = useSignal<Payload | null>(null);`
+2. Passes it down as a prop to the child.
+3. Child watches via `useTask$`:
+
+   ```tsx
+   useTask$(async ({ track }) => {
+     if (!trigger) return; // optional prop guard
+     const payload = track(() => trigger.value);
+     if (payload === null) return;
+     trigger.value = null; // reset BEFORE the work so a re-trigger on the
+                           // same value still fires (track only sees changes)
+     await doTheThing(payload);
+   });
+   ```
+
+4. Parent invokes by writing: `trigger.value = somePayload;`
+
+Constraints:
+
+- Payload must be **serializable** — plain object / string / number, not a
+  QRL, class instance, or function reference.
+- **Reset to `null` *before* the async work**, not after — `track()` only
+  re-runs on value changes, so resetting first lets the same payload
+  re-trigger without writing a different intermediate value.
+- For one-shot signals that should re-fire even on writing the same value,
+  use a nonce / counter field in a store instead.
+
+### ESLint plugin quirks
+
+Two `eslint-plugin-qwik` rules surprise first-time users:
+
+- **`qwik/valid-lexical-scope`** rejects booleans built from a `QRL<...>`
+  operand (`const hasPicker = prompts && resolvePrompt$`) when captured into
+  a child `$()` closure, with the misleading message `"Symbol, which is not
+  serializable."` The composite IS fine in JSX render; only nested child
+  QRLs trigger it.
+- **`qwik/no-async-prevent-default`** fires for **any** `preventDefault()`
+  inside a `$()` closure regardless of whether the body is actually `async`
+  — the name is misleading. The proper fix is `sync$()`, not just removing
+  `async`.
+
+Read `references/lint-quirks.md` when you hit either rule — it covers the
+underlying cause for each, the recommended pattern (`sync$()` split for
+prevent-default, inlined per-signal gates for lexical-scope), and when an
+`eslint-disable` block is the pragmatic last resort.
+
 ---
 
 ## Reference files
@@ -449,10 +544,16 @@ will not pump. In production this Just Works; in tests, click a no-op
   serialization APIs, Vite 8 / Rolldown support, `pnpm qwik migrate-v2`
   codemod, and v1-lib interop. **Read for any v2-specific question or
   migration request.**
+- **`references/lint-quirks.md`** — `eslint-plugin-qwik` rules that surprise
+  users: `qwik/valid-lexical-scope` rejecting QRL-mixed composites, and
+  `qwik/no-async-prevent-default` firing for any `preventDefault()` inside
+  `$()` (not just async). Covers the `sync$()` split pattern, inlined per-signal
+  gates, and when `eslint-disable` is the right call. Read when either rule
+  fires unexpectedly.
 
 ### Cookbook recipes (read for specific "how do I" patterns)
 
-When the user asks _how to implement_ a specific common pattern, read the
+When the user asks *how to implement* a specific common pattern, read the
 matching file from `references/cookbook/`:
 
 | Pattern                      | File                                     |
