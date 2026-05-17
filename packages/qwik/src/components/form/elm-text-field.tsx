@@ -83,10 +83,18 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
           {label}
           {required && <span class={styles.requierd}>*</span>}
         </span>
-        {maxLength != null && (
+        {value != null && (
           <ElmInlineText
-            text={`${value?.value.length} / ${maxLength}`}
-            color={(value?.value.length ?? -1) > maxLength ? "#c56565" : "gray"}
+            text={
+              maxLength != null
+                ? `${value.value.length} / ${maxLength}`
+                : `${value.value.length}`
+            }
+            color={
+              maxLength != null && value.value.length > maxLength
+                ? "#c56565"
+                : "gray"
+            }
             size="0.75rem"
           />
         )}
