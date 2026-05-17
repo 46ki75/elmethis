@@ -189,14 +189,13 @@ export const ElmAgUiInput = component$<ElmAgUiInputProps>(
       },
     );
 
-    // Keep this handler synchronous so `event.preventDefault()` runs
-    // before the browser's default-action phase. The lint warning
-    // `qwik/no-async-prevent-default` fires unconditionally for any
-    // `preventDefault()` inside a `$()` boundary (the closure is
-    // lazy-downloaded as a chunk), but in practice Qwik's prefetcher
-    // has the chunk warm before the user's first keystroke. The
-    // async pick path is fired-and-forgotten via `.then()` so the
-    // keystroke suppression doesn't depend on it resolving.
+    // Sync handler — keystroke suppression doesn't depend on async
+    // work. The `qwik/no-async-prevent-default` rule pattern-matches
+    // any `event.preventDefault()` inside a `$()` boundary regardless
+    // of whether the body is async, and the recommended attribute
+    // alternative (`preventdefault:keydown`) is unconditional and
+    // would block normal typing. Rule disabled at function scope.
+    /* eslint-disable qwik/no-async-prevent-default */
     const handleKeyDown$ = $(
       (event: KeyboardEvent, _element: HTMLTextAreaElement) => {
         // Gate on `slashRange` only — slash mode can only have been
@@ -229,6 +228,7 @@ export const ElmAgUiInput = component$<ElmAgUiInputProps>(
         }
       },
     );
+    /* eslint-enable qwik/no-async-prevent-default */
 
     return (
       <div class={[styles["elm-ag-ui-input-wrapper"], className]} style={style}>
