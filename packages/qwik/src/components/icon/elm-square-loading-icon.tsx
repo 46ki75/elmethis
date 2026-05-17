@@ -2,7 +2,7 @@ import { component$, PropsOf, type CSSProperties } from "@qwik.dev/core";
 
 import styles from "./elm-square-loading-icon.module.css";
 
-export interface ElmSquareLoadingIconProps extends PropsOf<"div"> {
+export interface ElmSquareLoadingIconProps extends PropsOf<"span"> {
   size?: CSSProperties["width"];
   dimensions?: number;
 }
@@ -13,7 +13,7 @@ export const ElmSquareLoadingIcon = component$<ElmSquareLoadingIconProps>(
     const DELAY = DURATION / (dimensions * 3);
 
     return (
-      <div
+      <span
         class={[styles.wrapper, className]}
         style={{
           "--size": size,
@@ -29,14 +29,14 @@ export const ElmSquareLoadingIcon = component$<ElmSquareLoadingIconProps>(
             new Array(dimensions)
               .fill(null)
               .map((_, columnIndex) => (
-                <div
+                <span
                   key={`${rowIndex}-${columnIndex}`}
                   class={styles.square}
                   style={{ "--delay": `${DELAY * (rowIndex + columnIndex)}ms` }}
-                ></div>
+                ></span>
               )),
           )}
-      </div>
+      </span>
     );
   },
 );

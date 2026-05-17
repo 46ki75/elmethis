@@ -2,7 +2,7 @@ import { component$, PropsOf, type CSSProperties } from "@qwik.dev/core";
 
 import styles from "./elm-dot-loading-icon.module.css";
 
-export interface ElmDotLoadingIconProps extends PropsOf<"div"> {
+export interface ElmDotLoadingIconProps extends PropsOf<"span"> {
   /**
    * Specifies the color of the dot.
    *
@@ -19,7 +19,7 @@ export interface ElmDotLoadingIconProps extends PropsOf<"div"> {
 export const ElmDotLoadingIcon = component$<ElmDotLoadingIconProps>(
   ({ class: className, style, size = "4em", color = "#606875", ...props }) => {
     return (
-      <div
+      <span
         class={[styles.wrapper, className]}
         style={{
           "--size": size,
@@ -28,10 +28,10 @@ export const ElmDotLoadingIcon = component$<ElmDotLoadingIconProps>(
         } as CSSProperties}
         {...props}
       >
-        <div class={styles.dot} aria-hidden="true"></div>
-        <div class={styles.dot} aria-hidden="true"></div>
-        <div class={styles.dot} aria-hidden="true"></div>
-      </div>
+        <span class={styles.dot} aria-hidden="true"></span>
+        <span class={styles.dot} aria-hidden="true"></span>
+        <span class={styles.dot} aria-hidden="true"></span>
+      </span>
     );
   },
 );

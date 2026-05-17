@@ -159,8 +159,16 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap<
     <div class={styles.card}>{renderChild(props.child)}</div>
   ),
 
+  // Rendered as a div-with-role rather than a native <button> because the
+  // A2UI `child` can be any component (Row, Column, Card, etc.), and those
+  // render <div>s. <div> inside <button> is invalid HTML and trips Qwik v2's
+  // SSR validator (Q12). Click handling already goes through the parent
+  // renderer's `[data-a2ui-action]` event delegation, so the element type
+  // doesn't have to be a native button.
   Button: ({ props, componentId, renderChild }: Ctx<typeof ButtonApi>) => (
-    <button
+    <div
+      role="button"
+      tabIndex={0}
       class={[
         styles.button,
         props.variant === "primary" && styles["button-primary"],
@@ -168,7 +176,7 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap<
       data-a2ui-action={props.action ? componentId : undefined}
     >
       {renderChild(props.child)}
-    </button>
+    </div>
   ),
 
   Image: ({ props, resolve }: Ctx<typeof ImageApi>) => {

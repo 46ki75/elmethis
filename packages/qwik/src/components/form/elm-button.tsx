@@ -74,7 +74,7 @@ export const ElmButton = component$<ElmButtonProps>((props) => {
       } as CSSProperties}
       {...rest}
     >
-      {clicked.value && <div class={styles.ripple}></div>}
+      {clicked.value && <span class={styles.ripple}></span>}
 
       {loading ? (
         <ElmDotLoadingIcon size="1.5rem" />
@@ -84,7 +84,7 @@ export const ElmButton = component$<ElmButtonProps>((props) => {
         </span>
       )}
 
-      <div class={styles["button-ornament"]}></div>
+      <span class={styles["button-ornament"]}></span>
     </button>
   );
 });
