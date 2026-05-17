@@ -11,15 +11,6 @@ import {
 import { z } from "zod";
 import { randomUUID } from "node:crypto";
 
-interface Todo {
-  id: string;
-  title: string;
-  done: boolean;
-  createdAt: string;
-}
-
-const store = new Map<string, Todo>();
-
 const envLevel = process.env.LOG_LEVEL as
   | keyof typeof LogLevels
   | undefined;
@@ -30,132 +21,68 @@ const rootLogger = createConsola({
       : LogLevels.debug,
 });
 
-function storeSummary() {
-  const total = store.size;
-  const pending = Array.from(store.values()).filter((t) => !t.done).length;
-  return { total, pending };
+const CONDITIONS = [
+  "Sunny",
+  "Partly cloudy",
+  "Cloudy",
+  "Light rain",
+  "Thunderstorm",
+  "Snow",
+];
+
+// Stable hash so the same city echoes the same weather across calls
+// for the lifetime of the process — handy for spotting agent caching
+// vs re-fetch behavior without wiring up a real weather API.
+function hashCity(city: string): number {
+  let h = 0;
+  for (let i = 0; i < city.length; i++) {
+    h = (h * 31 + city.charCodeAt(i)) | 0;
+  }
+  return Math.abs(h);
 }
 
 function buildServer(log: ConsolaInstance): McpServer {
   const server = new McpServer(
-    { name: "elmethis-todo-mcp", version: "0.0.1" },
+    { name: "elmethis-weather-mcp", version: "0.0.1" },
     { capabilities: {} },
   );
 
   server.registerTool(
-    "add_todo",
+    "get_weather",
     {
-      description: "Create a new todo item. Returns the created item.",
+      description:
+        "Get the current weather for a city. Returns a stub response — " +
+        "not real meteorological data.",
       inputSchema: {
-        title: z.string().min(1).describe("Short description of the task"),
-      },
-    },
-    async ({ title }) => {
-      const todo: Todo = {
-        id: randomUUID(),
-        title,
-        done: false,
-        createdAt: new Date().toISOString(),
-      };
-      store.set(todo.id, todo);
-      log.info("todo added", {
-        tool: "add_todo",
-        id: todo.id,
-        title,
-        store: storeSummary(),
-      });
-      return {
-        content: [{ type: "text", text: JSON.stringify(todo) }],
-      };
-    },
-  );
-
-  server.registerTool(
-    "list_todos",
-    {
-      description: "List all todos. Optionally filter by completion status.",
-      inputSchema: {
-        done: z
-          .boolean()
-          .optional()
+        city: z
+          .string()
+          .min(1)
           .describe(
-            "If true, return only completed todos; if false, return only " +
-              "pending ones. Omit to return all.",
+            "City name. Natural language is fine — e.g. 'Tokyo', " +
+              "'the city of Paris', 'San Francisco, California'. The " +
+              "value is used verbatim as the lookup key.",
           ),
       },
     },
-    async ({ done }) => {
-      const all = Array.from(store.values());
-      const filtered =
-        done === undefined ? all : all.filter((t) => t.done === done);
-      log.info("todos listed", {
-        tool: "list_todos",
-        filter: done === undefined ? "all" : done ? "done" : "pending",
-        count: filtered.length,
-        store: storeSummary(),
+    async ({ city }) => {
+      const h = hashCity(city);
+      const result = {
+        city,
+        condition: CONDITIONS[h % CONDITIONS.length],
+        temperature_c: 10 + (h % 25),
+        humidity_percent: 40 + ((h >> 3) % 50),
+        wind_kph: (h >> 5) % 30,
+        observed_at: new Date().toISOString(),
+        note: "Stub data — this server does not call a real weather API.",
+      };
+      log.info("weather queried", {
+        tool: "get_weather",
+        city,
+        condition: result.condition,
+        temperature_c: result.temperature_c,
       });
       return {
-        content: [{ type: "text", text: JSON.stringify(filtered) }],
-      };
-    },
-  );
-
-  server.registerTool(
-    "complete_todo",
-    {
-      description: "Mark a todo as done by id.",
-      inputSchema: {
-        id: z.string().describe("Id of the todo to complete"),
-      },
-    },
-    async ({ id }) => {
-      const todo = store.get(id);
-      if (!todo) {
-        log.warn("todo not found", { tool: "complete_todo", id });
-        return {
-          isError: true,
-          content: [{ type: "text", text: `No todo with id "${id}"` }],
-        };
-      }
-      todo.done = true;
-      log.info("todo completed", {
-        tool: "complete_todo",
-        id,
-        title: todo.title,
-        store: storeSummary(),
-      });
-      return {
-        content: [{ type: "text", text: JSON.stringify(todo) }],
-      };
-    },
-  );
-
-  server.registerTool(
-    "delete_todo",
-    {
-      description: "Delete a todo by id.",
-      inputSchema: {
-        id: z.string().describe("Id of the todo to delete"),
-      },
-    },
-    async ({ id }) => {
-      const existed = store.delete(id);
-      if (existed) {
-        log.info("todo deleted", {
-          tool: "delete_todo",
-          id,
-          store: storeSummary(),
-        });
-      } else {
-        log.warn("todo not found", { tool: "delete_todo", id });
-      }
-      return {
-        content: [
-          {
-            type: "text",
-            text: JSON.stringify({ id, deleted: existed }),
-          },
-        ],
+        content: [{ type: "text", text: JSON.stringify(result) }],
       };
     },
   );
@@ -206,15 +133,14 @@ app.all("/mcp", async (c) => {
 
 app.get("/", (c) =>
   c.json({
-    name: "elmethis-todo-mcp",
+    name: "elmethis-weather-mcp",
     endpoints: { mcp: "/mcp" },
-    todos: store.size,
   }),
 );
 
 const port = Number(process.env.PORT ?? 19102);
 serve({ fetch: app.fetch, port }, ({ port }) => {
-  rootLogger.success("ToDo MCP listening", {
+  rootLogger.success("Weather MCP listening", {
     port,
     url: `http://localhost:${port}/mcp`,
   });

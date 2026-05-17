@@ -28,10 +28,10 @@ const UseAgent = component$<UseAgentProps>(
   ({ class: className, style, url, mcpUrl }) => {
     const context = useStore<Array<{ description: string; value: string }>>([]);
 
-    // ToDo MCP server: tools are listed asynchronously after connect.
-    // The returned signal grows as the server becomes ready.
+    // Weather MCP server: tools are listed asynchronously after
+    // connect. The returned signal grows as the server becomes ready.
     const { tools: mcpTools } = useMcpTools({
-      servers: [{ id: "todo", url: mcpUrl }],
+      servers: [{ id: "weather", url: mcpUrl }],
     });
 
     // Local tools the agent should always see. The Zod schema is not
@@ -108,19 +108,19 @@ const UseAgent = component$<UseAgentProps>(
           content: "What is my current location?",
         },
         {
-          description: "ToDo: add an item",
+          description: "Weather: single city",
           content:
-            "Add a todo titled 'Buy groceries' using the todo MCP server, then read it back to confirm.",
+            "What's the weather like in Tokyo right now? Use the weather MCP tool.",
         },
         {
-          description: "ToDo: list pending items",
+          description: "Weather: compare two cities",
           content:
-            "List all the todos that are still pending and summarise them as a numbered list.",
+            "Compare today's weather in Tokyo and London using the weather tool. Which one is warmer, and by how much?",
         },
         {
-          description: "ToDo: complete and clean up",
+          description: "Weather: trip planning",
           content:
-            "Add three todos ('Buy milk', 'Write report', 'Call dentist'), then mark 'Write report' as done, then delete 'Call dentist'. Show me the final list afterwards.",
+            "I'm picking between Paris, Rome, and Barcelona for a weekend trip. Check the current weather in each city, then recommend one based on the conditions. Show me the data you used.",
         },
         {
           description: "Render A2UI",
@@ -170,8 +170,8 @@ const meta: Meta<UseAgentProps> = {
     },
     mcpUrl: {
       description:
-        "Streamable HTTP endpoint for the ToDo MCP server (packages/mcp-server). " +
-        "Its tools are merged into useAgent under the `todo__` prefix.",
+        "Streamable HTTP endpoint for the Weather MCP server (packages/mcp-server). " +
+        "Its tools are merged into useAgent under the `weather__` prefix.",
       control: "text",
     },
   },

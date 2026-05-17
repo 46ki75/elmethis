@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
-  "description": "In-memory ToDo MCP server used to exercise the qwik package's useMcpTools hook.",
+  "description": "Stub Weather MCP server used to exercise the qwik package's useMcpTools hook.",
   "scripts": {
     "dev": "PORT=19102 node --watch ./src/index.ts",
     "start": "PORT=19102 node ./src/index.ts"
