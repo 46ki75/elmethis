@@ -22,6 +22,54 @@ The package lives at `./packages/qwik`.
   - `styles/` - shared styles (SCSS)
   - `index.ts` - package exports (re-export components)
 
+## Consumer setup
+
+### `pkce-challenge` resolver workaround
+
+The `ag-ui-client` components transitively depend on
+`@modelcontextprotocol/sdk`, which statically imports
+[`pkce-challenge`](https://www.npmjs.com/package/pkce-challenge). That
+package's `exports` field doesn't include a `default` condition, so Vite's
+resolver fails the client build even when the OAuth/PKCE code path is never
+reached at runtime.
+
+Until [`pkce-challenge`](https://github.com/crouchcd/pkce-challenge) ships a
+fix upstream, alias it to a local stub in your `vite.config.ts`:
+
+```ts
+// vite.config.ts
+import { fileURLToPath } from "node:url";
+import { defineConfig } from "vite";
+
+export default defineConfig({
+  resolve: {
+    alias: {
+      "pkce-challenge": fileURLToPath(
+        new URL("./src/stubs/pkce-challenge.ts", import.meta.url),
+      ),
+    },
+  },
+});
+```
+
+```ts
+// src/stubs/pkce-challenge.ts
+export default async function pkceChallenge(): Promise<{
+  code_verifier: string;
+  code_challenge: string;
+}> {
+  throw new Error("pkce-challenge is stubbed in this build");
+}
+
+export async function verifyChallenge(): Promise<boolean> {
+  throw new Error("pkce-challenge is stubbed in this build");
+}
+```
+
+The `throw` is intentional — if the OAuth code path is ever reached at
+runtime, you'll get a loud error instead of silent broken crypto. Omit the
+alias if your app actually uses the MCP SDK's OAuth flow.
+
 ## Coding style
 
 ### Module structure
