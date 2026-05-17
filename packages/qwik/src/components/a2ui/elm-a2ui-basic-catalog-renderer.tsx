@@ -1,6 +1,6 @@
 // Built-in catalog renderer map for standard A2UI component types.
 // Each entry maps a component type name to a render function.
-import { type CSSProperties } from "@builder.io/qwik";
+import { type CSSProperties } from "@qwik.dev/core";
 import { z } from "zod";
 import {
   AudioPlayerApi,
@@ -23,7 +23,12 @@ import {
   VideoApi,
 } from "@a2ui/web_core/v0_9/basic_catalog";
 
-import { ElmTabs } from "../containments/elm-tabs";
+import {
+  ElmTab,
+  ElmTabList,
+  ElmTabPanel,
+  ElmTabs,
+} from "../containments/elm-tabs";
 import styles from "./elm-a2ui.module.css";
 import {
   type CatalogRendererMap,
@@ -254,12 +259,20 @@ export const elmBasicCatalogRendererMap: CatalogRendererMap<
   },
 
   Tabs: ({ props, resolve, renderChild }: Ctx<typeof TabsApi>) => (
-    <ElmTabs
-      tabs={props.tabs.map((tab) => ({
-        label: <>{resolve(tab.title)}</>,
-        content: renderChild(tab.child),
-      }))}
-    />
+    <ElmTabs defaultValue="0">
+      <ElmTabList>
+        {props.tabs.map((tab, idx) => (
+          <ElmTab key={idx} value={String(idx)}>
+            {resolve(tab.title)}
+          </ElmTab>
+        ))}
+      </ElmTabList>
+      {props.tabs.map((tab, idx) => (
+        <ElmTabPanel key={idx} value={String(idx)}>
+          {renderChild(tab.child)}
+        </ElmTabPanel>
+      ))}
+    </ElmTabs>
   ),
 
   Modal: ({ props, renderChild }: Ctx<typeof ModalApi>) => (

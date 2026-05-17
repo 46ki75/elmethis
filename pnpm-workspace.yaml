@@ -1,5 +1,6 @@
 packages:
   - "packages/copilotkit"
+  - "packages/mcp-server"
   - "packages/qwik"
   - "packages/react"
   - "packages/vue"

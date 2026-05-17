@@ -3,7 +3,7 @@ import {
   NoSerialize,
   useSignal,
   useVisibleTask$,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 import autoAnimate from "@formkit/auto-animate";
 
 export type UseAutoAnimateOptions = {

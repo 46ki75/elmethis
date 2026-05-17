@@ -1,4 +1,4 @@
-import { $, component$, PropsOf, useSignal } from "@builder.io/qwik";
+import { $, component$, PropsOf, useSignal } from "@qwik.dev/core";
 import { parseToHsl, parseToRgb, rgbToColorString } from "polished";
 import { mdiCheck } from "@mdi/js";
 

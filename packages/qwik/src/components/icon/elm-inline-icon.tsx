@@ -1,4 +1,4 @@
-import { component$, PropsOf, type Numberish } from "@builder.io/qwik";
+import { component$, PropsOf } from "@qwik.dev/core";
 
 import styles from "./elm-inline-icon.module.css";
 
@@ -13,11 +13,11 @@ export interface ElmInlineIconProps extends PropsOf<"span"> {
    */
   alt?: string;
 
-  width?: Numberish;
+  width?: number | `${number}`;
 
-  height?: Numberish;
+  height?: number | `${number}`;
 
-  size?: Numberish;
+  size?: number | `${number}`;
 }
 
 export const ElmInlineIcon = component$<ElmInlineIconProps>(

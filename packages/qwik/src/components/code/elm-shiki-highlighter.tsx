@@ -3,7 +3,7 @@ import {
   PropsOf,
   useSignal,
   useTask$,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 
 import styles from "./elm-shiki-highlighter.module.css";
 import { codeToHtml } from "shiki";

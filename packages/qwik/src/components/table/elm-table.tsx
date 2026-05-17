@@ -5,7 +5,7 @@ import {
   createContextId,
   useContextProvider,
   useComputed$,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 import styles from "./elm-table.module.css";
 import textStyles from "../../styles/text.module.css";
 import { ElmInlineText } from "../typography/elm-inline-text";

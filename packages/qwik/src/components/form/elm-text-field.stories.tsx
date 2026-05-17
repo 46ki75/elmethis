@@ -1,4 +1,4 @@
-import { component$, useSignal } from "@builder.io/qwik";
+import { component$, useSignal } from "@qwik.dev/core";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { ElmTextField, type ElmTextFieldProps } from "./elm-text-field";
 import { ElmInlineText } from "../typography/elm-inline-text";
@@ -52,9 +52,10 @@ const WithIconTextField = component$(() => {
       <ElmTextField
         label="Email"
         placeholder="Enter your email"
-        icon={<ElmMdiIcon d={mdiEmail} size="1.5rem" color="gray" />}
         value={text}
-      />
+      >
+        <ElmMdiIcon q:slot="icon" d={mdiEmail} size="1.5rem" color="gray" />
+      </ElmTextField>
       <ElmInlineText text={text.value} />
     </div>
   );

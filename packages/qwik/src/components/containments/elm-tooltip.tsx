@@ -1,4 +1,4 @@
-import { $, component$, PropsOf, Slot, useSignal, type CSSProperties } from "@builder.io/qwik";
+import { $, component$, PropsOf, Slot, useSignal, type CSSProperties } from "@qwik.dev/core";
 
 import styles from "./elm-tooltip.module.css";
 

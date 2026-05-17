@@ -4,7 +4,7 @@ import {
   useSignal,
   useStore,
   useVisibleTask$,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 
 export interface UseAsyncStateOptions<D = unknown> {
   /**

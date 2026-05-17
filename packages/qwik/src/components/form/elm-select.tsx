@@ -3,12 +3,12 @@ import {
   component$,
   PropsOf,
   Signal,
+  Slot,
   useComputed$,
   useSignal,
   useVisibleTask$,
   type CSSProperties,
-  type JSXOutput,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 import {
   mdiArrowDownDropCircleOutline,
   mdiChevronRight,
@@ -16,29 +16,31 @@ import {
 } from "@mdi/js";
 
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
+import { ElmInlineIcon } from "../icon/elm-inline-icon";
+import { ElmInlineText } from "../typography/elm-inline-text";
 import styles from "./elm-select.module.css";
 import textStyles from "../../styles/text.module.css";
 import { ElmCollapse } from "../containments/elm-collapse";
 
 export interface ElmSelectOption {
   id: string;
-  slot: JSXOutput;
+  label: string;
+  /**
+   * Optional icon URL displayed alongside the option label.
+   */
+  icon?: string;
 }
 
+// Display/form dual-use component: intentionally does NOT adopt
+// `useBindableSignal`. Used both as a form selector and as a presentation
+// widget reflecting upstream-owned state, so a direct
+// `selectedOptionId: Signal<string | null>` binding is preferred over the
+// controlled/uncontrolled split.
 export interface ElmSelectProps extends PropsOf<"div"> {
   /**
    * Label for the select component.
    */
   label: string;
-
-  /**
-   * Icon for the select component.
-   * This is displayed on the left side of the label.
-   * If not provided, a default dropdown icon is used.
-   *
-   * @example <ElmSelectSlot icon={<ElmInlineIcon src={url} />} />
-   */
-  icon?: JSXOutput;
 
   /**
    * Placeholder text shown when no option is selected.
@@ -72,7 +74,6 @@ export const ElmSelect = component$<ElmSelectProps>((props) => {
     disabled,
     loading,
     options,
-    icon,
     selectedOptionId,
     ...rest
   } = props;
@@ -116,18 +117,21 @@ export const ElmSelect = component$<ElmSelectProps>((props) => {
       {...rest}
     >
       <span class={[styles.label, { [styles["label-active"]]: isOpen.value }]}>
-        {icon ? (
-          <div class={styles.icon}>{icon}</div>
-        ) : (
+        <Slot name="icon">
           <ElmMdiIcon d={mdiArrowDownDropCircleOutline} size="0.75rem" />
-        )}
+        </Slot>
         {label}
       </span>
 
       <div class={styles.body}>
         <div class={[styles["selected-option"], textStyles.text]}>
           {selectedOption.value ? (
-            <div key={selectedOption.value.id}>{selectedOption.value.slot}</div>
+            <div key={selectedOption.value.id} class={styles["option-content"]}>
+              {selectedOption.value.icon && (
+                <ElmInlineIcon src={selectedOption.value.icon} />
+              )}
+              <ElmInlineText>{selectedOption.value.label}</ElmInlineText>
+            </div>
           ) : (
             <div class={styles.fallback}>
               <span>{placeholder ?? "Select an option"}</span>
@@ -149,7 +153,8 @@ export const ElmSelect = component$<ElmSelectProps>((props) => {
               }}
             >
               <ElmMdiIcon d={mdiChevronRight} color="#868e9c" size="0.75em" />
-              {option.slot}
+              {option.icon && <ElmInlineIcon src={option.icon} />}
+              <ElmInlineText>{option.label}</ElmInlineText>
             </div>
           ))}
         </ElmCollapse>

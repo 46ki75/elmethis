@@ -3,7 +3,7 @@ import {
   useSignal,
   useTask$,
   type NoSerialize,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 
 /**
  * Returns a reactive signal pair where writing to `signal` drives a

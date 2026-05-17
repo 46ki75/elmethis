@@ -1,6 +1,6 @@
-import { $, component$, useSignal, type CSSProperties } from "@builder.io/qwik";
+import { $, component$, useSignal, type CSSProperties } from "@qwik.dev/core";
 
-import styles from "./useClipboard.module.css";
+import styles from "./use-clipboard.module.css";
 
 import { ElmMdiIcon } from "../components/icon/elm-mdi-icon";
 import { mdiClipboardCheckOutline, mdiClipboardOutline } from "@mdi/js";

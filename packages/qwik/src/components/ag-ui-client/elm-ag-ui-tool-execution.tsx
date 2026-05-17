@@ -1,10 +1,9 @@
 import {
-  $,
   component$,
   useSignal,
   useVisibleTask$,
   type CSSProperties,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 
 import styles from "./elm-ag-ui-tool-execution.module.css";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
@@ -18,7 +17,7 @@ import { ElmInlineText } from "../typography/elm-inline-text";
 import { EventType } from "@ag-ui/core";
 import { ElmCodeBlock } from "../code/elm-code-block";
 import { ElmToggle } from "../containments/elm-toggle";
-import { useThrottledQueue } from "../../hooks/useThrottledQueue";
+import { useThrottledQueue } from "../../hooks/use-throttled-queue";
 
 type ToolEventType =
   | EventType.TOOL_CALL_START
@@ -109,24 +108,12 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
       }
     });
 
-    const setIsOpen = $((v: boolean) => {
-      isOpen.value = v;
-    });
-
-    const setIsArgsOpen = $((v: boolean) => {
-      isArgsOpen.value = v;
-    });
-
-    const setIsResultOpen = $((v: boolean) => {
-      isResultOpen.value = v;
-    });
-
     return (
       <div
         class={[styles["elm-ag-ui-tool-execution"], className]}
         style={{ "--margin-block": "0", ...style }}
       >
-        <ElmToggle isOpen={isOpen.value} setIsOpen$={setIsOpen} monochrome>
+        <ElmToggle isOpen={isOpen} monochrome>
           <div q:slot="summary" class={styles.summary}>
             <ElmMdiIcon d={mdiHammerScrewdriver} size="1rem" />
             <ElmInlineText>{toolName}</ElmInlineText>
@@ -148,11 +135,7 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
           }
 
           {isArgsShown.value && (
-            <ElmToggle
-              isOpen={isArgsOpen.value}
-              setIsOpen$={setIsArgsOpen}
-              monochrome
-            >
+            <ElmToggle isOpen={isArgsOpen} monochrome>
               <div q:slot="summary" class={styles.summary}>
                 <ElmMdiIcon d={mdiCodeJson} size="1rem" />
                 <ElmInlineText>Args</ElmInlineText>
@@ -186,11 +169,7 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
           )}
 
           {isResultShown.value && (
-            <ElmToggle
-              isOpen={isResultOpen.value}
-              setIsOpen$={setIsResultOpen}
-              monochrome
-            >
+            <ElmToggle isOpen={isResultOpen} monochrome>
               <div q:slot="summary" class={styles.summary}>
                 <ElmMdiIcon d={mdiCodeJson} size="1rem" />
                 <ElmInlineText>Result</ElmInlineText>

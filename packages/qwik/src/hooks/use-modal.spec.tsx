@@ -1,9 +1,9 @@
-import { component$ } from "@builder.io/qwik";
-import { createDOM } from "@builder.io/qwik/testing";
-import { renderToString } from "@builder.io/qwik/server";
+import { component$ } from "@qwik.dev/core";
+import { createDOM } from "@qwik.dev/core/testing";
+import { renderToString } from "@qwik.dev/core/server";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
-import { useModal } from "./useModal";
+import { useModal } from "./use-modal";
 import { ElmTextField } from "../components/form/elm-text-field";
 
 // ---------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-import { component$, Slot, type CSSProperties } from "@builder.io/qwik";
+import { component$, Slot, type CSSProperties } from "@qwik.dev/core";
 
 import styles from "./elm-inline-text.module.css";
 import textStyles from "../../styles/text.module.css";

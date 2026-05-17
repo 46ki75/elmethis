@@ -4,7 +4,7 @@ import {
   JSXOutput,
   useSignal,
   useTask$,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 import { marked, type Token, type Tokens } from "marked";
 
 import { ElmInlineText } from "../typography/elm-inline-text";

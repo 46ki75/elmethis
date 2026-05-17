@@ -1,0 +1,187 @@
+.panel {
+  box-sizing: border-box;
+  width: 100%;
+  max-height: min(420px, 60vh);
+  overflow-y: auto;
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  scrollbar-color: gray transparent;
+  scrollbar-width: thin;
+}
+
+.empty {
+  padding: 1rem;
+  text-align: center;
+  color: gray;
+  font-size: 0.875rem;
+}
+
+.prompt-row {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  transition: background-color 150ms;
+  cursor: pointer;
+  gap: 0.25rem;
+}
+
+.prompt-row:hover,
+.prompt-row-active {
+  background-color: oklch(from gray l c h / 0.08);
+}
+
+.prompt-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.prompt-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.prompt-description {
+  font-size: 0.8rem;
+  color: gray;
+  line-height: 1.3;
+}
+
+.modal-card {
+  box-sizing: border-box;
+  width: min(440px, calc(100vw - 2rem));
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.modal-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.modal-title {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.modal-description {
+  font-size: 0.85rem;
+  color: gray;
+  line-height: 1.4;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.use-button {
+  appearance: none;
+  border: none;
+  background-color: oklch(from black l c h / 0.85);
+  color: white;
+  padding: 0.4rem 0.9rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: opacity 150ms;
+}
+
+.use-button:hover {
+  opacity: 0.8;
+}
+
+.use-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.cancel-button {
+  appearance: none;
+  border: 1px solid oklch(from gray l c h / 0.3);
+  background-color: transparent;
+  color: inherit;
+  padding: 0.4rem 0.9rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background-color 150ms;
+}
+
+.cancel-button:hover {
+  background-color: oklch(from gray l c h / 0.08);
+}
+
+.error {
+  font-size: 0.8rem;
+  color: #c56565;
+}
+
+.field-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.85rem;
+}
+
+.field-name {
+  color: gray;
+  font-size: 0.75rem;
+}
+
+.field-required {
+  color: #c56565;
+  margin-inline-start: 0.2rem;
+}
+
+.field-input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid oklch(from gray l c h / 0.3);
+  border-radius: 0.25rem;
+  background-color: white;
+  font: inherit;
+  outline: none;
+  transition: border-color 150ms;
+}
+
+.field-input:focus {
+  border-color: oklch(from black l c h / 0.5);
+}
+
+/*
+  Hint line shown under enum <select>s — the `<option>` text only
+  renders one value at a time, so the description goes below to keep
+  it visible after a choice is made.
+*/
+.field-hint {
+  color: gray;
+  font-size: 0.72rem;
+  line-height: 1.3;
+}
+
+select.field-input {
+  appearance: auto;
+  cursor: pointer;
+}

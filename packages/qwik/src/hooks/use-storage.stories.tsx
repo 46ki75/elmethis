@@ -1,7 +1,7 @@
-import { $, component$ } from "@builder.io/qwik";
+import { $, component$ } from "@qwik.dev/core";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { useLocalStorage, type UseLocalStorageOptions } from "./useStorage";
-import { useSessionStorage } from "./useStorage";
+import { useLocalStorage, type UseLocalStorageOptions } from "./use-storage";
+import { useSessionStorage } from "./use-storage";
 
 type UserProfile = { name: string; age: number };
 

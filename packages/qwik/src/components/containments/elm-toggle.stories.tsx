@@ -1,4 +1,4 @@
-import { $, component$, useSignal } from "@builder.io/qwik";
+import { component$, useSignal } from "@qwik.dev/core";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { ElmToggle, type ElmToggleProps } from "./elm-toggle";
 import { ElmHeading } from "../typography/elm-heading";
@@ -61,13 +61,7 @@ const ControlledToggle = component$(() => {
           Toggle from outside
         </button>
       </div>
-      <ElmToggle
-        summary="Controlled toggle"
-        isOpen={isOpen.value}
-        setIsOpen$={$((v) => {
-          isOpen.value = v;
-        })}
-      >
+      <ElmToggle summary="Controlled toggle" isOpen={isOpen}>
         <ElmHeading level={2}>Body</ElmHeading>
         <ElmParagraph>
           This toggle's open state is controlled by the parent component.

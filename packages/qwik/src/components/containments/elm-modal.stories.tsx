@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { ElmModal, type ElmModalProps } from "./elm-modal";
-import { $, component$, Slot, useSignal } from "@builder.io/qwik";
+import { $, component$, Slot, useSignal } from "@qwik.dev/core";
 import { ElmTextField } from "../form/elm-text-field";
 
 const meta: Meta<ElmModalProps> = {

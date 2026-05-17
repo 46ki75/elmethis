@@ -1,4 +1,4 @@
-import { $, component$, PropsOf } from "@builder.io/qwik";
+import { $, component$, PropsOf } from "@qwik.dev/core";
 
 import styles from "./elm-file.module.css";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";

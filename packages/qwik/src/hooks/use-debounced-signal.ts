@@ -1,4 +1,4 @@
-import { useSignal, useTask$ } from "@builder.io/qwik";
+import { useSignal, useTask$ } from "@qwik.dev/core";
 
 /**
  * Returns a reactive signal pair where writing to `signal` drives a debounced

@@ -1,4 +1,4 @@
-import { $, useSignal } from "@builder.io/qwik";
+import { $, useSignal } from "@qwik.dev/core";
 
 export const useDelayedSignal = <T>(
   initialValue: Parameters<typeof useSignal<T>>[0],

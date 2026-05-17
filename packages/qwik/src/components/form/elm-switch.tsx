@@ -4,10 +4,14 @@ import {
   PropsOf,
   Signal,
   type CSSProperties,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 
 import styles from "./elm-switch.module.css";
 
+// Display/form dual-use component: intentionally does NOT adopt
+// `useBindableSignal`. Used both as a stateful form input and as a passive
+// indicator reflecting upstream state, so a direct `checked: Signal<boolean>`
+// binding is preferred over the controlled/uncontrolled split.
 export interface ElmSwitchProps extends PropsOf<"div"> {
   /**
    * The color of the switch when checked.

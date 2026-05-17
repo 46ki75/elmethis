@@ -1,0 +1,140 @@
+@keyframes loading {
+  0% {
+    transform-origin: 0%;
+    transform: scaleX(0);
+  }
+
+  40% {
+    transform-origin: 0%;
+    transform: scaleX(1);
+  }
+
+  60% {
+    transform-origin: 100%;
+    transform: scaleX(1);
+  }
+
+  100% {
+    transform-origin: 100%;
+    transform: scaleX(0);
+  }
+}
+
+.loading {
+  position: absolute;
+  width: 100%;
+  height: 0.125rem;
+  bottom: 0;
+  left: 0;
+  background-color: #6987b8;
+  transition: opacity 200ms;
+  pointer-events: none;
+
+  animation-name: loading;
+  animation-iteration-count: infinite;
+  animation-duration: 1600ms;
+}
+
+.wrapper {
+  --highlight-color: #bfa056;
+
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.25rem;
+
+  transition:
+    border-color 200ms,
+    background-color 200ms;
+
+  border-style: solid;
+  border-width: 1px;
+  border-color: transparent;
+
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.15);
+
+  &.active {
+    border-color: var(--highlight-color);
+  }
+
+  [data-theme="dark"] & {
+    background-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.75);
+  }
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 1rem 1fr max-content;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  font-size: 0.75rem;
+  line-height: 0.75rem;
+  height: 0.75rem;
+  transition: color 200ms;
+  color: gray;
+  user-select: none;
+
+  &.label-active {
+    color: var(--highlight-color);
+  }
+}
+
+.requierd {
+  padding-inline: 0.25rem;
+  color: #c56565;
+  font-weight: bold;
+}
+
+.body {
+  display: flex;
+  padding: 0 0.25rem;
+}
+
+.textarea {
+  all: unset;
+  box-sizing: border-box;
+  padding: 0;
+  width: 100%;
+  min-height: 1.5rem;
+  font-family: inherit;
+  line-height: 1.4;
+  color: oklch(from black l c h / 70%);
+  caret-color: var(--highlight-color);
+  resize: vertical;
+  /* `all: unset` strips this; restore so the user can drag-resize. */
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+
+  &::placeholder {
+    opacity: 0.5;
+
+    [data-theme="dark"] & {
+      opacity: 0.7;
+    }
+  }
+
+  &::selection {
+    background-color: oklch(from black l c h / 70%);
+    color: oklch(from white l c h / 70%);
+  }
+
+  [data-theme="dark"] & {
+    color: oklch(from white l c h / 70%);
+
+    &::selection {
+      background-color: oklch(from white l c h / 70%);
+      color: oklch(from black l c h / 70%);
+    }
+  }
+}
+

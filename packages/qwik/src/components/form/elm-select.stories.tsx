@@ -1,12 +1,10 @@
-import { component$, useSignal } from "@builder.io/qwik";
+import { component$, useSignal } from "@qwik.dev/core";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import {
   ElmSelect,
   type ElmSelectOption,
   type ElmSelectProps,
 } from "./elm-select";
-import { ElmInlineIcon } from "../icon/elm-inline-icon";
-import { ElmInlineText } from "../typography/elm-inline-text";
 
 import MiniMax from "../../assets/images/minimax.svg?url";
 import OpenAI from "../../assets/images/openai.svg?url";
@@ -14,39 +12,36 @@ import Claude from "../../assets/images/claude.svg?url";
 import { mdiAccountOutline } from "@mdi/js";
 import { ElmMdiIcon } from "../..";
 
-const Model = component$((props: { icon: string; text: string }) => {
-  return (
-    <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-      <ElmInlineIcon src={props.icon} />
-      <ElmInlineText>{props.text}</ElmInlineText>
-    </div>
-  );
-});
-
 const OPTIONS: ElmSelectOption[] = [
   {
     id: "minimax/minimax-m2.5",
-    slot: <Model icon={MiniMax} text="MiniMax: MiniMax M2.5" />,
+    label: "MiniMax: MiniMax M2.5",
+    icon: MiniMax,
   },
   {
     id: "minimax/minimax-m2.7",
-    slot: <Model icon={MiniMax} text="MiniMax: MiniMax M2.7" />,
+    label: "MiniMax: MiniMax M2.7",
+    icon: MiniMax,
   },
   {
     id: "openai/gpt-5.4-nano",
-    slot: <Model icon={OpenAI} text="OpenAI: GPT-5.4 Nano" />,
+    label: "OpenAI: GPT-5.4 Nano",
+    icon: OpenAI,
   },
   {
     id: "openai/gpt-5.4-mini",
-    slot: <Model icon={OpenAI} text="OpenAI: GPT-5.4 Mini" />,
+    label: "OpenAI: GPT-5.4 Mini",
+    icon: OpenAI,
   },
   {
     id: "anthropic/claude-sonnet-4.6",
-    slot: <Model icon={Claude} text="Anthropic: Claude Sonnet 4.6" />,
+    label: "Anthropic: Claude Sonnet 4.6",
+    icon: Claude,
   },
   {
     id: "anthropic/claude-opus-4.7",
-    slot: <Model icon={Claude} text="Anthropic: Claude Opus 4.7" />,
+    label: "Anthropic: Claude Opus 4.7",
+    icon: Claude,
   },
 ];
 
@@ -78,10 +73,11 @@ const WithIconSelect = component$(() => {
   return (
     <ElmSelect
       label="Select with icon"
-      icon={<ElmMdiIcon d={mdiAccountOutline} />}
       options={OPTIONS}
       selectedOptionId={selectedOptionId}
-    />
+    >
+      <ElmMdiIcon q:slot="icon" d={mdiAccountOutline} />
+    </ElmSelect>
   );
 });
 

@@ -1,0 +1,22 @@
+{
+  "name": "@elmethis/mcp-server",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Stub Weather MCP server used to exercise the qwik package's useMcpTools hook.",
+  "scripts": {
+    "dev": "PORT=19102 node --watch ./src/index.ts",
+    "start": "PORT=19102 node ./src/index.ts"
+  },
+  "dependencies": {
+    "@hono/node-server": "^2.0.2",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "consola": "^3.4.2",
+    "hono": "^4.12.18",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^24.12.4",
+    "typescript": "^5.9.3"
+  }
+}

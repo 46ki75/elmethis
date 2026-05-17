@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
-import { createDOM } from "@builder.io/qwik/testing";
-import { component$ } from "@builder.io/qwik";
-import { renderToString } from "@builder.io/qwik/server";
+import { createDOM } from "@qwik.dev/core/testing";
+import { component$ } from "@qwik.dev/core";
+import { renderToString } from "@qwik.dev/core/server";
 
 import { useWordle } from "./use-wordle";
 

@@ -1,4 +1,4 @@
-import { component$ } from "@builder.io/qwik";
+import { component$ } from "@qwik.dev/core";
 import styles from "./bash.module.css";
 import type { CommonLanguageProps } from "./language-interface";
 

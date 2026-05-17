@@ -62,6 +62,12 @@
 
     .selected-option {
       overflow: hidden;
+
+      .option-content {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+      }
     }
 
     .fallback {

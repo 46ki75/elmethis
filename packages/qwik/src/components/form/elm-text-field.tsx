@@ -2,11 +2,11 @@ import {
   $,
   component$,
   PropsOf,
+  Slot,
   useSignal,
   type CSSProperties,
-  type JSXOutput,
   type Signal,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 import {
   mdiEyeOffOutline,
   mdiEyeOutline,
@@ -19,6 +19,11 @@ import { ElmInlineText } from "../typography/elm-inline-text";
 
 import styles from "./elm-text-field.module.css";
 
+// Display/form dual-use component: intentionally does NOT adopt
+// `useBindableSignal`. The display case (read-only or upstream-driven
+// text) has no "uncontrolled with default" semantic to model, so a direct
+// `value: Signal<string>` binding is preferred over the
+// controlled/uncontrolled split.
 export interface ElmTextFieldProps extends Omit<PropsOf<"label">, "onInput$"> {
   label: string;
   maxLength?: number;
@@ -33,12 +38,6 @@ export interface ElmTextFieldProps extends Omit<PropsOf<"label">, "onInput$"> {
    */
   value?: Signal<string>;
 
-  /**
-   * Icon displayed on the left side of the input.
-   *
-   * @example <ElmTextField icon={<ElmInlineIcon src={url} />} label="..." />
-   */
-  icon?: JSXOutput;
   isPassword?: boolean;
   required?: boolean;
 }
@@ -55,7 +54,6 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
     disabled,
     loading,
     value,
-    icon,
     isPassword,
     required,
     ...rest
@@ -78,19 +76,25 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
       <span
         class={[styles.header, { [styles["label-active"]]: isFocused.value }]}
       >
-        {icon ? (
-          <div class={styles.icon}>{icon}</div>
-        ) : (
+        <Slot name="icon">
           <ElmMdiIcon d={mdiText} size="0.75rem" />
-        )}
+        </Slot>
         <span>
           {label}
           {required && <span class={styles.requierd}>*</span>}
         </span>
-        {maxLength != null && (
+        {value != null && (
           <ElmInlineText
-            text={`${value?.value.length} / ${maxLength}`}
-            color={(value?.value.length ?? -1) > maxLength ? "#c56565" : "gray"}
+            text={
+              maxLength != null
+                ? `${value.value.length} / ${maxLength}`
+                : `${value.value.length}`
+            }
+            color={
+              maxLength != null && value.value.length > maxLength
+                ? "#c56565"
+                : "gray"
+            }
             size="0.75rem"
           />
         )}

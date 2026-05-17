@@ -1,36 +1,51 @@
 ---
 name: qwik
 description: >
-  Expert guidance for building applications with Qwik and Qwik City — covering
-  resumability, components, signals, stores, tasks, context, QRLs, file-based
-  routing, route loaders, route actions, middleware, endpoints, layouts, and
-  deployment. Use this skill whenever someone is writing, debugging, or
-  reviewing Qwik or Qwik City code, asking how things like useSignal, useStore,
-  useTask$, routeLoader$, routeAction$, component$, or the $ suffix work, wants
-  to understand resumability vs hydration, is setting up a new Qwik project, is
-  adding server-side data fetching, building a REST or JSON endpoint, configuring
-  middleware, deploying to Cloudflare/Vercel/Node/etc., or wondering why their
-  Qwik app behaves differently from React. Always invoke this skill for any
-  question that mentions Qwik, Qwik City, QRL, routeLoader$, routeAction$,
-  useVisibleTask$, noSerialize, or the resumable architecture, even if the
-  question seems simple.
+  Expert guidance for Qwik (v1 and v2) and its meta-framework — Qwik City in
+  v1, Qwik Router in v2 — covering resumability, components, signals, stores,
+  tasks, context, QRLs, file-based routing, route loaders/actions, middleware,
+  endpoints, layouts, async data (useResource$/useAsync$/Suspense), v1→v2
+  migration, and deployment. Use whenever someone writes, debugs, or reviews
+  Qwik code, asks about useSignal, useStore, useTask$, useAsync$, routeLoader$,
+  routeAction$, component$, the $ suffix, resumability vs hydration, migrating
+  v1 to v2, server-side data fetching, REST/JSON endpoints, middleware, or
+  deployment. Always invoke for any question mentioning Qwik, Qwik City, Qwik
+  Router, QRL, routeLoader$, routeAction$, useVisibleTask$, useAsync$,
+  noSerialize, or the resumable architecture.
 license: MIT
 metadata:
   author: "Ikuma Yamashita"
-  version: "1.0"
+  version: "1.4.0"
 ---
 
-# Qwik & Qwik City Skill
+# Qwik Skill (v1 & v2)
 
-You are an expert in the Qwik framework and its meta-framework Qwik City. Your
-goal is to help users write correct, idiomatic, and performant Qwik code.
+You are an expert in the Qwik framework and its meta-framework (Qwik City in
+v1, Qwik Router in v2). Your goal is to help users write correct, idiomatic,
+and performant Qwik code.
+
+## Version detection — do this first
+
+Qwik v2 is in **beta** (stable as of 2026-05 is still v1). Check the user's
+`package.json` before answering anything API-specific:
+
+| Sees in `package.json`                       | Version |
+| -------------------------------------------- | ------- |
+| `@builder.io/qwik` + `@builder.io/qwik-city` | **v1**  |
+| `@qwik.dev/core` + `@qwik.dev/router`        | **v2**  |
+
+If unclear, ask. Several APIs differ in non-obvious ways (`useResource$` →
+`useAsync$`, `<Resource>` → `<Suspense>`, `<QwikCityProvider>` →
+`useQwikRouter()`, sync-only `useComputed$`). **For any v2-specific question,
+or whenever the user mentions migration, read `references/qwik-v2.md`.**
 
 ## Quick orientation
 
-| Package                 | Import                                                                                                                                                                          | Purpose                  |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
-| `@builder.io/qwik`      | `component$`, `useSignal`, `useStore`, `useTask$`, `useVisibleTask$`, `useResource$`, `useComputed$`, `useContext`, `useContextProvider`, `createContextId`, `$`, `noSerialize` | Core framework           |
-| `@builder.io/qwik-city` | `routeLoader$`, `routeAction$`, `Form`, `Link`, `useLocation`, `useNavigate`, `RequestHandler`                                                                                  | Meta-framework / routing |
+| Package (v1)            | Package (v2)       | Key exports                                                                                                                                                                     |
+| ----------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@builder.io/qwik`      | `@qwik.dev/core`   | `component$`, `useSignal`, `useStore`, `useTask$`, `useVisibleTask$`, `useComputed$`, `useContext`, `useContextProvider`, `createContextId`, `$`, `noSerialize`                 |
+| ↑ same                  | ↑ same             | v1 only: `useResource$`, `<Resource>` &nbsp;·&nbsp; v2 only: `useAsync$`, `<Suspense>`, `<Reveal>`, `useSerializer$`, `createSerializer$`                                       |
+| `@builder.io/qwik-city` | `@qwik.dev/router` | `routeLoader$`, `routeAction$`, `Form`, `Link`, `useLocation`, `useNavigate`, `RequestHandler` (v1: `QwikCityProvider` &nbsp;·&nbsp; v2: `useQwikRouter`, `QwikRouterProvider`) |
 
 ## Core concepts you must always apply
 
@@ -80,7 +95,7 @@ state.user.name = "Bob"; // triggers re-render of consumers
 // Derived/computed — synchronous, memoised
 const upper = useComputed$(() => name.value.toUpperCase());
 
-// Async computed — fetch or other async work
+// Async data — v1: useResource$ + <Resource>
 const data = useResource$<T>(async ({ track, cleanup }) => {
   track(() => id.value); // re-run when id changes
   const ctrl = new AbortController();
@@ -90,11 +105,21 @@ const data = useResource$<T>(async ({ track, cleanup }) => {
   );
 });
 // Render with <Resource value={data} onPending=... onResolved=... />
+
+// Async data — v2: useAsync$ + <Suspense>
+const data = useAsync$<T>(async ({ track, abortSignal }) => {
+  track(id); // signal shorthand (track(() => id.value) also works)
+  const r = await fetch(`/api/item/${id.value}`, { signal: abortSignal });
+  return r.json();
+});
+// Render: <Suspense fallback={<p>…</p>}><p>{data.value.name}</p></Suspense>
+// data.value is T directly (not Promise<T>); .loading and .error are also exposed.
 ```
 
 Prefer `useSignal` for single values, `useStore` for related multi-field
 objects. Use `useComputed$` over `useTask$` for pure derived values — it is
-simpler and auto-tracks.
+simpler and auto-tracks. **In v2, `useComputed$` is sync-only — passing an
+async function throws runtime error Q29; use `useAsync$` instead.**
 
 ### 4 – Tasks and the lifecycle
 
@@ -104,15 +129,20 @@ useTask$ -> RENDER -> useVisibleTask$
      SERVER or BROWSER   BROWSER only
 ```
 
-| Hook              | When it runs                                                                | Use it for                                                    |
-| ----------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| `useTask$`        | Before first render (server or browser); re-runs when tracked state changes | Async init, side effects that should run on server AND client |
-| `useVisibleTask$` | After render, browser only, when element becomes visible                    | DOM manipulation, third-party libs, subscriptions             |
-| `useResource$`    | Before render, async, non-blocking                                          | Async data that should not block rendering                    |
+| Hook                | When it runs                                                                | Use it for                                                    |
+| ------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| `useTask$`          | Before first render (server or browser); re-runs when tracked state changes | Async init, side effects that should run on server AND client |
+| `useVisibleTask$`   | After render, browser only, when element becomes visible                    | DOM manipulation, third-party libs, subscriptions             |
+| `useResource$` (v1) | Before render, async, non-blocking                                          | Async data that should not block rendering                    |
+| `useAsync$` (v2)    | Before render, async, non-blocking                                          | v2 replacement for `useResource$` — pair with `<Suspense>`    |
 
 `useTask$` blocks rendering until its promise resolves. Use it for critical
-data. `useResource$` does not block — the component renders immediately with the
-pending state.
+data. `useResource$`/`useAsync$` do not block — the component renders
+immediately with the pending state.
+
+> **v2 note:** `useVisibleTask$` no longer accepts `eagerness: 'load' | 'idle'`
+> — remove it when migrating. A `strategy: 'document-ready'` option exists for
+> cases that need eager client execution.
 
 Important: `useTask$` that tracks no state runs **exactly once**, either on the
 server or the browser, not both. Use `isServer`/`isBrowser` guards only when
@@ -136,7 +166,16 @@ drilling. The provided value can be a signal, store, or any serializable value.
 
 ---
 
-## Qwik City — routing and server integration
+## Qwik City (v1) / Qwik Router (v2) — routing and server integration
+
+The same APIs (`routeLoader$`, `routeAction$`, `Form`, middleware, endpoints,
+layouts) exist in both versions — only the package name and a few wrapper
+identifiers differ:
+
+- v1: `import { routeLoader$ } from '@builder.io/qwik-city'`, root wraps in
+  `<QwikCityProvider>`.
+- v2: `import { routeLoader$ } from '@qwik.dev/router'`, root calls
+  `useQwikRouter()` (no provider wrapper).
 
 Read `references/qwik-city.md` for detailed API docs including: routing,
 `routeLoader$`, `routeAction$`, middleware, endpoints, `server$`, caching,
@@ -339,6 +378,55 @@ useVisibleTask$(() => {
 });
 ```
 
+### `useStore` gotchas when deep-cloning or seeding two stores
+
+`useStore` returns a `Proxy`. Two consequences that bite often:
+
+- `structuredClone(store)` throws `DataCloneError` — the proxy's internal
+  traps are incompatible. Use `cloneDeep` from `es-toolkit` (or `lodash`) when
+  you need a deep snapshot for comparison, debouncing, throttling, or
+  history.
+- `useStore({ ...initialValue })` only shallow-copies. If you create two
+  stores from the same seed, their nested objects are aliased — mutating one
+  mutates the other. Pass `cloneDeep(initialValue)` to each.
+
+```ts
+import { cloneDeep, isEqual } from "es-toolkit";
+
+const live = useStore<T>(cloneDeep(initialValue));
+const snapshotted = useStore<T>(cloneDeep(initialValue)); // independent
+
+useTask$(({ track }) => {
+  const snap = track(() => cloneDeep(live)); // reactive deep snapshot
+  if (!isEqual(snap, snapshotted)) Object.assign(snapshotted, snap);
+});
+```
+
+See `references/qwik-core.md` ("Testing helper") for more, including the
+related `useTask$` cleanup pattern.
+
+### `useTask$` cleanup fires on re-run, not only on unmount
+
+A `cleanup()` registered inside a tracking `useTask$` fires **before every
+re-run** as well as on unmount. That's the right behaviour for things that
+should reset on the next write (e.g. a debounce timer). It's the wrong
+behaviour for things that must survive across writes (e.g. a throttle
+cooldown timer).
+
+When you need an unmount-only cleanup, register it from a **separate
+`useTask$` with no `track()`** — a no-track task runs once on construction
+and its cleanup fires only on unmount. Pattern and rationale documented in
+`references/qwik-core.md` ("Testing helper" / cleanup).
+
+### Testing async signal writes with `createDOM`
+
+`createDOM` only flushes pending renders inside `userEvent` / `render`. A
+signal write from a raw `setTimeout` (or any callback outside Qwik's invoke
+context) queues a render that `await new Promise(r => setTimeout(r, ms))`
+will not pump. In production this Just Works; in tests, click a no-op
+`#btn-flush` button after waiting to flush the scheduler. Details in
+`references/qwik-core.md` ("Testing helper").
+
 ---
 
 ## Reference files
@@ -354,6 +442,13 @@ useVisibleTask$(() => {
 - **`references/qwik-deprecated.md`** — migration table for all deprecated APIs
   (`useWatch$`, `useClientEffect$`, `loader$`, `action$`, etc.). Read when the
   user mentions old APIs or is migrating from an older version.
+- **`references/qwik-v2.md`** — complete v1 → v2 migration reference: package
+  renames (`@builder.io/*` → `@qwik.dev/*`), `useResource$` → `useAsync$`,
+  `<Resource>` → `<Suspense>`, sync-only `useComputed$`, `useQwikRouter()`
+  hook, `useVisibleTask$` eagerness removal, qwik-labs removal, new
+  serialization APIs, Vite 8 / Rolldown support, `pnpm qwik migrate-v2`
+  codemod, and v1-lib interop. **Read for any v2-specific question or
+  migration request.**
 
 ### Cookbook recipes (read for specific "how do I" patterns)
 
@@ -365,6 +460,7 @@ matching file from `references/cookbook/`:
 | Algolia / search             | `cookbook/algolia-search.md`             |
 | Composing middleware         | `cookbook/combine-request-handlers.md`   |
 | Debounce input               | `cookbook/debouncer.md`                  |
+| Throttle input               | `cookbook/throttle.md`                   |
 | Image load detection         | `cookbook/detect-img-onload.md`          |
 | Drag and drop                | `cookbook/drag-and-drop.md`              |
 | Fonts / FOIT / CLS           | `cookbook/fonts.md`                      |

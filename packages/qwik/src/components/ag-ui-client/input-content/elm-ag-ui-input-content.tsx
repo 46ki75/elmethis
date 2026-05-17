@@ -1,4 +1,4 @@
-import { component$, type CSSProperties } from "@builder.io/qwik";
+import { component$, type CSSProperties } from "@qwik.dev/core";
 
 import styles from "./elm-ag-ui-input-content.module.css";
 

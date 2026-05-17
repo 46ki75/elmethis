@@ -3,9 +3,10 @@ import {
   JSX,
   QRL,
   useSignal,
+  useTask$,
   useVisibleTask$,
   type CSSProperties,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 
 import styles from "./elm-ag-ui-message-renderer.module.css";
 import {
@@ -126,73 +127,78 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
         }
 
         case "reasoning": {
-          const Reasoning = component$(
-            ({
-              isReasoningRunning,
-              markdown,
-            }: {
-              isReasoningRunning: boolean;
-              markdown: string;
-            }) => {
-              const reasoningRef = useSignal<HTMLElement>();
-              const lastScrollTime = useSignal(0);
+          const Reasoning = component$<{
+            isReasoningRunning: boolean;
+            markdown: string;
+          }>((props) => {
+            const reasoningRef = useSignal<HTMLElement>();
+            const lastScrollTime = useSignal(0);
+            const isOpen = useSignal(props.isReasoningRunning);
 
-              // eslint-disable-next-line qwik/no-use-visible-task
-              useVisibleTask$(({ track }) => {
-                track(() => markdown);
-                const now = Date.now();
-                if (now - lastScrollTime.value < 500) return;
-                lastScrollTime.value = now;
-                reasoningRef.value?.scrollTo({
-                  behavior: "smooth",
-                  top: reasoningRef.value.scrollHeight,
-                });
+            // Mirror `isReasoningRunning` into the toggle's bound signal so
+            // the panel auto-closes when the stream ends. Manual clicks
+            // between transitions remain sticky — `track()` only re-fires
+            // on an actual value change of the prop, not on every parent
+            // re-render.
+            useTask$(({ track }) => {
+              isOpen.value = track(() => props.isReasoningRunning);
+            });
+
+            // eslint-disable-next-line qwik/no-use-visible-task
+            useVisibleTask$(({ track }) => {
+              track(() => props.markdown);
+              const now = Date.now();
+              if (now - lastScrollTime.value < 500) return;
+              lastScrollTime.value = now;
+              reasoningRef.value?.scrollTo({
+                behavior: "smooth",
+                top: reasoningRef.value.scrollHeight,
               });
+            });
 
-              const ReasoningMarkdown = component$(
-                ({ markdown }: { markdown: string }) => {
-                  const markdownRef = useSignal<HTMLElement>();
+            const ReasoningMarkdown = component$<{ markdown: string }>(
+              (mdProps) => {
+                const markdownRef = useSignal<HTMLElement>();
 
-                  return (
-                    <div ref={markdownRef}>
-                      <ElmMarkdown
-                        style={{ opacity: 0.5 }}
-                        markdown={markdown}
-                        streaming={true}
-                      />
-                    </div>
-                  );
-                },
-              );
-
-              return (
-                <ElmToggle isOpen={isReasoningRunning} monochrome>
-                  <div q:slot="summary" class={styles["message-content-type"]}>
-                    <ElmMdiIcon
-                      class={styles["message-content-icon"]}
-                      d={mdiLightbulbOn}
+                return (
+                  <div ref={markdownRef}>
+                    <ElmMarkdown
+                      style={{ opacity: 0.5 }}
+                      markdown={mdProps.markdown}
+                      streaming={true}
                     />
-                    <ElmInlineText>Reasoning</ElmInlineText>
-                    <div
-                      aria-hidden="true"
-                      class={styles["message-content-spacer"]}
-                    ></div>
                   </div>
+                );
+              },
+            );
 
+            return (
+              <ElmToggle isOpen={isOpen} monochrome>
+                <div q:slot="summary" class={styles["message-content-type"]}>
+                  <ElmMdiIcon
+                    class={styles["message-content-icon"]}
+                    d={mdiLightbulbOn}
+                  />
+                  <ElmInlineText>Reasoning</ElmInlineText>
                   <div
-                    ref={reasoningRef}
-                    class={[
-                      {
-                        [styles["reasoning-running"]]: isReasoningRunning,
-                      },
-                    ]}
-                  >
-                    <ReasoningMarkdown markdown={markdown} />
-                  </div>
-                </ElmToggle>
-              );
-            },
-          );
+                    aria-hidden="true"
+                    class={styles["message-content-spacer"]}
+                  ></div>
+                </div>
+
+                <div
+                  ref={reasoningRef}
+                  class={[
+                    {
+                      [styles["reasoning-running"]]: props.isReasoningRunning,
+                    },
+                  ]}
+                >
+                  <ReasoningMarkdown markdown={props.markdown} />
+                </div>
+              </ElmToggle>
+            );
+          });
 
           return (
             <Reasoning

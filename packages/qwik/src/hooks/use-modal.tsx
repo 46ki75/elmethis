@@ -1,6 +1,6 @@
-import { $, component$, Slot, useSignal } from "@builder.io/qwik";
+import { $, component$, Slot, useSignal } from "@qwik.dev/core";
 
-import styles from "./useModal.module.css";
+import styles from "./use-modal.module.css";
 
 export interface UseModalOptions {
   /**

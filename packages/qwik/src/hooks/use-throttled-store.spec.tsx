@@ -1,7 +1,7 @@
 import { describe, expect, test, vi, afterEach, beforeEach } from "vitest";
-import { createDOM } from "@builder.io/qwik/testing";
-import { renderToString } from "@builder.io/qwik/server";
-import { component$ } from "@builder.io/qwik";
+import { createDOM } from "@qwik.dev/core/testing";
+import { renderToString } from "@qwik.dev/core/server";
+import { component$ } from "@qwik.dev/core";
 
 import { useThrottledStore } from "./use-throttled-store";
 

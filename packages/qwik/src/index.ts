@@ -52,6 +52,12 @@ export {
   type ElmAgUiInputProps,
 } from "./components/ag-ui-client/elm-ag-ui-input";
 export {
+  ElmAgUiPromptPicker,
+  type ElmAgUiPromptPickerProps,
+  type ElmAgUiPromptDescriptor,
+  type ElmAgUiPromptArgument,
+} from "./components/ag-ui-client/elm-ag-ui-prompt-picker";
+export {
   ElmAgUiMessageRenderer,
   type ElmAgUiMessageRendererProps,
 } from "./components/ag-ui-client/elm-ag-ui-message-renderer";
@@ -64,9 +70,45 @@ export {
   type ElmAgUiInputContentImageProps,
 } from "./components/ag-ui-client/input-content/elm-ag-ui-input-content";
 export {
+  ElmAgUiAgent,
+  type ElmAgUiAgentProps,
+} from "./components/ag-ui-client/elm-ag-ui-agent";
+export {
+  defineTool,
+  defineJsonSchemaTool,
+  type AnyToolDef,
+  type JsonSchemaToolDef,
+  type ToolDef,
+  type ToolParameters,
+  type ToolRegistry,
+} from "./components/ag-ui-client/tool-registry";
+export {
   useAgent,
+  type AgentState,
   type UseAgentOptions,
-} from "./components/ag-ui-client/useAgent";
+} from "./components/ag-ui-client/use-agent";
+export {
+  useMcpTools,
+  type UseMcpToolsOptions,
+  type UseMcpToolsReturn,
+} from "./components/ag-ui-client/use-mcp-tools";
+export {
+  useMcpPrompts,
+  type UseMcpPromptsOptions,
+  type UseMcpPromptsReturn,
+  type AnnotatedMcpPromptDescriptor,
+} from "./components/ag-ui-client/use-mcp-prompts";
+export type {
+  McpClientHandle,
+  McpPromptArgument,
+  McpPromptContent,
+  McpPromptDescriptor,
+  McpPromptMessage,
+  McpPromptResult,
+  McpServerConfig,
+  McpServerStatus,
+  McpToolDescriptor,
+} from "./components/ag-ui-client/mcp-types";
 
 // | Code |
 export {
@@ -92,7 +134,16 @@ export {
   ElmParallax,
   type ElmParallaxProps,
 } from "./components/containments/elm-parallax";
-export { ElmTabs, type ElmTabsProps } from "./components/containments/elm-tabs";
+export {
+  ElmTab,
+  ElmTabList,
+  ElmTabPanel,
+  ElmTabs,
+  type ElmTabListProps,
+  type ElmTabPanelProps,
+  type ElmTabProps,
+  type ElmTabsProps,
+} from "./components/containments/elm-tabs";
 export {
   ElmToggle,
   type ElmToggleProps,
@@ -129,6 +180,10 @@ export {
 } from "./components/form/elm-select";
 export { ElmSwitch, type ElmSwitchProps } from "./components/form/elm-switch";
 export {
+  ElmTextArea,
+  type ElmTextAreaProps,
+} from "./components/form/elm-text-area";
+export {
   ElmTextField,
   type ElmTextFieldProps,
 } from "./components/form/elm-text-field";
@@ -146,26 +201,24 @@ export {
   useAutoAnimate,
   type UseAutoAnimateOptions,
 } from "./hooks/use-auto-animate";
-export { useClipboard, type UseClipboardOptions } from "./hooks/useClipboard";
-export {
-  useControllableState,
-  type ControllableStateSetter,
-} from "./hooks/use-controllable-state";
+export { useClipboard, type UseClipboardOptions } from "./hooks/use-clipboard";
+export { useBindableSignal } from "./hooks/use-bindable-signal";
+export { useBindableStore } from "./hooks/use-bindable-store";
 export { useDebouncedSignal } from "./hooks/use-debounced-signal";
 export { useDebouncedStore } from "./hooks/use-debounced-store";
-export { useDelayedSignal } from "./hooks/useDelayedSignal";
+export { useDelayedSignal } from "./hooks/use-delayed-signal";
 export { useThrottledSignal } from "./hooks/use-throttled-signal";
 export { useThrottledStore } from "./hooks/use-throttled-store";
-export { useElmethisTheme } from "./hooks/useElmethisTheme";
-export { useInView } from "./hooks/useInView";
-export { useModal, type UseModalOptions } from "./hooks/useModal";
+export { useElmethisTheme } from "./hooks/use-elmethis-theme";
+export { useInView } from "./hooks/use-in-view";
+export { useModal, type UseModalOptions } from "./hooks/use-modal";
 export {
   useLocalStorage,
   type UseLocalStorageOptions,
   useSessionStorage,
   type UseSessionStorageOptions,
-} from "./hooks/useStorage";
-export { useThrottledQueue, ThrottledQueue } from "./hooks/useThrottledQueue";
+} from "./hooks/use-storage";
+export { useThrottledQueue, ThrottledQueue } from "./hooks/use-throttled-queue";
 
 // | Icon |
 export {

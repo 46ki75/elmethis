@@ -3,7 +3,7 @@ import {
   useStore,
   useVisibleTask$,
   type CSSProperties,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 
 import { ElmA2uiRenderer } from "./elm-a2ui-renderer";
 import { type CatalogRendererMap } from "./elm-a2ui-catalog-renderer";

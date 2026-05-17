@@ -1,4 +1,4 @@
-import { component$ } from "@builder.io/qwik";
+import { component$ } from "@qwik.dev/core";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 
 import { useDebouncedStore } from "./use-debounced-store";

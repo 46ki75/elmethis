@@ -7,6 +7,7 @@ Learn more about the recommended Project Setup and IDE Support in the [Vue Docs 
 ## Port
 
 - `packages/copilotkit/`: `19101`
+- `packages/mcp-server/`: `19102`
 - `packages/qwik/`: `19211`
 - `packages/react/`: `19221`
 - `packages/vue/`: `19231`

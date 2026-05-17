@@ -1,4 +1,4 @@
-import { component$ } from "@builder.io/qwik";
+import { component$ } from "@qwik.dev/core";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 
 import { useDebouncedSignal } from "./use-debounced-signal";

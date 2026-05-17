@@ -1,4 +1,4 @@
-import { component$ } from "@builder.io/qwik";
+import { component$ } from "@qwik.dev/core";
 import type { CommonLanguageProps } from "./language-interface";
 
 export const Json = component$<CommonLanguageProps>(

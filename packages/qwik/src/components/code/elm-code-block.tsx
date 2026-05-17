@@ -4,7 +4,7 @@ import {
   PropsOf,
   Slot,
   useSignal,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 
 import styles from "./elm-code-block.module.css";
 

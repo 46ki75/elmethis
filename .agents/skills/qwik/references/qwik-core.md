@@ -184,6 +184,40 @@ export const Card = component$(() => (
 </Card>;
 ```
 
+### Slot fallback content
+
+Any children placed _between_ the opening and closing `<Slot>` tags are used
+as the **fallback** rendered when no `q:slot="<name>"` child is projected.
+This works for both default and named slots.
+
+```tsx
+// Provider
+export const TextField = component$<TextFieldProps>(({ label }) => (
+  <label>
+    <span class="header">
+      <Slot name="icon">
+        {/* Rendered when the consumer does not provide a q:slot="icon" child */}
+        <DefaultIcon />
+      </Slot>
+      {label}
+    </span>
+    <input />
+  </label>
+));
+
+// Consumer A — no icon child → renders the fallback <DefaultIcon/>
+<TextField label="Name" />
+
+// Consumer B — provides an icon → renders <EmailIcon/> instead
+<TextField label="Email">
+  <EmailIcon q:slot="icon" />
+</TextField>
+```
+
+This is the cleanest way to migrate `icon?: JSXOutput` props (and similar
+single-element JSX props) to a slot-based API while keeping a sensible default
+without consumer churn.
+
 ---
 
 ## Events
@@ -406,6 +440,132 @@ await render(<MyComponent />);
 const btn = screen.querySelector("button")!;
 await userEvent(btn, "click");
 ```
+
+`renderToString` from `@builder.io/qwik/server` covers the SSR side:
+
+```tsx
+import { renderToString } from "@builder.io/qwik/server";
+const result = await renderToString(<MyComponent />, {
+  containerTagName: "div",
+});
+expect(result.html).toContain("hello");
+```
+
+### `createDOM` only flushes on `userEvent` / `render`
+
+`createDOM`'s test platform queues a render whenever a tracked signal changes,
+but the queue is **only flushed** when `await userEvent(...)` or
+`await render(...)` runs. A bare `await new Promise(r => setTimeout(r, ms))`
+does **not** flush, even after waiting longer than the underlying timer. This
+matters whenever an asynchronous callback (a `setTimeout`, a fetch resolution,
+a `MutationObserver`) writes a signal that the JSX reads:
+
+```tsx
+// In production this updates the DOM on its own. In createDOM tests it
+// schedules a render that nothing flushes.
+setTimeout(() => (sig.value = "later"), 50);
+```
+
+The simplest fix in tests is to give the harness a no-op event to pump:
+
+```tsx
+// Wrapper exposes a no-op button just to flush the test scheduler.
+<button id="btn-flush" onClick$={() => {}} />;
+
+// In the test:
+await new Promise((r) => setTimeout(r, 100));
+await userEvent("#btn-flush", "click"); // pumps the queued render
+expect(screen.querySelector("#out")!.textContent).toBe("later");
+```
+
+This is a `createDOM`-specific limitation — production Qwik flushes these
+renders automatically. Don't change your hook to "work around" tests; pump the
+test platform from the test side.
+
+### Pending timers leak across tests
+
+Real-timer `setTimeout`s scheduled from a test continue running after the test
+ends. When they fire into the now-stale test platform, Qwik throws
+`"Must be same function"` (the test platform's render context no longer
+matches). Either: (a) reach steady state inside the test by waiting long
+enough for all chained cooldowns to settle, or (b) use `vi.useFakeTimers()` so
+`vi.clearAllTimers()` in `afterEach` actually clears the pending ones.
+
+### `cleanup()` inside `useTask$` fires on re-run too, not only on unmount
+
+`useTask$(({ track, cleanup }) => { ...; cleanup(() => ...); })` registers a
+cleanup that runs **before every re-run** of the task and on unmount.
+Re-runs happen on every tracked-signal change, so cleanup here is the right
+place to cancel work tied to _this run_ (e.g. a debounce timer that should
+reset on the next write).
+
+If you need a cleanup that survives task re-runs — for instance, a throttle
+cooldown timer that must keep ticking across many writes — register it from a
+**separate `useTask$` with no `track()` call**. A task with no tracked
+dependencies runs once on construction, and its cleanup fires only on
+unmount.
+
+```tsx
+const timerId = useSignal<NoSerialize<ReturnType<typeof setTimeout>>>();
+
+// Unmount-only cleanup — survives re-runs of the tracking task below.
+useTask$(({ cleanup }) => {
+  cleanup(() => {
+    if (timerId.value !== undefined) clearTimeout(timerId.value);
+  });
+});
+
+// Re-runs on every write; reads/writes timerId without touching its lifetime.
+useTask$(({ track }) => {
+  track(() => signal.value);
+  // ... arm/extend timer through timerId.value ...
+});
+```
+
+Wrap the timer id in `noSerialize` because Node's `Timeout` objects are not
+serializable. Keeping the id in a `useSignal` makes it reachable from both
+tasks.
+
+### `useStore` proxies are NOT structured-cloneable
+
+`structuredClone(store)` throws `DataCloneError` — Qwik's `useStore` returns a
+`Proxy` whose internal traps aren't compatible with the structured-clone
+algorithm. When you need a deep snapshot of a store (to compare it, to seed
+another store, to debounce/throttle a copy of it), use a property-walking
+deep clone (`cloneDeep` from `es-toolkit` or `lodash`) which iterates through
+the proxy's getters and produces a plain object.
+
+```ts
+import { cloneDeep, isEqual } from "es-toolkit";
+
+const snapshot = track(() => cloneDeep(store)); // ✅
+// const snapshot = track(() => structuredClone(store)); // ❌ DataCloneError
+```
+
+### Two stores seeded from the same `initialValue` share nested references
+
+`useStore({ ...initialValue })` only spreads the top level. If you create two
+stores from the same seed, their nested objects are the same physical
+references — mutating one mutates the other, bypassing any timing/debouncing
+you layer on top.
+
+```ts
+const a = useStore<T>({ ...initialValue });
+const b = useStore<T>({ ...initialValue });
+// a.user === b.user (true) — same nested object!
+// a.user.name = "X" also changes b.user.name
+
+const a = useStore<T>(cloneDeep(initialValue));
+const b = useStore<T>(cloneDeep(initialValue)); // independent
+```
+
+> **Note for reviewers / future readers:** `a.user === b.user` really is
+> `true` here — verified empirically inside a `component$` rendered through
+> `createDOM`. It's tempting to assume Qwik wraps each `.user` read in its
+> own proxy and the strict-equality claim breaks down, but Qwik either
+> returns the underlying nested object directly or memoizes its nested proxy
+> per backing-object identity. Either way the `===` check holds and the
+> aliasing bug is reproducible through reference equality.
 
 ---
 

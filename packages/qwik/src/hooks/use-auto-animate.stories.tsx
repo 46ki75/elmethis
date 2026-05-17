@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { useAutoAnimate, type UseAutoAnimateOptions } from "./use-auto-animate";
-import { $, component$, useStore, useStylesScoped$ } from "@builder.io/qwik";
+import { $, component$, useStore, useStylesScoped$ } from "@qwik.dev/core";
 import { ElmList } from "../components/typography/elm-list";
 import { ElmInlineText } from "../components/typography/elm-inline-text";
 

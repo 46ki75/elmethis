@@ -1,29 +1,87 @@
-.elm-ag-ui-input {
+.elm-ag-ui-input-wrapper {
   position: relative;
   box-sizing: border-box;
-  padding: 0.5rem 4rem 0.5rem 0.5rem;
-  min-height: 4rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.picker-container {
+  width: 100%;
+  margin-block-end: 0.5rem;
+}
+
+/*
+  Outer container is a flex column: textarea on top, button row below.
+  The button row keeps an internal grid for the `auto 1fr auto`
+  positioning of plus / spacer / send. Splitting it this way avoids
+  the brittle multi-column-span behavior on the textarea (which
+  refused to honor `width: 100%` reliably when its grid cell crossed
+  three tracks).
+*/
+.elm-ag-ui-input {
+  box-sizing: border-box;
+  padding: 0.5rem;
   width: 100%;
   border-radius: 0.25rem;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
   background-color: #f7f7f9;
   box-shadow: 0 0 2px oklch(from black l c h / 0.25);
 
   .input {
-    all: unset;
+    /*
+      Selective resets in place of `all: unset`. `all: unset` would
+      drop `display` back to `inline`, which silently makes the
+      textarea ignore `width: 100%` — the root cause of the
+      empty-state collapse we kept chasing.
+    */
+    display: block;
+    box-sizing: border-box;
     width: 100%;
-    height: auto;
-    align-self: center;
-    field-sizing: content;
+    min-height: 3rem;
+    max-height: 12rem;
+    overflow-y: auto;
+    resize: none;
+    padding: 0;
+    margin: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+  }
+
+  .button-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: "plus spacer send";
+    column-gap: 0.5rem;
+    align-items: center;
+  }
+
+  .plus-button {
+    grid-area: plus;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 0.25rem;
+    background-color: oklch(from black l c h / 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 200ms;
+
+    &:hover {
+      opacity: 0.75;
+    }
   }
 
   .submit-button {
-    position: absolute;
-    right: 0.5rem;
-    bottom: 0.5rem;
-    width: 3rem;
-    height: 3rem;
+    grid-area: send;
+    width: 1.5rem;
+    height: 1.5rem;
     border-radius: 0.25rem;
     background-color: oklch(from black l c h / 0.75);
     display: flex;

@@ -1,5 +1,5 @@
-import { component$, type CSSProperties } from "@builder.io/qwik";
-import { useElmethisTheme } from "../../hooks/useElmethisTheme";
+import { component$, type CSSProperties } from "@qwik.dev/core";
+import { useElmethisTheme } from "../../hooks/use-elmethis-theme";
 import styles from "./elm-toggle-theme.module.css";
 
 export interface ElmToggleThemeProps {

@@ -1,4 +1,4 @@
-import { component$, PropsOf } from "@builder.io/qwik";
+import { component$, PropsOf } from "@qwik.dev/core";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import styles from "./elm-unsupported-block.module.css";
 

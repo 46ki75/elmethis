@@ -3,7 +3,7 @@ import {
   useVisibleTask$,
   noSerialize,
   type NoSerialize,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 
 type Entry = { task: () => Promise<void>; reject: (err: unknown) => void };
 

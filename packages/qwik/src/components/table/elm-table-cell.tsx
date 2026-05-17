@@ -3,7 +3,7 @@ import {
   Slot,
   useContext,
   type CSSProperties,
-} from "@builder.io/qwik";
+} from "@qwik.dev/core";
 import styles from "./elm-table-cell.module.css";
 import { HasHeaderContext } from "./elm-table-header";
 
