@@ -14,6 +14,7 @@ import styles from "./elm-ag-ui-agent.module.css";
 
 import { ElmAgUiMessageRenderer } from "./elm-ag-ui-message-renderer";
 import { ElmAgUiInput } from "./elm-ag-ui-input";
+import type { ElmAgUiPromptDescriptor } from "./elm-ag-ui-prompt-picker";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import type { AgentState } from "./use-agent";
@@ -30,6 +31,25 @@ export interface ElmAgUiAgentProps {
   enableAutoScroll?: boolean;
   class?: ClassList;
   style?: CSSProperties;
+  /**
+   * Prompts exposed via a "+" button at the left of the input. Pair
+   * with `resolvePrompt$` to integrate MCP prompts or any other
+   * prompt source.
+   */
+  prompts?: ElmAgUiPromptDescriptor[];
+  /**
+   * Resolve a picked prompt with the user-supplied argument values
+   * into `InputContent[]`. The text blocks are inserted into the
+   * textarea at the current cursor position so the user can edit
+   * before submitting. Return `null` (or content with no text blocks)
+   * to leave the textarea untouched.
+   */
+  resolvePrompt$?: QRL<
+    (
+      key: string,
+      args: Record<string, string>,
+    ) => Promise<InputContent[] | null>
+  >;
 }
 
 export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
@@ -41,6 +61,8 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
     width = "clamp(300px, 100%, 600px)",
     class: className,
     style,
+    prompts,
+    resolvePrompt$,
   } = props;
 
   const input = useSignal("");
@@ -150,6 +172,8 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
             onSubmit$={onSubmit$}
             onAbort$={abort$}
             isRunning={state.isRunning}
+            prompts={prompts}
+            resolvePrompt$={resolvePrompt$}
           />
         </div>
       </div>

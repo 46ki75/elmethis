@@ -1,6 +1,8 @@
 import {
+  $,
   component$,
   noSerialize,
+  useComputed$,
   useSignal,
   useStore,
   useTask$,
@@ -16,6 +18,8 @@ import { ElmAgUiAgent } from "./elm-ag-ui-agent";
 import { defineTool } from "./tool-registry";
 import type { ToolRegistry } from "./tool-registry";
 import { useMcpTools } from "./use-mcp-tools";
+import { useMcpPrompts } from "./use-mcp-prompts";
+import type { ElmAgUiPromptDescriptor } from "./elm-ag-ui-prompt-picker";
 
 export interface UseAgentProps {
   class?: string;
@@ -33,6 +37,36 @@ const UseAgent = component$<UseAgentProps>(
     const { tools: mcpTools } = useMcpTools({
       servers: [{ id: "weather", url: mcpUrl }],
     });
+
+    // Same server, prompts side. We keep tools and prompts as separate
+    // hooks so each can be composed independently; the picker UI is
+    // rendered by ElmAgUiAgent given the descriptor list + resolve QRL.
+    const { prompts: mcpPrompts, resolve$: resolveMcpPrompt$ } =
+      useMcpPrompts({
+        servers: [{ id: "weather", url: mcpUrl }],
+      });
+
+    // Reshape MCP descriptors into the picker's generic shape. We
+    // encode `(serverId, name)` into `key` so the resolver can split
+    // them back apart without holding extra state.
+    const pickerPrompts = useComputed$<ElmAgUiPromptDescriptor[]>(() =>
+      mcpPrompts.value.map((p) => ({
+        key: `${p.serverId}::${p.name}`,
+        name: p.name,
+        description: p.description,
+        arguments: p.arguments,
+      })),
+    );
+
+    const resolvePrompt$ = $(
+      async (key: string, args: Record<string, string>) => {
+        const sep = key.indexOf("::");
+        if (sep === -1) return null;
+        const serverId = key.slice(0, sep);
+        const name = key.slice(sep + 2);
+        return await resolveMcpPrompt$(serverId, name, args);
+      },
+    );
 
     // Local tools the agent should always see. The Zod schema is not
     // serializable, so build it inside a useVisibleTask$ (client-only)
@@ -140,6 +174,8 @@ const UseAgent = component$<UseAgentProps>(
         abort$={abort$}
         class={className}
         style={style}
+        prompts={pickerPrompts.value}
+        resolvePrompt$={resolvePrompt$}
       />
     );
   },

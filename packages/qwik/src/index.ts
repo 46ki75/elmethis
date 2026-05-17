@@ -52,6 +52,11 @@ export {
   type ElmAgUiInputProps,
 } from "./components/ag-ui-client/elm-ag-ui-input";
 export {
+  ElmAgUiPromptPicker,
+  type ElmAgUiPromptPickerProps,
+  type ElmAgUiPromptDescriptor,
+} from "./components/ag-ui-client/elm-ag-ui-prompt-picker";
+export {
   ElmAgUiMessageRenderer,
   type ElmAgUiMessageRendererProps,
 } from "./components/ag-ui-client/elm-ag-ui-message-renderer";
@@ -86,8 +91,19 @@ export {
   type UseMcpToolsOptions,
   type UseMcpToolsReturn,
 } from "./components/ag-ui-client/use-mcp-tools";
+export {
+  useMcpPrompts,
+  type UseMcpPromptsOptions,
+  type UseMcpPromptsReturn,
+  type AnnotatedMcpPromptDescriptor,
+} from "./components/ag-ui-client/use-mcp-prompts";
 export type {
   McpClientHandle,
+  McpPromptArgument,
+  McpPromptContent,
+  McpPromptDescriptor,
+  McpPromptMessage,
+  McpPromptResult,
   McpServerConfig,
   McpServerStatus,
   McpToolDescriptor,

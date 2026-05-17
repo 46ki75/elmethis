@@ -1,5 +1,7 @@
 import type {
   McpClientHandle,
+  McpPromptDescriptor,
+  McpPromptResult,
   McpServerConfig,
   McpToolDescriptor,
 } from "./mcp-types";
@@ -42,6 +44,14 @@ export async function createMcpClient(
     },
     callTool: async (name, args) => {
       return await client.callTool({ name, arguments: args });
+    },
+    listPrompts: async () => {
+      const { prompts } = await client.listPrompts();
+      return prompts as McpPromptDescriptor[];
+    },
+    getPrompt: async (name, args) => {
+      const result = await client.getPrompt({ name, arguments: args });
+      return result as McpPromptResult;
     },
     close: async () => {
       await client.close();

@@ -47,6 +47,140 @@ function buildServer(log: ConsolaInstance): McpServer {
     { capabilities: {} },
   );
 
+  server.registerPrompt(
+    "daily_briefing",
+    {
+      description:
+        "Ask the agent for a quick personal briefing: weather, calendar " +
+        "vibes, and one fun fact. Takes no arguments.",
+      argsSchema: {},
+    },
+    async () => {
+      log.info("prompt requested", { prompt: "daily_briefing" });
+      return {
+        description: "Generic morning briefing prompt",
+        messages: [
+          {
+            role: "user",
+            content: {
+              type: "text",
+              text:
+                "Good morning! Give me a short daily briefing: a one-line " +
+                "weather summary for my city using the weather tool, my " +
+                "mood for the day, and one fun fact. Keep it under 80 words.",
+            },
+          },
+        ],
+      };
+    },
+  );
+
+  server.registerPrompt(
+    "weather_report",
+    {
+      description:
+        "Generate a polished weather report for one or more cities " +
+        "using the weather tool.",
+      argsSchema: {
+        cities: z
+          .string()
+          .min(1)
+          .describe(
+            "Comma-separated list of cities, e.g. 'Tokyo, Paris, " +
+              "San Francisco'. Each will be looked up via the weather tool.",
+          ),
+        tone: z
+          .enum(["formal", "casual", "poetic"])
+          .optional()
+          .describe(
+            "Stylistic tone for the report. Defaults to 'casual' when omitted.",
+          ),
+      },
+    },
+    async ({ cities, tone }) => {
+      log.info("prompt requested", {
+        prompt: "weather_report",
+        cities,
+        tone,
+      });
+      const effectiveTone = tone ?? "casual";
+      return {
+        description: `Weather report for: ${cities}`,
+        messages: [
+          {
+            role: "user",
+            content: {
+              type: "text",
+              text:
+                `Write a ${effectiveTone} weather report for these cities: ${cities}.\n` +
+                "For each city, call the weather tool first, then summarize " +
+                "the result in one sentence. End with a single overall " +
+                "recommendation (e.g., which city has the nicest weather " +
+                "right now).",
+            },
+          },
+        ],
+      };
+    },
+  );
+
+  server.registerPrompt(
+    "trip_planner",
+    {
+      description:
+        "Plan a short trip given a destination and number of days. " +
+        "Uses the weather tool to consider current conditions.",
+      argsSchema: {
+        destination: z
+          .string()
+          .min(1)
+          .describe("Destination city or region for the trip."),
+        days: z
+          .string()
+          .regex(/^\d+$/)
+          .describe(
+            "Number of days for the trip, as a decimal integer string " +
+              "(MCP prompt args are always strings).",
+          ),
+        interests: z
+          .string()
+          .optional()
+          .describe(
+            "Optional comma-separated interests, e.g. 'food, history, hiking'. " +
+              "Used to tailor the itinerary.",
+          ),
+      },
+    },
+    async ({ destination, days, interests }) => {
+      log.info("prompt requested", {
+        prompt: "trip_planner",
+        destination,
+        days,
+        interests,
+      });
+      const interestsLine = interests
+        ? `\nInterests: ${interests}.`
+        : "";
+      return {
+        description: `Trip plan: ${destination} (${days} days)`,
+        messages: [
+          {
+            role: "user",
+            content: {
+              type: "text",
+              text:
+                `Plan a ${days}-day trip to ${destination}.${interestsLine}\n` +
+                "Start by calling the weather tool for the destination, " +
+                "then suggest a day-by-day itinerary that takes the " +
+                "current conditions into account. Be concrete: name " +
+                "specific neighborhoods, food, or activities.",
+            },
+          },
+        ],
+      };
+    },
+  );
+
   server.registerTool(
     "get_weather",
     {
