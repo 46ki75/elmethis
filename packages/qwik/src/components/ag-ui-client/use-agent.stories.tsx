@@ -111,24 +111,31 @@ const UseAgent = component$<UseAgentProps>(
       undefined,
     );
 
+    // `document-ready` strategy: the host component renders
+    // `<ElmAgUiAgent>` (another component, not a direct DOM element),
+    // so the default `intersection-observer` strategy can't attach
+    // and Qwik would otherwise log a fallback warning at runtime.
     // eslint-disable-next-line qwik/no-use-visible-task
-    useVisibleTask$(() => {
-      localToolsRef.value = noSerialize<ToolRegistry>({
-        generateUuid: defineTool({
-          description: "Generate a random UUID v4 or v7 string",
-          schema: z.object({
-            version: z
-              .enum(["v4", "v7"])
-              .describe(
-                "The version of UUID to generate. Supported values are 'v4' and 'v7'.",
-              ),
+    useVisibleTask$(
+      () => {
+        localToolsRef.value = noSerialize<ToolRegistry>({
+          generateUuid: defineTool({
+            description: "Generate a random UUID v4 or v7 string",
+            schema: z.object({
+              version: z
+                .enum(["v4", "v7"])
+                .describe(
+                  "The version of UUID to generate. Supported values are 'v4' and 'v7'.",
+                ),
+            }),
+            execute: async ({ version }) => ({
+              uuid: version === "v4" ? v4() : v7(),
+            }),
           }),
-          execute: async ({ version }) => ({
-            uuid: version === "v4" ? v4() : v7(),
-          }),
-        }),
-      });
-    });
+        });
+      },
+      { strategy: "document-ready" },
+    );
 
     useTask$(({ track }) => {
       const local = track(() => localToolsRef.value);
