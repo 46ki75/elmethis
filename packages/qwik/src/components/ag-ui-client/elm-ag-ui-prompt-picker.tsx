@@ -1,8 +1,10 @@
 import {
   $,
   component$,
+  useSignal,
   useStore,
   useTask$,
+  useVisibleTask$,
   type CSSProperties,
   type QRL,
   type Signal,
@@ -137,6 +139,31 @@ export const ElmAgUiPromptPicker = component$<ElmAgUiPromptPickerProps>(
       submitting: false,
       error: null,
     });
+
+    // Ref on whichever field renders first in the modal — populated
+    // by Qwik on the render pass that mounts the modal contents. The
+    // `useVisibleTask$` below focuses it once `active.descriptor`
+    // transitions from null to non-null.
+    const firstFieldRef = useSignal<HTMLInputElement | HTMLSelectElement>();
+
+    // `document-ready` strategy (rather than the default
+    // intersection-observer) is needed because the picker sits inside
+    // an `ElmCollapse` that is closed by default — without this the
+    // task wouldn't subscribe until the panel scrolls into view, and
+    // the `active.descriptor` change would slip past unobserved.
+    // eslint-disable-next-line qwik/no-use-visible-task
+    useVisibleTask$(
+      ({ track }) => {
+        const desc = track(() => active.descriptor);
+        if (!desc) return;
+        // Defer one animation frame so Qwik has finished wiring the
+        // ref attribute onto the freshly-mounted field. A microtask
+        // is too eager — the modal's open transition may not have
+        // committed the slotted children yet.
+        requestAnimationFrame(() => firstFieldRef.value?.focus());
+      },
+      { strategy: "document-ready" },
+    );
 
     const onRowClick$ = $(async (descriptor: ElmAgUiPromptDescriptor) => {
       const args = descriptor.arguments ?? [];
@@ -281,7 +308,7 @@ export const ElmAgUiPromptPicker = component$<ElmAgUiPromptPickerProps>(
                 </div>
 
                 <div class={styles.form}>
-                  {(active.descriptor.arguments ?? []).map((a) => (
+                  {(active.descriptor.arguments ?? []).map((a, idx) => (
                     <label key={a.name} class={styles["field-label"]}>
                       <span class={styles["field-name"]}>
                         {a.name}
@@ -291,6 +318,7 @@ export const ElmAgUiPromptPicker = component$<ElmAgUiPromptPickerProps>(
                       </span>
                       {a.enum && a.enum.length > 0 ? (
                         <select
+                          ref={idx === 0 ? firstFieldRef : undefined}
                           class={styles["field-input"]}
                           value={active.values[a.name] ?? ""}
                           aria-required={a.required}
@@ -315,6 +343,7 @@ export const ElmAgUiPromptPicker = component$<ElmAgUiPromptPickerProps>(
                         </select>
                       ) : (
                         <input
+                          ref={idx === 0 ? firstFieldRef : undefined}
                           class={styles["field-input"]}
                           type="text"
                           placeholder={a.description}
