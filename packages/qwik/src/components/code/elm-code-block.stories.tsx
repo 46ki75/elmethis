@@ -36,8 +36,8 @@ export const CaptionSlot: Story = {
   render() {
     return (
       <ElmCodeBlock {...(this.args as ElmCodeBlockProps)}>
-        <ElmInlineText text="File:" />
-        <ElmInlineText text="src/main.rs" code />
+        <ElmInlineText>File:</ElmInlineText>
+        <ElmInlineText code>src/main.rs</ElmInlineText>
       </ElmCodeBlock>
     );
   },

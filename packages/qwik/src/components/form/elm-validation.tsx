@@ -27,7 +27,9 @@ export const ElmValidation = component$<ElmValidationProps>(
           d={isValid ? mdiCheckCircle : mdiCheckCircleOutline}
           color={isValid ? validColor : undefined}
         />
-        <ElmInlineText text={text} color={isValid ? validColor : undefined} />
+        <ElmInlineText color={isValid ? validColor : undefined}>
+          {text}
+        </ElmInlineText>
       </div>
     );
   },

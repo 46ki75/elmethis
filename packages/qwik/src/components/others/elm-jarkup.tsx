@@ -74,7 +74,6 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
           return (
             <ElmInlineText
               key={key}
-              text={p.text}
               color={p.color}
               backgroundColor={p.backgroundColor}
               bold={p.bold}
@@ -85,7 +84,9 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
               ruby={p.ruby}
               href={p.href}
               favicon={p.favicon}
-            />
+            >
+              {p.text}
+            </ElmInlineText>
           );
         }
 

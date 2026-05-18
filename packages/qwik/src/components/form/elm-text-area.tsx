@@ -79,18 +79,17 @@ export const ElmTextArea = component$<ElmTextAreaProps>((props) => {
         </span>
         {value != null && (
           <ElmInlineText
-            text={
-              maxLength != null
-                ? `${value.value.length} / ${maxLength}`
-                : `${value.value.length}`
-            }
             color={
               maxLength != null && value.value.length > maxLength
                 ? "#c56565"
                 : "gray"
             }
             size="0.75rem"
-          />
+          >
+            {maxLength != null
+              ? `${value.value.length} / ${maxLength}`
+              : `${value.value.length}`}
+          </ElmInlineText>
         )}
       </span>
 

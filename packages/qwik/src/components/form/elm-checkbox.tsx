@@ -149,7 +149,7 @@ export const ElmCheckbox = component$<ElmCheckboxProps>((props) => {
           <line x1="20" y1="23" x2="24" y2="23" stroke-width="1.5" fill="transparent" />
           <line x1="24" y1="4" x2="24" y2="20" style={{ strokeWidth: "1px" }} fill="transparent" />
         </svg>
-        <ElmInlineText text={label} />
+        <ElmInlineText>{label}</ElmInlineText>
       </div>
     </div>
   );

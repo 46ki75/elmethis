@@ -61,7 +61,11 @@ const renderByToken = (tokens: Token[]): JSXOutput[] => {
         );
         break;
       case "codespan":
-        results.push(<ElmInlineText key={i} text={token.text} code={true} />);
+        results.push(
+          <ElmInlineText key={i} code={true}>
+            {token.text}
+          </ElmInlineText>,
+        );
         break;
       case "def":
         // Link reference definitions (usually not rendered directly)
@@ -73,7 +77,9 @@ const renderByToken = (tokens: Token[]): JSXOutput[] => {
               {renderByToken(token.tokens as Token[])}
             </ElmInlineText>
           ) : (
-            <ElmInlineText key={i} text={token.text} strikethrough={true} />
+            <ElmInlineText key={i} strikethrough={true}>
+              {token.text}
+            </ElmInlineText>
           ),
         );
         break;
@@ -84,7 +90,9 @@ const renderByToken = (tokens: Token[]): JSXOutput[] => {
               {renderByToken(token.tokens as Token[])}
             </ElmInlineText>
           ) : (
-            <ElmInlineText key={i} text={token.text} italic={true} />
+            <ElmInlineText key={i} italic={true}>
+              {token.text}
+            </ElmInlineText>
           ),
         );
         break;
@@ -127,7 +135,9 @@ const renderByToken = (tokens: Token[]): JSXOutput[] => {
               {renderByToken(token.tokens as Token[])}
             </ElmInlineText>
           ) : (
-            <ElmInlineText key={i} text={token.text} href={token.href} />
+            <ElmInlineText key={i} href={token.href}>
+              {token.text}
+            </ElmInlineText>
           ),
         );
         break;
@@ -171,7 +181,9 @@ const renderByToken = (tokens: Token[]): JSXOutput[] => {
               {renderByToken(token.tokens as Token[])}
             </ElmInlineText>
           ) : (
-            <ElmInlineText key={i} text={token.text} bold={true} />
+            <ElmInlineText key={i} bold={true}>
+              {token.text}
+            </ElmInlineText>
           ),
         );
         break;

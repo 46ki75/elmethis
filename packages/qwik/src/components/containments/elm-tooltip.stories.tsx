@@ -16,8 +16,8 @@ export const Primary: Story = {
   render() {
     return (
       <ElmTooltip {...this.args}>
-        <ElmInlineText q:slot="original" text="HOVER ME" />
-        <ElmInlineText q:slot="tooltip" text="TOOLTIP" />
+        <ElmInlineText q:slot="original">HOVER ME</ElmInlineText>
+        <ElmInlineText q:slot="tooltip">TOOLTIP</ElmInlineText>
       </ElmTooltip>
     );
   },
