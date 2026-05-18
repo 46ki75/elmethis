@@ -19,7 +19,7 @@ const meta: Meta<ElmCalloutProps> = {
   render() {
     return (
       <ElmCallout {...this.args}>
-        <ElmInlineText text={lorem} />
+        <ElmInlineText>{lorem}</ElmInlineText>
       </ElmCallout>
     );
   },

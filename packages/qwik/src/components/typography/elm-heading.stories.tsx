@@ -34,8 +34,8 @@ export const Slot: Story = {
   render() {
     return (
       <ElmHeading {...(this.args as ElmHeadingProps)}>
-        <ElmInlineText text="This" color="crimson" /> is{" "}
-        <ElmInlineText text="code" code /> !
+        <ElmInlineText color="crimson">This</ElmInlineText> is{" "}
+        <ElmInlineText code>code</ElmInlineText> !
       </ElmHeading>
     );
   },

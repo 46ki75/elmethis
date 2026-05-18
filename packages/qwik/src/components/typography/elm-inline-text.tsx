@@ -1,20 +1,17 @@
-import { component$, Slot, type CSSProperties } from "@qwik.dev/core";
+import {
+  component$,
+  PropsOf,
+  Slot,
+  type CSSProperties,
+  type JSXOutput,
+} from "@qwik.dev/core";
 
 import styles from "./elm-inline-text.module.css";
 import textStyles from "../../styles/text.module.css";
 
 import { ElmInlineIcon } from "../icon/elm-inline-icon";
 
-export interface ElmInlineTextProps {
-  class?: string;
-
-  style?: CSSProperties;
-
-  /**
-   * The text to display.
-   */
-  text?: string;
-
+export interface ElmInlineTextProps extends PropsOf<"span"> {
   /**
    * Specifies the color of the text.
    *
@@ -52,6 +49,9 @@ export interface ElmInlineTextProps {
    */
   code?: boolean;
 
+  /**
+   * Specifies whether the text should be displayed as a keyboard key.
+   */
   kbd?: boolean;
 
   /**
@@ -71,84 +71,77 @@ export interface ElmInlineTextProps {
    */
   href?: string;
 
+  /**
+   * Optional favicon URL displayed alongside the link.
+   */
   favicon?: string;
 }
 
-export const ElmInlineText = component$<ElmInlineTextProps>((props) => {
-  const {
+export const ElmInlineText = component$<ElmInlineTextProps>(
+  ({
+    class: className,
+    style,
+    color,
+    size = "1em",
+    backgroundColor,
     bold = false,
     italic = false,
     underline = false,
     strikethrough = false,
     code = false,
-    size = "1em",
-  } = props;
+    kbd = false,
+    ruby,
+    href,
+    favicon,
+    ...rest
+  }) => {
+    let vnode: JSXOutput = <Slot />;
 
-  let vnode = props.text ? <span>{props.text}</span> : <Slot />;
+    if (href) {
+      vnode = (
+        <a
+          class={styles.link}
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {favicon && <ElmInlineIcon src={favicon} alt="favicon" />}
+          {vnode}
+        </a>
+      );
+    }
 
-  if (props.kbd) {
-    vnode = <kbd class={styles.kbd}>{vnode}</kbd>;
-  }
+    if (kbd) vnode = <kbd class={styles.kbd}>{vnode}</kbd>;
+    if (strikethrough) vnode = <del>{vnode}</del>;
+    if (italic) vnode = <em>{vnode}</em>;
+    if (underline) vnode = <ins>{vnode}</ins>;
+    if (bold) vnode = <strong>{vnode}</strong>;
+    if (code) vnode = <code class={styles.code}>{vnode}</code>;
 
-  if (strikethrough) {
-    vnode = <del>{vnode}</del>;
-  }
+    if (ruby) {
+      vnode = (
+        <ruby class={styles.text}>
+          <span>{vnode}</span>
+          <rt>{ruby}</rt>
+        </ruby>
+      );
+    }
 
-  if (italic) {
-    vnode = <em>{vnode}</em>;
-  }
-
-  if (underline) {
-    vnode = <ins>{vnode}</ins>;
-  }
-
-  if (bold) {
-    vnode = <strong>{vnode}</strong>;
-  }
-
-  if (code) {
-    vnode = <code class={styles.code}>{vnode}</code>;
-  }
-
-  if (props.ruby) {
-    vnode = (
-      <ruby class={styles.text}>
-        <span>{vnode}</span>
-        <rt>{props.ruby}</rt>
-      </ruby>
-    );
-  }
-
-  const wrappedVnode = (
-    <span
-      class={[styles.text, textStyles.text, props.class]}
-      style={{
-        "--color": props.color,
-        "--font-size": size,
-        "--background-color": props.backgroundColor,
-        ...props.style,
-      }}
-    >
-      {vnode}
-    </span>
-  );
-
-  if (props.href) {
     return (
-      <a
-        class={styles.link}
-        href={props.href}
-        style={{ "--font-size": size }}
-        target="_blank"
-        rel="noopener noreferrer"
+      <span
+        class={[styles.text, textStyles.text, className]}
+        style={
+          {
+            ...(style as CSSProperties),
+            "--color": color,
+            "--font-size": size,
+            "--background-color": backgroundColor,
+          } as CSSProperties
+        }
+        {...rest}
       >
-        {props.favicon && (
-          <ElmInlineIcon src={props.favicon} alt={`Favicon of ${props.text}`} />
-        )}
-        {props.text ? <span>{props.text}</span> : <Slot />}
-      </a>
+        {vnode}
+      </span>
     );
-  }
-
-  return wrappedVnode;
-});
+  },
+);

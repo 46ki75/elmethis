@@ -28,7 +28,7 @@ const PrimaryTextField = component$((props: ElmTextFieldProps) => {
     <div>
       <ElmTextField {...props} value={text} />
       <ElmTextField {...props} value={text} />
-      <ElmInlineText text={text.value} />
+      <ElmInlineText>{text.value}</ElmInlineText>
     </div>
   );
 });
@@ -56,7 +56,7 @@ const WithIconTextField = component$(() => {
       >
         <ElmMdiIcon q:slot="icon" d={mdiEmail} size="1.5rem" color="gray" />
       </ElmTextField>
-      <ElmInlineText text={text.value} />
+      <ElmInlineText>{text.value}</ElmInlineText>
     </div>
   );
 });

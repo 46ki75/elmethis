@@ -27,7 +27,7 @@ const PrimaryTextArea = component$((props: ElmTextAreaProps) => {
     <div>
       <ElmTextArea {...props} value={text} />
       <ElmTextArea {...props} value={text} />
-      <ElmInlineText text={text.value} />
+      <ElmInlineText>{text.value}</ElmInlineText>
     </div>
   );
 });
@@ -60,7 +60,7 @@ const WithIconTextArea = component$(() => {
           color="gray"
         />
       </ElmTextArea>
-      <ElmInlineText text={text.value} />
+      <ElmInlineText>{text.value}</ElmInlineText>
     </div>
   );
 });

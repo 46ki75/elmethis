@@ -18,7 +18,6 @@ const meta: Meta<ElmInlineTextProps> = {
   },
 
   args: {
-    text: "Inline Text",
     bold: false,
     italic: false,
     underline: false,
@@ -26,6 +25,8 @@ const meta: Meta<ElmInlineTextProps> = {
     code: false,
     kbd: false,
   },
+
+  render: (args) => <ElmInlineText {...args}>Inline Text</ElmInlineText>,
 };
 
 export default meta;
@@ -38,11 +39,13 @@ export const Colored: Story = {
 };
 
 export const Code: Story = {
-  args: { code: true, text: "const x = 10;" },
+  args: { code: true },
+  render: (args) => <ElmInlineText {...args}>const x = 10;</ElmInlineText>,
 };
 
 export const Kbd: Story = {
-  args: { text: "Ctrl", kbd: true },
+  args: { kbd: true },
+  render: (args) => <ElmInlineText {...args}>Ctrl</ElmInlineText>,
 };
 
 export const Background: Story = {
@@ -50,21 +53,26 @@ export const Background: Story = {
 };
 
 export const Ruby: Story = {
-  args: { text: "国際連合", ruby: "こくさいれんごう" },
+  args: { ruby: "こくさいれんごう" },
+  render: (args) => <ElmInlineText {...args}>国際連合</ElmInlineText>,
 };
 
 export const Link: Story = {
   args: {
-    text: "Google Search",
     href: "https://google.com",
     favicon: "https://www.google.com/favicon.ico",
   },
+  render: (args) => <ElmInlineText {...args}>Google Search</ElmInlineText>,
 };
 
 export const LinkWithOgp: Story = {
   args: {
-    text: "Visual Studio Code - Code Editing. Redefined",
     href: "https://code.visualstudio.com/",
     favicon: "https://code.visualstudio.com/assets/favicon.ico",
   },
+  render: (args) => (
+    <ElmInlineText {...args}>
+      Visual Studio Code - Code Editing. Redefined
+    </ElmInlineText>
+  ),
 };

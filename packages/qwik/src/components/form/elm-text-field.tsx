@@ -85,18 +85,17 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
         </span>
         {value != null && (
           <ElmInlineText
-            text={
-              maxLength != null
-                ? `${value.value.length} / ${maxLength}`
-                : `${value.value.length}`
-            }
             color={
               maxLength != null && value.value.length > maxLength
                 ? "#c56565"
                 : "gray"
             }
             size="0.75rem"
-          />
+          >
+            {maxLength != null
+              ? `${value.value.length} / ${maxLength}`
+              : `${value.value.length}`}
+          </ElmInlineText>
         )}
       </span>
 
@@ -121,7 +120,7 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
 
         <div class={styles["right-icon-box"]}>
           <span class={styles["prefix-suffix"]}>
-            {suffix != null && <ElmInlineText text={suffix} />}
+            {suffix != null && <ElmInlineText>{suffix}</ElmInlineText>}
           </span>
 
           <div

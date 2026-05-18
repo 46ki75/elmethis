@@ -43,7 +43,7 @@ export const ElmTable = component$<ElmTableProps>((props) => {
                   fill="#6987b8"
                 />
               </svg>
-              <ElmInlineText text={caption} />
+              <ElmInlineText>{caption}</ElmInlineText>
             </span>
 
             <span class={styles.spacing}></span>
