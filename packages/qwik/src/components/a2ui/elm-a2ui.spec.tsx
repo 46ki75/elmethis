@@ -654,6 +654,166 @@ describe("ElmA2ui — review round 2 (failing repros)", () => {
 });
 
 // ---------------------------------------------------------------------------
+// Review-round-3 repro tests
+//
+// Follow-up concerns surfaced by the third-pass code review:
+//   M1  Stream swap leaks the previous processor's SurfaceGroupModel —
+//       the old surfaces / dataModels / componentsModels are never disposed.
+//   M3  `dispatchAction$` walks only the top-level event.context, so nested
+//       `{ path }` literals reach the action listener unresolved.
+// ---------------------------------------------------------------------------
+
+describe("ElmA2ui — review round 3 (failing repros)", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  // M1 — When the unified setup task takes the rebuild path (a fresh
+  // stream prefix or a `catalogId` change), the previous processor's
+  // `SurfaceGroupModel` must be disposed. `SurfaceGroupModel.dispose()`
+  // cascades into per-surface dispose (dataModel + componentsModel +
+  // per-surface emitters). Without it the old surface graph stays
+  // pinned across every stream swap.
+  test("stream swap disposes the previous SurfaceGroupModel", async () => {
+    const a2ui = await import("@a2ui/web_core/v0_9");
+    const disposeSpy = vi.spyOn(
+      a2ui.SurfaceGroupModel.prototype,
+      "dispose",
+    );
+
+    const streamA = [
+      {
+        version: "v0.9",
+        createSurface: { surfaceId: "a", catalogId: BASIC_CATALOG_ID },
+      },
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: "a",
+          components: [{ component: "Text", id: "root", text: "from-A" }],
+        },
+      },
+    ];
+    // Different surface id and array reference → rebuild path.
+    const streamB = [
+      {
+        version: "v0.9",
+        createSurface: { surfaceId: "b", catalogId: BASIC_CATALOG_ID },
+      },
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: "b",
+          components: [{ component: "Text", id: "root", text: "from-B" }],
+        },
+      },
+    ];
+
+    const Wrapper = component$(() => {
+      const useB = useSignal(false);
+      return (
+        <div>
+          <button id="swap" onClick$={() => (useB.value = true)}>
+            swap
+          </button>
+          <ElmA2ui messages={useB.value ? streamB : streamA} />
+        </div>
+      );
+    });
+
+    const { screen, render, userEvent } = await createDOM();
+    await render(<Wrapper />);
+    expect(screen.outerHTML).toContain("from-A");
+
+    disposeSpy.mockClear();
+    await userEvent("#swap", "click");
+
+    expect(screen.outerHTML).toContain("from-B");
+    // Exactly one dispose call for the previous SurfaceGroupModel —
+    // the new processor's group isn't disposed (it's still in use).
+    expect(disposeSpy).toHaveBeenCalledTimes(1);
+  });
+
+  // M3 — Actions whose `event.context` contains nested `{ path }`
+  // literals must be deep-resolved before dispatch, matching the
+  // official `GenericBinder.ACTION` behavior. The SDK's
+  // `DataContext.resolveAction` only walks the top-level context
+  // record, so without our recursive resolver the listener would
+  // receive `{ path: "/user/name" }` instead of the resolved value.
+  test("dispatchAction deep-resolves nested {path} bindings inside event.context", async () => {
+    const a2ui = await import("@a2ui/web_core/v0_9");
+    const dispatchSpy = vi.spyOn(
+      a2ui.SurfaceModel.prototype,
+      "dispatchAction",
+    );
+
+    const { screen, render, userEvent } = await createDOM();
+    await render(
+      <ElmA2ui
+        messages={[
+          {
+            version: "v0.9",
+            createSurface: { surfaceId: "s", catalogId: BASIC_CATALOG_ID },
+          },
+          {
+            version: "v0.9",
+            updateDataModel: {
+              surfaceId: "s",
+              path: "/user/name",
+              value: "Ada",
+            },
+          },
+          {
+            version: "v0.9",
+            updateComponents: {
+              surfaceId: "s",
+              components: [
+                { component: "Column", id: "root", children: ["btn"] },
+                {
+                  component: "Button",
+                  id: "btn",
+                  child: "label",
+                  action: {
+                    event: {
+                      name: "submit",
+                      // The nested `payload.user` is what the SDK's
+                      // top-level `resolveAction` walks past — only
+                      // our deep resolver evaluates it.
+                      context: {
+                        payload: { user: { path: "/user/name" } },
+                      },
+                    },
+                  },
+                },
+                { component: "Text", id: "label", text: "Go" },
+              ],
+            },
+          },
+        ]}
+      />,
+    );
+
+    dispatchSpy.mockClear();
+    await userEvent(
+      '[data-a2ui-component-id="btn"] [role="button"]',
+      "click",
+    );
+
+    expect(dispatchSpy).toHaveBeenCalledTimes(1);
+    const dispatched = dispatchSpy.mock.calls[0]?.[0];
+    expect(dispatched).toEqual({
+      event: {
+        name: "submit",
+        context: {
+          payload: { user: "Ada" },
+        },
+      },
+    });
+    expect(screen.outerHTML).toContain("Go");
+  });
+});
+
+// ---------------------------------------------------------------------------
 // Streams & dynamic updates
 //
 // A2UI is a streaming protocol: an agent emits createSurface / updateComponents

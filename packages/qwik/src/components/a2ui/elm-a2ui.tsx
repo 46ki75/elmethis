@@ -185,10 +185,18 @@ export const ElmA2ui = component$<ElmA2uiProps>((props) => {
       const internal = processorRef.value;
       if (!internal) return;
       for (const s of internal.subs) s.unsubscribe();
+      // Dispose the SurfaceGroupModel — cascades into per-surface dispose
+      // (dataModel + componentsModel + per-surface EventEmitters), so the
+      // entire processor graph is released when the component unmounts.
+      internal.processor.model.dispose();
     });
   });
 
   useTask$(async ({ track }) => {
+    // `track` is identity-based on the property reference. In-place
+    // mutation of the same array (e.g. `props.messages.push(...)`) won't
+    // re-fire this task — callers must produce a new array reference per
+    // tick, matching the React/Angular reference implementations.
     const propsMessages = track(() => props.messages);
     const propsCatalogId = track(() => props.catalogId);
     track(() => streamStore.list.length);
@@ -234,9 +242,14 @@ export const ElmA2ui = component$<ElmA2uiProps>((props) => {
       return;
     }
 
-    // Rebuild path: stream swap or catalogId change.
+    // Rebuild path: stream swap or catalogId change. Release our own
+    // surface-map subscriptions, then dispose the previous processor's
+    // SurfaceGroupModel so its surfaces release their dataModel /
+    // componentsModel / per-surface emitters. Without this the old
+    // surface graph stays pinned in memory across every stream swap.
     if (existing) {
       for (const s of existing.subs) s.unsubscribe();
+      existing.processor.model.dispose();
     }
 
     const ids = new Set<string>([BASIC_CATALOG_ID]);

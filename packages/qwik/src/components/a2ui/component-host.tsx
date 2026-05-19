@@ -84,6 +84,13 @@ export const ComponentHost = component$<ComponentHostProps>((props) => {
   useContextProvider(A2uiAncestorContext, [...ancestors, props.id]);
 
   const tick = useSignal(0);
+  // Latched once the host has ever resolved a model for `props.id`. Used
+  // to distinguish two visually-different cases that both observe a
+  // missing model: a genuine out-of-order arrival (never seen → show
+  // `[Loading id…]`) vs. a transient gap between `onDeleted` and
+  // `onCreated` during a type swap (seen before → render nothing
+  // instead of flashing the placeholder).
+  const everHadModel = useSignal(false);
 
   useTask$(({ cleanup }) => {
     // `surface` is a NoSerialize-wrapped value: undefined during SSR /
@@ -104,6 +111,7 @@ export const ComponentHost = component$<ComponentHostProps>((props) => {
       updateSub = model.onUpdated.subscribe(() => {
         tick.value++;
       });
+      everHadModel.value = true;
     };
 
     const initial = surface.componentsModel.get(props.id);
@@ -145,6 +153,11 @@ export const ComponentHost = component$<ComponentHostProps>((props) => {
 
   const model = surface.componentsModel.get(props.id);
   if (!model) {
+    // If we've previously resolved a model for this id, the gap is a
+    // swap-in-progress (`onDeleted` has fired, `onCreated` for the
+    // replacement hasn't yet). Render nothing rather than flash the
+    // placeholder — the next microtask will bring `onCreated`.
+    if (everHadModel.value) return null;
     // Out-of-order arrival: a parent referenced this id before its own
     // `updateComponents` message landed. The placeholder mirrors the
     // official React renderer's `[Loading {id}…]` affordance and lets
@@ -232,7 +245,13 @@ export const ComponentHost = component$<ComponentHostProps>((props) => {
 
   // QRL dispatcher — mirror of `setBinding$` for action props. Defaults to
   // the `"action"` property name but accepts an override for components
-  // that bind multiple actions.
+  // that bind multiple actions. Walks the action with a recursive
+  // resolver so nested `{ path }` / `{ call }` literals inside
+  // `event.context` (or anywhere else in the action shape) are evaluated
+  // before dispatch — matching the official `GenericBinder.ACTION`. The
+  // SDK's `DataContext.resolveAction` only walks the top-level context
+  // record, so nested bindings would otherwise reach the action
+  // listener as unresolved `{ path }` objects.
   const dispatchAction$ = $((propName: string = "action") => {
     if (!surface) return;
     const m = surface.componentsModel.get(idCapture);
@@ -240,11 +259,18 @@ export const ComponentHost = component$<ComponentHostProps>((props) => {
     const action = (m.properties as Record<string, unknown>)[propName];
     if (!action) return;
     const dispatchCtx = new ComponentContext(surface, idCapture);
+    const resolveDeep = (val: unknown): unknown => {
+      if (val === null || typeof val !== "object") return val;
+      if ("path" in val || "call" in val) {
+        return dispatchCtx.dataContext.resolveDynamicValue(val as never);
+      }
+      if (Array.isArray(val)) return val.map(resolveDeep);
+      const out: Record<string, unknown> = {};
+      for (const [k, v] of Object.entries(val)) out[k] = resolveDeep(v);
+      return out;
+    };
     surface
-      .dispatchAction(
-        dispatchCtx.dataContext.resolveAction(action as never),
-        idCapture,
-      )
+      .dispatchAction(resolveDeep(action), idCapture)
       .catch((err: unknown) => {
         console.error("[ComponentHost] action dispatch failed:", err);
       });
