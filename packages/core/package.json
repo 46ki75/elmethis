@@ -36,7 +36,8 @@
     "build": "tsdown",
     "dev": "tsdown --watch",
     "fmt": "prettier --write .",
-    "fmt.check": "prettier --check ."
+    "fmt.check": "prettier --check .",
+    "prepublishOnly": "pnpm run build"
   },
   "peerDependencies": {
     "@a2ui/web_core": ">=0.10.0",
