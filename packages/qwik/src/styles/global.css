@@ -30,10 +30,6 @@
   --elmethis-color-accent-muted: var(--elmethis-neutral-400);
   --elmethis-color-selection-text: var(--elmethis-neutral-200);
   --elmethis-color-selection-background: var(--elmethis-neutral-700);
-
-  /* Component-scoped (kept for back-compat with existing consumers) */
-  --elmethis-scoped-collapse-transition-duration: 200ms;
-  --elmethis-scoped-transition-timing-function: ease-in-out;
 }
 
 [data-theme="dark"] {

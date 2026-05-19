@@ -26,8 +26,4 @@ export type ElmethisCSSVariables = {
   "--elmethis-color-accent-muted"?: CSSProperties["color"];
   "--elmethis-color-selection-text"?: CSSProperties["color"];
   "--elmethis-color-selection-background"?: CSSProperties["backgroundColor"];
-
-  // Scoped (component-private)
-  "--elmethis-scoped-collapse-transition-duration"?: CSSProperties["transitionDuration"];
-  "--elmethis-scoped-transition-timing-function"?: CSSProperties["transitionTimingFunction"];
 };
