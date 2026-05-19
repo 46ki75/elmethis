@@ -586,3 +586,339 @@ describe("ElmA2ui — review round 2 (failing repros)", () => {
     expect(screen.outerHTML).toContain("from-B");
   });
 });
+
+// ---------------------------------------------------------------------------
+// Streams & dynamic updates
+//
+// A2UI is a streaming protocol: an agent emits createSurface / updateComponents
+// / updateDataModel messages incrementally. These tests drive the prop in
+// successive ticks (Wrapper + useSignal swap) and assert that:
+//
+//   - new components stream in via appended updateComponents
+//   - bound text re-renders when subsequent updateDataModel messages arrive
+//   - List templates expand when their bound array grows
+//   - new surfaces created mid-stream render alongside existing ones
+//   - deleteSurface drops a surface from the DOM
+// ---------------------------------------------------------------------------
+
+describe("ElmA2ui — streams & dynamic updates", () => {
+  test("appended updateComponents renders newly-added children", async () => {
+    const initial = [
+      {
+        version: "v0.9",
+        createSurface: { surfaceId: "s", catalogId: BASIC_CATALOG_ID },
+      },
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: "s",
+          components: [
+            { component: "Column", id: "root", children: ["a"] },
+            { component: "Text", id: "a", text: "alpha" },
+          ],
+        },
+      },
+    ];
+    const grown = [
+      ...initial,
+      // Re-emit root with an extended children list AND introduce a new child.
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: "s",
+          components: [
+            { component: "Column", id: "root", children: ["a", "b"] },
+            { component: "Text", id: "b", text: "beta" },
+          ],
+        },
+      },
+    ];
+
+    const Wrapper = component$(() => {
+      const more = useSignal(false);
+      return (
+        <div>
+          <button id="go" onClick$={() => (more.value = true)}>
+            go
+          </button>
+          <ElmA2ui messages={more.value ? grown : initial} />
+        </div>
+      );
+    });
+
+    const { screen, render, userEvent } = await createDOM();
+    await render(<Wrapper />);
+    expect(screen.outerHTML).toContain("alpha");
+    expect(screen.outerHTML).not.toContain("beta");
+
+    await userEvent("#go", "click");
+
+    // Both the original and the newly-streamed child must be present —
+    // confirms streaming-update merge semantics, not a full surface swap.
+    expect(screen.outerHTML).toContain("alpha");
+    expect(screen.outerHTML).toContain("beta");
+  });
+
+  test("subsequent updateDataModel messages update bound Text live", async () => {
+    const initial = withData(
+      "/v",
+      "one",
+      { component: "Column", id: "root", children: ["t"] },
+      { component: "Text", id: "t", text: { path: "/v" } },
+    );
+    const updated = [
+      ...initial,
+      {
+        version: "v0.9",
+        updateDataModel: { surfaceId: "s", path: "/v", value: "two" },
+      },
+    ];
+
+    const Wrapper = component$(() => {
+      const push = useSignal(false);
+      return (
+        <div>
+          <button id="push" onClick$={() => (push.value = true)}>
+            push
+          </button>
+          <ElmA2ui messages={push.value ? updated : initial} />
+        </div>
+      );
+    });
+
+    const { screen, render, userEvent } = await createDOM();
+    await render(<Wrapper />);
+    expect(screen.outerHTML).toContain("one");
+
+    await userEvent("#push", "click");
+
+    expect(screen.outerHTML).toContain("two");
+    expect(screen.outerHTML).not.toContain(">one<");
+  });
+
+  test("List re-renders when its bound array grows via updateDataModel", async () => {
+    const setupList = [
+      {
+        version: "v0.9",
+        createSurface: { surfaceId: "s", catalogId: BASIC_CATALOG_ID },
+      },
+      {
+        version: "v0.9",
+        updateDataModel: {
+          surfaceId: "s",
+          path: "/items",
+          value: [{ label: "first" }],
+        },
+      },
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: "s",
+          components: [
+            {
+              component: "List",
+              id: "root",
+              children: { componentId: "item", path: "/items" },
+            },
+            { component: "Text", id: "item", text: { path: "label" } },
+          ],
+        },
+      },
+    ];
+    const grown = [
+      ...setupList,
+      {
+        version: "v0.9",
+        updateDataModel: {
+          surfaceId: "s",
+          path: "/items",
+          value: [{ label: "first" }, { label: "second" }],
+        },
+      },
+    ];
+
+    const Wrapper = component$(() => {
+      const more = useSignal(false);
+      return (
+        <div>
+          <button id="grow" onClick$={() => (more.value = true)}>
+            grow
+          </button>
+          <ElmA2ui messages={more.value ? grown : setupList} />
+        </div>
+      );
+    });
+
+    const { screen, render, userEvent } = await createDOM();
+    await render(<Wrapper />);
+    expect(screen.outerHTML).toContain("first");
+    expect(screen.outerHTML).not.toContain("second");
+
+    await userEvent("#grow", "click");
+
+    expect(screen.outerHTML).toContain("first");
+    expect(screen.outerHTML).toContain("second");
+  });
+
+  test("new createSurface mid-stream renders alongside existing surfaces", async () => {
+    const first = [
+      {
+        version: "v0.9",
+        createSurface: { surfaceId: "a", catalogId: BASIC_CATALOG_ID },
+      },
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: "a",
+          components: [{ component: "Text", id: "root", text: "surface-A" }],
+        },
+      },
+    ];
+    const both = [
+      ...first,
+      {
+        version: "v0.9",
+        createSurface: { surfaceId: "b", catalogId: BASIC_CATALOG_ID },
+      },
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: "b",
+          components: [{ component: "Text", id: "root", text: "surface-B" }],
+        },
+      },
+    ];
+
+    const Wrapper = component$(() => {
+      const second = useSignal(false);
+      return (
+        <div>
+          <button id="add" onClick$={() => (second.value = true)}>
+            add
+          </button>
+          <ElmA2ui messages={second.value ? both : first} />
+        </div>
+      );
+    });
+
+    const { screen, render, userEvent } = await createDOM();
+    await render(<Wrapper />);
+    expect(screen.outerHTML).toContain("surface-A");
+    expect(screen.outerHTML).not.toContain("surface-B");
+
+    await userEvent("#add", "click");
+
+    expect(screen.outerHTML).toContain("surface-A");
+    expect(screen.outerHTML).toContain("surface-B");
+  });
+
+  test("deleteSurface removes a surface from the rendered tree", async () => {
+    const setup = [
+      {
+        version: "v0.9",
+        createSurface: { surfaceId: "a", catalogId: BASIC_CATALOG_ID },
+      },
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: "a",
+          components: [{ component: "Text", id: "root", text: "doomed" }],
+        },
+      },
+    ];
+    const afterDelete = [
+      ...setup,
+      { version: "v0.9", deleteSurface: { surfaceId: "a" } },
+    ];
+
+    const Wrapper = component$(() => {
+      const gone = useSignal(false);
+      return (
+        <div>
+          <button id="kill" onClick$={() => (gone.value = true)}>
+            kill
+          </button>
+          <ElmA2ui messages={gone.value ? afterDelete : setup} />
+        </div>
+      );
+    });
+
+    const { screen, render, userEvent } = await createDOM();
+    await render(<Wrapper />);
+    expect(screen.outerHTML).toContain("doomed");
+
+    await userEvent("#kill", "click");
+
+    expect(screen.outerHTML).not.toContain("doomed");
+  });
+
+  test("structural and data updates compose: append child, then bind it, then push value", async () => {
+    // End-to-end mini-stream: agent first introduces a Text, then binds it
+    // to /v, then pushes a value. Each step is a separate prop tick.
+    const tick1 = [
+      {
+        version: "v0.9",
+        createSurface: { surfaceId: "s", catalogId: BASIC_CATALOG_ID },
+      },
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: "s",
+          components: [
+            { component: "Column", id: "root", children: ["greet"] },
+            { component: "Text", id: "greet", text: "Hello" },
+          ],
+        },
+      },
+    ];
+    const tick2 = [
+      ...tick1,
+      {
+        version: "v0.9",
+        updateDataModel: { surfaceId: "s", path: "/v", value: "world" },
+      },
+      // Re-emit `greet` with a bound text — agent decided to make it dynamic.
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: "s",
+          components: [
+            { component: "Text", id: "greet", text: { path: "/v" } },
+          ],
+        },
+      },
+    ];
+    const tick3 = [
+      ...tick2,
+      {
+        version: "v0.9",
+        updateDataModel: { surfaceId: "s", path: "/v", value: "everyone" },
+      },
+    ];
+
+    const Wrapper = component$(() => {
+      const step = useSignal(0);
+      const messages = step.value === 0 ? tick1 : step.value === 1 ? tick2 : tick3;
+      return (
+        <div>
+          <button id="next" onClick$={() => step.value++}>
+            next
+          </button>
+          <ElmA2ui messages={messages} />
+        </div>
+      );
+    });
+
+    const { screen, render, userEvent } = await createDOM();
+    await render(<Wrapper />);
+    expect(screen.outerHTML).toContain("Hello");
+
+    await userEvent("#next", "click");
+    expect(screen.outerHTML).toContain("world");
+    expect(screen.outerHTML).not.toContain("Hello");
+
+    await userEvent("#next", "click");
+    expect(screen.outerHTML).toContain("everyone");
+    expect(screen.outerHTML).not.toContain("world");
+  });
+});

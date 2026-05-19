@@ -1046,6 +1046,264 @@ export const ComponentSwap: Story = {
   render: () => <ComponentSwapStory />,
 };
 
+// ---- LiveCounter ----
+
+const LiveCounterStory = component$(() => {
+  const msgs = useSignal<object[]>([]);
+
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(({ cleanup }) => {
+    const SID = "counter";
+    const setup: object[] = [
+      {
+        version: "v0.9",
+        createSurface: { surfaceId: SID, catalogId: CATALOG_ID },
+      },
+      { version: "v0.9", updateDataModel: { surfaceId: SID, path: "/n", value: 0 } },
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: SID,
+          components: [
+            { component: "Column", id: "root", children: ["label", "value"] },
+            { component: "Text", id: "label", variant: "h4", text: "Live counter" },
+            { component: "Text", id: "value", variant: "h1", text: { path: "/n" } },
+          ],
+        },
+      },
+    ];
+    msgs.value = setup;
+    let n = 0;
+    const handle = setInterval(() => {
+      n += 1;
+      msgs.value = [
+        ...msgs.value,
+        {
+          version: "v0.9",
+          updateDataModel: { surfaceId: SID, path: "/n", value: n },
+        },
+      ];
+    }, 600);
+    cleanup(() => clearInterval(handle));
+  });
+
+  return <ElmA2ui messages={msgs.value} />;
+});
+
+export const LiveCounter: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Minimal dynamic data-binding demo: a single `Text` component is " +
+          "bound to `/n`, and a tick every 600 ms pushes an `updateDataModel` " +
+          "message incrementing the value. The component tree is built once on " +
+          "mount; every subsequent frame is data-only.",
+      },
+    },
+  },
+  render: () => <LiveCounterStory />,
+};
+
+// ---- MultiSurfaceStream ----
+
+const MultiSurfaceStreamStory = component$(() => {
+  const msgs = useSignal<object[]>([]);
+
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(({ cleanup }) => {
+    cleanup(
+      scheduleMessages(
+        (m) => {
+          msgs.value = m;
+        },
+        [
+          // 1. Primary surface — chat message
+          {
+            version: "v0.9",
+            createSurface: { surfaceId: "chat", catalogId: CATALOG_ID },
+          },
+          {
+            version: "v0.9",
+            updateComponents: {
+              surfaceId: "chat",
+              components: [
+                { component: "Card", id: "root", child: "chatInner" },
+                {
+                  component: "Column",
+                  id: "chatInner",
+                  children: ["chatTitle", "chatBody"],
+                },
+                {
+                  component: "Text",
+                  id: "chatTitle",
+                  variant: "h4",
+                  text: "Assistant",
+                },
+                {
+                  component: "Text",
+                  id: "chatBody",
+                  text: "Here's the analysis you requested.",
+                },
+              ],
+            },
+          },
+          // 2. Secondary surface — the agent opens a side panel for detail
+          {
+            version: "v0.9",
+            createSurface: { surfaceId: "details", catalogId: CATALOG_ID },
+          },
+          {
+            version: "v0.9",
+            updateDataModel: {
+              surfaceId: "details",
+              path: "/rows",
+              value: [
+                { k: "Latency", v: "42 ms" },
+                { k: "Throughput", v: "1.2k req/s" },
+                { k: "Error rate", v: "0.03%" },
+              ],
+            },
+          },
+          {
+            version: "v0.9",
+            updateComponents: {
+              surfaceId: "details",
+              components: [
+                {
+                  component: "Column",
+                  id: "root",
+                  children: ["dTitle", "dList"],
+                },
+                {
+                  component: "Text",
+                  id: "dTitle",
+                  variant: "h4",
+                  text: "Details",
+                },
+                {
+                  component: "List",
+                  id: "dList",
+                  children: { componentId: "dRow", path: "/rows" },
+                },
+                {
+                  component: "Row",
+                  id: "dRow",
+                  justify: "spaceBetween",
+                  children: ["dK", "dV"],
+                },
+                { component: "Text", id: "dK", text: { path: "k" } },
+                { component: "Text", id: "dV", text: { path: "v" } },
+              ],
+            },
+          },
+        ],
+        900,
+      ),
+    );
+  });
+
+  return <ElmA2ui messages={msgs.value} />;
+});
+
+export const MultiSurfaceStream: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "One stream drives two surfaces. The chat surface arrives first; " +
+          "0.9 s later the agent opens a second surface (`details`) with its " +
+          "own data model and a `List` template. Each surface is independent — " +
+          "they render side-by-side and have separate `DataModel` trees.",
+      },
+    },
+  },
+  render: () => <MultiSurfaceStreamStory />,
+};
+
+// ---- DeleteSurface ----
+
+const DeleteSurfaceStory = component$(() => {
+  const msgs = useSignal<object[]>([]);
+
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(({ cleanup }) => {
+    cleanup(
+      scheduleMessages(
+        (m) => {
+          msgs.value = m;
+        },
+        [
+          {
+            version: "v0.9",
+            createSurface: { surfaceId: "toast", catalogId: CATALOG_ID },
+          },
+          {
+            version: "v0.9",
+            updateComponents: {
+              surfaceId: "toast",
+              components: [
+                { component: "Card", id: "root", child: "inner" },
+                { component: "Column", id: "inner", children: ["t", "b"] },
+                {
+                  component: "Text",
+                  id: "t",
+                  variant: "h5",
+                  text: "Toast notification",
+                },
+                {
+                  component: "Text",
+                  id: "b",
+                  text: "This surface will be removed in ~2 s.",
+                },
+              ],
+            },
+          },
+          // After a delay, the agent removes the surface entirely.
+          { version: "v0.9", deleteSurface: { surfaceId: "toast" } },
+          // A follow-up surface confirms the renderer is still healthy.
+          {
+            version: "v0.9",
+            createSurface: { surfaceId: "after", catalogId: CATALOG_ID },
+          },
+          {
+            version: "v0.9",
+            updateComponents: {
+              surfaceId: "after",
+              components: [
+                {
+                  component: "Text",
+                  id: "root",
+                  variant: "caption",
+                  text: "Toast dismissed.",
+                },
+              ],
+            },
+          },
+        ],
+        2000,
+      ),
+    );
+  });
+
+  return <ElmA2ui messages={msgs.value} />;
+});
+
+export const DeleteSurface: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Demonstrates `deleteSurface`. The agent first emits a toast-style " +
+          "Card, then 2 s later sends `deleteSurface` to remove it. A small " +
+          "follow-up caption confirms the renderer recovers and keeps " +
+          "processing subsequent messages.",
+      },
+    },
+  },
+  render: () => <DeleteSurfaceStory />,
+};
+
 // ---- Catalog override stories ---------------------------------------------
 // Demonstrate the CatalogRenderer composition API: `basicCatalog.extend()`
 // returns a new catalog with the supplied renderers layered on top.
