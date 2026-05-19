@@ -1,16 +1,67 @@
 :root {
+  /* ============================================================
+   * Primitive layer — raw values, theme-agnostic
+   * ============================================================ */
+
+  /* Neutral scale (lower index = lighter) */
+  --elmethis-neutral-100: #eff0f2;
+  --elmethis-neutral-200: #cccfd5;
+  --elmethis-neutral-300: #b0b5be;
+  --elmethis-neutral-400: #868e9c;
+  --elmethis-neutral-600: #606875;
+  --elmethis-neutral-700: #3e434b;
+  --elmethis-neutral-800: #25282e;
+
+  /* Accent palette (one value per role) */
+  --elmethis-accent-primary: #b69545;
+  --elmethis-accent-info: #6987b8;
+  --elmethis-accent-success: #59b57c;
+  --elmethis-accent-warning: #bfa056;
+
+  /* Spacing scale (n × 0.25rem) */
+  --elmethis-space-1: 0.25rem;
+  --elmethis-space-2: 0.5rem;
+  --elmethis-space-3: 0.75rem;
+  --elmethis-space-4: 1rem;
+  --elmethis-space-6: 1.5rem;
+  --elmethis-space-8: 2rem;
+
+  /* Radius scale */
+  --elmethis-radius-sm: 0.125rem;
+  --elmethis-radius-md: 0.25rem;
+
+  /* Duration scale */
+  --elmethis-duration-fast: 100ms;
+  --elmethis-duration-medium: 200ms;
+  --elmethis-duration-slow: 400ms;
+
+  /* Easing */
+  --elmethis-ease-default: ease;
+  --elmethis-ease-out: ease-out;
+
+  /* ============================================================
+   * Semantic layer — theme-aware roles, reference primitives
+   * ============================================================ */
+
   --elmethis-margin-block-start: 0;
 
-  --elmethis-color-primary: #b69545;
-  --elmethis-color-text: #606875;
-  --elmethis-color-text-background: #eff0f2;
-  --elmethis-color-accent-muted: #868e9c;
+  --elmethis-color-primary: var(--elmethis-accent-primary);
+  --elmethis-color-text: var(--elmethis-neutral-600);
+  --elmethis-color-text-background: var(--elmethis-neutral-100);
+  --elmethis-color-accent-muted: var(--elmethis-neutral-400);
+  --elmethis-color-selection-text: var(--elmethis-neutral-200);
+  --elmethis-color-selection-background: var(--elmethis-neutral-700);
 
-  --elmethis-scoped-collapse-transition-duration: 200ms;
+  /* Component-scoped (kept for back-compat with existing consumers) */
+  --elmethis-scoped-collapse-transition-duration: var(
+    --elmethis-duration-medium
+  );
   --elmethis-scoped-transition-timing-function: ease-in-out;
 }
 
 [data-theme="dark"] {
-  --elmethis-color-text: #b0b5be;
-  --elmethis-color-text-background: #25282e;
+  --elmethis-color-text: var(--elmethis-neutral-300);
+  --elmethis-color-text-background: var(--elmethis-neutral-800);
+  --elmethis-color-selection-text: var(--elmethis-neutral-700);
+  --elmethis-color-selection-background: var(--elmethis-neutral-200);
 }

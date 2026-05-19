@@ -1,6 +1,6 @@
 .paragraph {
   transition: opacity 800ms;
-  color: var(--color, #606875);
+  color: var(--color, var(--elmethis-color-text));
   background-color: var(--background-color, inherit);
   margin: 0;
   margin-block-start: var(--elmethis-margin-block-start);
@@ -11,8 +11,6 @@
   }
 
   [data-theme="dark"] & {
-    color: rgba(255, 255, 255, 0.7);
-
     &::selection {
       color: rgba(0, 0, 0, 0.7);
       background-color: rgba(255, 255, 255, 0.7);

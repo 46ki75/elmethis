@@ -152,7 +152,11 @@ export const ElmSelect = component$<ElmSelectProps>((props) => {
                 isOpen.value = false;
               }}
             >
-              <ElmMdiIcon d={mdiChevronRight} color="#868e9c" size="0.75em" />
+              <ElmMdiIcon
+                d={mdiChevronRight}
+                color="var(--elmethis-color-accent-muted)"
+                size="0.75em"
+              />
               {option.icon && <ElmInlineIcon src={option.icon} />}
               <ElmInlineText>{option.label}</ElmInlineText>
             </div>
