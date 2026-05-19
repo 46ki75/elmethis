@@ -71,6 +71,29 @@ describe("[CSR] useLocalStorage", () => {
     expect(screen.querySelector("#state")!.textContent).toBe("a");
     expect(localStorage.getItem("k")).toBe(JSON.stringify("a"));
   });
+
+  // -------------------------------------------------------------------------
+  // Regression pin: when storage was empty at mount, the writer
+  // `useVisibleTask$` fires its initial run and persists `initialValue` to
+  // storage — turning "no value stored" into "initialValue stored".
+  //
+  // This is the current (deliberate) behavior: a subscriber that calls
+  // `useLocalStorage({ key: "k", initialValue: "seed" })` always sees its
+  // key present in storage after mount, simplifying downstream consumers
+  // that might want to enumerate keys. If we ever decide to gate the first
+  // write on a user-initiated change instead, this test flags the shift.
+  // -------------------------------------------------------------------------
+  test("writer task persists initialValue when storage was empty at mount", async () => {
+    expect(localStorage.getItem("k")).toBeNull();
+
+    const { render } = await createDOM();
+    await render(<LocalWrapper />);
+
+    // Let both mount-time visible tasks (reader + writer) complete.
+    await new Promise((r) => setTimeout(r, 0));
+
+    expect(localStorage.getItem("k")).toBe(JSON.stringify("seed"));
+  });
 });
 
 describe("[CSR] useSessionStorage BroadcastChannel reuse", () => {

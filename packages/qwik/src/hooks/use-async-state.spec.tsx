@@ -20,6 +20,12 @@ type Deferred<T> = {
 
 const deferredQueue: Deferred<string>[] = [];
 
+// Captures the promises returned by `execute()` so the test body can await
+// them and observe what each individual call resolves with — separate from
+// the surface-level `state` signal. Used by the stale-resolve regression
+// test below.
+const promiseQueue: Promise<string | undefined>[] = [];
+
 const newDeferred = <T,>(): Deferred<T> => {
   let resolve!: (value: T) => void;
   let reject!: (reason: unknown) => void;
@@ -32,6 +38,7 @@ const newDeferred = <T,>(): Deferred<T> => {
 
 const resetQueue = () => {
   deferredQueue.length = 0;
+  promiseQueue.length = 0;
 };
 
 // ---------------------------------------------------------------------------
@@ -68,6 +75,33 @@ const RaceWrapper = component$(() => {
         Exec
       </button>
     </div>
+  );
+});
+
+/**
+ * Same as RaceWrapper but publishes the promise returned by each
+ * `execute()` into `promiseQueue` so tests can observe what individual
+ * callers see, independent of the `state` signal.
+ */
+const CapturingWrapper = component$(() => {
+  const { execute } = useAsyncState<string>(
+    $(() => {
+      const d = newDeferred<string>();
+      deferredQueue.push(d);
+      return d.promise;
+    }),
+    "initial",
+    { immediate: false },
+  );
+  return (
+    <button
+      id="exec"
+      onClick$={() => {
+        promiseQueue.push(execute());
+      }}
+    >
+      Exec
+    </button>
   );
 });
 
@@ -149,5 +183,40 @@ describe("[CSR] useAsyncState concurrency", () => {
 
     // State stays at the newer success, not reset by the stale rejection.
     expect(screen.querySelector("#state")!.textContent).toBe("new");
+  });
+
+  // -------------------------------------------------------------------------
+  // Regression pin: when an older execute() is invalidated by a newer one
+  // and only later resolves, the *promise returned to the original caller*
+  // still resolves with the (stale) data. The hook only protects the public
+  // `state` / `error` / `isLoading` signals from clobbering; it does not
+  // reject or hide the stale value from whoever awaited that specific
+  // promise.
+  //
+  // This is a deliberate behavior choice: rejecting the older promise would
+  // require choosing an error type and might surprise callers using
+  // `execute().then(...)`. Pinning it here so that if we ever decide to
+  // change the contract (e.g. resolve stale calls with `undefined`), this
+  // test flags the semantic shift loudly.
+  // -------------------------------------------------------------------------
+  test("stale execute() still resolves to its original caller with the stale data", async () => {
+    const { render, userEvent } = await createDOM();
+    await render(<CapturingWrapper />);
+
+    await userEvent("#exec", "click");
+    await userEvent("#exec", "click");
+    expect(promiseQueue.length).toBe(2);
+    expect(deferredQueue.length).toBe(2);
+
+    // Newer call resolves first.
+    deferredQueue[1].resolve("new");
+    // Older call resolves later — it is "stale" by then.
+    deferredQueue[0].resolve("old");
+
+    // Both promises observable to their original callers still resolve
+    // (neither rejects), and each one resolves with the value its own
+    // promise$ returned — including the stale one.
+    await expect(promiseQueue[1]).resolves.toBe("new");
+    await expect(promiseQueue[0]).resolves.toBe("old");
   });
 });

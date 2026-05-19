@@ -4,6 +4,20 @@ const LOCAL_STORAGE_KEY = "elmethis-theme";
 
 type Theme = "light" | "dark";
 
+/**
+ * Coerce a raw storage value into a Theme. Exported so the (otherwise
+ * inline) decision rule can be regression-tested directly without having
+ * to dispatch a real `StorageEvent` through Qwik's resumable listener
+ * system (which is not wired up under `createDOM`).
+ *
+ * Any value that is not literally `"dark"` — including `null` (the key was
+ * cleared in another tab) and unknown strings — resolves to `"light"`.
+ * This is the safest default for cross-tab sync: a cleared key should
+ * land back on the platform-default theme rather than locking in dark.
+ */
+export const parseTheme = (raw: string | null): Theme =>
+  raw === "dark" ? "dark" : "light";
+
 // Pushes the theme into both the DOM (data-theme attribute + body
 // colorScheme) and localStorage. Kept as a free function so every code path
 // — toggle, initial mount, and cross-tab storage event — performs the same
@@ -36,7 +50,7 @@ export function useElmethisTheme() {
     $((event: Event) => {
       const e = event as StorageEvent;
       if (e.key !== LOCAL_STORAGE_KEY) return;
-      const next: Theme = e.newValue === "dark" ? "dark" : "light";
+      const next = parseTheme(e.newValue);
       isDarkTheme.value = next === "dark";
       // `persist: false` — the other tab already wrote to localStorage; we
       // just mirror the DOM here.
@@ -49,7 +63,7 @@ export function useElmethisTheme() {
     () => {
       const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
       if (stored != null) {
-        const theme: Theme = stored === "dark" ? "dark" : "light";
+        const theme = parseTheme(stored);
         isDarkTheme.value = theme === "dark";
         applyTheme(theme, false);
       } else {

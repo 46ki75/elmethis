@@ -4,7 +4,7 @@ import { component$ } from "@qwik.dev/core";
 import { createDOM } from "@qwik.dev/core/testing";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
-import { useElmethisTheme } from "./use-elmethis-theme";
+import { parseTheme, useElmethisTheme } from "./use-elmethis-theme";
 
 const LOCAL_STORAGE_KEY = "elmethis-theme";
 
@@ -92,5 +92,38 @@ describe("[CSR] storage listener attachment", () => {
     expect(markup).toContain("q-w:storage");
     // And the buggy form — a document listener for "storage" — must not.
     expect(markup).not.toContain("q-d:storage");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// parseTheme()
+// ---------------------------------------------------------------------------
+//
+// Regression pin for the storage-coercion rule. The cross-tab storage
+// handler and the mount-time reader both route through `parseTheme`, so
+// any value other than literally "dark" — including `null` (key cleared
+// in another tab) and unknown strings — settles to "light".
+//
+// This is the deliberate behavior: a cleared key should fall back to the
+// platform-default theme, not lock in dark. If we ever switch to
+// system-preference fallback or anything else, this test makes the
+// semantic shift visible.
+
+describe("parseTheme", () => {
+  test('"dark" → "dark"', () => {
+    expect(parseTheme("dark")).toBe("dark");
+  });
+
+  test('"light" → "light"', () => {
+    expect(parseTheme("light")).toBe("light");
+  });
+
+  test("null (key cleared in another tab) → light", () => {
+    expect(parseTheme(null)).toBe("light");
+  });
+
+  test("unknown string → light", () => {
+    expect(parseTheme("auto")).toBe("light");
+    expect(parseTheme("")).toBe("light");
   });
 });
