@@ -351,7 +351,7 @@ describe("ElmA2ui", () => {
 // These reproduce the four concerns surfaced by the second-pass code review:
 //   #1 TextField double write-back (inline handler + surface delegator both fire)
 //   #3 `messages` prop stream-swap is ignored when the new array is shorter
-//   #4 Per-component `onUpdated` subscriptions are never released on delete
+//   #4 Per-component host subscriptions are never released on unmount
 //   #6 `catalogId` captured at first render — adding a new catalog id mid-flight
 //      doesn't register the new catalog
 //
@@ -477,41 +477,45 @@ describe("ElmA2ui — review round 2 (failing repros)", () => {
     expect(screen.outerHTML).not.toContain("from-A");
   });
 
-  // #4 — When a component is removed (via `updateComponents` changing its
-  // `component` type, which calls `removeComponent` internally), the
-  // per-component host must release the `onUpdated` subscription it took
-  // out at mount time. We wrap `EventEmitter.prototype.subscribe` so that
-  // every Subscription's `unsubscribe()` is counted: the test asserts that
-  // a post-mount type swap of an already-mounted child causes at least one
-  // wrapped `unsubscribe` to fire.
+  // #4 — Each `ComponentHost` subscribes to four `EventEmitter`s at
+  // mount: `componentsModel.onCreated`, `onDeleted`, the `dataModel`
+  // root, and the resolved `model.onUpdated`. When the host disappears
+  // from the rendered tree — because its parent dropped it from
+  // `children` — Qwik unmounts the `component$` and the host's
+  // `useTask$` cleanup must release every sub. The pre-refactor
+  // surface-level subscription model couldn't honor this contract
+  // because subscriptions weren't owned per-id.
   //
-  // The deletion MUST happen after mount so that a per-component host has
-  // a live subscription to release. With all messages crammed into the
-  // initial `messages` prop the SDK deletes the model before any host
-  // mounts, so neither the bulk-sub nor the per-id-sub design has anything
-  // to release.
-  test("removing a component releases its onUpdated subscription", async () => {
+  // Counting `unsubscribe` calls alone is not sufficient: when the SDK
+  // calls `ComponentModel.dispose()` it clears its listener Set
+  // directly, so any subsequent `unsubscribe` on the disposed model
+  // would still register on the counter even though it's a no-op on
+  // the Set. Instead we track ACTIVE subscriptions (subscribes minus
+  // unsubscribes) and assert the count drops after the child is
+  // dropped — verifying the cleanup contract, not the bookkeeping.
+  test("dropping a child from its parent's children list releases the host's subscriptions on unmount", async () => {
     const a2ui = await import("@a2ui/web_core/v0_9");
     const proto = a2ui.EventEmitter.prototype as unknown as {
       subscribe: (l: unknown) => { unsubscribe(): void };
     };
     const realSubscribe = proto.subscribe;
-    let unsubs = 0;
+    let active = 0;
     proto.subscribe = function (listener: unknown) {
+      active++;
       const sub = realSubscribe.call(this, listener) as {
         unsubscribe(): void;
       };
       const realUnsub = sub.unsubscribe.bind(sub);
       return {
         unsubscribe() {
-          unsubs++;
+          active--;
           realUnsub();
         },
       };
     };
 
     try {
-      const initial = [
+      const both = [
         {
           version: "v0.9",
           createSurface: { surfaceId: "s", catalogId: BASIC_CATALOG_ID },
@@ -521,48 +525,58 @@ describe("ElmA2ui — review round 2 (failing repros)", () => {
           updateComponents: {
             surfaceId: "s",
             components: [
-              { component: "Column", id: "root", children: ["c"] },
-              { component: "Text", id: "c", text: "v1" },
+              { component: "Column", id: "root", children: ["a", "b"] },
+              { component: "Text", id: "a", text: "alpha" },
+              { component: "Text", id: "b", text: "beta" },
             ],
           },
         },
       ];
-      // Replace `c` with a different component type — triggers
-      // removeComponent(c) in the processor, firing onDeleted for the old
-      // model and onCreated for the new one.
-      const swapped = [
-        ...initial,
+      // Re-emit `root` with `b` dropped from `children`. The model for
+      // `b` stays in `componentsModel`, but no `<ComponentHost id="b" />`
+      // is rendered, so Qwik unmounts the host and fires its cleanup.
+      const onlyA = [
+        ...both,
         {
           version: "v0.9",
           updateComponents: {
             surfaceId: "s",
-            components: [{ component: "CheckBox", id: "c", label: "v2" }],
+            components: [
+              { component: "Column", id: "root", children: ["a"] },
+            ],
           },
         },
       ];
 
       const Wrapper = component$(() => {
-        const swap = useSignal(false);
+        const drop = useSignal(false);
         return (
           <div>
-            <button id="swap" onClick$={() => (swap.value = true)}>
-              swap
+            <button id="drop" onClick$={() => (drop.value = true)}>
+              drop
             </button>
-            <ElmA2ui messages={swap.value ? swapped : initial} />
+            <ElmA2ui messages={drop.value ? onlyA : both} />
           </div>
         );
       });
 
-      const { render, userEvent } = await createDOM();
+      const { screen, render, userEvent } = await createDOM();
       await render(<Wrapper />);
-      // ComponentHost for "c" has now mounted and subscribed to Text(c)'s
-      // onUpdated. Snapshot the counter so we ignore any unsubs that may
-      // have fired during mount (e.g. transient model subs in the
-      // GenericBinder phase).
-      const baseline = unsubs;
-      await userEvent("#swap", "click");
-      // The host's onDeleted handler must release the old model's sub.
-      expect(unsubs).toBeGreaterThan(baseline);
+      expect(screen.outerHTML).toContain("alpha");
+      expect(screen.outerHTML).toContain("beta");
+
+      const beforeDrop = active;
+      await userEvent("#drop", "click");
+
+      expect(screen.outerHTML).toContain("alpha");
+      expect(screen.outerHTML).not.toContain("beta");
+      // The dropped host owned three `EventEmitter`-backed subs at
+      // mount time (`onCreated`, `onDeleted`, `model.onUpdated`). The
+      // fourth — `dataModel.subscribe("/")` — uses a separate path-
+      // indexed mechanism and doesn't hit this prototype patch, so we
+      // assert on the `EventEmitter`-tracked floor. `>= 3` (not
+      // `=== 3`) leaves room for adding subs to the host in the future.
+      expect(beforeDrop - active).toBeGreaterThanOrEqual(3);
     } finally {
       proto.subscribe = realSubscribe;
     }
