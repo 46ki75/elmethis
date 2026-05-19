@@ -27,7 +27,8 @@ export interface UseModalOptions {
  * 1. `isShown = false`
  * 2. `setTimeout(() => { if gen matches: isOpen = false }, delay)`
  */
-export const useModal = ({ delay = 200 }: UseModalOptions) => {
+export const useModal = (options: UseModalOptions = {}) => {
+  const delay = options.delay ?? 200;
   const isOpen = useSignal(false);
   const isShown = useSignal(false);
   const hideGen = useSignal(0);

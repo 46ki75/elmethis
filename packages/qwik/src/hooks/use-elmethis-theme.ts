@@ -37,9 +37,10 @@ const applyTheme = (theme: Theme, persist: boolean): void => {
 export function useElmethisTheme() {
   const isDarkTheme = useSignal(false);
 
+  // No SSR guard needed — this QRL is only invoked from a DOM click
+  // handler, which by definition runs on the hydrated client.
   const toggleTheme = $(() => {
     isDarkTheme.value = !isDarkTheme.value;
-    if (typeof document === "undefined") return;
     applyTheme(isDarkTheme.value ? "dark" : "light", true);
   });
 

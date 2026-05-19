@@ -70,6 +70,27 @@ const TrailingWrapper = component$(() => {
   );
 });
 
+// Module-level so the test body can mutate it AFTER mount and observe
+// whether the hook's internal stores still hold an isolated deep copy.
+const sharedInitial: { user: { name: string }; marker: number } = {
+  user: { name: "Alice" },
+  marker: 0,
+};
+
+const SharedInitialWrapper = component$(() => {
+  const { store, throttledStore } = useThrottledStore(sharedInitial, 50);
+  return (
+    <div>
+      <span id="store-name">{store.user.name}</span>
+      <span id="throttled-name">{throttledStore.user.name}</span>
+      <span id="store-marker">{store.marker}</span>
+      <button id="bump" onClick$={() => store.marker++}>
+        Bump
+      </button>
+    </div>
+  );
+});
+
 const MultiKeyWrapper = component$(() => {
   const { store, throttledStore } = useThrottledStore(
     { first: "", last: "" },
@@ -258,5 +279,32 @@ describe("[CSR]", () => {
     expect(screen.querySelector("#store-last")!.textContent).toBe("");
     expect(screen.querySelector("#throttled-first")!.textContent).toBe("Bob");
     expect(screen.querySelector("#throttled-last")!.textContent).toBe("");
+  });
+
+  // -------------------------------------------------------------------------
+  // Regression pin: the hook deep-clones `initialValue` for BOTH stores.
+  // See the matching pin in `use-debounced-store.spec.tsx` for the full
+  // rationale — same contract, same failure mode if `cloneDeep` is ever
+  // removed or replaced with a shallow copy.
+  // -------------------------------------------------------------------------
+  test("mutating the caller's initialValue after mount does not bleed into either store", async () => {
+    sharedInitial.user.name = "Alice";
+    sharedInitial.marker = 0;
+
+    const { screen, render, userEvent } = await createDOM();
+    await render(<SharedInitialWrapper />);
+
+    expect(screen.querySelector("#store-name")!.textContent).toBe("Alice");
+    expect(screen.querySelector("#throttled-name")!.textContent).toBe("Alice");
+
+    // Caller mutates the original object directly — bypasses the Qwik proxy.
+    sharedInitial.user.name = "Mutated";
+
+    // Trigger a re-render through the proxy. Without cloneDeep, the proxy's
+    // get-trap would return the now-mutated underlying value.
+    await userEvent("#bump", "click");
+
+    expect(screen.querySelector("#store-name")!.textContent).toBe("Alice");
+    expect(screen.querySelector("#throttled-name")!.textContent).toBe("Alice");
   });
 });

@@ -217,6 +217,35 @@ describe("[CSR]", () => {
   });
 
   // -------------------------------------------------------------------------
+  // Regression pin: `useModal` must be callable with no argument. Earlier
+  // the parameter `({ delay = 200 }: UseModalOptions)` was required, forcing
+  // every caller that wanted defaults to write `useModal({})`. The
+  // `= {}` default fixes that; this test fails to compile if the default
+  // is removed.
+  // -------------------------------------------------------------------------
+  test("can be called with no options argument", async () => {
+    const NoArgsWrapper = component$(() => {
+      const { Modal, isShown, show } = useModal();
+      return (
+        <div>
+          <button id="show" onClick$={show}>
+            Show
+          </button>
+          <span id="isShown">{String(isShown.value)}</span>
+          <Modal>content</Modal>
+        </div>
+      );
+    });
+
+    const { screen, render, userEvent } = await createDOM();
+    await render(<NoArgsWrapper />);
+
+    expect(screen.querySelector("#isShown")!.textContent).toBe("false");
+    await userEvent("#show", "click");
+    expect(screen.querySelector("#isShown")!.textContent).toBe("true");
+  });
+
+  // -------------------------------------------------------------------------
   // Bug repro: hide() arms a setTimeout that is never cancelled if the modal
   // host unmounts before the timer fires. The callback then runs on a
   // disposed host, writing to `isOpen` of a torn-down hook instance.
