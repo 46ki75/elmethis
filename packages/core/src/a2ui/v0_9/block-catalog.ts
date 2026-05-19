@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import {
   AccessibilityAttributesSchema,
+  ChildListSchema,
   type ComponentApi,
   DynamicStringSchema,
 } from "@a2ui/web_core/v0_9";
@@ -16,11 +17,13 @@ const CommonProps = {
     .optional(),
 };
 
-/** Reusable children schema: static array of component IDs or a list template. */
-const childrenSchema = z.union([
-  z.array(z.string()),
-  z.object({ componentId: z.string(), path: z.string() }),
-]);
+/**
+ * Children schema: static array of component IDs or a list template. Aliased
+ * from the upstream `ChildListSchema` so the catalog-assembler can detect it
+ * and emit a `$ref: "#/$defs/ChildList"` instead of inlining the structure
+ * into every component that has children.
+ */
+const childrenSchema = ChildListSchema;
 
 // ---------------------------------------------------------------------------
 // Inline components
