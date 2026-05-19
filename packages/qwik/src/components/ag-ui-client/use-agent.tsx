@@ -39,9 +39,7 @@ export interface UseAgentOptions {
    *   the signal at every `runAgent` call. `addTool$` becomes a no-op
    *   in this mode — mutate the signal's source instead.
    */
-  tools?:
-    | ToolRegistry
-    | Signal<NoSerialize<ToolRegistry> | undefined>;
+  tools?: ToolRegistry | Signal<NoSerialize<ToolRegistry> | undefined>;
   context?: { value: string; description: string }[];
   headers?: Record<string, string>;
   initialMessages?: Message[];
@@ -121,8 +119,7 @@ export function useAgent({
         headers ? { ...headers } : undefined,
       );
 
-      const factory =
-        factoryRef.value ?? ((opts) => new HttpAgent(opts));
+      const factory = factoryRef.value ?? ((opts) => new HttpAgent(opts));
       agentRef.value = noSerialize(
         factory({ url: trackedUrl, headers: trackedHeaders }),
       );

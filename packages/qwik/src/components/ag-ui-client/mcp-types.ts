@@ -57,7 +57,7 @@ export interface McpPromptDescriptor {
  */
 export type McpPromptContent =
   | { type: "text"; text: string }
-  | { type: string;[k: string]: unknown };
+  | { type: string; [k: string]: unknown };
 
 /**
  * Shape of a message returned by `prompts/get`. The MCP spec allows
@@ -83,10 +83,7 @@ export interface McpPromptResult {
  */
 export interface McpClientHandle {
   listTools: () => Promise<McpToolDescriptor[]>;
-  callTool: (
-    name: string,
-    args: Record<string, unknown>,
-  ) => Promise<unknown>;
+  callTool: (name: string, args: Record<string, unknown>) => Promise<unknown>;
   listPrompts: () => Promise<McpPromptDescriptor[]>;
   getPrompt: (
     name: string,

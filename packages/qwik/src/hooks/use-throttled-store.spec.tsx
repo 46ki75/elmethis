@@ -100,7 +100,6 @@ describe("[SSR]", () => {
     expect(result.html).toContain("Alice");
     expect(result.html).toContain("30");
   });
-
 });
 
 // ---------------------------------------------------------------------------

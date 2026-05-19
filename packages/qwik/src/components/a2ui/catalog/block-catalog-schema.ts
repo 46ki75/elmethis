@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import {
   AccessibilityAttributesSchema,
-  ComponentApi,
+  type ComponentApi,
   DynamicStringSchema,
 } from "@a2ui/web_core/v0_9";
 

@@ -64,8 +64,8 @@ const ControlledToggle = component$(() => {
       <ElmToggle summary="Controlled toggle" isOpen={isOpen}>
         <ElmHeading level={2}>Body</ElmHeading>
         <ElmParagraph>
-          This toggle's open state is controlled by the parent component.
-          You can toggle it from outside using the button above.
+          This toggle's open state is controlled by the parent component. You
+          can toggle it from outside using the button above.
         </ElmParagraph>
       </ElmToggle>
     </div>

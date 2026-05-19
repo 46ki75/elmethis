@@ -37,7 +37,16 @@ export interface ElmButtonProps extends PropsOf<"button"> {
 
 export const ElmButton = component$<ElmButtonProps>((props) => {
   const clicked = useSignal(false);
-  const { class: className, onClick$, style, loading, block, color, primary, ...rest } = props;
+  const {
+    class: className,
+    onClick$,
+    style,
+    loading,
+    block,
+    color,
+    primary,
+    ...rest
+  } = props;
 
   const handleClick = $(async () => {
     if (!props.loading && !props.disabled) {
@@ -60,18 +69,20 @@ export const ElmButton = component$<ElmButtonProps>((props) => {
         !color && primary && styles.primary,
         className,
       ]}
-      style={{
-        display: block ? "flex" : "inline-flex",
-        width: block ? "100%" : "auto",
-        cursor: rest.disabled
-          ? "not-allowed"
-          : loading
-            ? "progress"
-            : "pointer",
-        "--opacity": rest.disabled || loading ? 0.6 : undefined,
-        "--color": color,
-        ...(style as CSSProperties),
-      } as CSSProperties}
+      style={
+        {
+          display: block ? "flex" : "inline-flex",
+          width: block ? "100%" : "auto",
+          cursor: rest.disabled
+            ? "not-allowed"
+            : loading
+              ? "progress"
+              : "pointer",
+          "--opacity": rest.disabled || loading ? 0.6 : undefined,
+          "--color": color,
+          ...(style as CSSProperties),
+        } as CSSProperties
+      }
       {...rest}
     >
       {clicked.value && <span class={styles.ripple}></span>}

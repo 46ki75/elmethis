@@ -36,19 +36,17 @@ const UncontrolledToggle = component$(() => {
  * land directly on `externalState`, and writes from outside (the "Reset"
  * button) are reflected in the toggle.
  */
-const ToggleChild = component$(
-  (props: { externalState: Signal<boolean> }) => {
-    const isOpen = useBindableSignal({
-      signal: props.externalState,
-      defaultValue: false,
-    });
-    return (
-      <button onClick$={() => (isOpen.value = !isOpen.value)}>
-        {isOpen.value ? "Close" : "Open"}
-      </button>
-    );
-  },
-);
+const ToggleChild = component$((props: { externalState: Signal<boolean> }) => {
+  const isOpen = useBindableSignal({
+    signal: props.externalState,
+    defaultValue: false,
+  });
+  return (
+    <button onClick$={() => (isOpen.value = !isOpen.value)}>
+      {isOpen.value ? "Close" : "Open"}
+    </button>
+  );
+});
 
 const ControlledToggle = component$(() => {
   const externalState = useSignal(false);

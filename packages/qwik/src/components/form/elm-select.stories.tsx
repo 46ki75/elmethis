@@ -60,7 +60,11 @@ type Story = StoryObj<ElmSelectProps>;
 const PrimarySelect = component$(() => {
   const selectedOptionId = useSignal<string | null>(null);
   return (
-    <ElmSelect label="Select" options={OPTIONS} selectedOptionId={selectedOptionId} />
+    <ElmSelect
+      label="Select"
+      options={OPTIONS}
+      selectedOptionId={selectedOptionId}
+    />
   );
 });
 

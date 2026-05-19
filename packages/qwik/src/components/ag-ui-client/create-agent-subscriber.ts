@@ -1,8 +1,4 @@
-import type {
-  AgentSubscriber,
-  BaseEvent,
-  Message,
-} from "@ag-ui/client";
+import type { AgentSubscriber, BaseEvent, Message } from "@ag-ui/client";
 import { v7 } from "uuid";
 
 import { compactEventsExtended } from "./compactEventsExtended";
@@ -55,9 +51,7 @@ export function createAgentSubscriber({
 
     onEvent({ messages: newMessages, event }) {
       if (state.messages.length < newMessages.length) {
-        state.messages.push(
-          ...newMessages.slice(state.messages.length),
-        );
+        state.messages.push(...newMessages.slice(state.messages.length));
       }
       state.events = compactEventsExtended([...state.events, event]);
     },

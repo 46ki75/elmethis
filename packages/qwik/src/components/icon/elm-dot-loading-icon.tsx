@@ -21,11 +21,13 @@ export const ElmDotLoadingIcon = component$<ElmDotLoadingIconProps>(
     return (
       <span
         class={[styles.wrapper, className]}
-        style={{
-          "--size": size,
-          "--color": color,
-          ...(style as CSSProperties),
-        } as CSSProperties}
+        style={
+          {
+            "--size": size,
+            "--color": color,
+            ...(style as CSSProperties),
+          } as CSSProperties
+        }
         {...props}
       >
         <span class={styles.dot} aria-hidden="true"></span>

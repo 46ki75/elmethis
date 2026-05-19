@@ -26,10 +26,7 @@ export const Primary: Story = {
 export const DefaultChecked: Story = {
   render() {
     return (
-      <ElmCheckbox
-        {...(this.args as ElmCheckboxProps)}
-        defaultChecked={true}
-      />
+      <ElmCheckbox {...(this.args as ElmCheckboxProps)} defaultChecked={true} />
     );
   },
 };

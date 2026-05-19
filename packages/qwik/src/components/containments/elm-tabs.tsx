@@ -19,8 +19,7 @@ interface ElmTabsContextValue {
   transitionTimingFunction: CSSProperties["transition-timing-function"];
 }
 
-const ElmTabsContext =
-  createContextId<ElmTabsContextValue>("elmethis.tabs");
+const ElmTabsContext = createContextId<ElmTabsContextValue>("elmethis.tabs");
 
 export interface ElmTabsProps extends PropsOf<"div"> {
   /**

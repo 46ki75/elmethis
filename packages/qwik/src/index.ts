@@ -1,16 +1,26 @@
 // | A2UI |
-export { ElmA2ui, type ElmA2uiProps } from "./components/a2ui/elm-a2ui";
-export { elmBasicCatalogRendererMap } from "./components/a2ui/elm-a2ui-basic-catalog-renderer";
 export {
-  type CatalogRendererMap,
-  type RenderContext,
-} from "./components/a2ui/elm-a2ui-catalog-renderer";
+  ElmA2ui,
+  type ElmA2uiProps,
+  A2uiSurface,
+  type A2uiSurfaceProps,
+} from "./components/a2ui/elm-a2ui";
 export {
-  ElmA2uiRenderer,
-  type ElmA2uiRendererProps,
-  findRootId,
-  renderTree,
-} from "./components/a2ui/elm-a2ui-renderer";
+  ComponentHost,
+  ROOT_COMPONENT_ID,
+  A2uiSurfaceContext,
+  A2uiCatalogContext,
+} from "./components/a2ui/component-host";
+export {
+  CatalogRenderer,
+  defineRenderer,
+  type RenderArgs,
+  type RenderFn,
+  type RendererEntry,
+  type ChildRef,
+} from "./components/a2ui/catalog/catalog";
+export { basicCatalog } from "./components/a2ui/catalog/basic-catalog";
+export { blockCatalog } from "./components/a2ui/catalog/block-catalog";
 export {
   BlockImageApi,
   BlockQuoteApi,
@@ -38,8 +48,7 @@ export {
   TableRowApi,
   ToggleApi,
   UnsupportedApi,
-} from "./components/a2ui/catalog/n2ui-components-definition";
-export { elmN2UICatalogRendererMap } from "./components/a2ui/catalog/n2ui-components-renderer";
+} from "./components/a2ui/catalog/block-catalog-schema";
 
 // | AG-UI |
 export { compactEventsExtended } from "./components/ag-ui-client/compactEventsExtended";

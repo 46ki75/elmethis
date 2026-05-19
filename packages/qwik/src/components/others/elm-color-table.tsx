@@ -19,25 +19,27 @@ const DARKNESS_VALUES = [
   -3, -0.25, -0.2, -0.15, -0.1, -0.05, 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3,
 ];
 
-export const ElmColorTable = component$<ElmColorTableProps>(({ colors, class: className, ...props }) => {
-  return (
-    <div class={[styles.container, className]} {...props}>
-      {colors.map((color) => (
-        <div key={color.name} class={styles["row-container"]}>
-          <div
-            class={styles["color-name"]}
-            style={{ "--color": color.code } as Record<string, string>}
-          >
-            {color.name}
+export const ElmColorTable = component$<ElmColorTableProps>(
+  ({ colors, class: className, ...props }) => {
+    return (
+      <div class={[styles.container, className]} {...props}>
+        {colors.map((color) => (
+          <div key={color.name} class={styles["row-container"]}>
+            <div
+              class={styles["color-name"]}
+              style={{ "--color": color.code } as Record<string, string>}
+            >
+              {color.name}
+            </div>
+            {DARKNESS_VALUES.map((darkness) => (
+              <ElmColorSample
+                key={darkness}
+                color={darken(darkness, color.code)}
+              />
+            ))}
           </div>
-          {DARKNESS_VALUES.map((darkness) => (
-            <ElmColorSample
-              key={darkness}
-              color={darken(darkness, color.code)}
-            />
-          ))}
-        </div>
-      ))}
-    </div>
-  );
-});
+        ))}
+      </div>
+    );
+  },
+);

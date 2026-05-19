@@ -1,25 +1,25 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { elmN2UICatalogRendererMap as elmN2uiMap } from "./n2ui-components-renderer";
-import { elmBasicCatalogRendererMap as elmBasicMap } from "../elm-a2ui-basic-catalog-renderer";
-import { component$, noSerialize } from "@qwik.dev/core";
-import { ElmA2uiRenderer, ElmA2uiRendererProps } from "../elm-a2ui-renderer";
+import { blockCatalog } from "./block-catalog";
+import { component$ } from "@qwik.dev/core";
+import { ElmA2ui, type ElmA2uiProps } from "../elm-a2ui";
 
-const CATALOG_ID = "https://elmethis.example.com/catalogs/n2ui/v1/catalog.json";
+const CATALOG_ID =
+  "https://elmethis.example.com/catalogs/block/v1/catalog.json";
 
-const mergedCatalog = noSerialize({ ...elmBasicMap, ...elmN2uiMap });
+// blockCatalog already composes the basic catalog underneath.
 
-const meta: Meta<ElmA2uiRendererProps> = {
-  title: "Components/A2UI/Catalog/n2ui-components-renderer",
-  component: ElmA2uiRenderer,
+const meta: Meta<ElmA2uiProps> = {
+  title: "Components/A2UI/Catalog/block-catalog",
+  component: ElmA2ui,
   tags: ["autodocs"],
   args: {
     catalogId: CATALOG_ID,
-    catalog: mergedCatalog,
+    catalog: blockCatalog,
     messages: [{}],
   },
   render: (args) => {
-    const Render = component$((args: ElmA2uiRendererProps) => {
-      return <ElmA2uiRenderer {...args} />;
+    const Render = component$((args: ElmA2uiProps) => {
+      return <ElmA2ui {...args} />;
     });
 
     return <Render {...args} />;
@@ -27,7 +27,7 @@ const meta: Meta<ElmA2uiRendererProps> = {
 };
 
 export default meta;
-type Story = StoryObj<ElmA2uiRendererProps>;
+type Story = StoryObj<ElmA2uiProps>;
 
 // ---------------------------------------------------------------------------
 // Inline text

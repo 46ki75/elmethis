@@ -75,10 +75,7 @@ const NestedChild = component$((props: { external: NestedState }) => {
     <div>
       <span id="nested-name">{state.user.name}</span>
       <span id="nested-city">{state.user.profile.city}</span>
-      <button
-        id="btn-nested-name"
-        onClick$={() => (state.user.name = "Bob")}
-      >
+      <button id="btn-nested-name" onClick$={() => (state.user.name = "Bob")}>
         Set nested name
       </button>
       <button
@@ -121,7 +118,9 @@ describe("[SSR]", () => {
     const result = await renderToString(<ControlledWrapper />, {
       containerTagName: "div",
     });
-    expect(result.html).toMatch(/<span [^>]*id="child-name"[^>]*>Alice<\/span>/);
+    expect(result.html).toMatch(
+      /<span [^>]*id="child-name"[^>]*>Alice<\/span>/,
+    );
     expect(result.html).toMatch(/<span [^>]*id="child-age"[^>]*>30<\/span>/);
   });
 });
@@ -185,7 +184,9 @@ describe("[CSR]", () => {
     await userEvent("#btn-nested-city", "click");
 
     expect(screen.querySelector("#nested-name")!.textContent).toBe("Bob");
-    expect(screen.querySelector("#parent-nested-name")!.textContent).toBe("Bob");
+    expect(screen.querySelector("#parent-nested-name")!.textContent).toBe(
+      "Bob",
+    );
     expect(screen.querySelector("#nested-city")!.textContent).toBe("Tokyo");
     expect(screen.querySelector("#parent-nested-city")!.textContent).toBe(
       "Tokyo",

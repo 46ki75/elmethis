@@ -27,10 +27,7 @@ const preStyle = {
  * stops typing. `debouncedStore` is what you'd pass to an API call.
  */
 const BasicDemo = component$(() => {
-  const { store, debouncedStore } = useDebouncedStore(
-    { query: "" },
-    500,
-  );
+  const { store, debouncedStore } = useDebouncedStore({ query: "" }, 500);
 
   return (
     <div style={boxStyle}>

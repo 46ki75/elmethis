@@ -21,16 +21,18 @@ export interface ElmTableProps extends PropsOf<"table"> {
 }
 
 export const ElmTable = component$<ElmTableProps>((props) => {
-  const { class: className, caption, hasRowHeader: _hasRowHeader, ...rest } = props;
+  const {
+    class: className,
+    caption,
+    hasRowHeader: _hasRowHeader,
+    ...rest
+  } = props;
 
   const hasRowHeaderComputed = useComputed$(() => props.hasRowHeader ?? false);
   useContextProvider(HasRowHeaderContext, hasRowHeaderComputed);
 
   return (
-    <table
-      class={[styles.table, textStyles.text, className]}
-      {...rest}
-    >
+    <table class={[styles.table, textStyles.text, className]} {...rest}>
       {caption && (
         <caption>
           <span class={styles.caption}>

@@ -79,7 +79,11 @@ const RenderWithTextField = component$<ElmModalProps>((args) => {
         >
           <p>Clicking the text field below should NOT close this modal.</p>
           <ElmTextField label="Username" placeholder="Enter username" />
-          <ElmTextField label="Password" isPassword placeholder="Enter password" />
+          <ElmTextField
+            label="Password"
+            isPassword
+            placeholder="Enter password"
+          />
         </div>
       </ElmModal>
     </>

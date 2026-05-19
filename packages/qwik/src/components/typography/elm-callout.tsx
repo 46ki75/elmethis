@@ -34,7 +34,12 @@ export const ElmCallout = component$<ElmCalloutProps>(
     return (
       <aside
         class={[styles.callout, className]}
-        style={{ "--callout-color": COLOR_MAP[type].code, ...(style as CSSProperties) } as CSSProperties}
+        style={
+          {
+            "--callout-color": COLOR_MAP[type].code,
+            ...(style as CSSProperties),
+          } as CSSProperties
+        }
         {...props}
       >
         <div class={styles.header}>

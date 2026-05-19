@@ -1,10 +1,4 @@
-import {
-  $,
-  component$,
-  PropsOf,
-  Slot,
-  useSignal,
-} from "@qwik.dev/core";
+import { $, component$, PropsOf, Slot, useSignal } from "@qwik.dev/core";
 
 import styles from "./elm-code-block.module.css";
 

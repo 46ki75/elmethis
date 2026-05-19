@@ -247,8 +247,7 @@ export const ElmAgUiPromptPicker = component$<ElmAgUiPromptPickerProps>(
           return;
         }
         if (!re.test(payload[a.name])) {
-          active.error =
-            a.patternMessage ?? `"${a.name}" is invalid.`;
+          active.error = a.patternMessage ?? `"${a.name}" is invalid.`;
           return;
         }
       }

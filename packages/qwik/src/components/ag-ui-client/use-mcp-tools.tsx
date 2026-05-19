@@ -86,9 +86,7 @@ function validateServers(servers: McpServerConfig[]): void {
   const seen = new Set<string>();
   for (const s of servers) {
     if (!VALID_SERVER_ID.test(s.id)) {
-      throw new Error(
-        `MCP server id "${s.id}" must match /^[a-zA-Z0-9_-]+$/.`,
-      );
+      throw new Error(`MCP server id "${s.id}" must match /^[a-zA-Z0-9_-]+$/.`);
     }
     if (seen.has(s.id)) {
       throw new Error(`Duplicate MCP server id: "${s.id}".`);
@@ -144,9 +142,7 @@ function validateServers(servers: McpServerConfig[]): void {
  *   pass through verbatim. The AG-UI subscriber `JSON.stringify`s
  *   the value so the LLM sees the raw `{ content, isError }` shape.
  */
-export function useMcpTools(
-  options: UseMcpToolsOptions,
-): UseMcpToolsReturn {
+export function useMcpTools(options: UseMcpToolsOptions): UseMcpToolsReturn {
   const { servers, clientFactory } = options;
   validateServers(servers);
 
@@ -154,9 +150,7 @@ export function useMcpTools(
     noSerialize<ToolRegistry>({}),
   );
   const status = useStore<Record<string, McpServerStatus>>(
-    Object.fromEntries(
-      servers.map((s) => [s.id, { state: "connecting" }]),
-    ),
+    Object.fromEntries(servers.map((s) => [s.id, { state: "connecting" }])),
   );
   // Wrap in a Signal so Qwik's optimizer can serialize this primitive
   // into the visible-task closure unambiguously.
@@ -280,9 +274,7 @@ export function useMcpTools(
       // Initial connection fan-out: `allSettled` (not `all`) so one
       // slow or failing server doesn't starve the others — each
       // resolves into its own `status[id]` entry independently.
-      void Promise.allSettled(
-        (serversRef.value ?? []).map((cfg) => open(cfg)),
-      );
+      void Promise.allSettled((serversRef.value ?? []).map((cfg) => open(cfg)));
 
       cleanup(() => {
         // Drop the imperative op first so any late `reconnect$` call

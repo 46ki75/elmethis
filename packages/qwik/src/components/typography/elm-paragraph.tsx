@@ -14,11 +14,13 @@ export const ElmParagraph = component$<ElmParagraphProps>(
     return (
       <p
         class={[styles.paragraph, textStyles.text, className]}
-        style={{
-          ...(style as CSSProperties),
-          "--color": color,
-          "--background-color": backgroundColor,
-        } as CSSProperties}
+        style={
+          {
+            ...(style as CSSProperties),
+            "--color": color,
+            "--background-color": backgroundColor,
+          } as CSSProperties
+        }
         {...props}
       >
         <Slot />

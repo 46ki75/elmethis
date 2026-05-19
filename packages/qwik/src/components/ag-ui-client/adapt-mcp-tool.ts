@@ -31,10 +31,7 @@ export interface AdaptMcpToolOptions {
  */
 export function adaptMcpTool(
   descriptor: McpToolDescriptor,
-  callTool: (
-    name: string,
-    args: Record<string, unknown>,
-  ) => Promise<unknown>,
+  callTool: (name: string, args: Record<string, unknown>) => Promise<unknown>,
   options: AdaptMcpToolOptions = {},
 ): { name: string; tool: AnyToolDef } {
   const finalName =

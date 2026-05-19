@@ -1,4 +1,9 @@
-import { component$, PropsOf, type CSSProperties, type JSXOutput } from "@qwik.dev/core";
+import {
+  component$,
+  PropsOf,
+  type CSSProperties,
+  type JSXOutput,
+} from "@qwik.dev/core";
 import type { Component, InlineComponent } from "jarkup-ts";
 import { kebabCase } from "es-toolkit";
 
@@ -54,7 +59,13 @@ const convertInlineComponentsToPlainText = (
 };
 
 export const ElmJarkup = component$<ElmJarkupProps>((props) => {
-  const { class: className, style, jsonComponents, skipUnsupportedComponentWarning, ...rest } = props;
+  const {
+    class: className,
+    style,
+    jsonComponents,
+    skipUnsupportedComponentWarning,
+    ...rest
+  } = props;
 
   const render = (jsonComponents: Component[]): JSXOutput[] => {
     return jsonComponents.map((component, index) => {
@@ -349,7 +360,12 @@ export const ElmJarkup = component$<ElmJarkupProps>((props) => {
   return (
     <div
       class={className}
-      style={{ "--elmethis-margin-block-start": "2.5rem", ...(style as CSSProperties) } as CSSProperties}
+      style={
+        {
+          "--elmethis-margin-block-start": "2.5rem",
+          ...(style as CSSProperties),
+        } as CSSProperties
+      }
       {...rest}
     >
       {render(jsonComponents)}
