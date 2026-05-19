@@ -36,7 +36,7 @@ import {
   TableCellApi,
   TableRowApi,
   UnsupportedApi,
-} from "./block-catalog-schema";
+} from "@elmethis/core";
 
 const CATALOG_ID = "https://elmethis.test/block_catalog.json";
 

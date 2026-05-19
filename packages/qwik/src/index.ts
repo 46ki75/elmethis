@@ -48,7 +48,7 @@ export {
   TableRowApi,
   ToggleApi,
   UnsupportedApi,
-} from "./components/a2ui/catalog/block-catalog-schema";
+} from "@elmethis/core";
 
 // | AG-UI |
 export { compactEventsExtended } from "./components/ag-ui-client/compactEventsExtended";

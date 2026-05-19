@@ -68,7 +68,7 @@ import {
   TableRowApi,
   ToggleApi,
   UnsupportedApi,
-} from "./block-catalog-schema";
+} from "@elmethis/core";
 
 // Mirrors the multi-column layout in elm-jarkup.module.css.
 const columnListStyle: CSSProperties = {
