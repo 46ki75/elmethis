@@ -70,7 +70,7 @@ jobs:
           cp -r ./packages/react/storybook-static ./pages-site/react
           cp -r ./packages/vue/storybook-static ./pages-site/vue
           mkdir -p ./pages-site/a2ui/v0_9
-          cp ./packages/core/dist/a2ui/block_catalog.json ./pages-site/a2ui/v0_9/block_catalog.json
+          cp ./packages/core/dist/a2ui/v0_9/block_catalog.json ./pages-site/a2ui/v0_9/block_catalog.json
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
