@@ -223,7 +223,23 @@ export const ComponentHost = component$<ComponentHostProps>((props) => {
     path: string = props.basePath,
     childIndex: number = 0,
   ): JSX.Element | null => (
-    <ComponentHost id={childId} basePath={path} index={childIndex} />
+    // `key={childId}` is load-bearing: it forces Qwik to unmount the
+    // previous host and mount a fresh one when a parent re-binds a
+    // single-child slot (e.g. Card.child changes "a" → "b"). Without
+    // it Qwik reconciles by position and reuses the same component$
+    // instance with `props.id` swapped, but the host's internal state
+    // — most importantly the `everHadModel` latch and the live
+    // `updateSub` bound to the previous model — would carry over and
+    // suppress the `[Loading b…]` placeholder for the new id.
+    // List/Column/Row already key their iteration wrappers; this
+    // covers the single-child renderers (Card, Modal slots, Button
+    // child, …) and any future custom renderer.
+    <ComponentHost
+      key={childId}
+      id={childId}
+      basePath={path}
+      index={childIndex}
+    />
   );
 
   // QRL setter — captures only `surface` (NoSerialize, safe across QRL

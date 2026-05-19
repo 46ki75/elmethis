@@ -145,6 +145,11 @@ describe("ElmA2ui", () => {
 
   test("ignores messages that arrived before createSurface", async () => {
     // A stray updateComponents with no matching surface is silently dropped.
+    // The SDK throws `A2uiStateError` for this, which `ElmA2ui` catches and
+    // funnels to `console.warn`. Silence it here so the expected error path
+    // doesn't pollute the test stderr, and pin the contract by asserting the
+    // warn was called with the offending message and a real Error.
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
     const { screen, render } = await createDOM();
     await render(
       <ElmA2ui
@@ -162,6 +167,12 @@ describe("ElmA2ui", () => {
       />,
     );
     expect(screen.outerHTML).not.toContain("should not appear");
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining("[ElmA2ui] skipped invalid A2UI message:"),
+      expect.objectContaining({ updateComponents: expect.any(Object) }),
+      expect.any(Error),
+    );
+    warnSpy.mockRestore();
   });
 
   test("renders a [Loading id…] placeholder when a child id is missing", async () => {
@@ -810,6 +821,66 @@ describe("ElmA2ui — review round 3 (failing repros)", () => {
       },
     });
     expect(screen.outerHTML).toContain("Go");
+  });
+
+  // H1 — When a single-child parent (e.g. Card) is re-bound to point at
+  // a different child id ("a" → "b"), the recursion site
+  // (`<ComponentHost id={childId} ... />`) has no `key`, so Qwik may
+  // reconcile the slot by position and reuse the same component$
+  // instance with `props.id` swapped. The host-local `everHadModel`
+  // latch (set true while bound to "a") would then suppress the
+  // `[Loading b…]` placeholder for a genuinely out-of-order "b" —
+  // exactly the flicker the latch was meant to fix, just shifted to a
+  // different scenario. Card is the vehicle here because Column/Row/
+  // List already wrap each child in a `key={id:i}` span which forces
+  // an unmount/remount on id change. Fix is either keying the
+  // recursion by child id or resetting the latch on `props.id` change.
+  test("swapping a Card's child id from a→b shows the [Loading b…] placeholder", async () => {
+    const phaseOne = createMessages(
+      { component: "Card", id: "root", child: "a" },
+      { component: "Text", id: "a", text: "alpha" },
+    );
+    // New array reference; same prefix → unified task takes the
+    // extension path and processes only the tail message.
+    const phaseTwo = [
+      ...phaseOne,
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: "s",
+          components: [
+            // Re-bind root's `child` to "b". "b" is intentionally NOT
+            // emitted — this is the out-of-order arrival scenario.
+            { component: "Card", id: "root", child: "b" },
+          ],
+        },
+      },
+    ];
+
+    const Wrapper = component$(() => {
+      const showB = useSignal(false);
+      return (
+        <div>
+          <button id="swap" onClick$={() => (showB.value = true)}>
+            swap
+          </button>
+          <ElmA2ui messages={showB.value ? phaseTwo : phaseOne} />
+        </div>
+      );
+    });
+
+    const { screen, render, userEvent } = await createDOM();
+    await render(<Wrapper />);
+    expect(screen.outerHTML).toContain("alpha");
+    expect(screen.outerHTML).not.toContain("[Loading");
+
+    await userEvent("#swap", "click");
+
+    // After the swap, root's only child id is "b" and "b" has no
+    // component model. The host MUST render the loading placeholder
+    // — anything else (empty card, stale "alpha") is the H1 bug.
+    expect(screen.outerHTML).toContain("[Loading b…]");
+    expect(screen.outerHTML).not.toContain("alpha");
   });
 });
 
