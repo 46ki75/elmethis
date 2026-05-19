@@ -11,6 +11,13 @@ permissions:
   pages: write
   id-token: write
 
+# Allow only one Pages deploy at a time across the repo. `cancel-in-progress:
+# false` lets an in-flight deploy finish — cancelling mid-deploy can leave
+# the published site in a half-updated state.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
