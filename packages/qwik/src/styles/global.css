@@ -18,27 +18,6 @@
   --elmethis-accent-success: #59b57c;
   --elmethis-accent-warning: #bfa056;
 
-  /* Spacing scale (n × 0.25rem) */
-  --elmethis-space-1: 0.25rem;
-  --elmethis-space-2: 0.5rem;
-  --elmethis-space-3: 0.75rem;
-  --elmethis-space-4: 1rem;
-  --elmethis-space-6: 1.5rem;
-  --elmethis-space-8: 2rem;
-
-  /* Radius scale */
-  --elmethis-radius-sm: 0.125rem;
-  --elmethis-radius-md: 0.25rem;
-
-  /* Duration scale */
-  --elmethis-duration-fast: 100ms;
-  --elmethis-duration-medium: 200ms;
-  --elmethis-duration-slow: 400ms;
-
-  /* Easing */
-  --elmethis-ease-default: ease;
-  --elmethis-ease-out: ease-out;
-
   /* ============================================================
    * Semantic layer — theme-aware roles, reference primitives
    * ============================================================ */
@@ -53,9 +32,7 @@
   --elmethis-color-selection-background: var(--elmethis-neutral-700);
 
   /* Component-scoped (kept for back-compat with existing consumers) */
-  --elmethis-scoped-collapse-transition-duration: var(
-    --elmethis-duration-medium
-  );
+  --elmethis-scoped-collapse-transition-duration: 200ms;
   --elmethis-scoped-transition-timing-function: ease-in-out;
 }
 
