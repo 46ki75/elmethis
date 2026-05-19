@@ -1,4 +1,12 @@
-import { $, component$, Slot, useSignal } from "@qwik.dev/core";
+import {
+  $,
+  component$,
+  noSerialize,
+  Slot,
+  useSignal,
+  useTask$,
+  type NoSerialize,
+} from "@qwik.dev/core";
 
 import styles from "./use-modal.module.css";
 
@@ -19,10 +27,24 @@ export interface UseModalOptions {
  * 1. `isShown = false`
  * 2. `setTimeout(() => { if gen matches: isOpen = false }, delay)`
  */
-export const useModal = ({ delay = 200 }: UseModalOptions) => {
+export const useModal = (options: UseModalOptions = {}) => {
+  const delay = options.delay ?? 200;
   const isOpen = useSignal(false);
   const isShown = useSignal(false);
   const hideGen = useSignal(0);
+  // Track the most recent hide timer so it can be cancelled on unmount.
+  // Without this, hide()'s pending setTimeout fires after the host has been
+  // torn down, writing to a disposed signal.
+  const hideTimerId = useSignal<
+    NoSerialize<ReturnType<typeof setTimeout>> | undefined
+  >(undefined);
+
+  // Unmount-only cleanup: clear any pending hide timer.
+  useTask$(({ cleanup }) => {
+    cleanup(() => {
+      if (hideTimerId.value !== undefined) clearTimeout(hideTimerId.value);
+    });
+  });
 
   const show = $(() => {
     hideGen.value++;
@@ -33,11 +55,14 @@ export const useModal = ({ delay = 200 }: UseModalOptions) => {
   const hide = $(() => {
     const gen = ++hideGen.value;
     isShown.value = false;
-    setTimeout(() => {
-      if (hideGen.value === gen) {
-        isOpen.value = false;
-      }
-    }, delay);
+    hideTimerId.value = noSerialize(
+      setTimeout(() => {
+        if (hideGen.value === gen) {
+          isOpen.value = false;
+        }
+        hideTimerId.value = undefined;
+      }, delay),
+    );
   });
 
   const toggle = $(() => {

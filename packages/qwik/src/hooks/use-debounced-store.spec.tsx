@@ -68,6 +68,27 @@ const NestedWrapper = component$(() => {
   );
 });
 
+// Module-level so the test body can mutate it AFTER mount and observe
+// whether the hook's internal stores still hold an isolated deep copy.
+const sharedInitial: { user: { name: string }; marker: number } = {
+  user: { name: "Alice" },
+  marker: 0,
+};
+
+const SharedInitialWrapper = component$(() => {
+  const { store, debouncedStore } = useDebouncedStore(sharedInitial, 50);
+  return (
+    <div>
+      <span id="store-name">{store.user.name}</span>
+      <span id="debounced-name">{debouncedStore.user.name}</span>
+      <span id="store-marker">{store.marker}</span>
+      <button id="bump" onClick$={() => store.marker++}>
+        Bump
+      </button>
+    </div>
+  );
+});
+
 const MultiKeyWrapper = component$(() => {
   const { store, debouncedStore } = useDebouncedStore(
     { first: "", last: "" },
@@ -298,6 +319,45 @@ describe("[CSR]", () => {
     expect(screen.querySelector("#store-name")!.textContent).toBe("Bob");
     // debouncedStore should still hold the initial value because the
     // 50 ms timer has not fired (fake timers, no advancement).
+    expect(screen.querySelector("#debounced-name")!.textContent).toBe("Alice");
+  });
+
+  // -------------------------------------------------------------------------
+  // Regression pin: the hook deep-clones `initialValue` for BOTH stores.
+  //
+  // Without that clone, the internal stores share the caller's object
+  // reference. The caller could then mutate `initialValue` after mount and
+  // — on the next re-render — see their mutation leak into `store` /
+  // `debouncedStore`, because the Qwik proxy's get-trap reads from the
+  // (now-mutated) underlying target.
+  //
+  // This test mutates `sharedInitial` after mount, then triggers a
+  // re-render via a legitimate proxy write (`store.marker++`). With the
+  // current `cloneDeep(initialValue)` calls, the re-render still shows the
+  // original "Alice". If `cloneDeep` is removed or replaced with a shallow
+  // copy, the re-render would surface "Mutated" and this test fails.
+  // -------------------------------------------------------------------------
+  test("mutating the caller's initialValue after mount does not bleed into either store", async () => {
+    // Reset shared state so the test is independent of run order.
+    sharedInitial.user.name = "Alice";
+    sharedInitial.marker = 0;
+
+    const { screen, render, userEvent } = await createDOM();
+    await render(<SharedInitialWrapper />);
+
+    expect(screen.querySelector("#store-name")!.textContent).toBe("Alice");
+    expect(screen.querySelector("#debounced-name")!.textContent).toBe("Alice");
+
+    // The caller mutates the original object directly — bypassing the
+    // Qwik proxy, so no reactivity fires from this write alone.
+    sharedInitial.user.name = "Mutated";
+
+    // Trigger a re-render through the store's own proxy. Both spans
+    // re-read their bindings; the internal stores' deep clones still hold
+    // "Alice".
+    await userEvent("#bump", "click");
+
+    expect(screen.querySelector("#store-name")!.textContent).toBe("Alice");
     expect(screen.querySelector("#debounced-name")!.textContent).toBe("Alice");
   });
 });

@@ -1,4 +1,6 @@
-import { component$ } from "@qwik.dev/core";
+// @vitest-environment happy-dom
+
+import { component$, useSignal } from "@qwik.dev/core";
 import { createDOM } from "@qwik.dev/core/testing";
 import { renderToString } from "@qwik.dev/core/server";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
@@ -23,6 +25,41 @@ const ModalWrapper = component$(() => {
       <Modal>
         <span id="dialog-content">Dialog Content</span>
       </Modal>
+    </div>
+  );
+});
+
+/**
+ * Mountable / unmountable modal host. The parent flips `mounted` to false to
+ * tear down the inner `ModalHost` component, which is what drives the
+ * `useTask$({ cleanup })` exit path inside `useModal`.
+ */
+const ModalHost = component$(() => {
+  // Long delay so the hide timer is still pending when we unmount.
+  const { Modal, show, hide } = useModal({ delay: 1500 });
+  return (
+    <div>
+      <button id="show" onClick$={show}>
+        Show
+      </button>
+      <button id="hide" onClick$={hide}>
+        Hide
+      </button>
+      <Modal>
+        <span id="dialog-content">Dialog Content</span>
+      </Modal>
+    </div>
+  );
+});
+
+const ToggleableModalHost = component$(() => {
+  const mounted = useSignal(true);
+  return (
+    <div>
+      <button id="unmount" onClick$={() => (mounted.value = false)}>
+        Unmount
+      </button>
+      {mounted.value && <ModalHost />}
     </div>
   );
 });
@@ -177,5 +214,68 @@ describe("[CSR]", () => {
     expect(textFieldLabel).toBeTruthy();
     expect(textFieldLabel.getAttribute("for")).toBeNull();
     expect(textFieldLabel.querySelector("input")).toBeTruthy();
+  });
+
+  // -------------------------------------------------------------------------
+  // Regression pin: `useModal` must be callable with no argument. Earlier
+  // the parameter `({ delay = 200 }: UseModalOptions)` was required, forcing
+  // every caller that wanted defaults to write `useModal({})`. The
+  // `= {}` default fixes that; this test fails to compile if the default
+  // is removed.
+  // -------------------------------------------------------------------------
+  test("can be called with no options argument", async () => {
+    const NoArgsWrapper = component$(() => {
+      const { Modal, isShown, show } = useModal();
+      return (
+        <div>
+          <button id="show" onClick$={show}>
+            Show
+          </button>
+          <span id="isShown">{String(isShown.value)}</span>
+          <Modal>content</Modal>
+        </div>
+      );
+    });
+
+    const { screen, render, userEvent } = await createDOM();
+    await render(<NoArgsWrapper />);
+
+    expect(screen.querySelector("#isShown")!.textContent).toBe("false");
+    await userEvent("#show", "click");
+    expect(screen.querySelector("#isShown")!.textContent).toBe("true");
+  });
+
+  // -------------------------------------------------------------------------
+  // Bug repro: hide() arms a setTimeout that is never cancelled if the modal
+  // host unmounts before the timer fires. The callback then runs on a
+  // disposed host, writing to `isOpen` of a torn-down hook instance.
+  //
+  // We spy on clearTimeout: the fix must register a useTask$({cleanup}) that
+  // clears the pending hide timer. The buggy code never calls clearTimeout
+  // on this timer, so the spy's call count stays flat across unmount.
+  // -------------------------------------------------------------------------
+  test("pending hide timer is cleared when modal host unmounts", async () => {
+    // Spy AFTER enabling fake timers — vi swaps the global setTimeout /
+    // clearTimeout implementations, so spying first would attach to the
+    // unswapped versions that the hook no longer calls.
+    vi.useFakeTimers();
+    const clearSpy = vi.spyOn(globalThis, "clearTimeout");
+
+    const { render, userEvent } = await createDOM();
+    await render(<ToggleableModalHost />);
+
+    await userEvent("#show", "click");
+    await userEvent("#hide", "click");
+    await vi.advanceTimersByTimeAsync(0);
+
+    const before = clearSpy.mock.calls.length;
+
+    // Unmount the modal host while the hide timer is still pending.
+    await userEvent("#unmount", "click");
+    await vi.advanceTimersByTimeAsync(0);
+
+    // The cleanup must clear the pending timer. Without the fix, no
+    // clearTimeout call corresponds to the hide timer.
+    expect(clearSpy.mock.calls.length).toBeGreaterThan(before);
   });
 });
