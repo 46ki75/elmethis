@@ -1,4 +1,4 @@
-import { describe, expect, test } from "vitest";
+import { afterEach, describe, expect, test, vi } from "vitest";
 import { createDOM } from "@qwik.dev/core/testing";
 import { component$, useSignal } from "@qwik.dev/core";
 
@@ -305,5 +305,284 @@ describe("ElmA2ui", () => {
 
     expect(screen.outerHTML).toContain("second");
     expect(screen.outerHTML).not.toContain("first");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Review-round-2 repro tests
+//
+// These reproduce the four concerns surfaced by the second-pass code review:
+//   #1 TextField double write-back (inline handler + surface delegator both fire)
+//   #3 `messages` prop stream-swap is ignored when the new array is shorter
+//   #4 Per-component `onUpdated` subscriptions are never released on delete
+//   #6 `catalogId` captured at first render — adding a new catalog id mid-flight
+//      doesn't register the new catalog
+//
+// Each test should FAIL on `qwik/refactor/a2ui` HEAD.
+// ---------------------------------------------------------------------------
+
+describe("ElmA2ui — review round 2 (failing repros)", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  // #1 — Each input event on a bound TextField should call `DataContext.set`
+  // exactly once. Currently the renderer attaches an inline `onInput$` AND
+  // emits the `data-a2ui-bind` attribute that the surface-level delegator
+  // listens for, so in a real browser both QRL handlers run and the data
+  // model is written twice per event.
+  //
+  // This test is `skip`ped because the bug is NOT reproducible in
+  // createDOM: `userEvent` dispatches the event through Qwik's container
+  // without populating `event.target`, and the surface-level `writeBack`
+  // helper bails on `target?.closest(…)` returning undefined. Only the
+  // inline handler fires under tests, so the spy registers 1 call. Browser-
+  // level coverage (Playwright) would be needed to see the actual double-
+  // write. Kept in source as a structural placeholder so the redundancy is
+  // visible to anyone reading the spec.
+  test.skip("TextField input triggers DataContext.set exactly once per event (real browser)", async () => {
+    const a2ui = await import("@a2ui/web_core/v0_9");
+    const setSpy = vi.spyOn(a2ui.DataContext.prototype, "set");
+
+    const { screen, render, userEvent } = await createDOM();
+    await render(
+      <ElmA2ui
+        messages={[
+          {
+            version: "v0.9",
+            createSurface: { surfaceId: "s", catalogId: BASIC_CATALOG_ID },
+          },
+          {
+            version: "v0.9",
+            updateDataModel: { surfaceId: "s", path: "/v", value: "" },
+          },
+          {
+            version: "v0.9",
+            updateComponents: {
+              surfaceId: "s",
+              components: [
+                { component: "Column", id: "root", children: ["f"] },
+                {
+                  component: "TextField",
+                  id: "f",
+                  label: "x",
+                  value: { path: "/v" },
+                },
+              ],
+            },
+          },
+        ]}
+      />,
+    );
+
+    const input = screen.querySelector(
+      'input[data-a2ui-bind="f:value"], textarea[data-a2ui-bind="f:value"]',
+    ) as HTMLInputElement | null;
+    expect(input).not.toBeNull();
+
+    setSpy.mockClear();
+    input!.value = "x";
+    await userEvent('input[data-a2ui-bind="f:value"]', "input");
+
+    expect(setSpy).toHaveBeenCalledTimes(1);
+  });
+
+  // #3 — If a parent swaps `messages` for a fresh stream (e.g. a new
+  // conversation), ElmA2ui should reflect the new stream. Today the sync task
+  // only appends when the new array is longer; an equal-or-shorter swap is
+  // either silently ignored or warned about while leaving the old surfaces
+  // intact. We swap to an array of the same length but with a different
+  // surface id and assert that the new surface renders.
+  test("swapping messages to a fresh stream of equal length renders the new stream", async () => {
+    const streamA = [
+      {
+        version: "v0.9",
+        createSurface: { surfaceId: "a", catalogId: BASIC_CATALOG_ID },
+      },
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: "a",
+          components: [{ component: "Text", id: "root", text: "from-A" }],
+        },
+      },
+    ];
+    const streamB = [
+      {
+        version: "v0.9",
+        createSurface: { surfaceId: "b", catalogId: BASIC_CATALOG_ID },
+      },
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: "b",
+          components: [{ component: "Text", id: "root", text: "from-B" }],
+        },
+      },
+    ];
+
+    const Wrapper = component$(() => {
+      const useB = useSignal(false);
+      return (
+        <div>
+          <button id="swap" onClick$={() => (useB.value = true)}>
+            swap
+          </button>
+          <ElmA2ui messages={useB.value ? streamB : streamA} />
+        </div>
+      );
+    });
+
+    const { screen, render, userEvent } = await createDOM();
+    await render(<Wrapper />);
+    expect(screen.outerHTML).toContain("from-A");
+
+    await userEvent("#swap", "click");
+
+    expect(screen.outerHTML).toContain("from-B");
+    expect(screen.outerHTML).not.toContain("from-A");
+  });
+
+  // #4 — When a component is removed (via `updateComponents` changing its
+  // `component` type, which calls `removeComponent` internally), the
+  // SurfaceView never releases the matching `onUpdated` subscription it
+  // pushed into its private `subs` array on creation. We can't read `subs`
+  // directly, but we can wrap `EventEmitter.prototype.subscribe` so that
+  // every Subscription's `unsubscribe()` is counted. A leak-free
+  // implementation should unsubscribe the orphan's onUpdated when onDeleted
+  // fires.
+  test("removing a component releases its onUpdated subscription", async () => {
+    const a2ui = await import("@a2ui/web_core/v0_9");
+    const proto = a2ui.EventEmitter.prototype as unknown as {
+      subscribe: (l: unknown) => { unsubscribe(): void };
+    };
+    const realSubscribe = proto.subscribe;
+    let unsubs = 0;
+    proto.subscribe = function (listener: unknown) {
+      const sub = realSubscribe.call(this, listener) as {
+        unsubscribe(): void;
+      };
+      const realUnsub = sub.unsubscribe.bind(sub);
+      return {
+        unsubscribe() {
+          unsubs++;
+          realUnsub();
+        },
+      };
+    };
+
+    try {
+      const { render } = await createDOM();
+      await render(
+        <ElmA2ui
+          messages={[
+            {
+              version: "v0.9",
+              createSurface: { surfaceId: "s", catalogId: BASIC_CATALOG_ID },
+            },
+            {
+              version: "v0.9",
+              updateComponents: {
+                surfaceId: "s",
+                components: [
+                  { component: "Column", id: "root", children: ["c"] },
+                  { component: "Text", id: "c", text: "v1" },
+                ],
+              },
+            },
+            // Replace `c` with a different component type — triggers
+            // removeComponent(c) in the processor, which fires onDeleted for
+            // the old model and onCreated for the new one.
+            {
+              version: "v0.9",
+              updateComponents: {
+                surfaceId: "s",
+                components: [
+                  { component: "CheckBox", id: "c", label: "v2" },
+                ],
+              },
+            },
+          ]}
+        />,
+      );
+
+      // On HEAD, removal only triggers the surface-level `bump()`; the
+      // specific onUpdated subscription added in onCreated for the deleted
+      // model is never unsubscribed. unsubs stays at 0 while the test is
+      // still rendering (Qwik's cleanup hasn't run).
+      expect(unsubs).toBeGreaterThan(0);
+    } finally {
+      proto.subscribe = realSubscribe;
+    }
+  });
+
+  // #6 — `catalogId` is captured at first render: the setup `useTask$`
+  // pre-registers `Catalog`s for whatever ids it sees on mount, and never
+  // re-runs. If the parent changes `catalogId` to a new value AND streams a
+  // message referencing the new catalog, the processor doesn't know about
+  // it. The new surface fails silently inside the try/catch wrapper.
+  //
+  // We use `catalogId` (not `catalog`) as the test vector because the
+  // CatalogRenderer prop can't cross a QRL boundary in a child component$
+  // (Q3 serialization error), so we'd need noSerialize gymnastics; the
+  // underlying first-render-capture bug is the same.
+  test("changing `catalogId` after mount registers the new catalog", async () => {
+    const CATALOG_A = "https://example.test/catalog-A";
+    const CATALOG_B = "https://example.test/catalog-B";
+
+    const streamA = [
+      {
+        version: "v0.9",
+        createSurface: { surfaceId: "a", catalogId: CATALOG_A },
+      },
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: "a",
+          components: [{ component: "Text", id: "root", text: "from-A" }],
+        },
+      },
+    ];
+    const streamWithB = [
+      ...streamA,
+      {
+        version: "v0.9",
+        createSurface: { surfaceId: "b", catalogId: CATALOG_B },
+      },
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: "b",
+          components: [{ component: "Text", id: "root", text: "from-B" }],
+        },
+      },
+    ];
+
+    const Wrapper = component$(() => {
+      const showB = useSignal(false);
+      return (
+        <div>
+          <button id="add-b" onClick$={() => (showB.value = true)}>
+            add b
+          </button>
+          <ElmA2ui
+            catalogId={showB.value ? CATALOG_B : CATALOG_A}
+            messages={showB.value ? streamWithB : streamA}
+          />
+        </div>
+      );
+    });
+
+    const { screen, render, userEvent } = await createDOM();
+    await render(<Wrapper />);
+    expect(screen.outerHTML).toContain("from-A");
+
+    await userEvent("#add-b", "click");
+
+    // Surface B should appear alongside A. Today the setup task only knows
+    // about CATALOG_A, so the createSurface for CATALOG_B throws inside the
+    // per-message try/catch and the surface is never registered.
+    expect(screen.outerHTML).toContain("from-A");
+    expect(screen.outerHTML).toContain("from-B");
   });
 });
