@@ -1,3 +1,29 @@
+/*
+ * elmethis CSS token system
+ *
+ * Two layers:
+ *   1. Primitives — theme-agnostic raw values (--elmethis-neutral-*,
+ *      --elmethis-accent-*). Never reference these from component CSS.
+ *      They exist so that semantic roles can reference them, and so future
+ *      tokens can share the same palette.
+ *   2. Semantic roles — theme-aware (--elmethis-color-*). Component CSS
+ *      consumes these. Theme switching happens here, under
+ *      [data-theme="dark"] — never inside individual component modules.
+ *
+ * Adding tokens:
+ *   - Seed only values the codebase actually contains. No speculative tiers.
+ *   - Color tokens earn their keep because of theme switching. Spacing /
+ *     radius / duration / easing values stay as literals at the call site
+ *     unless there is a concrete need to override them globally.
+ *
+ * Per-instance overrides (one paragraph's color, one icon's fill):
+ *   use component-private CSS variables (--color, --font-size, etc.) written
+ *   from props. NEVER write to --elmethis-* from a prop on the component's
+ *   own root — the variable would leak into every descendant.
+ *
+ * See `variables.ts` for the public TypeScript contract.
+ */
+
 :root {
   /* ============================================================
    * Primitive layer — raw values, theme-agnostic
