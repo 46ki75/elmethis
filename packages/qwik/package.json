@@ -1,6 +1,6 @@
 {
   "name": "@elmethis/qwik",
-  "version": "0.1.0-alpha.3",
+  "version": "0.1.0-alpha.4",
   "publishConfig": {
     "access": "public"
   },
@@ -33,7 +33,9 @@
     "node": "^18.17.0 || ^20.3.0 || >=21.0.0"
   },
   "private": false,
-  "sideEffects": ["**/*.css"],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "type": "module",
   "scripts": {
     "build": "qwik build",
