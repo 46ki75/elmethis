@@ -26,6 +26,13 @@ export const useStorage = <T>({
 }: UseStorageOptions<T>) => {
   const state = useSignal<T>(initialValue);
   const storageRef = useSignal<NoSerialize<Storage> | undefined>(undefined);
+  // One BroadcastChannel per mount, reused across every write and on remove.
+  // The earlier version constructed a fresh BC per write/remove and closed
+  // it immediately afterward — burning allocations for no benefit, since one
+  // channel can post any number of messages.
+  const bcRef = useSignal<NoSerialize<BroadcastChannel> | undefined>(
+    undefined,
+  );
 
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(
@@ -54,11 +61,12 @@ export const useStorage = <T>({
         }
       };
 
-      addEventListener("storage", onStorage);
+      window.addEventListener("storage", onStorage);
 
       let bc: BroadcastChannel | undefined;
       if (channel) {
         bc = new BroadcastChannel(channel);
+        bcRef.value = noSerialize(bc);
         bc.onmessage = (
           event: MessageEvent<{ key: string; value: T | null }>,
         ) => {
@@ -69,8 +77,9 @@ export const useStorage = <T>({
       }
 
       cleanup(() => {
-        removeEventListener("storage", onStorage);
+        window.removeEventListener("storage", onStorage);
         bc?.close();
+        bcRef.value = undefined;
       });
     },
     { strategy: "document-ready" },
@@ -86,11 +95,7 @@ export const useStorage = <T>({
 
       try {
         storage.setItem(key, JSON.stringify(newState));
-        if (channel) {
-          const bc = new BroadcastChannel(channel);
-          bc.postMessage({ key, value: newState });
-          bc.close();
-        }
+        bcRef.value?.postMessage({ key, value: newState });
       } catch (e) {
         console.warn(`useStorage: failed to write "${key}"`, e);
       }
@@ -102,18 +107,14 @@ export const useStorage = <T>({
     const storage = storageRef.value;
     if (!storage) {
       console.warn(`useStorage: storage area is not available`);
-    } else {
-      try {
-        state.value = initialValue;
-        storage.removeItem(key);
-        if (channel) {
-          const bc = new BroadcastChannel(channel);
-          bc.postMessage({ key, value: null });
-          bc.close();
-        }
-      } catch (e) {
-        console.warn(`useStorage: failed to remove "${key}"`, e);
-      }
+      return;
+    }
+    try {
+      state.value = initialValue;
+      storage.removeItem(key);
+      bcRef.value?.postMessage({ key, value: null });
+    } catch (e) {
+      console.warn(`useStorage: failed to remove "${key}"`, e);
     }
   });
 

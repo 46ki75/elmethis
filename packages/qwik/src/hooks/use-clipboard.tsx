@@ -1,4 +1,12 @@
-import { $, component$, useSignal, type CSSProperties } from "@qwik.dev/core";
+import {
+  $,
+  component$,
+  noSerialize,
+  useSignal,
+  useTask$,
+  type CSSProperties,
+  type NoSerialize,
+} from "@qwik.dev/core";
 
 import styles from "./use-clipboard.module.css";
 
@@ -19,6 +27,19 @@ type ClipboardItemParameter = ConstructorParameters<typeof ClipboardItem>[0];
 
 export const useClipboard = (options: UseClipboardOptions) => {
   const copied = useSignal(false);
+  // Active reset timer. Re-pressing the copy button before the previous
+  // reset fires must cancel the older timer — otherwise it would flip
+  // `copied` back to false mid-way through the new feedback window.
+  const resetTimerId = useSignal<
+    NoSerialize<ReturnType<typeof setTimeout>> | undefined
+  >(undefined);
+
+  // Unmount-only cleanup so a pending reset doesn't fire on a disposed host.
+  useTask$(({ cleanup }) => {
+    cleanup(() => {
+      if (resetTimerId.value !== undefined) clearTimeout(resetTimerId.value);
+    });
+  });
 
   const copy = $(async () => {
     if (typeof options.content === "string") {
@@ -28,11 +49,18 @@ export const useClipboard = (options: UseClipboardOptions) => {
         options.content.map((item) => new ClipboardItem(item)),
       );
     }
-    copied.value = true;
 
-    setTimeout(() => {
-      copied.value = false;
-    }, options.delay ?? 1500);
+    // Cancel any in-flight reset before arming a new one.
+    if (resetTimerId.value !== undefined) {
+      clearTimeout(resetTimerId.value);
+    }
+    copied.value = true;
+    resetTimerId.value = noSerialize(
+      setTimeout(() => {
+        copied.value = false;
+        resetTimerId.value = undefined;
+      }, options.delay ?? 1500),
+    );
   });
 
   const CopyButton = component$(() => {
