@@ -33,21 +33,30 @@
   },
   "sideEffects": false,
   "scripts": {
-    "build": "tsdown",
+    "build": "tsdown && tsx scripts/emit-catalog.ts",
     "dev": "tsdown --watch",
     "fmt": "prettier --write .",
     "fmt.check": "prettier --check .",
+    "test.unit": "vitest --run",
     "prepublishOnly": "pnpm run build"
   },
   "peerDependencies": {
     "@a2ui/web_core": ">=0.10.0",
     "zod": "^3"
   },
+  "dependencies": {
+    "zod-to-json-schema": "^3.25.2"
+  },
   "devDependencies": {
     "@a2ui/web_core": "^0.10.0",
+    "@types/node": "25.7.0",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
     "prettier": "3.8.3",
     "tsdown": "^0.22.0",
+    "tsx": "^4.20.7",
     "typescript": "5.9.3",
+    "vitest": "^4.1.6",
     "zod": "^3"
   }
 }
