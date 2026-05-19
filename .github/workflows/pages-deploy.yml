@@ -1,4 +1,4 @@
-name: Deploy Storybook
+name: Deploy GitHub Pages
 
 on:
   push:
@@ -61,21 +61,21 @@ jobs:
         run: pnpm run build-storybook
         working-directory: packages/vue
 
-      - name: Package Storybooks for deployment
+      - name: Assemble Pages site
         run: |
-          rm -rf ./storybook-static
-          mkdir -p ./storybook-static
-          cp ./index.html ./storybook-static/index.html
-          cp -r ./packages/qwik/storybook-static ./storybook-static/qwik
-          cp -r ./packages/react/storybook-static ./storybook-static/react
-          cp -r ./packages/vue/storybook-static ./storybook-static/vue
-          mkdir -p ./storybook-static/a2ui/v0_9
-          cp ./packages/core/dist/a2ui/block_catalog.json ./storybook-static/a2ui/v0_9/block_catalog.json
+          rm -rf ./pages-site
+          mkdir -p ./pages-site
+          cp ./index.html ./pages-site/index.html
+          cp -r ./packages/qwik/storybook-static ./pages-site/qwik
+          cp -r ./packages/react/storybook-static ./pages-site/react
+          cp -r ./packages/vue/storybook-static ./pages-site/vue
+          mkdir -p ./pages-site/a2ui/v0_9
+          cp ./packages/core/dist/a2ui/block_catalog.json ./pages-site/a2ui/v0_9/block_catalog.json
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "./storybook-static"
+          path: "./pages-site"
 
       - name: Deploy to GitHub Pages
         id: deployment
