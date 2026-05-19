@@ -1,0 +1,16 @@
+:root {
+  --elmethis-margin-block-start: 0;
+
+  --elmethis-color-primary: #b69545;
+  --elmethis-color-text: #606875;
+  --elmethis-color-text-background: #eff0f2;
+  --elmethis-color-accent-muted: #868e9c;
+
+  --elmethis-scoped-collapse-transition-duration: 200ms;
+  --elmethis-scoped-transition-timing-function: ease-in-out;
+}
+
+[data-theme="dark"] {
+  --elmethis-color-text: #b0b5be;
+  --elmethis-color-text-background: #25282e;
+}
