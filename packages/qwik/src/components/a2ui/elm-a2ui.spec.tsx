@@ -39,8 +39,7 @@ describe("ElmA2ui", () => {
     const { screen, render } = await createDOM();
     await render(<ElmA2ui />);
     // No SurfaceView is mounted — surface map is empty.
-    expect(screen.querySelectorAll("[data-a2ui-action]").length).toBe(0);
-    expect(screen.querySelectorAll("[data-a2ui-bind]").length).toBe(0);
+    expect(screen.querySelectorAll("[data-a2ui-component-id]").length).toBe(0);
   });
 
   test("renders a root Column with Text children from pre-built messages", async () => {
@@ -77,7 +76,7 @@ describe("ElmA2ui", () => {
     expect(screen.outerHTML).toContain("Ada");
   });
 
-  test("emits bindAction attributes for Button components with actions", async () => {
+  test("renders a Button component under the host component-id wrapper", async () => {
     const { screen, render } = await createDOM();
     await render(
       <ElmA2ui
@@ -93,12 +92,17 @@ describe("ElmA2ui", () => {
         )}
       />,
     );
-    const button = screen.querySelector('[data-a2ui-action="btn"]');
+    const button = screen.querySelector(
+      '[data-a2ui-component-id="btn"] [role="button"]',
+    );
     expect(button).not.toBeNull();
     expect(screen.outerHTML).toContain("Submit");
   });
 
-  test("emits bindValue attributes for TextField components", async () => {
+  test("renders a bound TextField under the host component-id wrapper", async () => {
+    // Post-Phase-2 the input no longer emits `data-a2ui-bind` — write-back
+    // is wired through an inline QRL inside the renderer. Tests should
+    // locate the input via the host wrapper's stable `data-a2ui-component-id`.
     const { screen, render } = await createDOM();
     await render(
       <ElmA2ui
@@ -113,7 +117,9 @@ describe("ElmA2ui", () => {
         )}
       />,
     );
-    const input = screen.querySelector('input[data-a2ui-bind="field:value"]');
+    const input = screen.querySelector(
+      '[data-a2ui-component-id="field"] input',
+    );
     expect(input).not.toBeNull();
   });
 
@@ -156,6 +162,37 @@ describe("ElmA2ui", () => {
       />,
     );
     expect(screen.outerHTML).not.toContain("should not appear");
+  });
+
+  test("renders a [Loading id…] placeholder when a child id is missing", async () => {
+    const { screen, render } = await createDOM();
+    await render(
+      <ElmA2ui
+        messages={createMessages(
+          // root references "ghost", which is never sent.
+          { component: "Column", id: "root", children: ["ghost"] },
+        )}
+      />,
+    );
+    const loader = screen.querySelector('[data-a2ui-state="loading"]');
+    expect(loader).not.toBeNull();
+    expect(screen.outerHTML).toContain("[Loading ghost…]");
+  });
+
+  test("renders an Unknown component placeholder for missing renderer types", async () => {
+    const { screen, render } = await createDOM();
+    await render(
+      <ElmA2ui
+        messages={createMessages(
+          { component: "Column", id: "root", children: ["x"] },
+          // `Mystery` is not in the basic catalog.
+          { component: "Mystery", id: "x" },
+        )}
+      />,
+    );
+    const unknown = screen.querySelector('[data-a2ui-state="unknown"]');
+    expect(unknown).not.toBeNull();
+    expect(screen.outerHTML).toContain("Unknown component: Mystery");
   });
 
   test("renders multiple surfaces side-by-side", async () => {
@@ -244,12 +281,12 @@ describe("ElmA2ui", () => {
     );
 
     const input = screen.querySelector(
-      'input[data-a2ui-bind="field:value"]',
+      '[data-a2ui-component-id="field"] input',
     ) as HTMLInputElement | null;
     expect(input).not.toBeNull();
 
     input!.value = "Ada";
-    await userEvent('input[data-a2ui-bind="field:value"]', "input");
+    await userEvent('[data-a2ui-component-id="field"] input', "input");
 
     // After write-back the bound Text should reflect the new value.
     expect(screen.outerHTML).toContain("Ada");
@@ -327,20 +364,17 @@ describe("ElmA2ui — review round 2 (failing repros)", () => {
   });
 
   // #1 — Each input event on a bound TextField should call `DataContext.set`
-  // exactly once. Currently the renderer attaches an inline `onInput$` AND
-  // emits the `data-a2ui-bind` attribute that the surface-level delegator
-  // listens for, so in a real browser both QRL handlers run and the data
-  // model is written twice per event.
+  // exactly once. The Phase 2 refactor removed the surface-level event
+  // delegator's path for TextField: the renderer no longer emits
+  // `data-a2ui-bind`, so the inline `onInput$` is now the only write-back
+  // path and the spy registers exactly one call per event.
   //
-  // This test is `skip`ped because the bug is NOT reproducible in
-  // createDOM: `userEvent` dispatches the event through Qwik's container
-  // without populating `event.target`, and the surface-level `writeBack`
-  // helper bails on `target?.closest(…)` returning undefined. Only the
-  // inline handler fires under tests, so the spy registers 1 call. Browser-
-  // level coverage (Playwright) would be needed to see the actual double-
-  // write. Kept in source as a structural placeholder so the redundancy is
-  // visible to anyone reading the spec.
-  test.skip("TextField input triggers DataContext.set exactly once per event (real browser)", async () => {
+  // Historical note: pre-Phase-2 the renderer emitted both an inline
+  // handler AND `data-a2ui-bind`, which made the surface delegator and the
+  // inline handler both fire — but the bug only manifested in real
+  // browsers because createDOM's `userEvent` doesn't populate
+  // `event.target`, so the delegator's `target?.closest(…)` always bailed.
+  test("TextField input triggers DataContext.set exactly once per event", async () => {
     const a2ui = await import("@a2ui/web_core/v0_9");
     const setSpy = vi.spyOn(a2ui.DataContext.prototype, "set");
 
@@ -376,13 +410,13 @@ describe("ElmA2ui — review round 2 (failing repros)", () => {
     );
 
     const input = screen.querySelector(
-      'input[data-a2ui-bind="f:value"], textarea[data-a2ui-bind="f:value"]',
+      '[data-a2ui-component-id="f"] input',
     ) as HTMLInputElement | null;
     expect(input).not.toBeNull();
 
     setSpy.mockClear();
     input!.value = "x";
-    await userEvent('input[data-a2ui-bind="f:value"]', "input");
+    await userEvent('[data-a2ui-component-id="f"] input', "input");
 
     expect(setSpy).toHaveBeenCalledTimes(1);
   });
@@ -445,12 +479,17 @@ describe("ElmA2ui — review round 2 (failing repros)", () => {
 
   // #4 — When a component is removed (via `updateComponents` changing its
   // `component` type, which calls `removeComponent` internally), the
-  // SurfaceView never releases the matching `onUpdated` subscription it
-  // pushed into its private `subs` array on creation. We can't read `subs`
-  // directly, but we can wrap `EventEmitter.prototype.subscribe` so that
-  // every Subscription's `unsubscribe()` is counted. A leak-free
-  // implementation should unsubscribe the orphan's onUpdated when onDeleted
-  // fires.
+  // per-component host must release the `onUpdated` subscription it took
+  // out at mount time. We wrap `EventEmitter.prototype.subscribe` so that
+  // every Subscription's `unsubscribe()` is counted: the test asserts that
+  // a post-mount type swap of an already-mounted child causes at least one
+  // wrapped `unsubscribe` to fire.
+  //
+  // The deletion MUST happen after mount so that a per-component host has
+  // a live subscription to release. With all messages crammed into the
+  // initial `messages` prop the SDK deletes the model before any host
+  // mounts, so neither the bulk-sub nor the per-id-sub design has anything
+  // to release.
   test("removing a component releases its onUpdated subscription", async () => {
     const a2ui = await import("@a2ui/web_core/v0_9");
     const proto = a2ui.EventEmitter.prototype as unknown as {
@@ -472,45 +511,58 @@ describe("ElmA2ui — review round 2 (failing repros)", () => {
     };
 
     try {
-      const { render } = await createDOM();
-      await render(
-        <ElmA2ui
-          messages={[
-            {
-              version: "v0.9",
-              createSurface: { surfaceId: "s", catalogId: BASIC_CATALOG_ID },
-            },
-            {
-              version: "v0.9",
-              updateComponents: {
-                surfaceId: "s",
-                components: [
-                  { component: "Column", id: "root", children: ["c"] },
-                  { component: "Text", id: "c", text: "v1" },
-                ],
-              },
-            },
-            // Replace `c` with a different component type — triggers
-            // removeComponent(c) in the processor, which fires onDeleted for
-            // the old model and onCreated for the new one.
-            {
-              version: "v0.9",
-              updateComponents: {
-                surfaceId: "s",
-                components: [
-                  { component: "CheckBox", id: "c", label: "v2" },
-                ],
-              },
-            },
-          ]}
-        />,
-      );
+      const initial = [
+        {
+          version: "v0.9",
+          createSurface: { surfaceId: "s", catalogId: BASIC_CATALOG_ID },
+        },
+        {
+          version: "v0.9",
+          updateComponents: {
+            surfaceId: "s",
+            components: [
+              { component: "Column", id: "root", children: ["c"] },
+              { component: "Text", id: "c", text: "v1" },
+            ],
+          },
+        },
+      ];
+      // Replace `c` with a different component type — triggers
+      // removeComponent(c) in the processor, firing onDeleted for the old
+      // model and onCreated for the new one.
+      const swapped = [
+        ...initial,
+        {
+          version: "v0.9",
+          updateComponents: {
+            surfaceId: "s",
+            components: [{ component: "CheckBox", id: "c", label: "v2" }],
+          },
+        },
+      ];
 
-      // On HEAD, removal only triggers the surface-level `bump()`; the
-      // specific onUpdated subscription added in onCreated for the deleted
-      // model is never unsubscribed. unsubs stays at 0 while the test is
-      // still rendering (Qwik's cleanup hasn't run).
-      expect(unsubs).toBeGreaterThan(0);
+      const Wrapper = component$(() => {
+        const swap = useSignal(false);
+        return (
+          <div>
+            <button id="swap" onClick$={() => (swap.value = true)}>
+              swap
+            </button>
+            <ElmA2ui messages={swap.value ? swapped : initial} />
+          </div>
+        );
+      });
+
+      const { render, userEvent } = await createDOM();
+      await render(<Wrapper />);
+      // ComponentHost for "c" has now mounted and subscribed to Text(c)'s
+      // onUpdated. Snapshot the counter so we ignore any unsubs that may
+      // have fired during mount (e.g. transient model subs in the
+      // GenericBinder phase).
+      const baseline = unsubs;
+      await userEvent("#swap", "click");
+      // The host's onDeleted handler must release the old model's sub.
+      expect(unsubs).toBeGreaterThan(baseline);
     } finally {
       proto.subscribe = realSubscribe;
     }

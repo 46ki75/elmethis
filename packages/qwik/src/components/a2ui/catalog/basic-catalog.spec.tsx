@@ -1,4 +1,5 @@
 import { describe, expect, test } from "vitest";
+import { $, noSerialize } from "@qwik.dev/core";
 import { createDOM } from "@qwik.dev/core/testing";
 
 import {
@@ -13,7 +14,7 @@ import {
   BASIC_FUNCTIONS,
 } from "@a2ui/web_core/v0_9/basic_catalog";
 
-import { bindActionAttrs, bindValueAttrs, type RenderArgs } from "./catalog";
+import { type RenderArgs } from "./catalog";
 import { basicCatalog } from "./basic-catalog";
 
 const CATALOG_ID = "https://a2ui.org/specification/v0_9/basic_catalog.json";
@@ -111,8 +112,41 @@ function buildArgs(
     resolve,
     childRefs,
     renderChild,
-    bindValue: (prop, opts) => bindValueAttrs(target.id, prop, opts),
-    bindAction: () => bindActionAttrs(target.id),
+    setBinding$: (() => {
+      // `$()` verifies captures at construction time; plain class
+      // instances fail the check. The helper exists only to satisfy the
+      // RenderArgs shape for unit tests that don't actually exercise the
+      // QRL — wrap the live references in `noSerialize` so the captures
+      // are formally serializable while still callable in-process.
+      const modelRef = noSerialize(model);
+      const ctxRef = noSerialize(ctx);
+      return $((propName: string, value: unknown) => {
+        if (!modelRef || !ctxRef) return;
+        const bound = (modelRef.properties as Record<string, unknown>)[
+          propName
+        ];
+        if (!bound || typeof bound !== "object" || !("path" in bound)) return;
+        ctxRef.dataContext.set((bound as { path: string }).path, value);
+      });
+    })(),
+    dispatchAction$: (() => {
+      const modelRef = noSerialize(model);
+      const surfaceRef = noSerialize(surface);
+      const ctxRef = noSerialize(ctx);
+      return $((propName: string = "action") => {
+        if (!modelRef || !surfaceRef || !ctxRef) return;
+        const action = (modelRef.properties as Record<string, unknown>)[
+          propName
+        ];
+        if (!action) return;
+        surfaceRef
+          .dispatchAction(
+            ctxRef.dataContext.resolveAction(action as never),
+            target.id,
+          )
+          .catch(() => {});
+      });
+    })(),
   };
 }
 
@@ -200,7 +234,13 @@ describe("basicCatalog: layout", () => {
 });
 
 describe("basicCatalog: interactive", () => {
-  test("Button emits the action attribute when action is set", async () => {
+  // Post-Phase-2 the renderers no longer emit `data-a2ui-bind` /
+  // `data-a2ui-action` attributes. Write-back and action dispatch are
+  // wired through inline `onInput$` / `onChange$` / `onClick$` QRLs that
+  // call `setBinding$` and `dispatchAction$`. The remaining structural
+  // assertions confirm the renderer produces the expected control type
+  // and reflects the resolved value.
+  test("Button renders a clickable div with role=button", async () => {
     const args = buildArgs({
       component: "Button",
       id: "btn",
@@ -208,28 +248,19 @@ describe("basicCatalog: interactive", () => {
       action: { action: "submit" },
     });
     const html = await renderArgs(args, "Button");
-    expect(html).toContain('data-a2ui-action="btn"');
+    expect(html).toContain('role="button"');
+    expect(html).toContain("label");
   });
 
-  test("Button without action omits the attribute", async () => {
-    const args = buildArgs({
-      component: "Button",
-      id: "btn",
-      child: "label",
-    });
-    const html = await renderArgs(args, "Button");
-    expect(html).not.toContain("data-a2ui-action");
-  });
-
-  test("TextField emits bindValue on the input", async () => {
+  test("TextField renders an <input> with the resolved value", async () => {
     const args = buildArgs({
       component: "TextField",
       id: "tf",
       label: "Name",
     });
     const html = await renderArgs(args, "TextField");
-    expect(html).toContain('data-a2ui-bind="tf:value"');
-    expect(html).not.toContain("data-a2ui-bind-multi");
+    expect(html).toContain("<input");
+    expect(html).toContain("Name");
   });
 
   // BUG repro (review #5): the `longText` variant of TextField is meant to
@@ -244,7 +275,6 @@ describe("basicCatalog: interactive", () => {
     });
     const html = await renderArgs(args, "TextField");
     expect(html.toLowerCase()).toContain("<textarea");
-    expect(html).toContain('data-a2ui-bind="tf:value"');
   });
 
   test("CheckBox reflects a boolean path binding", async () => {
@@ -258,7 +288,6 @@ describe("basicCatalog: interactive", () => {
       { dataModel: { "/form/agree": true } },
     );
     const html = await renderArgs(args, "CheckBox");
-    expect(html).toContain('data-a2ui-bind="cb:value"');
     // Boolean attribute serializes as `checked=""` in HTML5.
     expect(html).toMatch(/<input[^>]*\bchecked\b/);
   });
@@ -276,10 +305,9 @@ describe("basicCatalog: interactive", () => {
     expect(html).toContain('min="0"');
     expect(html).toContain('max="100"');
     expect(html).toContain('value="30"');
-    expect(html).toContain('data-a2ui-bind="s:value"');
   });
 
-  test("ChoicePicker single-select uses radio inputs without the multi flag", async () => {
+  test("ChoicePicker single-select uses radio inputs", async () => {
     const args = buildArgs({
       component: "ChoicePicker",
       id: "cp",
@@ -291,11 +319,10 @@ describe("basicCatalog: interactive", () => {
     });
     const html = await renderArgs(args, "ChoicePicker");
     expect(html).toContain('type="radio"');
-    expect(html).toContain('data-a2ui-bind="cp:value"');
-    expect(html).not.toContain("data-a2ui-bind-multi");
+    expect(html).not.toContain('type="checkbox"');
   });
 
-  test("ChoicePicker multipleSelection uses checkboxes with the multi flag", async () => {
+  test("ChoicePicker multipleSelection uses checkboxes", async () => {
     const args = buildArgs({
       component: "ChoicePicker",
       id: "cp",
@@ -308,8 +335,7 @@ describe("basicCatalog: interactive", () => {
     });
     const html = await renderArgs(args, "ChoicePicker");
     expect(html).toContain('type="checkbox"');
-    expect(html).toContain('data-a2ui-bind="cp:value"');
-    expect(html).toContain('data-a2ui-bind-multi="true"');
+    expect(html).not.toContain('type="radio"');
   });
 
   test("DateTimeInput type depends on enableDate / enableTime", async () => {

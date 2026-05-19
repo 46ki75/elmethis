@@ -7,7 +7,7 @@
  * built-in `basicCatalog` or `blockCatalog` to override individual components
  * while reusing the rest.
  */
-import { type JSX } from "@qwik.dev/core";
+import { type JSX, type QRL } from "@qwik.dev/core";
 import { type z } from "zod";
 
 import {
@@ -28,9 +28,9 @@ export interface ChildRef {
 
 /**
  * Everything a render function needs to produce JSX for a single component
- * instance. The helpers (`resolve`, `children`, `renderChild`, `bindValue`,
- * `bindAction`) are pre-bound to the current component so renderers stay
- * declarative.
+ * instance. The helpers (`resolve`, `childRefs`, `renderChild`,
+ * `setBinding$`, `dispatchAction$`) are pre-bound to the current component
+ * so renderers stay declarative.
  */
 export interface RenderArgs<TProps = Record<string, unknown>> {
   /** Unique component id within the surface. */
@@ -66,64 +66,27 @@ export interface RenderArgs<TProps = Record<string, unknown>> {
   ) => JSX.Element | null;
 
   /**
-   * Returns the DOM attributes that wire this element's `change`/`input`
-   * event to writing back to the data model. `multi: true` signals
-   * multi-select semantics (e.g. checkbox-style ChoicePicker) so the
-   * surface-level delegator can collect all checked values instead of one.
+   * Writes `value` back into the surface's data model for the binding
+   * behind `propName`. If the property isn't path-bound, the call is a
+   * no-op. This is a `QRL` so renderers can capture it inside `onInput$`
+   * / `onChange$` without crossing Qwik's serialization boundary — the
+   * surface and component id are baked into the captured QRL by
+   * `ComponentHost`.
    */
-  bindValue: (
-    propName: string,
-    options?: { multi?: boolean },
-  ) => Record<string, string>;
+  setBinding$: QRL<(propName: string, value: unknown) => void>;
 
   /**
-   * Returns the DOM attributes that wire this element's `click` event to
-   * dispatching the bound action. The renderer must ensure the element
-   * also carries an appropriate `role`/`tabIndex` if it isn't a native
-   * interactive element.
+   * Resolves and dispatches the component's bound action. Looks up the
+   * named property (default `"action"`) on the live component model, walks
+   * any nested path bindings, and calls `surface.dispatchAction`. No-op if
+   * the property isn't an action.
    */
-  bindAction: () => Record<string, string>;
+  dispatchAction$: QRL<(propName?: string) => void>;
 }
 
 export type RenderFn<TProps = Record<string, unknown>> = (
   args: RenderArgs<TProps>,
 ) => JSX.Element | null;
-
-// ---- Surface delegation protocol -------------------------------------------
-// These data-attribute helpers are the contract between a renderer and the
-// SurfaceView event delegator. Catalog authors should use the `bindValue` /
-// `bindAction` helpers on `RenderArgs` rather than calling these directly —
-// the names are an internal protocol that may change.
-
-/** Reserved on the surface root; never spread into JSX. */
-export const A2UI_BIND_ATTR = "data-a2ui-bind";
-export const A2UI_BIND_MULTI_ATTR = "data-a2ui-bind-multi";
-export const A2UI_ACTION_ATTR = "data-a2ui-action";
-
-/**
- * Builds the attributes that mark this element as a write-back target for
- * `componentId.propName`. `options.multi` toggles multi-select aggregation
- * (the delegator collects every checked input under this element).
- */
-export function bindValueAttrs(
-  componentId: string,
-  propName: string,
-  options?: { multi?: boolean },
-): Record<string, string> {
-  const attrs: Record<string, string> = {
-    [A2UI_BIND_ATTR]: `${componentId}:${propName}`,
-  };
-  if (options?.multi) attrs[A2UI_BIND_MULTI_ATTR] = "true";
-  return attrs;
-}
-
-/**
- * Builds the attribute that marks this element as the click target for
- * `componentId`'s bound action.
- */
-export function bindActionAttrs(componentId: string): Record<string, string> {
-  return { [A2UI_ACTION_ATTR]: componentId };
-}
 
 /** One entry in a `CatalogRenderer`. */
 export interface RendererEntry<TProps = Record<string, unknown>> {
@@ -157,7 +120,7 @@ export function defineRenderer<Api extends ComponentApi>(
  */
 // Entries are stored with `any`-typed props because the prop schema varies
 // per component. Type safety is enforced at the `defineRenderer` call site
-// (where the schema is known) and at lookup the consumer is the render-tree,
+// (where the schema is known) and at lookup the consumer is `ComponentHost`,
 // which only cares about the `RenderFn` signature.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyRendererEntry = RendererEntry<any>;

@@ -2,14 +2,12 @@
  * Built-in renderer set for the A2UI v0.9 Basic Catalog
  * (`https://a2ui.org/specification/v0_9/basic_catalog.json`).
  *
- * Each entry is a typed `defineRenderer(api, fn)` so the props type comes from
- * the upstream Zod schema. Interactive components use the `bindValue` /
- * `bindAction` helpers from `RenderArgs` rather than emitting `data-a2ui-*`
- * attributes by hand — the surface-level delegator owns that protocol.
+ * Each entry is a typed `defineRenderer(api, fn)`. Interactive components
+ * write back to the data model via the `setBinding$` QRL provided by
+ * `ComponentHost`, and fire actions via `dispatchAction$`. Both are baked
+ * with the host's surface + component id, so renderers stay free of
+ * surface-level coupling.
  */
-import { noSerialize } from "@qwik.dev/core";
-
-import { ComponentContext } from "@a2ui/web_core/v0_9";
 import {
   AudioPlayerApi,
   ButtonApi,
@@ -130,7 +128,7 @@ export const basicCatalog: CatalogRenderer = new CatalogRenderer([
   // A2UI `child` can be any component (Row, Column, Card, etc.), and those
   // render <div>s. <div> inside <button> is invalid HTML and trips Qwik v2's
   // SSR validator (Q12).
-  defineRenderer(ButtonApi, ({ props, renderChild, bindAction }) => (
+  defineRenderer(ButtonApi, ({ props, renderChild, dispatchAction$ }) => (
     <div
       role="button"
       tabIndex={0}
@@ -138,7 +136,17 @@ export const basicCatalog: CatalogRenderer = new CatalogRenderer([
         styles.button,
         props.variant === "primary" && styles["button-primary"],
       ]}
-      {...(props.action ? bindAction() : {})}
+      onClick$={props.action ? () => dispatchAction$("action") : undefined}
+      onKeyDown$={
+        props.action
+          ? (e: KeyboardEvent) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                return dispatchAction$("action");
+              }
+            }
+          : undefined
+      }
     >
       {renderChild(props.child)}
     </div>
@@ -169,77 +177,41 @@ export const basicCatalog: CatalogRenderer = new CatalogRenderer([
     />
   )),
 
-  defineRenderer(
-    TextFieldApi,
-    ({ props, componentId, surface, resolve, bindValue }) => {
-      const variant = props.variant ?? "shortText";
-      const value = props.value ? resolve(props.value) : "";
-      const path = (props.value as { path?: string } | undefined)?.path;
-      // Inline handler attached directly to the input, not delegated. `el`
-      // here is the input itself, so we don't depend on `event.target` —
-      // which keeps the binding testable under createDOM.
-      //
-      // `surface` is a non-serializable SurfaceModel; Qwik would reject it
-      // as a QRL capture, so we wrap it in `noSerialize` first. Handlers
-      // only fire on the client where the surface is live in memory, so
-      // the runtime null-check is just defensive.
-      //
-      // The handler is written inline in JSX so the Qwik compiler can
-      // analyze the closure captures precisely; assigning to a local
-      // variable defeats that analysis and the compiler over-captures the
-      // entire renderer scope.
-      const surfaceRef = noSerialize(surface);
-      return (
-        <div class={styles["text-field"]}>
-          <label class={styles.label}>{resolve(props.label)}</label>
-          {variant === "longText" ? (
-            <textarea
-              class={styles.input}
-              value={value}
-              {...bindValue("value")}
-              onInput$={(_e: Event, el: HTMLTextAreaElement) => {
-                if (!surfaceRef || !path) return;
-                new ComponentContext(surfaceRef, componentId).dataContext.set(
-                  path,
-                  el.value,
-                );
-              }}
-              onChange$={(_e: Event, el: HTMLTextAreaElement) => {
-                if (!surfaceRef || !path) return;
-                new ComponentContext(surfaceRef, componentId).dataContext.set(
-                  path,
-                  el.value,
-                );
-              }}
-            />
-          ) : (
-            <input
-              class={styles.input}
-              type={textFieldInputType[variant] ?? "text"}
-              value={value}
-              {...bindValue("value")}
-              onInput$={(_e: Event, el: HTMLInputElement) => {
-                if (!surfaceRef || !path) return;
-                new ComponentContext(surfaceRef, componentId).dataContext.set(
-                  path,
-                  el.value,
-                );
-              }}
-              onChange$={(_e: Event, el: HTMLInputElement) => {
-                if (!surfaceRef || !path) return;
-                new ComponentContext(surfaceRef, componentId).dataContext.set(
-                  path,
-                  el.value,
-                );
-              }}
-            />
-          )}
-        </div>
-      );
-    },
-  ),
+  defineRenderer(TextFieldApi, ({ props, resolve, setBinding$ }) => {
+    const variant = props.variant ?? "shortText";
+    const value = props.value ? resolve(props.value) : "";
+    return (
+      <div class={styles["text-field"]}>
+        <label class={styles.label}>{resolve(props.label)}</label>
+        {variant === "longText" ? (
+          <textarea
+            class={styles.input}
+            value={value}
+            onInput$={(_e: Event, el: HTMLTextAreaElement) =>
+              setBinding$("value", el.value)
+            }
+            onChange$={(_e: Event, el: HTMLTextAreaElement) =>
+              setBinding$("value", el.value)
+            }
+          />
+        ) : (
+          <input
+            class={styles.input}
+            type={textFieldInputType[variant] ?? "text"}
+            value={value}
+            onInput$={(_e: Event, el: HTMLInputElement) =>
+              setBinding$("value", el.value)
+            }
+            onChange$={(_e: Event, el: HTMLInputElement) =>
+              setBinding$("value", el.value)
+            }
+          />
+        )}
+      </div>
+    );
+  }),
 
-  defineRenderer(CheckBoxApi, ({ props, ctx, resolve, bindValue }) => {
+  defineRenderer(CheckBoxApi, ({ props, ctx, resolve, setBinding$ }) => {
     const raw = props.value;
     const checked =
       typeof raw === "boolean"
@@ -247,13 +219,19 @@ export const basicCatalog: CatalogRenderer = new CatalogRenderer([
         : Boolean(ctx.dataContext.resolveDynamicValue(raw as never) ?? false);
     return (
       <label class={styles.checkbox}>
-        <input type="checkbox" checked={checked} {...bindValue("value")} />
+        <input
+          type="checkbox"
+          checked={checked}
+          onChange$={(_e: Event, el: HTMLInputElement) =>
+            setBinding$("value", el.checked)
+          }
+        />
         <span class={styles["checkbox-label"]}>{resolve(props.label)}</span>
       </label>
     );
   }),
 
-  defineRenderer(SliderApi, ({ props, ctx, bindValue }) => {
+  defineRenderer(SliderApi, ({ props, ctx, setBinding$ }) => {
     const raw = props.value;
     const value =
       typeof raw === "number"
@@ -266,7 +244,12 @@ export const basicCatalog: CatalogRenderer = new CatalogRenderer([
         value={value}
         min={props.min ?? 0}
         max={props.max}
-        {...bindValue("value")}
+        onInput$={(_e: Event, el: HTMLInputElement) =>
+          setBinding$("value", Number(el.value))
+        }
+        onChange$={(_e: Event, el: HTMLInputElement) =>
+          setBinding$("value", Number(el.value))
+        }
       />
     );
   }),
@@ -305,18 +288,46 @@ export const basicCatalog: CatalogRenderer = new CatalogRenderer([
 
   defineRenderer(
     ChoicePickerApi,
-    ({ props, componentId, ctx, resolve, bindValue }) => {
+    ({ props, componentId, ctx, resolve, setBinding$ }) => {
       const raw = props.value;
-      const resolved = Array.isArray(raw)
+      const resolvedArr = Array.isArray(raw)
         ? raw
         : (ctx.dataContext.resolveDynamicValue(raw as never) ?? []);
-      const selected: string[] = Array.isArray(resolved)
-        ? (resolved as string[])
+      const selected: string[] = Array.isArray(resolvedArr)
+        ? (resolvedArr as string[])
         : [];
       const multi =
         (props.variant ?? "mutuallyExclusive") === "multipleSelection";
+
+      // Single wrapper-level handler instead of per-input handlers.
+      // Reason: an `onChange$` inside an array iteration drags the
+      // entire renderer scope into Qwik's dev-mode QRL captures map
+      // and trips Q3 on the `resolve` arg even when the body doesn't
+      // reference it. Wrapper-level delegation gives Qwik exactly one
+      // QRL to verify. We probe `multi` from the DOM (input type) to
+      // avoid capturing the renderer's `multi` boolean — eslint's
+      // `qwik/valid-lexical-scope` rule infers the strict-equal result
+      // as Symbol from the typed variant union.
       return (
-        <div class={styles["choice-picker"]} {...bindValue("value", { multi })}>
+        <div
+          class={styles["choice-picker"]}
+          data-choice-picker={componentId}
+          onChange$={(_e: Event, wrapper: HTMLDivElement) => {
+            const inputs =
+              wrapper.querySelectorAll<HTMLInputElement>("input");
+            const isMulti =
+              inputs.length > 0 && inputs[0]!.type === "checkbox";
+            const checked = Array.from(
+              wrapper.querySelectorAll<HTMLInputElement>("input:checked"),
+            ).map((i) => i.value);
+            // For single-select radios the browser keeps exactly one
+            // input checked, so `checked` is already the right shape.
+            return setBinding$(
+              "value",
+              isMulti ? checked : checked.slice(0, 1),
+            );
+          }}
+        >
           {props.label ? (
             <span class={styles["choice-picker-label"]}>
               {resolve(props.label)}
@@ -340,7 +351,7 @@ export const basicCatalog: CatalogRenderer = new CatalogRenderer([
     },
   ),
 
-  defineRenderer(DateTimeInputApi, ({ props, resolve, bindValue }) => {
+  defineRenderer(DateTimeInputApi, ({ props, resolve, setBinding$ }) => {
     const enableDate = props.enableDate ?? false;
     const enableTime = props.enableTime ?? false;
     const inputType =
@@ -362,7 +373,12 @@ export const basicCatalog: CatalogRenderer = new CatalogRenderer([
           value={props.value ? resolve(props.value) : ""}
           min={props.min != null ? String(props.min) : undefined}
           max={props.max != null ? String(props.max) : undefined}
-          {...bindValue("value")}
+          onInput$={(_e: Event, el: HTMLInputElement) =>
+            setBinding$("value", el.value)
+          }
+          onChange$={(_e: Event, el: HTMLInputElement) =>
+            setBinding$("value", el.value)
+          }
         />
       </div>
     );

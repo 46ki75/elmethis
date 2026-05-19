@@ -6,17 +6,15 @@
  *   - `messages` — render a pre-collected message list (useful for tests).
  *
  * Surface state lives in `NoSerialize`-wrapped models because `SurfaceModel`
- * holds runtime-only references (subscriptions, Maps). Event delegation lives
- * on the surface container — renderers emit `data-a2ui-bind` / `data-a2ui-action`
- * attributes via the `RenderArgs.bindValue` / `bindAction` helpers and the
- * delegator below routes events back into the data model and action stream.
+ * holds runtime-only references (subscriptions, Maps). Per-component
+ * write-back and action dispatch are wired by `ComponentHost` — renderers
+ * call `setBinding$` / `dispatchAction$` QRLs directly, so this component
+ * no longer mounts a surface-level event delegator.
  */
 import {
   component$,
-  createContextId,
   noSerialize,
   type NoSerialize,
-  useContext,
   useContextProvider,
   useSignal,
   useStore,
@@ -27,7 +25,6 @@ import {
 
 import {
   Catalog,
-  ComponentContext,
   MessageProcessor,
   type ComponentApi,
   type SurfaceModel,
@@ -39,22 +36,18 @@ import {
 
 import { basicCatalog } from "./catalog/basic-catalog";
 import { type CatalogRenderer } from "./catalog/catalog";
-import { renderSurface } from "./render-tree";
+import {
+  A2uiAncestorContext,
+  A2uiCatalogContext,
+  A2uiSurfaceContext,
+  ComponentHost,
+  ROOT_COMPONENT_ID,
+} from "./component-host";
 import { streamJsonLines } from "./stream-json-lines";
 import styles from "./elm-a2ui.module.css";
 
 const BASIC_CATALOG_ID =
   "https://a2ui.org/specification/v0_9/basic_catalog.json";
-
-/**
- * Holds the active `CatalogRenderer` so internal `SurfaceView`s can resolve
- * renderers without serializing the catalog across a QRL boundary. Wrapped in
- * `NoSerialize` because catalogs carry plain render functions Qwik can't
- * serialize.
- */
-const A2uiCatalogContext = createContextId<
-  NoSerialize<CatalogRenderer> | undefined
->("elmethis.a2ui.catalog");
 
 export interface ElmA2uiProps {
   class?: string;
@@ -79,257 +72,219 @@ export interface ElmA2uiProps {
 }
 
 // ---------------------------------------------------------------------------
-// SurfaceView — one per surface; owns subscriptions and the event delegator.
+// A2uiSurface — official-style standalone entry point.
+//
+// External integrations that own their own `MessageProcessor` (the React /
+// Angular pattern) can mount this directly with a `NoSerialize`-wrapped
+// `SurfaceModel`. `ElmA2ui` below wraps it for the
+// `messages` / `url` / `catalogId` convenience API.
 // ---------------------------------------------------------------------------
 
-interface SurfaceViewProps {
+export interface A2uiSurfaceProps {
+  /**
+   * The `SurfaceModel` to render. Must be wrapped in `noSerialize()` because
+   * it carries non-serializable runtime references (subscriptions, Maps).
+   */
   surface: NoSerialize<SurfaceModel<ComponentApi>>;
+  /**
+   * Active renderer catalog. Provided via context so descendant
+   * `ComponentHost`s can resolve renderers without crossing a QRL
+   * serialization boundary. Defaults to `basicCatalog` when omitted.
+   */
+  catalog?: CatalogRenderer;
 }
 
-const SurfaceView = component$<SurfaceViewProps>((props) => {
-  // The catalog is fetched from context rather than props so it never crosses
-  // a QRL boundary. Both surface and catalog become `undefined` after a
-  // client-side resume; we render `null` until they reappear.
-  const catalog = useContext(A2uiCatalogContext);
-  const tick = useSignal(0);
+export const A2uiSurface = component$<A2uiSurfaceProps>((props) => {
+  useContextProvider(
+    A2uiCatalogContext,
+    noSerialize(props.catalog ?? basicCatalog),
+  );
+  useContextProvider(A2uiSurfaceContext, props.surface);
+  useContextProvider(A2uiAncestorContext, []);
 
-  // Surface-model subscriptions. `useTask$` (not `useVisibleTask$`) so the
-  // task fires deterministically on the client without depending on visibility
-  // heuristics — the default intersection-observer strategy never fires inside
-  // hidden subtrees like ElmCollapse, and `useVisibleTask$` also doesn't run
-  // in jsdom-based test envs. The `if (!surface) return` guard makes the
-  // server-side pass a no-op since the NoSerialize surface is undefined there.
-  //
-  // We also subscribe to each component's `onUpdated` event. The surface-
-  // level `onCreated` / `onDeleted` only cover lifecycle, so an
-  // `updateComponents` message that mutates an existing component's
-  // properties (the common streaming case) would otherwise never trigger a
-  // re-render.
-  useTask$(({ track, cleanup }) => {
-    const surface = track(() => props.surface);
-    if (!surface) return;
-
-    const subs: Array<{ unsubscribe(): void }> = [];
-    const bump = () => {
-      tick.value++;
-    };
-
-    for (const [, model] of surface.componentsModel.entries) {
-      subs.push(model.onUpdated.subscribe(bump));
-    }
-
-    subs.push(
-      surface.componentsModel.onCreated.subscribe((model) => {
-        bump();
-        subs.push(model.onUpdated.subscribe(bump));
-      }),
-    );
-    subs.push(surface.componentsModel.onDeleted.subscribe(bump));
-    // "/" fires for every path because notifySignals walks up to root.
-    subs.push(surface.dataModel.subscribe("/", bump));
-
-    cleanup(() => {
-      for (const s of subs) s.unsubscribe();
-    });
-  });
-
-  // Reading tick.value establishes the reactive dep so Qwik re-renders when
-  // the NoSerialize surface mutates underneath us.
-  const tree =
-    tick.value >= 0 && props.surface && catalog
-      ? renderSurface(props.surface, catalog)
-      : null;
-
-  // Event delegation lives as inline bubble handlers on the surface root.
-  // Going through Qwik's QRL system (rather than native addEventListener +
-  // useVisibleTask$) keeps the handlers reachable from `userEvent` in tests
-  // and avoids tying registration to visibility heuristics.
   return (
     <div
       class={styles.surface}
       style={{ "--elmethis-margin-block-start": "2rem" }}
-      onClick$={(e) => {
-        const surface = props.surface;
-        if (!surface) return;
-        const el = (e.target as HTMLElement | null)?.closest?.(
-          "[data-a2ui-action]",
-        ) as HTMLElement | null;
-        if (!el) return;
-        const cid = el.dataset.a2uiAction ?? "";
-        const model = surface.componentsModel.get(cid);
-        const action = (model?.properties as { action?: unknown } | undefined)
-          ?.action;
-        if (!action) return;
-        const ctx = new ComponentContext(surface, cid);
-        surface
-          .dispatchAction(ctx.dataContext.resolveAction(action as never), cid)
-          .catch((err: unknown) => {
-            console.error("[ElmA2ui] action dispatch failed:", err);
-          });
-      }}
-      onInput$={(e) => writeBack(e, props.surface)}
-      onChange$={(e) => writeBack(e, props.surface)}
     >
-      {tree}
+      <ComponentHost id={ROOT_COMPONENT_ID} basePath="/" />
     </div>
   );
 });
 
-/**
- * Routes an input/change event from a `[data-a2ui-bind]` element into the
- * surface's data model. Pulled out of `SurfaceView` so both `onInput$` and
- * `onChange$` can share it without duplicating the body inside a QRL.
- */
-function writeBack(
-  e: Event,
-  surface: NoSerialize<SurfaceModel<ComponentApi>> | undefined,
-): void {
-  if (!surface) return;
-  const target = e.target as HTMLElement | null;
-  const bindEl = target?.closest?.("[data-a2ui-bind]") as HTMLElement | null;
-  if (!bindEl) return;
-  const raw = bindEl.dataset.a2uiBind ?? "";
-  const sep = raw.indexOf(":");
-  if (sep <= 0) return;
-  const cid = raw.slice(0, sep);
-  const propName = raw.slice(sep + 1);
-  const model = surface.componentsModel.get(cid);
-  if (!model) return;
-  const bound = (model.properties as Record<string, unknown>)[propName];
-  if (!bound || typeof bound !== "object" || !("path" in bound)) return;
-  const path = (bound as { path: string }).path;
+// SurfaceView is kept as an internal alias for `A2uiSurface`-without-its-own
+// catalog provider, used by `ElmA2ui` which provides the catalog at a
+// higher level (so every surface in a single ElmA2ui shares one catalog).
+const SurfaceView = component$<{
+  surface: NoSerialize<SurfaceModel<ComponentApi>>;
+}>((props) => {
+  useContextProvider(A2uiSurfaceContext, props.surface);
+  useContextProvider(A2uiAncestorContext, []);
 
-  const isMulti = bindEl.dataset.a2uiBindMulti === "true";
-  let value: unknown;
-  if (isMulti) {
-    value = Array.from(
-      bindEl.querySelectorAll<HTMLInputElement>(
-        "input[type=checkbox]:checked, input[type=radio]:checked",
-      ),
-    ).map((i) => i.value);
-  } else if (target instanceof HTMLInputElement) {
-    if (target.type === "checkbox") value = target.checked;
-    else if (target.type === "range") value = Number(target.value);
-    else value = target.value;
-  } else if (target instanceof HTMLSelectElement) {
-    value = target.multiple
-      ? Array.from(target.selectedOptions).map((o) => o.value)
-      : target.value;
-  } else if (target instanceof HTMLTextAreaElement) {
-    value = target.value;
-  } else {
-    return;
-  }
-
-  new ComponentContext(surface, cid).dataContext.set(path, value);
-}
+  return (
+    <div
+      class={styles.surface}
+      style={{ "--elmethis-margin-block-start": "2rem" }}
+    >
+      <ComponentHost id={ROOT_COMPONENT_ID} basePath="/" />
+    </div>
+  );
+});
 
 // ---------------------------------------------------------------------------
 // ElmA2ui — public component.
 // ---------------------------------------------------------------------------
 
 export const ElmA2ui = component$<ElmA2uiProps>((props) => {
-  const { class: className, style, url, headers, catalogId, catalog } = props;
+  const { class: className, style, url, headers, catalog } = props;
   const userCatalog = catalog ?? basicCatalog;
   // Publish the catalog through context so child SurfaceViews can resolve
   // renderers without the catalog ever crossing a QRL serialization point.
   useContextProvider(A2uiCatalogContext, noSerialize(userCatalog));
 
-  const messagesStore = useStore<{ list: object[] }>({
-    list: props.messages ? [...props.messages] : [],
-  });
+  // The stream store holds messages produced by the URL-driven JSONL
+  // reader; the controlled-mode `props.messages` path bypasses it. The
+  // unified setup task below picks whichever is active.
+  const streamStore = useStore<{ list: object[] }>({ list: [] });
 
   const surfaceMapSig = useSignal<
     NoSerialize<Map<string, SurfaceModel<ComponentApi>>> | undefined
   >();
   const tick = useSignal(0);
   const processorRef = useSignal<
-    | NoSerialize<{
-        processor: MessageProcessor<ComponentApi>;
-        processed: number;
-      }>
-    | undefined
+    NoSerialize<{
+      processor: MessageProcessor<ComponentApi>;
+      subs: Array<{ unsubscribe(): void }>;
+      processed: number;
+      // Snapshot of the messages used to build the processor — lets the
+      // next run detect prefix-extension vs fresh-stream swap without an
+      // external signal.
+      messages: object[];
+      catalogId: string | undefined;
+    }>
   >();
 
-  // ---- setup processor + surface map (one-shot) ----
+  // ---- unified setup + sync + processing ----
+  // Tracks `props.messages` identity, `props.catalogId`, AND the URL
+  // stream's `streamStore.list.length`. On each fire it diffs against the
+  // last-built state in `processorRef`:
+  //   - extension (same prefix, more items, same catalogId) → process tail
+  //   - swap (different prefix, or catalogId changed)       → tear down
+  //                                                            and rebuild
+  // The rebuild scans the new messages for `createSurface.catalogId`s and
+  // pre-registers them so the SDK's constructor-only catalog list is
+  // always in sync with what's about to be processed. This is what fixes
+  // round-2 #3 (stream swap) and #6 (catalogId reactivity).
+  // Component-scoped cleanup. This task tracks nothing so its cleanup fires
+  // only on unmount — NOT between re-runs of the unified setup task below.
+  // Without this split the unified task's cleanup would tear down the
+  // subscriptions every time `props.messages` changes, even on the
+  // extension path that wants to keep them alive.
   useTask$(({ cleanup }) => {
+    cleanup(() => {
+      const internal = processorRef.value;
+      if (!internal) return;
+      for (const s of internal.subs) s.unsubscribe();
+    });
+  });
+
+  useTask$(async ({ track }) => {
+    const propsMessages = track(() => props.messages);
+    const propsCatalogId = track(() => props.catalogId);
+    track(() => streamStore.list.length);
+
+    // Pick the controlled (props.messages) vs. uncontrolled (URL stream)
+    // input. They're documented as mutually exclusive.
+    const effective: object[] = propsMessages
+      ? [...propsMessages]
+      : [...streamStore.list];
+
+    const existing = processorRef.value;
+    const isExtension =
+      existing !== undefined &&
+      existing.catalogId === propsCatalogId &&
+      effective.length >= existing.messages.length &&
+      existing.messages.every((m, i) => m === effective[i]);
+
+    if (isExtension) {
+      // Append-only path: process whatever's new since the last run.
+      const fresh = effective.slice(existing.processed);
+      if (!fresh.length) return;
+      for (const msg of fresh) {
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          existing.processor.processMessages([msg] as any[]);
+        } catch (err) {
+          console.warn("[ElmA2ui] skipped invalid A2UI message:", msg, err);
+        }
+      }
+      // The SDK's `EventEmitter.emit` awaits each listener (microtask
+      // per iteration). Yield twice so any `onSurfaceCreated` /
+      // `onSurfaceDeleted` listeners scheduled by `processMessages`
+      // have run before the task resolves — otherwise the surface map
+      // mutation lands after Qwik has already settled the re-render.
+      await Promise.resolve();
+      await Promise.resolve();
+      processorRef.value = noSerialize({
+        ...existing,
+        processed: effective.length,
+        messages: effective,
+      });
+      tick.value++;
+      return;
+    }
+
+    // Rebuild path: stream swap or catalogId change.
+    if (existing) {
+      for (const s of existing.subs) s.unsubscribe();
+    }
+
     const ids = new Set<string>([BASIC_CATALOG_ID]);
-    if (catalogId) ids.add(catalogId);
-    for (const m of messagesStore.list) {
+    if (propsCatalogId) ids.add(propsCatalogId);
+    for (const m of effective) {
       if (m && typeof m === "object" && "createSurface" in m) {
         const id = (m as { createSurface?: { catalogId?: string } })
           .createSurface?.catalogId;
         if (typeof id === "string") ids.add(id);
       }
     }
-
-    // TODO: when @a2ui/web_core supports lazy catalog registration, replace
-    // this with on-demand creation so streams can introduce new catalog ids
-    // mid-flight without crashing.
     const catalogs = Array.from(ids).map(
       (id) =>
         new Catalog(id, BASIC_COMPONENTS as ComponentApi[], BASIC_FUNCTIONS),
     );
     const processor = new MessageProcessor<ComponentApi>(catalogs);
     const surfaceMap = new Map<string, SurfaceModel<ComponentApi>>();
+    const subs: Array<{ unsubscribe(): void }> = [];
+    subs.push(
+      processor.model.onSurfaceCreated.subscribe((surface) => {
+        surfaceMap.set(surface.id, surface);
+        tick.value++;
+      }),
+    );
+    subs.push(
+      processor.model.onSurfaceDeleted.subscribe((id) => {
+        surfaceMap.delete(id);
+        tick.value++;
+      }),
+    );
     surfaceMapSig.value = noSerialize(surfaceMap);
 
-    const subCreated = processor.model.onSurfaceCreated.subscribe((surface) => {
-      surfaceMap.set(surface.id, surface);
-      tick.value++;
-    });
-    const subDeleted = processor.model.onSurfaceDeleted.subscribe((id) => {
-      surfaceMap.delete(id);
-      tick.value++;
-    });
-
-    processorRef.value = noSerialize({ processor, processed: 0 });
-
-    cleanup(() => {
-      subCreated.unsubscribe();
-      subDeleted.unsubscribe();
-    });
-  });
-
-  // ---- sync the `messages` prop into the internal store ----
-  // A2UI is an append-only stream protocol, so we only handle "array grew".
-  // Tracking the array reference catches both reassignment and identity-
-  // preserving mutation by the parent (Qwik wouldn't re-run us in the latter
-  // case anyway, but the length check is cheap insurance).
-  useTask$(({ track }) => {
-    const arr = track(() => props.messages);
-    if (!arr) return;
-    const have = messagesStore.list.length;
-    if (arr.length > have) {
-      for (let i = have; i < arr.length; i++) {
-        messagesStore.list.push(arr[i]!);
-      }
-    } else if (arr.length < have) {
-      console.warn(
-        "[ElmA2ui] messages prop shrank; A2UI streams are append-only",
-      );
-    }
-  });
-
-  // ---- incremental processing for messages appended after mount ----
-  useTask$(({ track }) => {
-    track(() => messagesStore.list.length);
-    const internal = processorRef.value;
-    if (!internal) return;
-    const fresh = messagesStore.list.slice(internal.processed);
-    if (!fresh.length) return;
-    // Process one at a time so a single malformed / stale message (e.g.
-    // an update targeting a surface that was never created) doesn't drop
-    // every subsequent message in the batch.
-    for (const msg of fresh) {
+    for (const msg of effective) {
       try {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        internal.processor.processMessages([msg] as any[]);
+        processor.processMessages([msg] as any[]);
       } catch (err) {
         console.warn("[ElmA2ui] skipped invalid A2UI message:", msg, err);
       }
     }
-    internal.processed = messagesStore.list.length;
+
+    processorRef.value = noSerialize({
+      processor,
+      subs,
+      processed: effective.length,
+      messages: effective,
+      catalogId: propsCatalogId,
+    });
     tick.value++;
   });
 
@@ -344,8 +299,7 @@ export const ElmA2ui = component$<ElmA2uiProps>((props) => {
         await streamJsonLines(res.body, {
           signal: ctrl.signal,
           onMessage: (m) => {
-            if (m && typeof m === "object")
-              messagesStore.list.push(m as object);
+            if (m && typeof m === "object") streamStore.list.push(m as object);
           },
           onError: (err, line) => {
             console.warn("[ElmA2ui] skipped invalid JSON line:", line, err);

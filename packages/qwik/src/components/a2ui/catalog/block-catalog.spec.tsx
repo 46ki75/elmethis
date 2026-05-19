@@ -1,4 +1,5 @@
 import { describe, expect, test } from "vitest";
+import { $, noSerialize } from "@qwik.dev/core";
 import { createDOM } from "@qwik.dev/core/testing";
 
 import {
@@ -13,7 +14,7 @@ import {
   BASIC_FUNCTIONS,
 } from "@a2ui/web_core/v0_9/basic_catalog";
 
-import { bindActionAttrs, bindValueAttrs, type RenderArgs } from "./catalog";
+import { type RenderArgs } from "./catalog";
 import { blockCatalog } from "./block-catalog";
 import {
   BlockQuoteApi,
@@ -149,8 +150,36 @@ function buildArgs(
     resolve,
     childRefs,
     renderChild,
-    bindValue: (prop, opts) => bindValueAttrs(target.id, prop, opts),
-    bindAction: () => bindActionAttrs(target.id),
+    setBinding$: (() => {
+      const modelRef = noSerialize(model);
+      const ctxRef = noSerialize(ctx);
+      return $((propName: string, value: unknown) => {
+        if (!modelRef || !ctxRef) return;
+        const bound = (modelRef.properties as Record<string, unknown>)[
+          propName
+        ];
+        if (!bound || typeof bound !== "object" || !("path" in bound)) return;
+        ctxRef.dataContext.set((bound as { path: string }).path, value);
+      });
+    })(),
+    dispatchAction$: (() => {
+      const modelRef = noSerialize(model);
+      const surfaceRef = noSerialize(surface);
+      const ctxRef = noSerialize(ctx);
+      return $((propName: string = "action") => {
+        if (!modelRef || !surfaceRef || !ctxRef) return;
+        const action = (modelRef.properties as Record<string, unknown>)[
+          propName
+        ];
+        if (!action) return;
+        surfaceRef
+          .dispatchAction(
+            ctxRef.dataContext.resolveAction(action as never),
+            target.id,
+          )
+          .catch(() => {});
+      });
+    })(),
   };
 }
 
