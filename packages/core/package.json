@@ -1,6 +1,10 @@
 {
   "name": "@elmethis/core",
   "version": "0.9.0",
+  "author": {
+    "name": "Ikuma Yamashita",
+    "url": "https://www.ikuma.cloud/"
+  },
   "description": "Framework-agnostic shared types and schemas for the @elmethis component libraries.",
   "publishConfig": {
     "access": "public"
