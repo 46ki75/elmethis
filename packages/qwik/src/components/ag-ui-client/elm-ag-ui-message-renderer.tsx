@@ -23,7 +23,7 @@ import { mdiAccount, mdiCreation, mdiLightbulbOn, mdiRefresh } from "@mdi/js";
 import { ElmAgUiToolExecution } from "./elm-ag-ui-tool-execution";
 import { ElmCopyIcon } from "../icon/elm-copy-icon";
 import { ElmToggle } from "../containments/elm-toggle";
-import { ElmA2uiRenderer } from "../a2ui/elm-a2ui-renderer";
+import { ElmA2ui } from "../a2ui/elm-a2ui";
 import { ElmAgUiInputContent } from "./input-content/elm-ag-ui-input-content";
 
 export interface ElmAgUiMessageRendererProps {
@@ -72,7 +72,7 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
           const activity = message as ActivityMessage;
           if (activity.activityType === "a2ui-surface") {
             const ops = activity.content["a2ui_operations"] as object[];
-            return <ElmA2uiRenderer messages={ops} />;
+            return <ElmA2ui messages={ops} />;
           }
           return null;
         }
