@@ -13,7 +13,9 @@ export const ElmBlockFallback = component$<ElmBlockFallbackProps>(
     return (
       <div
         class={[styles["block-fallback"], className]}
-        style={{ "--height": height, ...(style as CSSProperties) } as CSSProperties}
+        style={
+          { "--height": height, ...(style as CSSProperties) } as CSSProperties
+        }
         {...props}
       >
         <ElmDotLoadingIcon />

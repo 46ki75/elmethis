@@ -15,12 +15,14 @@ export const ElmSquareLoadingIcon = component$<ElmSquareLoadingIconProps>(
     return (
       <span
         class={[styles.wrapper, className]}
-        style={{
-          "--size": size,
-          "--dimensions": dimensions,
-          "--duration": `${DURATION}ms`,
-          ...(style as CSSProperties),
-        } as CSSProperties}
+        style={
+          {
+            "--size": size,
+            "--dimensions": dimensions,
+            "--duration": `${DURATION}ms`,
+            ...(style as CSSProperties),
+          } as CSSProperties
+        }
         {...props}
       >
         {new Array(dimensions)

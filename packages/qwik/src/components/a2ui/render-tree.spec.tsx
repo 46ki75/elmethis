@@ -76,7 +76,10 @@ function buildSurface(components: object[]): SurfaceModel<ComponentApi> {
   return captured;
 }
 
-async function htmlOf(surface: SurfaceModel<ComponentApi>, catalog = traversalCatalog) {
+async function htmlOf(
+  surface: SurfaceModel<ComponentApi>,
+  catalog = traversalCatalog,
+) {
   const out = renderSurface(surface, catalog);
   const dom = await createDOM();
   await dom.render(<div>{out}</div>);
@@ -100,9 +103,7 @@ describe("renderSurface", () => {
       { component: "Box", id: "root", children: [] },
     ]);
     // Renderer catalog with only Text — Box's render is missing.
-    const onlyText = new CatalogRenderer([
-      defineRenderer(TextApi, () => null),
-    ]);
+    const onlyText = new CatalogRenderer([defineRenderer(TextApi, () => null)]);
     expect(renderSurface(surface, onlyText)).toBeNull();
   });
 

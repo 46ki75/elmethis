@@ -145,16 +145,13 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
     </div>
   )),
 
-  defineRenderer(
-    ColumnListApi,
-    ({ props, index, childRefs, renderChild }) => (
-      <div style={{ ...columnListStyle, ...firstChildMargin(index) }}>
-        {childRefs(props.children).map(({ id, path }, i) => (
-          <Fragment key={`${id}:${i}`}>{renderChild(id, path, i)}</Fragment>
-        ))}
-      </div>
-    ),
-  ),
+  defineRenderer(ColumnListApi, ({ props, index, childRefs, renderChild }) => (
+    <div style={{ ...columnListStyle, ...firstChildMargin(index) }}>
+      {childRefs(props.children).map(({ id, path }, i) => (
+        <Fragment key={`${id}:${i}`}>{renderChild(id, path, i)}</Fragment>
+      ))}
+    </div>
+  )),
 
   // -------------------------------------------------------------------------
   // Block typography
@@ -199,16 +196,13 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
     </>
   )),
 
-  defineRenderer(
-    BlockQuoteApi,
-    ({ props, index, childRefs, renderChild }) => (
-      <ElmBlockQuote cite={props.cite} style={firstChildMargin(index)}>
-        {childRefs(props.children).map(({ id, path }, i) => (
-          <Fragment key={`${id}:${i}`}>{renderChild(id, path, i)}</Fragment>
-        ))}
-      </ElmBlockQuote>
-    ),
-  ),
+  defineRenderer(BlockQuoteApi, ({ props, index, childRefs, renderChild }) => (
+    <ElmBlockQuote cite={props.cite} style={firstChildMargin(index)}>
+      {childRefs(props.children).map(({ id, path }, i) => (
+        <Fragment key={`${id}:${i}`}>{renderChild(id, path, i)}</Fragment>
+      ))}
+    </ElmBlockQuote>
+  )),
 
   defineRenderer(CalloutApi, ({ props, index, childRefs, renderChild }) => (
     <ElmCallout type={props.type} style={firstChildMargin(index)}>
@@ -310,50 +304,47 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
 
   defineRenderer(ContentTabApi, () => null),
 
-  defineRenderer(
-    ContentTabsApi,
-    ({ props, index, surface, renderChild }) => {
-      const tabIds = Array.isArray(props.children) ? props.children : [];
-      const tabs = tabIds.map((tabId) => {
-        const tabModel = surface.componentsModel.get(tabId);
-        const rawLabels = tabModel?.properties.labels;
-        const rawContents = tabModel?.properties.contents;
-        return {
-          tabId,
-          labelIds: Array.isArray(rawLabels)
-            ? rawLabels.filter((id): id is string => typeof id === "string")
-            : [],
-          contentIds: Array.isArray(rawContents)
-            ? rawContents.filter((id): id is string => typeof id === "string")
-            : [],
-        };
-      });
-      return (
-        <ElmTabs defaultValue="0" style={firstChildMargin(index)}>
-          <ElmTabList>
-            {tabs.map(({ tabId, labelIds }, idx) => (
-              <ElmTab key={tabId} value={String(idx)}>
-                {labelIds.map((lid, i) => (
-                  <Fragment key={`${lid}:${i}`}>
-                    {renderChild(lid, "/", i)}
-                  </Fragment>
-                ))}
-              </ElmTab>
-            ))}
-          </ElmTabList>
-          {tabs.map(({ tabId, contentIds }, idx) => (
-            <ElmTabPanel key={tabId} value={String(idx)}>
-              {contentIds.map((cid, i) => (
-                <Fragment key={`${cid}:${i}`}>
-                  {renderChild(cid, "/", i)}
+  defineRenderer(ContentTabsApi, ({ props, index, surface, renderChild }) => {
+    const tabIds = Array.isArray(props.children) ? props.children : [];
+    const tabs = tabIds.map((tabId) => {
+      const tabModel = surface.componentsModel.get(tabId);
+      const rawLabels = tabModel?.properties.labels;
+      const rawContents = tabModel?.properties.contents;
+      return {
+        tabId,
+        labelIds: Array.isArray(rawLabels)
+          ? rawLabels.filter((id): id is string => typeof id === "string")
+          : [],
+        contentIds: Array.isArray(rawContents)
+          ? rawContents.filter((id): id is string => typeof id === "string")
+          : [],
+      };
+    });
+    return (
+      <ElmTabs defaultValue="0" style={firstChildMargin(index)}>
+        <ElmTabList>
+          {tabs.map(({ tabId, labelIds }, idx) => (
+            <ElmTab key={tabId} value={String(idx)}>
+              {labelIds.map((lid, i) => (
+                <Fragment key={`${lid}:${i}`}>
+                  {renderChild(lid, "/", i)}
                 </Fragment>
               ))}
-            </ElmTabPanel>
+            </ElmTab>
           ))}
-        </ElmTabs>
-      );
-    },
-  ),
+        </ElmTabList>
+        {tabs.map(({ tabId, contentIds }, idx) => (
+          <ElmTabPanel key={tabId} value={String(idx)}>
+            {contentIds.map((cid, i) => (
+              <Fragment key={`${cid}:${i}`}>
+                {renderChild(cid, "/", i)}
+              </Fragment>
+            ))}
+          </ElmTabPanel>
+        ))}
+      </ElmTabs>
+    );
+  }),
 
   // -------------------------------------------------------------------------
   // Table

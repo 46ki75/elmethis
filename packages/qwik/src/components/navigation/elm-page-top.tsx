@@ -47,12 +47,14 @@ export const ElmPageTop = component$<ElmPageTopProps>(
           { [styles["wrapper--visible"]]: isVisible.value },
           className,
         ]}
-        style={{
-          "--size": `${64}px`,
-          left: position === "left" ? "0" : "auto",
-          right: position === "right" ? "0" : "auto",
-          ...(style as CSSProperties),
-        } as CSSProperties}
+        style={
+          {
+            "--size": `${64}px`,
+            left: position === "left" ? "0" : "auto",
+            right: position === "right" ? "0" : "auto",
+            ...(style as CSSProperties),
+          } as CSSProperties
+        }
         onClick$={toTop}
         {...props}
       >

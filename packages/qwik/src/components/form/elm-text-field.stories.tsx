@@ -49,11 +49,7 @@ const WithIconTextField = component$(() => {
   const text = useSignal<string>("");
   return (
     <div>
-      <ElmTextField
-        label="Email"
-        placeholder="Enter your email"
-        value={text}
-      >
+      <ElmTextField label="Email" placeholder="Enter your email" value={text}>
         <ElmMdiIcon q:slot="icon" d={mdiEmail} size="1.5rem" color="gray" />
       </ElmTextField>
       <ElmInlineText>{text.value}</ElmInlineText>

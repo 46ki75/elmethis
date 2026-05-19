@@ -234,7 +234,12 @@ const ElmMarkdownStable = component$<{ tokens: Token[] }>(({ tokens }) => (
 ));
 
 export const ElmMarkdown = component$<ElmMarkdownProps>((props) => {
-  const { class: className, markdown: _markdown, streaming: _streaming, ...rest } = props;
+  const {
+    class: className,
+    markdown: _markdown,
+    streaming: _streaming,
+    ...rest
+  } = props;
   const stableTokens = useSignal<Token[]>([]);
   const tailTokens = useSignal<Token[]>([]);
 

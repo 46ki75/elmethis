@@ -48,7 +48,7 @@ describe("streamJsonLines", () => {
   test("reports parse errors but keeps streaming", async () => {
     const received: unknown[] = [];
     const onError = vi.fn();
-    await streamJsonLines(streamOf("not json\n{\"ok\":true}\n"), {
+    await streamJsonLines(streamOf('not json\n{"ok":true}\n'), {
       onMessage: (m) => received.push(m),
       onError,
     });

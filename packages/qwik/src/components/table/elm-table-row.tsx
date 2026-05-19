@@ -1,9 +1,4 @@
-import {
-  component$,
-  PropsOf,
-  Slot,
-  useContext,
-} from "@qwik.dev/core";
+import { component$, PropsOf, Slot, useContext } from "@qwik.dev/core";
 import styles from "./elm-table-row.module.css";
 import { HasRowHeaderContext } from "./elm-table";
 

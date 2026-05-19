@@ -13,11 +13,7 @@ import {
   BASIC_FUNCTIONS,
 } from "@a2ui/web_core/v0_9/basic_catalog";
 
-import {
-  bindActionAttrs,
-  bindValueAttrs,
-  type RenderArgs,
-} from "./catalog";
+import { bindActionAttrs, bindValueAttrs, type RenderArgs } from "./catalog";
 import { basicCatalog } from "./basic-catalog";
 
 const CATALOG_ID = "https://a2ui.org/specification/v0_9/basic_catalog.json";
@@ -82,7 +78,7 @@ function buildArgs(
     if (typeof v === "string") return v as V;
     if (v == null) return "" as V;
     if (typeof v === "object")
-      return ((ctx.dataContext.resolveDynamicValue(v as never) ?? "") as V);
+      return (ctx.dataContext.resolveDynamicValue(v as never) ?? "") as V;
     return String(v) as V;
   };
 
@@ -104,9 +100,7 @@ function buildArgs(
   };
 
   // Stub renderChild — wraps the id in a marker so assertions can see it.
-  const renderChild = (id: string) => (
-    <span data-child-id={id}>{id}</span>
-  );
+  const renderChild = (id: string) => <span data-child-id={id}>{id}</span>;
 
   return {
     componentId: target.id,
@@ -236,6 +230,21 @@ describe("basicCatalog: interactive", () => {
     const html = await renderArgs(args, "TextField");
     expect(html).toContain('data-a2ui-bind="tf:value"');
     expect(html).not.toContain("data-a2ui-bind-multi");
+  });
+
+  // BUG repro (review #5): the `longText` variant of TextField is meant to
+  // accept multi-line input but currently maps to <input type="text"> which is
+  // single-line. Expected: a <textarea> (or an <input> with a multi-line affordance).
+  test("TextField longText variant renders a multi-line control", async () => {
+    const args = buildArgs({
+      component: "TextField",
+      id: "tf",
+      label: "Notes",
+      variant: "longText",
+    });
+    const html = await renderArgs(args, "TextField");
+    expect(html.toLowerCase()).toContain("<textarea");
+    expect(html).toContain('data-a2ui-bind="tf:value"');
   });
 
   test("CheckBox reflects a boolean path binding", async () => {

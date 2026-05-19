@@ -13,11 +13,7 @@ import {
   BASIC_FUNCTIONS,
 } from "@a2ui/web_core/v0_9/basic_catalog";
 
-import {
-  bindActionAttrs,
-  bindValueAttrs,
-  type RenderArgs,
-} from "./catalog";
+import { bindActionAttrs, bindValueAttrs, type RenderArgs } from "./catalog";
 import { blockCatalog } from "./block-catalog";
 import {
   BlockQuoteApi,
@@ -121,7 +117,7 @@ function buildArgs(
     if (typeof v === "string") return v as V;
     if (v == null) return "" as V;
     if (typeof v === "object")
-      return ((ctx.dataContext.resolveDynamicValue(v as never) ?? "") as V);
+      return (ctx.dataContext.resolveDynamicValue(v as never) ?? "") as V;
     return String(v) as V;
   };
 

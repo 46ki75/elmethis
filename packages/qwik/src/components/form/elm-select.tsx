@@ -78,8 +78,8 @@ export const ElmSelect = component$<ElmSelectProps>((props) => {
     ...rest
   } = props;
 
-  const selectedOption = useComputed$(() =>
-    options.find((o) => o.id === selectedOptionId.value) ?? null,
+  const selectedOption = useComputed$(
+    () => options.find((o) => o.id === selectedOptionId.value) ?? null,
   );
 
   const isOpen = useSignal(false);

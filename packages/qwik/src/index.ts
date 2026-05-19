@@ -1,6 +1,9 @@
 // | A2UI |
 export { ElmA2ui, type ElmA2uiProps } from "./components/a2ui/elm-a2ui";
-export { renderSurface, ROOT_COMPONENT_ID } from "./components/a2ui/render-tree";
+export {
+  renderSurface,
+  ROOT_COMPONENT_ID,
+} from "./components/a2ui/render-tree";
 export {
   CatalogRenderer,
   defineRenderer,

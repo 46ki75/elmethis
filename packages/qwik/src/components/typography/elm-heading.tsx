@@ -30,7 +30,10 @@ export const ElmHeading = component$<ElmHeadingProps>(
           styles[`h${level}`],
           className,
         ]}
-        style={{ "--font-size": `${SIZE_MAP[level]}em`, ...(style as CSSProperties) }}
+        style={{
+          "--font-size": `${SIZE_MAP[level]}em`,
+          ...(style as CSSProperties),
+        }}
         id={id}
         {...props}
       >

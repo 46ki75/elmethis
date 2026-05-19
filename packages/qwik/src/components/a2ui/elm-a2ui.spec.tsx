@@ -1,5 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { createDOM } from "@qwik.dev/core/testing";
+import { component$, useSignal } from "@qwik.dev/core";
 
 import { TextApi } from "@a2ui/web_core/v0_9/basic_catalog";
 
@@ -208,5 +209,101 @@ describe("ElmA2ui", () => {
     // API in tests — the basic check above confirms the binding works on
     // initial render. Further dynamic-update coverage lives in the
     // render-tree spec which feeds a MessageProcessor directly.
+  });
+
+  // BUG repro (review #1 + #8a): SurfaceView attaches its native event
+  // delegator inside a default-strategy `useVisibleTask$`. In jsdom (no
+  // IntersectionObserver) the task never fires, so the delegator is never
+  // wired up. After the fix (e.g. `{ strategy: "document-ready" }`), an input
+  // event on a TextField should write back into the data model and the bound
+  // Text should reflect the new value.
+  //
+  // Note: the surface-level delegator listens via native `addEventListener`,
+  // not via Qwik's QRL system, so `userEvent` (which dispatches through
+  // Qwik's container) will only reach it if the test harness also routes the
+  // event natively. If the test fails after fixing the strategy, it likely
+  // means the env limitation requires browser-level coverage (e.g. Playwright)
+  // instead.
+  test("input on a bound TextField writes back to the data model", async () => {
+    const { screen, render, userEvent } = await createDOM();
+    await render(
+      <ElmA2ui
+        messages={withData(
+          "/form/name",
+          "initial",
+          { component: "Column", id: "root", children: ["field", "echo"] },
+          {
+            component: "TextField",
+            id: "field",
+            label: "Name",
+            value: { path: "/form/name" },
+          },
+          { component: "Text", id: "echo", text: { path: "/form/name" } },
+        )}
+      />,
+    );
+
+    const input = screen.querySelector(
+      'input[data-a2ui-bind="field:value"]',
+    ) as HTMLInputElement | null;
+    expect(input).not.toBeNull();
+
+    input!.value = "Ada";
+    await userEvent('input[data-a2ui-bind="field:value"]', "input");
+
+    // After write-back the bound Text should reflect the new value.
+    expect(screen.outerHTML).toContain("Ada");
+    expect(screen.outerHTML).not.toContain("initial");
+  });
+
+  // BUG repro (review #2): `messages` is shallow-cloned into a `useStore` at
+  // mount and never re-tracked. When a parent re-renders with a different
+  // messages array, the inner store still sees the original list and the new
+  // components / data updates never reach the MessageProcessor.
+  test("appending to the messages prop after mount renders the new components", async () => {
+    const initial = [
+      {
+        version: "v0.9",
+        createSurface: { surfaceId: "s", catalogId: BASIC_CATALOG_ID },
+      },
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: "s",
+          components: [{ component: "Text", id: "root", text: "first" }],
+        },
+      },
+    ];
+    const appended = [
+      ...initial,
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: "s",
+          components: [{ component: "Text", id: "root", text: "second" }],
+        },
+      },
+    ];
+
+    const Wrapper = component$(() => {
+      const showMore = useSignal(false);
+      return (
+        <div>
+          <button id="grow" onClick$={() => (showMore.value = true)}>
+            grow
+          </button>
+          <ElmA2ui messages={showMore.value ? appended : initial} />
+        </div>
+      );
+    });
+
+    const { screen, render, userEvent } = await createDOM();
+    await render(<Wrapper />);
+    expect(screen.outerHTML).toContain("first");
+
+    await userEvent("#grow", "click");
+
+    expect(screen.outerHTML).toContain("second");
+    expect(screen.outerHTML).not.toContain("first");
   });
 });

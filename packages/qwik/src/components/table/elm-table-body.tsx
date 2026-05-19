@@ -1,9 +1,4 @@
-import {
-  component$,
-  PropsOf,
-  Slot,
-  useContextProvider,
-} from "@qwik.dev/core";
+import { component$, PropsOf, Slot, useContextProvider } from "@qwik.dev/core";
 import { HasHeaderContext } from "./elm-table-header";
 
 export type ElmTableBodyProps = PropsOf<"tbody">;

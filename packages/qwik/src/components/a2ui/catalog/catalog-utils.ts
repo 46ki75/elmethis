@@ -1,16 +1,18 @@
 import { type CSSProperties } from "@qwik.dev/core";
 
 /** Maps A2UI `justify` prop values to CSS `justify-content` values. */
-export const justifyContentMap: Record<string, CSSProperties["justifyContent"]> =
-  {
-    start: "flex-start",
-    end: "flex-end",
-    center: "center",
-    spaceBetween: "space-between",
-    spaceAround: "space-around",
-    spaceEvenly: "space-evenly",
-    stretch: "stretch",
-  };
+export const justifyContentMap: Record<
+  string,
+  CSSProperties["justifyContent"]
+> = {
+  start: "flex-start",
+  end: "flex-end",
+  center: "center",
+  spaceBetween: "space-between",
+  spaceAround: "space-around",
+  spaceEvenly: "space-evenly",
+  stretch: "stretch",
+};
 
 /** Maps A2UI `align` prop values to CSS `align-items` values. */
 export const alignItemsMap: Record<string, CSSProperties["alignItems"]> = {

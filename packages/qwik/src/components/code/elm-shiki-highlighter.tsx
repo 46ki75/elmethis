@@ -1,9 +1,4 @@
-import {
-  component$,
-  PropsOf,
-  useSignal,
-  useTask$,
-} from "@qwik.dev/core";
+import { component$, PropsOf, useSignal, useTask$ } from "@qwik.dev/core";
 
 import styles from "./elm-shiki-highlighter.module.css";
 import { codeToHtml } from "shiki";

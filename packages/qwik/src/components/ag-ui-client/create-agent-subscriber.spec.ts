@@ -206,7 +206,7 @@ describe("createAgentSubscriber", () => {
         assistant({
           id: "a1",
           toolCalls: [
-            { id: "tc1", function: { name: "x", arguments: "{\"a\":" } },
+            { id: "tc1", function: { name: "x", arguments: '{"a":' } },
           ],
         }),
       ],

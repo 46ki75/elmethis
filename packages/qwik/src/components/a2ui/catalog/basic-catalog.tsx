@@ -7,6 +7,9 @@
  * `bindAction` helpers from `RenderArgs` rather than emitting `data-a2ui-*`
  * attributes by hand — the surface-level delegator owns that protocol.
  */
+import { noSerialize } from "@qwik.dev/core";
+
+import { ComponentContext } from "@a2ui/web_core/v0_9";
 import {
   AudioPlayerApi,
   ButtonApi,
@@ -48,7 +51,6 @@ import {
 
 const textFieldInputType: Record<string, string> = {
   shortText: "text",
-  longText: "text",
   number: "number",
   obscured: "password",
 };
@@ -167,17 +169,75 @@ export const basicCatalog: CatalogRenderer = new CatalogRenderer([
     />
   )),
 
-  defineRenderer(TextFieldApi, ({ props, resolve, bindValue }) => (
-    <div class={styles["text-field"]}>
-      <label class={styles.label}>{resolve(props.label)}</label>
-      <input
-        class={styles.input}
-        type={textFieldInputType[props.variant ?? "shortText"] ?? "text"}
-        value={props.value ? resolve(props.value) : ""}
-        {...bindValue("value")}
-      />
-    </div>
-  )),
+  defineRenderer(
+    TextFieldApi,
+    ({ props, componentId, surface, resolve, bindValue }) => {
+      const variant = props.variant ?? "shortText";
+      const value = props.value ? resolve(props.value) : "";
+      const path = (props.value as { path?: string } | undefined)?.path;
+      // Inline handler attached directly to the input, not delegated. `el`
+      // here is the input itself, so we don't depend on `event.target` —
+      // which keeps the binding testable under createDOM.
+      //
+      // `surface` is a non-serializable SurfaceModel; Qwik would reject it
+      // as a QRL capture, so we wrap it in `noSerialize` first. Handlers
+      // only fire on the client where the surface is live in memory, so
+      // the runtime null-check is just defensive.
+      //
+      // The handler is written inline in JSX so the Qwik compiler can
+      // analyze the closure captures precisely; assigning to a local
+      // variable defeats that analysis and the compiler over-captures the
+      // entire renderer scope.
+      const surfaceRef = noSerialize(surface);
+      return (
+        <div class={styles["text-field"]}>
+          <label class={styles.label}>{resolve(props.label)}</label>
+          {variant === "longText" ? (
+            <textarea
+              class={styles.input}
+              value={value}
+              {...bindValue("value")}
+              onInput$={(_e: Event, el: HTMLTextAreaElement) => {
+                if (!surfaceRef || !path) return;
+                new ComponentContext(surfaceRef, componentId).dataContext.set(
+                  path,
+                  el.value,
+                );
+              }}
+              onChange$={(_e: Event, el: HTMLTextAreaElement) => {
+                if (!surfaceRef || !path) return;
+                new ComponentContext(surfaceRef, componentId).dataContext.set(
+                  path,
+                  el.value,
+                );
+              }}
+            />
+          ) : (
+            <input
+              class={styles.input}
+              type={textFieldInputType[variant] ?? "text"}
+              value={value}
+              {...bindValue("value")}
+              onInput$={(_e: Event, el: HTMLInputElement) => {
+                if (!surfaceRef || !path) return;
+                new ComponentContext(surfaceRef, componentId).dataContext.set(
+                  path,
+                  el.value,
+                );
+              }}
+              onChange$={(_e: Event, el: HTMLInputElement) => {
+                if (!surfaceRef || !path) return;
+                new ComponentContext(surfaceRef, componentId).dataContext.set(
+                  path,
+                  el.value,
+                );
+              }}
+            />
+          )}
+        </div>
+      );
+    },
+  ),
 
   defineRenderer(CheckBoxApi, ({ props, ctx, resolve, bindValue }) => {
     const raw = props.value;
@@ -253,7 +313,8 @@ export const basicCatalog: CatalogRenderer = new CatalogRenderer([
       const selected: string[] = Array.isArray(resolved)
         ? (resolved as string[])
         : [];
-      const multi = (props.variant ?? "mutuallyExclusive") === "multipleSelection";
+      const multi =
+        (props.variant ?? "mutuallyExclusive") === "multipleSelection";
       return (
         <div class={styles["choice-picker"]} {...bindValue("value", { multi })}>
           {props.label ? (

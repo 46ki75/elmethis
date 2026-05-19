@@ -1141,7 +1141,12 @@ export const OverrideText: Story = {
                 id: "root",
                 children: ["h1", "h2", "h3", "body"],
               },
-              { component: "Text", id: "h1", variant: "h1", text: "Page Title" },
+              {
+                component: "Text",
+                id: "h1",
+                variant: "h1",
+                text: "Page Title",
+              },
               {
                 component: "Text",
                 id: "h2",

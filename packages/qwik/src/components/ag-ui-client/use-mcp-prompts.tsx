@@ -80,9 +80,7 @@ function validateServers(servers: McpServerConfig[]): void {
   const seen = new Set<string>();
   for (const s of servers) {
     if (!VALID_SERVER_ID.test(s.id)) {
-      throw new Error(
-        `MCP server id "${s.id}" must match /^[a-zA-Z0-9_-]+$/.`,
-      );
+      throw new Error(`MCP server id "${s.id}" must match /^[a-zA-Z0-9_-]+$/.`);
     }
     if (seen.has(s.id)) {
       throw new Error(`Duplicate MCP server id: "${s.id}".`);
@@ -144,9 +142,7 @@ export function useMcpPrompts(
 
   const prompts = useSignal<AnnotatedMcpPromptDescriptor[]>([]);
   const status = useStore<Record<string, McpServerStatus>>(
-    Object.fromEntries(
-      servers.map((s) => [s.id, { state: "connecting" }]),
-    ),
+    Object.fromEntries(servers.map((s) => [s.id, { state: "connecting" }])),
   );
 
   const serversRef = useSignal<NoSerialize<McpServerConfig[]>>(
@@ -229,9 +225,7 @@ export function useMcpPrompts(
         },
       );
 
-      void Promise.allSettled(
-        (serversRef.value ?? []).map((cfg) => open(cfg)),
-      );
+      void Promise.allSettled((serversRef.value ?? []).map((cfg) => open(cfg)));
 
       cleanup(() => {
         resolveOp.value = undefined;

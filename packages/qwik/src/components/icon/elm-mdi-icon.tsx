@@ -24,11 +24,13 @@ export const ElmMdiIcon = component$<ElmMdiIconProps>(
     return (
       <svg
         class={[styles.icon, className]}
-        style={{
-          "--color": lightColor ?? color,
-          "--dark-color": darkColor ?? color,
-          ...(style as CSSProperties),
-        } as CSSProperties}
+        style={
+          {
+            "--color": lightColor ?? color,
+            "--dark-color": darkColor ?? color,
+            ...(style as CSSProperties),
+          } as CSSProperties
+        }
         width={size}
         height={size}
         viewBox="0 0 24 24"

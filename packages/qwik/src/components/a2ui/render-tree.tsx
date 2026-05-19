@@ -57,7 +57,7 @@ function renderById(
       if (typeof v === "string") return v as V;
       if (v == null) return "" as V;
       if (typeof v === "object")
-        return ((ctx.dataContext.resolveDynamicValue(v as never) ?? "") as V);
+        return (ctx.dataContext.resolveDynamicValue(v as never) ?? "") as V;
       return String(v) as V;
     };
 

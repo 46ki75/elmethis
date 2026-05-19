@@ -141,13 +141,62 @@ export const ElmCheckbox = component$<ElmCheckboxProps>((props) => {
             />
           )}
 
-          <line x1="0" y1="1" x2="4" y2="1" stroke-width="2" fill="transparent" />
-          <line x1="4" y1="0" x2="24" y2="0" stroke-width="1" fill="transparent" />
-          <line x1="0" y1="4" x2="0" y2="16" stroke-width="1" fill="transparent" />
-          <line x1="0" y1="18" x2="0" y2="20" stroke-width="1" fill="transparent" />
-          <line x1="0" y1="24" x2="20" y2="24" stroke-width="1" fill="transparent" />
-          <line x1="20" y1="23" x2="24" y2="23" stroke-width="1.5" fill="transparent" />
-          <line x1="24" y1="4" x2="24" y2="20" style={{ strokeWidth: "1px" }} fill="transparent" />
+          <line
+            x1="0"
+            y1="1"
+            x2="4"
+            y2="1"
+            stroke-width="2"
+            fill="transparent"
+          />
+          <line
+            x1="4"
+            y1="0"
+            x2="24"
+            y2="0"
+            stroke-width="1"
+            fill="transparent"
+          />
+          <line
+            x1="0"
+            y1="4"
+            x2="0"
+            y2="16"
+            stroke-width="1"
+            fill="transparent"
+          />
+          <line
+            x1="0"
+            y1="18"
+            x2="0"
+            y2="20"
+            stroke-width="1"
+            fill="transparent"
+          />
+          <line
+            x1="0"
+            y1="24"
+            x2="20"
+            y2="24"
+            stroke-width="1"
+            fill="transparent"
+          />
+          <line
+            x1="20"
+            y1="23"
+            x2="24"
+            y2="23"
+            stroke-width="1.5"
+            fill="transparent"
+          />
+          <line
+            x1="24"
+            y1="4"
+            x2="24"
+            y2="20"
+            style={{ strokeWidth: "1px" }}
+            fill="transparent"
+          />
         </svg>
         <ElmInlineText>{label}</ElmInlineText>
       </div>

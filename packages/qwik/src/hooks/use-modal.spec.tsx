@@ -110,8 +110,7 @@ describe("[CSR]", () => {
     expect(screen.querySelector("#isShown")!.textContent).toBe("true");
 
     // The backdrop is the parent element of div[role="dialog"].
-    const backdrop = screen
-      .querySelector('[role="dialog"]')!
+    const backdrop = screen.querySelector('[role="dialog"]')!
       .parentElement as HTMLElement;
     await userEvent(backdrop, "click");
 
@@ -180,4 +179,3 @@ describe("[CSR]", () => {
     expect(textFieldLabel.querySelector("input")).toBeTruthy();
   });
 });
-
