@@ -31,6 +31,10 @@
       }
     }
   }
+
+  ol li::marker {
+    content: normal;
+  }
 }
 
 .elmethis-numbered-list {
@@ -62,5 +66,9 @@
         }
       }
     }
+  }
+
+  ul li {
+    list-style-type: none;
   }
 }

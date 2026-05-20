@@ -190,6 +190,89 @@ export const List: Story = {
 };
 
 // ---------------------------------------------------------------------------
+// NestedList
+// ---------------------------------------------------------------------------
+
+export const NestedList: Story = {
+  args: {
+    messages: [
+      {
+        version: "v0.9",
+        createSurface: { surfaceId: "nested_list", catalogId: CATALOG_ID },
+      },
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: "nested_list",
+          components: [
+            {
+              component: "List",
+              id: "root",
+              style: "unordered",
+              children: ["li1", "li2", "li3"],
+            },
+            {
+              component: "ListItem",
+              id: "li1",
+              children: ["li1-t", "li1-sub"],
+            },
+            { component: "RichText", id: "li1-t", text: "Fruits" },
+            {
+              component: "List",
+              id: "li1-sub",
+              style: "unordered",
+              children: ["li1-sub-1", "li1-sub-2"],
+            },
+            {
+              component: "ListItem",
+              id: "li1-sub-1",
+              children: ["li1-sub-1-t"],
+            },
+            { component: "RichText", id: "li1-sub-1-t", text: "Apple" },
+            {
+              component: "ListItem",
+              id: "li1-sub-2",
+              children: ["li1-sub-2-t"],
+            },
+            { component: "RichText", id: "li1-sub-2-t", text: "Banana" },
+            {
+              component: "ListItem",
+              id: "li2",
+              children: ["li2-t", "li2-sub"],
+            },
+            { component: "RichText", id: "li2-t", text: "Steps" },
+            {
+              component: "List",
+              id: "li2-sub",
+              style: "ordered",
+              children: ["li2-sub-1", "li2-sub-2"],
+            },
+            {
+              component: "ListItem",
+              id: "li2-sub-1",
+              children: ["li2-sub-1-t"],
+            },
+            { component: "RichText", id: "li2-sub-1-t", text: "Preheat oven" },
+            {
+              component: "ListItem",
+              id: "li2-sub-2",
+              children: ["li2-sub-2-t"],
+            },
+            { component: "RichText", id: "li2-sub-2-t", text: "Mix batter" },
+            {
+              component: "ListItem",
+              id: "li3",
+              children: ["li3-t"],
+            },
+            { component: "RichText", id: "li3-t", text: "Flat item" },
+          ],
+        },
+      },
+    ],
+  },
+};
+
+// ---------------------------------------------------------------------------
 // BlockQuote
 // ---------------------------------------------------------------------------
 
