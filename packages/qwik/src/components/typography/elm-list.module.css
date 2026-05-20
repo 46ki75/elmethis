@@ -7,24 +7,39 @@
 }
 
 .elmethis-bulleted-list {
+  list-style: none;
+
   li {
     box-sizing: border-box;
     padding-left: 0.5rem;
     margin-block: 0.75rem;
+    position: relative;
 
-    &::marker {
-      content: url("./markers/list-bullet-level-1.svg");
+    &::before {
+      content: "";
+      position: absolute;
+      left: -1em;
+      top: 0.3em;
+      width: 0.75em;
+      height: 0.75em;
+      background-color: var(--elmethis-color-primary, #449763);
+      mask-image: url("./markers/list-bullet-level-1.svg");
+      mask-size: contain;
+      mask-repeat: no-repeat;
+      mask-position: center;
     }
 
     ul {
+      list-style: none;
       li {
-        &::marker {
-          content: url("./markers/list-bullet-level-2.svg");
+        &::before {
+          mask-image: url("./markers/list-bullet-level-2.svg");
         }
         ul {
+          list-style: none;
           li {
-            &::marker {
-              content: url("./markers/list-bullet-level-3.svg");
+            &::before {
+              mask-image: url("./markers/list-bullet-level-3.svg");
             }
           }
         }
@@ -32,8 +47,8 @@
     }
   }
 
-  ol li::marker {
-    content: normal;
+  ol li::before {
+    content: none;
   }
 }
 
