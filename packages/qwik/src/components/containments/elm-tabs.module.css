@@ -38,13 +38,13 @@
     border-color 200ms;
 
   &.active {
-    background-color: oklch(from #7cbac5 l c h / 0.025);
-    border-bottom-color: #7cbac5;
+    background-color: oklch(from var(--elmethis-color-primary) l c h / 0.025);
+    border-bottom-color: var(--elmethis-color-primary);
     cursor: default;
   }
 
   &:hover {
-    background-color: oklch(from #7cbac5 l c h / 0.05);
+    background-color: oklch(from var(--elmethis-color-primary) l c h / 0.05);
   }
 }
 
