@@ -4,10 +4,10 @@
 
 .bar {
   z-index: 0;
-  padding: var(--padding);
-  width: var(--width);
-  height: var(--size);
-  border-radius: calc((var(--size) + var(--padding)) / 2);
+  padding: var(--elmethis-scoped-padding);
+  width: var(--elmethis-scoped-width);
+  height: var(--elmethis-scoped-size);
+  border-radius: calc((var(--elmethis-scoped-size) + var(--elmethis-scoped-padding)) / 2);
   position: relative;
   cursor: pointer;
   box-shadow: 0 0 2px rgb(0 0 0 / 10%);
@@ -17,7 +17,7 @@
   background-color: rgb(128 128 128 / 25%);
 
   &.checked {
-    background-color: var(--color);
+    background-color: var(--elmethis-scoped-color);
     opacity: 0.9;
   }
 
@@ -28,12 +28,12 @@
 
 .circle {
   z-index: 1;
-  width: var(--size);
-  height: var(--size);
+  width: var(--elmethis-scoped-size);
+  height: var(--elmethis-scoped-size);
   border-radius: 50%;
   position: absolute;
-  top: var(--padding);
-  left: var(--padding);
+  top: var(--elmethis-scoped-padding);
+  left: var(--elmethis-scoped-padding);
   transition:
     transform 300ms,
     opacity 300ms,
@@ -41,7 +41,7 @@
   background-color: rgb(255 255 255 / 90%);
 
   &.checked {
-    transform: translateX(calc(var(--width) - var(--size)));
+    transform: translateX(calc(var(--elmethis-scoped-width) - var(--elmethis-scoped-size)));
   }
 
   &.disabled {

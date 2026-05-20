@@ -8,15 +8,15 @@
 
   &::selection {
     filter: brightness(1000%);
-    background-color: var(--color, rgb(0 0 0 / 25%));
+    background-color: var(--elmethis-scoped-color, rgb(0 0 0 / 25%));
   }
 
   [data-theme="dark"] & {
-    color: var(--color, rgb(255 255 255 / 70%));
+    color: var(--elmethis-scoped-color, rgb(255 255 255 / 70%));
 
     &::selection {
       color: rgb(0 0 0 / 70%);
-      background-color: var(--color, rgb(255 255 255 / 25%));
+      background-color: var(--elmethis-scoped-color, rgb(255 255 255 / 25%));
     }
   }
 }

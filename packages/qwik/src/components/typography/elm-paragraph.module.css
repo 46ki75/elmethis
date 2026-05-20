@@ -1,7 +1,7 @@
 .paragraph {
   transition: opacity 800ms;
-  color: var(--color, var(--elmethis-color-text));
-  background-color: var(--background-color, inherit);
+  color: var(--elmethis-scoped-color, var(--elmethis-color-text));
+  background-color: var(--elmethis-scoped-background-color, inherit);
   margin: 0;
   margin-block-start: var(--elmethis-margin-block-start);
 

@@ -32,8 +32,8 @@
 }
 
 .text {
-  opacity: var(--opacity);
+  opacity: var(--elmethis-scoped-opacity);
   transition: opacity 200ms;
-  transition-delay: var(--delay);
+  transition-delay: var(--elmethis-scoped-delay);
   padding: 0 0.25rem;
 }

@@ -78,8 +78,8 @@ export const ElmButton = component$<ElmButtonProps>((props) => {
             : loading
               ? "progress"
               : "pointer",
-          "--opacity": rest.disabled || loading ? 0.6 : undefined,
-          "--color": color,
+          "--elmethis-scoped-opacity": rest.disabled || loading ? 0.6 : undefined,
+          "--elmethis-scoped-color": color,
           ...(style as CSSProperties),
         } as CSSProperties
       }

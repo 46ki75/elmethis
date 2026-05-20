@@ -16,7 +16,7 @@ export const ElmBlockQuote = component$<PropsOf<"blockquote">>(
       >
         <div
           class={styles.icon}
-          style={{ "--inset": "0.25rem auto auto 0.5rem" }}
+          style={{ "--elmethis-scoped-inset": "0.25rem auto auto 0.5rem" }}
         >
           <ElmMdiIcon d={mdiFormatQuoteOpen} />
         </div>
@@ -27,7 +27,7 @@ export const ElmBlockQuote = component$<PropsOf<"blockquote">>(
 
         <div
           class={styles.icon}
-          style={{ "--inset": "auto 0.25rem 0.25rem auto" }}
+          style={{ "--elmethis-scoped-inset": "auto 0.25rem 0.25rem auto" }}
         >
           <ElmMdiIcon d={mdiFormatQuoteClose} />
         </div>

@@ -29,6 +29,6 @@
 .icon {
   position: absolute;
   content: "";
-  inset: var(--inset);
+  inset: var(--elmethis-scoped-inset);
   opacity: 0.5;
 }

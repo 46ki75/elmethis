@@ -1,9 +1,9 @@
 .heading-common {
   margin: 0;
   position: relative;
-  font-size: var(--font-size);
-  line-height: var(--font-size);
-  opacity: var(--opacity);
+  font-size: var(--elmethis-scoped-font-size);
+  line-height: var(--elmethis-scoped-font-size);
+  opacity: var(--elmethis-scoped-opacity);
   margin-block-start: var(--elmethis-margin-block-start);
   transition:
     color 400ms,
@@ -46,7 +46,7 @@
     height: 2px;
     background-color: rgb(0 0 0 / 60%);
     transition: transform 800ms;
-    transform: scaleY(var(--scale));
+    transform: scaleY(var(--elmethis-scoped-scale));
     transform-origin: top;
 
     [data-theme="dark"] & {

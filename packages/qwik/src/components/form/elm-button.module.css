@@ -16,7 +16,7 @@
   transition:
     opacity 200ms,
     transform 200ms;
-  opacity: var(--opacity);
+  opacity: var(--elmethis-scoped-opacity);
   box-shadow: 0 0 0.125rem rgb(128 128 128 / 25%);
 }
 
@@ -52,7 +52,7 @@
 }
 
 .colored {
-  background-color: var(--color);
+  background-color: var(--elmethis-scoped-color);
 }
 
 .enable {
@@ -64,24 +64,24 @@
   [data-theme="dark"] & {
     &:hover {
       transform: translateX(-1px) translateY(-1px);
-      opacity: var(--opacity, 0.7);
+      opacity: var(--elmethis-scoped-opacity, 0.7);
     }
 
     &:active {
       transform: translateX(1px) translateY(1px);
-      opacity: var(--opacity, 0.5);
+      opacity: var(--elmethis-scoped-opacity, 0.5);
     }
   }
 
   &:hover {
     transform: translateX(-1px) translateY(-1px);
-    opacity: var(--opacity, 0.7);
+    opacity: var(--elmethis-scoped-opacity, 0.7);
     box-shadow: 0.125rem 0.125rem 0.125rem rgb(128 128 128 / 25%);
   }
 
   &:active {
     transform: translateX(1px) translateY(1px);
-    opacity: var(--opacity, 0.5);
+    opacity: var(--elmethis-scoped-opacity, 0.5);
     box-shadow: -1px -1px 0.125rem rgb(128 128 128 / 25%);
   }
 }

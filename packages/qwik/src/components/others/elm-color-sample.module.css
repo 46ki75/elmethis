@@ -2,7 +2,7 @@
   width: 5rem;
   height: 2rem;
   border-radius: 0.25rem;
-  background-color: var(--background-color);
+  background-color: var(--elmethis-scoped-background-color);
   cursor: pointer;
   transition: opacity 100ms;
   display: flex;
@@ -22,13 +22,13 @@
     color 100ms,
     background-color 100ms,
     opacity 100ms;
-  color: var(--color);
+  color: var(--elmethis-scoped-color);
   cursor: pointer;
 }
 
 .text:hover {
   color: white;
-  background-color: var(--color);
+  background-color: var(--elmethis-scoped-color);
 }
 
 .text:active {
@@ -37,5 +37,5 @@
 
 .text::selection {
   color: white;
-  background-color: var(--color);
+  background-color: var(--elmethis-scoped-color);
 }

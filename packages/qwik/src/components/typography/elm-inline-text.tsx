@@ -133,9 +133,9 @@ export const ElmInlineText = component$<ElmInlineTextProps>(
         style={
           {
             ...(style as CSSProperties),
-            "--color": color,
-            "--font-size": size,
-            "--background-color": backgroundColor,
+            "--elmethis-scoped-color": color,
+            "--elmethis-scoped-font-size": size,
+            "--elmethis-scoped-background-color": backgroundColor,
           } as CSSProperties
         }
         {...rest}

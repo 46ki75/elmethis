@@ -16,10 +16,10 @@
 
 .color-name {
   width: 6rem;
-  color: var(--color);
+  color: var(--elmethis-scoped-color);
 }
 
 .color-name::selection {
-  background-color: var(--color);
+  background-color: var(--elmethis-scoped-color);
   color: white;
 }

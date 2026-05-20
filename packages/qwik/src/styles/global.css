@@ -17,9 +17,13 @@
  *     unless there is a concrete need to override them globally.
  *
  * Per-instance overrides (one paragraph's color, one icon's fill):
- *   use component-private CSS variables (--color, --font-size, etc.) written
- *   from props. NEVER write to --elmethis-* from a prop on the component's
- *   own root — the variable would leak into every descendant.
+ *   use component-private CSS variables namespaced with
+ *   `--elmethis-scoped-*` (e.g. --elmethis-scoped-color,
+ *   --elmethis-scoped-font-size) written from props. The
+ *   `--elmethis-scoped-*` prefix prevents collisions with consumer
+ *   custom properties. NEVER write to a design-token --elmethis-* from
+ *   a prop on the component's own root — the variable would leak into
+ *   every descendant.
  *
  * See `variables.ts` for the public TypeScript contract.
  */

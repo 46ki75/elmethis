@@ -27,7 +27,7 @@ export const ElmColorTable = component$<ElmColorTableProps>(
           <div key={color.name} class={styles["row-container"]}>
             <div
               class={styles["color-name"]}
-              style={{ "--color": color.code } as Record<string, string>}
+              style={{ "--elmethis-scoped-color": color.code } as Record<string, string>}
             >
               {color.name}
             </div>

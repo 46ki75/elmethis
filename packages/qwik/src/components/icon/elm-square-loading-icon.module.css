@@ -20,20 +20,20 @@
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(var(--dimensions), auto);
-  grid-template-rows: repeat(var(--dimensions), auto);
+  grid-template-columns: repeat(var(--elmethis-scoped-dimensions), auto);
+  grid-template-rows: repeat(var(--elmethis-scoped-dimensions), auto);
   justify-content: start;
 }
 
 .square {
-  width: calc(var(--size) / var(--dimensions));
-  height: calc(var(--size) / var(--dimensions));
+  width: calc(var(--elmethis-scoped-size) / var(--elmethis-scoped-dimensions));
+  height: calc(var(--elmethis-scoped-size) / var(--elmethis-scoped-dimensions));
   animation-name: appear;
   animation-iteration-count: infinite;
   animation-fill-mode: both;
   animation-direction: alternate;
-  animation-duration: var(--duration);
-  animation-delay: var(--delay);
+  animation-duration: var(--elmethis-scoped-duration);
+  animation-delay: var(--elmethis-scoped-delay);
   background-color: #606875;
 
   [data-theme="dark"] & {

@@ -1,8 +1,8 @@
 .text {
-  color: var(--color, var(--elmethis-color-text));
+  color: var(--elmethis-scoped-color, var(--elmethis-color-text));
 
   &::selection {
     color: var(--elmethis-color-selection-text);
-    background-color: var(--color, var(--elmethis-color-selection-background));
+    background-color: var(--elmethis-scoped-color, var(--elmethis-color-selection-background));
   }
 }

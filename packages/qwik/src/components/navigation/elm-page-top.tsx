@@ -49,7 +49,7 @@ export const ElmPageTop = component$<ElmPageTopProps>(
         ]}
         style={
           {
-            "--size": `${64}px`,
+            "--elmethis-scoped-size": `${64}px`,
             left: position === "left" ? "0" : "auto",
             right: position === "right" ? "0" : "auto",
             ...(style as CSSProperties),

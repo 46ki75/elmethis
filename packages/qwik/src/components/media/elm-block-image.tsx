@@ -88,8 +88,8 @@ export const ElmBlockImage = component$<ElmBlockImageProps>((props) => {
       fetchPriority={isModal ? "low" : "auto"}
       onLoad$={handleImageLoad}
       style={{
-        "--opacity": isLoading.value ? 0.01 : 1,
-        "--cursor":
+        "--elmethis-scoped-opacity": isLoading.value ? 0.01 : 1,
+        "--elmethis-scoped-cursor":
           (enableModal ?? true)
             ? isShowModal.value
               ? "zoom-out"
@@ -105,7 +105,7 @@ export const ElmBlockImage = component$<ElmBlockImageProps>((props) => {
       class={styles["modal-container"]}
       style={{
         pointerEvents: isShowModal.value ? "auto" : "none",
-        "--opacity": isShowModal.value ? 1 : 0,
+        "--elmethis-scoped-opacity": isShowModal.value ? 1 : 0,
       }}
       onClick$={handleToggleModal}
     >
@@ -117,7 +117,7 @@ export const ElmBlockImage = component$<ElmBlockImageProps>((props) => {
     <figure class={[styles["block-image"], className]} {...rest}>
       <div
         class={styles["image-container"]}
-        style={{ "--opacity": isLoading.value ? 1 : 0.01 }}
+        style={{ "--elmethis-scoped-opacity": isLoading.value ? 1 : 0.01 }}
         onClick$={handleToggleModal}
       >
         {ImageComponent(false)}
@@ -130,7 +130,7 @@ export const ElmBlockImage = component$<ElmBlockImageProps>((props) => {
       {caption && (
         <figcaption
           class={styles["caption-box"]}
-          style={{ "--opacity": isLoading.value ? 0.01 : 1 }}
+          style={{ "--elmethis-scoped-opacity": isLoading.value ? 0.01 : 1 }}
         >
           <span style={{ flex: "1" }}>
             <ElmMdiIcon

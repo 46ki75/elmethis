@@ -1,6 +1,6 @@
 .elmethis-list-common {
   margin-block-start: var(--elmethis-margin-block-start);
-  opacity: var(--opacity);
+  opacity: var(--elmethis-scoped-opacity);
   transition: opacity 800ms;
   box-sizing: border-box;
   padding-left: 1.25rem;

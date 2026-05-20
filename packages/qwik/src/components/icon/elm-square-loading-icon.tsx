@@ -17,9 +17,9 @@ export const ElmSquareLoadingIcon = component$<ElmSquareLoadingIconProps>(
         class={[styles.wrapper, className]}
         style={
           {
-            "--size": size,
-            "--dimensions": dimensions,
-            "--duration": `${DURATION}ms`,
+            "--elmethis-scoped-size": size,
+            "--elmethis-scoped-dimensions": dimensions,
+            "--elmethis-scoped-duration": `${DURATION}ms`,
             ...(style as CSSProperties),
           } as CSSProperties
         }
@@ -34,7 +34,7 @@ export const ElmSquareLoadingIcon = component$<ElmSquareLoadingIconProps>(
                 <span
                   key={`${rowIndex}-${columnIndex}`}
                   class={styles.square}
-                  style={{ "--delay": `${DELAY * (rowIndex + columnIndex)}ms` }}
+                  style={{ "--elmethis-scoped-delay": `${DELAY * (rowIndex + columnIndex)}ms` }}
                 ></span>
               )),
           )}

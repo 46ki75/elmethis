@@ -2,11 +2,11 @@
   padding: 0;
   margin: 0;
   white-space: pre-line;
-  font-size: var(--font-size, 1em);
-  line-height: var(--font-size, 1em);
-  background-color: var(--background-color);
+  font-size: var(--elmethis-scoped-font-size, 1em);
+  line-height: var(--elmethis-scoped-font-size, 1em);
+  background-color: var(--elmethis-scoped-background-color);
   transition: color 200ms;
-  text-decoration-color: var(--color);
+  text-decoration-color: var(--elmethis-scoped-color);
 }
 
 .code {
@@ -52,7 +52,7 @@
   color: #6987b8;
   box-sizing: border-box;
   padding: 0 0.25rem;
-  font-size: var(--font-size);
+  font-size: var(--elmethis-scoped-font-size);
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;

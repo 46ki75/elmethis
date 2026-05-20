@@ -36,14 +36,14 @@ export const ElmColorSample = component$<ElmColorSampleProps>(
     return (
       <div
         class={className}
-        style={{ "--color": color } as Record<string, string>}
+        style={{ "--elmethis-scoped-color": color } as Record<string, string>}
         {...props}
       >
         <ElmTooltip>
           <div q:slot="original">
             <div
               class={styles["color-bg"]}
-              style={{ "--background-color": color } as Record<string, string>}
+              style={{ "--elmethis-scoped-background-color": color } as Record<string, string>}
               onClick$={() => copyText(hex)}
             >
               {copied.value && (

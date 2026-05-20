@@ -66,19 +66,19 @@
     border-radius: 0.125rem;
     background-color: oklch(from white l c h / 80%);
     backdrop-filter: blur(0.25rem);
-    color: var(--color, #606875);
+    color: var(--elmethis-scoped-color, #606875);
 
     &::selection {
       color: #cccfd5;
-      background-color: var(--color, #3e434b);
+      background-color: var(--elmethis-scoped-color, #3e434b);
     }
 
     [data-theme="dark"] & {
-      color: var(--color, #b0b5be);
+      color: var(--elmethis-scoped-color, #b0b5be);
 
       &::selection {
         color: #3e434b;
-        background-color: var(--color, #cccfd5);
+        background-color: var(--elmethis-scoped-color, #cccfd5);
       }
     }
   }

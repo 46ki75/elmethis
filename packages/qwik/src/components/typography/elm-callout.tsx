@@ -36,7 +36,7 @@ export const ElmCallout = component$<ElmCalloutProps>(
         class={[styles.callout, className]}
         style={
           {
-            "--callout-color": COLOR_MAP[type].code,
+            "--elmethis-scoped-callout-color": COLOR_MAP[type].code,
             ...(style as CSSProperties),
           } as CSSProperties
         }
