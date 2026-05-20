@@ -63,7 +63,7 @@
 
     &::marker {
       font-weight: bold;
-      color: #a17c5b;
+      color: var(--elmethis-color-secondary);
     }
 
     ol {
