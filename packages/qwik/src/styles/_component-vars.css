@@ -1,0 +1,42 @@
+/*
+ * Allowlist of component-private CSS variables.
+ *
+ * This file is NOT bundled — it is referenced only by stylelint's
+ * `csstools/value-no-unknown-custom-properties` rule (see
+ * `stylelint.config.mjs`) so that component-private vars set via inline
+ * `style={{ "--x": value }}` from props don't trigger false positives.
+ *
+ * Convention: component-private vars are short-named (no `--elmethis-`
+ * prefix) and written to a component's own root element only. The
+ * design-token vars (`--elmethis-*`) live in `global.css`.
+ *
+ * When a component introduces a new component-private var, add it here.
+ */
+
+:root {
+  /* Generic per-component knobs (size, color, layout) */
+  --background-color: initial;
+  --callout-color: initial;
+  --color: initial;
+  --cursor: initial;
+  --dimensions: initial;
+  --font-size: initial;
+  --height: initial;
+  --inset: initial;
+  --opacity: initial;
+  --padding: initial;
+  --scale: initial;
+  --size: initial;
+  --width: initial;
+
+  /* Animation timing knobs */
+  --delay: initial;
+  --duration: initial;
+
+  /* Specific component scoping */
+  --agent-ui-width: initial;
+
+  /* Shiki syntax-highlighter (set on <pre> by Shiki itself) */
+  --shiki-dark: initial;
+  --shiki-dark-bg: initial;
+}

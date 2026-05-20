@@ -1,7 +1,17 @@
 /** @type {import('stylelint').Config} */
 export default {
   extends: ["stylelint-config-standard", "stylelint-config-css-modules"],
+  plugins: ["stylelint-value-no-unknown-custom-properties"],
   rules: {
+    "csstools/value-no-unknown-custom-properties": [
+      true,
+      {
+        importFrom: [
+          "./src/styles/global.css",
+          "./src/styles/_component-vars.css",
+        ],
+      },
+    ],
     "selector-class-pattern": [
       "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:__[a-z0-9]+(?:-[a-z0-9]+)*)?(?:--[a-z0-9]+(?:-[a-z0-9]+)*)?$",
       {
