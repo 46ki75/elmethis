@@ -35,9 +35,12 @@ export const objectFitMap: Record<string, CSSProperties["objectFit"]> = {
  * When applied to the first child in a flow, suppresses the top margin so
  * vertical rhythm doesn't add unwanted space above the leading block.
  * Reusable across every block-level renderer.
+ *
+ * Sets `margin-block-start` directly instead of the `--elmethis-margin-block-start`
+ * custom property: the variable inherits, so on container renderers (Column,
+ * ColumnList, Callout, Toggle, Tabs, …) the override would cascade into every
+ * nested block and zero out all top margins.
  */
 export function firstChildMargin(index: number): CSSProperties | undefined {
-  return index === 0
-    ? ({ "--elmethis-margin-block-start": "0" } as CSSProperties)
-    : undefined;
+  return index === 0 ? { marginBlockStart: 0 } : undefined;
 }
