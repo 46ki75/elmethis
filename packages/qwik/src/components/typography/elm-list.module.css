@@ -22,7 +22,7 @@
       top: 0.3em;
       width: 0.75em;
       height: 0.75em;
-      background-color: var(--elmethis-color-primary, #449763);
+      background-color: var(--elmethis-color-primary, #b69545);
       mask-image: url("./markers/list-bullet-level-1.svg");
       mask-size: contain;
       mask-repeat: no-repeat;
@@ -63,7 +63,7 @@
 
     &::marker {
       font-weight: bold;
-      color: #9771bd;
+      color: #a17c5b;
     }
 
     ol {
