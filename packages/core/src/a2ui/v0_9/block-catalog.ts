@@ -405,30 +405,23 @@ export const MermaidApi = {
 
 /**
  * A single tab inside a ContentTabs container.
- * The `labels` list holds inline component IDs for the tab button label;
- * `contents` holds block component IDs for the tab panel body.
+ *
+ * `label` is the inline content of the tab's button (typically RichText /
+ * LinkText / Icon ids). `content` is the block content shown when the tab
+ * is active. Both accept a `ChildList` — a static list of component ids or
+ * a list template for data-driven panels.
  */
 export const ContentTabApi = {
   name: "ContentTab",
   schema: z
     .object({
       ...CommonProps,
-      title: z
-        .string()
-        .describe(
-          "Accessible title for the tab (also used as fallback label text).",
-        )
-        .optional(),
-      labels: z
-        .array(z.string())
-        .describe(
-          "Ordered list of inline component IDs that render the tab button label.",
-        ),
-      contents: z
-        .array(z.string())
-        .describe(
-          "Ordered list of component IDs that render the tab panel content.",
-        ),
+      label: childrenSchema.describe(
+        "Inline content that renders the tab's button (typically RichText / LinkText / Icon ids), or a list template.",
+      ),
+      content: childrenSchema.describe(
+        "Block content shown when this tab is active, or a list template.",
+      ),
     })
     .strict(),
 } satisfies ComponentApi;

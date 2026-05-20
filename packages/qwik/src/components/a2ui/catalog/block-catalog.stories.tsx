@@ -670,9 +670,8 @@ export const ContentTabs: Story = {
             {
               component: "ContentTab",
               id: "tab1",
-              title: "First tab",
-              labels: ["tab1-label"],
-              contents: ["tab1-body"],
+              label: ["tab1-label"],
+              content: ["tab1-body"],
             },
             { component: "RichText", id: "tab1-label", text: "First" },
             {
@@ -688,9 +687,8 @@ export const ContentTabs: Story = {
             {
               component: "ContentTab",
               id: "tab2",
-              title: "Second tab",
-              labels: ["tab2-label"],
-              contents: ["tab2-body"],
+              label: ["tab2-label"],
+              content: ["tab2-body"],
             },
             { component: "RichText", id: "tab2-label", text: "Second" },
             {

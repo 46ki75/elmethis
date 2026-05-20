@@ -1,4 +1,5 @@
 .elm-tabs {
+  margin-block-start: var(--elmethis-margin-block-start);
   display: flex;
   flex-direction: column;
   gap: 0;
