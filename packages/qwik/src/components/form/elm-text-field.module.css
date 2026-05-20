@@ -36,7 +36,7 @@
 }
 
 .wrapper {
-  --highlight-color: #bfa056;
+  --highlight-color: var(--elmethis-color-primary);
 
   overflow: hidden;
   position: relative;
