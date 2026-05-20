@@ -17,8 +17,8 @@ export const ElmParagraph = component$<ElmParagraphProps>(
         style={
           {
             ...(style as CSSProperties),
-            "--color": color,
-            "--background-color": backgroundColor,
+            "--elmethis-scoped-color": color,
+            "--elmethis-scoped-background-color": backgroundColor,
           } as CSSProperties
         }
         {...props}

@@ -22,6 +22,7 @@ export const Primary: Story = {
   },
   args: {
     colors: [
+      { name: "brown", code: "#a17c5b" },
       { name: "crimson", code: "#c56565" },
       { name: "amber", code: "#d48b70" },
       { name: "gold", code: "#cdb57b" },

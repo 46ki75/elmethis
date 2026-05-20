@@ -5,13 +5,12 @@
   grid-template-columns: 1.5rem 1fr 1fr 1.5rem;
   gap: 1rem;
   align-items: center;
-
-  box-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 0.125rem rgb(0 0 0 / 20%);
   border-radius: 0.25rem;
+  background-color: rgb(255 255 255 / 20%);
 
-  background-color: rgba(255, 255, 255, 0.2);
   [data-theme="dark"] & {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgb(0 0 0 / 20%);
   }
 }
 
@@ -26,7 +25,6 @@
   align-items: center;
   height: 1.5rem;
   width: 1.5rem;
-
   padding: 0.125rem;
   border-radius: 0.125rem;
   cursor: pointer;
@@ -35,9 +33,10 @@
     background-color 200ms;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgb(0 0 0 / 10%);
+
     [data-theme="dark"] & {
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: rgb(255 255 255 / 10%);
     }
   }
 }

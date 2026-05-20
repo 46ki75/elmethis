@@ -23,8 +23,8 @@ export const ElmDotLoadingIcon = component$<ElmDotLoadingIconProps>(
         class={[styles.wrapper, className]}
         style={
           {
-            "--size": size,
-            "--color": color,
+            "--elmethis-scoped-size": size,
+            "--elmethis-scoped-color": color,
             ...(style as CSSProperties),
           } as CSSProperties
         }

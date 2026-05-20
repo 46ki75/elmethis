@@ -17,22 +17,27 @@
   font-size: 2rem;
   font-weight: 700;
 }
+
 .text-h2 {
   font-size: 1.5rem;
   font-weight: 600;
 }
+
 .text-h3 {
   font-size: 1.25rem;
   font-weight: 600;
 }
+
 .text-h4 {
   font-size: 1.125rem;
   font-weight: 500;
 }
+
 .text-h5 {
   font-size: 1rem;
   font-weight: 500;
 }
+
 .text-body {
   font-size: 1rem;
 }
@@ -41,8 +46,7 @@
 
 .row {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
   gap: 8px;
 }
 
@@ -79,7 +83,7 @@
   border-radius: 8px;
   padding: 16px;
   background: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 8%);
 }
 
 /* ---- button ---- */
@@ -100,7 +104,7 @@
 }
 
 .button:hover {
-  background: rgba(0, 0, 0, 0.05);
+  background: rgb(0 0 0 / 5%);
 }
 
 .button-primary {

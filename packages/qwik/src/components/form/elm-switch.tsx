@@ -44,7 +44,7 @@ export const ElmSwitch = component$<ElmSwitchProps>((props) => {
     checked,
     ...rest
   } = props;
-  const resolvedColor = color ?? "#bfa056";
+  const resolvedColor = color ?? "var(--elmethis-color-primary)";
   const resolvedSize = size ?? "18px";
 
   return (
@@ -57,10 +57,10 @@ export const ElmSwitch = component$<ElmSwitchProps>((props) => {
       class={className}
       style={
         {
-          "--color": resolvedColor,
-          "--padding": "2px",
-          "--size": resolvedSize,
-          "--width": "calc(var(--size) * 2 + var(--padding) * 2)",
+          "--elmethis-scoped-color": resolvedColor,
+          "--elmethis-scoped-padding": "2px",
+          "--elmethis-scoped-size": resolvedSize,
+          "--elmethis-scoped-width": "calc(var(--elmethis-scoped-size) * 2 + var(--elmethis-scoped-padding) * 2)",
           ...(style as CSSProperties),
         } as CSSProperties
       }

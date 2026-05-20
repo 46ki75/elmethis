@@ -26,7 +26,7 @@ export const ElmValidation = component$<ElmValidationProps>(
         class={[styles.validation, className]}
         style={
           {
-            "--opacity": isValid ? 1 : 0.5,
+            "--elmethis-scoped-opacity": isValid ? 1 : 0.5,
             ...(style as CSSProperties),
           } as CSSProperties
         }

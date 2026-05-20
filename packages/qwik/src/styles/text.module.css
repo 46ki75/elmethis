@@ -1,17 +1,8 @@
 .text {
-  color: var(--color, #606875);
+  color: var(--elmethis-scoped-color, var(--elmethis-color-text));
 
   &::selection {
-    color: #cccfd5;
-    background-color: var(--color, #3e434b);
-  }
-
-  [data-theme="dark"] & {
-    color: var(--color, #b0b5be);
-
-    &::selection {
-      color: #3e434b;
-      background-color: var(--color, #cccfd5);
-    }
+    color: var(--elmethis-color-selection-text);
+    background-color: var(--elmethis-scoped-color, var(--elmethis-color-selection-background));
   }
 }

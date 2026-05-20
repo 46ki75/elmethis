@@ -9,7 +9,7 @@
     inset: 0 auto auto 0;
     height: 100%;
     width: 0.25rem;
-    background-color: var(--callout-color);
+    background-color: var(--elmethis-scoped-callout-color);
   }
 
   &::before {
@@ -18,7 +18,7 @@
     inset: 0 0 auto auto;
     height: 100%;
     width: 100%;
-    background-color: var(--callout-color);
+    background-color: var(--elmethis-scoped-callout-color);
     opacity: 0.15;
     z-index: -1;
     pointer-events: none;
@@ -32,6 +32,5 @@
 }
 
 .content {
-  padding-block-start: 1rem;
-  padding-block-end: 0.25rem;
+  padding-block: 1rem 0.25rem;
 }

@@ -7,7 +7,8 @@
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  border: 1px dashed rgba(134, 142, 156, 0.5);
+  border: 1px dashed
+    color-mix(in srgb, var(--elmethis-color-accent-muted) 50%, transparent);
 }
 
 .message {
@@ -18,7 +19,7 @@
 }
 
 .icon {
-  fill: #868e9c;
+  fill: var(--elmethis-color-accent-muted);
 }
 
 .details {

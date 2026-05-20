@@ -59,3 +59,36 @@ export const Nested: Story = {
     );
   },
 };
+
+export const MixedNested: Story = {
+  args: { listStyle: "unordered" },
+  render() {
+    return (
+      <ElmList {...(this.args as ElmListProps)}>
+        <li>
+          Ingredients
+          <ElmList listStyle="ordered">
+            <li>Flour</li>
+            <li>Sugar</li>
+            <li>Eggs</li>
+          </ElmList>
+        </li>
+        <li>
+          Steps
+          <ElmList listStyle="ordered">
+            <li>Preheat oven</li>
+            <li>
+              Mix batter
+              <ElmList listStyle="unordered">
+                <li>Combine dry ingredients</li>
+                <li>Add wet ingredients</li>
+              </ElmList>
+            </li>
+            <li>Bake</li>
+          </ElmList>
+        </li>
+        <li>Done</li>
+      </ElmList>
+    );
+  },
+};

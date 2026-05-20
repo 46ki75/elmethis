@@ -5,12 +5,12 @@
   color: #555b67;
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.3);
-  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 0.125rem rgb(0 0 0 / 30%);
+  background-color: rgb(255 255 255 / 20%);
 
   :global([data-theme="dark"]) & {
-    box-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.6);
-    background-color: rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 0.125rem rgb(0 0 0 / 60%);
+    background-color: rgb(0 0 0 / 20%);
     color: #b0b5be;
   }
 }

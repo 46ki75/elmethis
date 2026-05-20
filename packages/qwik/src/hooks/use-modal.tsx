@@ -82,7 +82,7 @@ export const useModal = (options: UseModalOptions = {}) => {
             [styles["open"]]: isShown.value,
           },
         ]}
-        style={{ "--delay": `${delay}ms` }}
+        style={{ "--elmethis-scoped-delay": `${delay}ms` }}
         onClick$={hide}
       >
         {isOpen.value && (

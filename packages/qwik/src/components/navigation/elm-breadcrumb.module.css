@@ -1,7 +1,6 @@
 .container {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
   align-items: center;
   gap: 0;
   user-select: none;
@@ -16,14 +15,13 @@
   padding: 0.25rem;
   border-radius: 0.25rem;
   cursor: pointer;
-
   transition:
     background-color 100ms,
     opacity 100ms,
     transform 100ms;
 
   &:hover {
-    background-color: rgba(134, 142, 156, 0.2);
+    background-color: rgb(134 142 156 / 20%);
     transform: translateX(-1px) translateY(-1px);
   }
 
@@ -34,8 +32,8 @@
 }
 
 .text {
-  opacity: var(--opacity);
+  opacity: var(--elmethis-scoped-opacity);
   transition: opacity 200ms;
-  transition-delay: var(--delay);
+  transition-delay: var(--elmethis-scoped-delay);
   padding: 0 0.25rem;
 }

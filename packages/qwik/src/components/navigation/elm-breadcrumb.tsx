@@ -34,7 +34,7 @@ export const ElmBreadcrumb = component$<ElmBreadcrumbProps>(
               <span
                 class={styles.icon}
                 style={{
-                  "--delay": `${index * 100}ms`,
+                  "--elmethis-scoped-delay": `${index * 100}ms`,
                 }}
               >
                 <ElmMdiIcon
@@ -52,7 +52,7 @@ export const ElmBreadcrumb = component$<ElmBreadcrumbProps>(
               <span
                 class={styles.text}
                 style={{
-                  "--delay": `${index * 100 + 50}ms`,
+                  "--elmethis-scoped-delay": `${index * 100 + 50}ms`,
                 }}
               >
                 <ElmInlineText>{link.text}</ElmInlineText>
@@ -62,7 +62,7 @@ export const ElmBreadcrumb = component$<ElmBreadcrumbProps>(
             {links.length !== index + 1 && (
               <span
                 class={styles.text}
-                style={{ "--delay": `${index * 100 + 100}ms` }}
+                style={{ "--elmethis-scoped-delay": `${index * 100 + 100}ms` }}
               >
                 <ElmMdiIcon d={mdiChevronRight} size="1em" color="#b69545" />
               </span>

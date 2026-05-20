@@ -1,21 +1,19 @@
 .paragraph {
   transition: opacity 800ms;
-  color: var(--color, #606875);
-  background-color: var(--background-color, inherit);
+  color: var(--elmethis-scoped-color, var(--elmethis-color-text));
+  background-color: var(--elmethis-scoped-background-color, inherit);
   margin: 0;
   margin-block-start: var(--elmethis-margin-block-start);
 
   &::selection {
-    color: rgba(255, 255, 255, 0.7);
-    background-color: rgba(0, 0, 0, 0.7);
+    color: rgb(255 255 255 / 70%);
+    background-color: rgb(0 0 0 / 70%);
   }
 
   [data-theme="dark"] & {
-    color: rgba(255, 255, 255, 0.7);
-
     &::selection {
-      color: rgba(0, 0, 0, 0.7);
-      background-color: rgba(255, 255, 255, 0.7);
+      color: rgb(0 0 0 / 70%);
+      background-color: rgb(255 255 255 / 70%);
     }
   }
 }

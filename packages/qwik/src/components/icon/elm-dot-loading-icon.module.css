@@ -13,8 +13,8 @@
 }
 
 .wrapper {
-  width: var(--size);
-  height: var(--size);
+  width: var(--elmethis-scoped-size);
+  height: var(--elmethis-scoped-size);
   user-select: none;
   position: relative;
   display: flex;
@@ -31,9 +31,8 @@
   animation-iteration-count: infinite;
   animation-direction: alternate;
   animation-timing-function: ease-out;
-
   transition: background-color 400ms;
-  background-color: var(--color, #606875);
+  background-color: var(--elmethis-scoped-color, #606875);
 
   [data-theme="dark"] & {
     background-color: #b0b5be;
