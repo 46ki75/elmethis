@@ -64,7 +64,9 @@ export const ElmToggle = component$<ElmToggleProps>((props) => {
             <ElmMdiIcon
               d={mdiChevronRight}
               color={
-                monochrome ? "var(--elmethis-color-accent-muted)" : "#59b57c"
+                monochrome
+                  ? "var(--elmethis-color-accent-muted)"
+                  : "var(--elmethis-color-primary)"
               }
               size="1rem"
             />
@@ -88,8 +90,8 @@ export const ElmToggle = component$<ElmToggleProps>((props) => {
               monochrome
                 ? "var(--elmethis-color-accent-muted)"
                 : isOpen.value
-                  ? "#b36472"
-                  : "#59b57c"
+                  ? "var(--elmethis-accent-error)"
+                  : "var(--elmethis-color-primary)"
             }
           />
         </span>

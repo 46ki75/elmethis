@@ -41,9 +41,11 @@
   /* Accent palette (one value per role) */
   --elmethis-accent-primary: #b69545;
   --elmethis-accent-secondary: #a17c5b;
+
   --elmethis-accent-info: #6987b8;
   --elmethis-accent-success: #59b57c;
   --elmethis-accent-warning: #bfa056;
+  --elmethis-accent-error: #b36472;
 
   /* ============================================================
    * Semantic layer — theme-aware roles, reference primitives

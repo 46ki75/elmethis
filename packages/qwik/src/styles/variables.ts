@@ -56,9 +56,12 @@ export type ElmethisCSSVariables = {
   "--elmethis-accent-info"?: CSSProperties["color"];
   "--elmethis-accent-success"?: CSSProperties["color"];
   "--elmethis-accent-warning"?: CSSProperties["color"];
+  "--elmethis-accent-error"?: CSSProperties["color"];
 
   // Semantic — Color (theme-aware, references primitives)
   "--elmethis-color-primary"?: CSSProperties["color"];
+  "--elmethis-color-secondary"?: CSSProperties["color"];
+
   "--elmethis-color-text"?: CSSProperties["color"];
   "--elmethis-color-text-background"?: CSSProperties["backgroundColor"];
   "--elmethis-color-accent-muted"?: CSSProperties["color"];
