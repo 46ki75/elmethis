@@ -79,6 +79,6 @@
     "tsc-alias": "^1.8.17",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.59.4",
-    "vite": "^8.0.4"
+    "vite": "^8.0.13"
   }
 }
