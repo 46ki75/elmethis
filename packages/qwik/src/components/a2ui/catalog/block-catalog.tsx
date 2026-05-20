@@ -70,6 +70,17 @@ import {
   UnsupportedApi,
 } from "@elmethis/core";
 
+/**
+ * A `ChildList` is either a static array of component ids or a template
+ * `{ componentId, path }`. The Tab renderer only renders the static form
+ * today; bound templates resolve to no children until the data layer is
+ * wired up. Returns the validated string ids.
+ */
+function extractChildIds(value: unknown): string[] {
+  if (!Array.isArray(value)) return [];
+  return value.filter((id): id is string => typeof id === "string");
+}
+
 // Mirrors the multi-column layout in elm-jarkup.module.css.
 const columnListStyle: CSSProperties = {
   boxSizing: "content-box",
@@ -299,7 +310,7 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
 
   // -------------------------------------------------------------------------
   // Tabs — ContentTab is data-only (its parent ContentTabs walks the surface
-  // model to read tab labels and contents directly).
+  // model to read each tab's label and content ChildList directly).
   // -------------------------------------------------------------------------
 
   defineRenderer(ContentTabApi, () => null),
@@ -308,16 +319,10 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
     const tabIds = Array.isArray(props.children) ? props.children : [];
     const tabs = tabIds.map((tabId) => {
       const tabModel = surface.componentsModel.get(tabId);
-      const rawLabels = tabModel?.properties.labels;
-      const rawContents = tabModel?.properties.contents;
       return {
         tabId,
-        labelIds: Array.isArray(rawLabels)
-          ? rawLabels.filter((id): id is string => typeof id === "string")
-          : [],
-        contentIds: Array.isArray(rawContents)
-          ? rawContents.filter((id): id is string => typeof id === "string")
-          : [],
+        labelIds: extractChildIds(tabModel?.properties.label),
+        contentIds: extractChildIds(tabModel?.properties.content),
       };
     });
     return (

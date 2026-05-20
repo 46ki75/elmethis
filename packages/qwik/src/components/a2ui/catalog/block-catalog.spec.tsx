@@ -310,15 +310,15 @@ describe("blockCatalog: tabs", () => {
     const args = buildArgs({
       component: "ContentTab",
       id: "tab1",
-      labels: ["l1"],
-      contents: ["c1"],
+      label: ["l1"],
+      content: ["c1"],
     });
     const render = blockCatalog.get("ContentTab");
     expect(render).toBeDefined();
     expect(render!(args)).toBeNull();
   });
 
-  test("ContentTabs reads labels and contents from each tab's properties", async () => {
+  test("ContentTabs reads label and content from each tab's properties", async () => {
     const args = buildArgs(
       {
         component: "ContentTabs",
@@ -330,8 +330,8 @@ describe("blockCatalog: tabs", () => {
           {
             component: "ContentTab",
             id: "tab1",
-            labels: ["label-comp"],
-            contents: ["content-comp"],
+            label: ["label-comp"],
+            content: ["content-comp"],
           },
         ],
       },
