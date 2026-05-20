@@ -19,10 +19,3 @@
     }
   }
 }
-
-.has-row-header {
-  td:first-child,
-  tr:first-child {
-    background-color: rgba(128, 128, 128, 0.15);
-  }
-}

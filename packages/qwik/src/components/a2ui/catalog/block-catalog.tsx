@@ -379,8 +379,8 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
     </ElmTableRow>
   )),
 
-  defineRenderer(TableCellApi, ({ props, childRefs, renderChild }) => (
-    <ElmTableCell hasHeader={props.isHeader}>
+  defineRenderer(TableCellApi, ({ props, index, childRefs, renderChild }) => (
+    <ElmTableCell isHeader={props.isHeader} columnIndex={index}>
       {childRefs(props.children).map(({ id, path }, i) => (
         <span key={`${id}:${i}`}>{renderChild(id, path, i)}</span>
       ))}

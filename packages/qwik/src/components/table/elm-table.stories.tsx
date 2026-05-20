@@ -23,11 +23,11 @@ export const Primary: Story = {
       <ElmTable {...this.args}>
         <ElmTableHeader>
           <ElmTableRow>
-            <ElmTableCell hasHeader text="Header 1" />
-            <ElmTableCell hasHeader text="Header 2" />
-            <ElmTableCell hasHeader text="Header 3" />
-            <ElmTableCell hasHeader text="Header 4" />
-            <ElmTableCell hasHeader text="Header 5" />
+            <ElmTableCell isHeader text="Header 1" />
+            <ElmTableCell isHeader text="Header 2" />
+            <ElmTableCell isHeader text="Header 3" />
+            <ElmTableCell isHeader text="Header 4" />
+            <ElmTableCell isHeader text="Header 5" />
           </ElmTableRow>
         </ElmTableHeader>
 

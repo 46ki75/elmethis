@@ -2,17 +2,14 @@ import {
   component$,
   PropsOf,
   Slot,
-  createContextId,
   useContextProvider,
-  useComputed$,
+  useSignal,
+  useTask$,
 } from "@qwik.dev/core";
 import styles from "./elm-table.module.css";
 import textStyles from "../../styles/text.module.css";
 import { ElmInlineText } from "../typography/elm-inline-text";
-
-export const HasRowHeaderContext = createContextId<
-  Readonly<{ value: boolean }>
->("HasRowHeaderContext");
+import { HasRowHeaderContext } from "./table-context";
 
 export interface ElmTableProps extends PropsOf<"table"> {
   caption?: string;
@@ -28,8 +25,11 @@ export const ElmTable = component$<ElmTableProps>((props) => {
     ...rest
   } = props;
 
-  const hasRowHeaderComputed = useComputed$(() => props.hasRowHeader ?? false);
-  useContextProvider(HasRowHeaderContext, hasRowHeaderComputed);
+  const hasRowHeader = useSignal(props.hasRowHeader ?? false);
+  useTask$(({ track }) => {
+    hasRowHeader.value = track(() => props.hasRowHeader) ?? false;
+  });
+  useContextProvider(HasRowHeaderContext, hasRowHeader);
 
   return (
     <table class={[styles.table, textStyles.text, className]} {...rest}>

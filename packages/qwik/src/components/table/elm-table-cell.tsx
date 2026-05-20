@@ -1,46 +1,62 @@
-import {
-  component$,
-  Slot,
-  useContext,
-  type CSSProperties,
-} from "@qwik.dev/core";
+import { component$, PropsOf, Slot, useContext } from "@qwik.dev/core";
 import styles from "./elm-table-cell.module.css";
-import { HasHeaderContext } from "./elm-table-header";
+import { HasRowHeaderContext, TableSectionContext } from "./table-context";
 
-export interface ElmTableCellProps {
-  class?: string;
-
-  style?: CSSProperties;
+export interface ElmTableCellProps extends PropsOf<"td"> {
+  /**
+   * Force this cell to render as a `<th>`. Use for cells that are headers
+   * but live outside `<ElmTableHeader>` (e.g. a mid-table grouping row).
+   * Cells inside `<ElmTableHeader>` are promoted automatically.
+   */
+  isHeader?: boolean;
 
   /**
-   * Whether the cell is a header cell.
+   * 0-based column index within the row. When the surrounding `<ElmTable>`
+   * has `hasRowHeader`, the cell at `columnIndex === 0` is promoted to
+   * `<th scope="row">` for accessibility. Hand-authored callers can omit
+   * this; renderers (e.g. the A2UI catalog) should pass their iteration
+   * index through.
    */
-  hasHeader?: boolean;
+  columnIndex?: number;
 
-  /**
-   * The text content of the cell.
-   * If not provided, the cell will render its children as content.
-   */
+  /** Convenience for plain-text cells. Equivalent to passing children. */
   text?: string;
 }
 
 export const ElmTableCell = component$<ElmTableCellProps>((props) => {
-  const { class: className, style, hasHeader = false, text } = props;
-  const hasHeaderInjected = useContext(HasHeaderContext, false);
+  const {
+    class: className,
+    style,
+    isHeader = false,
+    columnIndex,
+    text,
+    scope: scopeOverride,
+    ...rest
+  } = props;
 
-  const isHeader = hasHeader || (hasHeaderInjected as boolean | undefined);
+  const section = useContext(TableSectionContext, "body");
+  const hasRowHeader = useContext(HasRowHeaderContext, { value: false });
 
-  return (
-    <>
-      {isHeader ? (
-        <th class={[styles.common, styles.th, className]} style={style}>
-          {text ? text : <Slot />}
-        </th>
-      ) : (
-        <td class={[styles.common, styles.td, className]} style={style}>
-          {text ? text : <Slot />}
-        </td>
-      )}
-    </>
+  const inHead = section === "head";
+  const isRowHeader =
+    !inHead && !isHeader && columnIndex === 0 && hasRowHeader.value;
+  const renderAsTh = inHead || isHeader || isRowHeader;
+
+  const scope =
+    scopeOverride ?? (inHead ? "col" : isRowHeader ? "row" : undefined);
+
+  return renderAsTh ? (
+    <th
+      class={[styles.common, styles.th, className]}
+      style={style}
+      scope={scope}
+      {...rest}
+    >
+      {text != null ? text : <Slot />}
+    </th>
+  ) : (
+    <td class={[styles.common, styles.td, className]} style={style} {...rest}>
+      {text != null ? text : <Slot />}
+    </td>
   );
 });

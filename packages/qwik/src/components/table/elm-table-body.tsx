@@ -1,11 +1,11 @@
 import { component$, PropsOf, Slot, useContextProvider } from "@qwik.dev/core";
-import { HasHeaderContext } from "./elm-table-header";
+import { TableSectionContext } from "./table-context";
 
 export type ElmTableBodyProps = PropsOf<"tbody">;
 
 export const ElmTableBody = component$<PropsOf<"tbody">>(
   ({ class: className, ...props }) => {
-    useContextProvider(HasHeaderContext, false);
+    useContextProvider(TableSectionContext, "body");
 
     return (
       <tbody class={className} {...props}>
