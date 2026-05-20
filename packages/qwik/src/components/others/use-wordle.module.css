@@ -26,13 +26,13 @@
 
 .message-area--error {
   background-color: #1a1a1b;
-  color: #ffffff;
+  color: #fff;
   animation: fade-in 0.15s ease;
 }
 
 .message-area--status {
   background-color: #538d4e;
-  color: #ffffff;
+  color: #fff;
   font-size: 1rem;
   animation: fade-in 0.15s ease;
 }
@@ -81,19 +81,19 @@
 .cell--correct {
   background-color: #538d4e;
   border-color: #538d4e;
-  color: #ffffff;
+  color: #fff;
 }
 
 .cell--present {
   background-color: #b59f3b;
   border-color: #b59f3b;
-  color: #ffffff;
+  color: #fff;
 }
 
 .cell--absent {
   background-color: #3a3a3c;
   border-color: #3a3a3c;
-  color: #ffffff;
+  color: #fff;
 }
 
 /* ── Keyboard ─────────────────────────────────────────────────── */
@@ -118,7 +118,7 @@
   border: none;
   border-radius: 0.25rem;
   background-color: #818384;
-  color: #ffffff;
+  color: #fff;
   font-size: 0.8125rem;
   font-weight: bold;
   cursor: pointer;
@@ -166,7 +166,7 @@
   border: none;
   border-radius: 0.25rem;
   background-color: #538d4e;
-  color: #ffffff;
+  color: #fff;
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
@@ -189,6 +189,7 @@
     opacity: 0;
     transform: translateY(-0.25rem);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

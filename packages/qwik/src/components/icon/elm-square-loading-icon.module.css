@@ -28,14 +28,12 @@
 .square {
   width: calc(var(--size) / var(--dimensions));
   height: calc(var(--size) / var(--dimensions));
-
   animation-name: appear;
   animation-iteration-count: infinite;
   animation-fill-mode: both;
   animation-direction: alternate;
   animation-duration: var(--duration);
   animation-delay: var(--delay);
-
   background-color: #606875;
 
   [data-theme="dark"] & {

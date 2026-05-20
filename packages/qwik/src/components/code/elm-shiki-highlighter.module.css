@@ -8,10 +8,10 @@
       "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace !important;
 
     *::selection {
-      background-color: rgba(0, 0, 0, 0.1);
+      background-color: rgb(0 0 0 / 10%);
 
       [data-theme="dark"] & {
-        background-color: rgba(255, 255, 255, 0.15);
+        background-color: rgb(255 255 255 / 15%);
       }
     }
 

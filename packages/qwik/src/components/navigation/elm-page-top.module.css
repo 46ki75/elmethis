@@ -2,8 +2,6 @@
   --const-margin: 1rem;
 
   z-index: 50;
-  -webkit-tap-highlight-color: transparent;
-
   display: block;
   position: fixed;
   bottom: 0;
@@ -13,15 +11,12 @@
   left: var(--left, auto);
   right: var(--right, auto);
   opacity: 1;
-
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-
   transition:
     transform 700ms,
     opacity 400ms;
   transform-origin: 50% 50%;
-
   transform: translateY(250%) rotate(180deg);
 
   &:hover {
@@ -48,25 +43,26 @@
       animation: move 3000ms ease-out 2000ms infinite;
     }
 
-    &:before,
-    &:after {
+    &::before,
+    &::after {
       content: "";
       position: absolute;
       top: 0;
       height: 100%;
       width: 50%;
       background-color: #494f59;
+
       [data-theme="dark"] & {
         background-color: #bec2ca;
       }
     }
 
-    &:before {
+    &::before {
       left: 0;
       transform: skew(0deg, -30deg);
     }
 
-    &:after {
+    &::after {
       right: 0;
       transform: skew(0deg, 30deg);
     }
@@ -108,18 +104,22 @@
     opacity: 0;
     transform: translateY(600%);
   }
+
   25% {
     opacity: 1;
     transform: translateY(220%);
   }
+
   42% {
     opacity: 1;
     transform: translateY(200%);
   }
+
   67% {
     opacity: 1;
     transform: translateY(0%);
   }
+
   100% {
     opacity: 0;
     transform: translateY(-50%) scale(0.5);

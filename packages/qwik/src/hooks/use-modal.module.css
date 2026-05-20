@@ -7,17 +7,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
   transition:
     opacity var(--delay),
     background-color var(--delay);
-
   background-color: transparent;
   pointer-events: none;
   opacity: 0;
 
   &.open {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgb(0 0 0 / 50%);
     pointer-events: auto;
     opacity: 1;
   }

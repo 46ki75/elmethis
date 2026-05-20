@@ -41,7 +41,6 @@
   /* Accent palette (one value per role) */
   --elmethis-accent-primary: #b69545;
   --elmethis-accent-secondary: #a17c5b;
-
   --elmethis-accent-info: #6987b8;
   --elmethis-accent-success: #59b57c;
   --elmethis-accent-warning: #bfa056;
@@ -52,7 +51,6 @@
    * ============================================================ */
 
   --elmethis-margin-block-start: 0;
-
   --elmethis-color-primary: var(--elmethis-accent-primary);
   --elmethis-color-secondary: var(--elmethis-accent-secondary);
   --elmethis-color-text: var(--elmethis-neutral-600);

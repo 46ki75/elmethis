@@ -28,7 +28,7 @@
   flex-direction: column;
   gap: 0.5rem;
   background-color: #f7f7f9;
-  box-shadow: 0 0 2px oklch(from black l c h / 0.25);
+  box-shadow: 0 0 2px oklch(from black l c h / 25%);
 
   .input {
     /*
@@ -66,7 +66,7 @@
     width: 1.5rem;
     height: 1.5rem;
     border-radius: 0.25rem;
-    background-color: oklch(from black l c h / 0.6);
+    background-color: oklch(from black l c h / 60%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -83,7 +83,7 @@
     width: 1.5rem;
     height: 1.5rem;
     border-radius: 0.25rem;
-    background-color: oklch(from black l c h / 0.75);
+    background-color: oklch(from black l c h / 75%);
     display: flex;
     align-items: center;
     justify-content: center;

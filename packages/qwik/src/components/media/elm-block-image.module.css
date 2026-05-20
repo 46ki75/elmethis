@@ -13,7 +13,6 @@
   width: 100%;
   height: 100%;
   position: relative;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -26,12 +25,11 @@
   height: auto;
   object-fit: contain;
   border-radius: 0.25rem;
-  box-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 0.125rem rgb(0 0 0 / 10%);
   transition: opacity 400ms;
   opacity: var(--opacity, 1);
   user-select: none;
   aspect-ratio: var(--aspect-ratio, auto);
-
   cursor: var(--cursor);
 }
 
@@ -47,7 +45,7 @@
 
 .caption-box {
   box-sizing: border-box;
-  padding: 0rem 1rem;
+  padding: 0 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -66,7 +64,7 @@
   position: fixed;
   inset: 0 0 auto auto;
   z-index: 100;
-  background-color: rgba(35, 38, 42, 0.8);
+  background-color: rgb(35 38 42 / 80%);
   cursor: zoom-out;
   opacity: var(--opacity, 1);
   transition: opacity 200ms;

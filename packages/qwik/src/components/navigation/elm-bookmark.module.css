@@ -3,21 +3,20 @@
   display: block;
   container-type: inline-size;
   border-radius: 0.25rem;
-  box-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 0.125rem rgb(0 0 0 / 10%);
   overflow: hidden;
   margin-block-start: var(--elmethis-margin-block-start);
-
   transition:
     background-color 200ms,
     transform 200ms;
 
   &:hover {
-    background-color: rgba(105, 135, 184, 0.1);
+    background-color: rgb(105 135 184 / 10%);
     transform: translateX(-0.125rem) translateY(-0.125rem);
   }
 
   &:active {
-    background-color: rgba(89, 181, 124, 0.1);
+    background-color: rgb(89 181 124 / 10%);
     transform: translateX(0) translateY(0);
   }
 }
@@ -30,9 +29,7 @@
   flex-direction: row;
 
   @container (max-width: 700px) {
-    & {
-      flex-direction: column;
-    }
+    flex-direction: column;
   }
 }
 
@@ -50,11 +47,9 @@
   max-width: 35%;
 
   @container (max-width: 700px) {
-    & {
-      min-width: unset;
-      max-width: unset;
-      width: 100%;
-    }
+    min-width: unset;
+    max-width: unset;
+    width: 100%;
   }
 }
 
@@ -67,18 +62,15 @@
   flex-direction: column;
   gap: 0.5rem;
   justify-content: space-between;
-
   transition: background-color 200ms;
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgb(255 255 255 / 40%);
 
   @container (max-width: 700px) {
-    & {
-      width: 100%;
-    }
+    width: 100%;
   }
 
   [data-theme="dark"] & {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgb(0 0 0 / 20%);
   }
 
   .title {

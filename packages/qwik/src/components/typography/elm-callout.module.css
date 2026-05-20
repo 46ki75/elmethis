@@ -32,6 +32,5 @@
 }
 
 .content {
-  padding-block-start: 1rem;
-  padding-block-end: 0.25rem;
+  padding-block: 1rem 0.25rem;
 }

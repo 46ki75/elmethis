@@ -31,7 +31,6 @@
   animation-iteration-count: infinite;
   animation-direction: alternate;
   animation-timing-function: ease-out;
-
   transition: background-color 400ms;
   background-color: var(--color, #606875);
 

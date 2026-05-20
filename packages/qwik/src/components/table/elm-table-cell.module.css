@@ -1,26 +1,21 @@
 .common {
   padding: 0.75rem 1rem;
-
-  color: rgba(0, 0, 0, 0.7);
-
-  border-right: 1px dotted rgba(0, 0, 0, 0.15);
+  color: rgb(0 0 0 / 70%);
+  border-right: 1px dotted rgb(0 0 0 / 15%);
 
   &::selection {
-    color: rgba(255, 255, 255, 0.7);
-    background-color: rgba(0, 0, 0, 0.7);
+    color: rgb(255 255 255 / 70%);
+    background-color: rgb(0 0 0 / 70%);
   }
 
   [data-theme="dark"] & {
-    color: rgba(255, 255, 255, 0.7);
+    color: rgb(255 255 255 / 70%);
+    border-right: 1px dotted rgb(255 255 255 / 15%);
 
     &::selection {
-      color: rgba(0, 0, 0, 0.7);
-      background-color: rgba(255, 255, 255, 0.7);
+      color: rgb(0 0 0 / 70%);
+      background-color: rgb(255 255 255 / 70%);
     }
-  }
-
-  [data-theme="dark"] & {
-    border-right: 1px dotted rgba(255, 255, 255, 0.15);
   }
 
   &:last-child {
@@ -29,13 +24,13 @@
 }
 
 .td {
-  border-top: 1px solid rgba(0, 0, 0, 0.15);
+  border-top: 1px solid rgb(0 0 0 / 15%);
 
   [data-theme="dark"] & {
-    border-top-color: rgba(255, 255, 255, 0.15);
+    border-top-color: rgb(255 255 255 / 15%);
   }
 }
 
 .th {
-  background-color: rgba(128, 128, 128, 0.15);
+  background-color: rgb(128 128 128 / 15%);
 }

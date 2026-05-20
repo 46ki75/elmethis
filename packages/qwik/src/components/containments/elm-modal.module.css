@@ -12,6 +12,7 @@
 
   &.shown {
     opacity: 1;
+
     &::backdrop {
       opacity: 1;
     }
@@ -21,6 +22,6 @@
     opacity: 0;
     transition: opacity 200ms;
     background-color: transparent;
-    background-color: oklch(from black l c h / 0.5);
+    background-color: oklch(from black l c h / 50%);
   }
 }

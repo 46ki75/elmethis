@@ -8,15 +8,15 @@
 
   &::selection {
     filter: brightness(1000%);
-    background-color: var(--color, rgba(0, 0, 0, 0.25));
+    background-color: var(--color, rgb(0 0 0 / 25%));
   }
 
   [data-theme="dark"] & {
-    color: var(--color, rgba(255, 255, 255, 0.7));
+    color: var(--color, rgb(255 255 255 / 70%));
 
     &::selection {
-      color: rgba(0, 0, 0, 0.7);
-      background-color: var(--color, rgba(255, 255, 255, 0.25));
+      color: rgb(0 0 0 / 70%);
+      background-color: var(--color, rgb(255 255 255 / 25%));
     }
   }
 }

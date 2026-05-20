@@ -47,6 +47,7 @@ const ignores = [
   "**/dist",
   "**/tsconfig.tsbuildinfo",
   "**/vite.config.ts",
+  "**/stylelint.config.mjs",
   "**/*.spec.tsx",
   "**/*.spec.ts",
   "**/.netlify",

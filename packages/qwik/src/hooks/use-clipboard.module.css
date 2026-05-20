@@ -8,6 +8,6 @@
   cursor: pointer;
 
   &:hover {
-    background-color: oklch(from gray l c h / 0.25);
+    background-color: oklch(from gray l c h / 25%);
   }
 }

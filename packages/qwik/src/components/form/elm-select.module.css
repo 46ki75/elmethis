@@ -10,17 +10,14 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 0.25rem;
-
   border-style: solid;
   border-width: 1px;
   border-color: transparent;
-
   transition:
     border-color 200ms,
     background-color 200ms;
-
-  background-color: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.15);
+  background-color: rgb(255 255 255 / 80%);
+  box-shadow: 0 0 0.125rem rgb(0 0 0 / 15%);
   cursor: pointer;
 
   &.active {
@@ -28,8 +25,8 @@
   }
 
   [data-theme="dark"] & {
-    background-color: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.75);
+    background-color: rgb(255 255 255 / 15%);
+    box-shadow: 0 0 0.125rem rgb(0 0 0 / 75%);
   }
 
   .label {
@@ -51,9 +48,6 @@
   }
 
   .body {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     padding: 0 0.25rem;
     height: 1.25rem;
     display: flex;
@@ -83,18 +77,16 @@
       top: calc(100% + 0.25rem);
       left: 0;
       z-index: 100;
-
       box-sizing: border-box;
       width: max-content;
       padding: 0;
       border-radius: 0.25rem;
-
-      background-color: rgba(255, 255, 255, 0.95);
-      box-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.15);
+      background-color: rgb(255 255 255 / 95%);
+      box-shadow: 0 0 0.125rem rgb(0 0 0 / 15%);
 
       [data-theme="dark"] & {
-        background-color: rgba(51, 51, 51, 0.95);
-        box-shadow: 0 0 0.125rem rgba(0, 0, 0, 0.75);
+        background-color: rgb(51 51 51 / 95%);
+        box-shadow: 0 0 0.125rem rgb(0 0 0 / 75%);
       }
 
       .option {
@@ -111,9 +103,10 @@
         cursor: pointer;
 
         &:hover {
-          background-color: rgba(190, 194, 202, 0.3);
+          background-color: rgb(190 194 202 / 30%);
+
           [data-theme="dark"] & {
-            background-color: rgba(190, 194, 202, 0.2);
+            background-color: rgb(190 194 202 / 20%);
           }
         }
       }
