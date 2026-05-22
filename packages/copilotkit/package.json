@@ -23,7 +23,7 @@
         "agent": "link:@mastra/core/agent",
         "dotenv": "^17.4.2",
         "hono": "^4.12.18",
-        "openai": "^6.37.0"
+        "openai": "^6.39.0"
     },
     "devDependencies": {
         "@types/node": "^25.7.0",
