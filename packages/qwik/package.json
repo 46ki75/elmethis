@@ -75,7 +75,7 @@
     "stylelint-config-standard": "^40.0.0",
     "stylelint-value-no-unknown-custom-properties": "^6.1.1",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.59.4",
+    "typescript-eslint": "8.60.0",
     "undici": "*",
     "vite": "^7",
     "vite-tsconfig-paths": "^6.1.1",
