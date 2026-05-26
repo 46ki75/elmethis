@@ -20,35 +20,14 @@
   box-shadow: 0 0 0.125rem rgb(128 128 128 / 25%);
 }
 
-.button-ornament {
-  position: absolute;
-  content: "";
-  bottom: -1px;
-  right: -1px;
-  height: 1rem;
-  width: 1rem;
-  background-color: rgb(219 202 160 / 60%);
-  clip-path: polygon(100% 0%, 1000% 100%, 0% 100%);
-}
-
 .normal {
-  color: rgb(0 0 0 / 60%);
-  background-color: rgb(255 255 255 / 80%);
-
-  [data-theme="dark"] & {
-    color: rgb(255 255 255 / 60%);
-    background-color: #3e434b;
-  }
+  color: oklch(from var(--elmethis-color-primary) l calc(c * 0.25) h);
+  background-color: #393e46;
 }
 
 .primary {
-  color: rgb(255 255 255 / 60%);
-  background-color: #3e434b;
-
-  [data-theme="dark"] & {
-    color: rgb(0 0 0 / 60%);
-    background-color: rgb(255 255 255 / 80%);
-  }
+  color: var(--elmethis-color-text);
+  background-color: oklch(from var(--elmethis-color-primary) l c h);
 }
 
 .colored {
