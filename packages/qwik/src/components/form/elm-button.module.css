@@ -10,14 +10,17 @@
   box-sizing: border-box;
   padding: 0.5rem 1.5rem;
   line-height: 1.5rem;
-  border: solid 1px rgb(205 181 123 / 60%);
   user-select: none;
   cursor: pointer;
   transition:
     opacity 200ms,
     transform 200ms;
   opacity: var(--elmethis-scoped-opacity);
-  box-shadow: 0 0 0.125rem rgb(128 128 128 / 25%);
+
+  box-shadow: 0 0 0.125rem oklch(from black l c h / 25%);
+  [data-theme="dark"] & {
+    box-shadow: 0 0 0.125rem oklch(from black l c h / 50%);
+  }
 }
 
 .normal {
@@ -26,7 +29,7 @@
 
   [data-theme="dark"] & {
     color: oklch(from var(--elmethis-color-primary) l calc(c * 0.25) h);
-    background-color: #393e46;
+    background-color: oklch(from #393e46 calc(l / 0.9) c h);
   }
 }
 
