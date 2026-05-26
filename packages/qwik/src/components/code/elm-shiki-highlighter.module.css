@@ -7,17 +7,17 @@
     font-family:
       "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace !important;
 
-    *::selection {
-      background-color: rgb(0 0 0 / 10%);
-
-      [data-theme="dark"] & {
-        background-color: rgb(255 255 255 / 15%);
-      }
+    &::selection {
+      background-color: oklch(from #cdb57b l c h / 25%);
     }
 
     [data-theme="dark"] & {
       color: var(--shiki-dark) !important;
       background-color: var(--shiki-dark-bg) !important;
+
+      &::selection {
+        background-color: oklch(from #cdb57b l c h / 25%);
+      }
     }
   }
 }
