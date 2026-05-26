@@ -40,6 +40,12 @@
     background-color: oklch(from var(--elmethis-color-primary) l c h / 2.5%);
     border-bottom-color: var(--elmethis-color-primary);
     cursor: default;
+
+    [data-theme="dark"] & {
+      border-bottom-color: oklch(
+        from var(--elmethis-color-primary) l calc(c - 0.05) h
+      );
+    }
   }
 
   &:hover {
