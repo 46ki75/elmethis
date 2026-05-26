@@ -23,11 +23,22 @@
 .normal {
   color: oklch(from var(--elmethis-color-primary) l calc(c * 0.25) h);
   background-color: #393e46;
+
+  [data-theme="dark"] & {
+    color: oklch(from var(--elmethis-color-primary) l calc(c * 0.25) h);
+    background-color: #393e46;
+  }
 }
 
 .primary {
   color: var(--elmethis-color-text);
   background-color: oklch(from var(--elmethis-color-primary) l c h);
+
+  [data-theme="dark"] & {
+    color: oklch(
+      from var(--elmethis-color-primary) calc(l * 0.6) calc(c * 0.25) h
+    );
+  }
 }
 
 .colored {
