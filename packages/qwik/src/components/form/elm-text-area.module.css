@@ -53,7 +53,7 @@
   border-style: solid;
   border-width: 1px;
   border-color: transparent;
-  background-color: rgb(255 255 255 / 80%);
+  background-color: oklch(from #efecea calc(l * 1.05) c h);
   box-shadow: 0 0 0.125rem rgb(0 0 0 / 15%);
 
   &.active {
@@ -61,7 +61,7 @@
   }
 
   [data-theme="dark"] & {
-    background-color: rgb(255 255 255 / 15%);
+    background-color: oklch(from #393e46 calc(l * 0.9) c h);
     box-shadow: 0 0 0.125rem rgb(0 0 0 / 75%);
   }
 }
