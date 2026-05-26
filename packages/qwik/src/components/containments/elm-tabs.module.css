@@ -37,13 +37,13 @@
     border-color 200ms;
 
   &.active {
-    background-color: oklch(from var(--elmethis-color-primary) l c h / 2.5%);
+    background-color: oklch(from var(--elmethis-color-primary) l c h / 5%);
     border-bottom-color: var(--elmethis-color-primary);
     cursor: default;
 
     [data-theme="dark"] & {
       border-bottom-color: oklch(
-        from var(--elmethis-color-primary) l calc(c - 0.05) h
+        from var(--elmethis-color-primary) calc(l * 0.9) calc(c * 1.5) h
       );
     }
   }
