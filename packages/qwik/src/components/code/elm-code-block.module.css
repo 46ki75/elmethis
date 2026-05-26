@@ -10,11 +10,11 @@
   margin-block-start: var(--elmethis-margin-block-start);
   padding: 0.25rem;
   border-radius: 0.25rem;
-  background-color: rgb(255 255 255 / 40%);
+  background-color: #efecea;
   box-shadow: 0 0 0.125rem rgb(62 67 75 / 30%);
 
   [data-theme="dark"] & {
-    background-color: rgb(44 48 55 / 90%);
+    background-color: #393e46;
     box-shadow: 0 0 0.125rem rgb(0 0 0 / 40%);
   }
 }
