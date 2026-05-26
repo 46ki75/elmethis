@@ -82,6 +82,7 @@
     "vitest": "^4.1.6"
   },
   "dependencies": {
+    "@46ki75/ikuma-theme": "^0.0.7",
     "@a2ui/web_core": "^0.10.0",
     "@ag-ui/client": "^0.0.53",
     "@ag-ui/core": "^0.0.53",

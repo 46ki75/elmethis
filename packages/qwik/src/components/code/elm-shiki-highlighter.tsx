@@ -1,7 +1,9 @@
 import { component$, PropsOf, useSignal, useTask$ } from "@qwik.dev/core";
 
 import styles from "./elm-shiki-highlighter.module.css";
-import { codeToHtml } from "shiki";
+import { codeToHtml, type ThemeRegistrationRaw } from "shiki";
+import ikumaDark from "@46ki75/ikuma-theme/dark";
+import ikumaLight from "@46ki75/ikuma-theme/light";
 
 export interface ElmShikiHighlighterProps extends PropsOf<"pre"> {
   /**
@@ -28,7 +30,10 @@ export const ElmShikiHighlighter = component$<ElmShikiHighlighterProps>(
       try {
         rawHtml.value = await codeToHtml(code, {
           lang: language,
-          themes: { dark: "vitesse-dark", light: "vitesse-light" },
+          themes: {
+            dark: ikumaDark as unknown as ThemeRegistrationRaw,
+            light: ikumaLight as unknown as ThemeRegistrationRaw,
+          },
           colorReplacements: {
             "#ffffff": "transparent",
             "#121212": "transparent",
