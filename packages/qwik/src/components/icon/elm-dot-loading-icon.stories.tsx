@@ -8,7 +8,6 @@ const meta: Meta<ElmDotLoadingIconProps> = {
   title: "Components/Icon/elm-dot-loading-icon",
   component: ElmDotLoadingIcon,
   tags: ["autodocs"],
-  argTypes: { color: { control: "color" } },
   args: { size: "4em" },
 };
 
