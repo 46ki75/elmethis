@@ -117,11 +117,7 @@
   overflow-wrap: break-word;
 
   &::placeholder {
-    opacity: 0.5;
-
-    [data-theme="dark"] & {
-      opacity: 0.7;
-    }
+    opacity: 0.6;
   }
 
   &::selection {
