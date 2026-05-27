@@ -42,15 +42,6 @@ export type ElmethisCSSVariables = {
   // Layout
   "--elmethis-margin-block-start"?: CSSProperties["marginBlockStart"];
 
-  // Primitive — Neutral scale
-  "--elmethis-neutral-100"?: CSSProperties["color"];
-  "--elmethis-neutral-200"?: CSSProperties["color"];
-  "--elmethis-neutral-300"?: CSSProperties["color"];
-  "--elmethis-neutral-400"?: CSSProperties["color"];
-  "--elmethis-neutral-600"?: CSSProperties["color"];
-  "--elmethis-neutral-700"?: CSSProperties["color"];
-  "--elmethis-neutral-800"?: CSSProperties["color"];
-
   // Primitive — Accent palette
   "--elmethis-accent-primary"?: CSSProperties["color"];
   "--elmethis-accent-info"?: CSSProperties["color"];
@@ -60,7 +51,4 @@ export type ElmethisCSSVariables = {
 
   // Semantic — Color (theme-aware, references primitives)
   "--elmethis-color-primary"?: CSSProperties["color"];
-  "--elmethis-color-secondary"?: CSSProperties["color"];
-
-  "--elmethis-color-accent-muted"?: CSSProperties["color"];
 };
