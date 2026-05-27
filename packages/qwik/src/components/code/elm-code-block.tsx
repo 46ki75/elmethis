@@ -43,7 +43,7 @@ export const ElmCodeBlock = component$<ElmCodeBlockProps>(
           </ElmInlineText>
         </span>
 
-        <div>
+        <div class={styles["copy-icon"]}>
           <CopyButton />
         </div>
 

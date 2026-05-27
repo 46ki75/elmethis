@@ -26,6 +26,10 @@
   font-size: 1rem;
 }
 
+.copy-icon {
+  grid-area: copy-icon;
+}
+
 .divider {
   grid-area: divider;
   width: calc(100% - 1rem);
