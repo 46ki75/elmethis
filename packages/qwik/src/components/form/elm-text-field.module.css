@@ -102,7 +102,7 @@
   box-sizing: border-box;
   padding: 0;
   width: 100%;
-  color: oklch(from black l c h / 70%);
+  color: var(--elmethis-color-mono-fg);
   caret-color: var(--highlight-color);
 
   &::placeholder {
@@ -114,17 +114,11 @@
   }
 
   &::selection {
-    background-color: oklch(from black l c h / 70%);
-    color: oklch(from white l c h / 70%);
-  }
-
-  [data-theme="dark"] & {
-    color: oklch(from white l c h / 70%);
-
-    &::selection {
-      background-color: oklch(from white l c h / 70%);
-      color: oklch(from black l c h / 70%);
-    }
+    color: var(--elmethis-color-selection-text);
+    background-color: var(
+      --elmethis-scoped-color,
+      var(--elmethis-color-mono-fg)
+    );
   }
 }
 

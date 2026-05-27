@@ -107,7 +107,7 @@
   min-height: 1.5rem;
   font-family: inherit;
   line-height: 1.4;
-  color: oklch(from black l c h / 70%);
+  color: var(--elmethis-color-mono-fg);
   caret-color: var(--highlight-color);
   resize: vertical;
 
@@ -125,8 +125,11 @@
   }
 
   &::selection {
-    background-color: oklch(from black l c h / 70%);
-    color: oklch(from white l c h / 70%);
+    color: var(--elmethis-color-selection-text);
+    background-color: var(
+      --elmethis-scoped-color,
+      var(--elmethis-color-mono-fg)
+    );
   }
 
   [data-theme="dark"] & {
