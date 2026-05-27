@@ -1,5 +1,5 @@
 .wrapper {
-  --highlight-color: #bfa056;
+  --highlight-color: var(--elmethis-color-primary-common-fg);
 
   user-select: none;
   position: relative;

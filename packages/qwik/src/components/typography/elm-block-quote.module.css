@@ -3,7 +3,7 @@
   width: 100%;
   margin-block-start: var(--elmethis-margin-block-start);
   margin-inline: 0;
-  background-color: var(--elmethis-background-color);
+  background-color: oklch(from var(--elmethis-color-mono-bg) l c h / 12.5%);
   position: relative;
 
   &::after {
@@ -13,7 +13,9 @@
     left: 0;
     width: 4px;
     height: 100%;
-    background-color: var(--elmethis-background-color-strong);
+    background-color: oklch(
+      from var(--elmethis-color-mono-fg-strong) l c h / 50%
+    );
   }
 }
 

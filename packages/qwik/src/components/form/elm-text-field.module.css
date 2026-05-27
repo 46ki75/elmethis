@@ -35,7 +35,7 @@
 }
 
 .wrapper {
-  --highlight-color: var(--elmethis-color-primary);
+  --highlight-color: var(--elmethis-color-primary-common-fg);
 
   overflow: hidden;
   position: relative;
