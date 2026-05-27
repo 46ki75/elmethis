@@ -131,8 +131,6 @@
   --elmethis-box-shadow-color: oklch(from #3e434b l c h / 0.25);
 
   --elmethis-color-secondary: var(--elmethis-accent-secondary);
-  --elmethis-color-text: var(--elmethis-neutral-600);
-  --elmethis-color-text-background: var(--elmethis-neutral-100);
   --elmethis-color-accent-muted: var(--elmethis-neutral-400);
   --elmethis-color-selection-text: var(--elmethis-neutral-200);
   --elmethis-color-selection-background: var(--elmethis-neutral-700);
@@ -175,8 +173,6 @@
 
   --elmethis-box-shadow-color: #242629;
 
-  --elmethis-color-text: var(--elmethis-neutral-300);
-  --elmethis-color-text-background: var(--elmethis-neutral-800);
   --elmethis-color-selection-text: var(--elmethis-neutral-700);
   --elmethis-color-selection-background: var(--elmethis-neutral-200);
 }

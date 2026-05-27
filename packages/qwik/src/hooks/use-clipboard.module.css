@@ -7,7 +7,7 @@
   transition: background-color 200ms;
   cursor: pointer;
 
-  color: var(--elmethis-color-text);
+  color: var(--elmethis-scoped-color, var(--elmethis-color-mono-fg));
 
   &:hover {
     background-color: var(--elmethis-color-primary-hover);
