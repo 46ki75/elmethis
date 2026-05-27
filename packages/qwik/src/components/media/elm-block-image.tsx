@@ -132,12 +132,8 @@ export const ElmBlockImage = component$<ElmBlockImageProps>((props) => {
           class={styles["caption-box"]}
           style={{ "--elmethis-scoped-opacity": isLoading.value ? 0.01 : 1 }}
         >
-          <span style={{ flex: "1" }}>
-            <ElmMdiIcon
-              d={mdiMessageImageOutline}
-              color="#cdb57b"
-              size="1.25rem"
-            />
+          <span class={styles["caption-icon"]}>
+            <ElmMdiIcon d={mdiMessageImageOutline} size="1.25rem" />
           </span>
           <ElmInlineText size="1rem">{caption}</ElmInlineText>
         </figcaption>

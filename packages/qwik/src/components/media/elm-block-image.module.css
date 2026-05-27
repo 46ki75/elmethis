@@ -53,6 +53,11 @@
   opacity: 0.75;
   opacity: var(--elmethis-scoped-opacity, 1);
   transition: opacity 400ms;
+
+  .caption-icon {
+    flex: 1;
+    color: var(--elmethis-color-primary-fg);
+  }
 }
 
 .modal-container {
