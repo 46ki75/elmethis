@@ -10,6 +10,12 @@
  *      consumes these. Theme switching happens here, under
  *      [data-theme="dark"] — never inside individual component modules.
  *
+ *      Within this layer, names containing `-common-`
+ *      (e.g. --elmethis-color-mono-common-fg) stay identical across
+ *      themes. Default to the non-`-common-` form so theming works
+ *      automatically; reach for `-common-` only when you intentionally
+ *      want a value that does not flip under [data-theme="dark"].
+ *
  * Adding tokens:
  *   - Seed only values the codebase actually contains. No speculative tiers.
  *   - Color tokens earn their keep because of theme switching. Spacing /
@@ -104,7 +110,7 @@
   /* DARK */
 
   --elmethis-color-primary-hover: oklch(
-    from var(--elmethis-color-primary-common-fg-weak) l c h / 25%
+    from var(--elmethis-color-primary-common-fg-weak) l c h / 20%
   );
   --elmethis-color-mono-container-default: oklch(from black l c h / 12.5%);
   --elmethis-color-mono-container-enabled: oklch(from white l c h / 12.5%);
