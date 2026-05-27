@@ -162,7 +162,10 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
                   class={styles["prompt-template-tip"]}
                   onClick$={onTemplateClick$}
                 >
-                  <ElmMdiIcon d={mdiForumOutline} color="#cdb57b" />
+                  <ElmMdiIcon
+                    class={styles["prompt-template-tip-icon"]}
+                    d={mdiForumOutline}
+                  />
                   <ElmInlineText>{template.description}</ElmInlineText>
                 </span>
               ))}
