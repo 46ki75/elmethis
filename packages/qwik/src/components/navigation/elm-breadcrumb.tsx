@@ -31,12 +31,7 @@ export const ElmBreadcrumb = component$<ElmBreadcrumbProps>(
         {links.map((link, index) => (
           <>
             <span class={styles["link-container"]} onClick$={link.onClick$}>
-              <span
-                class={styles.icon}
-                style={{
-                  "--elmethis-scoped-delay": `${index * 100}ms`,
-                }}
-              >
+              <span class={styles.icon}>
                 <ElmMdiIcon
                   d={
                     index === 0
@@ -49,22 +44,14 @@ export const ElmBreadcrumb = component$<ElmBreadcrumbProps>(
                 />
               </span>
 
-              <span
-                class={styles.text}
-                style={{
-                  "--elmethis-scoped-delay": `${index * 100 + 50}ms`,
-                }}
-              >
+              <span class={styles.chunk}>
                 <ElmInlineText>{link.text}</ElmInlineText>
               </span>
             </span>
 
             {links.length !== index + 1 && (
-              <span
-                class={styles.text}
-                style={{ "--elmethis-scoped-delay": `${index * 100 + 100}ms` }}
-              >
-                <ElmMdiIcon d={mdiChevronRight} size="1em" color="#b69545" />
+              <span class={styles.chevron}>
+                <ElmMdiIcon d={mdiChevronRight} size="1em" />
               </span>
             )}
           </>
