@@ -29,67 +29,46 @@ export const ElmColorTokenSample = component$<ElmColorTokenSampleProps>(
             </div>
 
             <div class={styles.body}>
-              <div
-                style={{
-                  color: "var(--elmethis-color-mono-fg-weak)",
-                }}
-              >
-                --elmethis-color-mono-fg-weak
-              </div>
-              <div style={{ color: "var(--elmethis-color-mono-fg)" }}>
-                --elmethis-color-mono-fg
-              </div>
-              <div
-                style={{
-                  color: "var(--elmethis-color-mono-fg-strong)",
-                }}
-              >
-                --elmethis-color-mono-fg-strong
-              </div>
+              {[
+                "--elmethis-color-mono-fg-weak",
+                "--elmethis-color-mono-fg",
+                "--elmethis-color-mono-fg-strong",
+                "--elmethis-color-primary-fg-weak",
+                "--elmethis-color-primary-fg",
+                "--elmethis-color-primary-fg-strong",
+                "--elmethis-accent-info",
+                "--elmethis-accent-success",
+                "--elmethis-accent-important",
+                "--elmethis-accent-warning",
+                "--elmethis-accent-error",
+                "--elmethis-accent-link",
+                "--elmethis-accent-link-visited",
+              ].map((name) => (
+                <div
+                  key={name}
+                  style={{
+                    color: `var(${name})`,
+                  }}
+                >
+                  {name}
+                </div>
+              ))}
 
-              <div style={{ color: "var(--elmethis-color-primary-fg-weak)" }}>
-                --elmethis-color-primary-fg-weak
-              </div>
-              <div style={{ color: "var(--elmethis-color-primary-fg)" }}>
-                --elmethis-color-primary-fg
-              </div>
-              <div style={{ color: "var(--elmethis-color-primary-fg-strong)" }}>
-                --elmethis-color-primary-fg-strong
-              </div>
-
-              <div
-                class={styles.container}
-                style={{
-                  backgroundColor:
-                    "var(--elmethis-color-mono-container-default)",
-                }}
-              >
-                <ElmInlineText>
-                  --elmethis-color-mono-container-default
-                </ElmInlineText>
-              </div>
-              <div
-                class={styles.container}
-                style={{
-                  backgroundColor:
-                    "var(--elmethis-color-mono-container-enabled)",
-                }}
-              >
-                <ElmInlineText>
-                  --elmethis-color-mono-container-enabled
-                </ElmInlineText>
-              </div>
-              <div
-                class={styles.container}
-                style={{
-                  backgroundColor:
-                    "var(--elmethis-color-mono-container-disabled)",
-                }}
-              >
-                <ElmInlineText>
-                  --elmethis-color-mono-container-disabled
-                </ElmInlineText>
-              </div>
+              {[
+                "--elmethis-color-mono-container-default",
+                "--elmethis-color-mono-container-enabled",
+                "--elmethis-color-mono-container-disabled",
+              ].map((name) => (
+                <div
+                  key={name}
+                  class={styles.container}
+                  style={{
+                    backgroundColor: `var(${name})`,
+                  }}
+                >
+                  <ElmInlineText>{name}</ElmInlineText>
+                </div>
+              ))}
             </div>
 
             <footer
