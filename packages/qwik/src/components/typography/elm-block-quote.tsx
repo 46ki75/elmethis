@@ -14,10 +14,7 @@ export const ElmBlockQuote = component$<PropsOf<"blockquote">>(
         class={[styles.blockquote, textStyles.text, className]}
         {...props}
       >
-        <div
-          class={styles.icon}
-          style={{ "--elmethis-scoped-inset": "0.25rem auto auto 0.5rem" }}
-        >
+        <div class={[styles.icon, styles["icon-top-left"]]}>
           <ElmMdiIcon d={mdiFormatQuoteOpen} />
         </div>
 
@@ -25,10 +22,7 @@ export const ElmBlockQuote = component$<PropsOf<"blockquote">>(
           <Slot />
         </div>
 
-        <div
-          class={styles.icon}
-          style={{ "--elmethis-scoped-inset": "auto 0.25rem 0.25rem auto" }}
-        >
+        <div class={[styles.icon, styles["icon-bottom-right"]]}>
           <ElmMdiIcon d={mdiFormatQuoteClose} />
         </div>
       </blockquote>
