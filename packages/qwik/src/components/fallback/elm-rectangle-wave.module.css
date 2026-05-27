@@ -31,5 +31,5 @@
   animation-fill-mode: both;
   border-style: solid;
   border-width: 1px;
-  border-color: var(--elmethis-color-primary);
+  border-color: var(--elmethis-color-primary-common-fg);
 }

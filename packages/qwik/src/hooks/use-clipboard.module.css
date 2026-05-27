@@ -10,6 +10,6 @@
   color: var(--elmethis-color-text);
 
   &:hover {
-    background-color: oklch(from gray l c h / 25%);
+    background-color: var(--elmethis-color-primary-hover);
   }
 }
