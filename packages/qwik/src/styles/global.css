@@ -100,7 +100,8 @@
   --elmethis-color-primary-hover: oklch(
     from var(--elmethis-color-primary-common-fg-weak) l c h / 25%
   );
-  --elmethis-color-mono-container: oklch(from white l c h / 75%);
+  --elmethis-color-mono-container-default: oklch(from white l c h / 75%);
+  --elmethis-color-mono-container-enabled: oklch(from white l c h / 75%);
   --elmethis-color-mono-container-disabled: oklch(from gray l c h / 12.5%);
 
   --elmethis-color-mono-bg-weak: var(--elmethis-color-mono-common-bg-weak);
@@ -144,7 +145,8 @@
   --elmethis-color-primary-hover: oklch(
     from var(--elmethis-color-primary-common-fg-weak) l c h / 25%
   );
-  --elmethis-color-mono-container: oklch(from white l c h / 12.5%);
+  --elmethis-color-mono-container-default: oklch(from black l c h / 25%);
+  --elmethis-color-mono-container-enabled: oklch(from white l c h / 12.5%);
   --elmethis-color-mono-container-disabled: oklch(from black l c h / 25%);
 
   --elmethis-color-mono-bg-weak: var(--elmethis-color-mono-common-fg-weak);

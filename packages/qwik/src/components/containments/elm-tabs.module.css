@@ -8,11 +8,7 @@
   border-radius: 0.25rem;
   box-shadow: 0 0 0.125rem oklch(from black l c h / 10%);
   overflow: hidden;
-  background-color: oklch(from white l c h / 50%);
-
-  [data-theme="dark"] & {
-    background-color: oklch(from black l c h / 10%);
-  }
+  background-color: var(--elmethis-color-mono-container-default);
 }
 
 .tab-container {
@@ -37,19 +33,17 @@
     border-color 200ms;
 
   &.active {
-    background-color: oklch(from var(--elmethis-color-primary) l c h / 5%);
-    border-bottom-color: var(--elmethis-color-primary);
+    background-color: oklch(
+      from var(--elmethis-color-primary-common-fg) l c h / 5%
+    );
+    border-bottom-color: var(--elmethis-color-primary-common-fg);
     cursor: default;
-
-    [data-theme="dark"] & {
-      border-bottom-color: oklch(
-        from var(--elmethis-color-primary) calc(l * 0.9) calc(c * 1.5) h
-      );
-    }
   }
 
   &:hover {
-    background-color: oklch(from var(--elmethis-color-primary) l c h / 5%);
+    background-color: oklch(
+      from var(--elmethis-color-primary-common-fg) l c h / 5%
+    );
   }
 }
 

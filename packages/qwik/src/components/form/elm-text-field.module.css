@@ -53,7 +53,7 @@
   border-style: solid;
   border-width: 1px;
   border-color: transparent;
-  background-color: var(--elmethis-color-mono-container);
+  background-color: var(--elmethis-color-mono-container-enabled);
   box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
 
   &.disabled {

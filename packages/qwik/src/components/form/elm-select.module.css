@@ -16,7 +16,7 @@
   transition:
     border-color 200ms,
     background-color 200ms;
-  background-color: var(--elmethis-color-mono-container);
+  background-color: var(--elmethis-color-mono-container-enabled);
   box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
   cursor: pointer;
 
