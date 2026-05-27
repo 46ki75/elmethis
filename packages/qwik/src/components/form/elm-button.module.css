@@ -10,45 +10,24 @@
   box-sizing: border-box;
   padding: 0.5rem 1.5rem;
   line-height: 1.5rem;
-  border: solid 1px rgb(205 181 123 / 60%);
   user-select: none;
   cursor: pointer;
   transition:
     opacity 200ms,
     transform 200ms;
   opacity: var(--elmethis-scoped-opacity);
-  box-shadow: 0 0 0.125rem rgb(128 128 128 / 25%);
-}
 
-.button-ornament {
-  position: absolute;
-  content: "";
-  bottom: -1px;
-  right: -1px;
-  height: 1rem;
-  width: 1rem;
-  background-color: rgb(219 202 160 / 60%);
-  clip-path: polygon(100% 0%, 1000% 100%, 0% 100%);
+  box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
 }
 
 .normal {
-  color: rgb(0 0 0 / 60%);
-  background-color: rgb(255 255 255 / 80%);
-
-  [data-theme="dark"] & {
-    color: rgb(255 255 255 / 60%);
-    background-color: #3e434b;
-  }
+  color: var(--elmethis-color-primary-common-bg-weak);
+  background-color: var(--elmethis-color-mono-common-fg);
 }
 
 .primary {
-  color: rgb(255 255 255 / 60%);
-  background-color: #3e434b;
-
-  [data-theme="dark"] & {
-    color: rgb(0 0 0 / 60%);
-    background-color: rgb(255 255 255 / 80%);
-  }
+  color: var(--elmethis-color-mono-common-fg-strong);
+  background-color: var(--elmethis-color-primary-common-fg-weak);
 }
 
 .colored {

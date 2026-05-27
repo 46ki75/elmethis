@@ -8,11 +8,7 @@
   border-radius: 0.25rem;
   box-shadow: 0 0 0.125rem oklch(from black l c h / 10%);
   overflow: hidden;
-  background-color: oklch(from white l c h / 50%);
-
-  [data-theme="dark"] & {
-    background-color: oklch(from black l c h / 10%);
-  }
+  background-color: var(--elmethis-color-mono-container-default);
 }
 
 .tab-container {
@@ -36,14 +32,21 @@
     background-color 200ms,
     border-color 200ms;
 
+  color: var(--elmethis-scoped-color, var(--elmethis-color-mono-fg));
+  user-select: none;
+
   &.active {
-    background-color: oklch(from var(--elmethis-color-primary) l c h / 2.5%);
-    border-bottom-color: var(--elmethis-color-primary);
+    background-color: oklch(
+      from var(--elmethis-color-primary-common-fg) l c h / 5%
+    );
+    border-bottom-color: var(--elmethis-color-primary-common-fg);
     cursor: default;
   }
 
   &:hover {
-    background-color: oklch(from var(--elmethis-color-primary) l c h / 5%);
+    background-color: oklch(
+      from var(--elmethis-color-primary-common-fg) l c h / 5%
+    );
   }
 }
 

@@ -7,7 +7,13 @@
   transition: background-color 200ms;
   cursor: pointer;
 
+  color: var(--elmethis-scoped-color, var(--elmethis-color-mono-fg));
+
   &:hover {
-    background-color: oklch(from gray l c h / 25%);
+    background-color: var(--elmethis-color-primary-hover);
+  }
+
+  .use-clipboard-icon-copied {
+    color: var(--elmethis-color-primary-fg);
   }
 }

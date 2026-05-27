@@ -7,9 +7,11 @@ const meta: Meta<ElmSwitchProps> = {
   component: ElmSwitch,
   tags: ["autodocs"],
   args: {
-    color: "#bfa056",
     size: "18px",
     disabled: false,
+  },
+  argTypes: {
+    color: { control: "color" },
   },
 };
 

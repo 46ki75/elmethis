@@ -1,19 +1,15 @@
 .paragraph {
   transition: opacity 800ms;
-  color: var(--elmethis-scoped-color, var(--elmethis-color-text));
+  color: var(--elmethis-scoped-color, var(--elmethis-color-mono-fg));
   background-color: var(--elmethis-scoped-background-color, inherit);
   margin: 0;
   margin-block-start: var(--elmethis-margin-block-start);
 
   &::selection {
-    color: rgb(255 255 255 / 70%);
-    background-color: rgb(0 0 0 / 70%);
-  }
-
-  [data-theme="dark"] & {
-    &::selection {
-      color: rgb(0 0 0 / 70%);
-      background-color: rgb(255 255 255 / 70%);
-    }
+    color: var(--elmethis-color-mono-bg);
+    background-color: var(
+      --elmethis-scoped-color,
+      var(--elmethis-color-mono-fg)
+    );
   }
 }

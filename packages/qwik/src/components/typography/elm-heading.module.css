@@ -28,13 +28,9 @@
     left: 0;
     width: 100%;
     height: 0.25px;
-    background-color: rgb(0 0 0 / 50%);
+    background-color: var(--elmethis-color-mono-fg-weak);
     transform-origin: left;
     animation: heading-stretch 1000ms ease 200ms both;
-
-    [data-theme="dark"] & {
-      background-color: rgb(255 255 255 / 50%);
-    }
   }
 
   &::before {
@@ -44,14 +40,10 @@
     left: 45%;
     width: 10%;
     height: 2px;
-    background-color: rgb(0 0 0 / 60%);
+    background-color: var(--elmethis-color-mono-fg-weak);
     transition: transform 800ms;
     transform: scaleY(var(--elmethis-scoped-scale));
     transform-origin: top;
-
-    [data-theme="dark"] & {
-      background-color: rgb(255 255 255 / 60%);
-    }
   }
 }
 
@@ -65,11 +57,7 @@
     height: 8px;
     opacity: 0.8;
     transform: skewX(-25deg);
-    background-color: rgb(0 0 0 / 80%);
-
-    [data-theme="dark"] & {
-      background-color: rgb(255 255 255 / 80%);
-    }
+    background-color: var(--elmethis-color-mono-fg-weak);
   }
 
   &::before {
@@ -81,11 +69,7 @@
     height: 8px;
     opacity: 0.8;
     transform: skewX(-25deg);
-    background-color: rgb(0 0 0 / 80%);
-
-    [data-theme="dark"] & {
-      background-color: rgb(255 255 255 / 80%);
-    }
+    background-color: var(--elmethis-color-mono-fg-weak);
   }
 }
 
@@ -97,13 +81,9 @@
   left: 0;
   width: 100%;
   height: 0.25px;
-  background-color: rgb(0 0 0 / 50%);
+  background-color: var(--elmethis-color-mono-fg-weak);
   transform-origin: left;
   animation: heading-stretch 1000ms ease 200ms both;
-
-  [data-theme="dark"] & {
-    background-color: rgb(255 255 255 / 50%);
-  }
 }
 
 .h3 {
@@ -117,11 +97,7 @@
     height: 12px;
     top: calc(50% - 8px);
     left: 0;
-    background-color: rgb(0 0 0 / 50%);
-
-    [data-theme="dark"] & {
-      background-color: rgb(255 255 255 / 50%);
-    }
+    background-color: var(--elmethis-color-mono-fg-weak);
   }
 }
 

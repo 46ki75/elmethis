@@ -2,13 +2,19 @@
  * elmethis CSS token system
  *
  * Two layers:
- *   1. Primitives — theme-agnostic raw values (--elmethis-neutral-*,
- *      --elmethis-accent-*). Never reference these from component CSS.
- *      They exist so that semantic roles can reference them, and so future
- *      tokens can share the same palette.
+ *   1. Primitives — theme-agnostic raw values (--elmethis-accent-*).
+ *      Never reference these from component CSS. They exist so that
+ *      semantic roles can reference them, and so future tokens can share
+ *      the same palette.
  *   2. Semantic roles — theme-aware (--elmethis-color-*). Component CSS
  *      consumes these. Theme switching happens here, under
  *      [data-theme="dark"] — never inside individual component modules.
+ *
+ *      Within this layer, names containing `-common-`
+ *      (e.g. --elmethis-color-mono-common-fg) stay identical across
+ *      themes. Default to the non-`-common-` form so theming works
+ *      automatically; reach for `-common-` only when you intentionally
+ *      want a value that does not flip under [data-theme="dark"].
  *
  * Adding tokens:
  *   - Seed only values the codebase actually contains. No speculative tiers.
@@ -33,40 +39,93 @@
    * Primitive layer — raw values, theme-agnostic
    * ============================================================ */
 
-  /* Neutral scale (lower index = lighter) */
-  --elmethis-neutral-100: #eff0f2;
-  --elmethis-neutral-200: #cccfd5;
-  --elmethis-neutral-300: #b0b5be;
-  --elmethis-neutral-400: #868e9c;
-  --elmethis-neutral-600: #606875;
-  --elmethis-neutral-700: #3e434b;
-  --elmethis-neutral-800: #25282e;
-
   /* Accent palette (one value per role) */
-  --elmethis-accent-primary: #b69545;
-  --elmethis-accent-secondary: #a17c5b;
   --elmethis-accent-info: #6987b8;
   --elmethis-accent-success: #59b57c;
-  --elmethis-accent-warning: #bfa056;
+  --elmethis-accent-important: #9771bd;
+  --elmethis-accent-warning: #b8a36e;
   --elmethis-accent-error: #b36472;
+
+  --elmethis-accent-link: #6987b8;
+  --elmethis-accent-link-visited: #9771bd;
 
   /* ============================================================
    * Semantic layer — theme-aware roles, reference primitives
    * ============================================================ */
 
-  --elmethis-margin-block-start: 0;
-  --elmethis-color-primary: var(--elmethis-accent-primary);
-  --elmethis-color-secondary: var(--elmethis-accent-secondary);
-  --elmethis-color-text: var(--elmethis-neutral-600);
-  --elmethis-color-text-background: var(--elmethis-neutral-100);
-  --elmethis-color-accent-muted: var(--elmethis-neutral-400);
-  --elmethis-color-selection-text: var(--elmethis-neutral-200);
-  --elmethis-color-selection-background: var(--elmethis-neutral-700);
+  /*
+    REFACTORING IN PROGRESS!!!
+
+    Goal:
+     - Eliminate conditional theming from all component CSS files (× [data-theme=""])
+     - Eliminate hard-coded colors from all component CSS files (× #FFFFFF)
+     - Eliminate calculated colors from all component CSS files (× oklch(from _ ...))
+
+    Light:
+      Background: Gold
+      Foreground Normal: Slate
+      Foreground Accent: Gold
+    Dark:
+      Background: Slate
+      Foreground Normal: Slate
+      Foreground Accent: Gold
+   */
+
+  /* COMMON */
+
+  --elmethis-color-mono-common-bg-weak: #d7d9e1;
+  --elmethis-color-mono-common-bg: #b0b5be;
+  --elmethis-color-mono-common-bg-strong: #949ba7;
+
+  --elmethis-color-mono-common-fg-weak: #6c7483;
+  --elmethis-color-mono-common-fg: #555b67;
+  --elmethis-color-mono-common-fg-strong: #3e434b;
+
+  --elmethis-color-primary-common-bg-weak: #d9cec7;
+  --elmethis-color-primary-common-bg: #cec1b6;
+
+  --elmethis-color-primary-common-fg-weak: #c1a882;
+  --elmethis-color-primary-common-fg: #ac936d;
+
+  --elmethis-margin-block-start: 2rem;
+
+  /* LIGHT */
+
+  --elmethis-color-primary-hover: oklch(
+    from var(--elmethis-color-primary-common-fg-weak) l c h / 25%
+  );
+  --elmethis-color-mono-container-default: #f7f5f5;
+  --elmethis-color-mono-container-enabled: oklch(from white l c h / 75%);
+  --elmethis-color-mono-container-disabled: oklch(from gray l c h / 12.5%);
+
+  --elmethis-color-mono-bg: var(--elmethis-color-mono-common-bg);
+
+  --elmethis-color-mono-fg-weak: var(--elmethis-color-mono-common-fg-weak);
+  --elmethis-color-mono-fg: var(--elmethis-color-mono-common-fg);
+  --elmethis-color-mono-fg-strong: var(--elmethis-color-mono-common-fg-strong);
+
+  --elmethis-color-primary-fg: var(--elmethis-color-primary-common-fg);
+
+  --elmethis-box-shadow-color: oklch(from #3e434b l c h / 0.25);
 }
 
 [data-theme="dark"] {
-  --elmethis-color-text: var(--elmethis-neutral-300);
-  --elmethis-color-text-background: var(--elmethis-neutral-800);
-  --elmethis-color-selection-text: var(--elmethis-neutral-700);
-  --elmethis-color-selection-background: var(--elmethis-neutral-200);
+  /* DARK */
+
+  --elmethis-color-primary-hover: oklch(
+    from var(--elmethis-color-primary-common-fg-weak) l c h / 20%
+  );
+  --elmethis-color-mono-container-default: #2b2f35;
+  --elmethis-color-mono-container-enabled: oklch(from white l c h / 12.5%);
+  --elmethis-color-mono-container-disabled: oklch(from black l c h / 25%);
+
+  --elmethis-color-mono-bg: var(--elmethis-color-mono-common-fg);
+
+  --elmethis-color-mono-fg-weak: var(--elmethis-color-mono-common-bg-weak);
+  --elmethis-color-mono-fg: var(--elmethis-color-mono-common-bg);
+  --elmethis-color-mono-fg-strong: var(--elmethis-color-mono-common-bg-strong);
+
+  --elmethis-color-primary-fg: var(--elmethis-color-primary-common-bg);
+
+  --elmethis-box-shadow-color: #242629;
 }

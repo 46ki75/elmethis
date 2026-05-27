@@ -1,5 +1,5 @@
 .wrapper {
-  --highlight-color: #bfa056;
+  --highlight-color: var(--elmethis-color-primary-common-fg-weak);
 
   user-select: none;
   position: relative;
@@ -16,17 +16,16 @@
   transition:
     border-color 200ms,
     background-color 200ms;
-  background-color: rgb(255 255 255 / 80%);
-  box-shadow: 0 0 0.125rem rgb(0 0 0 / 15%);
+  background-color: var(--elmethis-color-mono-container-enabled);
+  box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
   cursor: pointer;
+
+  &.disabled {
+    background-color: var(--elmethis-color-mono-container-disabled);
+  }
 
   &.active {
     border-color: var(--highlight-color);
-  }
-
-  [data-theme="dark"] & {
-    background-color: rgb(255 255 255 / 15%);
-    box-shadow: 0 0 0.125rem rgb(0 0 0 / 75%);
   }
 
   .label {
@@ -40,7 +39,7 @@
     height: 0.75rem;
     transition: color 200ms;
     user-select: none;
-    color: gray;
+    color: var(--elmethis-color-mono-fg);
 
     &.label-active {
       color: var(--highlight-color);

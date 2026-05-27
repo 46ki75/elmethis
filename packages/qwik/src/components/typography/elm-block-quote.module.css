@@ -3,11 +3,7 @@
   width: 100%;
   margin-block-start: var(--elmethis-margin-block-start);
   margin-inline: 0;
-  background-color: color-mix(
-    in srgb,
-    var(--elmethis-color-accent-muted) 10%,
-    transparent
-  );
+  background-color: oklch(from var(--elmethis-color-mono-bg) l c h / 12.5%);
   position: relative;
 
   &::after {
@@ -17,7 +13,9 @@
     left: 0;
     width: 4px;
     height: 100%;
-    background-color: var(--elmethis-color-accent-muted);
+    background-color: oklch(
+      from var(--elmethis-color-mono-fg-strong) l c h / 50%
+    );
   }
 }
 
@@ -29,6 +27,14 @@
 .icon {
   position: absolute;
   content: "";
-  inset: var(--elmethis-scoped-inset);
   opacity: 0.5;
+  color: var(--elmethis-color-mono-fg-weak);
+
+  &.icon-top-left {
+    inset: 0.25rem auto auto 0.5rem;
+  }
+
+  &.icon-bottom-right {
+    inset: auto 0.25rem 0.25rem auto;
+  }
 }

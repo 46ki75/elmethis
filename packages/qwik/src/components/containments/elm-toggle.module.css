@@ -24,6 +24,7 @@
   align-items: center;
   gap: 0.5rem;
   transition: background-color 200ms;
+  border-radius: 0.25rem;
 
   .summary-left {
     flex-shrink: 0;
@@ -43,11 +44,7 @@
   }
 
   &:hover {
-    background-color: rgb(62 67 75 / 5%);
-
-    [data-theme="dark"] & {
-      background-color: rgb(190 194 202 / 10%);
-    }
+    background-color: var(--elmethis-color-primary-hover);
   }
 
   .chevron {

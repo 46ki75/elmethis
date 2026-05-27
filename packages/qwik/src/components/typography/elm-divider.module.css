@@ -2,6 +2,5 @@
   margin-block-start: var(--elmethis-margin-block-start);
   width: 100%;
   border: none;
-  border-bottom: dashed 2px
-    oklch(from var(--elmethis-color-secondary) l c h / 25%);
+  border-bottom: dashed 1px var(--elmethis-color-primary-fg);
 }

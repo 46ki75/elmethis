@@ -14,7 +14,7 @@
   padding: 2px 0.5em;
   font-size: calc(1em - 2px);
   border-radius: 0.125rem;
-  background-color: rgb(0 0 0 / 7.5%);
+  background-color: var(--elmethis-color-mono-container-default);
   font-family: "Source Code Pro", monospace;
 }
 
@@ -22,34 +22,39 @@
   padding: 0.125rem 0.25rem;
   position: relative;
   border-radius: 0.125rem;
-  background-color: #e6e6e6;
-
-  [data-theme="dark"] & {
-    background-color: #404040;
-  }
+  background-color: var(--elmethis-color-mono-container-default);
+  border: solid 1px var(--elmethis-color-mono-bg);
 
   &::before {
     z-index: -1;
     position: absolute;
     content: "";
     bottom: -0.25em;
-    left: 0;
+    left: -0.5px;
     height: 100%;
     width: 100%;
-    background-color: #ccc;
-    border-radius: 0 0 0.125rem 0.125rem;
-    box-shadow: 0 0 0.125em rgb(0 0 0 / 50%);
+    border: solid 1px var(--elmethis-color-mono-bg);
+    border-radius: 0.125rem;
 
-    [data-theme="dark"] & {
-      background-color: #595959;
-      box-shadow: 0 0 0.125em rgb(255 255 255 / 50%);
-    }
+    background-color: var(--elmethis-color-mono-bg);
+  }
+
+  &::after {
+    z-index: 1;
+    position: absolute;
+    content: "";
+    bottom: 0.5px;
+    left: 25%;
+    height: 1px;
+    width: 50%;
+    background-color: var(--elmethis-color-mono-bg);
+    opacity: 0.5;
   }
 }
 
 .link {
   all: unset;
-  color: #6987b8;
+  color: var(--elmethis-accent-link);
   box-sizing: border-box;
   padding: 0 0.25rem;
   font-size: var(--elmethis-scoped-font-size);
@@ -72,11 +77,13 @@
   }
 
   &:visited {
-    color: #9771bd;
-    border-bottom: dashed 1px #9771bd;
+    color: var(--elmethis-accent-link-visited);
+    border-bottom: dashed 1px var(--elmethis-accent-link-visited);
 
     &:hover {
-      background-color: oklch(from #9771bd l c h / 20%);
+      background-color: oklch(
+        from var(--elmethis-accent-link-visited) l c h / 20%
+      );
     }
   }
 }
@@ -87,12 +94,8 @@
   gap: 0.25rem;
   overflow: hidden;
   border-radius: 0.25rem;
-  box-shadow: 0 0 0.125rem rgb(0 0 0 / 30%);
-  background-color: rgb(255 255 255 / 80%);
-
-  [data-theme="dark"] & {
-    background-color: rgb(255 255 255 / 10%);
-  }
+  box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
+  background-color: var(--elmethis-color-mono-container-default);
 }
 
 .ogp-text {

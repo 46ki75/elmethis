@@ -135,10 +135,12 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
               <div class={styles["error"]}>
                 <ElmMdiIcon
                   d={mdiAlert}
-                  color="#c56565"
+                  color="var(--elmethis-accent-error)"
                   style={{ flexShrink: 0 }}
                 />
-                <ElmInlineText color="#c56565">{state.error}</ElmInlineText>
+                <ElmInlineText color="var(--elmethis-accent-error)">
+                  {state.error}
+                </ElmInlineText>
               </div>
 
               <span class={styles["clickable-icon"]} onClick$={retry$}>
@@ -160,7 +162,10 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
                   class={styles["prompt-template-tip"]}
                   onClick$={onTemplateClick$}
                 >
-                  <ElmMdiIcon d={mdiForumOutline} color="#cdb57b" />
+                  <ElmMdiIcon
+                    class={styles["prompt-template-tip-icon"]}
+                    d={mdiForumOutline}
+                  />
                   <ElmInlineText>{template.description}</ElmInlineText>
                 </span>
               ))}

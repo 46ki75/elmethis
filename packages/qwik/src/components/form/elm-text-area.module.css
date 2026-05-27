@@ -23,10 +23,10 @@
 .loading {
   position: absolute;
   width: 100%;
-  height: 0.125rem;
+  height: 2px;
   bottom: 0;
   left: 0;
-  background-color: #6987b8;
+  background-color: var(--highlight-color);
   transition: opacity 200ms;
   pointer-events: none;
   animation-name: loading;
@@ -35,7 +35,7 @@
 }
 
 .wrapper {
-  --highlight-color: var(--elmethis-color-primary);
+  --highlight-color: var(--elmethis-color-primary-common-fg);
 
   overflow: hidden;
   position: relative;
@@ -53,15 +53,19 @@
   border-style: solid;
   border-width: 1px;
   border-color: transparent;
-  background-color: rgb(255 255 255 / 80%);
-  box-shadow: 0 0 0.125rem rgb(0 0 0 / 15%);
+  background-color: var(--elmethis-color-mono-container-enabled);
+  box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
+
+  &.disabled {
+    background-color: var(--elmethis-color-mono-container-disabled);
+  }
 
   &.active {
     border-color: var(--highlight-color);
   }
 
   [data-theme="dark"] & {
-    background-color: rgb(255 255 255 / 15%);
+    background-color: oklch(from #393e46 calc(l * 0.9) c h);
     box-shadow: 0 0 0.125rem rgb(0 0 0 / 75%);
   }
 }
@@ -76,7 +80,7 @@
   line-height: 0.75rem;
   height: 0.75rem;
   transition: color 200ms;
-  color: gray;
+  color: var(--elmethis-color-mono-fg);
   user-select: none;
 
   &.label-active {
@@ -86,7 +90,7 @@
 
 .requierd {
   padding-inline: 0.25rem;
-  color: #c56565;
+  color: var(--elmethis-accent-error);
   font-weight: bold;
 }
 
@@ -103,7 +107,7 @@
   min-height: 1.5rem;
   font-family: inherit;
   line-height: 1.4;
-  color: oklch(from black l c h / 70%);
+  color: var(--elmethis-color-mono-fg);
   caret-color: var(--highlight-color);
   resize: vertical;
 
@@ -113,16 +117,15 @@
   overflow-wrap: break-word;
 
   &::placeholder {
-    opacity: 0.5;
-
-    [data-theme="dark"] & {
-      opacity: 0.7;
-    }
+    opacity: 0.6;
   }
 
   &::selection {
-    background-color: oklch(from black l c h / 70%);
-    color: oklch(from white l c h / 70%);
+    color: var(--elmethis-color-mono-bg);
+    background-color: var(
+      --elmethis-scoped-color,
+      var(--elmethis-color-mono-fg)
+    );
   }
 
   [data-theme="dark"] & {

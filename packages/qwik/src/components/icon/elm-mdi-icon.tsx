@@ -16,7 +16,7 @@ export const ElmMdiIcon = component$<ElmMdiIconProps>(
     style,
     d,
     size = "1em",
-    color,
+    color = "currentColor",
     lightColor,
     darkColor,
     ...props
