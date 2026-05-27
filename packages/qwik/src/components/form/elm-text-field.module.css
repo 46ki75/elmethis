@@ -53,16 +53,15 @@
   border-style: solid;
   border-width: 1px;
   border-color: transparent;
-  background-color: rgb(255 255 255 / 80%);
-  box-shadow: 0 0 0.125rem rgb(0 0 0 / 15%);
+  background-color: var(--elmethis-color-mono-container);
+  box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
+
+  &.disabled {
+    background-color: var(--elmethis-color-mono-container-disabled);
+  }
 
   &.active {
     border-color: var(--highlight-color);
-  }
-
-  [data-theme="dark"] & {
-    background-color: rgb(255 255 255 / 15%);
-    box-shadow: 0 0 0.125rem rgb(0 0 0 / 75%);
   }
 }
 
@@ -76,7 +75,7 @@
   line-height: 0.75rem;
   height: 0.75rem;
   transition: color 200ms;
-  color: gray;
+  color: var(--elmethis-color-mono-fg);
   user-select: none;
 
   &.label-active {

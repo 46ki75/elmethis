@@ -7,7 +7,6 @@ import {
   useComputed$,
   useSignal,
   useVisibleTask$,
-  type CSSProperties,
 } from "@qwik.dev/core";
 import {
   mdiArrowDownDropCircleOutline,
@@ -102,13 +101,15 @@ export const ElmSelect = component$<ElmSelectProps>((props) => {
   return (
     <div
       ref={containerRef}
-      class={[styles.wrapper, isOpen.value && styles.active, className]}
-      style={
+      class={[
+        styles.wrapper,
+        isOpen.value && styles.active,
+        className,
         {
-          backgroundColor: disabled || loading ? "rgba(0,0,0,0.15)" : undefined,
-          ...(style as CSSProperties),
-        } as CSSProperties
-      }
+          [styles.disabled]: disabled || loading,
+        },
+      ]}
+      style={style}
       onClick$={$(() => {
         if (!props.disabled && !props.loading) {
           isOpen.value = !isOpen.value;

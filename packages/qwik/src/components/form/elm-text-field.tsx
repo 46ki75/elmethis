@@ -4,7 +4,6 @@ import {
   PropsOf,
   Slot,
   useSignal,
-  type CSSProperties,
   type Signal,
 } from "@qwik.dev/core";
 import {
@@ -64,13 +63,15 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
 
   return (
     <label
-      class={[styles.wrapper, isFocused.value && styles.active, className]}
-      style={
+      class={[
+        styles.wrapper,
+        isFocused.value && styles.active,
+        className,
         {
-          backgroundColor: disabled || loading ? "rgba(0,0,0,0.15)" : undefined,
-          ...(style as CSSProperties),
-        } as CSSProperties
-      }
+          [styles.disabled]: disabled || loading,
+        },
+      ]}
+      style={style}
       {...rest}
     >
       <span

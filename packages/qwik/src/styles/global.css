@@ -76,17 +76,17 @@
 
   /* COMMON */
 
-  --elmethis-color-mono-common-bg-weak: #949ba7;
+  --elmethis-color-mono-common-bg-weak: #d7d9e1;
   --elmethis-color-mono-common-bg: #b0b5be;
-  --elmethis-color-mono-common-bg-strong: #d7d9e1;
+  --elmethis-color-mono-common-bg-strong: #949ba7;
 
   --elmethis-color-mono-common-fg-weak: #6c7483;
   --elmethis-color-mono-common-fg: #555b67;
   --elmethis-color-mono-common-fg-strong: #3e434b;
 
-  --elmethis-color-primary-common-bg-weak: #d9d3cc;
+  --elmethis-color-primary-common-bg-weak: #efecea;
   --elmethis-color-primary-common-bg: #ebe6e2;
-  --elmethis-color-primary-common-bg-strong: #efecea;
+  --elmethis-color-primary-common-bg-strong: #d9d3cc;
 
   --elmethis-color-primary-common-fg-weak: #c1a882;
   --elmethis-color-primary-common-fg: #ac936d;
@@ -100,6 +100,8 @@
   --elmethis-color-primary-hover: oklch(
     from var(--elmethis-color-primary-common-fg-weak) l c h / 25%
   );
+  --elmethis-color-mono-container: oklch(from white l c h / 75%);
+  --elmethis-color-mono-container-disabled: oklch(from gray l c h / 12.5%);
 
   --elmethis-color-mono-bg-weak: var(--elmethis-color-mono-common-bg-weak);
   --elmethis-color-mono-bg: var(--elmethis-color-mono-common-bg);
@@ -142,6 +144,8 @@
   --elmethis-color-primary-hover: oklch(
     from var(--elmethis-color-primary-common-fg-weak) l c h / 25%
   );
+  --elmethis-color-mono-container: oklch(from white l c h / 12.5%);
+  --elmethis-color-mono-container-disabled: oklch(from black l c h / 25%);
 
   --elmethis-color-mono-bg-weak: var(--elmethis-color-mono-common-fg-weak);
   --elmethis-color-mono-bg: var(--elmethis-color-mono-common-fg);
