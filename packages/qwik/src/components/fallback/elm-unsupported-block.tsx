@@ -19,11 +19,15 @@ export const ElmUnsupportedBlock = component$<ElmUnsupportedBlockProps>(
           >
             <path d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
           </svg>
-          <ElmInlineText color="var(--elmethis-color-accent-muted)">UNSUPPORTED BLOCK</ElmInlineText>
+          <ElmInlineText color="var(--elmethis-color-mono-common-fg-weak)">
+            UNSUPPORTED BLOCK
+          </ElmInlineText>
         </div>
         {details && (
           <div class={styles.details}>
-            <ElmInlineText color="var(--elmethis-color-accent-muted)">{details}</ElmInlineText>
+            <ElmInlineText color="var(--elmethis-color-mono-common-fg-weak)">
+              {details}
+            </ElmInlineText>
           </div>
         )}
       </div>
