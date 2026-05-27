@@ -46,6 +46,9 @@
   --elmethis-accent-warning: #b8a36e;
   --elmethis-accent-error: #b36472;
 
+  --elmethis-accent-link: #6987b8;
+  --elmethis-accent-link-visited: #9771bd;
+
   /* ============================================================
    * Semantic layer — theme-aware roles, reference primitives
    * ============================================================ */
