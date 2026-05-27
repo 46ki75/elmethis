@@ -156,7 +156,7 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
       <div
         class={styles.loading}
         style={{
-          opacity: loading ? 0.2 : 0,
+          opacity: loading ? 1 : 0,
         }}
       ></div>
     </label>

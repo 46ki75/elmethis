@@ -23,10 +23,10 @@
 .loading {
   position: absolute;
   width: 100%;
-  height: 100%;
-  top: 0;
+  height: 2px;
+  bottom: 0;
   left: 0;
-  background-color: #6987b8;
+  background-color: var(--highlight-color);
   transition: opacity 200ms;
   pointer-events: none;
   animation-name: loading;
@@ -85,7 +85,7 @@
 
 .requierd {
   padding-inline: 0.25rem;
-  color: #c56565;
+  color: var(--elmethis-accent-error);
   font-weight: bold;
 }
 
