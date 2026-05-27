@@ -45,7 +45,7 @@
   --elmethis-normal: #555b67;
 
   /* Accent palette (one value per role) */
-  --elmethis-accent-primary: #ac986d;
+  --elmethis-accent-primary: #ac936d;
   --elmethis-accent-secondary: #a17c5b;
   --elmethis-accent-info: #6987b8;
   --elmethis-accent-success: #59b57c;
@@ -82,10 +82,14 @@
   --elmethis-foreground-color: #555b67;
   --elmethis-foreground-color-strong: #3e434b;
 
+  --elmethis-color-primary-weak: #c1a882;
+  --elmethis-color-primary: #ac936d;
+  --elmethis-color-primary-strong: #947c57;
+
   --elmethis-box-shadow-color: oklch(from #3e434b l c h / 0.25);
 
   --elmethis-margin-block-start: 0;
-  --elmethis-color-primary: var(--elmethis-accent-primary);
+
   --elmethis-color-secondary: var(--elmethis-accent-secondary);
   --elmethis-color-text: var(--elmethis-neutral-600);
   --elmethis-color-text-background: var(--elmethis-neutral-100);
@@ -102,6 +106,10 @@
   --elmethis-foreground-color-weak: #949ba7;
   --elmethis-foreground-color: #b0b5be;
   --elmethis-foreground-color-strong: #cccfd5;
+
+  --elmethis-color-primary-weak: #947c57;
+  --elmethis-color-primary: #ac936d;
+  --elmethis-color-primary-strong: #c1a882;
 
   --elmethis-box-shadow-color: #242629;
 

@@ -22,7 +22,7 @@
       top: 0.3em;
       width: 0.75em;
       height: 0.75em;
-      background-color: var(--elmethis-color-primary, #b69545);
+      background-color: var(--elmethis-color-primary);
       mask-image: url("./markers/list-bullet-level-1.svg");
       mask-size: contain;
       mask-repeat: no-repeat;
@@ -65,7 +65,7 @@
 
     &::marker {
       font-weight: bold;
-      color: var(--elmethis-color-secondary);
+      color: var(--elmethis-color-primary);
     }
 
     ol {
