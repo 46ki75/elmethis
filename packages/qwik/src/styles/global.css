@@ -132,8 +132,6 @@
 
   --elmethis-color-secondary: var(--elmethis-accent-secondary);
   --elmethis-color-accent-muted: var(--elmethis-neutral-400);
-  --elmethis-color-selection-text: var(--elmethis-neutral-200);
-  --elmethis-color-selection-background: var(--elmethis-neutral-700);
 }
 
 [data-theme="dark"] {
@@ -172,7 +170,4 @@
   );
 
   --elmethis-box-shadow-color: #242629;
-
-  --elmethis-color-selection-text: var(--elmethis-neutral-700);
-  --elmethis-color-selection-background: var(--elmethis-neutral-200);
 }

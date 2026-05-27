@@ -63,6 +63,4 @@ export type ElmethisCSSVariables = {
   "--elmethis-color-secondary"?: CSSProperties["color"];
 
   "--elmethis-color-accent-muted"?: CSSProperties["color"];
-  "--elmethis-color-selection-text"?: CSSProperties["color"];
-  "--elmethis-color-selection-background"?: CSSProperties["backgroundColor"];
 };

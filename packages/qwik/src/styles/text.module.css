@@ -2,7 +2,7 @@
   color: var(--elmethis-scoped-color, var(--elmethis-color-mono-fg));
 
   &::selection {
-    color: var(--elmethis-color-selection-text);
+    color: var(--elmethis-color-mono-bg);
     background-color: var(
       --elmethis-scoped-color,
       var(--elmethis-color-mono-fg)
