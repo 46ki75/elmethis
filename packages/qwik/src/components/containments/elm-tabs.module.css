@@ -32,6 +32,9 @@
     background-color 200ms,
     border-color 200ms;
 
+  color: var(--elmethis-scoped-color, var(--elmethis-color-mono-fg));
+  user-select: none;
+
   &.active {
     background-color: oklch(
       from var(--elmethis-color-primary-common-fg) l c h / 5%
