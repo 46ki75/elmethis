@@ -42,8 +42,10 @@
   --elmethis-neutral-700: #3e434b;
   --elmethis-neutral-800: #25282e;
 
+  --elmethis-normal: #555b67;
+
   /* Accent palette (one value per role) */
-  --elmethis-accent-primary: #cfc2a5;
+  --elmethis-accent-primary: #ac986d;
   --elmethis-accent-secondary: #a17c5b;
   --elmethis-accent-info: #6987b8;
   --elmethis-accent-success: #59b57c;
@@ -53,6 +55,30 @@
   /* ============================================================
    * Semantic layer — theme-aware roles, reference primitives
    * ============================================================ */
+
+  /*
+    REFACTORING IN PROGRESS!!!
+
+    Goal:
+     - Eliminate conditional theming from all component CSS files (× [data-theme=""])
+     - Eliminate hard-coded colors from all component CSS files (× #FFFFFF)
+     - Eliminate calculated colors from all component CSS files (× oklch(from _ ...))
+  
+    Light:
+      Background: Gold
+      Foreground Normal: Slate
+      Foreground Accent: Gold 
+    Dark:
+      Background: Slate
+      Foreground Normal: Slate
+      Foreground Accent: Gold       
+   */
+
+  --elmethis-background-color-weak: #efecea;
+  --elmethis-background-color: #ebe6e2;
+  --elmethis-background-color-strong: #d9d3cc;
+
+  --elmethis-box-shadow-color: oklch(from #3e434b l c h / 0.25);
 
   --elmethis-margin-block-start: 0;
   --elmethis-color-primary: var(--elmethis-accent-primary);
@@ -65,6 +91,12 @@
 }
 
 [data-theme="dark"] {
+  --elmethis-background-color-weak: #393e46;
+  --elmethis-background-color: #31353a;
+  --elmethis-background-color-strong: #242629;
+
+  --elmethis-box-shadow-color: #242629;
+
   --elmethis-color-text: var(--elmethis-neutral-300);
   --elmethis-color-text-background: var(--elmethis-neutral-800);
   --elmethis-color-selection-text: var(--elmethis-neutral-700);

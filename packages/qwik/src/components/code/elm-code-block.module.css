@@ -10,13 +10,8 @@
   margin-block-start: var(--elmethis-margin-block-start);
   padding: 0.25rem;
   border-radius: 0.25rem;
-  background-color: #f6f4f2;
-  box-shadow: 0 0 0.125rem rgb(62 67 75 / 30%);
-
-  [data-theme="dark"] & {
-    background-color: #33373d;
-    box-shadow: 0 0 0.125rem rgb(0 0 0 / 40%);
-  }
+  background-color: var(--elmethis-background-color);
+  box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
 }
 
 .language-icon {
@@ -29,24 +24,6 @@
   padding: 1rem;
   font-family: monospace;
   font-size: 1rem;
-}
-
-.copy-icon {
-  grid-area: copy-icon;
-  padding: 0.25rem;
-  width: 1.25rem;
-  height: 1.25rem;
-  border-radius: 0.125rem;
-  transition: background-color 100ms;
-  cursor: pointer;
-
-  &:hover {
-    background-color: rgb(0 0 0 / 10%);
-
-    [data-theme="dark"] & {
-      background-color: rgb(255 255 255 / 10%);
-    }
-  }
 }
 
 .divider {

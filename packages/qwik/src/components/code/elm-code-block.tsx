@@ -1,4 +1,4 @@
-import { $, component$, PropsOf, Slot, useSignal } from "@qwik.dev/core";
+import { component$, PropsOf, Slot } from "@qwik.dev/core";
 
 import styles from "./elm-code-block.module.css";
 
@@ -6,11 +6,7 @@ import { ElmLanguageIcon } from "../icon/elm-language-icon";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { ElmShikiHighlighter } from "./elm-shiki-highlighter";
 
-import {
-  mdiClipboardMultipleOutline,
-  mdiClipboardCheckMultipleOutline,
-} from "@mdi/js";
-import { ElmMdiIcon } from "../icon/elm-mdi-icon";
+import { useClipboard } from "../../hooks/use-clipboard";
 
 export interface ElmCodeBlockProps extends PropsOf<"figure"> {
   /**
@@ -32,21 +28,7 @@ export interface ElmCodeBlockProps extends PropsOf<"figure"> {
 
 export const ElmCodeBlock = component$<ElmCodeBlockProps>(
   ({ class: className, code, language = "txt", caption, ...props }) => {
-    const timerId = useSignal<number | null>(null);
-
-    const copyToClipboard = $(async () => {
-      if (timerId.value !== null) {
-        window.clearTimeout(timerId.value);
-        timerId.value = null;
-      }
-
-      try {
-        await navigator.clipboard.writeText(code);
-        timerId.value = window.setTimeout(() => (timerId.value = null), 1500);
-      } catch (err) {
-        console.error("Failed to copy: ", err);
-      }
-    });
+    const { CopyButton } = useClipboard({ content: code });
 
     return (
       <figure class={[styles["code-block"], className]} {...props}>
@@ -61,16 +43,8 @@ export const ElmCodeBlock = component$<ElmCodeBlockProps>(
           </ElmInlineText>
         </span>
 
-        <div class={styles["copy-icon"]} onClick$={copyToClipboard}>
-          <ElmMdiIcon
-            size="1.25rem"
-            d={
-              timerId.value !== null
-                ? mdiClipboardCheckMultipleOutline
-                : mdiClipboardMultipleOutline
-            }
-            color={timerId.value !== null ? "#59b57c" : undefined}
-          />
+        <div>
+          <CopyButton />
         </div>
 
         <hr class={styles.divider} />
