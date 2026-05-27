@@ -12,4 +12,8 @@
   &:hover {
     background-color: var(--elmethis-color-primary-hover);
   }
+
+  .use-clipboard-icon-copied {
+    color: var(--elmethis-color-primary-fg);
+  }
 }

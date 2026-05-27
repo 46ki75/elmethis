@@ -71,8 +71,12 @@ export const useClipboard = (options: UseClipboardOptions) => {
         onClick$={copy}
       >
         <ElmMdiIcon
+          class={[
+            {
+              [styles["use-clipboard-icon-copied"]]: copied.value,
+            },
+          ]}
           d={copied.value ? mdiClipboardCheckOutline : mdiClipboardOutline}
-          color={copied.value ? "#cdb57b" : undefined}
           size="1.25rem"
         />
       </span>
