@@ -43,8 +43,8 @@ importers:
         specifier: ^1.58.0
         version: 1.58.0(m7y7d2rkifcwdzbqhryq4da43i)
       '@copilotkit/shared':
-        specifier: ^1.57.4
-        version: 1.57.4(@ag-ui/core@0.0.53)
+        specifier: ^1.58.0
+        version: 1.58.0(@ag-ui/core@0.0.53)
       '@hono/node-server':
         specifier: ^2.0.4
         version: 2.0.4(hono@4.12.23)
@@ -876,11 +876,6 @@ packages:
         optional: true
       openai:
         optional: true
-
-  '@copilotkit/shared@1.57.4':
-    resolution: {integrity: sha512-CkUQeUgElVSuy2Wuhen6EtLuDlwJ9glGn9buKDqKqqdH1YkWyPKGyKn3AkUrq2aojzDV2phjCXqjkZ8Iic3U2A==}
-    peerDependencies:
-      '@ag-ui/core': '>=0.0.48'
 
   '@copilotkit/shared@1.58.0':
     resolution: {integrity: sha512-RTy8duBBeX4eJOq17O789ks4q0GDoerXecm6QGca3sv8lbYFaTeNku3BB7N8h+RiXm5jjclbaCp+dRlUCprAQQ==}
@@ -10309,22 +10304,6 @@ snapshots:
       - utf-8-validate
       - vue
       - zod-to-json-schema
-
-  '@copilotkit/shared@1.57.4(@ag-ui/core@0.0.53)':
-    dependencies:
-      '@ag-ui/client': 0.0.53
-      '@ag-ui/core': 0.0.53
-      '@copilotkit/license-verifier': 0.4.0
-      '@segment/analytics-node': 2.3.0
-      '@standard-schema/spec': 1.1.0
-      chalk: 4.1.2
-      graphql: 16.14.0
-      partial-json: 0.1.7
-      uuid: 14.0.0
-      zod: 3.25.76
-      zod-to-json-schema: 3.25.2(zod@3.25.76)
-    transitivePeerDependencies:
-      - encoding
 
   '@copilotkit/shared@1.58.0(@ag-ui/core@0.0.53)':
     dependencies:
