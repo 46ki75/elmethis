@@ -142,8 +142,8 @@ importers:
   packages/qwik:
     dependencies:
       '@46ki75/ikuma-theme':
-        specifier: ^0.0.8
-        version: 0.0.8
+        specifier: ^0.0.10
+        version: 0.0.10
       '@a2ui/web_core':
         specifier: ^0.10.0
         version: 0.10.0
@@ -485,8 +485,8 @@ packages:
       graphql:
         optional: true
 
-  '@46ki75/ikuma-theme@0.0.8':
-    resolution: {integrity: sha512-UMGmyuTK7XJBXEPE0yNh9Pn0p3o2jIHFFcCHxR6RbAl5XTXb/P6Rrtb3bstXgHTxHe6YGSmKO67guMNCD0YMng==}
+  '@46ki75/ikuma-theme@0.0.10':
+    resolution: {integrity: sha512-3r6ZpQutfFo4vXPXpmrNSQ0JnfA1RUwKKvasJiYwSp168zlSFOWmj/PNzspWxDDlrPHaxX+Duh9ZSM+53WvzPA==}
 
   '@a2a-js/sdk@0.2.5':
     resolution: {integrity: sha512-VTDuRS5V0ATbJ/LkaQlisMnTAeYKXAK6scMguVBstf+KIBQ7HIuKhiXLv+G/hvejkV+THoXzoNifInAkU81P1g==}
@@ -9746,7 +9746,7 @@ snapshots:
     optionalDependencies:
       graphql: 16.14.0
 
-  '@46ki75/ikuma-theme@0.0.8': {}
+  '@46ki75/ikuma-theme@0.0.10': {}
 
   '@a2a-js/sdk@0.2.5':
     dependencies:
