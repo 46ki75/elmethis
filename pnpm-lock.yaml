@@ -34,8 +34,8 @@ importers:
   packages/copilotkit:
     dependencies:
       '@ag-ui/mastra':
-        specifier: ^1.0.2
-        version: 1.0.2(zujbyp3j6dhf373rtwcc6mw4he)
+        specifier: ^1.0.3
+        version: 1.0.3(zujbyp3j6dhf373rtwcc6mw4he)
       '@ai-sdk/openai':
         specifier: ^3.0.66
         version: 3.0.66(zod@3.25.76)
@@ -537,8 +537,8 @@ packages:
       '@ag-ui/client': '>=0.0.42'
       '@ag-ui/core': '>=0.0.42'
 
-  '@ag-ui/mastra@1.0.2':
-    resolution: {integrity: sha512-5WX4HFOpr0B3nBWVkdXJyELeV2UzoNDmSMB2z4lY2D+MO8ziK7JWyMlC7tCJ6i+ZPpAzPgDKtinj/YjkXgB25A==}
+  '@ag-ui/mastra@1.0.3':
+    resolution: {integrity: sha512-KiUEg+m04afE6uw1M/SdldnMOxP9+E8tE2bAOhRBKxrWoUKIuVUOJoVkNxzRLmIDLG3bQFJti2ljpRyIJvnFNA==}
     peerDependencies:
       '@ag-ui/client': '>=0.0.44'
       '@ag-ui/core': '>=0.0.44'
@@ -9826,7 +9826,7 @@ snapshots:
       - ws
       - zod-to-json-schema
 
-  '@ag-ui/mastra@1.0.2(zujbyp3j6dhf373rtwcc6mw4he)':
+  '@ag-ui/mastra@1.0.3(zujbyp3j6dhf373rtwcc6mw4he)':
     dependencies:
       '@ag-ui/client': 0.0.53
       '@ag-ui/core': 0.0.53
