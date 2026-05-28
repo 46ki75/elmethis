@@ -21,13 +21,13 @@
 }
 
 .normal {
-  color: var(--elmethis-color-primary-common-bg-weak);
-  background-color: var(--elmethis-color-mono-common-fg);
+  color: oklch(from white l c h / 75%);
+  background-color: var(--elmethis-color-mono-fg-weak);
 }
 
 .primary {
-  color: var(--elmethis-color-mono-common-fg-strong);
-  background-color: var(--elmethis-color-primary-common-fg-weak);
+  color: oklch(from white l c h / 75%);
+  background-color: var(--elmethis-color-primary-fg-weak);
 }
 
 .colored {

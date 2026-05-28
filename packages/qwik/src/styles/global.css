@@ -73,38 +73,44 @@
 
   /* COMMON */
 
-  --elmethis-color-mono-common-bg-weak: #d7d9e1;
+  /* --elmethis-color-mono-common-bg-weak: #d7d9e1;
   --elmethis-color-mono-common-bg: #b0b5be;
   --elmethis-color-mono-common-bg-strong: #949ba7;
 
   --elmethis-color-mono-common-fg-weak: #6c7483;
   --elmethis-color-mono-common-fg: #555b67;
-  --elmethis-color-mono-common-fg-strong: #3e434b;
+  --elmethis-color-mono-common-fg-strong: #3e434b; */
 
-  --elmethis-color-primary-common-bg-weak: #d9cec7;
-  --elmethis-color-primary-common-bg: #cec1b6;
+  /* --elmethis-color-primary-common-bg-weak: #b3a090;
+  --elmethis-color-primary-common-bg: #bbada1;
+  --elmethis-color-primary-common-bg-strong: #d4c6ba; */
 
-  --elmethis-color-primary-common-fg-weak: #c1a882;
+  /* --elmethis-color-primary-common-fg-weak: #c1a882;
   --elmethis-color-primary-common-fg: #ac936d;
+  --elmethis-color-primary-common-fg-strong: #967e5b; */
 
   --elmethis-margin-block-start: 2rem;
 
   /* LIGHT */
 
-  --elmethis-color-primary-hover: oklch(
-    from var(--elmethis-color-primary-common-fg-weak) l c h / 25%
-  );
+  --elmethis-color-primary-hover: oklch(from #c1a882 l c h / 25%);
   --elmethis-color-mono-container-default: #f7f5f5;
   --elmethis-color-mono-container-enabled: oklch(from white l c h / 75%);
   --elmethis-color-mono-container-disabled: oklch(from gray l c h / 12.5%);
 
   --elmethis-color-mono-bg: var(--elmethis-color-mono-common-bg);
 
-  --elmethis-color-mono-fg-weak: var(--elmethis-color-mono-common-fg-weak);
-  --elmethis-color-mono-fg: var(--elmethis-color-mono-common-fg);
-  --elmethis-color-mono-fg-strong: var(--elmethis-color-mono-common-fg-strong);
+  --elmethis-color-mono-fg-weak: #6c7483;
+  --elmethis-color-mono-fg: #555b67;
+  --elmethis-color-mono-fg-strong: #3e434b;
 
-  --elmethis-color-primary-fg: var(--elmethis-color-primary-common-fg);
+  --elmethis-color-primary-fg-weak: #bca88a;
+  --elmethis-color-primary-fg: #ac936d;
+  --elmethis-color-primary-fg-strong: #8b7554;
+
+  --elmethis-color-bg-strong: #d9d3cc;
+  --elmethis-color-bg: #ebe6e2;
+  --elmethis-color-bg-weak: #efecea;
 
   --elmethis-box-shadow-color: oklch(from #3e434b l c h / 0.25);
 }
@@ -112,20 +118,24 @@
 [data-theme="dark"] {
   /* DARK */
 
-  --elmethis-color-primary-hover: oklch(
-    from var(--elmethis-color-primary-common-fg-weak) l c h / 20%
-  );
+  --elmethis-color-primary-hover: oklch(from #c1a882 l c h / 20%);
   --elmethis-color-mono-container-default: #2b2f35;
   --elmethis-color-mono-container-enabled: oklch(from white l c h / 12.5%);
   --elmethis-color-mono-container-disabled: oklch(from black l c h / 25%);
 
   --elmethis-color-mono-bg: var(--elmethis-color-mono-common-fg);
 
-  --elmethis-color-mono-fg-weak: var(--elmethis-color-mono-common-bg-weak);
-  --elmethis-color-mono-fg: var(--elmethis-color-mono-common-bg);
-  --elmethis-color-mono-fg-strong: var(--elmethis-color-mono-common-bg-strong);
+  --elmethis-color-mono-fg-weak: #949ba7;
+  --elmethis-color-mono-fg: #b0b5be;
+  --elmethis-color-mono-fg-strong: #d7d9e1;
 
-  --elmethis-color-primary-fg: var(--elmethis-color-primary-common-bg);
+  --elmethis-color-primary-fg-weak: #b3a090;
+  --elmethis-color-primary-fg: #bbada1;
+  --elmethis-color-primary-fg-strong: #d4c6ba;
+
+  --elmethis-color-bg-strong: #242629;
+  --elmethis-color-bg: #31353a;
+  --elmethis-color-bg-weak: #393e46;
 
   --elmethis-box-shadow-color: #242629;
 }
