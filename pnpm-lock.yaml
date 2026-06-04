@@ -172,8 +172,8 @@ importers:
         specifier: ^0.17.0
         version: 0.17.0
       marked:
-        specifier: ^18.0.4
-        version: 18.0.4
+        specifier: ^18.0.5
+        version: 18.0.5
       polished:
         specifier: ^4.3.1
         version: 4.3.1
@@ -296,8 +296,8 @@ importers:
         specifier: ^4.18.1
         version: 4.18.1
       marked:
-        specifier: ^18.0.4
-        version: 18.0.4
+        specifier: ^18.0.5
+        version: 18.0.5
       mermaid:
         specifier: ^11.15.0
         version: 11.15.0
@@ -390,8 +390,8 @@ importers:
         specifier: ^4.18.1
         version: 4.18.1
       marked:
-        specifier: ^18.0.4
-        version: 18.0.4
+        specifier: ^18.0.5
+        version: 18.0.5
       mermaid:
         specifier: ^11.15.0
         version: 11.15.0
@@ -6913,8 +6913,8 @@ packages:
     engines: {node: '>= 20'}
     hasBin: true
 
-  marked@18.0.4:
-    resolution: {integrity: sha512-c/BTaKzg0G6ezQx97DAkYU7k0HM6ys0FqYeKBL6hlBByZwy+ycA1+f0vDdjMHKKeEjdgkx0GOv9Il6D+85cOqA==}
+  marked@18.0.5:
+    resolution: {integrity: sha512-S6GcvALHg6K4ohtu4E7x0a1AqhAjp6cV8KhLSyN9qVapnzJkusVBxZRcIU9AeYsbe6P1hKDusSbEOzGyyuce6w==}
     engines: {node: '>= 20'}
     hasBin: true
 
@@ -16745,7 +16745,7 @@ snapshots:
 
   marked@16.4.2: {}
 
-  marked@18.0.4: {}
+  marked@18.0.5: {}
 
   math-intrinsics@1.1.0: {}
 
