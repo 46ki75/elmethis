@@ -63,7 +63,7 @@
     "vite": "^8.0.7",
     "vite-plugin-css-injected-by-js": "^5.0.1",
     "vite-plugin-dts": "^5.0.2",
-    "vue-tsc": "^3.3.2"
+    "vue-tsc": "^3.3.3"
   },
   "peerDependencies": {
     "vue": "^3.4.0"
