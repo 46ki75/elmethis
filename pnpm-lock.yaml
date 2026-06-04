@@ -151,8 +151,8 @@ importers:
         specifier: ^0.0.53
         version: 0.0.53
       '@ag-ui/core':
-        specifier: ^0.0.53
-        version: 0.0.53
+        specifier: ^0.0.55
+        version: 0.0.55
       '@elmethis/core':
         specifier: workspace:^
         version: link:../core
@@ -409,8 +409,8 @@ importers:
         version: 3.5.26(typescript@6.0.3)
     devDependencies:
       '@ag-ui/core':
-        specifier: ^0.0.53
-        version: 0.0.53
+        specifier: ^0.0.55
+        version: 0.0.55
       '@notionhq/client':
         specifier: ^5.22.0
         version: 5.22.0
@@ -527,6 +527,9 @@ packages:
 
   '@ag-ui/core@0.0.53':
     resolution: {integrity: sha512-11UocR7fFdMWw503bWCX2IOK15vbWfxT11Mn9xOiPBVO/UVcn57ywGrlLL4UaBlPgmUTvuzr2yYR2ElSqiN2wQ==}
+
+  '@ag-ui/core@0.0.55':
+    resolution: {integrity: sha512-Pj7Ke0NsCxbCFgI3xK5YE56LaMRxnXnyeDUgDFTYxeF6KZDcSf5E0x2gB6/37w6bE0hcn/LRNPFd8Es18eIEzA==}
 
   '@ag-ui/encoder@0.0.53':
     resolution: {integrity: sha512-bAOcfVdm6U4H6G6tW+DZfwPEQm1w/snVBTwaFn9nJcEMW69M7/HZuwvEc/7Zo0rK1jRL32N/j60PwTAeky19fw==}
@@ -9778,6 +9781,10 @@ snapshots:
       zod: 3.25.76
 
   '@ag-ui/core@0.0.53':
+    dependencies:
+      zod: 3.25.76
+
+  '@ag-ui/core@0.0.55':
     dependencies:
       zod: 3.25.76
 
