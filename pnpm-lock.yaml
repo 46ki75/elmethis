@@ -148,8 +148,8 @@ importers:
         specifier: ^0.10.0
         version: 0.10.0
       '@ag-ui/client':
-        specifier: ^0.0.53
-        version: 0.0.53
+        specifier: ^0.0.55
+        version: 0.0.55
       '@ag-ui/core':
         specifier: ^0.0.55
         version: 0.0.55
@@ -531,6 +531,9 @@ packages:
   '@ag-ui/client@0.0.54':
     resolution: {integrity: sha512-N5UVXEBV5gPHqTuMoR/21brconRn42URf+MB4L8OniCJKqLcl/qUJb5kMamK0nnfBhDfPs/uq7LxDn6bsDJzJg==}
 
+  '@ag-ui/client@0.0.55':
+    resolution: {integrity: sha512-cyTY0S1UK3ynFCtLh6XPkxECQiYL6XvFcAei5FD4yYzln5agSCZ3cAmdD86mwE4UbS5teS3Nci8Q5tEAjrRRgA==}
+
   '@ag-ui/core@0.0.53':
     resolution: {integrity: sha512-11UocR7fFdMWw503bWCX2IOK15vbWfxT11Mn9xOiPBVO/UVcn57ywGrlLL4UaBlPgmUTvuzr2yYR2ElSqiN2wQ==}
 
@@ -545,6 +548,9 @@ packages:
 
   '@ag-ui/encoder@0.0.54':
     resolution: {integrity: sha512-0dPuE/eAeBRBDj/OOj5AW8SoP1r0dufmoOdrtKgmf+dlbVXKSNkDDHGrrvIWFPxwvPTWhHeN6wnsVUayWpUsGg==}
+
+  '@ag-ui/encoder@0.0.55':
+    resolution: {integrity: sha512-co4RB8kCatQ/+sBOR+nmNMzuKKWynHD73U/MTn9yG8rdznG51KuAPlQAwTP03VChFgO5GfNqEAzcGf5dR6jyMg==}
 
   '@ag-ui/langgraph@0.0.37':
     resolution: {integrity: sha512-N/u2axTbnvd9MLIzHX1T7YE90X6zTEuTEI3yEud4ywIjBov5qdgA3MqhCqfcgjeJnKKp78AvcMCQ5zMk6aiPkA==}
@@ -576,6 +582,9 @@ packages:
 
   '@ag-ui/proto@0.0.54':
     resolution: {integrity: sha512-IPF+xeFaBAKKP2FO74MaVTkKUP8VaGGkbPzORCvC5TLDdGs+oQgQFqz+XoBeksQGE14+jgLWiAr9EPXdhqr1NA==}
+
+  '@ag-ui/proto@0.0.55':
+    resolution: {integrity: sha512-DNavmWA/dL3u4mpB+g/NPzF7XrYLjVFgmS8CnSOsenrmO64XVoR5RrbQghzaKvP9VNkhvdFI9tllpItfE3Pryw==}
 
   '@ai-sdk/anthropic@2.0.80':
     resolution: {integrity: sha512-7HPgFv91YFFYyZapM/Vy3tRbBq/hL44omh0vz/WikiU7fJFxdOjCeg6Nb089lxM7+qBe7blZsoSRJ7gfAkEo1w==}
@@ -9795,6 +9804,19 @@ snapshots:
       uuid: 14.0.0
       zod: 3.25.76
 
+  '@ag-ui/client@0.0.55':
+    dependencies:
+      '@ag-ui/core': 0.0.55
+      '@ag-ui/encoder': 0.0.55
+      '@ag-ui/proto': 0.0.55
+      '@types/uuid': 10.0.0
+      compare-versions: 6.1.1
+      fast-json-patch: 3.1.1
+      rxjs: 7.8.1
+      untruncate-json: 0.0.1
+      uuid: 14.0.0
+      zod: 3.25.76
+
   '@ag-ui/core@0.0.53':
     dependencies:
       zod: 3.25.76
@@ -9816,6 +9838,11 @@ snapshots:
     dependencies:
       '@ag-ui/core': 0.0.54
       '@ag-ui/proto': 0.0.54
+
+  '@ag-ui/encoder@0.0.55':
+    dependencies:
+      '@ag-ui/core': 0.0.55
+      '@ag-ui/proto': 0.0.55
 
   '@ag-ui/langgraph@0.0.37(@ag-ui/client@0.0.53)(@ag-ui/core@0.0.53)(@opentelemetry/api@1.9.1)(@opentelemetry/exporter-trace-otlp-proto@0.203.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.7.0(@opentelemetry/api@1.9.1))(openai@6.42.0(ws@8.21.0)(zod@3.25.76))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(vue@3.5.26(typescript@5.9.3))(ws@8.21.0)(zod-to-json-schema@3.25.2(zod@3.25.76))':
     dependencies:
@@ -9880,6 +9907,12 @@ snapshots:
   '@ag-ui/proto@0.0.54':
     dependencies:
       '@ag-ui/core': 0.0.54
+      '@bufbuild/protobuf': 2.12.0
+      '@protobuf-ts/protoc': 2.11.1
+
+  '@ag-ui/proto@0.0.55':
+    dependencies:
+      '@ag-ui/core': 0.0.55
       '@bufbuild/protobuf': 2.12.0
       '@protobuf-ts/protoc': 2.11.1
 
