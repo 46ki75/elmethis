@@ -79,7 +79,7 @@
     "undici": "*",
     "vite": "^7",
     "vite-tsconfig-paths": "^6.1.1",
-    "vitest": "^4.1.7"
+    "vitest": "^4.1.8"
   },
   "dependencies": {
     "@46ki75/ikuma-theme": "^0.0.10",
