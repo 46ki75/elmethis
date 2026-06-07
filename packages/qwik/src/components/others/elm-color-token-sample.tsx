@@ -9,6 +9,24 @@ export interface ElmColorTokenSampleProps {
   style?: CSSProperties;
 }
 
+const ColorSample = component$((args: { variables: string[] }) => {
+  return (
+    <div class={styles["color-sample-container"]}>
+      {args.variables.map((variable) => (
+        <div class={styles["color-sample"]}>
+          <div
+            class={styles["color-sample-bg"]}
+            style={{
+              backgroundColor: `var(${variable})`,
+            }}
+          ></div>
+          <code class={styles["color-sample-name"]}>{variable}</code>
+        </div>
+      ))}
+    </div>
+  );
+});
+
 export const ElmColorTokenSample = component$<ElmColorTokenSampleProps>(
   ({ class: className, style }) => {
     const Render = component$((props: { theme: "light" | "dark" }) => {
@@ -69,6 +87,21 @@ export const ElmColorTokenSample = component$<ElmColorTokenSampleProps>(
                   <ElmInlineText>{name}</ElmInlineText>
                 </div>
               ))}
+
+              <div>
+                <ColorSample
+                  variables={[
+                    "--elmethis-color-red",
+                    "--elmethis-color-orange",
+                    "--elmethis-color-yellow",
+                    "--elmethis-color-green",
+                    "--elmethis-color-cyan",
+                    "--elmethis-color-blue",
+                    "--elmethis-color-purple",
+                    "--elmethis-color-magenta",
+                  ]}
+                />
+              </div>
             </div>
 
             <footer

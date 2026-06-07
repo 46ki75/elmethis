@@ -35,23 +35,24 @@
  */
 
 :root {
-  /* ============================================================
-   * Primitive layer — raw values, theme-agnostic
-   * ============================================================ */
+  /* ANSI */
+  --elmethis-color-red: #c56565;
+  --elmethis-color-orange: #d48b70;
+  --elmethis-color-yellow: #cdb57b;
+  --elmethis-color-green: #59b57c;
+  --elmethis-color-cyan: #5fb5a8;
+  --elmethis-color-blue: #6987b8;
+  --elmethis-color-purple: #9771bd;
+  --elmethis-color-magenta: #c9699e;
 
-  /* Accent palette (one value per role) */
-  --elmethis-accent-info: #6987b8;
-  --elmethis-accent-success: #59b57c;
-  --elmethis-accent-important: #9771bd;
-  --elmethis-accent-warning: #b8a36e;
-  --elmethis-accent-error: #b36472;
+  --elmethis-accent-info: var(--elmethis-color-blue);
+  --elmethis-accent-success: var(--elmethis-color-green);
+  --elmethis-accent-important: var(--elmethis-color-purple);
+  --elmethis-accent-warning: var(--elmethis-color-yellow);
+  --elmethis-accent-error: var(--elmethis-color-red);
 
-  --elmethis-accent-link: #6987b8;
-  --elmethis-accent-link-visited: #9771bd;
-
-  /* ============================================================
-   * Semantic layer — theme-aware roles, reference primitives
-   * ============================================================ */
+  --elmethis-accent-link: var(--elmethis-color-blue);
+  --elmethis-accent-link-visited: var(--elmethis-color-purple);
 
   /*
     REFACTORING IN PROGRESS!!!
