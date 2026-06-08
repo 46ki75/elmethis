@@ -132,10 +132,29 @@
   --elmethis-box-shadow-color: oklch(from #3e434b l c h / 0.25);
 
   --elmethis-color-accent-info: var(--elmethis-primitive-color-blue-500);
+  --elmethis-color-accent-info-surface: var(
+    --elmethis-primitive-color-blue-100
+  );
+
   --elmethis-color-accent-success: var(--elmethis-primitive-color-green-500);
+  --elmethis-color-accent-success-surface: var(
+    --elmethis-primitive-color-green-100
+  );
+
   --elmethis-color-accent-important: var(--elmethis-primitive-color-purple-500);
+  --elmethis-color-accent-important-surface: var(
+    --elmethis-primitive-color-purple-100
+  );
+
   --elmethis-color-accent-warning: var(--elmethis-primitive-color-yellow-500);
+  --elmethis-color-accent-warning-surface: var(
+    --elmethis-primitive-color-yellow-100
+  );
+
   --elmethis-color-accent-error: var(--elmethis-primitive-color-red-500);
+  --elmethis-color-accent-error-surface: var(
+    --elmethis-primitive-color-red-100
+  );
 
   --elmethis-color-accent-link: var(--elmethis-primitive-color-blue-500);
   --elmethis-color-accent-link-visited: var(
@@ -164,4 +183,29 @@
   --elmethis-color-primary-strong: var(--elmethis-primitive-color-gold-400);
 
   --elmethis-box-shadow-color: var(--elmethis-primitive-color-slate-900);
+
+  --elmethis-color-accent-info: var(--elmethis-primitive-color-blue-500);
+  --elmethis-color-accent-info-surface: var(
+    --elmethis-primitive-color-blue-900
+  );
+
+  --elmethis-color-accent-success: var(--elmethis-primitive-color-green-500);
+  --elmethis-color-accent-success-surface: var(
+    --elmethis-primitive-color-green-900
+  );
+
+  --elmethis-color-accent-important: var(--elmethis-primitive-color-purple-500);
+  --elmethis-color-accent-important-surface: var(
+    --elmethis-primitive-color-purple-900
+  );
+
+  --elmethis-color-accent-warning: var(--elmethis-primitive-color-yellow-500);
+  --elmethis-color-accent-warning-surface: var(
+    --elmethis-primitive-color-yellow-900
+  );
+
+  --elmethis-color-accent-error: var(--elmethis-primitive-color-red-500);
+  --elmethis-color-accent-error-surface: var(
+    --elmethis-primitive-color-red-900
+  );
 }
