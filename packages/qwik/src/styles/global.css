@@ -36,14 +36,37 @@
 
 :root {
   /* ANSI */
-  --elmethis-primitive-color-red: #ae6e6e;
-  --elmethis-primitive-color-orange: #b8816e;
-  --elmethis-primitive-color-yellow: #bba676;
-  --elmethis-primitive-color-green: #61a17a;
-  --elmethis-primitive-color-cyan: #60a097;
-  --elmethis-primitive-color-blue: #6b80a0;
-  --elmethis-primitive-color-purple: #8a6ea5;
-  --elmethis-primitive-color-magenta: #b17396;
+  --elmethis-primitive-color-red-100: #eedbdb;
+  --elmethis-primitive-color-red-500: #ae6e6e;
+  --elmethis-primitive-color-red-900: #683b3b;
+
+  --elmethis-primitive-color-orange-100: #f0dfd9;
+  --elmethis-primitive-color-orange-500: #b8816e;
+  --elmethis-primitive-color-orange-900: #6d4436;
+
+  --elmethis-primitive-color-yellow-100: #f0e9d9;
+  --elmethis-primitive-color-yellow-500: #bba676;
+  --elmethis-primitive-color-yellow-900: #6c5c37;
+
+  --elmethis-primitive-color-green-100: #dcede3;
+  --elmethis-primitive-color-green-500: #61a17a;
+  --elmethis-primitive-color-green-900: #3d664d;
+
+  --elmethis-primitive-color-cyan-100: #dcedeb;
+  --elmethis-primitive-color-cyan-500: #60a097;
+  --elmethis-primitive-color-cyan-900: #3d6660;
+
+  --elmethis-primitive-color-blue-100: #dde3ec;
+  --elmethis-primitive-color-blue-500: #6b80a0;
+  --elmethis-primitive-color-blue-900: #404e63;
+
+  --elmethis-primitive-color-purple-100: #e5ddec;
+  --elmethis-primitive-color-purple-500: #8a6ea5;
+  --elmethis-primitive-color-purple-900: #523f64;
+
+  --elmethis-primitive-color-magenta-100: #eedbe6;
+  --elmethis-primitive-color-magenta-500: #b17396;
+  --elmethis-primitive-color-magenta-900: #683b54;
 
   --elmethis-primitive-color-slate-100: #d7d9e1;
   --elmethis-primitive-color-slate-200: #b0b5be;
@@ -108,14 +131,16 @@
 
   --elmethis-box-shadow-color: oklch(from #3e434b l c h / 0.25);
 
-  --elmethis-color-accent-info: var(--elmethis-primitive-color-blue);
-  --elmethis-color-accent-success: var(--elmethis-primitive-color-green);
-  --elmethis-color-accent-important: var(--elmethis-primitive-color-purple);
-  --elmethis-color-accent-warning: var(--elmethis-primitive-color-yellow);
-  --elmethis-color-accent-error: var(--elmethis-primitive-color-red);
+  --elmethis-color-accent-info: var(--elmethis-primitive-color-blue-500);
+  --elmethis-color-accent-success: var(--elmethis-primitive-color-green-500);
+  --elmethis-color-accent-important: var(--elmethis-primitive-color-purple-500);
+  --elmethis-color-accent-warning: var(--elmethis-primitive-color-yellow-500);
+  --elmethis-color-accent-error: var(--elmethis-primitive-color-red-500);
 
-  --elmethis-color-accent-link: var(--elmethis-primitive-color-blue);
-  --elmethis-color-accent-link-visited: var(--elmethis-primitive-color-purple);
+  --elmethis-color-accent-link: var(--elmethis-primitive-color-blue-500);
+  --elmethis-color-accent-link-visited: var(
+    --elmethis-primitive-color-purple-500
+  );
 }
 
 [data-theme="dark"] {
