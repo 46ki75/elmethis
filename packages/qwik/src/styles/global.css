@@ -36,14 +36,14 @@
 
 :root {
   /* ANSI */
-  --elmethis-color-red: #c56565;
-  --elmethis-color-orange: #d48b70;
-  --elmethis-color-yellow: #cdb57b;
-  --elmethis-color-green: #59b57c;
-  --elmethis-color-cyan: #5fb5a8;
-  --elmethis-color-blue: #6987b8;
-  --elmethis-color-purple: #9771bd;
-  --elmethis-color-magenta: #c9699e;
+  --elmethis-color-red: #ae6e6e;
+  --elmethis-color-orange: #b8816e;
+  --elmethis-color-yellow: #bba676;
+  --elmethis-color-green: #61a17a;
+  --elmethis-color-cyan: #60a097;
+  --elmethis-color-blue: #6b80a0;
+  --elmethis-color-purple: #8a6ea5;
+  --elmethis-color-magenta: #b17396;
 
   --elmethis-accent-info: var(--elmethis-color-blue);
   --elmethis-accent-success: var(--elmethis-color-green);
