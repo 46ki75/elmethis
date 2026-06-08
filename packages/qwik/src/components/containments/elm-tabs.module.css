@@ -32,7 +32,7 @@
     background-color 200ms,
     border-color 200ms;
 
-  color: var(--elmethis-scoped-color, var(--elmethis-color-mono-fg));
+  color: var(--elmethis-scoped-color, var(--elmethis-color-neutral-fg));
   user-select: none;
 
   &.active {

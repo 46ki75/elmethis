@@ -11,7 +11,7 @@
  *      [data-theme="dark"] — never inside individual component modules.
  *
  *      Within this layer, names containing `-common-`
- *      (e.g. --elmethis-color-mono-common-fg) stay identical across
+ *      (e.g. --elmethis-color-neutral-common-fg) stay identical across
  *      themes. Default to the non-`-common-` form so theming works
  *      automatically; reach for `-common-` only when you intentionally
  *      want a value that does not flip under [data-theme="dark"].
@@ -108,12 +108,12 @@
   --elmethis-color-surface-raised: var(--elmethis-color-gold-100);
 
   --elmethis-color-primary-hover: oklch(from #c1a882 l c h / 25%);
-  --elmethis-color-mono-container-enabled: oklch(from white l c h / 75%);
-  --elmethis-color-mono-container-disabled: oklch(from gray l c h / 12.5%);
+  --elmethis-color-neutral-container-enabled: oklch(from white l c h / 75%);
+  --elmethis-color-neutral-container-disabled: oklch(from gray l c h / 12.5%);
 
-  --elmethis-color-mono-fg-weak: var(--elmethis-color-slate-400);
-  --elmethis-color-mono-fg: var(--elmethis-color-slate-500);
-  --elmethis-color-mono-fg-strong: var(--elmethis-color-slate-600);
+  --elmethis-color-neutral-fg-weak: var(--elmethis-color-slate-400);
+  --elmethis-color-neutral-fg: var(--elmethis-color-slate-500);
+  --elmethis-color-neutral-fg-strong: var(--elmethis-color-slate-600);
 
   --elmethis-color-primary-fg-weak: var(--elmethis-color-gold-600);
   --elmethis-color-primary-fg: var(--elmethis-color-gold-700);
@@ -133,12 +133,12 @@
   --elmethis-color-surface-raised: var(--elmethis-color-slate-700);
 
   --elmethis-color-primary-hover: oklch(from #c1a882 l c h / 20%);
-  --elmethis-color-mono-container-enabled: oklch(from white l c h / 12.5%);
-  --elmethis-color-mono-container-disabled: oklch(from black l c h / 25%);
+  --elmethis-color-neutral-container-enabled: oklch(from white l c h / 12.5%);
+  --elmethis-color-neutral-container-disabled: oklch(from black l c h / 25%);
 
-  --elmethis-color-mono-fg-weak: var(--elmethis-color-slate-300);
-  --elmethis-color-mono-fg: var(--elmethis-color-slate-200);
-  --elmethis-color-mono-fg-strong: var(--elmethis-color-slate-100);
+  --elmethis-color-neutral-fg-weak: var(--elmethis-color-slate-300);
+  --elmethis-color-neutral-fg: var(--elmethis-color-slate-200);
+  --elmethis-color-neutral-fg-strong: var(--elmethis-color-slate-100);
 
   --elmethis-color-primary-fg-weak: var(--elmethis-color-gold-600);
   --elmethis-color-primary-fg: var(--elmethis-color-gold-500);

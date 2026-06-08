@@ -48,9 +48,9 @@ export const ElmColorTokenSample = component$<ElmColorTokenSampleProps>(
 
             <div class={styles.body}>
               {[
-                "--elmethis-color-mono-fg-weak",
-                "--elmethis-color-mono-fg",
-                "--elmethis-color-mono-fg-strong",
+                "--elmethis-color-neutral-fg-weak",
+                "--elmethis-color-neutral-fg",
+                "--elmethis-color-neutral-fg-strong",
                 "--elmethis-color-primary-fg-weak",
                 "--elmethis-color-primary-fg",
                 "--elmethis-color-primary-fg-strong",
@@ -74,8 +74,8 @@ export const ElmColorTokenSample = component$<ElmColorTokenSampleProps>(
 
               {[
                 "--elmethis-color-surface-raised",
-                "--elmethis-color-mono-container-enabled",
-                "--elmethis-color-mono-container-disabled",
+                "--elmethis-color-neutral-container-enabled",
+                "--elmethis-color-neutral-container-disabled",
               ].map((name) => (
                 <div
                   key={name}

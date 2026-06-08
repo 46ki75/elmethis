@@ -21,7 +21,7 @@
     transform 100ms;
 
   .icon {
-    color: var(--elmethis-color-mono-fg);
+    color: var(--elmethis-color-neutral-fg);
   }
 
   &:hover {
