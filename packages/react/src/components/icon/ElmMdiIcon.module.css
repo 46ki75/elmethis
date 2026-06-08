@@ -8,10 +8,8 @@
 }
 
 .icon-theme-color {
-  fill: var(--elmethis-color-primary, #555b67);
+  /* `--elmethis-color-primary` is theme-aware in global.css, so no
+     `[data-theme="dark"]` override is needed here. */
+  fill: var(--elmethis-color-primary);
   transition: fill 200ms;
-
-  [data-theme="dark"] & {
-    fill: var(--elmethis-color-primary-dark, #b0b5be);
-  }
 }

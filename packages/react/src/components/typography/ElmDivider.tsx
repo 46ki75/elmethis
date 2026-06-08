@@ -6,9 +6,7 @@ import type { ElmethisCSSVariables } from "@styles/variables";
 
 export type ElmDividerCSSVariables = Pick<
   ElmethisCSSVariables,
-  | "--elmethis-margin-block-start"
-  | "--elmethis-text-color-light"
-  | "--elmethis-text-color-dark"
+  "--elmethis-margin-block-start"
 >;
 
 export interface ElmDividerProps {

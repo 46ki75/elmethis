@@ -6,7 +6,7 @@ import type { ElmethisCSSVariables } from "@styles/variables";
 
 export type ElmMdiIconCSSVariables = Pick<
   ElmethisCSSVariables,
-  "--elmethis-color-primary" | "--elmethis-color-primary-dark"
+  "--elmethis-color-primary"
 > & {
   "--elmethis-scoped-color"?: React.CSSProperties["color"];
   "--elmethis-scoped-color-dark"?: React.CSSProperties["color"];

@@ -1,18 +1,14 @@
 .text {
-  color: var(--elmethis-text-color-light);
+  /* `--elmethis-color-neutral` is theme-aware in global.css; an optional
+     per-instance `--elmethis-scoped-color` override wins when set. */
+  color: var(--elmethis-scoped-color, var(--elmethis-color-neutral));
 
   &::selection {
-    color: var(--elmethis-text-color-dark);
-    background-color: var(--elmethis-text-background-color-dark);
-  }
-
-  [data-theme="dark"] & {
-    color: var(--elmethis-text-color-dark);
-
-    &::selection {
-      color: var(--elmethis-text-color-light);
-      background-color: var(--elmethis-text-background-color-light);
-    }
+    color: var(--elmethis-color-surface-raised);
+    background-color: var(
+      --elmethis-scoped-color,
+      var(--elmethis-color-neutral)
+    );
   }
 }
 

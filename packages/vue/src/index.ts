@@ -1,3 +1,6 @@
+// Design tokens (primitive + semantic CSS custom properties)
+import "./styles/global.css";
+
 // Code
 export type { ElmCodeBlockProps } from "./components/code/ElmCodeBlock.vue";
 export { default as ElmCodeBlock } from "./components/code/ElmCodeBlock.vue";

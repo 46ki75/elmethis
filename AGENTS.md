@@ -13,6 +13,17 @@
 - `packages/react`: (`@elmethis/react`) React component library.
 - `packages/qwik`: (`@elmethis/qwik`) Qwik component library.
 
+## Design Tokens & Reference Implementation
+
+- `packages/qwik` (`@elmethis/qwik`) is the **lead / base-reference** implementation
+  for both the design-token system and component behavior. It is ahead; `react`
+  and `vue` are behind and are being brought up to parity with it.
+- The canonical design tokens live in `packages/qwik/src/styles/global.css`
+  (two layers: primitive `--elmethis-primitive-*` and semantic `--elmethis-*`,
+  themed via the `[data-theme="dark"]` attribute).
+- When refactoring tokens or components in `react`/`vue`, port **from** qwik —
+  match qwik's token names and usage rather than introducing new ones.
+
 ## Toolchain
 
 - Use `pnpm` to manage dependencies and workspaces.
