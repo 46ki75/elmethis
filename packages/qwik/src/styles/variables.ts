@@ -5,7 +5,7 @@ import type { CSSProperties } from "@qwik.dev/core";
  *
  * ## Two-layer architecture
  *
- * - **Primitives** (`--elmethis-accent-*`) are theme-agnostic raw values. The same hex
+ * - **Primitives** (`--elmethis-color-accent-*`) are theme-agnostic raw values. The same hex
  *   resolves in both light and dark mode.
  * - **Semantic roles** (`--elmethis-color-*`) are theme-aware. They reference primitives
  *   and flip under `[data-theme="dark"]`. Components consume these, not the primitives.
@@ -15,7 +15,7 @@ import type { CSSProperties } from "@qwik.dev/core";
  * Set the variable on a wrapper element to retheme everything inside, via CSS inheritance:
  *
  * ```tsx
- * const themed: ElmethisCSSVariables = { "--elmethis-accent-error": "tomato" };
+ * const themed: ElmethisCSSVariables = { "--elmethis-color-accent-error": "tomato" };
  *
  * <div style={themed}>
  *   <ElmTextField label="Email" required />
@@ -43,9 +43,9 @@ export type ElmethisCSSVariables = {
   "--elmethis-margin-block-start"?: CSSProperties["marginBlockStart"];
 
   // Primitive — Accent palette
-  "--elmethis-accent-info"?: CSSProperties["color"];
-  "--elmethis-accent-success"?: CSSProperties["color"];
-  "--elmethis-accent-important"?: CSSProperties["color"];
-  "--elmethis-accent-warning"?: CSSProperties["color"];
-  "--elmethis-accent-error"?: CSSProperties["color"];
+  "--elmethis-color-accent-info"?: CSSProperties["color"];
+  "--elmethis-color-accent-success"?: CSSProperties["color"];
+  "--elmethis-color-accent-important"?: CSSProperties["color"];
+  "--elmethis-color-accent-warning"?: CSSProperties["color"];
+  "--elmethis-color-accent-error"?: CSSProperties["color"];
 };

@@ -54,13 +54,13 @@ export const ElmColorTokenSample = component$<ElmColorTokenSampleProps>(
                 "--elmethis-color-primary-weak",
                 "--elmethis-color-primary",
                 "--elmethis-color-primary-strong",
-                "--elmethis-accent-info",
-                "--elmethis-accent-success",
-                "--elmethis-accent-important",
-                "--elmethis-accent-warning",
-                "--elmethis-accent-error",
-                "--elmethis-accent-link",
-                "--elmethis-accent-link-visited",
+                "--elmethis-color-accent-info",
+                "--elmethis-color-accent-success",
+                "--elmethis-color-accent-important",
+                "--elmethis-color-accent-warning",
+                "--elmethis-color-accent-error",
+                "--elmethis-color-accent-link",
+                "--elmethis-color-accent-link-visited",
               ].map((name) => (
                 <div
                   key={name}

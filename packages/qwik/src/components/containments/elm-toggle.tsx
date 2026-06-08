@@ -90,7 +90,7 @@ export const ElmToggle = component$<ElmToggleProps>((props) => {
               monochrome
                 ? "var(--elmethis-color-neutral-weak)"
                 : isOpen.value
-                  ? "var(--elmethis-accent-error)"
+                  ? "var(--elmethis-color-accent-error)"
                   : "var(--elmethis-color-primary)"
             }
           />

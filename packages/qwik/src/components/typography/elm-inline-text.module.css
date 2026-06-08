@@ -54,7 +54,7 @@
 
 .link {
   all: unset;
-  color: var(--elmethis-accent-link);
+  color: var(--elmethis-color-accent-link);
   box-sizing: border-box;
   padding: 0 0.25rem;
   font-size: var(--elmethis-scoped-font-size);
@@ -77,12 +77,12 @@
   }
 
   &:visited {
-    color: var(--elmethis-accent-link-visited);
-    border-bottom: dashed 1px var(--elmethis-accent-link-visited);
+    color: var(--elmethis-color-accent-link-visited);
+    border-bottom: dashed 1px var(--elmethis-color-accent-link-visited);
 
     &:hover {
       background-color: oklch(
-        from var(--elmethis-accent-link-visited) l c h / 20%
+        from var(--elmethis-color-accent-link-visited) l c h / 20%
       );
     }
   }

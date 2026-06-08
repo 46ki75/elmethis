@@ -85,7 +85,7 @@
 
 .requierd {
   padding-inline: 0.25rem;
-  color: var(--elmethis-accent-error);
+  color: var(--elmethis-color-accent-error);
   font-weight: bold;
 }
 

@@ -15,14 +15,17 @@ export type AlertType = "note" | "tip" | "important" | "warning" | "caution";
 
 const COLOR_MAP: Record<AlertType, { code: string; icon: string }> =
   Object.freeze({
-    note: { code: "var(--elmethis-accent-info)", icon: mdiInformation },
-    tip: { code: "var(--elmethis-accent-success)", icon: mdiLightbulbOn },
+    note: { code: "var(--elmethis-color-accent-info)", icon: mdiInformation },
+    tip: { code: "var(--elmethis-color-accent-success)", icon: mdiLightbulbOn },
     important: {
-      code: "var(--elmethis-accent-important)",
+      code: "var(--elmethis-color-accent-important)",
       icon: mdiShieldAlert,
     },
-    warning: { code: "var(--elmethis-accent-warning)", icon: mdiAlert },
-    caution: { code: "var(--elmethis-accent-error)", icon: mdiAlertOctagram },
+    warning: { code: "var(--elmethis-color-accent-warning)", icon: mdiAlert },
+    caution: {
+      code: "var(--elmethis-color-accent-error)",
+      icon: mdiAlertOctagram,
+    },
   } as const);
 
 export interface ElmCalloutProps extends PropsOf<"aside"> {
