@@ -90,14 +90,14 @@ export const ElmColorTokenSample = component$<ElmColorTokenSampleProps>(
               <div>
                 <ColorSample
                   variables={[
-                    "--elmethis-color-red",
-                    "--elmethis-color-orange",
-                    "--elmethis-color-yellow",
-                    "--elmethis-color-green",
-                    "--elmethis-color-cyan",
-                    "--elmethis-color-blue",
-                    "--elmethis-color-purple",
-                    "--elmethis-color-magenta",
+                    "--elmethis-primitive-color-red",
+                    "--elmethis-primitive-color-orange",
+                    "--elmethis-primitive-color-yellow",
+                    "--elmethis-primitive-color-green",
+                    "--elmethis-primitive-color-cyan",
+                    "--elmethis-primitive-color-blue",
+                    "--elmethis-primitive-color-purple",
+                    "--elmethis-primitive-color-magenta",
                   ]}
                 />
               </div>

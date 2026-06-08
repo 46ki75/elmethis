@@ -36,34 +36,34 @@
 
 :root {
   /* ANSI */
-  --elmethis-color-red: #ae6e6e;
-  --elmethis-color-orange: #b8816e;
-  --elmethis-color-yellow: #bba676;
-  --elmethis-color-green: #61a17a;
-  --elmethis-color-cyan: #60a097;
-  --elmethis-color-blue: #6b80a0;
-  --elmethis-color-purple: #8a6ea5;
-  --elmethis-color-magenta: #b17396;
+  --elmethis-primitive-color-red: #ae6e6e;
+  --elmethis-primitive-color-orange: #b8816e;
+  --elmethis-primitive-color-yellow: #bba676;
+  --elmethis-primitive-color-green: #61a17a;
+  --elmethis-primitive-color-cyan: #60a097;
+  --elmethis-primitive-color-blue: #6b80a0;
+  --elmethis-primitive-color-purple: #8a6ea5;
+  --elmethis-primitive-color-magenta: #b17396;
 
-  --elmethis-color-slate-100: #d7d9e1;
-  --elmethis-color-slate-200: #b0b5be;
-  --elmethis-color-slate-300: #949ba7;
-  --elmethis-color-slate-400: #6c7483;
-  --elmethis-color-slate-500: #555b67;
-  --elmethis-color-slate-600: #4e535d;
-  --elmethis-color-slate-700: #393e46;
-  --elmethis-color-slate-800: #31353a;
-  --elmethis-color-slate-900: #242629;
+  --elmethis-primitive-color-slate-100: #d7d9e1;
+  --elmethis-primitive-color-slate-200: #b0b5be;
+  --elmethis-primitive-color-slate-300: #949ba7;
+  --elmethis-primitive-color-slate-400: #6c7483;
+  --elmethis-primitive-color-slate-500: #555b67;
+  --elmethis-primitive-color-slate-600: #4e535d;
+  --elmethis-primitive-color-slate-700: #393e46;
+  --elmethis-primitive-color-slate-800: #31353a;
+  --elmethis-primitive-color-slate-900: #242629;
 
-  --elmethis-color-gold-100: #f7f5f5;
-  --elmethis-color-gold-200: #efecea;
-  --elmethis-color-gold-300: #d9d3cc;
-  --elmethis-color-gold-400: #d4c6ba;
-  --elmethis-color-gold-500: #bbada1;
-  --elmethis-color-gold-600: #b3a090;
-  --elmethis-color-gold-700: #ac936d;
-  --elmethis-color-gold-800: #8b7554;
-  --elmethis-color-gold-900: #705d40;
+  --elmethis-primitive-color-gold-100: #f7f5f5;
+  --elmethis-primitive-color-gold-200: #efecea;
+  --elmethis-primitive-color-gold-300: #d9d3cc;
+  --elmethis-primitive-color-gold-400: #d4c6ba;
+  --elmethis-primitive-color-gold-500: #bbada1;
+  --elmethis-primitive-color-gold-600: #b3a090;
+  --elmethis-primitive-color-gold-700: #ac936d;
+  --elmethis-primitive-color-gold-800: #8b7554;
+  --elmethis-primitive-color-gold-900: #705d40;
 
   /*
     REFACTORING IN PROGRESS!!!
@@ -90,53 +90,53 @@
   /* LIGHT */
 
   /* Header background */
-  --elmethis-color-surface-sunken: var(--elmethis-color-gold-300);
+  --elmethis-color-surface-sunken: var(--elmethis-primitive-color-gold-300);
   /* Body background */
-  --elmethis-color-surface-base: var(--elmethis-color-gold-200);
+  --elmethis-color-surface-base: var(--elmethis-primitive-color-gold-200);
   /* a surface lifted above its neighbors */
-  --elmethis-color-surface-raised: var(--elmethis-color-gold-100);
+  --elmethis-color-surface-raised: var(--elmethis-primitive-color-gold-100);
 
   --elmethis-color-primary-hover: oklch(from #c1a882 l c h / 25%);
 
-  --elmethis-color-neutral-weak: var(--elmethis-color-slate-400);
-  --elmethis-color-neutral: var(--elmethis-color-slate-500);
-  --elmethis-color-neutral-strong: var(--elmethis-color-slate-600);
+  --elmethis-color-neutral-weak: var(--elmethis-primitive-color-slate-400);
+  --elmethis-color-neutral: var(--elmethis-primitive-color-slate-500);
+  --elmethis-color-neutral-strong: var(--elmethis-primitive-color-slate-600);
 
-  --elmethis-color-primary-weak: var(--elmethis-color-gold-600);
-  --elmethis-color-primary: var(--elmethis-color-gold-700);
-  --elmethis-color-primary-strong: var(--elmethis-color-gold-800);
+  --elmethis-color-primary-weak: var(--elmethis-primitive-color-gold-600);
+  --elmethis-color-primary: var(--elmethis-primitive-color-gold-700);
+  --elmethis-color-primary-strong: var(--elmethis-primitive-color-gold-800);
 
   --elmethis-box-shadow-color: oklch(from #3e434b l c h / 0.25);
 
-  --elmethis-color-accent-info: var(--elmethis-color-blue);
-  --elmethis-color-accent-success: var(--elmethis-color-green);
-  --elmethis-color-accent-important: var(--elmethis-color-purple);
-  --elmethis-color-accent-warning: var(--elmethis-color-yellow);
-  --elmethis-color-accent-error: var(--elmethis-color-red);
+  --elmethis-color-accent-info: var(--elmethis-primitive-color-blue);
+  --elmethis-color-accent-success: var(--elmethis-primitive-color-green);
+  --elmethis-color-accent-important: var(--elmethis-primitive-color-purple);
+  --elmethis-color-accent-warning: var(--elmethis-primitive-color-yellow);
+  --elmethis-color-accent-error: var(--elmethis-primitive-color-red);
 
-  --elmethis-color-accent-link: var(--elmethis-color-blue);
-  --elmethis-color-accent-link-visited: var(--elmethis-color-purple);
+  --elmethis-color-accent-link: var(--elmethis-primitive-color-blue);
+  --elmethis-color-accent-link-visited: var(--elmethis-primitive-color-purple);
 }
 
 [data-theme="dark"] {
   /* DARK */
 
   /* Header background */
-  --elmethis-color-surface-sunken: var(--elmethis-color-slate-800);
+  --elmethis-color-surface-sunken: var(--elmethis-primitive-color-slate-800);
   /* Body background */
-  --elmethis-color-surface-base: var(--elmethis-color-slate-700);
+  --elmethis-color-surface-base: var(--elmethis-primitive-color-slate-700);
   /* Container background */
-  --elmethis-color-surface-raised: var(--elmethis-color-slate-600);
+  --elmethis-color-surface-raised: var(--elmethis-primitive-color-slate-600);
 
   --elmethis-color-primary-hover: oklch(from #c1a882 l c h / 20%);
 
-  --elmethis-color-neutral-weak: var(--elmethis-color-slate-300);
-  --elmethis-color-neutral: var(--elmethis-color-slate-200);
-  --elmethis-color-neutral-strong: var(--elmethis-color-slate-100);
+  --elmethis-color-neutral-weak: var(--elmethis-primitive-color-slate-300);
+  --elmethis-color-neutral: var(--elmethis-primitive-color-slate-200);
+  --elmethis-color-neutral-strong: var(--elmethis-primitive-color-slate-100);
 
-  --elmethis-color-primary-weak: var(--elmethis-color-gold-600);
-  --elmethis-color-primary: var(--elmethis-color-gold-500);
-  --elmethis-color-primary-strong: var(--elmethis-color-gold-400);
+  --elmethis-color-primary-weak: var(--elmethis-primitive-color-gold-600);
+  --elmethis-color-primary: var(--elmethis-primitive-color-gold-500);
+  --elmethis-color-primary-strong: var(--elmethis-primitive-color-gold-400);
 
-  --elmethis-box-shadow-color: var(--elmethis-color-slate-900);
+  --elmethis-box-shadow-color: var(--elmethis-primitive-color-slate-900);
 }
