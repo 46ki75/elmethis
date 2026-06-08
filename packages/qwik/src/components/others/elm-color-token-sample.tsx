@@ -74,8 +74,7 @@ export const ElmColorTokenSample = component$<ElmColorTokenSampleProps>(
 
               {[
                 "--elmethis-color-surface-raised",
-                "--elmethis-color-neutral-container-enabled",
-                "--elmethis-color-neutral-container-disabled",
+                "--elmethis-color-surface-sunken",
               ].map((name) => (
                 <div
                   key={name}
@@ -84,7 +83,7 @@ export const ElmColorTokenSample = component$<ElmColorTokenSampleProps>(
                     backgroundColor: `var(${name})`,
                   }}
                 >
-                  <ElmInlineText>{name}</ElmInlineText>
+                  {name}
                 </div>
               ))}
 

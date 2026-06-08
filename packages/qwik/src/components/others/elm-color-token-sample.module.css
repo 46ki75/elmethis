@@ -19,6 +19,11 @@
   .container {
     border-radius: 0.25rem;
     padding: 2rem 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: gray;
+    font-family: monospace;
   }
 
   .footer {

@@ -16,12 +16,12 @@
   transition:
     border-color 200ms,
     background-color 200ms;
-  background-color: var(--elmethis-color-neutral-container-enabled);
+  background-color: var(--elmethis-color-surface-raised);
   box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
   cursor: pointer;
 
   &.disabled {
-    background-color: var(--elmethis-color-neutral-container-disabled);
+    background-color: var(--elmethis-color-surface-sunken);
   }
 
   &.active {

@@ -59,7 +59,7 @@
   --elmethis-color-slate-300: #949ba7;
   --elmethis-color-slate-400: #6c7483;
   --elmethis-color-slate-500: #555b67;
-  --elmethis-color-slate-600: #3e434b;
+  --elmethis-color-slate-600: #4e535d;
   --elmethis-color-slate-700: #393e46;
   --elmethis-color-slate-800: #31353a;
   --elmethis-color-slate-900: #242629;
@@ -106,8 +106,6 @@
   --elmethis-color-surface-raised: var(--elmethis-color-gold-100);
 
   --elmethis-color-primary-hover: oklch(from #c1a882 l c h / 25%);
-  --elmethis-color-neutral-container-enabled: oklch(from white l c h / 75%);
-  --elmethis-color-neutral-container-disabled: oklch(from gray l c h / 12.5%);
 
   --elmethis-color-neutral-weak: var(--elmethis-color-slate-400);
   --elmethis-color-neutral: var(--elmethis-color-slate-500);
@@ -124,15 +122,13 @@
   /* DARK */
 
   /* Header background */
-  --elmethis-color-surface-sunken: var(--elmethis-color-slate-900);
+  --elmethis-color-surface-sunken: var(--elmethis-color-slate-800);
   /* Body background */
-  --elmethis-color-surface-base: var(--elmethis-color-slate-800);
+  --elmethis-color-surface-base: var(--elmethis-color-slate-700);
   /* Container background */
-  --elmethis-color-surface-raised: var(--elmethis-color-slate-700);
+  --elmethis-color-surface-raised: var(--elmethis-color-slate-600);
 
   --elmethis-color-primary-hover: oklch(from #c1a882 l c h / 20%);
-  --elmethis-color-neutral-container-enabled: oklch(from white l c h / 12.5%);
-  --elmethis-color-neutral-container-disabled: oklch(from black l c h / 25%);
 
   --elmethis-color-neutral-weak: var(--elmethis-color-slate-300);
   --elmethis-color-neutral: var(--elmethis-color-slate-200);
