@@ -64,8 +64,8 @@
   --elmethis-color-slate-800: #31353a;
   --elmethis-color-slate-900: #242629;
 
-  --elmethis-color-gold-100: #efecea;
-  --elmethis-color-gold-200: #ebe6e2;
+  --elmethis-color-gold-100: #f7f5f5;
+  --elmethis-color-gold-200: #efecea;
   --elmethis-color-gold-300: #d9d3cc;
   --elmethis-color-gold-400: #d4c6ba;
   --elmethis-color-gold-500: #bbada1;
@@ -116,8 +116,15 @@
 
   /* LIGHT */
 
+  /* Header background */
+  --elmethis-color-bg-strong: var(--elmethis-color-gold-300);
+  /* Body background */
+  --elmethis-color-bg: var(--elmethis-color-gold-200);
+  /* Container background */
+  --elmethis-color-bg-weak: var(--elmethis-color-gold-100);
+
   --elmethis-color-primary-hover: oklch(from #c1a882 l c h / 25%);
-  --elmethis-color-mono-container-default: #f7f5f5;
+  --elmethis-color-mono-container-default: var(--elmethis-color-bg-weak);
   --elmethis-color-mono-container-enabled: oklch(from white l c h / 75%);
   --elmethis-color-mono-container-disabled: oklch(from gray l c h / 12.5%);
 
@@ -131,18 +138,21 @@
   --elmethis-color-primary-fg: var(--elmethis-color-gold-700);
   --elmethis-color-primary-fg-strong: var(--elmethis-color-gold-800);
 
-  --elmethis-color-bg-strong: var(--elmethis-color-gold-300);
-  --elmethis-color-bg: var(--elmethis-color-gold-200);
-  --elmethis-color-bg-weak: var(--elmethis-color-gold-100);
-
   --elmethis-box-shadow-color: oklch(from #3e434b l c h / 0.25);
 }
 
 [data-theme="dark"] {
   /* DARK */
 
+  /* Header background */
+  --elmethis-color-bg-strong: var(--elmethis-color-slate-900);
+  /* Body background */
+  --elmethis-color-bg: var(--elmethis-color-slate-800);
+  /* Container background */
+  --elmethis-color-bg-weak: var(--elmethis-color-slate-700);
+
   --elmethis-color-primary-hover: oklch(from #c1a882 l c h / 20%);
-  --elmethis-color-mono-container-default: #2b2f35;
+  --elmethis-color-mono-container-default: var(--elmethis-color-bg-weak);
   --elmethis-color-mono-container-enabled: oklch(from white l c h / 12.5%);
   --elmethis-color-mono-container-disabled: oklch(from black l c h / 25%);
 
@@ -155,10 +165,6 @@
   --elmethis-color-primary-fg-weak: var(--elmethis-color-gold-600);
   --elmethis-color-primary-fg: var(--elmethis-color-gold-500);
   --elmethis-color-primary-fg-strong: var(--elmethis-color-gold-400);
-
-  --elmethis-color-bg-strong: var(--elmethis-color-slate-900);
-  --elmethis-color-bg: var(--elmethis-color-slate-800);
-  --elmethis-color-bg-weak: var(--elmethis-color-slate-700);
 
   --elmethis-box-shadow-color: var(--elmethis-color-slate-900);
 }
