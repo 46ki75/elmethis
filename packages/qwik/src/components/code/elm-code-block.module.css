@@ -10,7 +10,7 @@
   margin-block-start: var(--elmethis-margin-block-start);
   padding: 0.25rem;
   border-radius: 0.25rem;
-  background-color: var(--elmethis-color-mono-container-default);
+  background-color: var(--elmethis-color-surface-raised);
   box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
 }
 

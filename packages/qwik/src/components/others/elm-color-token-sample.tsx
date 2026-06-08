@@ -36,14 +36,14 @@ export const ElmColorTokenSample = component$<ElmColorTokenSampleProps>(
             <header
               class={styles.header}
               style={{
-                backgroundColor: "var(--elmethis-color-bg-strong)",
+                backgroundColor: "var(--elmethis-color-surface-sunken)",
               }}
             >
-              <span>--elmethis-color-bg-strong</span>
+              <span>--elmethis-color-surface-sunken</span>
             </header>
 
             <div style={{ textAlign: "center", color: "gray" }}>
-              --elmethis-color-bg-weak
+              --elmethis-color-bg
             </div>
 
             <div class={styles.body}>
@@ -73,7 +73,7 @@ export const ElmColorTokenSample = component$<ElmColorTokenSampleProps>(
               ))}
 
               {[
-                "--elmethis-color-mono-container-default",
+                "--elmethis-color-surface-raised",
                 "--elmethis-color-mono-container-enabled",
                 "--elmethis-color-mono-container-disabled",
               ].map((name) => (

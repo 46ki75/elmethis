@@ -14,7 +14,7 @@
   padding: 2px 0.5em;
   font-size: calc(1em - 2px);
   border-radius: 0.125rem;
-  background-color: var(--elmethis-color-mono-container-default);
+  background-color: var(--elmethis-color-surface-raised);
   font-family: "Source Code Pro", monospace;
 }
 
@@ -22,7 +22,7 @@
   padding: 0.125rem 0.25rem;
   position: relative;
   border-radius: 0.125rem;
-  background-color: var(--elmethis-color-mono-container-default);
+  background-color: var(--elmethis-color-surface-raised);
   border: solid 1px var(--elmethis-color-mono-bg);
 
   &::before {
@@ -95,7 +95,7 @@
   overflow: hidden;
   border-radius: 0.25rem;
   box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
-  background-color: var(--elmethis-color-mono-container-default);
+  background-color: var(--elmethis-color-surface-raised);
 }
 
 .ogp-text {

@@ -117,14 +117,13 @@
   /* LIGHT */
 
   /* Header background */
-  --elmethis-color-bg-strong: var(--elmethis-color-gold-300);
+  --elmethis-color-surface-sunken: var(--elmethis-color-gold-300);
   /* Body background */
-  --elmethis-color-bg: var(--elmethis-color-gold-200);
-  /* Container background */
-  --elmethis-color-bg-weak: var(--elmethis-color-gold-100);
+  --elmethis-color-surface-base: var(--elmethis-color-gold-200);
+  /* a surface lifted above its neighbors */
+  --elmethis-color-surface-raised: var(--elmethis-color-gold-100);
 
   --elmethis-color-primary-hover: oklch(from #c1a882 l c h / 25%);
-  --elmethis-color-mono-container-default: var(--elmethis-color-bg-weak);
   --elmethis-color-mono-container-enabled: oklch(from white l c h / 75%);
   --elmethis-color-mono-container-disabled: oklch(from gray l c h / 12.5%);
 
@@ -145,14 +144,13 @@
   /* DARK */
 
   /* Header background */
-  --elmethis-color-bg-strong: var(--elmethis-color-slate-900);
+  --elmethis-color-surface-sunken: var(--elmethis-color-slate-900);
   /* Body background */
-  --elmethis-color-bg: var(--elmethis-color-slate-800);
+  --elmethis-color-surface-base: var(--elmethis-color-slate-800);
   /* Container background */
-  --elmethis-color-bg-weak: var(--elmethis-color-slate-700);
+  --elmethis-color-surface-raised: var(--elmethis-color-slate-700);
 
   --elmethis-color-primary-hover: oklch(from #c1a882 l c h / 20%);
-  --elmethis-color-mono-container-default: var(--elmethis-color-bg-weak);
   --elmethis-color-mono-container-enabled: oklch(from white l c h / 12.5%);
   --elmethis-color-mono-container-disabled: oklch(from black l c h / 25%);
 

@@ -8,7 +8,7 @@
   border-radius: 0.25rem;
   box-shadow: 0 0 0.125rem oklch(from black l c h / 10%);
   overflow: hidden;
-  background-color: var(--elmethis-color-mono-container-default);
+  background-color: var(--elmethis-color-surface-raised);
 }
 
 .tab-container {
