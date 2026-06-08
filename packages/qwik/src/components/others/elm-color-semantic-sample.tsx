@@ -25,6 +25,18 @@ const FOREGROUND_TOKENS = [
   "--elmethis-color-accent-link-visited",
 ];
 
+const NEUTRAL_TOKENS = [
+  "--elmethis-color-neutral-weak",
+  "--elmethis-color-neutral",
+  "--elmethis-color-neutral-strong",
+];
+
+const PRIMARY_TOKENS = [
+  "--elmethis-color-primary-weak",
+  "--elmethis-color-primary",
+  "--elmethis-color-primary-strong",
+];
+
 const PRIMITIVE_TOKENS = [
   "--elmethis-primitive-color-red-500",
   "--elmethis-primitive-color-orange-500",
@@ -138,6 +150,16 @@ export const ElmColorSemanticSample = component$<ElmColorSemanticSampleProps>(
                     <span>{surface}</span>
                   </div>
                 ))}
+              </div>
+
+              <div class={styles.group}>
+                <span class={styles["section-title"]}>Neutral</span>
+                <ColorSample variables={NEUTRAL_TOKENS} />
+              </div>
+
+              <div class={styles.group}>
+                <span class={styles["section-title"]}>Primary</span>
+                <ColorSample variables={PRIMARY_TOKENS} />
               </div>
 
               <div class={styles.group}>

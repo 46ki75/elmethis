@@ -21,12 +21,16 @@
 }
 
 .normal {
-  color: oklch(from white l c h / 75%);
-  background-color: var(--elmethis-color-neutral-weak);
+  color: oklch(
+    from contrast-color(var(--elmethis-color-neutral-strong)) l c h / 65%
+  );
+  background-color: var(--elmethis-color-neutral-strong);
 }
 
 .primary {
-  color: oklch(from white l c h / 75%);
+  color: oklch(
+    from contrast-color(var(--elmethis-color-primary-weak)) l c h / 65%
+  );
   background-color: var(--elmethis-color-primary-weak);
 }
 
