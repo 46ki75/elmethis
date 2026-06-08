@@ -135,10 +135,10 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
               <div class={styles["error"]}>
                 <ElmMdiIcon
                   d={mdiAlert}
-                  color="var(--elmethis-accent-error)"
+                  color="var(--elmethis-color-accent-error)"
                   style={{ flexShrink: 0 }}
                 />
-                <ElmInlineText color="var(--elmethis-accent-error)">
+                <ElmInlineText color="var(--elmethis-color-accent-error)">
                   {state.error}
                 </ElmInlineText>
               </div>

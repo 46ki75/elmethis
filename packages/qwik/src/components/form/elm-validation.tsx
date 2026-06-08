@@ -17,7 +17,7 @@ export const ElmValidation = component$<ElmValidationProps>(
     class: className,
     style,
     text,
-    validColor = "var(--elmethis-accent-success)",
+    validColor = "var(--elmethis-color-accent-success)",
     isValid,
     ...props
   }) => {

@@ -64,12 +64,12 @@
           cursor: pointer;
           gap: 0.5rem;
           box-shadow: 0 0 0.25rem rgb(0 0 0 / 10%);
-          background-color: var(--elmethis-color-mono-container-default);
+          background-color: var(--elmethis-color-surface-raised);
           border-radius: 1rem;
           transition: opacity 200ms;
 
           .prompt-template-tip-icon {
-            color: var(--elmethis-color-primary-fg);
+            color: var(--elmethis-color-primary);
           }
 
           &:hover {

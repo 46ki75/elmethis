@@ -8,7 +8,7 @@
   border-radius: 0.25rem;
   box-shadow: 0 0 0.125rem oklch(from black l c h / 10%);
   overflow: hidden;
-  background-color: var(--elmethis-color-mono-container-default);
+  background-color: var(--elmethis-color-surface-raised);
 }
 
 .tab-container {
@@ -32,21 +32,17 @@
     background-color 200ms,
     border-color 200ms;
 
-  color: var(--elmethis-scoped-color, var(--elmethis-color-mono-fg));
+  color: var(--elmethis-scoped-color, var(--elmethis-color-neutral));
   user-select: none;
 
   &.active {
-    background-color: oklch(
-      from var(--elmethis-color-primary-common-fg) l c h / 5%
-    );
-    border-bottom-color: var(--elmethis-color-primary-common-fg);
+    background-color: oklch(from var(--elmethis-color-primary) l c h / 5%);
+    border-bottom-color: var(--elmethis-color-primary);
     cursor: default;
   }
 
   &:hover {
-    background-color: oklch(
-      from var(--elmethis-color-primary-common-fg) l c h / 5%
-    );
+    background-color: oklch(from var(--elmethis-color-primary) l c h / 5%);
   }
 }
 

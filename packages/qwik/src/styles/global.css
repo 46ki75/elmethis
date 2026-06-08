@@ -1,66 +1,58 @@
-/*
- * elmethis CSS token system
- *
- * Two layers:
- *   1. Primitives — theme-agnostic raw values (--elmethis-accent-*).
- *      Never reference these from component CSS. They exist so that
- *      semantic roles can reference them, and so future tokens can share
- *      the same palette.
- *   2. Semantic roles — theme-aware (--elmethis-color-*). Component CSS
- *      consumes these. Theme switching happens here, under
- *      [data-theme="dark"] — never inside individual component modules.
- *
- *      Within this layer, names containing `-common-`
- *      (e.g. --elmethis-color-mono-common-fg) stay identical across
- *      themes. Default to the non-`-common-` form so theming works
- *      automatically; reach for `-common-` only when you intentionally
- *      want a value that does not flip under [data-theme="dark"].
- *
- * Adding tokens:
- *   - Seed only values the codebase actually contains. No speculative tiers.
- *   - Color tokens earn their keep because of theme switching. Spacing /
- *     radius / duration / easing values stay as literals at the call site
- *     unless there is a concrete need to override them globally.
- *
- * Per-instance overrides (one paragraph's color, one icon's fill):
- *   use component-private CSS variables namespaced with
- *   `--elmethis-scoped-*` (e.g. --elmethis-scoped-color,
- *   --elmethis-scoped-font-size) written from props. The
- *   `--elmethis-scoped-*` prefix prevents collisions with consumer
- *   custom properties. NEVER write to a design-token --elmethis-* from
- *   a prop on the component's own root — the variable would leak into
- *   every descendant.
- *
- * See `variables.ts` for the public TypeScript contract.
- */
-
 :root {
-  /* ============================================================
-   * Primitive layer — raw values, theme-agnostic
-   * ============================================================ */
+  /* === PRIMITIVE LAYER === */
+  --elmethis-primitive-color-red-100: #e9dddd;
+  --elmethis-primitive-color-red-500: #ae6e6e;
+  --elmethis-primitive-color-red-900: #291313;
 
-  /* Accent palette (one value per role) */
-  --elmethis-accent-info: #6987b8;
-  --elmethis-accent-success: #59b57c;
-  --elmethis-accent-important: #9771bd;
-  --elmethis-accent-warning: #b8a36e;
-  --elmethis-accent-error: #b36472;
+  --elmethis-primitive-color-orange-100: #ebdfdb;
+  --elmethis-primitive-color-orange-500: #b8816e;
+  --elmethis-primitive-color-orange-900: #3f251c;
 
-  --elmethis-accent-link: #6987b8;
-  --elmethis-accent-link-visited: #9771bd;
+  --elmethis-primitive-color-yellow-100: #ebe6db;
+  --elmethis-primitive-color-yellow-500: #b09a66;
+  --elmethis-primitive-color-yellow-900: #332b19;
 
-  /* ============================================================
-   * Semantic layer — theme-aware roles, reference primitives
-   * ============================================================ */
+  --elmethis-primitive-color-green-100: #dde9e2;
+  --elmethis-primitive-color-green-500: #659878;
+  --elmethis-primitive-color-green-900: #15281d;
+
+  --elmethis-primitive-color-cyan-100: #dde9e7;
+  --elmethis-primitive-color-cyan-500: #6091a0;
+  --elmethis-primitive-color-cyan-900: #203b37;
+
+  --elmethis-primitive-color-blue-100: #dde2e9;
+  --elmethis-primitive-color-blue-500: #68779f;
+  --elmethis-primitive-color-blue-900: #242d3e;
+
+  --elmethis-primitive-color-purple-100: #e3dde9;
+  --elmethis-primitive-color-purple-500: #8d799f;
+  --elmethis-primitive-color-purple-900: #271836;
+
+  --elmethis-primitive-color-magenta-100: #eadce4;
+  --elmethis-primitive-color-magenta-500: #b17396;
+  --elmethis-primitive-color-magenta-900: #3c1f2f;
+
+  --elmethis-primitive-color-slate-100: #d7d9e1;
+  --elmethis-primitive-color-slate-200: #b0b5be;
+  --elmethis-primitive-color-slate-300: #949ba7;
+  --elmethis-primitive-color-slate-400: #6c7483;
+  --elmethis-primitive-color-slate-500: #555b67;
+  --elmethis-primitive-color-slate-600: #4e535d;
+  --elmethis-primitive-color-slate-700: #393e46;
+  --elmethis-primitive-color-slate-800: #31353a;
+  --elmethis-primitive-color-slate-900: #242629;
+
+  --elmethis-primitive-color-gold-100: #f7f5f5;
+  --elmethis-primitive-color-gold-200: #efecea;
+  --elmethis-primitive-color-gold-300: #d9d3cc;
+  --elmethis-primitive-color-gold-400: #d4c6ba;
+  --elmethis-primitive-color-gold-500: #bbada1;
+  --elmethis-primitive-color-gold-600: #b3a090;
+  --elmethis-primitive-color-gold-700: #ac936d;
+  --elmethis-primitive-color-gold-800: #8b7554;
+  --elmethis-primitive-color-gold-900: #705d40;
 
   /*
-    REFACTORING IN PROGRESS!!!
-
-    Goal:
-     - Eliminate conditional theming from all component CSS files (× [data-theme=""])
-     - Eliminate hard-coded colors from all component CSS files (× #FFFFFF)
-     - Eliminate calculated colors from all component CSS files (× oklch(from _ ...))
-
     Light:
       Background: Gold
       Foreground Normal: Slate
@@ -71,71 +63,107 @@
       Foreground Accent: Gold
    */
 
+  /* === SEMANTIC LAYER === */
+
   /* COMMON */
-
-  /* --elmethis-color-mono-common-bg-weak: #d7d9e1;
-  --elmethis-color-mono-common-bg: #b0b5be;
-  --elmethis-color-mono-common-bg-strong: #949ba7;
-
-  --elmethis-color-mono-common-fg-weak: #6c7483;
-  --elmethis-color-mono-common-fg: #555b67;
-  --elmethis-color-mono-common-fg-strong: #3e434b; */
-
-  /* --elmethis-color-primary-common-bg-weak: #b3a090;
-  --elmethis-color-primary-common-bg: #bbada1;
-  --elmethis-color-primary-common-bg-strong: #d4c6ba; */
-
-  /* --elmethis-color-primary-common-fg-weak: #c1a882;
-  --elmethis-color-primary-common-fg: #ac936d;
-  --elmethis-color-primary-common-fg-strong: #967e5b; */
-
   --elmethis-margin-block-start: 2rem;
 
-  /* LIGHT */
+  --elmethis-color-accent-link: var(--elmethis-primitive-color-blue-500);
+  --elmethis-color-accent-link-visited: var(
+    --elmethis-primitive-color-purple-500
+  );
+
+  /* LIGHT THEME */
+
+  /* Header background */
+  --elmethis-color-surface-sunken: var(--elmethis-primitive-color-gold-300);
+  /* Body background */
+  --elmethis-color-surface-base: var(--elmethis-primitive-color-gold-200);
+  /* a surface lifted above its neighbors */
+  --elmethis-color-surface-raised: var(--elmethis-primitive-color-gold-100);
 
   --elmethis-color-primary-hover: oklch(from #c1a882 l c h / 25%);
-  --elmethis-color-mono-container-default: #f7f5f5;
-  --elmethis-color-mono-container-enabled: oklch(from white l c h / 75%);
-  --elmethis-color-mono-container-disabled: oklch(from gray l c h / 12.5%);
 
-  --elmethis-color-mono-bg: var(--elmethis-color-mono-common-bg);
+  --elmethis-color-neutral-weak: var(--elmethis-primitive-color-slate-300);
+  --elmethis-color-neutral: var(--elmethis-primitive-color-slate-400);
+  --elmethis-color-neutral-strong: var(--elmethis-primitive-color-slate-600);
 
-  --elmethis-color-mono-fg-weak: #6c7483;
-  --elmethis-color-mono-fg: #555b67;
-  --elmethis-color-mono-fg-strong: #3e434b;
-
-  --elmethis-color-primary-fg-weak: #bca88a;
-  --elmethis-color-primary-fg: #ac936d;
-  --elmethis-color-primary-fg-strong: #8b7554;
-
-  --elmethis-color-bg-strong: #d9d3cc;
-  --elmethis-color-bg: #ebe6e2;
-  --elmethis-color-bg-weak: #efecea;
+  --elmethis-color-primary-weak: var(--elmethis-primitive-color-gold-600);
+  --elmethis-color-primary: var(--elmethis-primitive-color-gold-700);
+  --elmethis-color-primary-strong: var(--elmethis-primitive-color-gold-800);
 
   --elmethis-box-shadow-color: oklch(from #3e434b l c h / 0.25);
+
+  --elmethis-color-accent-info: var(--elmethis-primitive-color-blue-500);
+  --elmethis-color-accent-info-surface: var(
+    --elmethis-primitive-color-blue-100
+  );
+
+  --elmethis-color-accent-success: var(--elmethis-primitive-color-green-500);
+  --elmethis-color-accent-success-surface: var(
+    --elmethis-primitive-color-green-100
+  );
+
+  --elmethis-color-accent-important: var(--elmethis-primitive-color-purple-500);
+  --elmethis-color-accent-important-surface: var(
+    --elmethis-primitive-color-purple-100
+  );
+
+  --elmethis-color-accent-warning: var(--elmethis-primitive-color-yellow-500);
+  --elmethis-color-accent-warning-surface: var(
+    --elmethis-primitive-color-yellow-100
+  );
+
+  --elmethis-color-accent-error: var(--elmethis-primitive-color-red-500);
+  --elmethis-color-accent-error-surface: var(
+    --elmethis-primitive-color-red-100
+  );
 }
 
 [data-theme="dark"] {
-  /* DARK */
+  /* DARK THEME */
+
+  /* Header background */
+  --elmethis-color-surface-sunken: var(--elmethis-primitive-color-slate-800);
+  /* Body background */
+  --elmethis-color-surface-base: var(--elmethis-primitive-color-slate-700);
+  /* Container background */
+  --elmethis-color-surface-raised: var(--elmethis-primitive-color-slate-600);
 
   --elmethis-color-primary-hover: oklch(from #c1a882 l c h / 20%);
-  --elmethis-color-mono-container-default: #2b2f35;
-  --elmethis-color-mono-container-enabled: oklch(from white l c h / 12.5%);
-  --elmethis-color-mono-container-disabled: oklch(from black l c h / 25%);
 
-  --elmethis-color-mono-bg: var(--elmethis-color-mono-common-fg);
+  --elmethis-color-neutral-weak: var(--elmethis-primitive-color-slate-300);
+  --elmethis-color-neutral: var(--elmethis-primitive-color-slate-200);
+  --elmethis-color-neutral-strong: var(--elmethis-primitive-color-slate-100);
 
-  --elmethis-color-mono-fg-weak: #949ba7;
-  --elmethis-color-mono-fg: #b0b5be;
-  --elmethis-color-mono-fg-strong: #d7d9e1;
+  --elmethis-color-primary-weak: var(--elmethis-primitive-color-gold-600);
+  --elmethis-color-primary: var(--elmethis-primitive-color-gold-500);
+  --elmethis-color-primary-strong: var(--elmethis-primitive-color-gold-400);
 
-  --elmethis-color-primary-fg-weak: #b3a090;
-  --elmethis-color-primary-fg: #bbada1;
-  --elmethis-color-primary-fg-strong: #d4c6ba;
+  --elmethis-box-shadow-color: var(--elmethis-primitive-color-slate-900);
 
-  --elmethis-color-bg-strong: #242629;
-  --elmethis-color-bg: #31353a;
-  --elmethis-color-bg-weak: #393e46;
+  --elmethis-color-accent-info: var(--elmethis-primitive-color-blue-500);
+  --elmethis-color-accent-info-surface: var(
+    --elmethis-primitive-color-blue-900
+  );
 
-  --elmethis-box-shadow-color: #242629;
+  --elmethis-color-accent-success: var(--elmethis-primitive-color-green-500);
+  --elmethis-color-accent-success-surface: var(
+    --elmethis-primitive-color-green-900
+  );
+
+  --elmethis-color-accent-important: var(--elmethis-primitive-color-purple-500);
+  --elmethis-color-accent-important-surface: var(
+    --elmethis-primitive-color-purple-900
+  );
+
+  --elmethis-color-accent-warning: var(--elmethis-primitive-color-yellow-500);
+  --elmethis-color-accent-warning-surface: var(
+    --elmethis-primitive-color-yellow-900
+  );
+
+  --elmethis-color-accent-error: var(--elmethis-primitive-color-red-500);
+  --elmethis-color-accent-error-surface: var(
+    --elmethis-primitive-color-red-900
+  );
 }

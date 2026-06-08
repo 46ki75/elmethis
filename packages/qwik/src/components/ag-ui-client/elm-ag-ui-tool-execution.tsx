@@ -126,8 +126,8 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
                 size="1rem"
                 color={
                   toolEventType === EventType.TOOL_CALL_START
-                    ? "var(--elmethis-accent-info)"
-                    : "var(--elmethis-accent-success)"
+                    ? "var(--elmethis-color-accent-info)"
+                    : "var(--elmethis-color-accent-success)"
                 }
               />
               <ElmInlineText>Preparing arguments...</ElmInlineText>
@@ -155,8 +155,8 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
                 color={
                   toolEventType === EventType.TOOL_CALL_ARGS ||
                   toolEventType === EventType.TOOL_CALL_END
-                    ? "var(--elmethis-accent-info)"
-                    : "var(--elmethis-accent-success)"
+                    ? "var(--elmethis-color-accent-info)"
+                    : "var(--elmethis-color-accent-success)"
                 }
               />
               <ElmInlineText>

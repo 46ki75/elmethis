@@ -82,7 +82,7 @@ export const ElmTextArea = component$<ElmTextAreaProps>((props) => {
           <ElmInlineText
             color={
               maxLength != null && value.value.length > maxLength
-                ? "var(--elmethis-accent-error)"
+                ? "var(--elmethis-color-accent-error)"
                 : "gray"
             }
             size="0.75rem"
