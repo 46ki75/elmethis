@@ -54,6 +54,26 @@
   --elmethis-accent-link: var(--elmethis-color-blue);
   --elmethis-accent-link-visited: var(--elmethis-color-purple);
 
+  --elmethis-color-slate-100: #d7d9e1;
+  --elmethis-color-slate-200: #b0b5be;
+  --elmethis-color-slate-300: #949ba7;
+  --elmethis-color-slate-400: #6c7483;
+  --elmethis-color-slate-500: #555b67;
+  --elmethis-color-slate-600: #3e434b;
+  --elmethis-color-slate-700: #393e46;
+  --elmethis-color-slate-800: #31353a;
+  --elmethis-color-slate-900: #242629;
+
+  --elmethis-color-gold-100: #efecea;
+  --elmethis-color-gold-200: #ebe6e2;
+  --elmethis-color-gold-300: #d9d3cc;
+  --elmethis-color-gold-400: #d4c6ba;
+  --elmethis-color-gold-500: #bbada1;
+  --elmethis-color-gold-600: #b3a090;
+  --elmethis-color-gold-700: #ac936d;
+  --elmethis-color-gold-800: #8b7554;
+  --elmethis-color-gold-900: #705d40;
+
   /*
     REFACTORING IN PROGRESS!!!
 
@@ -92,6 +112,8 @@
 
   --elmethis-margin-block-start: 2rem;
 
+  /* TODO: mono -> neutral */
+
   /* LIGHT */
 
   --elmethis-color-primary-hover: oklch(from #c1a882 l c h / 25%);
@@ -101,17 +123,17 @@
 
   --elmethis-color-mono-bg: var(--elmethis-color-mono-common-bg);
 
-  --elmethis-color-mono-fg-weak: #6c7483;
-  --elmethis-color-mono-fg: #555b67;
-  --elmethis-color-mono-fg-strong: #3e434b;
+  --elmethis-color-mono-fg-weak: var(--elmethis-color-slate-400);
+  --elmethis-color-mono-fg: var(--elmethis-color-slate-500);
+  --elmethis-color-mono-fg-strong: var(--elmethis-color-slate-600);
 
-  --elmethis-color-primary-fg-weak: #bca88a;
-  --elmethis-color-primary-fg: #ac936d;
-  --elmethis-color-primary-fg-strong: #8b7554;
+  --elmethis-color-primary-fg-weak: var(--elmethis-color-gold-600);
+  --elmethis-color-primary-fg: var(--elmethis-color-gold-700);
+  --elmethis-color-primary-fg-strong: var(--elmethis-color-gold-800);
 
-  --elmethis-color-bg-strong: #d9d3cc;
-  --elmethis-color-bg: #ebe6e2;
-  --elmethis-color-bg-weak: #efecea;
+  --elmethis-color-bg-strong: var(--elmethis-color-gold-300);
+  --elmethis-color-bg: var(--elmethis-color-gold-200);
+  --elmethis-color-bg-weak: var(--elmethis-color-gold-100);
 
   --elmethis-box-shadow-color: oklch(from #3e434b l c h / 0.25);
 }
@@ -126,17 +148,17 @@
 
   --elmethis-color-mono-bg: var(--elmethis-color-mono-common-fg);
 
-  --elmethis-color-mono-fg-weak: #949ba7;
-  --elmethis-color-mono-fg: #b0b5be;
-  --elmethis-color-mono-fg-strong: #d7d9e1;
+  --elmethis-color-mono-fg-weak: var(--elmethis-color-slate-300);
+  --elmethis-color-mono-fg: var(--elmethis-color-slate-200);
+  --elmethis-color-mono-fg-strong: var(--elmethis-color-slate-100);
 
-  --elmethis-color-primary-fg-weak: #b3a090;
-  --elmethis-color-primary-fg: #bbada1;
-  --elmethis-color-primary-fg-strong: #d4c6ba;
+  --elmethis-color-primary-fg-weak: var(--elmethis-color-gold-600);
+  --elmethis-color-primary-fg: var(--elmethis-color-gold-500);
+  --elmethis-color-primary-fg-strong: var(--elmethis-color-gold-400);
 
-  --elmethis-color-bg-strong: #242629;
-  --elmethis-color-bg: #31353a;
-  --elmethis-color-bg-weak: #393e46;
+  --elmethis-color-bg-strong: var(--elmethis-color-slate-900);
+  --elmethis-color-bg: var(--elmethis-color-slate-800);
+  --elmethis-color-bg-weak: var(--elmethis-color-slate-700);
 
-  --elmethis-box-shadow-color: #242629;
+  --elmethis-box-shadow-color: var(--elmethis-color-slate-900);
 }
