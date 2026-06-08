@@ -84,8 +84,8 @@
 
   --elmethis-color-primary-hover: oklch(from #c1a882 l c h / 25%);
 
-  --elmethis-color-neutral-weak: var(--elmethis-primitive-color-slate-400);
-  --elmethis-color-neutral: var(--elmethis-primitive-color-slate-500);
+  --elmethis-color-neutral-weak: var(--elmethis-primitive-color-slate-300);
+  --elmethis-color-neutral: var(--elmethis-primitive-color-slate-400);
   --elmethis-color-neutral-strong: var(--elmethis-primitive-color-slate-600);
 
   --elmethis-color-primary-weak: var(--elmethis-primitive-color-gold-600);
