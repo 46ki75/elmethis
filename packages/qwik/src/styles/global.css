@@ -73,6 +73,10 @@
     --elmethis-primitive-color-purple-500
   );
 
+  --elmethis-color-primary-hover: oklch(
+    from var(--elmethis-color-primary) l c h / 15%
+  );
+
   /* LIGHT THEME */
 
   /* Header background */
@@ -81,8 +85,6 @@
   --elmethis-color-surface-base: var(--elmethis-primitive-color-gold-200);
   /* a surface lifted above its neighbors */
   --elmethis-color-surface-raised: var(--elmethis-primitive-color-gold-100);
-
-  --elmethis-color-primary-hover: oklch(from #c1a882 l c h / 25%);
 
   --elmethis-color-neutral-weak: var(--elmethis-primitive-color-slate-300);
   --elmethis-color-neutral: var(--elmethis-primitive-color-slate-400);
@@ -129,8 +131,6 @@
   --elmethis-color-surface-base: var(--elmethis-primitive-color-slate-700);
   /* Container background */
   --elmethis-color-surface-raised: var(--elmethis-primitive-color-slate-600);
-
-  --elmethis-color-primary-hover: oklch(from #c1a882 l c h / 20%);
 
   --elmethis-color-neutral-weak: var(--elmethis-primitive-color-slate-300);
   --elmethis-color-neutral: var(--elmethis-primitive-color-slate-200);
