@@ -1,8 +1,5 @@
 import "./styles/global.css";
 
-// | Styles |
-export type { ElmethisCSSVariables } from "./styles/variables";
-
 // | A2UI |
 export {
   ElmA2ui,
