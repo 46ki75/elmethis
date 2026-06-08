@@ -11,11 +11,10 @@ import type { ElmethisCSSVariables } from "@styles/variables";
 
 export type ElmInlineTextCSSVariables = Pick<
   ElmethisCSSVariables,
-  | "--elmethis-text-color-light"
-  | "--elmethis-text-color-dark"
-  | "--elmethis-text-background-color-light"
-  | "--elmethis-text-background-color-dark"
->;
+  "--elmethis-color-neutral"
+> & {
+  "--elmethis-scoped-color"?: React.CSSProperties["color"];
+};
 
 interface InlineLinkProps {
   href?: string;
@@ -92,10 +91,7 @@ export const ElmInlineText = (props: ElmInlineTextProps) => {
     <span
       className={[styles.text, props.className].filter(Boolean).join(" ")}
       style={{
-        "--elmethis-text-color-light": props.color,
-        "--elmethis-text-color-dark": props.color,
-        "--elmethis-text-background-color-light": props.backgroundColor,
-        "--elmethis-text-background-color-dark": props.backgroundColor,
+        "--elmethis-scoped-color": props.color,
         color:
           props.color ??
           (props.backgroundColor
