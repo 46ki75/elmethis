@@ -1,6 +1,6 @@
 .paragraph {
   transition: opacity 800ms;
-  color: var(--elmethis-scoped-color, var(--elmethis-color-neutral-fg));
+  color: var(--elmethis-scoped-color, var(--elmethis-color-neutral));
   background-color: var(--elmethis-scoped-background-color, inherit);
   margin: 0;
   margin-block-start: var(--elmethis-margin-block-start);
@@ -9,7 +9,7 @@
     color: var(--elmethis-color-surface-raised);
     background-color: var(
       --elmethis-scoped-color,
-      var(--elmethis-color-neutral-fg)
+      var(--elmethis-color-neutral)
     );
   }
 }

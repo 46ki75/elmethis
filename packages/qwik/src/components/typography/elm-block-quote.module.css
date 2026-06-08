@@ -16,7 +16,7 @@
     width: 4px;
     height: 100%;
     background-color: oklch(
-      from var(--elmethis-color-neutral-fg-strong) l c h / 50%
+      from var(--elmethis-color-neutral-strong) l c h / 50%
     );
   }
 }
@@ -30,7 +30,7 @@
   position: absolute;
   content: "";
   opacity: 0.5;
-  color: var(--elmethis-color-neutral-fg-weak);
+  color: var(--elmethis-color-neutral-weak);
 
   &.icon-top-left {
     inset: 0.25rem auto auto 0.5rem;

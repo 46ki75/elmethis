@@ -1,5 +1,5 @@
 .wrapper {
-  --highlight-color: var(--elmethis-color-primary-fg-weak);
+  --highlight-color: var(--elmethis-color-primary-weak);
 
   user-select: none;
   position: relative;
@@ -39,7 +39,7 @@
     height: 0.75rem;
     transition: color 200ms;
     user-select: none;
-    color: var(--elmethis-color-neutral-fg);
+    color: var(--elmethis-color-neutral);
 
     &.label-active {
       color: var(--highlight-color);

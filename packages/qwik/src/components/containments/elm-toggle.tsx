@@ -65,8 +65,8 @@ export const ElmToggle = component$<ElmToggleProps>((props) => {
               d={mdiChevronRight}
               color={
                 monochrome
-                  ? "var(--elmethis-color-neutral-fg-weak)"
-                  : "var(--elmethis-color-primary-fg)"
+                  ? "var(--elmethis-color-neutral-weak)"
+                  : "var(--elmethis-color-primary)"
               }
               size="1rem"
             />
@@ -88,10 +88,10 @@ export const ElmToggle = component$<ElmToggleProps>((props) => {
             size="1rem"
             color={
               monochrome
-                ? "var(--elmethis-color-neutral-fg-weak)"
+                ? "var(--elmethis-color-neutral-weak)"
                 : isOpen.value
                   ? "var(--elmethis-accent-error)"
-                  : "var(--elmethis-color-primary-fg)"
+                  : "var(--elmethis-color-primary)"
             }
           />
         </span>

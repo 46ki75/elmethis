@@ -8,7 +8,7 @@
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  color: var(--elmethis-color-primary-fg);
+  color: var(--elmethis-color-primary);
   cursor: pointer;
   user-select: none;
   opacity: 1;

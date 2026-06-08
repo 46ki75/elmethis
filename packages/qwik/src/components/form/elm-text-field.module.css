@@ -35,7 +35,7 @@
 }
 
 .wrapper {
-  --highlight-color: var(--elmethis-color-primary-fg);
+  --highlight-color: var(--elmethis-color-primary);
 
   overflow: hidden;
   position: relative;
@@ -75,7 +75,7 @@
   line-height: 0.75rem;
   height: 0.75rem;
   transition: color 200ms;
-  color: var(--elmethis-color-neutral-fg);
+  color: var(--elmethis-color-neutral);
   user-select: none;
 
   &.label-active {
@@ -102,7 +102,7 @@
   box-sizing: border-box;
   padding: 0;
   width: 100%;
-  color: var(--elmethis-color-neutral-fg);
+  color: var(--elmethis-color-neutral);
   caret-color: var(--highlight-color);
 
   &::placeholder {
@@ -113,7 +113,7 @@
     color: var(--elmethis-color-surface-raised);
     background-color: var(
       --elmethis-scoped-color,
-      var(--elmethis-color-neutral-fg)
+      var(--elmethis-color-neutral)
     );
   }
 }

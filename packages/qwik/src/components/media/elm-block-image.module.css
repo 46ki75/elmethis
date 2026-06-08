@@ -56,7 +56,7 @@
 
   .caption-icon {
     flex: 1;
-    color: var(--elmethis-color-primary-fg);
+    color: var(--elmethis-color-primary);
   }
 }
 

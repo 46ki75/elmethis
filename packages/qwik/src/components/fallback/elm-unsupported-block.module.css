@@ -8,7 +8,7 @@
   align-items: center;
   gap: 1rem;
   border: 1px dashed
-    color-mix(in srgb, var(--elmethis-color-neutral-fg-weak) 50%, transparent);
+    color-mix(in srgb, var(--elmethis-color-neutral-weak) 50%, transparent);
 }
 
 .message {
@@ -19,7 +19,7 @@
 }
 
 .icon {
-  fill: var(--elmethis-color-neutral-fg-weak);
+  fill: var(--elmethis-color-neutral-weak);
 }
 
 .details {

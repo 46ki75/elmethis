@@ -21,11 +21,11 @@
     transform 100ms;
 
   .icon {
-    color: var(--elmethis-color-neutral-fg);
+    color: var(--elmethis-color-neutral);
   }
 
   &:hover {
-    background-color: oklch(from var(--elmethis-color-primary-fg) l c h / 25%);
+    background-color: oklch(from var(--elmethis-color-primary) l c h / 25%);
     transform: translateX(-1px) translateY(-1px);
   }
 
@@ -41,5 +41,5 @@
 
 .chevron {
   padding: 0 0.25rem;
-  color: var(--elmethis-color-primary-fg);
+  color: var(--elmethis-color-primary);
 }

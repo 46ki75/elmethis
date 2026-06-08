@@ -32,7 +32,7 @@
   animation-direction: alternate;
   animation-timing-function: ease-out;
   transition: background-color 400ms;
-  background-color: var(--elmethis-color-primary-fg);
+  background-color: var(--elmethis-color-primary);
 
   &:nth-last-of-type(1) {
     animation-delay: -100ms;

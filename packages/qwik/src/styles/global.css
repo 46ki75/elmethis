@@ -96,8 +96,6 @@
 
   --elmethis-margin-block-start: 2rem;
 
-  /* TODO: mono -> neutral */
-
   /* LIGHT */
 
   /* Header background */
@@ -111,13 +109,13 @@
   --elmethis-color-neutral-container-enabled: oklch(from white l c h / 75%);
   --elmethis-color-neutral-container-disabled: oklch(from gray l c h / 12.5%);
 
-  --elmethis-color-neutral-fg-weak: var(--elmethis-color-slate-400);
-  --elmethis-color-neutral-fg: var(--elmethis-color-slate-500);
-  --elmethis-color-neutral-fg-strong: var(--elmethis-color-slate-600);
+  --elmethis-color-neutral-weak: var(--elmethis-color-slate-400);
+  --elmethis-color-neutral: var(--elmethis-color-slate-500);
+  --elmethis-color-neutral-strong: var(--elmethis-color-slate-600);
 
-  --elmethis-color-primary-fg-weak: var(--elmethis-color-gold-600);
-  --elmethis-color-primary-fg: var(--elmethis-color-gold-700);
-  --elmethis-color-primary-fg-strong: var(--elmethis-color-gold-800);
+  --elmethis-color-primary-weak: var(--elmethis-color-gold-600);
+  --elmethis-color-primary: var(--elmethis-color-gold-700);
+  --elmethis-color-primary-strong: var(--elmethis-color-gold-800);
 
   --elmethis-box-shadow-color: oklch(from #3e434b l c h / 0.25);
 }
@@ -136,13 +134,13 @@
   --elmethis-color-neutral-container-enabled: oklch(from white l c h / 12.5%);
   --elmethis-color-neutral-container-disabled: oklch(from black l c h / 25%);
 
-  --elmethis-color-neutral-fg-weak: var(--elmethis-color-slate-300);
-  --elmethis-color-neutral-fg: var(--elmethis-color-slate-200);
-  --elmethis-color-neutral-fg-strong: var(--elmethis-color-slate-100);
+  --elmethis-color-neutral-weak: var(--elmethis-color-slate-300);
+  --elmethis-color-neutral: var(--elmethis-color-slate-200);
+  --elmethis-color-neutral-strong: var(--elmethis-color-slate-100);
 
-  --elmethis-color-primary-fg-weak: var(--elmethis-color-gold-600);
-  --elmethis-color-primary-fg: var(--elmethis-color-gold-500);
-  --elmethis-color-primary-fg-strong: var(--elmethis-color-gold-400);
+  --elmethis-color-primary-weak: var(--elmethis-color-gold-600);
+  --elmethis-color-primary: var(--elmethis-color-gold-500);
+  --elmethis-color-primary-strong: var(--elmethis-color-gold-400);
 
   --elmethis-box-shadow-color: var(--elmethis-color-slate-900);
 }

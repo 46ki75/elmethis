@@ -48,12 +48,12 @@ export const ElmColorTokenSample = component$<ElmColorTokenSampleProps>(
 
             <div class={styles.body}>
               {[
-                "--elmethis-color-neutral-fg-weak",
-                "--elmethis-color-neutral-fg",
-                "--elmethis-color-neutral-fg-strong",
-                "--elmethis-color-primary-fg-weak",
-                "--elmethis-color-primary-fg",
-                "--elmethis-color-primary-fg-strong",
+                "--elmethis-color-neutral-weak",
+                "--elmethis-color-neutral",
+                "--elmethis-color-neutral-strong",
+                "--elmethis-color-primary-weak",
+                "--elmethis-color-primary",
+                "--elmethis-color-primary-strong",
                 "--elmethis-accent-info",
                 "--elmethis-accent-success",
                 "--elmethis-accent-important",

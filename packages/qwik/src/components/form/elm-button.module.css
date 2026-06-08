@@ -22,12 +22,12 @@
 
 .normal {
   color: oklch(from white l c h / 75%);
-  background-color: var(--elmethis-color-neutral-fg-weak);
+  background-color: var(--elmethis-color-neutral-weak);
 }
 
 .primary {
   color: oklch(from white l c h / 75%);
-  background-color: var(--elmethis-color-primary-fg-weak);
+  background-color: var(--elmethis-color-primary-weak);
 }
 
 .colored {

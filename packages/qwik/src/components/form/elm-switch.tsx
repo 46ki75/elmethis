@@ -44,7 +44,7 @@ export const ElmSwitch = component$<ElmSwitchProps>((props) => {
     checked,
     ...rest
   } = props;
-  const resolvedColor = color ?? "var(--elmethis-color-primary-fg)";
+  const resolvedColor = color ?? "var(--elmethis-color-primary)";
   const resolvedSize = size ?? "18px";
 
   return (
