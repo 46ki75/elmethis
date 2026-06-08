@@ -25,6 +25,35 @@ const FOREGROUND_TOKENS = [
   "--elmethis-color-accent-link-visited",
 ];
 
+const PRIMITIVE_TOKENS = [
+  "--elmethis-primitive-color-red-500",
+  "--elmethis-primitive-color-orange-500",
+  "--elmethis-primitive-color-yellow-500",
+  "--elmethis-primitive-color-green-500",
+  "--elmethis-primitive-color-cyan-500",
+  "--elmethis-primitive-color-blue-500",
+  "--elmethis-primitive-color-purple-500",
+  "--elmethis-primitive-color-magenta-500",
+];
+
+const ColorSample = component$((args: { variables: string[] }) => {
+  return (
+    <div class={styles["color-sample-container"]}>
+      {args.variables.map((variable) => (
+        <div key={variable} class={styles["color-sample"]}>
+          <div
+            class={styles["color-sample-bg"]}
+            style={{
+              backgroundColor: `var(${variable})`,
+            }}
+          ></div>
+          <code class={styles["color-sample-name"]}>{variable}</code>
+        </div>
+      ))}
+    </div>
+  );
+});
+
 const ACCENT_PAIRS = [
   {
     fg: "--elmethis-color-accent-info",
@@ -109,6 +138,11 @@ export const ElmColorSemanticSample = component$<ElmColorSemanticSampleProps>(
                     <span>{surface}</span>
                   </div>
                 ))}
+              </div>
+
+              <div class={styles.group}>
+                <span class={styles["section-title"]}>Primitive</span>
+                <ColorSample variables={PRIMITIVE_TOKENS} />
               </div>
             </div>
           </body>
