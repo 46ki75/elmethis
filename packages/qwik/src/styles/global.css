@@ -1,41 +1,5 @@
-/*
- * elmethis CSS token system
- *
- * Two layers:
- *   1. Primitives — theme-agnostic raw values (--elmethis-color-accent-*).
- *      Never reference these from component CSS. They exist so that
- *      semantic roles can reference them, and so future tokens can share
- *      the same palette.
- *   2. Semantic roles — theme-aware (--elmethis-color-*). Component CSS
- *      consumes these. Theme switching happens here, under
- *      [data-theme="dark"] — never inside individual component modules.
- *
- *      Within this layer, names containing `-common-`
- *      (e.g. --elmethis-color-neutral-common-fg) stay identical across
- *      themes. Default to the non-`-common-` form so theming works
- *      automatically; reach for `-common-` only when you intentionally
- *      want a value that does not flip under [data-theme="dark"].
- *
- * Adding tokens:
- *   - Seed only values the codebase actually contains. No speculative tiers.
- *   - Color tokens earn their keep because of theme switching. Spacing /
- *     radius / duration / easing values stay as literals at the call site
- *     unless there is a concrete need to override them globally.
- *
- * Per-instance overrides (one paragraph's color, one icon's fill):
- *   use component-private CSS variables namespaced with
- *   `--elmethis-scoped-*` (e.g. --elmethis-scoped-color,
- *   --elmethis-scoped-font-size) written from props. The
- *   `--elmethis-scoped-*` prefix prevents collisions with consumer
- *   custom properties. NEVER write to a design-token --elmethis-* from
- *   a prop on the component's own root — the variable would leak into
- *   every descendant.
- *
- * See `variables.ts` for the public TypeScript contract.
- */
-
 :root {
-  /* ANSI */
+  /* === PRIMITIVE LAYER === */
   --elmethis-primitive-color-red-100: #eedbdb;
   --elmethis-primitive-color-red-500: #ae6e6e;
   --elmethis-primitive-color-red-900: #683b3b;
@@ -89,13 +53,6 @@
   --elmethis-primitive-color-gold-900: #705d40;
 
   /*
-    REFACTORING IN PROGRESS!!!
-
-    Goal:
-     - Eliminate conditional theming from all component CSS files (× [data-theme=""])
-     - Eliminate hard-coded colors from all component CSS files (× #FFFFFF)
-     - Eliminate calculated colors from all component CSS files (× oklch(from _ ...))
-
     Light:
       Background: Gold
       Foreground Normal: Slate
@@ -106,11 +63,17 @@
       Foreground Accent: Gold
    */
 
-  /* COMMON */
+  /* === SEMANTIC LAYER === */
 
+  /* COMMON */
   --elmethis-margin-block-start: 2rem;
 
-  /* LIGHT */
+  --elmethis-color-accent-link: var(--elmethis-primitive-color-blue-500);
+  --elmethis-color-accent-link-visited: var(
+    --elmethis-primitive-color-purple-500
+  );
+
+  /* LIGHT THEME */
 
   /* Header background */
   --elmethis-color-surface-sunken: var(--elmethis-primitive-color-gold-300);
@@ -155,15 +118,10 @@
   --elmethis-color-accent-error-surface: var(
     --elmethis-primitive-color-red-100
   );
-
-  --elmethis-color-accent-link: var(--elmethis-primitive-color-blue-500);
-  --elmethis-color-accent-link-visited: var(
-    --elmethis-primitive-color-purple-500
-  );
 }
 
 [data-theme="dark"] {
-  /* DARK */
+  /* DARK THEME */
 
   /* Header background */
   --elmethis-color-surface-sunken: var(--elmethis-primitive-color-slate-800);
