@@ -3,7 +3,9 @@
   width: 100%;
   margin-block-start: var(--elmethis-margin-block-start);
   margin-inline: 0;
-  background-color: oklch(from var(--elmethis-color-mono-bg) l c h / 12.5%);
+  background-color: oklch(
+    from var(--elmethis-color-surface-raised) l c h / 12.5%
+  );
   position: relative;
 
   &::after {

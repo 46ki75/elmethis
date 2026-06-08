@@ -6,7 +6,7 @@
   margin-block-start: var(--elmethis-margin-block-start);
 
   &::selection {
-    color: var(--elmethis-color-mono-bg);
+    color: var(--elmethis-color-surface-raised);
     background-color: var(
       --elmethis-scoped-color,
       var(--elmethis-color-mono-fg)

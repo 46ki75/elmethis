@@ -36,17 +36,13 @@
   user-select: none;
 
   &.active {
-    background-color: oklch(
-      from var(--elmethis-color-primary-common-fg) l c h / 5%
-    );
-    border-bottom-color: var(--elmethis-color-primary-common-fg);
+    background-color: oklch(from var(--elmethis-color-primary-fg) l c h / 5%);
+    border-bottom-color: var(--elmethis-color-primary-fg);
     cursor: default;
   }
 
   &:hover {
-    background-color: oklch(
-      from var(--elmethis-color-primary-common-fg) l c h / 5%
-    );
+    background-color: oklch(from var(--elmethis-color-primary-fg) l c h / 5%);
   }
 }
 

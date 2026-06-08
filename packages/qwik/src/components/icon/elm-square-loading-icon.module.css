@@ -34,5 +34,5 @@
   animation-direction: alternate;
   animation-duration: var(--elmethis-scoped-duration);
   animation-delay: var(--elmethis-scoped-delay);
-  background-color: var(--elmethis-color-primary-common-fg);
+  background-color: var(--elmethis-color-primary-fg);
 }

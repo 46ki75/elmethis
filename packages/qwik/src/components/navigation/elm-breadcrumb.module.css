@@ -25,9 +25,7 @@
   }
 
   &:hover {
-    background-color: oklch(
-      from var(--elmethis-color-primary-common-fg) l c h / 25%
-    );
+    background-color: oklch(from var(--elmethis-color-primary-fg) l c h / 25%);
     transform: translateX(-1px) translateY(-1px);
   }
 

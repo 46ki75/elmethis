@@ -23,7 +23,7 @@
   position: relative;
   border-radius: 0.125rem;
   background-color: var(--elmethis-color-surface-raised);
-  border: solid 1px var(--elmethis-color-mono-bg);
+  border: solid 1px var(--elmethis-color-surface-raised);
 
   &::before {
     z-index: -1;
@@ -33,10 +33,10 @@
     left: -0.5px;
     height: 100%;
     width: 100%;
-    border: solid 1px var(--elmethis-color-mono-bg);
+    border: solid 1px var(--elmethis-color-surface-raised);
     border-radius: 0.125rem;
 
-    background-color: var(--elmethis-color-mono-bg);
+    background-color: var(--elmethis-color-surface-raised);
   }
 
   &::after {
@@ -47,7 +47,7 @@
     left: 25%;
     height: 1px;
     width: 50%;
-    background-color: var(--elmethis-color-mono-bg);
+    background-color: var(--elmethis-color-surface-raised);
     opacity: 0.5;
   }
 }

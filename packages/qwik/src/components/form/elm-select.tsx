@@ -155,7 +155,7 @@ export const ElmSelect = component$<ElmSelectProps>((props) => {
             >
               <ElmMdiIcon
                 d={mdiChevronRight}
-                color="var(--elmethis-color-primary-common-fg-weak)"
+                color="var(--elmethis-color-primary-fg-weak)"
                 size="0.75em"
               />
               {option.icon && <ElmInlineIcon src={option.icon} />}

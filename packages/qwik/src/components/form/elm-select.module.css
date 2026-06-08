@@ -1,5 +1,5 @@
 .wrapper {
-  --highlight-color: var(--elmethis-color-primary-common-fg-weak);
+  --highlight-color: var(--elmethis-color-primary-fg-weak);
 
   user-select: none;
   position: relative;

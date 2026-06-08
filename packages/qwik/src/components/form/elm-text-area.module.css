@@ -35,7 +35,7 @@
 }
 
 .wrapper {
-  --highlight-color: var(--elmethis-color-primary-common-fg);
+  --highlight-color: var(--elmethis-color-primary-fg);
 
   overflow: hidden;
   position: relative;
@@ -121,7 +121,7 @@
   }
 
   &::selection {
-    color: var(--elmethis-color-mono-bg);
+    color: var(--elmethis-color-surface-raised);
     background-color: var(
       --elmethis-scoped-color,
       var(--elmethis-color-mono-fg)
