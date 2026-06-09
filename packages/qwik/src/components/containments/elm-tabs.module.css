@@ -6,7 +6,7 @@
   width: 100%;
   border: solid 1px oklch(from black l c h / 10%);
   border-radius: 0.25rem;
-  box-shadow: 0 0 0.125rem oklch(from black l c h / 10%);
+  box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
   overflow: hidden;
   background-color: var(--elmethis-color-surface-raised);
 }

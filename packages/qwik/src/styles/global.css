@@ -37,7 +37,7 @@
   --elmethis-primitive-color-slate-300: #949ba7;
   --elmethis-primitive-color-slate-400: #6c7483;
   --elmethis-primitive-color-slate-500: #555b67;
-  --elmethis-primitive-color-slate-600: #4e535d;
+  --elmethis-primitive-color-slate-600: #40444c;
   --elmethis-primitive-color-slate-700: #393e46;
   --elmethis-primitive-color-slate-800: #31353a;
   --elmethis-primitive-color-slate-900: #242629;
@@ -109,7 +109,7 @@
     var(--elmethis-primitive-color-slate-200)
   );
   --elmethis-color-neutral-strong: light-dark(
-    var(--elmethis-primitive-color-slate-600),
+    var(--elmethis-primitive-color-slate-500),
     var(--elmethis-primitive-color-slate-100)
   );
 
