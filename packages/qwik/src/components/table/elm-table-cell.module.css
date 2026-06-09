@@ -1,11 +1,16 @@
 .common {
   padding: 0.75rem 1rem;
-  color: light-dark(rgb(0 0 0 / 70%), rgb(255 255 255 / 70%));
-  border-right: 1px dotted light-dark(rgb(0 0 0 / 15%), rgb(255 255 255 / 15%));
+  border-right: 1px dashed
+    oklch(from var(--elmethis-color-primary-weak) l c h / 0.5);
+
+  color: var(--elmethis-scoped-color, var(--elmethis-color-neutral));
 
   &::selection {
-    color: light-dark(rgb(255 255 255 / 70%), rgb(0 0 0 / 70%));
-    background-color: light-dark(rgb(0 0 0 / 70%), rgb(255 255 255 / 70%));
+    color: var(--elmethis-color-surface-raised);
+    background-color: var(
+      --elmethis-scoped-color,
+      var(--elmethis-color-neutral)
+    );
   }
 
   &:last-child {
@@ -14,9 +19,10 @@
 }
 
 .td {
-  border-top: 1px solid light-dark(rgb(0 0 0 / 15%), rgb(255 255 255 / 15%));
+  border-top: 1px solid
+    oklch(from var(--elmethis-color-primary-weak) l c h / 0.5);
 }
 
 .th {
-  background-color: rgb(128 128 128 / 15%);
+  background-color: var(--elmethis-color-surface-sunken);
 }
