@@ -1,21 +1,11 @@
 .common {
   padding: 0.75rem 1rem;
-  color: rgb(0 0 0 / 70%);
-  border-right: 1px dotted rgb(0 0 0 / 15%);
+  color: light-dark(rgb(0 0 0 / 70%), rgb(255 255 255 / 70%));
+  border-right: 1px dotted light-dark(rgb(0 0 0 / 15%), rgb(255 255 255 / 15%));
 
   &::selection {
-    color: rgb(255 255 255 / 70%);
-    background-color: rgb(0 0 0 / 70%);
-  }
-
-  [data-theme="dark"] & {
-    color: rgb(255 255 255 / 70%);
-    border-right: 1px dotted rgb(255 255 255 / 15%);
-
-    &::selection {
-      color: rgb(0 0 0 / 70%);
-      background-color: rgb(255 255 255 / 70%);
-    }
+    color: light-dark(rgb(255 255 255 / 70%), rgb(0 0 0 / 70%));
+    background-color: light-dark(rgb(0 0 0 / 70%), rgb(255 255 255 / 70%));
   }
 
   &:last-child {
@@ -24,11 +14,7 @@
 }
 
 .td {
-  border-top: 1px solid rgb(0 0 0 / 15%);
-
-  [data-theme="dark"] & {
-    border-top-color: rgb(255 255 255 / 15%);
-  }
+  border-top: 1px solid light-dark(rgb(0 0 0 / 15%), rgb(255 255 255 / 15%));
 }
 
 .th {

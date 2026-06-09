@@ -15,6 +15,19 @@
   background-size: auto;
   opacity: 0.2;
 
+  /*
+    `opacity` is not a <color>, so it can't use light-dark(). The OS default
+    is handled by the media query; an explicit theme pinned via
+    useElmethisTheme (data-theme on the root) overrides it.
+  */
+  @media (prefers-color-scheme: dark) {
+    opacity: 0.1;
+  }
+
+  [data-theme="light"] & {
+    opacity: 0.2;
+  }
+
   [data-theme="dark"] & {
     opacity: 0.1;
   }

@@ -80,13 +80,8 @@
       width: max-content;
       padding: 0;
       border-radius: 0.25rem;
-      background-color: rgb(255 255 255 / 95%);
-      box-shadow: 0 0 0.125rem rgb(0 0 0 / 15%);
-
-      [data-theme="dark"] & {
-        background-color: rgb(51 51 51 / 95%);
-        box-shadow: 0 0 0.125rem rgb(0 0 0 / 75%);
-      }
+      background-color: light-dark(rgb(255 255 255 / 95%), rgb(51 51 51 / 95%));
+      box-shadow: 0 0 0.125rem light-dark(rgb(0 0 0 / 15%), rgb(0 0 0 / 75%));
 
       .option {
         overflow: hidden;
@@ -102,11 +97,10 @@
         cursor: pointer;
 
         &:hover {
-          background-color: rgb(190 194 202 / 30%);
-
-          [data-theme="dark"] & {
-            background-color: rgb(190 194 202 / 20%);
-          }
+          background-color: light-dark(
+            rgb(190 194 202 / 30%),
+            rgb(190 194 202 / 20%)
+          );
         }
       }
     }

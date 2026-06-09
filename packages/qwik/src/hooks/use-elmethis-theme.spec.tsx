@@ -32,15 +32,14 @@ describe("[CSR] toggleTheme()", () => {
   beforeEach(() => {
     localStorage.clear();
     document.documentElement.removeAttribute("data-theme");
-    const body = document.querySelector("body");
-    if (body) body.style.colorScheme = "";
+    document.documentElement.style.removeProperty("color-scheme");
   });
 
   afterEach(() => {
     vi.restoreAllMocks();
   });
 
-  test("flips isDarkTheme, writes data-theme, and persists to localStorage", async () => {
+  test("flips isDarkTheme, pins color-scheme + data-theme, and persists", async () => {
     const { screen, render, userEvent } = await createDOM();
     await render(<ThemeWrapper />);
 
@@ -49,6 +48,9 @@ describe("[CSR] toggleTheme()", () => {
     await userEvent("#toggle", "click");
 
     expect(screen.querySelector("#isDark")!.textContent).toBe("true");
+    // `color-scheme` drives the native light-dark() resolution...
+    expect(document.documentElement.style.colorScheme).toBe("dark");
+    // ...and `data-theme` covers the non-color overrides.
     expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
     expect(localStorage.getItem(LOCAL_STORAGE_KEY)).toBe("dark");
   });
@@ -61,6 +63,7 @@ describe("[CSR] toggleTheme()", () => {
     await userEvent("#toggle", "click");
 
     expect(screen.querySelector("#isDark")!.textContent).toBe("false");
+    expect(document.documentElement.style.colorScheme).toBe("light");
     expect(document.documentElement.getAttribute("data-theme")).toBe("light");
     expect(localStorage.getItem(LOCAL_STORAGE_KEY)).toBe("light");
   });
@@ -100,14 +103,14 @@ describe("[CSR] storage listener attachment", () => {
 // ---------------------------------------------------------------------------
 //
 // Regression pin for the storage-coercion rule. The cross-tab storage
-// handler and the mount-time reader both route through `parseTheme`, so
-// any value other than literally "dark" — including `null` (key cleared
-// in another tab) and unknown strings — settles to "light".
+// handler and the mount-time reader both route through `parseTheme`. Only
+// the literal strings "dark" and "light" are explicit choices; anything
+// else — including `null` (key cleared in another tab) and unknown strings —
+// resolves to `null`, meaning "follow the OS".
 //
-// This is the deliberate behavior: a cleared key should fall back to the
-// platform-default theme, not lock in dark. If we ever switch to
-// system-preference fallback or anything else, this test makes the
-// semantic shift visible.
+// This is the deliberate behavior: a cleared key should release the pin and
+// fall back to the native `color-scheme: light dark` default (which tracks
+// prefers-color-scheme), not lock in a theme.
 
 describe("parseTheme", () => {
   test('"dark" → "dark"', () => {
@@ -118,12 +121,12 @@ describe("parseTheme", () => {
     expect(parseTheme("light")).toBe("light");
   });
 
-  test("null (key cleared in another tab) → light", () => {
-    expect(parseTheme(null)).toBe("light");
+  test("null (key cleared in another tab) → null (follow OS)", () => {
+    expect(parseTheme(null)).toBeNull();
   });
 
-  test("unknown string → light", () => {
-    expect(parseTheme("auto")).toBe("light");
-    expect(parseTheme("")).toBe("light");
+  test("unknown string → null (follow OS)", () => {
+    expect(parseTheme("auto")).toBeNull();
+    expect(parseTheme("")).toBeNull();
   });
 });

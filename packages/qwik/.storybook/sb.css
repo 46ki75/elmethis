@@ -6,8 +6,5 @@ body,
 .docs-story {
   transition: background-color 200ms;
 
-  background-color: #efecea;
-  [data-theme="dark"] & {
-    background-color: #393e46;
-  }
+  background-color: light-dark(#efecea, #393e46);
 }

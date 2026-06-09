@@ -44,18 +44,6 @@
     transform 100ms,
     box-shadow 200ms;
 
-  [data-theme="dark"] & {
-    &:hover {
-      transform: translateX(-1px) translateY(-1px);
-      opacity: var(--elmethis-scoped-opacity, 0.7);
-    }
-
-    &:active {
-      transform: translateX(1px) translateY(1px);
-      opacity: var(--elmethis-scoped-opacity, 0.5);
-    }
-  }
-
   &:hover {
     transform: translateX(-1px) translateY(-1px);
     opacity: var(--elmethis-scoped-opacity, 0.7);

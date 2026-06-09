@@ -93,7 +93,9 @@ export const ElmColorSemanticSample = component$<ElmColorSemanticSampleProps>(
   ({ class: className, style }) => {
     const Render = component$((props: { theme: "light" | "dark" }) => {
       return (
-        <html data-theme={props.theme}>
+        // `color-scheme` drives native light-dark() token resolution;
+        // `data-theme` covers the few non-color overrides that can't use it.
+        <html data-theme={props.theme} style={{ colorScheme: props.theme }}>
           <body
             style={{
               backgroundColor: "var(--elmethis-color-surface-base)",

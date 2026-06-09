@@ -1,7 +1,3 @@
 .path {
-  fill: #293138;
-
-  [data-theme="dark"] & {
-    fill: #d2dbe3;
-  }
+  fill: light-dark(#293138, #d2dbe3);
 }

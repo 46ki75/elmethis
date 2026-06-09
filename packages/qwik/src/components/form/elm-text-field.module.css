@@ -145,9 +145,5 @@
   font-size: 0.85em;
   user-select: none;
   transition: color 200ms;
-  color: rgb(0 0 0 / 65%);
-
-  [data-theme="dark"] & {
-    color: rgb(255 255 255 / 65%);
-  }
+  color: light-dark(rgb(0 0 0 / 65%), rgb(255 255 255 / 65%));
 }

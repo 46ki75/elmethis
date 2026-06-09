@@ -7,11 +7,7 @@
   align-items: center;
   box-shadow: 0 0 0.125rem rgb(0 0 0 / 20%);
   border-radius: 0.25rem;
-  background-color: rgb(255 255 255 / 20%);
-
-  [data-theme="dark"] & {
-    background-color: rgb(0 0 0 / 20%);
-  }
+  background-color: light-dark(rgb(255 255 255 / 20%), rgb(0 0 0 / 20%));
 }
 
 .file-size {
@@ -33,10 +29,6 @@
     background-color 200ms;
 
   &:hover {
-    background-color: rgb(0 0 0 / 10%);
-
-    [data-theme="dark"] & {
-      background-color: rgb(255 255 255 / 10%);
-    }
+    background-color: light-dark(rgb(0 0 0 / 10%), rgb(255 255 255 / 10%));
   }
 }

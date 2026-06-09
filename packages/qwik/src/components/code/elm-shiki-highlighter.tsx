@@ -34,6 +34,10 @@ export const ElmShikiHighlighter = component$<ElmShikiHighlighterProps>(
             dark: ikumaDark as unknown as ThemeRegistrationRaw,
             light: ikumaLight as unknown as ThemeRegistrationRaw,
           },
+          // Emit both `--shiki-light*` and `--shiki-dark*` custom properties
+          // (instead of inlining one theme) so the CSS can resolve them with
+          // native light-dark(). See elm-shiki-highlighter.module.css.
+          defaultColor: false,
           colorReplacements: {
             "#ffffff": "transparent",
             "#121212": "transparent",

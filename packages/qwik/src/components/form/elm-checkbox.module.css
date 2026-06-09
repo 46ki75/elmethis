@@ -20,12 +20,8 @@
 }
 
 .checkbox {
-  stroke: rgb(0 0 0 / 80%);
+  stroke: light-dark(rgb(0 0 0 / 80%), rgb(255 255 255 / 80%));
   fill: transparent;
-
-  [data-theme="dark"] & {
-    stroke: rgb(255 255 255 / 80%);
-  }
 }
 
 .rect {
@@ -37,20 +33,12 @@
 }
 
 .rect--checked {
-  fill: rgb(0 0 0 / 80%);
-
-  [data-theme="dark"] & {
-    fill: rgb(255 255 255 / 80%);
-  }
+  fill: light-dark(rgb(0 0 0 / 80%), rgb(255 255 255 / 80%));
 }
 
 .loading {
   transition: opacity 200ms;
-  fill: rgb(0 0 0 / 70%);
-
-  [data-theme="dark"] & {
-    fill: rgb(255 255 255 / 70%);
-  }
+  fill: light-dark(rgb(0 0 0 / 70%), rgb(255 255 255 / 70%));
 }
 
 @keyframes elmethis-checkbox-check-line {
@@ -71,9 +59,5 @@
   animation-delay: 0.1s;
   animation-fill-mode: both;
   transform-origin: center;
-  stroke: rgb(255 255 255 / 90%);
-
-  [data-theme="dark"] & {
-    stroke: rgb(0 0 0 / 90%);
-  }
+  stroke: light-dark(rgb(255 255 255 / 90%), rgb(0 0 0 / 90%));
 }
