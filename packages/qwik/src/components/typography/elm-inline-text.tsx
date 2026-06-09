@@ -15,7 +15,11 @@ export interface ElmInlineTextProps extends PropsOf<"span"> {
   /**
    * Specifies the color of the text.
    *
-   * e.g.) `'red'`, `'#ff0000'`, `'rgba(255, 0, 0, 0.5)'`
+   * Accepts any CSS color value, including theme tokens via `var(...)`.
+   * Defaults to `var(--elmethis-color-neutral)` when omitted.
+   *
+   * e.g.) `'red'`, `'#ff0000'`, `'rgba(255, 0, 0, 0.5)'`,
+   * `'var(--elmethis-color-primary)'`
    */
   color?: CSSProperties["color"];
 
@@ -133,7 +137,6 @@ export const ElmInlineText = component$<ElmInlineTextProps>(
         style={
           {
             ...(style as CSSProperties),
-            color: color ?? "var(--elmethis-color-neutral)",
             "--elmethis-scoped-color": color,
             "--elmethis-scoped-font-size": size,
             "--elmethis-scoped-background-color": backgroundColor,
