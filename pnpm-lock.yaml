@@ -381,8 +381,8 @@ importers:
         specifier: ^14.3.0
         version: 14.3.0(vue@3.5.26(typescript@6.0.3))
       fuse.js:
-        specifier: ^7.3.0
-        version: 7.3.0
+        specifier: ^7.4.2
+        version: 7.4.2
       katex:
         specifier: ^0.17.0
         version: 0.17.0
@@ -5839,8 +5839,8 @@ packages:
   functions-have-names@1.2.3:
     resolution: {integrity: sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==}
 
-  fuse.js@7.3.0:
-    resolution: {integrity: sha512-plz8RVjfcDedTGfVngWH1jmJvBvAwi1v2jecfDerbEnMcmOYUEEwKFTHbNoCiYyzaK2Ws8lABkTCcRSqCY1q4w==}
+  fuse.js@7.4.2:
+    resolution: {integrity: sha512-LVbzjD4WA6UP5B1UnP8wuaXJiLnqMdM/E4fiJXTJ5haJ5b/MBNsK29h2fm6swEoQaVQjvYFWKLE2RanyZIoRVQ==}
     engines: {node: '>=10'}
 
   gaxios@7.1.5:
@@ -15710,7 +15710,7 @@ snapshots:
 
   functions-have-names@1.2.3: {}
 
-  fuse.js@7.3.0: {}
+  fuse.js@7.4.2: {}
 
   gaxios@7.1.5:
     dependencies:
