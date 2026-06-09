@@ -25,8 +25,7 @@
 .icon {
   position: absolute;
   content: "";
-  opacity: 0.5;
-  color: var(--elmethis-color-neutral-weak);
+  color: var(--elmethis-color-primary-weak);
 
   &.icon-top-left {
     inset: 0.25rem auto auto 0.5rem;
