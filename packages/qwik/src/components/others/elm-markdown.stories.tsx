@@ -2,6 +2,9 @@ import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { ElmMarkdown, type ElmMarkdownProps } from "./elm-markdown";
 import { component$, useSignal, useVisibleTask$ } from "@qwik.dev/core";
 
+import enMd from "./markdown/en.md?raw";
+import jaMd from "./markdown/ja.md?raw";
+
 const meta: Meta<ElmMarkdownProps> = {
   title: "Components/Others/elm-markdown",
   component: ElmMarkdown,
@@ -99,6 +102,14 @@ This line has a manual line break here
 You can escape characters like * and _ (escape) to prevent markdown formatting.
 `;
 
+const NarrowMarkdown = component$((props: ElmMarkdownProps) => {
+  return (
+    <div style={{ width: "540px", margin: "0 auto" }}>
+      <ElmMarkdown {...props} />
+    </div>
+  );
+});
+
 export const Primary: Story = {
   args: {
     markdown: MARKDOWN,
@@ -138,4 +149,18 @@ const StreamingWrapper = component$(() => {
 
 export const Stream: Story = {
   render: () => <StreamingWrapper />,
+};
+
+export const BlogEnglish: Story = {
+  render: (args) => <NarrowMarkdown {...args} />,
+  args: {
+    markdown: enMd,
+  },
+};
+
+export const BlogJapanese: Story = {
+  render: (args) => <NarrowMarkdown {...args} />,
+  args: {
+    markdown: jaMd,
+  },
 };
