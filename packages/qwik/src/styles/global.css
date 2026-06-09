@@ -37,7 +37,7 @@
   --elmethis-primitive-color-slate-300: #949ba7;
   --elmethis-primitive-color-slate-400: #6c7483;
   --elmethis-primitive-color-slate-500: #555b67;
-  --elmethis-primitive-color-slate-600: #4e535d;
+  --elmethis-primitive-color-slate-600: #40444c;
   --elmethis-primitive-color-slate-700: #393e46;
   --elmethis-primitive-color-slate-800: #31353a;
   --elmethis-primitive-color-slate-900: #242629;
@@ -61,11 +61,18 @@
       Background: Slate
       Foreground Normal: Slate
       Foreground Accent: Gold
+
+    Theme switching is native: each themed token below is a
+    `light-dark(<light>, <dark>)` value that resolves against the computed
+    `color-scheme`. The default `color-scheme: light dark` follows the OS
+    (`prefers-color-scheme`); pinning `color-scheme: light | dark` on the
+    root element (see `useElmethisTheme`) forces a specific theme.
    */
+  color-scheme: light dark;
 
   /* === SEMANTIC LAYER === */
 
-  /* COMMON */
+  /* COMMON (theme-independent) */
   --elmethis-margin-block-start: 2rem;
 
   --elmethis-color-accent-link: var(--elmethis-primitive-color-blue-500);
@@ -77,93 +84,79 @@
     from var(--elmethis-color-primary) l c h / 15%
   );
 
-  /* LIGHT THEME */
+  /* SURFACES */
 
   /* Header background */
-  --elmethis-color-surface-sunken: var(--elmethis-primitive-color-gold-300);
+  --elmethis-color-surface-sunken: light-dark(
+    var(--elmethis-primitive-color-gold-300),
+    var(--elmethis-primitive-color-slate-800)
+  );
   /* Body background */
-  --elmethis-color-surface-base: var(--elmethis-primitive-color-gold-200);
+  --elmethis-color-surface-base: light-dark(
+    var(--elmethis-primitive-color-gold-200),
+    var(--elmethis-primitive-color-slate-700)
+  );
   /* a surface lifted above its neighbors */
-  --elmethis-color-surface-raised: var(--elmethis-primitive-color-gold-100);
+  --elmethis-color-surface-raised: light-dark(
+    var(--elmethis-primitive-color-gold-100),
+    var(--elmethis-primitive-color-slate-600)
+  );
 
+  /* NEUTRAL */
   --elmethis-color-neutral-weak: var(--elmethis-primitive-color-slate-300);
-  --elmethis-color-neutral: var(--elmethis-primitive-color-slate-400);
-  --elmethis-color-neutral-strong: var(--elmethis-primitive-color-slate-600);
+  --elmethis-color-neutral: light-dark(
+    var(--elmethis-primitive-color-slate-400),
+    var(--elmethis-primitive-color-slate-200)
+  );
+  --elmethis-color-neutral-strong: light-dark(
+    var(--elmethis-primitive-color-slate-500),
+    var(--elmethis-primitive-color-slate-100)
+  );
 
+  /* PRIMARY */
   --elmethis-color-primary-weak: var(--elmethis-primitive-color-gold-600);
-  --elmethis-color-primary: var(--elmethis-primitive-color-gold-700);
-  --elmethis-color-primary-strong: var(--elmethis-primitive-color-gold-800);
+  --elmethis-color-primary: light-dark(
+    var(--elmethis-primitive-color-gold-700),
+    var(--elmethis-primitive-color-gold-500)
+  );
+  --elmethis-color-primary-strong: light-dark(
+    var(--elmethis-primitive-color-gold-800),
+    var(--elmethis-primitive-color-gold-400)
+  );
 
-  --elmethis-box-shadow-color: oklch(from #3e434b l c h / 0.25);
+  --elmethis-box-shadow-color: light-dark(
+    oklch(from #3e434b l c h / 0.25),
+    var(--elmethis-primitive-color-slate-900)
+  );
 
+  /* ACCENTS */
   --elmethis-color-accent-info: var(--elmethis-primitive-color-blue-500);
-  --elmethis-color-accent-info-surface: var(
-    --elmethis-primitive-color-blue-100
+  --elmethis-color-accent-info-surface: light-dark(
+    var(--elmethis-primitive-color-blue-100),
+    var(--elmethis-primitive-color-blue-900)
   );
 
   --elmethis-color-accent-success: var(--elmethis-primitive-color-green-500);
-  --elmethis-color-accent-success-surface: var(
-    --elmethis-primitive-color-green-100
+  --elmethis-color-accent-success-surface: light-dark(
+    var(--elmethis-primitive-color-green-100),
+    var(--elmethis-primitive-color-green-900)
   );
 
   --elmethis-color-accent-important: var(--elmethis-primitive-color-purple-500);
-  --elmethis-color-accent-important-surface: var(
-    --elmethis-primitive-color-purple-100
+  --elmethis-color-accent-important-surface: light-dark(
+    var(--elmethis-primitive-color-purple-100),
+    var(--elmethis-primitive-color-purple-900)
   );
 
   --elmethis-color-accent-warning: var(--elmethis-primitive-color-yellow-500);
-  --elmethis-color-accent-warning-surface: var(
-    --elmethis-primitive-color-yellow-100
+  --elmethis-color-accent-warning-surface: light-dark(
+    var(--elmethis-primitive-color-yellow-100),
+    var(--elmethis-primitive-color-yellow-900)
   );
 
   --elmethis-color-accent-error: var(--elmethis-primitive-color-red-500);
-  --elmethis-color-accent-error-surface: var(
-    --elmethis-primitive-color-red-100
-  );
-}
-
-[data-theme="dark"] {
-  /* DARK THEME */
-
-  /* Header background */
-  --elmethis-color-surface-sunken: var(--elmethis-primitive-color-slate-800);
-  /* Body background */
-  --elmethis-color-surface-base: var(--elmethis-primitive-color-slate-700);
-  /* Container background */
-  --elmethis-color-surface-raised: var(--elmethis-primitive-color-slate-600);
-
-  --elmethis-color-neutral-weak: var(--elmethis-primitive-color-slate-300);
-  --elmethis-color-neutral: var(--elmethis-primitive-color-slate-200);
-  --elmethis-color-neutral-strong: var(--elmethis-primitive-color-slate-100);
-
-  --elmethis-color-primary-weak: var(--elmethis-primitive-color-gold-600);
-  --elmethis-color-primary: var(--elmethis-primitive-color-gold-500);
-  --elmethis-color-primary-strong: var(--elmethis-primitive-color-gold-400);
-
-  --elmethis-box-shadow-color: var(--elmethis-primitive-color-slate-900);
-
-  --elmethis-color-accent-info: var(--elmethis-primitive-color-blue-500);
-  --elmethis-color-accent-info-surface: var(
-    --elmethis-primitive-color-blue-900
-  );
-
-  --elmethis-color-accent-success: var(--elmethis-primitive-color-green-500);
-  --elmethis-color-accent-success-surface: var(
-    --elmethis-primitive-color-green-900
-  );
-
-  --elmethis-color-accent-important: var(--elmethis-primitive-color-purple-500);
-  --elmethis-color-accent-important-surface: var(
-    --elmethis-primitive-color-purple-900
-  );
-
-  --elmethis-color-accent-warning: var(--elmethis-primitive-color-yellow-500);
-  --elmethis-color-accent-warning-surface: var(
-    --elmethis-primitive-color-yellow-900
-  );
-
-  --elmethis-color-accent-error: var(--elmethis-primitive-color-red-500);
-  --elmethis-color-accent-error-surface: var(
-    --elmethis-primitive-color-red-900
+  --elmethis-color-accent-error-surface: light-dark(
+    var(--elmethis-primitive-color-red-100),
+    var(--elmethis-primitive-color-red-900)
   );
 }

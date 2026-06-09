@@ -5,30 +5,51 @@ const LOCAL_STORAGE_KEY = "elmethis-theme";
 type Theme = "light" | "dark";
 
 /**
- * Coerce a raw storage value into a Theme. Exported so the (otherwise
- * inline) decision rule can be regression-tested directly without having
- * to dispatch a real `StorageEvent` through Qwik's resumable listener
- * system (which is not wired up under `createDOM`).
+ * Coerce a raw storage value into an explicit Theme, or `null` when no
+ * explicit choice is stored. `null` means "follow the OS" — i.e. fall back
+ * to the `color-scheme: light dark` default, which tracks
+ * `prefers-color-scheme`.
  *
- * Any value that is not literally `"dark"` — including `null` (the key was
- * cleared in another tab) and unknown strings — resolves to `"light"`.
- * This is the safest default for cross-tab sync: a cleared key should
- * land back on the platform-default theme rather than locking in dark.
+ * Exported so the (otherwise inline) decision rule can be regression-tested
+ * directly without having to dispatch a real `StorageEvent` through Qwik's
+ * resumable listener system (which is not wired up under `createDOM`).
+ *
+ * Only the literal strings `"dark"` and `"light"` are explicit choices;
+ * anything else — including `null` (the key was cleared in another tab) and
+ * unknown strings — resolves to `null` (auto / OS).
  */
-export const parseTheme = (raw: string | null): Theme =>
-  raw === "dark" ? "dark" : "light";
+export const parseTheme = (raw: string | null): Theme | null =>
+  raw === "dark" ? "dark" : raw === "light" ? "light" : null;
 
-// Pushes the theme into both the DOM (data-theme attribute + body
-// colorScheme) and localStorage. Kept as a free function so every code path
-// — toggle, initial mount, and cross-tab storage event — performs the same
-// side-effects. Earlier versions had the storage handler update the signal
-// only, which left the visible DOM out of sync with other tabs.
-const applyTheme = (theme: Theme, persist: boolean): void => {
-  document.documentElement.setAttribute("data-theme", theme);
-  const body = document.querySelector("body");
-  if (body != null) {
-    body.style.colorScheme = theme;
+/** Whether the OS currently prefers a dark color scheme. */
+const prefersDark = (): boolean =>
+  typeof matchMedia !== "undefined" &&
+  matchMedia("(prefers-color-scheme: dark)").matches;
+
+// Theme switching is native: every themed token is a `light-dark()` value
+// that resolves against the root's computed `color-scheme`. Pinning a theme
+// is therefore just overriding `color-scheme` on the root element.
+//
+// `data-theme` is also written for the handful of *non-color* overrides
+// (e.g. ElmParallax opacity, ElmInlineIcon selection filter) that can't use
+// light-dark(); those rules read `[data-theme="light" | "dark"]` to follow an
+// explicit pin, and `@media (prefers-color-scheme)` to follow the OS default.
+//
+// Kept as a free function so every code path — toggle, initial mount, and
+// cross-tab storage event — performs the same side-effects.
+const applyTheme = (theme: Theme | null, persist: boolean): void => {
+  const root = document.documentElement;
+  if (theme == null) {
+    // Revert to the OS-driven default (`color-scheme: light dark`).
+    root.style.removeProperty("color-scheme");
+    root.removeAttribute("data-theme");
+    if (persist && typeof localStorage !== "undefined") {
+      localStorage.removeItem(LOCAL_STORAGE_KEY);
+    }
+    return;
   }
+  root.style.colorScheme = theme;
+  root.setAttribute("data-theme", theme);
   if (persist && typeof localStorage !== "undefined") {
     localStorage.setItem(LOCAL_STORAGE_KEY, theme);
   }
@@ -52,7 +73,9 @@ export function useElmethisTheme() {
       const e = event as StorageEvent;
       if (e.key !== LOCAL_STORAGE_KEY) return;
       const next = parseTheme(e.newValue);
-      isDarkTheme.value = next === "dark";
+      // A cleared key (next == null) reverts to the OS preference rather than
+      // locking in a theme; mirror that in both the signal and the DOM.
+      isDarkTheme.value = next != null ? next === "dark" : prefersDark();
       // `persist: false` — the other tab already wrote to localStorage; we
       // just mirror the DOM here.
       applyTheme(next, false);
@@ -62,16 +85,16 @@ export function useElmethisTheme() {
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(
     () => {
-      const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
+      const stored = parseTheme(localStorage.getItem(LOCAL_STORAGE_KEY));
       if (stored != null) {
-        const theme = parseTheme(stored);
-        isDarkTheme.value = theme === "dark";
-        applyTheme(theme, false);
+        // An explicit choice was persisted — pin it.
+        isDarkTheme.value = stored === "dark";
+        applyTheme(stored, false);
       } else {
-        const current = document.documentElement.getAttribute("data-theme");
-        if (current != null) {
-          isDarkTheme.value = current === "dark";
-        }
+        // No explicit choice: leave `color-scheme: light dark` in place so the
+        // page follows the OS natively. Only mirror the OS into the signal so
+        // the toggle icon reflects what's actually rendered.
+        isDarkTheme.value = prefersDark();
       }
     },
     { strategy: "document-ready" },

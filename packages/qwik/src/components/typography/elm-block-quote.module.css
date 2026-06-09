@@ -3,9 +3,7 @@
   width: 100%;
   margin-block-start: var(--elmethis-margin-block-start);
   margin-inline: 0;
-  background-color: oklch(
-    from var(--elmethis-color-surface-raised) l c h / 12.5%
-  );
+  background-color: oklch(from var(--elmethis-color-neutral) l c h / 12.5%);
   position: relative;
 
   &::after {
@@ -15,9 +13,7 @@
     left: 0;
     width: 4px;
     height: 100%;
-    background-color: oklch(
-      from var(--elmethis-color-neutral-strong) l c h / 50%
-    );
+    background-color: var(--elmethis-color-neutral);
   }
 }
 
@@ -29,8 +25,7 @@
 .icon {
   position: absolute;
   content: "";
-  opacity: 0.5;
-  color: var(--elmethis-color-neutral-weak);
+  color: var(--elmethis-color-primary-weak);
 
   &.icon-top-left {
     inset: 0.25rem auto auto 0.5rem;

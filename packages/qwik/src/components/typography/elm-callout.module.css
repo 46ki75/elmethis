@@ -23,14 +23,41 @@
     z-index: -1;
     pointer-events: none;
   }
+
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-transform: uppercase;
+    user-select: none;
+    color: var(--elmethis-scoped-callout-color);
+  }
+
+  .content {
+    padding-block: 1rem 0.25rem;
+  }
+
+  .icon {
+    color: var(--elmethis-scoped-callout-color);
+  }
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+.note {
+  --elmethis-scoped-callout-color: var(--elmethis-color-accent-info);
 }
 
-.content {
-  padding-block: 1rem 0.25rem;
+.tip {
+  --elmethis-scoped-callout-color: var(--elmethis-color-accent-success);
+}
+
+.important {
+  --elmethis-scoped-callout-color: var(--elmethis-color-accent-important);
+}
+
+.warning {
+  --elmethis-scoped-callout-color: var(--elmethis-color-accent-warning);
+}
+
+.caution {
+  --elmethis-scoped-callout-color: var(--elmethis-color-accent-error);
 }

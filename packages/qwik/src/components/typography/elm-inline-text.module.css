@@ -4,6 +4,7 @@
   white-space: pre-line;
   font-size: var(--elmethis-scoped-font-size, 1em);
   line-height: var(--elmethis-scoped-font-size, 1em);
+  color: var(--elmethis-scoped-color, var(--elmethis-color-neutral));
   background-color: var(--elmethis-scoped-background-color);
   transition: color 200ms;
   text-decoration-color: var(--elmethis-scoped-color);

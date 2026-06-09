@@ -7,17 +7,20 @@
     font-family:
       "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace !important;
 
+    /* Shiki emits these dual-theme custom properties per token at runtime
+       (defaultColor: false); resolve them natively against the active
+       color-scheme. They aren't declared in CSS, so the unknown-custom-
+       property check can't see them. */
+    /* stylelint-disable csstools/value-no-unknown-custom-properties */
+    color: light-dark(var(--shiki-light), var(--shiki-dark)) !important;
+    background-color: light-dark(
+      var(--shiki-light-bg),
+      var(--shiki-dark-bg)
+    ) !important;
+    /* stylelint-enable csstools/value-no-unknown-custom-properties */
+
     &::selection {
       background-color: oklch(from #cdb57b l c h / 25%);
-    }
-
-    [data-theme="dark"] & {
-      color: var(--shiki-dark) !important;
-      background-color: var(--shiki-dark-bg) !important;
-
-      &::selection {
-        background-color: oklch(from #cdb57b l c h / 25%);
-      }
     }
   }
 }

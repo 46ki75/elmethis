@@ -1,4 +1,4 @@
-import { component$, PropsOf, Slot, type CSSProperties } from "@qwik.dev/core";
+import { component$, PropsOf, Slot } from "@qwik.dev/core";
 
 import styles from "./elm-callout.module.css";
 import {
@@ -9,24 +9,16 @@ import {
   mdiShieldAlert,
 } from "@mdi/js";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
-import { ElmInlineText } from "./elm-inline-text";
 
 export type AlertType = "note" | "tip" | "important" | "warning" | "caution";
 
-const COLOR_MAP: Record<AlertType, { code: string; icon: string }> =
-  Object.freeze({
-    note: { code: "var(--elmethis-color-accent-info)", icon: mdiInformation },
-    tip: { code: "var(--elmethis-color-accent-success)", icon: mdiLightbulbOn },
-    important: {
-      code: "var(--elmethis-color-accent-important)",
-      icon: mdiShieldAlert,
-    },
-    warning: { code: "var(--elmethis-color-accent-warning)", icon: mdiAlert },
-    caution: {
-      code: "var(--elmethis-color-accent-error)",
-      icon: mdiAlertOctagram,
-    },
-  } as const);
+const ICON_MAP: Record<AlertType, string> = Object.freeze({
+  note: mdiInformation,
+  tip: mdiLightbulbOn,
+  important: mdiShieldAlert,
+  warning: mdiAlert,
+  caution: mdiAlertOctagram,
+} as const);
 
 export interface ElmCalloutProps extends PropsOf<"aside"> {
   /**
@@ -39,22 +31,13 @@ export const ElmCallout = component$<ElmCalloutProps>(
   ({ class: className, type = "note", style, ...props }) => {
     return (
       <aside
-        class={[styles.callout, className]}
-        style={
-          {
-            "--elmethis-scoped-callout-color": COLOR_MAP[type].code,
-            ...(style as CSSProperties),
-          } as CSSProperties
-        }
+        class={[styles.callout, styles[type], className]}
+        style={style}
         {...props}
       >
         <div class={styles.header}>
-          <ElmMdiIcon
-            d={COLOR_MAP[type].icon}
-            color={COLOR_MAP[type].code}
-            size="1.25rem"
-          />
-          <ElmInlineText>{type.toLocaleUpperCase()}</ElmInlineText>
+          <ElmMdiIcon class={styles.icon} d={ICON_MAP[type]} size="1.25rem" />
+          <span>{type}</span>
         </div>
 
         <div class={styles.content}>
