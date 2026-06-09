@@ -9,7 +9,6 @@ import {
   mdiShieldAlert,
 } from "@mdi/js";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
-import { ElmInlineText } from "./elm-inline-text";
 
 export type AlertType = "note" | "tip" | "important" | "warning" | "caution";
 
@@ -38,7 +37,7 @@ export const ElmCallout = component$<ElmCalloutProps>(
       >
         <div class={styles.header}>
           <ElmMdiIcon class={styles.icon} d={ICON_MAP[type]} size="1.25rem" />
-          <ElmInlineText>{type}</ElmInlineText>
+          <span>{type}</span>
         </div>
 
         <div class={styles.content}>

@@ -30,6 +30,7 @@
     gap: 0.5rem;
     text-transform: uppercase;
     user-select: none;
+    color: var(--elmethis-scoped-callout-color);
   }
 
   .content {
