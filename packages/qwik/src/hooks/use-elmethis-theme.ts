@@ -2,6 +2,15 @@ import { $, useOnWindow, useSignal, useVisibleTask$ } from "@qwik.dev/core";
 
 const LOCAL_STORAGE_KEY = "elmethis-theme";
 
+/**
+ * Same-tab broadcast channel. Fired on `window` by `applyTheme` after every
+ * theme mutation. Each `useElmethisTheme()` call owns an independent signal,
+ * and the `storage` event only fires in *other* tabs — so without this
+ * event, sibling components in the same tab would never see a toggle.
+ * `detail` carries the new `Theme | null` (`null` = reverted to OS auto).
+ */
+export const THEME_CHANGE_EVENT = "elmethis-theme-change";
+
 type Theme = "light" | "dark";
 
 /**
@@ -46,13 +55,17 @@ const applyTheme = (theme: Theme | null, persist: boolean): void => {
     if (persist && typeof localStorage !== "undefined") {
       localStorage.removeItem(LOCAL_STORAGE_KEY);
     }
-    return;
+  } else {
+    root.style.colorScheme = theme;
+    root.setAttribute("data-theme", theme);
+    if (persist && typeof localStorage !== "undefined") {
+      localStorage.setItem(LOCAL_STORAGE_KEY, theme);
+    }
   }
-  root.style.colorScheme = theme;
-  root.setAttribute("data-theme", theme);
-  if (persist && typeof localStorage !== "undefined") {
-    localStorage.setItem(LOCAL_STORAGE_KEY, theme);
-  }
+  // Broadcast after the DOM/storage writes so listeners observe final state.
+  window.dispatchEvent(
+    new CustomEvent<Theme | null>(THEME_CHANGE_EVENT, { detail: theme }),
+  );
 };
 
 export function useElmethisTheme() {
@@ -64,6 +77,17 @@ export function useElmethisTheme() {
     isDarkTheme.value = !isDarkTheme.value;
     applyTheme(isDarkTheme.value ? "dark" : "light", true);
   });
+
+  // Same-tab sync: another hook instance (or this one) changed the theme via
+  // `applyTheme`. Mirror the broadcast into this instance's signal — writes
+  // from `toggleTheme` are idempotent here, so re-entry is harmless.
+  useOnWindow(
+    THEME_CHANGE_EVENT,
+    $((event: Event) => {
+      const theme = (event as CustomEvent<Theme | null>).detail;
+      isDarkTheme.value = theme != null ? theme === "dark" : prefersDark();
+    }),
+  );
 
   // The `storage` event fires on `window`, not `document`. Listening on
   // `document` was a silent miss — every cross-tab update was dropped.
@@ -84,7 +108,7 @@ export function useElmethisTheme() {
 
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(
-    () => {
+    ({ cleanup }) => {
       const stored = parseTheme(localStorage.getItem(LOCAL_STORAGE_KEY));
       if (stored != null) {
         // An explicit choice was persisted — pin it.
@@ -95,6 +119,22 @@ export function useElmethisTheme() {
         // page follows the OS natively. Only mirror the OS into the signal so
         // the toggle icon reflects what's actually rendered.
         isDarkTheme.value = prefersDark();
+      }
+
+      // In auto mode the page restyles natively when the OS preference flips
+      // (light-dark() tracks `color-scheme: light dark`), but nothing touches
+      // the DOM or storage, so no event reaches the mirrors above. Listen to
+      // the media query directly; a pinned theme overrides `color-scheme`, so
+      // defer to localStorage before mirroring.
+      if (typeof matchMedia !== "undefined") {
+        const mql = matchMedia("(prefers-color-scheme: dark)");
+        const onOsChange = (e: MediaQueryListEvent) => {
+          if (parseTheme(localStorage.getItem(LOCAL_STORAGE_KEY)) == null) {
+            isDarkTheme.value = e.matches;
+          }
+        };
+        mql.addEventListener("change", onOsChange);
+        cleanup(() => mql.removeEventListener("change", onOsChange));
       }
     },
     { strategy: "document-ready" },

@@ -220,7 +220,10 @@ export { useDebouncedStore } from "./hooks/use-debounced-store";
 export { useDelayedSignal } from "./hooks/use-delayed-signal";
 export { useThrottledSignal } from "./hooks/use-throttled-signal";
 export { useThrottledStore } from "./hooks/use-throttled-store";
-export { useElmethisTheme } from "./hooks/use-elmethis-theme";
+export {
+  THEME_CHANGE_EVENT,
+  useElmethisTheme,
+} from "./hooks/use-elmethis-theme";
 export { useInView } from "./hooks/use-in-view";
 export { useModal, type UseModalOptions } from "./hooks/use-modal";
 export {
