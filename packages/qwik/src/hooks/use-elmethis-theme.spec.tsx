@@ -4,7 +4,11 @@ import { component$ } from "@qwik.dev/core";
 import { createDOM } from "@qwik.dev/core/testing";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
-import { parseTheme, useElmethisTheme } from "./use-elmethis-theme";
+import {
+  parseTheme,
+  THEME_CHANGE_EVENT,
+  useElmethisTheme,
+} from "./use-elmethis-theme";
 
 const LOCAL_STORAGE_KEY = "elmethis-theme";
 
@@ -95,6 +99,61 @@ describe("[CSR] storage listener attachment", () => {
     expect(markup).toContain("q-w:storage");
     // And the buggy form — a document listener for "storage" — must not.
     expect(markup).not.toContain("q-d:storage");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// [CSR] same-tab theme-change broadcast
+// ---------------------------------------------------------------------------
+//
+// Repro for the same-tab staleness bug: every `useElmethisTheme()` call owns
+// an independent signal, and the `storage` event only fires in OTHER tabs —
+// so sibling components in the same tab never saw a toggle. The fix is a
+// `CustomEvent` broadcast from `applyTheme` that each instance mirrors via
+// `useOnWindow`.
+//
+// As with the storage listener above, the `useOnWindow` mirror itself can't
+// be exercised at runtime under `createDOM` (no qwikloader), so coverage is
+// split: the dispatch side is observed with a vanilla listener, and the
+// listen side is proven structurally via the `q-w:` resumable markup.
+
+describe("[CSR] same-tab theme-change broadcast", () => {
+  beforeEach(() => {
+    localStorage.clear();
+    document.documentElement.removeAttribute("data-theme");
+    document.documentElement.style.removeProperty("color-scheme");
+  });
+
+  test("toggle dispatches the custom event on window with the new theme", async () => {
+    const { render, userEvent } = await createDOM();
+    await render(<ThemeWrapper />);
+
+    const received: (string | null)[] = [];
+    const listener = (e: Event) => {
+      received.push((e as CustomEvent<string | null>).detail);
+    };
+    window.addEventListener(THEME_CHANGE_EVENT, listener);
+
+    try {
+      await userEvent("#toggle", "click");
+      expect(received).toEqual(["dark"]);
+
+      await userEvent("#toggle", "click");
+      expect(received).toEqual(["dark", "light"]);
+    } finally {
+      window.removeEventListener(THEME_CHANGE_EVENT, listener);
+    }
+  });
+
+  test("theme-change mirror is wired to window", async () => {
+    const { screen, render } = await createDOM();
+    await render(<ThemeWrapper />);
+
+    // In the resumable attribute encoding a single "-" marks an uppercase
+    // letter, so literal dashes in the event name are serialized doubled;
+    // the qwikloader decodes it back to `elmethis-theme-change` on resume.
+    const escaped = THEME_CHANGE_EVENT.replaceAll("-", "--");
+    expect(screen.outerHTML).toContain(`q-w:${escaped}`);
   });
 });
 
