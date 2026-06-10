@@ -52,6 +52,9 @@
   --elmethis-primitive-color-gold-800: #8e7356;
   --elmethis-primitive-color-gold-900: #6e583f;
 
+  --elmethis-primitive-font-family-monospace:
+    "DM Mono", "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace;
+
   /*
     Light:
       Background: Gold
@@ -74,6 +77,10 @@
 
   /* COMMON (theme-independent) */
   --elmethis-margin-block-start: 2rem;
+
+  --elmethis-font-family-monospace: var(
+    --elmethis-primitive-font-family-monospace
+  );
 
   --elmethis-color-accent-link: var(--elmethis-primitive-color-blue-500);
   --elmethis-color-accent-link-visited: var(
