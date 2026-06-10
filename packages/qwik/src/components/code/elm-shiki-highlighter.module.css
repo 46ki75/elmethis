@@ -4,8 +4,10 @@
 
   :global(.shiki),
   :global(.shiki span) {
-    font-family:
-      "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace !important;
+    font-family: var(
+      --elmethis-scoped-font-family,
+      var(--elmethis-font-family-monospace)
+    ) !important;
 
     /* Shiki emits these dual-theme custom properties per token at runtime
        (defaultColor: false); resolve them natively against the active
