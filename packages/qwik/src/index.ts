@@ -286,6 +286,14 @@ export {
 } from "./components/navigation/elm-page-top";
 
 // | Others |
+export {
+  ElmColorPrimitiveSample,
+  type ElmColorPrimitiveSampleProps,
+} from "./components/others/elm-color-primitive-sample";
+export {
+  ElmColorSemanticSample,
+  type ElmColorSemanticSampleProps,
+} from "./components/others/elm-color-semantic-sample";
 export { ElmJarkup, type ElmJarkupProps } from "./components/others/elm-jarkup";
 export {
   ElmMarkdown,
