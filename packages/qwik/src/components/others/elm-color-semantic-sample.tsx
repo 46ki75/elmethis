@@ -46,17 +46,6 @@ const PRIMARY_TOKENS = [
   "--elmethis-color-primary-strong",
 ];
 
-const PRIMITIVE_TOKENS = [
-  "--elmethis-primitive-color-red-500",
-  "--elmethis-primitive-color-orange-500",
-  "--elmethis-primitive-color-yellow-500",
-  "--elmethis-primitive-color-green-500",
-  "--elmethis-primitive-color-cyan-500",
-  "--elmethis-primitive-color-blue-500",
-  "--elmethis-primitive-color-purple-500",
-  "--elmethis-primitive-color-magenta-500",
-];
-
 const ColorSample = component$(
   (args: { variables: string[]; copiedToken: Signal<string | null> }) => {
     return (
@@ -105,6 +94,19 @@ const ACCENT_PAIRS = [
     surface: "--elmethis-color-accent-error-surface",
   },
 ];
+
+const DISPLAY_PAIRS = [
+  "red",
+  "orange",
+  "yellow",
+  "green",
+  "cyan",
+  "blue",
+  "magenta",
+].map((hue) => ({
+  fg: `--elmethis-color-display-${hue}`,
+  surface: `--elmethis-color-display-${hue}-surface`,
+}));
 
 export const ElmColorSemanticSample = component$<ElmColorSemanticSampleProps>(
   ({ class: className, style }) => {
@@ -232,11 +234,20 @@ export const ElmColorSemanticSample = component$<ElmColorSemanticSampleProps>(
               </div>
 
               <div class={styles.group}>
-                <span class={styles["section-title"]}>Primitive</span>
-                <ColorSample
-                  variables={PRIMITIVE_TOKENS}
-                  copiedToken={copiedToken}
-                />
+                <span class={styles["section-title"]}>Display</span>
+                {DISPLAY_PAIRS.map(({ fg, surface }) => (
+                  <div
+                    key={fg}
+                    class={styles["accent-pair"]}
+                    style={{
+                      color: `var(${fg})`,
+                      backgroundColor: `var(${surface})`,
+                    }}
+                  >
+                    <span data-copy-token={fg}>{label(fg)}</span>
+                    <span data-copy-token={surface}>{label(surface)}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </body>
