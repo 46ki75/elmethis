@@ -15,7 +15,7 @@
   padding: 2px 0.5em;
   font-size: calc(1em - 2px);
   border-radius: 0.125rem;
-  background-color: var(--elmethis-color-surface-raised);
+  background-color: oklch(from var(--elmethis-color-neutral) l c h / 8%);
   font-family: var(
     --elmethis-scoped-font-family,
     var(--elmethis-font-family-monospace)
