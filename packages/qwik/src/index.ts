@@ -286,14 +286,6 @@ export {
 } from "./components/navigation/elm-page-top";
 
 // | Others |
-export {
-  ElmColorSample,
-  type ElmColorSampleProps,
-} from "./components/others/elm-color-sample";
-export {
-  ElmColorTable,
-  type ElmColorTableProps,
-} from "./components/others/elm-color-table";
 export { ElmJarkup, type ElmJarkupProps } from "./components/others/elm-jarkup";
 export {
   ElmMarkdown,

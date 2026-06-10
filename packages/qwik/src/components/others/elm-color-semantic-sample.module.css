@@ -40,6 +40,14 @@
       border: solid 1px oklch(from gray l c h / 25%);
     }
   }
+
+  [data-copy-token] {
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .surface {
