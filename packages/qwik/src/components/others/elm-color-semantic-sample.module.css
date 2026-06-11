@@ -1,6 +1,39 @@
 .elm-color-semantic-sample {
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  .toolbar {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .mode-toggle {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border: solid 1px oklch(from gray l c h / 25%);
+    border-radius: 0.25rem;
+    padding: 0.35rem 0.75rem;
+    background-color: transparent;
+    color: gray;
+    font-family: monospace;
+    font-size: 0.75rem;
+
+    .mode-toggle-icon {
+      color: var(--elmethis-color-primary);
+    }
+
+    &:hover {
+      background-color: oklch(from gray l c h / 10%);
+    }
+  }
+
+  .panels {
+    display: flex;
+    justify-content: space-around;
+  }
 
   .header {
     width: 100%;
