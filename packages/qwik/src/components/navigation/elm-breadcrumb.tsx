@@ -8,7 +8,6 @@ import {
   mdiFolderOpen,
   mdiHome,
 } from "@mdi/js";
-import { ElmInlineText } from "../typography/elm-inline-text";
 
 export interface ElmBreadcrumbProps extends PropsOf<"nav"> {
   links: Array<{
@@ -31,28 +30,27 @@ export const ElmBreadcrumb = component$<ElmBreadcrumbProps>(
         {links.map((link, index) => (
           <>
             <span class={styles["link-container"]} onClick$={link.onClick$}>
-              <span class={styles.icon}>
-                <ElmMdiIcon
-                  d={
-                    index === 0
-                      ? mdiHome
-                      : index === links.length - 1
-                        ? mdiApplicationOutline
-                        : mdiFolderOpen
-                  }
-                  size="1.25em"
-                />
-              </span>
+              <ElmMdiIcon
+                class={styles.icon}
+                d={
+                  index === 0
+                    ? mdiHome
+                    : index === links.length - 1
+                      ? mdiApplicationOutline
+                      : mdiFolderOpen
+                }
+                size="1rem"
+              />
 
-              <span class={styles.chunk}>
-                <ElmInlineText>{link.text}</ElmInlineText>
-              </span>
+              <span class={styles.chunk}>{link.text}</span>
             </span>
 
             {links.length !== index + 1 && (
-              <span class={styles.chevron}>
-                <ElmMdiIcon d={mdiChevronRight} size="1em" />
-              </span>
+              <ElmMdiIcon
+                class={styles.chevron}
+                d={mdiChevronRight}
+                size="1rem"
+              />
             )}
           </>
         ))}

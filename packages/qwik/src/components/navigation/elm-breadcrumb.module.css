@@ -10,7 +10,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 0;
+  gap: 0.25rem;
   box-sizing: border-box;
   padding: 0.25rem;
   border-radius: 0.25rem;
@@ -26,17 +26,16 @@
 
   &:hover {
     background-color: oklch(from var(--elmethis-color-primary) l c h / 25%);
-    transform: translateX(-1px) translateY(-1px);
   }
 
   &:active {
-    opacity: 0.5;
-    transform: translateX(1px) translateY(1px);
+    background-color: oklch(from var(--elmethis-color-primary) l c h / 50%);
   }
 }
 
 .chunk {
-  padding: 0 0.25rem;
+  color: var(--elmethis-color-neutral);
+  user-select: none;
 }
 
 .chevron {
