@@ -185,8 +185,15 @@ export const ElmColorSemanticSample = component$<ElmColorSemanticSampleProps>(
       return (
         // `color-scheme` drives native light-dark() token resolution;
         // `data-theme` covers the few non-color overrides that can't use it.
-        <html data-theme={props.theme} style={{ colorScheme: props.theme }}>
-          <body
+        // Plain elements (not <html>/<body>) so the sample can be nested
+        // inside a page; `color-scheme`/`data-theme` apply to any element.
+        <div
+          class={styles.panel}
+          data-theme={props.theme}
+          style={{ colorScheme: props.theme }}
+        >
+          <div
+            class={styles["panel-body"]}
             style={{
               backgroundColor: "var(--elmethis-color-surface-base)",
             }}
@@ -281,8 +288,8 @@ export const ElmColorSemanticSample = component$<ElmColorSemanticSampleProps>(
                 ))}
               </div>
             </div>
-          </body>
-        </html>
+          </div>
+        </div>
       );
     });
 
