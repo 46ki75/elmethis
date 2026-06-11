@@ -67,7 +67,7 @@
     "happy-dom": "^20.10.2",
     "jarkup-ts": "^0.14.0",
     "np": "^11.2.1",
-    "prettier": "3.8.3",
+    "prettier": "3.8.4",
     "storybook": "^10.4.4",
     "storybook-framework-qwik": "0.6.2--canary.95.25602496384.0",
     "stylelint": "^17.13.0",
