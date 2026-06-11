@@ -66,10 +66,10 @@
     gap: 0.5rem;
   }
 
-  html {
+  .panel {
     flex: 1;
 
-    body {
+    .panel-body {
       border: solid 1px oklch(from gray l c h / 25%);
     }
   }
