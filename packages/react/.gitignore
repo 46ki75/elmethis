@@ -12,6 +12,7 @@ dist
 dist-ssr
 lib/
 lib-types/
+storybook-static/
 *.local
 
 # Editor directories and files

@@ -1,5 +1,6 @@
 import type { Preview, StoryContext } from "@storybook/react-vite";
 
+import "@elmethis/core/tokens.css";
 import "./sb.css";
 
 export const preview: Preview = {
@@ -32,6 +33,9 @@ export const preview: Preview = {
   decorators: [
     (Story: React.ElementType, context: StoryContext) => {
       const theme = context.globals.theme || "light";
+      // `color-scheme` drives the native light-dark() token resolution;
+      // `data-theme` covers the few non-color overrides that can't use it.
+      document.documentElement.style.colorScheme = theme;
       document.documentElement.setAttribute("data-theme", theme);
 
       return <Story />;

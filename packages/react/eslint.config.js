@@ -6,7 +6,15 @@ import tseslint from "typescript-eslint";
 import { defineConfig, globalIgnores } from "eslint/config";
 
 export default defineConfig([
-  globalIgnores(["dist", "lib-types"]),
+  globalIgnores([
+    "dist",
+    "lib",
+    "lib-types",
+    "storybook-static",
+    "node_modules",
+    "vite.config.ts",
+    "vitest.browser.config.ts",
+  ]),
   {
     files: ["**/*.{ts,tsx}"],
     extends: [
@@ -21,6 +29,15 @@ export default defineConfig([
     },
     rules: {
       "@typescript-eslint/no-empty-object-type": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          varsIgnorePattern: "^_",
+          argsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
     },
   },
 ]);

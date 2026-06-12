@@ -1,0 +1,42 @@
+/*
+ * Allowlist of component-private CSS variables.
+ *
+ * This file is NOT bundled — it is referenced only by stylelint's
+ * `csstools/value-no-unknown-custom-properties` rule (see
+ * `stylelint.config.mjs`) so that component-private vars set via inline
+ * `style={{ "--x": value }}` from props don't trigger false positives.
+ *
+ * Convention: component-private vars are namespaced with
+ * `--elmethis-scoped-*` and written to a component's own root element
+ * only. The `--elmethis-scoped-*` prefix protects them from collisions
+ * with consumer-defined custom properties on `:root` or ancestor
+ * elements. Design-token vars (`--elmethis-*`, no `scoped` segment)
+ * are provided by `@elmethis/core` (`tokens.css`).
+ *
+ * When a component introduces a new component-private var, add it here.
+ */
+
+:root {
+  /* Generic per-component knobs (size, color, layout) */
+  --elmethis-scoped-background-color: initial;
+  --elmethis-scoped-callout-color: initial;
+  --elmethis-scoped-color: initial;
+  --elmethis-scoped-cursor: initial;
+  --elmethis-scoped-dimensions: initial;
+  --elmethis-scoped-font-size: initial;
+  --elmethis-scoped-height: initial;
+  --elmethis-scoped-inset: initial;
+  --elmethis-scoped-opacity: initial;
+  --elmethis-scoped-padding: initial;
+  --elmethis-scoped-scale: initial;
+  --elmethis-scoped-size: initial;
+  --elmethis-scoped-width: initial;
+
+  /* Animation timing knobs */
+  --elmethis-scoped-delay: initial;
+  --elmethis-scoped-duration: initial;
+
+  /* Shiki syntax-highlighter (set on <pre> by Shiki itself) */
+  --shiki-dark: initial;
+  --shiki-dark-bg: initial;
+}

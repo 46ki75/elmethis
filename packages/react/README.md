@@ -1,73 +1,31 @@
-# React + TypeScript + Vite
+# @elmethis/react
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React 19 component library for elmethis.
 
-Currently, two official plugins are available:
+Components and hooks are being recreated to match the `@elmethis/qwik`
+lead/base-reference implementation:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- design tokens come from `@elmethis/core` (`import "@elmethis/core/tokens.css"`);
+- theming is native via CSS `light-dark()` + `color-scheme`;
+- files are `kebab-case`, styles use CSS Modules with the `.elm-*` class
+  convention, and specs are co-located.
 
-## React Compiler
+## Scripts
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| Script                | Purpose                                            |
+| --------------------- | -------------------------------------------------- |
+| `pnpm dev`            | Storybook dev server (port 19221)                  |
+| `pnpm build`         | Build the library (`vite build`) + types (`tsc`)    |
+| `pnpm test.unit`     | Unit specs (happy-dom + React Testing Library, SSR) |
+| `pnpm test.browser`  | Browser specs (real Chromium via Playwright)        |
+| `pnpm lint`          | ESLint                                              |
+| `pnpm lint.css`      | Stylelint                                           |
+| `pnpm fmt`           | Prettier                                            |
 
-## Expanding the ESLint configuration
+## Testing layers
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- `*.spec.ts(x)` → unit (`pnpm test.unit`): pure logic, CSR via React Testing
+  Library, and SSR via `renderToString`.
+- `*.browser.spec.tsx` → browser (`pnpm test.browser`): real Chromium, only for
+  behavior the unit DOM can't fake (native `<dialog>`/focus/layout, real Web
+  APIs, `color-scheme`).
