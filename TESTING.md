@@ -83,6 +83,14 @@ that lives in both layers shares a base name and differs only by the
   point — otherwise a late-firing `document-ready` task can clobber the action.
 - The shared `<html>` element and `localStorage` persist across tests in one
   browser tab — reset them in `beforeEach`/`afterEach`.
+- A `component$` rendered from a spec must **not close over a module-level
+  const**. Qwik's lazy component segment re-imports the spec module to resolve
+  the captured value, which re-runs `describe()` mid-test ("Calling the suite
+  function inside test function is not allowed"). Inline the literal in the
+  component; keep module consts for assertion code only.
+- Real Web APIs gated by permissions (clipboard, geolocation, notifications)
+  need a grant via the provider: `playwright({ contextOptions: { permissions:
+[...] } })` in `vitest.browser.config.ts`.
 
 ## CI
 

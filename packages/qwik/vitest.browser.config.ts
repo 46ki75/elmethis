@@ -26,7 +26,13 @@ export default defineConfig({
     browser: {
       enabled: true,
       headless: true,
-      provider: playwright(),
+      // Grant clipboard permissions so `use-clipboard` can exercise the real
+      // `navigator.clipboard` write/read path (createDOM can only mock it).
+      provider: playwright({
+        contextOptions: {
+          permissions: ["clipboard-read", "clipboard-write"],
+        },
+      }),
       instances: [{ browser: "chromium" }],
     },
   },
