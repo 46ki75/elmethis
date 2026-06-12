@@ -21,9 +21,12 @@ import {
   type CSSProperties,
 } from "react";
 import clsx from "clsx";
+import { marked } from "marked";
+import DOMPurify from "dompurify";
 
 import {
   A2uiSurface,
+  MarkdownContext,
   type ReactComponentImplementation,
 } from "@a2ui/react/v0_9";
 import {
@@ -38,6 +41,18 @@ import styles from "./elm-a2ui.module.css";
 
 const BASIC_CATALOG_ID =
   "https://a2ui.org/specification/v0_9/basic_catalog.json";
+
+// The basic-catalog `Text` renderer turns its `variant` into markdown
+// (`h1` → `# text`, `caption` → `*text*`) and renders it through a renderer
+// pulled from `MarkdownContext` — injected via `dangerouslySetInnerHTML`.
+// Without one it falls back to dumping the raw markdown string ("# Heading").
+// Provide `marked` (the engine ElmMarkdown already uses) so those variants
+// resolve to real HTML, and sanitize the result with DOMPurify since A2UI
+// content is agent-authored and goes through `dangerouslySetInnerHTML`.
+const renderMarkdown = async (markdown: string): Promise<string> => {
+  const html = marked.parse(markdown, { async: false, gfm: true });
+  return DOMPurify.sanitize(html);
+};
 
 const surfaceStyle = {
   "--elmethis-margin-block-start": "2rem",
@@ -234,11 +249,13 @@ export const ElmA2ui = ({
       style={style}
       {...rest}
     >
-      {surfaces.map((surface) => (
-        <div key={surface.id} className={styles.surface} style={surfaceStyle}>
-          <A2uiSurface surface={surface} />
-        </div>
-      ))}
+      <MarkdownContext.Provider value={renderMarkdown}>
+        {surfaces.map((surface) => (
+          <div key={surface.id} className={styles.surface} style={surfaceStyle}>
+            <A2uiSurface surface={surface} />
+          </div>
+        ))}
+      </MarkdownContext.Provider>
     </div>
   );
 };

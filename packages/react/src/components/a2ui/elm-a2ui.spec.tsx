@@ -52,6 +52,19 @@ describe("[CSR] ElmA2ui", () => {
     expect(container.textContent).toContain("Body paragraph.");
   });
 
+  test("renders Text `variant` through markdown (h2 → heading, not raw `##`)", async () => {
+    // The basic Text renderer maps `variant` to markdown; ElmA2ui supplies a
+    // `marked` renderer via MarkdownContext, so it must resolve to a real
+    // heading element with no leftover `##` syntax.
+    const { container } = render(<ElmA2ui messages={basicSurface} />);
+    await waitFor(() => {
+      const heading = container.querySelector("h2");
+      expect(heading).not.toBeNull();
+      expect(heading?.textContent).toContain("A2UI Title");
+    });
+    expect(container.textContent).not.toContain("## A2UI Title");
+  });
+
   test("renders an Elm block component (Heading → <h2>)", async () => {
     const { container } = render(<ElmA2ui messages={blockHeadingSurface} />);
     await waitFor(() => {
@@ -65,6 +78,36 @@ describe("[CSR] ElmA2ui", () => {
     // The root wrapper exists; no surfaces.
     expect(container.querySelector("div")).not.toBeNull();
     expect(container.textContent).toBe("");
+  });
+});
+
+const xssSurface = [
+  { version: "v0.9", createSurface: { surfaceId: "x", catalogId: CATALOG_ID } },
+  {
+    version: "v0.9",
+    updateComponents: {
+      surfaceId: "x",
+      components: [
+        {
+          component: "Text",
+          id: "root",
+          text: 'safe text <img src=x onerror="window.__xss=1">',
+        },
+      ],
+    },
+  },
+] as object[];
+
+describe("[CSR] ElmA2ui markdown sanitization", () => {
+  test("strips dangerous attributes from agent-authored markdown", async () => {
+    const { container } = render(<ElmA2ui messages={xssSurface} />);
+    await waitFor(() => {
+      expect(container.textContent).toContain("safe text");
+    });
+    // DOMPurify must drop the event handler that dangerouslySetInnerHTML
+    // would otherwise activate.
+    expect(container.querySelector("img[onerror]")).toBeNull();
+    expect(container.innerHTML).not.toContain("onerror");
   });
 });
 
