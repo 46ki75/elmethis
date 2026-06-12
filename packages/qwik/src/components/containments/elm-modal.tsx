@@ -18,11 +18,25 @@ import styles from "./elm-modal.module.css";
 export interface ElmModalProps extends PropsOf<"dialog"> {
   isOpen?: boolean;
 
+  /**
+   * Delay in **milliseconds** of the open/close fade. Emitted as the
+   * `--elmethis-scoped-modal-delay` custom property so the stylesheet
+   * transition stays in sync with the JS close timer. Defaults to `200`.
+   */
+  delay?: number;
+
   onClose$?: QRL<(event: Event, element: HTMLDialogElement) => void>;
 }
 
 export const ElmModal = component$<ElmModalProps>((props) => {
-  const { class: className, isOpen: _isOpen, onClose$, ...rest } = props;
+  const {
+    class: className,
+    isOpen: _isOpen,
+    delay = 200,
+    style,
+    onClose$,
+    ...rest
+  } = props;
   const dialogRef = useSignal<HTMLDialogElement>();
   const isShown = useSignal(false);
 
@@ -38,7 +52,7 @@ export const ElmModal = component$<ElmModalProps>((props) => {
         isShown.value = false;
         const timer = setTimeout(() => {
           dialogRef.value?.close();
-        }, 200);
+        }, delay);
         cleanup(() => {
           clearTimeout(timer);
         });
@@ -62,6 +76,10 @@ export const ElmModal = component$<ElmModalProps>((props) => {
         },
       ]}
       onClick$={handleClose}
+      style={{
+        "--elmethis-scoped-modal-delay": `${delay}ms`,
+        ...(style && typeof style === "object" ? style : {}),
+      }}
       {...({ closedBy: "none" } as object)}
       {...rest}
     >

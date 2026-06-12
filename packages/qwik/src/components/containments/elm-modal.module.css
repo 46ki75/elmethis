@@ -3,7 +3,7 @@
   margin: auto;
   padding: 0;
   opacity: 0;
-  transition: opacity 200ms;
+  transition: opacity var(--elmethis-scoped-modal-delay, 200ms);
   transition-timing-function: var(
     --elmethis-scoped-transition-timing-function,
     ease-in-out
@@ -20,7 +20,7 @@
 
   &::backdrop {
     opacity: 0;
-    transition: opacity 200ms;
+    transition: opacity var(--elmethis-scoped-modal-delay, 200ms);
     background-color: transparent;
     background-color: oklch(from black l c h / 50%);
   }

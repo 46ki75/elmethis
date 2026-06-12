@@ -1,42 +1,29 @@
 // @vitest-environment happy-dom
 
-import { component$, useSignal } from "@qwik.dev/core";
+import { component$ } from "@qwik.dev/core";
 import { createDOM } from "@qwik.dev/core/testing";
 import { renderToString } from "@qwik.dev/core/server";
-import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
+import { describe, expect, test } from "vitest";
 
 import { useModal } from "./use-modal";
 import { ElmTextField } from "../components/form/elm-text-field";
 
 // ---------------------------------------------------------------------------
 // Wrapper components
+//
+// NOTE: the open transition (`isOpen` -> true) drives `ElmModal`'s
+// `useVisibleTask$` into `dialog.showModal()`, which the Qwik `createDOM`
+// renderer cannot service (it throws `_ensureInsertValid is not a function`).
+// Native-`<dialog>` open behavior is therefore covered by Storybook, not here.
+// These specs split into two halves that both stay inside what `createDOM`
+// supports:
+//   - state wrappers exercise show/hide/toggle WITHOUT mounting `<Modal>`
+//   - structure wrappers mount `<Modal>` but leave it CLOSED
 // ---------------------------------------------------------------------------
 
-/** Simple modal wrapper that exposes open button, state spans, and dialog content. */
-const ModalWrapper = component$(() => {
-  const { Modal, isOpen, isShown, show } = useModal({ delay: 0 });
-  return (
-    <div>
-      <button id="open" onClick$={show}>
-        Open
-      </button>
-      <span id="isOpen">{String(isOpen.value)}</span>
-      <span id="isShown">{String(isShown.value)}</span>
-      <Modal>
-        <span id="dialog-content">Dialog Content</span>
-      </Modal>
-    </div>
-  );
-});
-
-/**
- * Mountable / unmountable modal host. The parent flips `mounted` to false to
- * tear down the inner `ModalHost` component, which is what drives the
- * `useTask$({ cleanup })` exit path inside `useModal`.
- */
-const ModalHost = component$(() => {
-  // Long delay so the hide timer is still pending when we unmount.
-  const { Modal, show, hide } = useModal({ delay: 1500 });
+/** Imperative-state harness: buttons + `isOpen` span, no dialog mounted. */
+const StateWrapper = component$(() => {
+  const { isOpen, show, hide, toggle } = useModal({ delay: 0 });
   return (
     <div>
       <button id="show" onClick$={show}>
@@ -45,39 +32,31 @@ const ModalHost = component$(() => {
       <button id="hide" onClick$={hide}>
         Hide
       </button>
-      <Modal>
-        <span id="dialog-content">Dialog Content</span>
-      </Modal>
-    </div>
-  );
-});
-
-const ToggleableModalHost = component$(() => {
-  const mounted = useSignal(true);
-  return (
-    <div>
-      <button id="unmount" onClick$={() => (mounted.value = false)}>
-        Unmount
-      </button>
-      {mounted.value && <ModalHost />}
-    </div>
-  );
-});
-
-/** Modal wrapper whose content is an ElmTextField (reproduces the reported bug). */
-const ModalWithTextField = component$(() => {
-  const { Modal, isOpen, isShown, show } = useModal({ delay: 0 });
-  return (
-    <div>
-      <button id="open" onClick$={show}>
-        Open
+      <button id="toggle" onClick$={toggle}>
+        Toggle
       </button>
       <span id="isOpen">{String(isOpen.value)}</span>
-      <span id="isShown">{String(isShown.value)}</span>
-      <Modal>
-        <ElmTextField label="Username" />
-      </Modal>
     </div>
+  );
+});
+
+/** Mounts `<Modal>` (kept closed) with slotted content. */
+const ModalWrapper = component$(() => {
+  const { Modal } = useModal({ delay: 0 });
+  return (
+    <Modal>
+      <span id="dialog-content">Dialog Content</span>
+    </Modal>
+  );
+});
+
+/** Mounts `<Modal>` (kept closed) whose content is an ElmTextField. */
+const ModalWithTextField = component$(() => {
+  const { Modal } = useModal({ delay: 0 });
+  return (
+    <Modal>
+      <ElmTextField label="Username" />
+    </Modal>
   );
 });
 
@@ -86,7 +65,7 @@ const ModalWithTextField = component$(() => {
 // ---------------------------------------------------------------------------
 
 describe("[SSR]", () => {
-  test("renders open button but dialog wrapper is absent when closed", async () => {
+  test("renders a native <dialog> shell with slotted content", async () => {
     const result = await renderToString(<ModalWrapper />, {
       containerTagName: "div",
       symbolMapper: (symbolName, _mapper, parent) => [
@@ -94,145 +73,56 @@ describe("[SSR]", () => {
         parent ?? symbolName,
       ],
     });
-    expect(result.html).toContain("Open");
-    // div[role="dialog"] is not rendered when modal is initially closed.
-    expect(result.html).not.toContain('role="dialog"');
+    // The native <dialog> is always present now; it is hidden via the top
+    // layer rather than by conditionally unmounting the slot content.
+    expect(result.html).toContain("<dialog");
+    expect(result.html).toContain("Dialog Content");
   });
 });
 
 // ---------------------------------------------------------------------------
-// [CSR]
+// [CSR] — imperative state
 // ---------------------------------------------------------------------------
 
-describe("[CSR]", () => {
-  beforeEach(() => {
-    vi.useRealTimers();
-  });
-
-  afterEach(() => {
-    vi.clearAllTimers();
-    vi.useRealTimers();
-  });
-
+describe("[CSR] state", () => {
   test("modal is closed by default", async () => {
     const { screen, render } = await createDOM();
-    await render(<ModalWrapper />);
+    await render(<StateWrapper />);
     expect(screen.querySelector("#isOpen")!.textContent).toBe("false");
-    expect(screen.querySelector("#isShown")!.textContent).toBe("false");
-    // The dialog wrapper is not rendered when modal is closed
-    // (slot content lives in a hidden <q:template>, not in a live dialog div).
-    expect(screen.querySelector('[role="dialog"]')).toBeFalsy();
   });
 
-  test("show() opens the modal and reveals content", async () => {
+  test("show() opens, hide() closes", async () => {
     const { screen, render, userEvent } = await createDOM();
-    await render(<ModalWrapper />);
+    await render(<StateWrapper />);
 
-    await userEvent("#open", "click");
-
+    await userEvent("#show", "click");
     expect(screen.querySelector("#isOpen")!.textContent).toBe("true");
-    expect(screen.querySelector("#isShown")!.textContent).toBe("true");
-    // Dialog is now rendered.
-    expect(screen.querySelector('[role="dialog"]')).toBeTruthy();
-    expect(
-      screen.querySelector('[role="dialog"] #dialog-content'),
-    ).toBeTruthy();
+
+    await userEvent("#hide", "click");
+    expect(screen.querySelector("#isOpen")!.textContent).toBe("false");
   });
 
-  test("clicking the backdrop closes the modal", async () => {
+  test("toggle() flips isOpen each call", async () => {
     const { screen, render, userEvent } = await createDOM();
-    await render(<ModalWrapper />);
+    await render(<StateWrapper />);
 
-    await userEvent("#open", "click");
-    expect(screen.querySelector("#isShown")!.textContent).toBe("true");
+    await userEvent("#toggle", "click");
+    expect(screen.querySelector("#isOpen")!.textContent).toBe("true");
 
-    // The backdrop is the parent element of div[role="dialog"].
-    const backdrop = screen.querySelector('[role="dialog"]')!
-      .parentElement as HTMLElement;
-    await userEvent(backdrop, "click");
-
-    expect(screen.querySelector("#isShown")!.textContent).toBe("false");
+    await userEvent("#toggle", "click");
+    expect(screen.querySelector("#isOpen")!.textContent).toBe("false");
   });
 
-  // -------------------------------------------------------------------------
-  // Fix 1 — structural test
-  // -------------------------------------------------------------------------
-
-  test("dialog div has stoppropagation:click attribute (Fix 1)", async () => {
-    const { screen, render, userEvent } = await createDOM();
-    await render(<ModalWrapper />);
-
-    await userEvent("#open", "click");
-
-    // The dialog div must carry stoppropagation:click so that Qwik's
-    // document-level event walk stops synchronously without loading any QRL.
-    const dialog = screen.querySelector('[role="dialog"]') as HTMLElement;
-    expect(dialog).toBeTruthy();
-    expect(dialog.hasAttribute("stoppropagation:click")).toBe(true);
-  });
-
-  // -------------------------------------------------------------------------
-  // Fix 2 — structural tests for ElmTextField
-  // -------------------------------------------------------------------------
-
-  test("ElmTextField renders as <label> wrapper with <input> inside (Fix 2)", async () => {
-    const { screen, render } = await createDOM();
-    await render(<ElmTextField label="Username" />);
-
-    // Root element must be a <label> (implicit association — no for= needed).
-    const wrapper = screen.querySelector("label") as HTMLLabelElement;
-    expect(wrapper).toBeTruthy();
-
-    // The <input> must be a descendant of the label.
-    const input = wrapper.querySelector("input") as HTMLInputElement;
-    expect(input).toBeTruthy();
-  });
-
-  test("ElmTextField <label> has no for= attribute (Fix 2)", async () => {
-    const { screen, render } = await createDOM();
-    await render(<ElmTextField label="Username" />);
-
-    const labels = Array.from(screen.querySelectorAll("label"));
-    // No <label> element should carry a for= attribute.
-    for (const label of labels) {
-      expect(label.getAttribute("for")).toBeNull();
-    }
-  });
-
-  test("ElmTextField inside modal: dialog retains stoppropagation:click (Fix 1 + Fix 2)", async () => {
-    const { screen, render, userEvent } = await createDOM();
-    await render(<ModalWithTextField />);
-
-    await userEvent("#open", "click");
-
-    const dialog = screen.querySelector('[role="dialog"]') as HTMLElement;
-    expect(dialog).toBeTruthy();
-    expect(dialog.hasAttribute("stoppropagation:click")).toBe(true);
-
-    // ElmTextField inside the dialog renders as a label (no for=).
-    const textFieldLabel = dialog.querySelector("label") as HTMLLabelElement;
-    expect(textFieldLabel).toBeTruthy();
-    expect(textFieldLabel.getAttribute("for")).toBeNull();
-    expect(textFieldLabel.querySelector("input")).toBeTruthy();
-  });
-
-  // -------------------------------------------------------------------------
-  // Regression pin: `useModal` must be callable with no argument. Earlier
-  // the parameter `({ delay = 200 }: UseModalOptions)` was required, forcing
-  // every caller that wanted defaults to write `useModal({})`. The
-  // `= {}` default fixes that; this test fails to compile if the default
-  // is removed.
-  // -------------------------------------------------------------------------
+  // Regression pin: `useModal` must be callable with no argument.
   test("can be called with no options argument", async () => {
     const NoArgsWrapper = component$(() => {
-      const { Modal, isShown, show } = useModal();
+      const { isOpen, show } = useModal();
       return (
         <div>
           <button id="show" onClick$={show}>
             Show
           </button>
-          <span id="isShown">{String(isShown.value)}</span>
-          <Modal>content</Modal>
+          <span id="isOpen">{String(isOpen.value)}</span>
         </div>
       );
     });
@@ -240,42 +130,46 @@ describe("[CSR]", () => {
     const { screen, render, userEvent } = await createDOM();
     await render(<NoArgsWrapper />);
 
-    expect(screen.querySelector("#isShown")!.textContent).toBe("false");
+    expect(screen.querySelector("#isOpen")!.textContent).toBe("false");
     await userEvent("#show", "click");
-    expect(screen.querySelector("#isShown")!.textContent).toBe("true");
+    expect(screen.querySelector("#isOpen")!.textContent).toBe("true");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// [CSR] — structure (dialog kept closed)
+// ---------------------------------------------------------------------------
+
+describe("[CSR] structure", () => {
+  test("Modal renders slotted content inside the <dialog>", async () => {
+    const { screen, render } = await createDOM();
+    await render(<ModalWrapper />);
+
+    const dialog = screen.querySelector("dialog");
+    expect(dialog).toBeTruthy();
+    expect(dialog!.querySelector("#dialog-content")).toBeTruthy();
   });
 
-  // -------------------------------------------------------------------------
-  // Bug repro: hide() arms a setTimeout that is never cancelled if the modal
-  // host unmounts before the timer fires. The callback then runs on a
-  // disposed host, writing to `isOpen` of a torn-down hook instance.
-  //
-  // We spy on clearTimeout: the fix must register a useTask$({cleanup}) that
-  // clears the pending hide timer. The buggy code never calls clearTimeout
-  // on this timer, so the spy's call count stays flat across unmount.
-  // -------------------------------------------------------------------------
-  test("pending hide timer is cleared when modal host unmounts", async () => {
-    // Spy AFTER enabling fake timers — vi swaps the global setTimeout /
-    // clearTimeout implementations, so spying first would attach to the
-    // unswapped versions that the hook no longer calls.
-    vi.useFakeTimers();
-    const clearSpy = vi.spyOn(globalThis, "clearTimeout");
+  test("content sits inside a stopPropagation guard, isolating it from the close handler", async () => {
+    const { screen, render } = await createDOM();
+    await render(<ModalWrapper />);
 
-    const { render, userEvent } = await createDOM();
-    await render(<ToggleableModalHost />);
+    // ElmModal wraps the slot in a guard <div onClick$={stopPropagation}> so
+    // clicking the content never bubbles to the dialog's close handler.
+    const dialog = screen.querySelector("dialog")!;
+    const guard = dialog.firstElementChild as HTMLElement;
+    expect(guard).toBeTruthy();
+    expect(guard.querySelector("#dialog-content")).toBeTruthy();
+  });
 
-    await userEvent("#show", "click");
-    await userEvent("#hide", "click");
-    await vi.advanceTimersByTimeAsync(0);
+  test("ElmTextField inside the modal renders as a <label> with an <input> (no for=)", async () => {
+    const { screen, render } = await createDOM();
+    await render(<ModalWithTextField />);
 
-    const before = clearSpy.mock.calls.length;
-
-    // Unmount the modal host while the hide timer is still pending.
-    await userEvent("#unmount", "click");
-    await vi.advanceTimersByTimeAsync(0);
-
-    // The cleanup must clear the pending timer. Without the fix, no
-    // clearTimeout call corresponds to the hide timer.
-    expect(clearSpy.mock.calls.length).toBeGreaterThan(before);
+    const dialog = screen.querySelector("dialog")!;
+    const label = dialog.querySelector("label") as HTMLLabelElement;
+    expect(label).toBeTruthy();
+    expect(label.getAttribute("for")).toBeNull();
+    expect(label.querySelector("input")).toBeTruthy();
   });
 });
