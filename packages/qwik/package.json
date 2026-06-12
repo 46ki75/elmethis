@@ -85,7 +85,6 @@
     "typescript-eslint": "8.61.0",
     "undici": "*",
     "vite": "^8",
-    "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^4.1.8",
     "vitest-browser-qwik": "^0.3.8"
   },

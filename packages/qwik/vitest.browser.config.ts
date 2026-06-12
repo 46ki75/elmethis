@@ -1,6 +1,5 @@
 import { defineConfig } from "vite";
 import { qwikVite } from "@qwik.dev/core/optimizer";
-import tsconfigPaths from "vite-tsconfig-paths";
 import { testSSR } from "vitest-browser-qwik/ssr-plugin";
 import { playwright } from "@vitest/browser-playwright";
 
@@ -12,13 +11,13 @@ import { playwright } from "@vitest/browser-playwright";
 // state the instant it is invoked, which corrupts the node project's
 // createDOM/localStorage globals if both configs are loaded together.
 export default defineConfig({
+  resolve: { tsconfigPaths: true },
   plugins: [
     // `testSSR()` must precede `qwikVite()` per the plugin's docs.
     testSSR(),
     // The Alt+click-to-source dev overlay intercepts pointer events and breaks
     // Playwright's actionability checks — turn it off here.
     qwikVite({ devTools: { clickToSource: false } }),
-    tsconfigPaths({ root: "." }),
   ],
   test: {
     name: "browser",
