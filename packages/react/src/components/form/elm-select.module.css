@@ -1,0 +1,108 @@
+.elm-select {
+  --elmethis-scoped-highlight-color: var(--elmethis-color-primary-weak);
+
+  user-select: none;
+  position: relative;
+  box-sizing: border-box;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.25rem;
+  border-style: solid;
+  border-width: 1px;
+  border-color: transparent;
+  transition:
+    border-color 200ms,
+    background-color 200ms;
+  background-color: var(--elmethis-color-surface-raised);
+  box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
+  cursor: pointer;
+
+  &.disabled {
+    background-color: var(--elmethis-color-surface-sunken);
+  }
+
+  &.active {
+    border-color: var(--elmethis-scoped-highlight-color);
+  }
+
+  .label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.125rem;
+    margin: 0;
+    padding: 0;
+    font-size: 0.75rem;
+    line-height: 0.75rem;
+    height: 0.75rem;
+    transition: color 200ms;
+    user-select: none;
+    color: var(--elmethis-color-neutral);
+
+    &.label-active {
+      color: var(--elmethis-scoped-highlight-color);
+    }
+  }
+
+  .body {
+    padding: 0 0.25rem;
+    height: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .selected-option {
+      overflow: hidden;
+
+      .option-content {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+      }
+    }
+
+    .fallback {
+      opacity: 0.6;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .pulldown {
+      position: absolute;
+      top: calc(100% + 0.25rem);
+      left: 0;
+      z-index: 100;
+      box-sizing: border-box;
+      width: max-content;
+      padding: 0;
+      border-radius: 0.25rem;
+      background-color: light-dark(rgb(255 255 255 / 95%), rgb(51 51 51 / 95%));
+      box-shadow: 0 0 0.125rem light-dark(rgb(0 0 0 / 15%), rgb(0 0 0 / 75%));
+
+      .option {
+        overflow: hidden;
+        width: 100%;
+        padding: 0.5rem;
+        box-sizing: border-box;
+        border-radius: 0.25rem;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 0.25rem;
+        transition: background-color 100ms;
+        cursor: pointer;
+
+        &:hover {
+          background-color: light-dark(
+            rgb(190 194 202 / 30%),
+            rgb(190 194 202 / 20%)
+          );
+        }
+      }
+    }
+  }
+}

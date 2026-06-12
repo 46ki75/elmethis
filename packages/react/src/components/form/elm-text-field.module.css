@@ -1,0 +1,149 @@
+@keyframes loading {
+  0% {
+    transform-origin: 0%;
+    transform: scaleX(0);
+  }
+
+  40% {
+    transform-origin: 0%;
+    transform: scaleX(1);
+  }
+
+  60% {
+    transform-origin: 100%;
+    transform: scaleX(1);
+  }
+
+  100% {
+    transform-origin: 100%;
+    transform: scaleX(0);
+  }
+}
+
+.loading {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--highlight-color);
+  transition: opacity 200ms;
+  pointer-events: none;
+  animation-name: loading;
+  animation-iteration-count: infinite;
+  animation-duration: 1600ms;
+}
+
+.elm-text-field {
+  --highlight-color: var(--elmethis-color-primary);
+
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.25rem;
+  transition:
+    border-color 200ms,
+    background-color 200ms;
+  border-style: solid;
+  border-width: 1px;
+  border-color: transparent;
+  background-color: var(--elmethis-color-surface-raised);
+  box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
+
+  &.disabled {
+    background-color: var(--elmethis-color-surface-sunken);
+  }
+
+  &.active {
+    border-color: var(--highlight-color);
+  }
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 1rem 1fr max-content;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  font-size: 0.75rem;
+  line-height: 0.75rem;
+  height: 0.75rem;
+  transition: color 200ms;
+  color: var(--elmethis-color-neutral);
+  user-select: none;
+
+  &.label-active {
+    color: var(--highlight-color);
+  }
+}
+
+.requierd {
+  padding-inline: 0.25rem;
+  color: var(--elmethis-color-accent-error);
+  font-weight: bold;
+}
+
+.body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0.25rem;
+  height: 1.25rem;
+}
+
+.input {
+  all: unset;
+  box-sizing: border-box;
+  padding: 0;
+  width: 100%;
+  color: var(--elmethis-color-neutral);
+  caret-color: var(--highlight-color);
+
+  &::placeholder {
+    opacity: 0.6;
+  }
+
+  &::selection {
+    color: var(--elmethis-color-surface-raised);
+    background-color: var(
+      --elmethis-scoped-color,
+      var(--elmethis-color-neutral)
+    );
+  }
+}
+
+.right-icon-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .clickable-icon {
+    box-sizing: border-box;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.25rem;
+    border-radius: 50%;
+    transition: background-color 100ms;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgb(128 128 128 / 20%);
+    }
+  }
+}
+
+.prefix-suffix {
+  opacity: 0.6;
+  padding: 0 0.25rem 0 0;
+  font-size: 0.85em;
+  user-select: none;
+  transition: color 200ms;
+  color: light-dark(rgb(0 0 0 / 65%), rgb(255 255 255 / 65%));
+}

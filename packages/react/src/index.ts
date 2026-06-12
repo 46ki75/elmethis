@@ -37,6 +37,10 @@ export {
   type ElmTabsProps,
 } from "./components/containments/elm-tabs";
 export {
+  ElmToggle,
+  type ElmToggleProps,
+} from "./components/containments/elm-toggle";
+export {
   ElmTooltip,
   type ElmTooltipProps,
 } from "./components/containments/elm-tooltip";
@@ -50,12 +54,41 @@ export {
   ElmRectangleWave,
   type ElmRectangleWaveProps,
 } from "./components/fallback/elm-rectangle-wave";
+export {
+  ElmUnsupportedBlock,
+  type ElmUnsupportedBlockProps,
+} from "./components/fallback/elm-unsupported-block";
 
 // Form
 export { ElmButton, type ElmButtonProps } from "./components/form/elm-button";
+export {
+  ElmCheckbox,
+  type ElmCheckboxProps,
+} from "./components/form/elm-checkbox";
+export {
+  ElmSelect,
+  type ElmSelectOption,
+  type ElmSelectProps,
+} from "./components/form/elm-select";
 export { ElmSwitch, type ElmSwitchProps } from "./components/form/elm-switch";
+export {
+  ElmTextArea,
+  type ElmTextAreaProps,
+} from "./components/form/elm-text-area";
+export {
+  ElmTextField,
+  type ElmTextFieldProps,
+} from "./components/form/elm-text-field";
+export {
+  ElmValidation,
+  type ElmValidationProps,
+} from "./components/form/elm-validation";
 
 // Icon
+export {
+  ElmCopyIcon,
+  type ElmCopyIconProps,
+} from "./components/icon/elm-copy-icon";
 export {
   ElmDotLoadingIcon,
   type ElmDotLoadingIconProps,
@@ -64,6 +97,10 @@ export {
   ElmInlineIcon,
   type ElmInlineIconProps,
 } from "./components/icon/elm-inline-icon";
+export {
+  ElmLanguageIcon,
+  type ElmLanguageIconProps,
+} from "./components/icon/elm-language-icon";
 export {
   ElmMdiIcon,
   type ElmMdiIconProps,
@@ -77,7 +114,18 @@ export {
   type ElmToggleThemeProps,
 } from "./components/icon/elm-toggle-theme";
 
+// Media
+export {
+  ElmBlockImage,
+  type ElmBlockImageProps,
+} from "./components/media/elm-block-image";
+export { ElmFile, type ElmFileProps } from "./components/media/elm-file";
+
 // Navigation
+export {
+  ElmBookmark,
+  type ElmBookmarkProps,
+} from "./components/navigation/elm-bookmark";
 export {
   ElmBreadcrumb,
   type ElmBreadcrumbProps,

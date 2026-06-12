@@ -1,0 +1,60 @@
+.elm-block-image {
+  margin-block-start: var(--elmethis-margin-block-start);
+  margin-inline: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.image-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image {
+  max-width: 100%;
+  max-height: min(100%, 100vh);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 0.25rem;
+  box-shadow: 0 0 0.125rem rgb(0 0 0 / 10%);
+  transition: opacity 400ms;
+  opacity: var(--elmethis-scoped-opacity, 1);
+  user-select: none;
+  aspect-ratio: var(--elmethis-scoped-aspect-ratio, auto);
+  cursor: var(--elmethis-scoped-cursor);
+}
+
+.fallback {
+  width: 100%;
+  height: 100%;
+  inset: 0 0 auto auto;
+  position: absolute;
+  transition: opacity 400ms;
+  opacity: var(--elmethis-scoped-opacity, 1);
+  pointer-events: none;
+}
+
+.caption-box {
+  box-sizing: border-box;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  opacity: var(--elmethis-scoped-opacity, 0.75);
+  transition: opacity 400ms;
+
+  .caption-icon {
+    flex: 1;
+    color: var(--elmethis-color-primary);
+  }
+}

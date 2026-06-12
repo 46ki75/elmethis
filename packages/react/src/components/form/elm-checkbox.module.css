@@ -1,0 +1,63 @@
+.elm-checkbox {
+  width: fit-content;
+  font-family: sans-serif;
+  user-select: none;
+  cursor: pointer;
+  transition: opacity 200ms;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &.disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+
+    &:hover {
+      opacity: 0.45;
+    }
+  }
+}
+
+.checkbox {
+  stroke: light-dark(rgb(0 0 0 / 80%), rgb(255 255 255 / 80%));
+  fill: transparent;
+}
+
+.rect {
+  transition: all 0.2s;
+
+  &.loading {
+    opacity: 0.3;
+  }
+
+  &.checked {
+    fill: light-dark(rgb(0 0 0 / 80%), rgb(255 255 255 / 80%));
+  }
+}
+
+.loading-dot {
+  transition: opacity 200ms;
+  fill: light-dark(rgb(0 0 0 / 70%), rgb(255 255 255 / 70%));
+}
+
+@keyframes elmethis-checkbox-check-line {
+  0% {
+    stroke-dashoffset: 100%;
+  }
+
+  100% {
+    stroke-dashoffset: 0%;
+  }
+}
+
+.check-line {
+  stroke-dasharray: 100%;
+  animation-name: elmethis-checkbox-check-line;
+  animation-duration: 0.2s;
+  animation-timing-function: ease-in-out;
+  animation-delay: 0.1s;
+  animation-fill-mode: both;
+  transform-origin: center;
+  stroke: light-dark(rgb(255 255 255 / 90%), rgb(0 0 0 / 90%));
+}

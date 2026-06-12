@@ -15,6 +15,7 @@ export default defineConfig({
   test: {
     name: "browser",
     include: ["src/**/*.browser.spec.tsx"],
+    setupFiles: ["./vitest.browser.setup.ts"],
     browser: {
       enabled: true,
       headless: true,
