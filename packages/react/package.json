@@ -50,8 +50,8 @@
     "test.unit": "vitest --run",
     "test.browser": "vitest --run --config vitest.browser.config.ts",
     "test.build": "pnpm run build && pnpm run build-storybook",
-    "check": "concurrently -g \"pnpm:fmt.check\" \"pnpm:lint\" \"pnpm:lint.css\" \"pnpm:test.unit\"",
-    "check.ci": "concurrently -g \"pnpm:check\" \"pnpm:test.browser\" \"pnpm:test.build\"",
+    "check": "concurrently -g \"pnpm:fmt.check\" \"pnpm:lint\" \"pnpm:lint.css\" \"pnpm:test.unit\" \"pnpm:test.browser\"",
+    "check.ci": "concurrently -g \"pnpm:check\" \"pnpm:test.build\"",
     "prepublishOnly": "pnpm run build"
   },
   "peerDependencies": {
