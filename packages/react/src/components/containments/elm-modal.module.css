@@ -1,0 +1,32 @@
+.elm-modal {
+  border: none;
+
+  /* showModal() focuses the dialog itself when it has no focusable child
+     (e.g. an image-only lightbox); suppress the outline on the box. Focusable
+     content inside keeps its own focus ring. */
+  outline: none;
+  margin: auto;
+  padding: 0;
+  opacity: 0;
+  transition: opacity var(--elmethis-scoped-modal-delay, 200ms);
+  transition-timing-function: var(
+    --elmethis-scoped-transition-timing-function,
+    ease-in-out
+  );
+  background-color: transparent;
+
+  &.shown {
+    opacity: 1;
+
+    &::backdrop {
+      opacity: 1;
+    }
+  }
+
+  &::backdrop {
+    opacity: 0;
+    transition: opacity var(--elmethis-scoped-modal-delay, 200ms);
+    background-color: transparent;
+    background-color: oklch(from black l c h / 50%);
+  }
+}

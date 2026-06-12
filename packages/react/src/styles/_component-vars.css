@@ -35,6 +35,11 @@
   /* Animation timing knobs */
   --elmethis-scoped-delay: initial;
   --elmethis-scoped-duration: initial;
+  --elmethis-scoped-modal-delay: initial;
+  --elmethis-scoped-transition-timing-function: initial;
+
+  /* Typography knobs */
+  --elmethis-scoped-font-family: initial;
 
   /* Shiki syntax-highlighter (set on <pre> by Shiki itself) */
   --shiki-dark: initial;

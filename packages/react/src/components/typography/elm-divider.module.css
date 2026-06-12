@@ -1,0 +1,6 @@
+.elm-divider {
+  margin-block-start: var(--elmethis-margin-block-start);
+  width: 100%;
+  border: none;
+  border-bottom: dashed 1px var(--elmethis-color-primary);
+}
