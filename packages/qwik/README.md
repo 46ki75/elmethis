@@ -70,35 +70,43 @@ The `throw` is intentional — if the OAuth code path is ever reached at
 runtime, you'll get a loud error instead of silent broken crypto. Omit the
 alias if your app actually uses the MCP SDK's OAuth flow.
 
+### Design tokens
+
+The design tokens are provided by [`@elmethis/core`](../core) as
+`--elmethis-*` CSS custom properties. They load automatically when you import
+from `@elmethis/qwik` (the entry runs `import "@elmethis/core/tokens.css"`).
+Two layers:
+
+- **Primitives** (`--elmethis-primitive-*`, e.g.
+  `--elmethis-primitive-color-blue-500`) — theme-agnostic raw values.
+- **Semantic roles** (`--elmethis-color-*`, plus a few non-color tokens like
+  `--elmethis-margin-block-start`) — reference the primitives. Components
+  consume these.
+
 ### Theming
 
-The library ships a set of CSS custom properties typed as
-`ElmethisCSSVariables`. Two layers:
+Theme switching is **native**: every themed token is a CSS `light-dark()`
+value that resolves against the root's computed `color-scheme`. The default
+(`color-scheme: light dark`) follows the OS (`prefers-color-scheme`).
+`useElmethisTheme()` pins `color-scheme` on `<html>` to force light or dark
+(and also sets `data-theme`, read only by the handful of non-color overrides
+that can't use `light-dark()`).
 
-- **Primitives** (`--elmethis-neutral-*`, `--elmethis-accent-*`) — theme-agnostic
-  raw values.
-- **Semantic roles** (`--elmethis-color-*`) — theme-aware. Flip automatically
-  under `[data-theme="dark"]` on `<html>` (toggled by `useElmethisTheme()`).
-  Components consume these.
-
-Override on a wrapper element to retheme a region:
+Override a token on a wrapper element to retheme a region:
 
 ```tsx
-import type { ElmethisCSSVariables } from "@elmethis/qwik";
-
-const themed: ElmethisCSSVariables = { "--elmethis-color-primary": "tomato" };
-
-<div style={themed}>
+<div style={{ "--elmethis-color-primary": "tomato" }}>
   <ElmHeading>I cascade tomato.</ElmHeading>
-</div>;
+</div>
 ```
 
 For per-instance overrides (one paragraph's color, one icon's fill), use the
 component's own props (`color`, `backgroundColor`, etc.). Those write to
-component-private CSS variables that don't cascade into descendants.
+component-private `--elmethis-scoped-*` variables that don't cascade into
+descendants.
 
-**Rule of thumb:** variable on a wrapper retheme a region; prop on a component
-styles one element. See the `ElmethisCSSVariables` type for the full token list.
+**Rule of thumb:** a variable on a wrapper retheme a region; a prop on a
+component styles one element.
 
 ## Coding style
 

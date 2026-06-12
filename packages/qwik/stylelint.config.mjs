@@ -7,7 +7,7 @@ export default {
       true,
       {
         importFrom: [
-          "./src/styles/global.css",
+          "./node_modules/@elmethis/core/dist/tokens.css",
           "./src/styles/_component-vars.css",
         ],
       },

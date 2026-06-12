@@ -6,7 +6,7 @@
   }
 
   &:nth-child(even) {
-    background-color: var(--elmethis-color-surface);
+    background-color: var(--elmethis-color-surface-base);
   }
 
   &:hover {
