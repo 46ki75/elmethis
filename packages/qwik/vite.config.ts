@@ -45,6 +45,9 @@ export default defineConfig(() => {
     // Real-browser component specs (`*.browser.spec.tsx`) live in their own
     // config (vitest.browser.config.ts) and are excluded here.
     test: {
+      // Qwik's createDOM + QRL resolution can exceed the 5s default when the
+      // unit suite runs concurrently under load.
+      testTimeout: 20000,
       exclude: [
         "**/*.browser.spec.tsx",
         "**/node_modules/**",
