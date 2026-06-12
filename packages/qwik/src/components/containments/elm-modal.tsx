@@ -49,6 +49,10 @@ export const ElmModal = component$<ElmModalProps>((props) => {
         dialogRef.value.showModal();
         isShown.value = true;
       } else {
+        // Nothing to close if it was never opened. Without this guard, every
+        // initially-closed modal arms a needless close timer on mount (and
+        // calls close() on a dialog that was never showModal()'d).
+        if (!isShown.value) return;
         isShown.value = false;
         const timer = setTimeout(() => {
           dialogRef.value?.close();
@@ -76,10 +80,11 @@ export const ElmModal = component$<ElmModalProps>((props) => {
         },
       ]}
       onClick$={handleClose}
-      style={{
-        "--elmethis-scoped-modal-delay": `${delay}ms`,
-        ...(style && typeof style === "object" ? style : {}),
-      }}
+      style={
+        typeof style === "string"
+          ? `${style};--elmethis-scoped-modal-delay:${delay}ms`
+          : { "--elmethis-scoped-modal-delay": `${delay}ms`, ...style }
+      }
       {...({ closedBy: "none" } as object)}
       {...rest}
     >

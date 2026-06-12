@@ -16,7 +16,8 @@ export interface UseModalOptions {
  * cleanup all live in `ElmModal`).
  */
 export const useModal = (options: UseModalOptions = {}) => {
-  const delay = options.delay ?? 200;
+  // Forwarded as-is; ElmModal owns the default (and the CSS fallback matches).
+  const delay = options.delay;
   const isOpen = useSignal(false);
 
   const show = $(() => {
