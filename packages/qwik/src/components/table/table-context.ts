@@ -23,6 +23,5 @@ export const HasRowHeaderContext = createContextId<{ readonly value: boolean }>(
  * `"foot"` is reserved for a future `<ElmTableFoot>`.
  */
 export type TableSection = "head" | "body" | "foot";
-export const TableSectionContext = createContextId<TableSection>(
-  "elm.table.Section",
-);
+export const TableSectionContext =
+  createContextId<TableSection>("elm.table.Section");

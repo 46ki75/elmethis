@@ -552,9 +552,7 @@ describe("ElmA2ui — review round 2 (failing repros)", () => {
           version: "v0.9",
           updateComponents: {
             surfaceId: "s",
-            components: [
-              { component: "Column", id: "root", children: ["a"] },
-            ],
+            components: [{ component: "Column", id: "root", children: ["a"] }],
           },
         },
       ];
@@ -687,10 +685,7 @@ describe("ElmA2ui — review round 3 (failing repros)", () => {
   // pinned across every stream swap.
   test("stream swap disposes the previous SurfaceGroupModel", async () => {
     const a2ui = await import("@a2ui/web_core/v0_9");
-    const disposeSpy = vi.spyOn(
-      a2ui.SurfaceGroupModel.prototype,
-      "dispose",
-    );
+    const disposeSpy = vi.spyOn(a2ui.SurfaceGroupModel.prototype, "dispose");
 
     const streamA = [
       {
@@ -753,10 +748,7 @@ describe("ElmA2ui — review round 3 (failing repros)", () => {
   // receive `{ path: "/user/name" }` instead of the resolved value.
   test("dispatchAction deep-resolves nested {path} bindings inside event.context", async () => {
     const a2ui = await import("@a2ui/web_core/v0_9");
-    const dispatchSpy = vi.spyOn(
-      a2ui.SurfaceModel.prototype,
-      "dispatchAction",
-    );
+    const dispatchSpy = vi.spyOn(a2ui.SurfaceModel.prototype, "dispatchAction");
 
     const { screen, render, userEvent } = await createDOM();
     await render(
@@ -805,10 +797,7 @@ describe("ElmA2ui — review round 3 (failing repros)", () => {
     );
 
     dispatchSpy.mockClear();
-    await userEvent(
-      '[data-a2ui-component-id="btn"] [role="button"]',
-      "click",
-    );
+    await userEvent('[data-a2ui-component-id="btn"] [role="button"]', "click");
 
     expect(dispatchSpy).toHaveBeenCalledTimes(1);
     const dispatched = dispatchSpy.mock.calls[0]?.[0];
@@ -1195,7 +1184,8 @@ describe("ElmA2ui — streams & dynamic updates", () => {
 
     const Wrapper = component$(() => {
       const step = useSignal(0);
-      const messages = step.value === 0 ? tick1 : step.value === 1 ? tick2 : tick3;
+      const messages =
+        step.value === 0 ? tick1 : step.value === 1 ? tick2 : tick3;
       return (
         <div>
           <button id="next" onClick$={() => step.value++}>

@@ -67,9 +67,7 @@ describe("ThrottledQueue", () => {
     q.destroy();
 
     // The new push must reject — queue is destroyed.
-    await expect(q.push(async () => "after")).rejects.toThrow(
-      /destroyed/i,
-    );
+    await expect(q.push(async () => "after")).rejects.toThrow(/destroyed/i);
 
     // Both pending tasks reject. (The very first one may already have been
     // scheduled — either way, after destroy() both promises settle as

@@ -313,10 +313,8 @@ export const basicCatalog: CatalogRenderer = new CatalogRenderer([
           class={styles["choice-picker"]}
           data-choice-picker={componentId}
           onChange$={(_e: Event, wrapper: HTMLDivElement) => {
-            const inputs =
-              wrapper.querySelectorAll<HTMLInputElement>("input");
-            const isMulti =
-              inputs.length > 0 && inputs[0]!.type === "checkbox";
+            const inputs = wrapper.querySelectorAll<HTMLInputElement>("input");
+            const isMulti = inputs.length > 0 && inputs[0]!.type === "checkbox";
             const checked = Array.from(
               wrapper.querySelectorAll<HTMLInputElement>("input:checked"),
             ).map((i) => i.value);

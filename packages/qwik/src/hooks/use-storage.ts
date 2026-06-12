@@ -30,9 +30,7 @@ export const useStorage = <T>({
   // The earlier version constructed a fresh BC per write/remove and closed
   // it immediately afterward — burning allocations for no benefit, since one
   // channel can post any number of messages.
-  const bcRef = useSignal<NoSerialize<BroadcastChannel> | undefined>(
-    undefined,
-  );
+  const bcRef = useSignal<NoSerialize<BroadcastChannel> | undefined>(undefined);
 
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(
