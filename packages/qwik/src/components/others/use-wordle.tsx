@@ -244,7 +244,23 @@ export const useWordle = (options?: UseWordleOptions) => {
 
         <div class={styles["board"]}>{rows}</div>
 
-        <div class={styles["keyboard"]}>
+        <div
+          class={styles["keyboard"]}
+          onClick$={(event) => {
+            const button = (event.target as HTMLElement).closest(
+              "button[data-key]",
+            ) as HTMLButtonElement | null;
+            const key = button?.dataset.key;
+            if (!key) return;
+            if (key === "Enter") {
+              submit();
+            } else if (key === "⌫") {
+              removeLetter();
+            } else {
+              addLetter(key);
+            }
+          }}
+        >
           {KEYBOARD_ROWS.map((row, rowIndex) => (
             <div key={rowIndex} class={styles["keyboard-row"]}>
               {row.map((key) => {
@@ -253,6 +269,7 @@ export const useWordle = (options?: UseWordleOptions) => {
                 return (
                   <button
                     key={key}
+                    data-key={key}
                     class={[
                       styles["key"],
                       key === "Enter" && styles["wide"],
@@ -261,15 +278,6 @@ export const useWordle = (options?: UseWordleOptions) => {
                       keyStatus === "present" && styles["present"],
                       keyStatus === "absent" && styles["absent"],
                     ]}
-                    onClick$={() => {
-                      if (key === "Enter") {
-                        submit();
-                      } else if (key === "⌫") {
-                        removeLetter();
-                      } else {
-                        addLetter(key);
-                      }
-                    }}
                   >
                     {key}
                   </button>
