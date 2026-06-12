@@ -43,7 +43,7 @@
     "build.lib": "vite build --mode lib",
     "build.types": "tsc --emitDeclarationOnly --incremental false",
     "dev": "storybook dev -p 19211 --no-open",
-    "fmt": "prettier --write .",
+    "fmt": "prettier --write ./src",
     "fmt.check": "prettier --check .",
     "lint": "eslint \"src/**/*.ts*\"",
     "lint.css": "stylelint \"src/**/*.css\"",
