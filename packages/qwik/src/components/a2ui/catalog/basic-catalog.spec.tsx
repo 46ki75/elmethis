@@ -387,3 +387,36 @@ describe("basicCatalog: media", () => {
     expect(html).toMatch(/class="[^"]*divider-vertical/);
   });
 });
+
+// Gap-fill: single-child / leaf containers that the original spec left
+// uncovered. (Modal is intentionally excluded — its renderer drives a native
+// `<dialog>.showModal()` path that throws in createDOM; see
+// [[feedback_qwik_showmodal_createdom]].)
+describe("basicCatalog: containers & leaves", () => {
+  test("Card renders its single child", async () => {
+    const html = await renderArgs(
+      buildArgs({ component: "Card", id: "c", child: "inner" }),
+      "Card",
+    );
+    expect(html).toContain('data-child-id="inner"');
+  });
+
+  test("Icon exposes the resolved name via aria-label and data-icon", async () => {
+    const html = await renderArgs(
+      buildArgs({ component: "Icon", id: "i", name: "star" }),
+      "Icon",
+    );
+    expect(html).toContain('aria-label="star"');
+    expect(html).toContain('data-icon="star"');
+  });
+
+  test("Column wraps each child and applies its block-margin var", async () => {
+    const html = await renderArgs(
+      buildArgs({ component: "Column", id: "col", children: ["a", "b"] }),
+      "Column",
+    );
+    expect(html).toContain('data-child-id="a"');
+    expect(html).toContain('data-child-id="b"');
+    expect(html.replace(/\s/g, "")).toContain("--margin-block:2rem");
+  });
+});
