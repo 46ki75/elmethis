@@ -259,7 +259,10 @@ describe("blockCatalog: layout", () => {
     // simulate "first child" — buildArgs uses index: 0 by default
     expect(args.index).toBe(0);
     const html = await renderArgs(args, "Column");
-    expect(html).toContain("--elmethis-margin-block-start");
+    // First child suppresses its top margin by setting `margin-block-start: 0`
+    // directly (NOT the inheriting `--elmethis-margin-block-start` custom
+    // property, which would cascade into nested blocks). See firstChildMargin.
+    expect(html.replace(/\s/g, "")).toContain("margin-block-start:0");
   });
 });
 
