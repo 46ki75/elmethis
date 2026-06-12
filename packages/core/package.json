@@ -57,7 +57,7 @@
     "@vanilla-extract/esbuild-plugin": "^2.3.22",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
-    "esbuild": "^0.28.0",
+    "esbuild": "^0.28.1",
     "prettier": "3.8.4",
     "tsdown": "^0.22.2",
     "tsx": "^4.22.4",
