@@ -1,13 +1,19 @@
 {
-    "extends": "./tsconfig.app.json",
-    "compilerOptions": {
-        "declaration": true,
-        "declarationMap": true,
-        "emitDeclarationOnly": true,
-        "outDir": "lib-types",
-        "rootDir": "src"
-    },
-    "include": [
-        "src"
-    ]
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "outDir": "lib-types",
+    "rootDir": "src"
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "src/**/*.spec.ts",
+    "src/**/*.spec.tsx",
+    "src/**/*.browser.spec.tsx",
+    "src/**/*.stories.tsx"
+  ]
 }

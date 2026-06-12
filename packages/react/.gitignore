@@ -12,7 +12,12 @@ dist
 dist-ssr
 lib/
 lib-types/
+storybook-static/
 *.local
+
+# Vitest browser-mode artifacts (failure screenshots / attachments)
+.vitest-attachments/
+**/__screenshots__/
 
 # Editor directories and files
 .vscode/*

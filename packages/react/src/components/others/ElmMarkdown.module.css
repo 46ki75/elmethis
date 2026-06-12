@@ -1,7 +1,0 @@
-.markdown-body > * + * {
-  margin-block-start: 2em;
-}
-
-.markdown-body {
-  line-height: 1.6;
-}

@@ -1,0 +1,27 @@
+.elm-unsupported-block {
+  box-sizing: border-box;
+  padding: 4rem;
+  margin-block-start: var(--elmethis-margin-block-start);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  border: 1px dashed
+    color-mix(in srgb, var(--elmethis-color-neutral-weak) 50%, transparent);
+}
+
+.message {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon {
+  fill: var(--elmethis-color-neutral-weak);
+}
+
+.details {
+  opacity: 0.75;
+}

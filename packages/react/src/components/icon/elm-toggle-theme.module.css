@@ -1,0 +1,10 @@
+.elm-toggle-theme {
+  display: block; /* Ensure it behaves like a block/inline-block */
+  box-sizing: border-box;
+  padding: 0.25rem;
+  color: light-dark(#555b67, #b0b5be);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 0.125rem light-dark(rgb(0 0 0 / 30%), rgb(0 0 0 / 60%));
+  background-color: light-dark(rgb(255 255 255 / 20%), rgb(0 0 0 / 20%));
+}
