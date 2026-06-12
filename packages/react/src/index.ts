@@ -27,17 +27,32 @@ export {
   type ElmParallaxProps,
 } from "./components/containments/elm-parallax";
 export {
+  ElmTab,
+  ElmTabList,
+  ElmTabPanel,
+  ElmTabs,
+  type ElmTabListProps,
+  type ElmTabPanelProps,
+  type ElmTabProps,
+  type ElmTabsProps,
+} from "./components/containments/elm-tabs";
+export {
   ElmTooltip,
   type ElmTooltipProps,
 } from "./components/containments/elm-tooltip";
 
 // Fallback
 export {
+  ElmBlockFallback,
+  type ElmBlockFallbackProps,
+} from "./components/fallback/elm-block-fallback";
+export {
   ElmRectangleWave,
   type ElmRectangleWaveProps,
 } from "./components/fallback/elm-rectangle-wave";
 
 // Form
+export { ElmButton, type ElmButtonProps } from "./components/form/elm-button";
 export { ElmSwitch, type ElmSwitchProps } from "./components/form/elm-switch";
 
 // Icon
@@ -57,17 +72,50 @@ export {
   ElmSquareLoadingIcon,
   type ElmSquareLoadingIconProps,
 } from "./components/icon/elm-square-loading-icon";
+export {
+  ElmToggleTheme,
+  type ElmToggleThemeProps,
+} from "./components/icon/elm-toggle-theme";
 
 // Navigation
+export {
+  ElmBreadcrumb,
+  type ElmBreadcrumbProps,
+} from "./components/navigation/elm-breadcrumb";
 export {
   ElmPageTop,
   type ElmPageTopProps,
 } from "./components/navigation/elm-page-top";
 
+// Others
+export {
+  ElmColorPrimitiveSample,
+  type ElmColorPrimitiveSampleProps,
+} from "./components/others/elm-color-primitive-sample";
+export {
+  ElmColorSemanticSample,
+  type ElmColorSemanticSampleProps,
+} from "./components/others/elm-color-semantic-sample";
+export {
+  useWordle,
+  type UseWordleOptions,
+  type LetterResult,
+  type LetterStatus,
+  type GameStatus,
+} from "./components/others/use-wordle";
+
 // Table
 export * from "./components/table";
 
 // Typography
+export {
+  ElmBlockQuote,
+  type ElmBlockQuoteProps,
+} from "./components/typography/elm-block-quote";
+export {
+  ElmCallout,
+  type ElmCalloutProps,
+} from "./components/typography/elm-callout";
 export {
   ElmDivider,
   type ElmDividerProps,
@@ -76,6 +124,14 @@ export {
   ElmFragmentIdentifier,
   type ElmFragmentIdentifierProps,
 } from "./components/typography/elm-fragment-identifier";
+export {
+  ElmHeading,
+  type ElmHeadingProps,
+} from "./components/typography/elm-heading";
+export {
+  ElmInlineText,
+  type ElmInlineTextProps,
+} from "./components/typography/elm-inline-text";
 export { ElmList, type ElmListProps } from "./components/typography/elm-list";
 export {
   ElmParagraph,
@@ -93,6 +149,7 @@ export {
   type UseAutoAnimateOptions,
 } from "./hooks/use-auto-animate";
 export { useBindableSignal } from "./hooks/use-bindable-signal";
+export { useClipboard, type UseClipboardOptions } from "./hooks/use-clipboard";
 export { useBindableStore } from "./hooks/use-bindable-store";
 export {
   useDebouncedSignal,
@@ -113,6 +170,7 @@ export {
   useSessionStorage,
   type UseSessionStorageOptions,
 } from "./hooks/use-storage";
+export { useModal, type UseModalOptions } from "./hooks/use-modal";
 export { useThrottledQueue, ThrottledQueue } from "./hooks/use-throttled-queue";
 export {
   useThrottledSignal,

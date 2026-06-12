@@ -1,0 +1,7 @@
+.elm-table-header {
+  text-align: left;
+  transition:
+    background-color 400ms,
+    color 400ms;
+  border-bottom: 2px solid var(--elmethis-color-primary-weak);
+}
