@@ -52,7 +52,6 @@
     "start": "vite --open --mode ssr",
     "test": "pnpm run test.unit && pnpm run test.browser",
     "test.unit": "vitest --run",
-    "test.unit.ui": "vitest --ui",
     "test.browser": "vitest --run --config vitest.browser.config.ts",
     "qwik": "qwik"
   },
