@@ -100,7 +100,7 @@ const LoadingTextField = component$(() => {
       label="Email"
       placeholder="Enter your email"
       value={text}
-      loading={true}
+      isLoading={true}
     />
   );
 });

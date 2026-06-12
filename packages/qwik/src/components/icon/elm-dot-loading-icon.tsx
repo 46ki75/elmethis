@@ -13,7 +13,7 @@ export const ElmDotLoadingIcon = component$<ElmDotLoadingIconProps>(
   ({ class: className, style, size = "4em", ...props }) => {
     return (
       <span
-        class={[styles.wrapper, className]}
+        class={[styles["elm-dot-loading-icon"], className]}
         style={
           {
             "--elmethis-scoped-size": size,

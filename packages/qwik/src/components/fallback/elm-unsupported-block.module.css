@@ -1,4 +1,4 @@
-.unsupported {
+.elm-unsupported-block {
   box-sizing: border-box;
   padding: 4rem;
   margin-block-start: var(--elmethis-margin-block-start);

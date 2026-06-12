@@ -99,7 +99,10 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
                       ></div>
                     </div>
 
-                    <ElmMarkdown markdown={message.content} streaming={true} />
+                    <ElmMarkdown
+                      markdown={message.content}
+                      isStreaming={true}
+                    />
 
                     {!isRunning && (
                       <div class={styles["message-content-assistant-actions"]}>
@@ -165,7 +168,7 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
                     <ElmMarkdown
                       style={{ opacity: 0.5 }}
                       markdown={mdProps.markdown}
-                      streaming={true}
+                      isStreaming={true}
                     />
                   </div>
                 );

@@ -1,4 +1,4 @@
-.button {
+.elm-button {
   all: unset;
   position: relative;
   overflow: hidden;
@@ -16,7 +16,6 @@
     opacity 200ms,
     transform 200ms;
   opacity: var(--elmethis-scoped-opacity);
-
   box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
 }
 

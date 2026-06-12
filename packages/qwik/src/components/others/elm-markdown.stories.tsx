@@ -144,7 +144,7 @@ const StreamingWrapper = component$(() => {
     })();
   });
 
-  return <ElmMarkdown markdown={content.value} streaming={true} />;
+  return <ElmMarkdown markdown={content.value} isStreaming={true} />;
 });
 
 export const Stream: Story = {

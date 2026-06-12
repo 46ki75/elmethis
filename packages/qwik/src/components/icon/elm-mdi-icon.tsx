@@ -23,7 +23,7 @@ export const ElmMdiIcon = component$<ElmMdiIconProps>(
   }) => {
     return (
       <svg
-        class={[styles.icon, className]}
+        class={[styles["elm-mdi-icon"], className]}
         style={
           {
             "--elmethis-scoped-color": lightColor ?? color,

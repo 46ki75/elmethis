@@ -8,8 +8,8 @@ const meta: Meta<ElmCheckboxProps> = {
   tags: ["autodocs"],
   args: {
     label: "Checkbox Label",
-    loading: false,
-    disable: false,
+    isLoading: false,
+    disabled: false,
   },
 };
 

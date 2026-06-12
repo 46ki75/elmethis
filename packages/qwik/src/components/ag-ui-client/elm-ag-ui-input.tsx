@@ -246,7 +246,7 @@ export const ElmAgUiInput = component$<ElmAgUiInputProps>(
     /* eslint-enable qwik/no-async-prevent-default */
 
     return (
-      <div class={[styles["elm-ag-ui-input-wrapper"], className]} style={style}>
+      <div class={[styles["elm-ag-ui-input"], className]} style={style}>
         <ElmCollapse
           isOpen={
             hasPicker && (isPickerOpen.value || slashRange.value !== null)
@@ -267,7 +267,7 @@ export const ElmAgUiInput = component$<ElmAgUiInputProps>(
           />
         </ElmCollapse>
 
-        <div class={[styles["elm-ag-ui-input"], textStyle["text"]]}>
+        <div class={[styles["card"], textStyle["text"]]}>
           <textarea
             ref={textAreaRef}
             name="prompt"

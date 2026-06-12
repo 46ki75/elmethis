@@ -1,4 +1,4 @@
-.elmethis-list-common {
+.elm-list {
   margin-block-start: var(--elmethis-margin-block-start);
   opacity: var(--elmethis-scoped-opacity);
   transition: opacity 800ms;
@@ -6,7 +6,7 @@
   padding-left: 1.25rem;
 }
 
-.elmethis-bulleted-list {
+.bulleted {
   list-style: none;
 
   li {
@@ -55,7 +55,7 @@
   }
 }
 
-.elmethis-numbered-list {
+.numbered {
   li {
     box-sizing: border-box;
     padding-left: 0.25rem;

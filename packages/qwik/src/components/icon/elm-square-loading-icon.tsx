@@ -14,7 +14,7 @@ export const ElmSquareLoadingIcon = component$<ElmSquareLoadingIconProps>(
 
     return (
       <span
-        class={[styles.wrapper, className]}
+        class={[styles["elm-square-loading-icon"], className]}
         style={
           {
             "--elmethis-scoped-size": size,
@@ -25,19 +25,17 @@ export const ElmSquareLoadingIcon = component$<ElmSquareLoadingIconProps>(
         }
         {...props}
       >
-        {new Array(dimensions)
-          .fill(null)
-          .map((_, rowIndex) =>
-            new Array(dimensions)
-              .fill(null)
-              .map((_, columnIndex) => (
-                <span
-                  key={`${rowIndex}-${columnIndex}`}
-                  class={styles.square}
-                  style={{ "--elmethis-scoped-delay": `${DELAY * (rowIndex + columnIndex)}ms` }}
-                ></span>
-              )),
-          )}
+        {new Array(dimensions).fill(null).map((_, rowIndex) =>
+          new Array(dimensions).fill(null).map((_, columnIndex) => (
+            <span
+              key={`${rowIndex}-${columnIndex}`}
+              class={styles.square}
+              style={{
+                "--elmethis-scoped-delay": `${DELAY * (rowIndex + columnIndex)}ms`,
+              }}
+            ></span>
+          )),
+        )}
       </span>
     );
   },

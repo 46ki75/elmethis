@@ -43,8 +43,8 @@ export const ElmPageTop = component$<ElmPageTopProps>(
     return (
       <nav
         class={[
-          styles.wrapper,
-          { [styles["wrapper--visible"]]: isVisible.value },
+          styles["elm-page-top"],
+          { [styles.visible]: isVisible.value },
           className,
         ]}
         style={

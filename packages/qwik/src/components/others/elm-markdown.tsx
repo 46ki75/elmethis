@@ -30,7 +30,7 @@ export interface ElmMarkdownProps extends PropsOf<"div"> {
    * Set to true when markdown is being streamed incrementally.
    * Keeps completed blocks stable and only re-renders the trailing block on each token.
    */
-  streaming?: boolean;
+  isStreaming?: boolean;
 }
 
 const renderByToken = (tokens: Token[]): JSXOutput[] => {
@@ -237,7 +237,7 @@ export const ElmMarkdown = component$<ElmMarkdownProps>((props) => {
   const {
     class: className,
     markdown: _markdown,
-    streaming: _streaming,
+    isStreaming: _isStreaming,
     ...rest
   } = props;
   const stableTokens = useSignal<Token[]>([]);
@@ -247,7 +247,7 @@ export const ElmMarkdown = component$<ElmMarkdownProps>((props) => {
     const md = track(() => props.markdown);
     const allTokens = marked.setOptions({ gfm: true }).lexer(md) as Token[];
 
-    if (props.streaming && allTokens.length > 0) {
+    if (props.isStreaming && allTokens.length > 0) {
       const newStable = allTokens.slice(0, -1);
       // Only replace stableTokens when a new complete block is added,
       // so ElmMarkdownStable skips re-renders between block boundaries.
@@ -262,7 +262,7 @@ export const ElmMarkdown = component$<ElmMarkdownProps>((props) => {
   });
 
   return (
-    <div class={[styles["markdown-body"], className]} {...rest}>
+    <div class={[styles["elm-markdown"], className]} {...rest}>
       <ElmMarkdownStable tokens={stableTokens.value} />
       {renderByToken(tailTokens.value)}
     </div>

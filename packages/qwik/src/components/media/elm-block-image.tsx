@@ -120,7 +120,7 @@ export const ElmBlockImage = component$<ElmBlockImageProps>((props) => {
   );
 
   return (
-    <figure class={[styles["block-image"], className]} {...rest}>
+    <figure class={[styles["elm-block-image"], className]} {...rest}>
       <div
         class={styles["image-container"]}
         style={{ "--elmethis-scoped-opacity": isLoading.value ? 1 : 0.01 }}

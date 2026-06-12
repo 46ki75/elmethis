@@ -1,4 +1,4 @@
-.toggle {
+.elm-toggle {
   margin-block-start: var(--elmethis-margin-block-start);
   box-sizing: border-box;
   display: grid;

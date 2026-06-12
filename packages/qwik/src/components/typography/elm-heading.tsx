@@ -25,7 +25,7 @@ export const ElmHeading = component$<ElmHeadingProps>(
     return (
       <Tag
         class={[
-          styles["heading-common"],
+          styles["elm-heading"],
           textStyles.text,
           styles[`h${level}`],
           className,
@@ -46,7 +46,7 @@ export const ElmHeading = component$<ElmHeadingProps>(
         )}
 
         {level === 2 && (
-          <span class={styles["h2__underline"]} aria-hidden="true"></span>
+          <span class={styles["h2-underline"]} aria-hidden="true"></span>
         )}
       </Tag>
     );

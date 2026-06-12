@@ -32,7 +32,7 @@ export const ElmTable = component$<ElmTableProps>((props) => {
   useContextProvider(HasRowHeaderContext, hasRowHeader);
 
   return (
-    <table class={[styles.table, textStyles.text, className]} {...rest}>
+    <table class={[styles["elm-table"], textStyles.text, className]} {...rest}>
       {caption && (
         <caption>
           <span class={styles.caption}>

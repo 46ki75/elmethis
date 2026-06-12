@@ -54,7 +54,7 @@ export interface ElmSelectProps extends PropsOf<"div"> {
   /**
    * Whether the select is in a loading state.
    */
-  loading?: boolean;
+  isLoading?: boolean;
 
   /**
    * Options to display in the dropdown.
@@ -71,7 +71,7 @@ export const ElmSelect = component$<ElmSelectProps>((props) => {
     label,
     placeholder,
     disabled,
-    loading,
+    isLoading,
     options,
     selectedOptionId,
     ...rest
@@ -102,16 +102,16 @@ export const ElmSelect = component$<ElmSelectProps>((props) => {
     <div
       ref={containerRef}
       class={[
-        styles.wrapper,
+        styles["elm-select"],
         isOpen.value && styles.active,
         className,
         {
-          [styles.disabled]: disabled || loading,
+          [styles.disabled]: disabled || isLoading,
         },
       ]}
       style={style}
       onClick$={$(() => {
-        if (!props.disabled && !props.loading) {
+        if (!props.disabled && !props.isLoading) {
           isOpen.value = !isOpen.value;
         }
       })}

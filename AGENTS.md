@@ -76,7 +76,12 @@ boolean reads as `isOpen` in Qwik/React and exposes as `is-open` in Vue template
 
 - **Custom boolean state:** `is` / `has` prefix + PascalCase — `isOpen`, `isLoading`,
   `isRunning`, `hasError`. The prefix marks the value as a boolean flag at a glance
-  (`error` could be a message; `hasError` cannot).
+  (`error` could be a message; `hasError` cannot). "State" means lifecycle/status that
+  changes at runtime (open, loading, running, submitting, streaming, valid).
+- **Variant & config flags stay bare.** Presentational variants (`bold`, `italic`,
+  `block`, `primary`, `monochrome`) and behavioral config (`enableModal`,
+  `skipUnsupportedComponentWarning`) are not state — keep them unprefixed.
+  `<ElmInlineText bold italic />` reads better than `isBold isItalic`.
 - **Native attribute passthrough:** when a prop is forwarded directly onto a native
   element, keep the native attribute's exact name — `disabled`, `required`, `readonly`,
   `checked`, `open` (on `<dialog>`/`<details>`). Do **not** rename to `isDisabled`.

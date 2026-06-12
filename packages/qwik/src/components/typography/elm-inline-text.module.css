@@ -1,4 +1,4 @@
-.text {
+.elm-inline-text {
   padding: 0;
   margin: 0;
   white-space: pre-line;
@@ -39,7 +39,6 @@
     width: 100%;
     border: solid 1px var(--elmethis-color-surface-raised);
     border-radius: 0.125rem;
-
     background-color: var(--elmethis-color-surface-raised);
   }
 

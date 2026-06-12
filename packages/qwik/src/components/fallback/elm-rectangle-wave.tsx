@@ -9,7 +9,7 @@ export const ElmRectangleWave = component$<PropsOf<"div">>(
     return (
       <div
         aria-hidden="true"
-        class={[styles["rectangle-wave"], className]}
+        class={[styles["elm-rectangle-wave"], className]}
         {...props}
       ></div>
     );

@@ -45,7 +45,7 @@ export const ElmBookmark = component$<ElmBookmarkProps>(
     };
 
     return (
-      <div class={[styles.bookmark, className]} {...props}>
+      <div class={[styles["elm-bookmark"], className]} {...props}>
         <a
           class={styles.container}
           href={url}

@@ -1,4 +1,4 @@
-.container {
+.elm-checkbox {
   width: fit-content;
   font-family: sans-serif;
   user-select: none;
@@ -8,14 +8,14 @@
   &:hover {
     opacity: 0.8;
   }
-}
 
-.container--disable {
-  opacity: 0.45;
-  cursor: not-allowed;
-
-  &:hover {
+  &.disabled {
     opacity: 0.45;
+    cursor: not-allowed;
+
+    &:hover {
+      opacity: 0.45;
+    }
   }
 }
 
@@ -26,17 +26,17 @@
 
 .rect {
   transition: all 0.2s;
+
+  &.loading {
+    opacity: 0.3;
+  }
+
+  &.checked {
+    fill: light-dark(rgb(0 0 0 / 80%), rgb(255 255 255 / 80%));
+  }
 }
 
-.rect--loading {
-  opacity: 0.3;
-}
-
-.rect--checked {
-  fill: light-dark(rgb(0 0 0 / 80%), rgb(255 255 255 / 80%));
-}
-
-.loading {
+.loading-dot {
   transition: opacity 200ms;
   fill: light-dark(rgb(0 0 0 / 70%), rgb(255 255 255 / 70%));
 }

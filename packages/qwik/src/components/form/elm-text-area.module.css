@@ -34,7 +34,7 @@
   animation-duration: 1600ms;
 }
 
-.wrapper {
+.elm-text-area {
   --highlight-color: var(--elmethis-color-primary);
 
   overflow: hidden;

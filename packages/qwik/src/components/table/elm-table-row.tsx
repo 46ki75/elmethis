@@ -6,7 +6,7 @@ export type ElmTableRowProps = PropsOf<"tr">;
 export const ElmTableRow = component$<PropsOf<"tr">>(
   ({ class: className, ...props }) => {
     return (
-      <tr class={[styles.tr, className]} {...props}>
+      <tr class={[styles["elm-table-row"], className]} {...props}>
         <Slot />
       </tr>
     );

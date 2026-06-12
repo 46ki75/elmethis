@@ -8,7 +8,7 @@ const meta: Meta<ElmButtonProps> = {
   component: ElmButton,
   tags: ["autodocs"],
   args: {
-    loading: false,
+    isLoading: false,
     block: false,
     disabled: false,
     primary: false,
@@ -32,7 +32,7 @@ export const Block: Story = {
 };
 
 export const Loading: Story = {
-  args: { loading: true, block: true },
+  args: { isLoading: true, block: true },
   render() {
     return <ElmButton {...this.args}>elm-button</ElmButton>;
   },

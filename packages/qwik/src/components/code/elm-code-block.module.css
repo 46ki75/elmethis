@@ -1,4 +1,4 @@
-.code-block {
+.elm-code-block {
   display: grid;
   grid-template: "language-icon caption copy-icon" 2.75rem "divider divider divider" 1px "code code code" 1fr / 2rem 1fr 2.5rem;
   align-items: center;

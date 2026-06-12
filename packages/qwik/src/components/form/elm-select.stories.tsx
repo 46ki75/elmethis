@@ -112,7 +112,7 @@ const LoadingSelect = component$(() => {
       label="Select"
       options={OPTIONS}
       selectedOptionId={selectedOptionId}
-      loading={true}
+      isLoading={true}
     />
   );
 });

@@ -26,7 +26,7 @@ export interface ElmBreadcrumbProps extends PropsOf<"nav"> {
 export const ElmBreadcrumb = component$<ElmBreadcrumbProps>(
   ({ class: className, links, ...props }) => {
     return (
-      <nav class={[styles.container, className]} {...props}>
+      <nav class={[styles["elm-breadcrumb"], className]} {...props}>
         {links.map((link, index) => (
           <>
             <span class={styles["link-container"]} onClick$={link.onClick$}>
