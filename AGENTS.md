@@ -93,6 +93,23 @@ boolean reads as `isOpen` in Qwik/React and exposes as `is-open` in Vue template
 - **Change events:** name after the bare concept, not the prefixed prop — `isOpen`
   pairs with `onOpenChange$` / `onToggle$`, never `onIsOpenChange$`.
 
+## Testing
+
+Two layers, split by file suffix (full conventions in `TESTING.md`):
+
+- `*.spec.ts(x)` → **unit**: pure logic, CSR via the framework test util
+  (Qwik `createDOM`, RTL, Vue Test Utils), and SSR (`renderToString`). Run with
+  `pnpm test.unit`.
+- `*.browser.spec.tsx` → **browser**: real Chromium via Playwright
+  (`vitest-browser-qwik` / `-react` / `-vue`). Only for behavior the test-util
+  DOM can't fake — `useVisibleTask$`/`document-ready`, real QRL resolution,
+  native `<dialog>`/focus/layout, real Web APIs (`localStorage`, `StorageEvent`,
+  `color-scheme`). Run with `pnpm test.browser`.
+
+Default to the unit layer; reach for `*.browser.spec.tsx` only when the test
+genuinely needs a real browser. Specs are co-located with their source.
+`packages/qwik` leads; `react`/`vue` follow the same shape.
+
 ## Toolchain
 
 - Use `pnpm` to manage dependencies and workspaces.
