@@ -36,3 +36,7 @@ lerna-debug.log*
 # Yarn
 .yarn/*
 !.yarn/releases
+
+# Vitest browser mode
+.vitest-attachments
+**/__screenshots__

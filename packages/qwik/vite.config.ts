@@ -2,7 +2,6 @@ import { defineConfig } from "vite";
 import pkg from "./package.json";
 import { qwikVite } from "@qwik.dev/core/optimizer";
 import tsconfigPaths from "vite-tsconfig-paths";
-import { join } from "node:path";
 
 const { dependencies = {}, peerDependencies = {} } = pkg as any;
 const makeRegex = (dep: string) => new RegExp(`^${dep}(/.*)?$`);
@@ -41,5 +40,17 @@ export default defineConfig(() => {
       },
     },
     css: {},
+    // The `unit` layer: pure logic + createDOM test-util specs (each file
+    // picks its own environment via a `// @vitest-environment` docblock).
+    // Real-browser component specs (`*.browser.spec.tsx`) live in their own
+    // config (vitest.browser.config.ts) and are excluded here.
+    test: {
+      exclude: [
+        "**/*.browser.spec.tsx",
+        "**/node_modules/**",
+        "**/lib/**",
+        "**/dist/**",
+      ],
+    },
   };
 });
