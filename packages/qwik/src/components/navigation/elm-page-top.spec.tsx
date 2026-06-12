@@ -49,7 +49,7 @@ describe("[CSR] ElmPageTop — interaction", () => {
     const scrollTo = vi.fn();
     vi.stubGlobal("scrollTo", scrollTo);
 
-    const { screen, render, userEvent } = await createDOM();
+    const { render, userEvent } = await createDOM();
     await render(<ElmPageTop />);
 
     await userEvent("nav", "click");
