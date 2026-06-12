@@ -1,7 +1,7 @@
 import type { Preview, StoryContext } from "storybook-framework-qwik";
 import type { Component } from "@qwik.dev/core";
 
-import "../src/styles/global.css";
+import "@elmethis/core/tokens.css";
 import "./sb.css";
 
 export const preview: Preview = {

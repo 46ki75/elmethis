@@ -11,7 +11,7 @@
  * only. The `--elmethis-scoped-*` prefix protects them from collisions
  * with consumer-defined custom properties on `:root` or ancestor
  * elements. Design-token vars (`--elmethis-*`, no `scoped` segment)
- * live in `global.css`.
+ * are provided by `@elmethis/core` (`tokens.css`).
  *
  * When a component introduces a new component-private var, add it here.
  */

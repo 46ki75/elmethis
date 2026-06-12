@@ -1,4 +1,4 @@
-import "./styles/global.css";
+import "@elmethis/core/tokens.css";
 
 // | A2UI |
 export {
