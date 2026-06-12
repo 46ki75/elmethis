@@ -1,0 +1,9 @@
+.elm-a2ui {
+  display: contents;
+}
+
+/* `display: contents` keeps the wrapper invisible to layout while still
+   letting `--elmethis-margin-block-start` inherit into the rendered surface. */
+.surface {
+  display: contents;
+}

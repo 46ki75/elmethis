@@ -60,6 +60,8 @@
   },
   "dependencies": {
     "@46ki75/ikuma-theme": "^0.0.10",
+    "@a2ui/react": "^0.10.0",
+    "@a2ui/web_core": "^0.10.0",
     "@elmethis/core": "workspace:^",
     "@formkit/auto-animate": "^0.9.0",
     "@mdi/js": "^7.4.47",
@@ -70,7 +72,8 @@
     "katex": "^0.17.0",
     "marked": "^18.0.5",
     "shiki": "^4.2.0",
-    "usehooks-ts": "^3.1.1"
+    "usehooks-ts": "^3.1.1",
+    "zod": "^3"
   },
   "devDependencies": {
     "@eslint/js": "latest",

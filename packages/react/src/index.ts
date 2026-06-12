@@ -6,6 +6,14 @@ import "@elmethis/core/tokens.css";
 // Components and hooks are re-exported here as they are ported from the
 // `@elmethis/qwik` reference implementation.
 
+// A2UI
+export { ElmA2ui, type ElmA2uiProps } from "./components/a2ui/elm-a2ui";
+export {
+  blockCatalog,
+  blockComponents,
+  blockFunctions,
+} from "./components/a2ui/catalog/block-catalog";
+
 // Code
 export {
   ElmCodeBlock,
