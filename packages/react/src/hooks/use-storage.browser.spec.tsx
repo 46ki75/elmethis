@@ -79,23 +79,42 @@ describe("[CSR] useSessionStorage BroadcastChannel reuse", () => {
   // The channel is allocated once at mount and reused for every write — the
   // earlier code constructed a fresh BroadcastChannel per write/remove.
   test("constructs at most one BroadcastChannel across many writes", async () => {
-    const ctorSpy = vi.spyOn(globalThis, "BroadcastChannel");
-    render(<SessionWrapper />);
+    // Count constructions while keeping a REAL channel. `vi.spyOn` is no good
+    // here: when the hook does `new BroadcastChannel(...)`, vitest invokes the
+    // mock via `Reflect.construct`, which can neither call-through to a native
+    // class nor accept an arrow-function implementation — either way the hook
+    // gets a non-functional instance (its `postMessage`/`close` are undefined),
+    // producing write warnings and an unhandled rejection on unmount. A counting
+    // subclass that simply forwards to `super` stays fully functional.
+    const OriginalBroadcastChannel = globalThis.BroadcastChannel;
+    let constructions = 0;
+    class CountingBroadcastChannel extends OriginalBroadcastChannel {
+      constructor(name: string) {
+        super(name);
+        constructions++;
+      }
+    }
+    globalThis.BroadcastChannel =
+      CountingBroadcastChannel as typeof BroadcastChannel;
 
-    // Wait for the mount effect to allocate its (one) channel.
-    await vi.waitFor(() =>
-      expect(ctorSpy.mock.calls.length).toBeGreaterThanOrEqual(1),
-    );
-    const callsAfterMount = ctorSpy.mock.calls.length;
+    try {
+      render(<SessionWrapper />);
 
-    await page.getByRole("button", { name: "A", exact: true }).click();
-    await page.getByRole("button", { name: "B", exact: true }).click();
-    await page.getByRole("button", { name: "C", exact: true }).click();
-    await vi.waitFor(() =>
-      expect(sessionStorage.getItem("sk")).toBe(JSON.stringify("c")),
-    );
+      // Wait for the mount effect to allocate its (one) channel.
+      await vi.waitFor(() => expect(constructions).toBeGreaterThanOrEqual(1));
+      const countAfterMount = constructions;
 
-    // No new constructions for the writes — the mount-time channel is reused.
-    expect(ctorSpy.mock.calls.length).toBe(callsAfterMount);
+      await page.getByRole("button", { name: "A", exact: true }).click();
+      await page.getByRole("button", { name: "B", exact: true }).click();
+      await page.getByRole("button", { name: "C", exact: true }).click();
+      await vi.waitFor(() =>
+        expect(sessionStorage.getItem("sk")).toBe(JSON.stringify("c")),
+      );
+
+      // No new constructions for the writes — the mount-time channel is reused.
+      expect(constructions).toBe(countAfterMount);
+    } finally {
+      globalThis.BroadcastChannel = OriginalBroadcastChannel;
+    }
   });
 });
