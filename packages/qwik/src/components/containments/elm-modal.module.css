@@ -1,5 +1,10 @@
 .elm-modal {
   border: none;
+
+  /* showModal() focuses the dialog itself when it has no focusable child
+     (e.g. an image-only lightbox); suppress the outline on the box. Focusable
+     content inside keeps its own focus ring. */
+  outline: none;
   margin: auto;
   padding: 0;
   opacity: 0;

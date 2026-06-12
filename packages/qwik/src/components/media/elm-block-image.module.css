@@ -59,18 +59,3 @@
     color: var(--elmethis-color-primary);
   }
 }
-
-.modal-container {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  inset: 0 0 auto auto;
-  z-index: 100;
-  background-color: rgb(35 38 42 / 80%);
-  cursor: zoom-out;
-  opacity: var(--elmethis-scoped-opacity, 1);
-  transition: opacity 200ms;
-}
