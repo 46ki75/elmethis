@@ -1,4 +1,4 @@
-.paragraph {
+.elm-paragraph {
   transition: opacity 800ms;
   line-height: 1.75;
   color: var(--elmethis-scoped-color, var(--elmethis-color-neutral));

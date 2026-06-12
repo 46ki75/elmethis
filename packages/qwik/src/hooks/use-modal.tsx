@@ -1,98 +1,44 @@
-import {
-  $,
-  component$,
-  noSerialize,
-  Slot,
-  useSignal,
-  useTask$,
-  type NoSerialize,
-} from "@qwik.dev/core";
+import { $, component$, Slot, useSignal } from "@qwik.dev/core";
 
-import styles from "./use-modal.module.css";
+import { ElmModal } from "../components/containments/elm-modal";
 
 export interface UseModalOptions {
   /**
-   * Delay in **milliseconds** before the modal is completely hidden after hiding animation starts.
+   * Delay in **milliseconds** of the open/close fade animation.
    */
   delay?: number;
 }
 
 /**
- * ## show
- * 1. `hideGen++` (invalidates any pending hide timeout)
- * 2. `isOpen = true`
- * 3. `isShown = true`
- *
- * ## hide
- * 1. `isShown = false`
- * 2. `setTimeout(() => { if gen matches: isOpen = false }, delay)`
+ * Imperative sugar over {@link ElmModal}. Owns a single `isOpen` intent signal
+ * and returns `show` / `hide` / `toggle` to drive it, plus a `Modal` component
+ * that renders the native `<dialog>` (open/animate/close lifecycle and timer
+ * cleanup all live in `ElmModal`).
  */
 export const useModal = (options: UseModalOptions = {}) => {
-  const delay = options.delay ?? 200;
+  // Forwarded as-is; ElmModal owns the default (and the CSS fallback matches).
+  const delay = options.delay;
   const isOpen = useSignal(false);
-  const isShown = useSignal(false);
-  const hideGen = useSignal(0);
-  // Track the most recent hide timer so it can be cancelled on unmount.
-  // Without this, hide()'s pending setTimeout fires after the host has been
-  // torn down, writing to a disposed signal.
-  const hideTimerId = useSignal<
-    NoSerialize<ReturnType<typeof setTimeout>> | undefined
-  >(undefined);
-
-  // Unmount-only cleanup: clear any pending hide timer.
-  useTask$(({ cleanup }) => {
-    cleanup(() => {
-      if (hideTimerId.value !== undefined) clearTimeout(hideTimerId.value);
-    });
-  });
 
   const show = $(() => {
-    hideGen.value++;
     isOpen.value = true;
-    isShown.value = true;
   });
 
   const hide = $(() => {
-    const gen = ++hideGen.value;
-    isShown.value = false;
-    hideTimerId.value = noSerialize(
-      setTimeout(() => {
-        if (hideGen.value === gen) {
-          isOpen.value = false;
-        }
-        hideTimerId.value = undefined;
-      }, delay),
-    );
+    isOpen.value = false;
   });
 
   const toggle = $(() => {
-    if (isShown.value) {
-      hide();
-    } else {
-      show();
-    }
+    isOpen.value = !isOpen.value;
   });
 
   const Modal = component$(() => {
     return (
-      <div
-        class={[
-          styles["use-modal"],
-          {
-            [styles["open"]]: isShown.value,
-          },
-        ]}
-        style={{ "--elmethis-scoped-delay": `${delay}ms` }}
-        onClick$={hide}
-      >
-        {isOpen.value && (
-          <div role="dialog" stoppropagation:click>
-            {<Slot />}
-          </div>
-        )}
-      </div>
+      <ElmModal isOpen={isOpen.value} delay={delay} onClose$={hide}>
+        <Slot />
+      </ElmModal>
     );
   });
 
-  return { Modal, isOpen, isShown, show, hide, toggle };
+  return { Modal, isOpen, show, hide, toggle };
 };

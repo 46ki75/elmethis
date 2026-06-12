@@ -12,9 +12,12 @@ export const ElmBlockFallback = component$<ElmBlockFallbackProps>(
   ({ class: className, style, height = "16rem", ...props }) => {
     return (
       <div
-        class={[styles["block-fallback"], className]}
+        class={[styles["elm-block-fallback"], className]}
         style={
-          { "--elmethis-scoped-height": height, ...(style as CSSProperties) } as CSSProperties
+          {
+            "--elmethis-scoped-height": height,
+            ...(style as CSSProperties),
+          } as CSSProperties
         }
         {...props}
       >

@@ -1,4 +1,4 @@
-.heading-common {
+.elm-heading {
   margin: 0;
   position: relative;
   font-size: var(--elmethis-scoped-font-size);
@@ -58,7 +58,7 @@
   }
 }
 
-.h2__underline {
+.h2-underline {
   overflow: hidden;
   position: absolute;
   content: "";

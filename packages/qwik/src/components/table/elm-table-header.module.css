@@ -1,4 +1,4 @@
-.thead {
+.elm-table-header {
   text-align: left;
   transition:
     background-color 400ms,

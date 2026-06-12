@@ -1,4 +1,4 @@
-.wordle {
+.elm-wordle {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,19 +22,19 @@
   transition:
     background-color 0.15s ease,
     color 0.15s ease;
-}
 
-.message-area--error {
-  background-color: #1a1a1b;
-  color: #fff;
-  animation: fade-in 0.15s ease;
-}
+  &.error {
+    background-color: #1a1a1b;
+    color: #fff;
+    animation: fade-in 0.15s ease;
+  }
 
-.message-area--status {
-  background-color: #538d4e;
-  color: #fff;
-  font-size: 1rem;
-  animation: fade-in 0.15s ease;
+  &.status {
+    background-color: #538d4e;
+    color: #fff;
+    font-size: 1rem;
+    animation: fade-in 0.15s ease;
+  }
 }
 
 /* ── Board ────────────────────────────────────────────────────── */
@@ -64,36 +64,36 @@
   transition:
     background-color 0.2s ease,
     border-color 0.2s ease;
-}
 
-.cell--empty {
-  border-color: gray;
-  background-color: transparent;
-  color: transparent;
-}
+  &.empty {
+    border-color: gray;
+    background-color: transparent;
+    color: transparent;
+  }
 
-.cell--tbd {
-  border-color: #565758;
-  background-color: transparent;
-  color: #6c7483;
-}
+  &.tbd {
+    border-color: #565758;
+    background-color: transparent;
+    color: #6c7483;
+  }
 
-.cell--correct {
-  background-color: #538d4e;
-  border-color: #538d4e;
-  color: #fff;
-}
+  &.correct {
+    background-color: #538d4e;
+    border-color: #538d4e;
+    color: #fff;
+  }
 
-.cell--present {
-  background-color: #b59f3b;
-  border-color: #b59f3b;
-  color: #fff;
-}
+  &.present {
+    background-color: #b59f3b;
+    border-color: #b59f3b;
+    color: #fff;
+  }
 
-.cell--absent {
-  background-color: #3a3a3c;
-  border-color: #3a3a3c;
-  color: #fff;
+  &.absent {
+    background-color: #3a3a3c;
+    border-color: #3a3a3c;
+    color: #fff;
+  }
 }
 
 /* ── Keyboard ─────────────────────────────────────────────────── */
@@ -129,36 +129,36 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
 
-.key:active {
-  transform: scale(0.95);
-}
+  &:active {
+    transform: scale(0.95);
+  }
 
-.key--wide {
-  min-width: 4rem;
-  font-size: 0.75rem;
-}
+  &.wide {
+    min-width: 4rem;
+    font-size: 0.75rem;
+  }
 
-.key--correct {
-  background-color: #538d4e;
-}
+  &.correct {
+    background-color: #538d4e;
+  }
 
-.key--present {
-  background-color: #b59f3b;
-}
+  &.present {
+    background-color: #b59f3b;
+  }
 
-.key--absent {
-  background-color: #3a3a3c;
+  &.absent {
+    background-color: #3a3a3c;
+  }
 }
 
 /* ── Reset button ─────────────────────────────────────────────── */
 .reset-container {
   margin-top: 0.5rem;
-}
 
-.reset-container--hidden {
-  visibility: hidden;
+  &.hidden {
+    visibility: hidden;
+  }
 }
 
 .reset-button {
@@ -173,14 +173,14 @@
   transition:
     background-color 0.15s ease,
     transform 0.05s ease;
-}
 
-.reset-button:hover {
-  background-color: #6aaa64;
-}
+  &:hover {
+    background-color: #6aaa64;
+  }
 
-.reset-button:active {
-  transform: scale(0.97);
+  &:active {
+    transform: scale(0.97);
+  }
 }
 
 /* ── Animation ────────────────────────────────────────────────── */

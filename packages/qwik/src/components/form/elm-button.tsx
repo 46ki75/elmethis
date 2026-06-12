@@ -15,7 +15,7 @@ export interface ElmButtonProps extends PropsOf<"button"> {
   /**
    * Whether the button is in loading state.
    */
-  loading?: boolean;
+  isLoading?: boolean;
 
   /**
    * Whether the button is block.
@@ -41,7 +41,7 @@ export const ElmButton = component$<ElmButtonProps>((props) => {
     class: className,
     onClick$,
     style,
-    loading,
+    isLoading,
     block,
     color,
     primary,
@@ -49,7 +49,7 @@ export const ElmButton = component$<ElmButtonProps>((props) => {
   } = props;
 
   const handleClick = $(async () => {
-    if (!props.loading && !props.disabled) {
+    if (!props.isLoading && !props.disabled) {
       if (onClick$) {
         clicked.value = true;
         setTimeout(() => (clicked.value = false), 300);
@@ -62,8 +62,8 @@ export const ElmButton = component$<ElmButtonProps>((props) => {
     <button
       onClick$={handleClick}
       class={[
-        styles.button,
-        !loading && !rest.disabled && styles.enable,
+        styles["elm-button"],
+        !isLoading && !rest.disabled && styles.enable,
         color && styles.colored,
         !color && !primary && styles.normal,
         !color && primary && styles.primary,
@@ -75,11 +75,11 @@ export const ElmButton = component$<ElmButtonProps>((props) => {
           width: block ? "100%" : "auto",
           cursor: rest.disabled
             ? "not-allowed"
-            : loading
+            : isLoading
               ? "progress"
               : "pointer",
           "--elmethis-scoped-opacity":
-            rest.disabled || loading ? 0.6 : undefined,
+            rest.disabled || isLoading ? 0.6 : undefined,
           "--elmethis-scoped-color": color,
           ...(style as CSSProperties),
         } as CSSProperties
@@ -88,7 +88,7 @@ export const ElmButton = component$<ElmButtonProps>((props) => {
     >
       {clicked.value && <span class={styles.ripple}></span>}
 
-      {loading ? (
+      {isLoading ? (
         <ElmDotLoadingIcon size="1.5rem" />
       ) : (
         <span class={styles.flex}>

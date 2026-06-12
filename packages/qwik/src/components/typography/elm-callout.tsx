@@ -31,7 +31,7 @@ export const ElmCallout = component$<ElmCalloutProps>(
   ({ class: className, type = "note", style, ...props }) => {
     return (
       <aside
-        class={[styles.callout, styles[type], className]}
+        class={[styles["elm-callout"], styles[type], className]}
         style={style}
         {...props}
       >

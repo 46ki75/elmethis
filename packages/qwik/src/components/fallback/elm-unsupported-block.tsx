@@ -9,7 +9,7 @@ export interface ElmUnsupportedBlockProps extends PropsOf<"div"> {
 export const ElmUnsupportedBlock = component$<ElmUnsupportedBlockProps>(
   ({ class: className, details, ...props }) => {
     return (
-      <div class={[styles.unsupported, className]} {...props}>
+      <div class={[styles["elm-unsupported-block"], className]} {...props}>
         <div class={styles.message}>
           <svg
             viewBox="0 0 24 24"
@@ -19,15 +19,11 @@ export const ElmUnsupportedBlock = component$<ElmUnsupportedBlockProps>(
           >
             <path d="M13,9H11V7H13M13,17H11V11H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
           </svg>
-          <ElmInlineText >
-            UNSUPPORTED BLOCK
-          </ElmInlineText>
+          <ElmInlineText>UNSUPPORTED BLOCK</ElmInlineText>
         </div>
         {details && (
           <div class={styles.details}>
-            <ElmInlineText >
-              {details}
-            </ElmInlineText>
+            <ElmInlineText>{details}</ElmInlineText>
           </div>
         )}
       </div>

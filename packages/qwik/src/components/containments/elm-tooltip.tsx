@@ -59,7 +59,7 @@ export const ElmTooltip = component$<PropsOf<"span">>(
     return (
       <span
         ref={elRef}
-        class={[styles.original, className]}
+        class={[styles["elm-tooltip"], className]}
         onMouseOver$={handleMouseOver}
         onMouseLeave$={handleMouseLeave}
         {...props}

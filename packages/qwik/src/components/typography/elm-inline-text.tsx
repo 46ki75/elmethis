@@ -124,7 +124,7 @@ export const ElmInlineText = component$<ElmInlineTextProps>(
 
     if (ruby) {
       vnode = (
-        <ruby class={styles.text}>
+        <ruby class={styles["elm-inline-text"]}>
           <span>{vnode}</span>
           <rt>{ruby}</rt>
         </ruby>
@@ -133,7 +133,7 @@ export const ElmInlineText = component$<ElmInlineTextProps>(
 
     return (
       <span
-        class={[styles.text, textStyles.text, className]}
+        class={[styles["elm-inline-text"], textStyles.text, className]}
         style={
           {
             ...(style as CSSProperties),

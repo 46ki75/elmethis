@@ -50,7 +50,7 @@ export const ElmShikiHighlighter = component$<ElmShikiHighlighterProps>(
 
     return (
       <pre
-        class={[styles.code, className]}
+        class={[styles["elm-shiki-highlighter"], className]}
         dangerouslySetInnerHTML={rawHtml.value}
         {...props}
       />

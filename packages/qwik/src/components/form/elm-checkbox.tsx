@@ -13,12 +13,12 @@ export interface ElmCheckboxProps extends PropsOf<"div"> {
   /**
    * Whether the checkbox is in a loading state.
    */
-  loading?: boolean;
+  isLoading?: boolean;
 
   /**
    * Whether the checkbox is disabled.
    */
-  disable?: boolean;
+  disabled?: boolean;
 
   /**
    * Controlled checked state. When provided the parent owns the signal.
@@ -35,8 +35,8 @@ export const ElmCheckbox = component$<ElmCheckboxProps>((props) => {
   const {
     class: className,
     label,
-    loading,
-    disable,
+    isLoading,
+    disabled,
     checked,
     defaultChecked,
     ...rest
@@ -49,13 +49,9 @@ export const ElmCheckbox = component$<ElmCheckboxProps>((props) => {
 
   return (
     <div
-      class={[
-        styles.container,
-        disable && styles["container--disable"],
-        className,
-      ]}
+      class={[styles["elm-checkbox"], disabled && styles.disabled, className]}
       onClick$={$(() => {
-        if (!props.loading && !props.disable) {
+        if (!props.isLoading && !props.disabled) {
           isChecked.value = !isChecked.value;
         }
       })}
@@ -73,8 +69,8 @@ export const ElmCheckbox = component$<ElmCheckboxProps>((props) => {
             cx="0"
             cy="0"
             r="2"
-            class={styles.loading}
-            style={{ opacity: loading ? 1 : 0 }}
+            class={styles["loading-dot"]}
+            style={{ opacity: isLoading ? 1 : 0 }}
           >
             <animate
               attributeName="cx"
@@ -98,8 +94,8 @@ export const ElmCheckbox = component$<ElmCheckboxProps>((props) => {
             cx="20"
             cy="20"
             r="2"
-            class={styles.loading}
-            style={{ opacity: loading ? 1 : 0 }}
+            class={styles["loading-dot"]}
+            style={{ opacity: isLoading ? 1 : 0 }}
           >
             <animate
               attributeName="cx"
@@ -126,8 +122,8 @@ export const ElmCheckbox = component$<ElmCheckboxProps>((props) => {
             height="16"
             class={[
               styles.rect,
-              isChecked.value && styles["rect--checked"],
-              loading && styles["rect--loading"],
+              isChecked.value && styles.checked,
+              isLoading && styles.loading,
             ]}
             stroke-width="0.8"
           />

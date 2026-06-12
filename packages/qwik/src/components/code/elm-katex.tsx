@@ -32,7 +32,11 @@ export const ElmKatex = component$<ElmKatexProps>((props) => {
 
   return (
     <div
-      class={[textStyle.text, block ? styles.katex : undefined, className]}
+      class={[
+        textStyle.text,
+        block ? styles["elm-katex"] : undefined,
+        className,
+      ]}
       dangerouslySetInnerHTML={html.value ?? ""}
       {...rest}
     />

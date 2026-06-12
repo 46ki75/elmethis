@@ -11,6 +11,7 @@ import { ElmInlineText } from "../typography/elm-inline-text";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { ElmRectangleWave } from "../fallback/elm-rectangle-wave";
 import { mdiMessageImageOutline } from "@mdi/js";
+import { useModal } from "../../hooks/use-modal";
 
 export interface ElmBlockImageProps extends PropsOf<"figure"> {
   /**
@@ -50,16 +51,31 @@ export const ElmBlockImage = component$<ElmBlockImageProps>((props) => {
     ...rest
   } = props;
   const isLoading = useSignal(true);
-  const isShowModal = useSignal(false);
+
+  // The lightbox is a `useModal` instance: `isOpen` drives the zoom cursor,
+  // `show`/`hide` open and close it, and `<ImageModal>` renders the native
+  // <dialog> (top layer, backdrop, Escape-to-close).
+  const {
+    Modal: ImageModal,
+    isOpen: isModalOpen,
+    show: showModal,
+    hide: hideModal,
+  } = useModal();
 
   const handleImageLoad = $(() => {
     isLoading.value = false;
   });
 
-  const handleToggleModal = $(() => {
+  const handleOpenModal = $(() => {
     if ((props.enableModal ?? true) && !isLoading.value) {
-      isShowModal.value = !isShowModal.value;
+      showModal();
     }
+  });
+
+  // ElmModal stops content-click propagation, so the enlarged image must
+  // close the lightbox itself (the backdrop-close only fires outside it).
+  const handleCloseModal = $(() => {
+    hideModal();
   });
 
   const imgRef = useSignal<HTMLImageElement>();
@@ -76,7 +92,9 @@ export const ElmBlockImage = component$<ElmBlockImageProps>((props) => {
 
   const ImageComponent = (isModal: boolean) => (
     <img
-      ref={imgRef}
+      // Only the inline image owns imgRef; the modal image must not steal it
+      // (ElmModal keeps its slot mounted, so both can coexist in the DOM).
+      ref={isModal ? undefined : imgRef}
       class={styles.image}
       src={src}
       alt={alt ?? caption ?? "Image"}
@@ -87,11 +105,12 @@ export const ElmBlockImage = component$<ElmBlockImageProps>((props) => {
       loading={isModal ? "lazy" : undefined}
       fetchPriority={isModal ? "low" : "auto"}
       onLoad$={handleImageLoad}
+      onClick$={isModal ? handleCloseModal : undefined}
       style={{
         "--elmethis-scoped-opacity": isLoading.value ? 0.01 : 1,
         "--elmethis-scoped-cursor":
           (enableModal ?? true)
-            ? isShowModal.value
+            ? isModalOpen.value
               ? "zoom-out"
               : "zoom-in"
             : "default",
@@ -100,25 +119,12 @@ export const ElmBlockImage = component$<ElmBlockImageProps>((props) => {
     />
   );
 
-  const Modal = (
-    <div
-      class={styles["modal-container"]}
-      style={{
-        pointerEvents: isShowModal.value ? "auto" : "none",
-        "--elmethis-scoped-opacity": isShowModal.value ? 1 : 0,
-      }}
-      onClick$={handleToggleModal}
-    >
-      {isShowModal.value && ImageComponent(true)}
-    </div>
-  );
-
   return (
-    <figure class={[styles["block-image"], className]} {...rest}>
+    <figure class={[styles["elm-block-image"], className]} {...rest}>
       <div
         class={styles["image-container"]}
         style={{ "--elmethis-scoped-opacity": isLoading.value ? 1 : 0.01 }}
-        onClick$={handleToggleModal}
+        onClick$={handleOpenModal}
       >
         {ImageComponent(false)}
 
@@ -139,7 +145,8 @@ export const ElmBlockImage = component$<ElmBlockImageProps>((props) => {
         </figcaption>
       )}
 
-      {Modal}
+      {/* Render the enlarged image only while open so it stays lazy. */}
+      <ImageModal>{isModalOpen.value && ImageComponent(true)}</ImageModal>
     </figure>
   );
 });

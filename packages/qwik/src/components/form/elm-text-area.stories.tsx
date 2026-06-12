@@ -95,7 +95,7 @@ const LoadingTextArea = component$(() => {
       label="Description"
       placeholder="Tell us what you think..."
       value={text}
-      loading={true}
+      isLoading={true}
       rows={4}
     />
   );

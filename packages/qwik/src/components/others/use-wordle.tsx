@@ -201,11 +201,11 @@ export const useWordle = (options?: UseWordleOptions) => {
             key={colIndex}
             class={[
               styles["cell"],
-              cellStatus === "correct" && styles["cell--correct"],
-              cellStatus === "present" && styles["cell--present"],
-              cellStatus === "absent" && styles["cell--absent"],
-              cellStatus === "tbd" && styles["cell--tbd"],
-              cellStatus === "empty" && styles["cell--empty"],
+              cellStatus === "correct" && styles["correct"],
+              cellStatus === "present" && styles["present"],
+              cellStatus === "absent" && styles["absent"],
+              cellStatus === "tbd" && styles["tbd"],
+              cellStatus === "empty" && styles["empty"],
             ]}
           >
             {letter}
@@ -221,14 +221,14 @@ export const useWordle = (options?: UseWordleOptions) => {
     });
 
     return (
-      <div class={styles["wordle"]}>
+      <div class={styles["elm-wordle"]}>
         <div
           class={[
             styles["message-area"],
             errorMessage.value
-              ? styles["message-area--error"]
+              ? styles["error"]
               : gameStatus.value !== "playing"
-                ? styles["message-area--status"]
+                ? styles["status"]
                 : undefined,
           ]}
           aria-live="polite"
@@ -244,7 +244,23 @@ export const useWordle = (options?: UseWordleOptions) => {
 
         <div class={styles["board"]}>{rows}</div>
 
-        <div class={styles["keyboard"]}>
+        <div
+          class={styles["keyboard"]}
+          onClick$={(event) => {
+            const button = (event.target as HTMLElement).closest(
+              "button[data-key]",
+            ) as HTMLButtonElement | null;
+            const key = button?.dataset.key;
+            if (!key) return;
+            if (key === "Enter") {
+              submit();
+            } else if (key === "⌫") {
+              removeLetter();
+            } else {
+              addLetter(key);
+            }
+          }}
+        >
           {KEYBOARD_ROWS.map((row, rowIndex) => (
             <div key={rowIndex} class={styles["keyboard-row"]}>
               {row.map((key) => {
@@ -253,23 +269,15 @@ export const useWordle = (options?: UseWordleOptions) => {
                 return (
                   <button
                     key={key}
+                    data-key={key}
                     class={[
                       styles["key"],
-                      key === "Enter" && styles["key--wide"],
-                      key === "⌫" && styles["key--wide"],
-                      keyStatus === "correct" && styles["key--correct"],
-                      keyStatus === "present" && styles["key--present"],
-                      keyStatus === "absent" && styles["key--absent"],
+                      key === "Enter" && styles["wide"],
+                      key === "⌫" && styles["wide"],
+                      keyStatus === "correct" && styles["correct"],
+                      keyStatus === "present" && styles["present"],
+                      keyStatus === "absent" && styles["absent"],
                     ]}
-                    onClick$={() => {
-                      if (key === "Enter") {
-                        submit();
-                      } else if (key === "⌫") {
-                        removeLetter();
-                      } else {
-                        addLetter(key);
-                      }
-                    }}
                   >
                     {key}
                   </button>
@@ -282,7 +290,7 @@ export const useWordle = (options?: UseWordleOptions) => {
         <div
           class={[
             styles["reset-container"],
-            gameStatus.value === "playing" && styles["reset-container--hidden"],
+            gameStatus.value === "playing" && styles["hidden"],
           ]}
         >
           <button class={styles["reset-button"]} onClick$={reset}>

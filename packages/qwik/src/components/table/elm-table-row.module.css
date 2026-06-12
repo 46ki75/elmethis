@@ -1,4 +1,4 @@
-.tr {
+.elm-table-row {
   transition: background-color 200ms;
 
   &:nth-child(odd) {

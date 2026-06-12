@@ -1,4 +1,4 @@
-.elm-ag-ui-input-wrapper {
+.elm-ag-ui-input {
   position: relative;
   box-sizing: border-box;
   width: 100%;
@@ -19,7 +19,7 @@
   refused to honor `width: 100%` reliably when its grid cell crossed
   three tracks).
 */
-.elm-ag-ui-input {
+.card {
   box-sizing: border-box;
   padding: 0.5rem;
   width: 100%;

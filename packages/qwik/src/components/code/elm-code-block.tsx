@@ -31,7 +31,7 @@ export const ElmCodeBlock = component$<ElmCodeBlockProps>(
     const { CopyButton } = useClipboard({ content: code });
 
     return (
-      <figure class={[styles["code-block"], className]} {...props}>
+      <figure class={[styles["elm-code-block"], className]} {...props}>
         <span class={styles["language-icon"]}>
           <ElmLanguageIcon language={language} />
         </span>

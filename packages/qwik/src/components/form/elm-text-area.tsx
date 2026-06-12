@@ -23,7 +23,7 @@ export interface ElmTextAreaProps extends Omit<PropsOf<"label">, "onInput$"> {
   maxLength?: number;
   placeholder?: string;
   disabled?: boolean;
-  loading?: boolean;
+  isLoading?: boolean;
   required?: boolean;
 
   /**
@@ -46,7 +46,7 @@ export const ElmTextArea = component$<ElmTextAreaProps>((props) => {
     maxLength,
     placeholder,
     disabled,
-    loading,
+    isLoading,
     required,
     value,
     rows = 3,
@@ -58,11 +58,11 @@ export const ElmTextArea = component$<ElmTextAreaProps>((props) => {
   return (
     <label
       class={[
-        styles.wrapper,
+        styles["elm-text-area"],
         isFocused.value && styles.active,
         className,
         {
-          [styles.disabled]: disabled || loading,
+          [styles.disabled]: disabled || isLoading,
         },
       ]}
       style={style}
@@ -102,9 +102,9 @@ export const ElmTextArea = component$<ElmTextAreaProps>((props) => {
           placeholder={placeholder}
           onFocus$={() => (isFocused.value = true)}
           onBlur$={() => (isFocused.value = false)}
-          disabled={disabled || loading}
+          disabled={disabled || isLoading}
           style={{
-            cursor: disabled ? "not-allowed" : loading ? "progress" : "auto",
+            cursor: disabled ? "not-allowed" : isLoading ? "progress" : "auto",
           }}
           aria-required={required}
           onInput$={$((_, el: HTMLTextAreaElement) => {
@@ -116,7 +116,7 @@ export const ElmTextArea = component$<ElmTextAreaProps>((props) => {
       <div
         class={styles.loading}
         style={{
-          opacity: loading ? 1 : 0,
+          opacity: isLoading ? 1 : 0,
         }}
       ></div>
     </label>

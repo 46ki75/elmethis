@@ -1,4 +1,4 @@
-.wrapper {
+.elm-page-top {
   --const-margin: 1rem;
 
   z-index: 50;
@@ -25,6 +25,13 @@
 
   &:active {
     opacity: 0.4;
+  }
+
+  &.visible {
+    transition:
+      transform 700ms,
+      opacity 200ms;
+    transform: translateY(0%) rotate(0deg);
   }
 
   .partial {
@@ -117,11 +124,4 @@
     opacity: 0;
     transform: translateY(-50%) scale(0.5);
   }
-}
-
-.wrapper--visible {
-  transition:
-    transform 700ms,
-    opacity 200ms;
-  transform: translateY(0%) rotate(0deg);
 }

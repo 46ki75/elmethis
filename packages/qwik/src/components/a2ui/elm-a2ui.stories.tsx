@@ -1059,15 +1059,28 @@ const LiveCounterStory = component$(() => {
         version: "v0.9",
         createSurface: { surfaceId: SID, catalogId: CATALOG_ID },
       },
-      { version: "v0.9", updateDataModel: { surfaceId: SID, path: "/n", value: 0 } },
+      {
+        version: "v0.9",
+        updateDataModel: { surfaceId: SID, path: "/n", value: 0 },
+      },
       {
         version: "v0.9",
         updateComponents: {
           surfaceId: SID,
           components: [
             { component: "Column", id: "root", children: ["label", "value"] },
-            { component: "Text", id: "label", variant: "h4", text: "Live counter" },
-            { component: "Text", id: "value", variant: "h1", text: { path: "/n" } },
+            {
+              component: "Text",
+              id: "label",
+              variant: "h4",
+              text: "Live counter",
+            },
+            {
+              component: "Text",
+              id: "value",
+              variant: "h1",
+              text: { path: "/n" },
+            },
           ],
         },
       },

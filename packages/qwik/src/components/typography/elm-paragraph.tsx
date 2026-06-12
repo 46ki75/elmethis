@@ -13,7 +13,7 @@ export const ElmParagraph = component$<ElmParagraphProps>(
   ({ class: className, style, color, backgroundColor, ...props }) => {
     return (
       <p
-        class={[styles.paragraph, textStyles.text, className]}
+        class={[styles["elm-paragraph"], textStyles.text, className]}
         style={
           {
             ...(style as CSSProperties),

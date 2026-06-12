@@ -1,4 +1,4 @@
-.wrapper {
+.elm-select {
   --highlight-color: var(--elmethis-color-primary-weak);
 
   user-select: none;

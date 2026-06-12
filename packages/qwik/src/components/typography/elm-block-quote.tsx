@@ -11,7 +11,7 @@ export const ElmBlockQuote = component$<PropsOf<"blockquote">>(
   ({ class: className, ...props }) => {
     return (
       <blockquote
-        class={[styles.blockquote, textStyles.text, className]}
+        class={[styles["elm-block-quote"], textStyles.text, className]}
         {...props}
       >
         <div class={[styles.icon, styles["icon-top-left"]]}>

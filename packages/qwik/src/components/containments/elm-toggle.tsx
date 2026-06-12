@@ -45,7 +45,7 @@ export const ElmToggle = component$<ElmToggleProps>((props) => {
   return (
     <div
       class={[
-        styles.toggle,
+        styles["elm-toggle"],
         {
           [styles.open]: isOpen.value,
         },

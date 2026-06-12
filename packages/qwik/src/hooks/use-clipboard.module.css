@@ -6,7 +6,6 @@
   border-radius: 0.25rem;
   transition: background-color 200ms;
   cursor: pointer;
-
   color: var(--elmethis-scoped-color, var(--elmethis-color-neutral));
 
   &:hover {

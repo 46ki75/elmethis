@@ -47,7 +47,7 @@ export const ElmTableCell = component$<ElmTableCellProps>((props) => {
 
   return renderAsTh ? (
     <th
-      class={[styles.common, styles.th, className]}
+      class={[styles["elm-table-cell"], styles.th, className]}
       style={style}
       scope={scope}
       {...rest}
@@ -55,7 +55,11 @@ export const ElmTableCell = component$<ElmTableCellProps>((props) => {
       {text != null ? text : <Slot />}
     </th>
   ) : (
-    <td class={[styles.common, styles.td, className]} style={style} {...rest}>
+    <td
+      class={[styles["elm-table-cell"], styles.td, className]}
+      style={style}
+      {...rest}
+    >
       {text != null ? text : <Slot />}
     </td>
   );

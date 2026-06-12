@@ -30,7 +30,7 @@ export interface ElmTextFieldProps extends Omit<PropsOf<"label">, "onInput$"> {
   suffix?: string;
   placeholder?: string;
   disabled?: boolean;
-  loading?: boolean;
+  isLoading?: boolean;
 
   /**
    * Controlled value. When provided the parent owns the state.
@@ -51,7 +51,7 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
     suffix,
     placeholder,
     disabled,
-    loading,
+    isLoading,
     value,
     isPassword,
     required,
@@ -64,11 +64,11 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
   return (
     <label
       class={[
-        styles.wrapper,
+        styles["elm-text-field"],
         isFocused.value && styles.active,
         className,
         {
-          [styles.disabled]: disabled || loading,
+          [styles.disabled]: disabled || isLoading,
         },
       ]}
       style={style}
@@ -109,9 +109,9 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
           placeholder={placeholder}
           onFocus$={() => (isFocused.value = true)}
           onBlur$={() => (isFocused.value = false)}
-          disabled={disabled || loading}
+          disabled={disabled || isLoading}
           style={{
-            cursor: disabled ? "not-allowed" : loading ? "progress" : "auto",
+            cursor: disabled ? "not-allowed" : isLoading ? "progress" : "auto",
           }}
           aria-required={required}
           onInput$={$((_, el: HTMLInputElement) => {
@@ -127,7 +127,7 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
           <div
             class={styles["clickable-icon"]}
             onClick$={$(() => {
-              if (!props.loading && !props.disabled) {
+              if (!props.isLoading && !props.disabled) {
                 inputType.value =
                   inputType.value === "text" ? "password" : "text";
               }
@@ -143,7 +143,7 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
           <div
             class={styles["clickable-icon"]}
             onClick$={$(() => {
-              if (!props.loading && !props.disabled && value) {
+              if (!props.isLoading && !props.disabled && value) {
                 value.value = "";
               }
             })}
@@ -156,7 +156,7 @@ export const ElmTextField = component$<ElmTextFieldProps>((props) => {
       <div
         class={styles.loading}
         style={{
-          opacity: loading ? 1 : 0,
+          opacity: isLoading ? 1 : 0,
         }}
       ></div>
     </label>

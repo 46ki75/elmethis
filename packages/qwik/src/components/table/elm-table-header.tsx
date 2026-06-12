@@ -9,7 +9,7 @@ export const ElmTableHeader = component$<PropsOf<"thead">>(
     useContextProvider(TableSectionContext, "head");
 
     return (
-      <thead class={[styles.thead, className]} {...props}>
+      <thead class={[styles["elm-table-header"], className]} {...props}>
         <Slot />
       </thead>
     );

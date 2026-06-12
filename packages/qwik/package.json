@@ -43,15 +43,16 @@
     "build.lib": "vite build --mode lib",
     "build.types": "tsc --emitDeclarationOnly --incremental false",
     "dev": "storybook dev -p 19211 --no-open",
-    "fmt": "prettier --write .",
+    "fmt": "prettier --write ./src",
     "fmt.check": "prettier --check .",
     "lint": "eslint \"src/**/*.ts*\"",
     "lint.css": "stylelint \"src/**/*.css\"",
     "prepublishOnly": "pnpm run build",
     "release": "np",
     "start": "vite --open --mode ssr",
+    "test": "pnpm run test.unit && pnpm run test.browser",
     "test.unit": "vitest --run",
-    "test.unit.ui": "vitest --ui",
+    "test.browser": "vitest --run --config vitest.browser.config.ts",
     "qwik": "qwik"
   },
   "devDependencies": {
@@ -60,6 +61,7 @@
     "@storybook/addon-docs": "^10.4.4",
     "@types/lodash-es": "^4.17.12",
     "@types/node": "25.7.0",
+    "@vitest/browser-playwright": "^4.1.8",
     "@vitest/ui": "^4.1.8",
     "eslint": "10.4.1",
     "eslint-plugin-qwik": "2.0.0-beta.37",
@@ -67,6 +69,7 @@
     "happy-dom": "^20.10.2",
     "jarkup-ts": "^0.14.0",
     "np": "^11.2.1",
+    "playwright": "^1.60.0",
     "prettier": "3.8.4",
     "storybook": "^10.4.4",
     "storybook-framework-qwik": "0.6.2--canary.95.25602496384.0",
@@ -79,7 +82,8 @@
     "undici": "*",
     "vite": "^7",
     "vite-tsconfig-paths": "^6.1.1",
-    "vitest": "^4.1.8"
+    "vitest": "^4.1.8",
+    "vitest-browser-qwik": "^0.3.8"
   },
   "dependencies": {
     "@46ki75/ikuma-theme": "^0.0.10",

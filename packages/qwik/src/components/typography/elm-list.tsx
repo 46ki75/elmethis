@@ -19,8 +19,8 @@ export const ElmList = component$<ElmListProps>(
         <ol
           class={[
             textStyle.text,
-            styles["elmethis-list-common"],
-            styles["elmethis-numbered-list"],
+            styles["elm-list"],
+            styles.numbered,
             className,
           ]}
           style={style}
@@ -34,8 +34,8 @@ export const ElmList = component$<ElmListProps>(
         <ul
           class={[
             textStyle.text,
-            styles["elmethis-list-common"],
-            styles["elmethis-bulleted-list"],
+            styles["elm-list"],
+            styles.bulleted,
             className,
           ]}
           style={style}

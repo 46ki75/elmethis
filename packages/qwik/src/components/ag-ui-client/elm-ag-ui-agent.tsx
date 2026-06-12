@@ -116,7 +116,7 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
   return (
     <div
       ref={containerRef}
-      class={[styles["use-agent"], className]}
+      class={[styles["elm-ag-ui-agent"], className]}
       style={{
         "--agent-ui-width": width,
         ...style,

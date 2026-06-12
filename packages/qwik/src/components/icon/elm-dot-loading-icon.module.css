@@ -12,7 +12,7 @@
   }
 }
 
-.wrapper {
+.elm-dot-loading-icon {
   width: var(--elmethis-scoped-size);
   height: var(--elmethis-scoped-size);
   user-select: none;

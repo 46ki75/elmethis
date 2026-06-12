@@ -6,6 +6,6 @@ export type ElmDividerProps = PropsOf<"hr">;
 
 export const ElmDivider = component$<PropsOf<"hr">>(
   ({ class: className, ...props }) => {
-    return <hr class={[styles.hr, className]} {...props} />;
+    return <hr class={[styles["elm-divider"], className]} {...props} />;
   },
 );

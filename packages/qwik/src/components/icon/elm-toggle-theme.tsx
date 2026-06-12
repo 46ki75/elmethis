@@ -25,7 +25,7 @@ export const ElmToggleTheme = component$<ElmToggleThemeProps>(
             width={size}
             height={size}
             viewBox="0 0 24 24"
-            class={[styles.icon, className]}
+            class={[styles["elm-toggle-theme"], className]}
             style={style}
             onClick$={toggleTheme}
           >
@@ -195,7 +195,7 @@ export const ElmToggleTheme = component$<ElmToggleThemeProps>(
             width={size}
             height={size}
             viewBox="0 0 24 24"
-            class={[styles.icon, className]}
+            class={[styles["elm-toggle-theme"], className]}
             style={style}
             onClick$={toggleTheme}
           >

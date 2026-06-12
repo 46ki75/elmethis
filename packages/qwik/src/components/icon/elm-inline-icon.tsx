@@ -23,11 +23,11 @@ export interface ElmInlineIconProps extends PropsOf<"span"> {
 export const ElmInlineIcon = component$<ElmInlineIconProps>(
   ({ class: className, src, alt, width, height, size = 16, ...props }) => {
     return (
-      <span class={[styles.icon, className]} {...props}>
+      <span class={[styles["elm-inline-icon"], className]} {...props}>
         <img
           src={src}
           alt={alt}
-          class={styles.icon}
+          class={styles["elm-inline-icon"]}
           width={width ?? size}
           height={height ?? size}
         />
