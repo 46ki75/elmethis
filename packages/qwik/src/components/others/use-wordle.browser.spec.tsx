@@ -1,5 +1,5 @@
 import { component$ } from "@qwik.dev/core";
-import { render, renderSSR } from "vitest-browser-qwik";
+import { render } from "vitest-browser-qwik";
 import { expect, test } from "vitest";
 
 import { useWordle } from "./use-wordle";
@@ -35,10 +35,8 @@ test("keyboard clicks build a guess and submit wins the game", async () => {
   await expect.element(screen.getByText(/You won/)).toBeVisible();
 });
 
-// SSR — server HTML is produced without crashing and contains the keyboard.
-test("renders the keyboard on the server", async () => {
-  const screen = await renderSSR(<Harness />);
-  await expect
-    .element(screen.getByRole("button", { name: "Enter", exact: true }))
-    .toBeInTheDocument();
-});
+// SSR is covered in the unit layer (`use-wordle.spec.tsx` → [SSR] via
+// `renderToString`). Deliberately not exercised here: `renderSSR()` spins up a
+// Vite SSR module runner whose file handles aren't released at teardown, which
+// hangs the browser run's pool close for 10s. Keep SSR assertions in the unit
+// layer where they belong.
