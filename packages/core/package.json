@@ -23,7 +23,8 @@
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
       }
-    }
+    },
+    "./tokens.css": "./dist/tokens.css"
   },
   "files": [
     "dist"
@@ -31,9 +32,11 @@
   "engines": {
     "node": "^18.17.0 || ^20.3.0 || >=21.0.0"
   },
-  "sideEffects": false,
+  "sideEffects": [
+    "**/*.css"
+  ],
   "scripts": {
-    "build": "tsdown && tsx scripts/emit-catalog.ts",
+    "build": "tsdown && tsx scripts/emit-catalog.ts && tsx scripts/build-tokens.ts",
     "dev": "tsdown --watch",
     "fmt": "prettier --write .",
     "fmt.check": "prettier --check .",
@@ -50,8 +53,11 @@
   "devDependencies": {
     "@a2ui/web_core": "^0.10.0",
     "@types/node": "25.7.0",
+    "@vanilla-extract/css": "^1.20.1",
+    "@vanilla-extract/esbuild-plugin": "^2.3.22",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
+    "esbuild": "^0.28.0",
     "prettier": "3.8.4",
     "tsdown": "^0.22.2",
     "tsx": "^4.22.4",
