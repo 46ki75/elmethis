@@ -224,7 +224,6 @@ export {
   THEME_CHANGE_EVENT,
   useElmethisTheme,
 } from "./hooks/use-elmethis-theme";
-export { useInView } from "./hooks/use-in-view";
 export { useModal, type UseModalOptions } from "./hooks/use-modal";
 export {
   useLocalStorage,
