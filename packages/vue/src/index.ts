@@ -18,6 +18,12 @@ export {
   type ElmModalProps,
 } from "./components/containments/elm-modal";
 
+// Fallback
+export {
+  ElmUnsupportedBlock,
+  type ElmUnsupportedBlockProps,
+} from "./components/fallback/elm-unsupported-block";
+
 // Form
 export {
   ElmCheckbox,
@@ -42,15 +48,27 @@ export {
   type ElmSquareLoadingIconProps,
 } from "./components/icon/elm-square-loading-icon";
 
+// Table
+export * from "./components/table";
+
 // Typography
 export {
   ElmDivider,
   type ElmDividerProps,
 } from "./components/typography/elm-divider";
 export {
+  ElmFragmentIdentifier,
+  type ElmFragmentIdentifierProps,
+} from "./components/typography/elm-fragment-identifier";
+export {
   ElmInlineText,
   type ElmInlineTextProps,
 } from "./components/typography/elm-inline-text";
+export { ElmList, type ElmListProps } from "./components/typography/elm-list";
+export {
+  ElmParagraph,
+  type ElmParagraphProps,
+} from "./components/typography/elm-paragraph";
 
 // Hooks
 export { useClipboard, type UseClipboardOptions } from "./hooks/use-clipboard";
