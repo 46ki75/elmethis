@@ -81,7 +81,7 @@ function extractChildIds(value: unknown): string[] {
   return value.filter((id): id is string => typeof id === "string");
 }
 
-// Mirrors the multi-column layout in elm-jarkup.module.css.
+// Multi-column layout for the ColumnList block.
 const columnListStyle: CSSProperties = {
   boxSizing: "content-box",
   paddingBlock: "0.25rem",

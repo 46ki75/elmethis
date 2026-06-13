@@ -91,7 +91,7 @@ import {
 const BLOCK_CATALOG_ID =
   "https://a2ui.org/specification/v0_9/basic_catalog.json";
 
-// Mirrors the multi-column layout in elm-jarkup.module.css.
+// Multi-column layout for the ColumnList block.
 const columnListStyle: CSSProperties = {
   boxSizing: "content-box",
   paddingBlock: "0.25rem",

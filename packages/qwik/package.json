@@ -71,7 +71,6 @@
     "eslint-plugin-qwik": "2.0.0-beta.37",
     "globals": "17.6.0",
     "happy-dom": "^20.10.2",
-    "jarkup-ts": "^0.14.0",
     "np": "^11.2.1",
     "playwright": "^1.60.0",
     "prettier": "3.8.4",

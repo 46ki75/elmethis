@@ -149,9 +149,6 @@ export { default as ElmColorTable } from "./components/others/ElmColorTable.vue"
 export type { ElmCommandPaletteProps } from "./components/others/ElmCommandPalette.vue";
 export { default as ElmCommandPalette } from "./components/others/ElmCommandPalette.vue";
 
-export type { ElmJsonComponentRendererProps } from "./components/others/ElmJsonComponentRenderer.vue";
-export { default as ElmJsonComponentRenderer } from "./components/others/ElmJsonComponentRenderer.vue";
-
 export type { ElmMarkdownProps } from "./components/others/ElmMarkdown.vue";
 export { default as ElmMarkdown } from "./components/others/ElmMarkdown.vue";
 
