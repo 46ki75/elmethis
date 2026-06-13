@@ -1,6 +1,6 @@
 {
   "name": "@elmethis/core",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "author": {
     "name": "Ikuma Yamashita",
     "url": "https://www.ikuma.cloud/"
@@ -37,11 +37,15 @@
   ],
   "scripts": {
     "build": "tsdown && tsx scripts/emit-catalog.ts && tsx scripts/build-tokens.ts",
+    "build.types": "exit 0",
     "dev": "tsdown --watch",
-    "fmt": "prettier --write .",
-    "fmt.check": "prettier --check .",
+    "fmt": "prettier --write ./src",
+    "fmt.check": "prettier --check ./src",
+    "lint": "eslint \"src/**/*.ts*\"",
     "test.unit": "vitest --run",
-    "prepublishOnly": "pnpm run build"
+    "prepublishOnly": "pnpm run build",
+    "check": "concurrently -g \"pnpm:fmt.check\" \"pnpm:lint\" \"pnpm:build.types\" \"pnpm:test.unit\"",
+    "check.ci": "concurrently -g \"pnpm:check\" \"pnpm:build\""
   },
   "peerDependencies": {
     "@a2ui/web_core": ">=0.10.0",
@@ -52,16 +56,21 @@
   },
   "devDependencies": {
     "@a2ui/web_core": "^0.10.0",
+    "@eslint/js": "latest",
     "@types/node": "25.7.0",
     "@vanilla-extract/css": "^1.20.1",
     "@vanilla-extract/esbuild-plugin": "^2.3.22",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
+    "concurrently": "^10.0.3",
     "esbuild": "^0.28.1",
+    "eslint": "^10.4.1",
+    "globals": "^17.6.0",
     "prettier": "3.8.4",
     "tsdown": "^0.22.2",
     "tsx": "^4.22.4",
     "typescript": "5.9.3",
+    "typescript-eslint": "^8.61.0",
     "vitest": "^4.1.8",
     "zod": "^3"
   }

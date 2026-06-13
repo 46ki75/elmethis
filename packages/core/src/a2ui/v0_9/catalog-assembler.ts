@@ -279,7 +279,6 @@ function inlineZod(schema: ZodTypeAny): unknown {
   }) as Record<string, unknown>;
   // Drop the top-level `$schema` field — it's only meaningful at the
   // document root, not at the definition level.
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { $schema: _drop, ...rest } = raw;
   return rest;
 }
