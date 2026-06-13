@@ -10,13 +10,21 @@ import { ElmShikiHighlighter } from "./elm-shiki-highlighter";
 // component requests `defaultColor: false`, so each token carries
 // `--shiki-light*` / `--shiki-dark*` custom properties (resolved natively with
 // light-dark() in CSS); asserting those proves the real highlight pipeline ran.
+//
+// The first highlight loads shiki's grammar + oniguruma WASM, which can exceed
+// RTL's 1s default when the three packages' suites run concurrently (pre-commit
+// `check`), so the highlight waits use a generous explicit timeout.
+const HIGHLIGHT_WAIT = { timeout: 10_000 } as const;
 
 describe("[CSR] ElmShikiHighlighter — highlighted output", () => {
   test("emits shiki token markup with dual-theme custom properties", async () => {
     const { container } = render(
       <ElmShikiHighlighter code={"let x = 1;"} language="rust" />,
     );
-    await waitFor(() => expect(container.innerHTML).toContain('class="line"'));
+    await waitFor(
+      () => expect(container.innerHTML).toContain('class="line"'),
+      HIGHLIGHT_WAIT,
+    );
     const html = container.innerHTML;
     // The real shiki output wraps tokens in `.shiki` and tokenizes into spans.
     expect(html).toContain("shiki");
@@ -31,7 +39,10 @@ describe("[CSR] ElmShikiHighlighter — highlighted output", () => {
     const { container } = render(
       <ElmShikiHighlighter code={"const a = 1"} language="typescript" />,
     );
-    await waitFor(() => expect(container.innerHTML).toContain("<span"));
+    await waitFor(
+      () => expect(container.innerHTML).toContain("<span"),
+      HIGHLIGHT_WAIT,
+    );
     // A keyword/identifier/number split proves the language grammar resolved
     // rather than a single plaintext blob.
     const spanCount = (container.innerHTML.match(/<span/g) ?? []).length;
@@ -54,8 +65,9 @@ describe("[CSR] ElmShikiHighlighter — highlighted output", () => {
     );
     // shiki falls back to a plaintext grammar instead of throwing; the host
     // still renders highlighted markup.
-    await waitFor(() =>
-      expect(container.innerHTML).toContain("plain text here"),
+    await waitFor(
+      () => expect(container.innerHTML).toContain("plain text here"),
+      HIGHLIGHT_WAIT,
     );
     expect(container.innerHTML).toContain("shiki");
   });

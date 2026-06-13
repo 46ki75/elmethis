@@ -1,0 +1,63 @@
+.elm-callout {
+  position: relative;
+  padding: 1rem;
+  margin-block-start: var(--elmethis-margin-block-start);
+
+  &::after {
+    position: absolute;
+    content: "";
+    inset: 0 auto auto 0;
+    height: 100%;
+    width: 0.25rem;
+    background-color: var(--elmethis-scoped-callout-color);
+  }
+
+  &::before {
+    position: absolute;
+    content: "";
+    inset: 0 0 auto auto;
+    height: 100%;
+    width: 100%;
+    background-color: var(--elmethis-scoped-callout-color);
+    opacity: 0.15;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-transform: uppercase;
+    user-select: none;
+    color: var(--elmethis-scoped-callout-color);
+  }
+
+  .content {
+    padding-block: 1rem 0.25rem;
+  }
+
+  .icon {
+    color: var(--elmethis-scoped-callout-color);
+  }
+}
+
+.note {
+  --elmethis-scoped-callout-color: var(--elmethis-color-accent-info);
+}
+
+.tip {
+  --elmethis-scoped-callout-color: var(--elmethis-color-accent-success);
+}
+
+.important {
+  --elmethis-scoped-callout-color: var(--elmethis-color-accent-important);
+}
+
+.warning {
+  --elmethis-scoped-callout-color: var(--elmethis-color-accent-warning);
+}
+
+.caution {
+  --elmethis-scoped-callout-color: var(--elmethis-color-accent-error);
+}

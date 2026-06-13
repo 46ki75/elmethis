@@ -1,0 +1,23 @@
+.elm-tooltip {
+  position: relative;
+}
+
+.tooltip {
+  box-sizing: border-box;
+  position: fixed;
+  z-index: 1000;
+  max-width: min(32rem, calc(100vw - 2rem));
+  padding: 0.5rem 0;
+  transition:
+    opacity 200ms,
+    transform 200ms;
+  transform: scale(0.9);
+  opacity: 0;
+  pointer-events: none;
+
+  &.show {
+    transform: scale(1);
+    opacity: 1;
+    pointer-events: auto;
+  }
+}

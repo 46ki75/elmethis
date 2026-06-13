@@ -1,0 +1,118 @@
+.elm-inline-text {
+  padding: 0;
+  margin: 0;
+  white-space: pre-line;
+  font-size: var(--elmethis-scoped-font-size, 1em);
+  line-height: var(--elmethis-scoped-font-size, 1em);
+  color: var(--elmethis-scoped-color, var(--elmethis-color-neutral));
+  background-color: var(--elmethis-scoped-background-color);
+  transition: color 200ms;
+  text-decoration-color: var(--elmethis-scoped-color);
+}
+
+.code {
+  margin-inline: 0.25rem;
+  padding: 2px 0.5em;
+  font-size: calc(1em - 2px);
+  border-radius: 0.125rem;
+  background-color: oklch(from var(--elmethis-color-neutral) l c h / 8%);
+  font-family: var(
+    --elmethis-scoped-font-family,
+    var(--elmethis-font-family-monospace)
+  );
+}
+
+.kbd {
+  padding: 0.125rem 0.25rem;
+  position: relative;
+  border-radius: 0.125rem;
+  background-color: var(--elmethis-color-surface-raised);
+  border: solid 1px var(--elmethis-color-surface-raised);
+
+  &::before {
+    z-index: -1;
+    position: absolute;
+    content: "";
+    bottom: -0.25em;
+    left: -0.5px;
+    height: 100%;
+    width: 100%;
+    border: solid 1px var(--elmethis-color-surface-raised);
+    border-radius: 0.125rem;
+    background-color: var(--elmethis-color-surface-raised);
+  }
+
+  &::after {
+    z-index: 1;
+    position: absolute;
+    content: "";
+    bottom: 0.5px;
+    left: 25%;
+    height: 1px;
+    width: 50%;
+    background-color: var(--elmethis-color-surface-raised);
+    opacity: 0.5;
+  }
+}
+
+.link {
+  all: unset;
+  color: var(--elmethis-color-accent-link);
+  box-sizing: border-box;
+  padding: 0 0.25rem;
+  font-size: var(--elmethis-scoped-font-size);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  border-radius: 0.125rem;
+  transition:
+    background-color 200ms,
+    color 200ms,
+    opacity 200ms;
+
+  &:hover {
+    background-color: oklch(from #6987b8 l c h / 20%);
+  }
+
+  &:active {
+    opacity: 0.5;
+  }
+
+  &:visited {
+    color: var(--elmethis-color-accent-link-visited);
+    border-bottom: dashed 1px var(--elmethis-color-accent-link-visited);
+
+    &:hover {
+      background-color: oklch(
+        from var(--elmethis-color-accent-link-visited) l c h / 20%
+      );
+    }
+  }
+}
+
+.ogp {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  overflow: hidden;
+  border-radius: 0.25rem;
+  box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
+  background-color: var(--elmethis-color-surface-raised);
+}
+
+.ogp-text {
+  box-sizing: border-box;
+  padding: 0.5rem;
+}
+
+.ogp-title {
+  box-sizing: border-box;
+  font-weight: bold;
+  padding-block-end: 0.25rem;
+}
+
+.ogp-description {
+  opacity: 0.7;
+  padding: 0.25rem;
+}

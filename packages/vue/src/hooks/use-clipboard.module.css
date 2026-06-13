@@ -1,0 +1,18 @@
+.use-clipboard {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  transition: background-color 200ms;
+  cursor: pointer;
+  color: var(--elmethis-scoped-color, var(--elmethis-color-neutral));
+
+  &:hover {
+    background-color: var(--elmethis-color-primary-hover);
+  }
+
+  .use-clipboard-icon-copied {
+    color: var(--elmethis-color-primary);
+  }
+}

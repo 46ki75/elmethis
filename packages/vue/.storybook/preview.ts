@@ -1,9 +1,16 @@
-import type { Preview } from "@storybook/vue3-vite";
+import type { Preview, StoryContext } from "@storybook/vue3-vite";
 
-import "./sb.scss";
+import "@elmethis/core/tokens.css";
+import "./sb.css";
 
-const preview: Preview = {
+export const preview: Preview = {
   parameters: {
+    options: {
+      showRoots: true,
+    },
+    docs: {
+      iframeHeight: "200px",
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -24,14 +31,14 @@ const preview: Preview = {
   },
   initialGlobals: { theme: "light" },
   decorators: [
-    (story, context) => {
+    (story, context: StoryContext) => {
       const theme = context.globals.theme || "light";
+      // `color-scheme` drives the native light-dark() token resolution;
+      // `data-theme` covers the few non-color overrides that can't use it.
+      document.documentElement.style.colorScheme = theme;
       document.documentElement.setAttribute("data-theme", theme);
 
-      return {
-        components: { story },
-        template: `<story />`,
-      };
+      return { components: { story }, template: "<story />" };
     },
   ],
 };

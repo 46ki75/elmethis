@@ -16,8 +16,13 @@ describe("[CSR] ElmCodeBlock — composition", () => {
     const { container } = render(
       <ElmCodeBlock code={"let x = 1;"} language="rust" />,
     );
-    // Shiki highlights asynchronously inside ElmShikiHighlighter's effect.
-    await waitFor(() => expect(container.innerHTML).toContain("--shiki-light"));
+    // Shiki highlights asynchronously inside ElmShikiHighlighter's effect. The
+    // first highlight loads grammar + oniguruma WASM, which can exceed RTL's 1s
+    // default under the concurrent three-package pre-commit `check`.
+    await waitFor(
+      () => expect(container.innerHTML).toContain("--shiki-light"),
+      { timeout: 10_000 },
+    );
     // Proof ElmShikiHighlighter ran inside the block.
     expect(container.innerHTML).toContain("shiki");
   });

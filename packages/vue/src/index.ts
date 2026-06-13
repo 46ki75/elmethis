@@ -1,202 +1,226 @@
-// Design tokens (primitive + semantic CSS custom properties)
-import "./styles/global.css";
+// Design tokens — the single source of truth lives in `@elmethis/core`
+// (`token.ts` → `tokens.css`). Every component consumes these `--elmethis-*`
+// custom properties; theming is native via `light-dark()` + `color-scheme`.
+import "@elmethis/core/tokens.css";
+
+// Components and hooks are re-exported here as they are ported from the
+// `@elmethis/qwik` reference implementation.
+
+// A2UI
+export {
+  ElmA2ui,
+  type ElmA2uiProps,
+  A2uiSurface,
+  type A2uiSurfaceProps,
+} from "./components/a2ui/elm-a2ui";
+export { basicCatalog } from "./components/a2ui/catalog/basic-catalog";
+export { blockCatalog } from "./components/a2ui/catalog/block-catalog";
+export {
+  CatalogRenderer,
+  defineRenderer,
+  type RenderArgs,
+  type RenderFn,
+  type RendererEntry,
+  type ChildRef,
+} from "./components/a2ui/catalog/catalog";
 
 // Code
-export type { ElmCodeBlockProps } from "./components/code/ElmCodeBlock.vue";
-export { default as ElmCodeBlock } from "./components/code/ElmCodeBlock.vue";
-
-export type { ElmKatexProps } from "./components/code/ElmKatex.vue";
-export { default as ElmKatex } from "./components/code/ElmKatex.vue";
-
-export type { ElmMermaidProps } from "./components/code/ElmMermaid.vue";
-export { default as ElmMermaid } from "./components/code/ElmMermaid.vue";
+export {
+  ElmCodeBlock,
+  type ElmCodeBlockProps,
+} from "./components/code/elm-code-block";
+export { ElmKatex, type ElmKatexProps } from "./components/code/elm-katex";
+export {
+  ElmShikiHighlighter,
+  type ElmShikiHighlighterProps,
+} from "./components/code/elm-shiki-highlighter";
 
 // Containments
-export type { ElmDesktopWindowProps } from "./components/containments/ElmDesktopWindow.vue";
-export { default as ElmDesktopWindow } from "./components/containments/ElmDesktopWindow.vue";
-
-export type { ElmConfirmModalProps } from "./components/containments/ElmConfirmModal.vue";
-export { default as ElmConfirmModal } from "./components/containments/ElmConfirmModal.vue";
-
-export type { ElmModalProps } from "./components/containments/ElmModal.vue";
-export { default as ElmModal } from "./components/containments/ElmModal.vue";
-
-export type { ElmParallaxProps } from "./components/containments/ElmParallax.vue";
-export { default as ElmParallax } from "./components/containments/ElmParallax.vue";
-
-export type { ElmSimpleTooltipProps } from "./components/containments/ElmSimpleTooltip.vue";
-export { default as ElmSimpleTooltip } from "./components/containments/ElmSimpleTooltip.vue";
-
-export type { ElmSnackbarProps } from "./components/containments/ElmSnackbar.vue";
-export { default as ElmSnackbar } from "./components/containments/ElmSnackbar.vue";
-
-export type { ElmSnackbarContainerProps } from "./components/containments/ElmSnackbarContainer.vue";
-export { default as ElmSnackbarContainer } from "./components/containments/ElmSnackbarContainer.vue";
-
-export type { ElmTabsProps } from "./components/containments/ElmTabs.vue";
-export { default as ElmTabs } from "./components/containments/ElmTabs.vue";
-
-export type { ElmToggleProps } from "./components/containments/ElmToggle.vue";
-export { default as ElmToggle } from "./components/containments/ElmToggle.vue";
-
-export type { ElmTooltipProps } from "./components/containments/ElmTooltip.vue";
-export { default as ElmTooltip } from "./components/containments/ElmTooltip.vue";
-
-export type { ElmProgressProps } from "./components/data/ElmProgress.vue";
-export { default as ElmProgress } from "./components/data/ElmProgress.vue";
-
-// Data
-export type { ElmMultiProgressProps } from "./components/data/ElmMultiProgress.vue";
-export { default as ElmMultiProgress } from "./components/data/ElmMultiProgress.vue";
-
-export type { ElmStatusMessageProps } from "./components/data/ElmStatusMessage.vue";
-export { default as ElmStatusMessage } from "./components/data/ElmStatusMessage.vue";
-
-export type { ElmRectangleWaveProps } from "./components/fallback/ElmRectangleWave.vue";
-export { default as ElmRectangleWave } from "./components/fallback/ElmRectangleWave.vue";
-
-// Embed
-export type { ElmOEmbedProps } from "./components/embed/ElmOEmbed.vue";
-export { default as ElmOEmbed } from "./components/embed/ElmOEmbed.vue";
+export {
+  ElmCollapse,
+  type ElmCollapseProps,
+} from "./components/containments/elm-collapse";
+export {
+  ElmModal,
+  type ElmModalProps,
+} from "./components/containments/elm-modal";
+export {
+  ElmParallax,
+  type ElmParallaxProps,
+} from "./components/containments/elm-parallax";
+export {
+  ElmTab,
+  ElmTabList,
+  ElmTabPanel,
+  ElmTabs,
+  type ElmTabListProps,
+  type ElmTabPanelProps,
+  type ElmTabProps,
+  type ElmTabsProps,
+} from "./components/containments/elm-tabs";
+export {
+  ElmToggle,
+  type ElmToggleProps,
+} from "./components/containments/elm-toggle";
+export {
+  ElmTooltip,
+  type ElmTooltipProps,
+} from "./components/containments/elm-tooltip";
 
 // Fallback
-export type { ElmBlockFallbackProps } from "./components/fallback/ElmBlockFallback.vue";
-export { default as ElmBlockFallback } from "./components/fallback/ElmBlockFallback.vue";
-
-export type { ElmSpinnerProps } from "./components/fallback/ElmSpinner.vue";
-export { default as ElmSpinner } from "./components/fallback/ElmSpinner.vue";
-
-export type { ElmUnsupportedBlockProps } from "./components/fallback/ElmUnsupportedBlock.vue";
-export { default as ElmUnsupportedBlock } from "./components/fallback/ElmUnsupportedBlock.vue";
+export {
+  ElmBlockFallback,
+  type ElmBlockFallbackProps,
+} from "./components/fallback/elm-block-fallback";
+export {
+  ElmRectangleWave,
+  type ElmRectangleWaveProps,
+} from "./components/fallback/elm-rectangle-wave";
+export {
+  ElmUnsupportedBlock,
+  type ElmUnsupportedBlockProps,
+} from "./components/fallback/elm-unsupported-block";
 
 // Form
-export type { ElmButtonProps } from "./components/form/ElmButton.vue";
-export { default as ElmButton } from "./components/form/ElmButton.vue";
-
-export type { ElmCheckboxProps } from "./components/form/ElmCheckbox.vue";
-export { default as ElmCheckbox } from "./components/form/ElmCheckbox.vue";
-
-export type { ElmSelectProps } from "./components/form/ElmSelect.vue";
-export { default as ElmSelect } from "./components/form/ElmSelect.vue";
-
-export type { ElmSwitchProps } from "./components/form/ElmSwitch.vue";
-export { default as ElmSwitch } from "./components/form/ElmSwitch.vue";
-
-export type { ElmTextFieldProps } from "./components/form/ElmTextField.vue";
-export { default as ElmTextField } from "./components/form/ElmTextField.vue";
-
-export type { ElmValidationProps } from "./components/form/ElmValidation.vue";
-export { default as ElmValidation } from "./components/form/ElmValidation.vue";
+export { ElmButton, type ElmButtonProps } from "./components/form/elm-button";
+export {
+  ElmCheckbox,
+  type ElmCheckboxProps,
+} from "./components/form/elm-checkbox";
+export {
+  ElmSelect,
+  type ElmSelectOption,
+  type ElmSelectProps,
+} from "./components/form/elm-select";
+export { ElmSwitch, type ElmSwitchProps } from "./components/form/elm-switch";
+export {
+  ElmTextArea,
+  type ElmTextAreaProps,
+} from "./components/form/elm-text-area";
+export {
+  ElmTextField,
+  type ElmTextFieldProps,
+} from "./components/form/elm-text-field";
+export {
+  ElmValidation,
+  type ElmValidationProps,
+} from "./components/form/elm-validation";
 
 // Icon
-export type { ElmArrowIconProps } from "./components/icon/ElmArrowIcon.vue";
-export { default as ElmArrowIcon } from "./components/icon/ElmArrowIcon.vue";
-
-export type { ElmBookmarkIconProps } from "./components/icon/ElmBookmarkIcon.vue";
-export { default as ElmBookmarkIcon } from "./components/icon/ElmBookmarkIcon.vue";
-
-export type { ElmCubeIconProps } from "./components/icon/ElmCubeIcon.vue";
-export { default as ElmCubeIcon } from "./components/icon/ElmCubeIcon.vue";
-
-export type { ElmDotLoadingIconProps } from "./components/icon/ElmDotLoadingIcon.vue";
-export { default as ElmDotLoadingIcon } from "./components/icon/ElmDotLoadingIcon.vue";
-
-export type { ElmInlineIconProps } from "./components/icon/ElmInlineIcon.vue";
-export { default as ElmInlineIcon } from "./components/icon/ElmInlineIcon.vue";
-
-export type { ElmLanguageIconProps } from "./components/icon/ElmLanguageIcon.vue";
-export { default as ElmLanguageIcon } from "./components/icon/ElmLanguageIcon.vue";
-
-export type { ElmLoginIconProps } from "./components/icon/ElmLoginIcon.vue";
-export { default as ElmLoginIcon } from "./components/icon/ElmLoginIcon.vue";
-
-export type { ElmMdiIconProps } from "./components/icon/ElmMdiIcon.vue";
-export { default as ElmMdiIcon } from "./components/icon/ElmMdiIcon.vue";
-
-export type { ElmSquareLoadingIconProps } from "./components/icon/ElmSquareLoadingIcon.vue";
-export { default as ElmSquareLoadingIcon } from "./components/icon/ElmSquareLoadingIcon.vue";
-
-export type { ElmToggleThemeProps } from "./components/icon/ElmToggleTheme.vue";
-export { default as ElmToggleTheme } from "./components/icon/ElmToggleTheme.vue";
+export {
+  ElmDotLoadingIcon,
+  type ElmDotLoadingIconProps,
+} from "./components/icon/elm-dot-loading-icon";
+export {
+  ElmCopyIcon,
+  type ElmCopyIconProps,
+} from "./components/icon/elm-copy-icon";
+export {
+  ElmInlineIcon,
+  type ElmInlineIconProps,
+} from "./components/icon/elm-inline-icon";
+export {
+  ElmLanguageIcon,
+  LANGUAGES,
+  type Language,
+  type ElmLanguageIconProps,
+} from "./components/icon/elm-language-icon";
+export {
+  ElmMdiIcon,
+  type ElmMdiIconProps,
+} from "./components/icon/elm-mdi-icon";
+export {
+  ElmSquareLoadingIcon,
+  type ElmSquareLoadingIconProps,
+} from "./components/icon/elm-square-loading-icon";
+export {
+  ElmToggleTheme,
+  type ElmToggleThemeProps,
+} from "./components/icon/elm-toggle-theme";
 
 // Media
-export type { ElmFileProps } from "./components/media/ElmFile.vue";
-export { default as ElmFile } from "./components/media/ElmFile.vue";
-
-export type { ElmImageProps } from "./components/media/ElmImage.vue";
-export { default as ElmImage } from "./components/media/ElmImage.vue";
+export {
+  ElmBlockImage,
+  type ElmBlockImageProps,
+} from "./components/media/elm-block-image";
+export { ElmFile, type ElmFileProps } from "./components/media/elm-file";
 
 // Navigation
-export type { ElmBookmarkProps } from "./components/navigation/ElmBookmark.vue";
-export { default as ElmBookmark } from "./components/navigation/ElmBookmark.vue";
-
-export type { ElmBreadcrumbProps } from "./components/navigation/ElmBreadcrumb.vue";
-export { default as ElmBreadcrumb } from "./components/navigation/ElmBreadcrumb.vue";
-
-export type { ElmPagetopProps } from "./components/navigation/ElmPagetop.vue";
-export { default as ElmPagetop } from "./components/navigation/ElmPagetop.vue";
-
-export type { ElmTableOfContentsProps } from "./components/navigation/ElmTableOfContents.vue";
-export { default as ElmTableOfContents } from "./components/navigation/ElmTableOfContents.vue";
+export {
+  ElmBookmark,
+  type ElmBookmarkProps,
+} from "./components/navigation/elm-bookmark";
+export {
+  ElmBreadcrumb,
+  type ElmBreadcrumbLink,
+  type ElmBreadcrumbProps,
+} from "./components/navigation/elm-breadcrumb";
+export {
+  ElmPageTop,
+  type ElmPageTopProps,
+} from "./components/navigation/elm-page-top";
 
 // Others
-export type { ElmColorSampleProps } from "./components/others/ElmColorSample.vue";
-export { default as ElmColorSample } from "./components/others/ElmColorSample.vue";
-
-export type { ElmColorTableProps } from "./components/others/ElmColorTable.vue";
-export { default as ElmColorTable } from "./components/others/ElmColorTable.vue";
-
-export type { ElmCommandPaletteProps } from "./components/others/ElmCommandPalette.vue";
-export { default as ElmCommandPalette } from "./components/others/ElmCommandPalette.vue";
-
-export type { ElmMarkdownProps } from "./components/others/ElmMarkdown.vue";
-export { default as ElmMarkdown } from "./components/others/ElmMarkdown.vue";
+export {
+  ElmColorPrimitiveSample,
+  type ElmColorPrimitiveSampleProps,
+} from "./components/others/elm-color-primitive-sample";
+export {
+  ElmColorSemanticSample,
+  type ElmColorSemanticSampleProps,
+} from "./components/others/elm-color-semantic-sample";
+export {
+  ElmMarkdown,
+  type ElmMarkdownProps,
+} from "./components/others/elm-markdown";
+export {
+  useWordle,
+  type UseWordleOptions,
+  type UseWordleReturn,
+  type LetterResult,
+  type LetterStatus,
+  type GameStatus,
+} from "./components/others/use-wordle";
 
 // Table
-export type { ElmTableProps } from "./components/table/ElmTable.vue";
-export { default as ElmTable } from "./components/table/ElmTable.vue";
+export * from "./components/table";
 
-export type { ElmTableHeaderProps } from "./components/table/ElmTableHeader.vue";
-export { default as ElmTableHeader } from "./components/table/ElmTableHeader.vue";
+// Typography
+export {
+  ElmBlockQuote,
+  type ElmBlockQuoteProps,
+} from "./components/typography/elm-block-quote";
+export {
+  ElmCallout,
+  type AlertType,
+  type ElmCalloutProps,
+} from "./components/typography/elm-callout";
+export {
+  ElmDivider,
+  type ElmDividerProps,
+} from "./components/typography/elm-divider";
+export {
+  ElmHeading,
+  type ElmHeadingProps,
+} from "./components/typography/elm-heading";
+export {
+  ElmFragmentIdentifier,
+  type ElmFragmentIdentifierProps,
+} from "./components/typography/elm-fragment-identifier";
+export {
+  ElmInlineText,
+  type ElmInlineTextProps,
+} from "./components/typography/elm-inline-text";
+export { ElmList, type ElmListProps } from "./components/typography/elm-list";
+export {
+  ElmParagraph,
+  type ElmParagraphProps,
+} from "./components/typography/elm-paragraph";
 
-export type { ElmTableBodyProps } from "./components/table/ElmTableBody.vue";
-export { default as ElmTableBody } from "./components/table/ElmTableBody.vue";
-
-export type { ElmTableRowProps } from "./components/table/ElmTableRow.vue";
-export { default as ElmTableRow } from "./components/table/ElmTableRow.vue";
-
-export type { ElmTableCellProps } from "./components/table/ElmTableCell.vue";
-export { default as ElmTableCell } from "./components/table/ElmTableCell.vue";
-
-// Yypography
-export type { ElmBlockQuoteProps } from "./components/typography/ElmBlockQuote.vue";
-export { default as ElmBlockQuote } from "./components/typography/ElmBlockQuote.vue";
-
-export type { ElmCalloutProps } from "./components/typography/ElmCallout.vue";
-export { default as ElmCallout } from "./components/typography/ElmCallout.vue";
-
-export type { ElmDividerProps } from "./components/typography/ElmDivider.vue";
-export { default as ElmDivider } from "./components/typography/ElmDivider.vue";
-
-export type { ElmFragmentIdentifierProps } from "./components/typography/ElmFragmentIdentifier.vue";
-export { default as ElmFragmentIdentifier } from "./components/typography/ElmFragmentIdentifier.vue";
-
-export type { ElmHeadingProps } from "./components/typography/ElmHeading.vue";
-export { default as ElmHeading } from "./components/typography/ElmHeading.vue";
-
-export type { ElmInlineTextProps } from "./components/typography/ElmInlineText.vue";
-export { default as ElmInlineText } from "./components/typography/ElmInlineText.vue";
-
-export type { ElmParagraphProps } from "./components/typography/ElmParagraph.vue";
-export { default as ElmParagraph } from "./components/typography/ElmParagraph.vue";
-
-export type { ElmListProps } from "./components/typography/ElmList.vue";
-export { default as ElmList } from "./components/typography/ElmList.vue";
-
-export type { ElmTypingAnimationProps } from "./components/typography/ElmTypingAnimation.vue";
-export { default as ElmTypingAnimation } from "./components/typography/ElmTypingAnimation.vue";
-
-// hooks
-
-export { useElmethisTheme } from "./hooks/useElmethisTheme";
-export { useTyping } from "./hooks/useTyping";
+// Hooks
+export { useClipboard, type UseClipboardOptions } from "./hooks/use-clipboard";
+export {
+  THEME_CHANGE_EVENT,
+  useElmethisTheme,
+} from "./hooks/use-elmethis-theme";
+export { useModal, type UseModalOptions } from "./hooks/use-modal";
