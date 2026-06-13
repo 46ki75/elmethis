@@ -436,6 +436,9 @@ importers:
       '@46ki75/ikuma-theme':
         specifier: ^0.0.10
         version: 0.0.10
+      '@a2ui/web_core':
+        specifier: ^0.10.0
+        version: 0.10.0
       '@elmethis/core':
         specifier: workspace:^
         version: link:../core
