@@ -1,6 +1,6 @@
 {
   "name": "@elmethis/vue",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "Vue 3 component library for elmethis.",
   "publishConfig": {
     "access": "public"
