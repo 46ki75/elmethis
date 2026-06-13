@@ -1,0 +1,110 @@
+{
+  "name": "@elmethis/vue",
+  "version": "0.4.2",
+  "description": "Vue 3 component library for elmethis.",
+  "publishConfig": {
+    "access": "public"
+  },
+  "private": false,
+  "type": "module",
+  "author": "Ikuma Yamashita",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:46ki75/elmethis.git"
+  },
+  "homepage": "https://46ki75.github.io/elmethis",
+  "main": "./lib/index.vue.mjs",
+  "module": "./lib/index.vue.mjs",
+  "types": "./lib-types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib-types/index.d.ts",
+      "import": {
+        "types": "./lib-types/index.d.ts",
+        "default": "./lib/index.vue.mjs"
+      },
+      "require": {
+        "types": "./lib-types/index.d.ts",
+        "default": "./lib/index.vue.cjs"
+      }
+    },
+    "./style.css": {
+      "default": "./lib/style.css"
+    }
+  },
+  "files": [
+    "lib",
+    "lib-types"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "engines": {
+    "node": "^18.17.0 || ^20.3.0 || >=21.0.0"
+  },
+  "scripts": {
+    "build": "pnpm run build.lib && pnpm run build.types",
+    "build.lib": "vite build",
+    "build.types": "vue-tsc --project tsconfig.lib.json",
+    "build-storybook": "storybook build",
+    "dev": "storybook dev -p 19231 --no-open",
+    "fmt": "prettier --write ./src",
+    "fmt.check": "prettier --check ./src",
+    "lint": "eslint \"src/**/*.ts*\"",
+    "lint.css": "stylelint \"src/**/*.css\"",
+    "test": "pnpm run test.unit && pnpm run test.browser",
+    "test.unit": "vitest --run",
+    "test.browser": "vitest --run --config vitest.browser.config.ts",
+    "test.build": "pnpm run build && pnpm run build-storybook",
+    "check": "concurrently -g \"pnpm:fmt.check\" \"pnpm:lint\" \"pnpm:lint.css\" \"pnpm:test.unit\" \"pnpm:test.browser\"",
+    "check.ci": "concurrently -g \"pnpm:check\" \"pnpm:test.build\"",
+    "prepublishOnly": "pnpm run build"
+  },
+  "peerDependencies": {
+    "vue": "^3.4.0"
+  },
+  "dependencies": {
+    "@46ki75/ikuma-theme": "^0.0.10",
+    "@elmethis/core": "workspace:^",
+    "@formkit/auto-animate": "^0.9.0",
+    "@mdi/js": "^7.4.47",
+    "@vueuse/core": "^14.3.0",
+    "clsx": "^2.1.1",
+    "dompurify": "^3.4.2",
+    "es-toolkit": "^1.47.1",
+    "katex": "^0.17.0",
+    "marked": "^18.0.5",
+    "shiki": "^4.2.0",
+    "zod": "^3"
+  },
+  "devDependencies": {
+    "@eslint/js": "latest",
+    "@storybook/addon-docs": "^10.4.4",
+    "@storybook/vue3-vite": "^10.4.4",
+    "@types/katex": "^0.16.8",
+    "@types/node": "^25.7.0",
+    "@vitejs/plugin-vue": "^6.0.7",
+    "@vitejs/plugin-vue-jsx": "^5.1.5",
+    "@vitest/browser-playwright": "^4.1.8",
+    "@vitest/ui": "^4.1.8",
+    "@vue/test-utils": "^2.4.11",
+    "concurrently": "^10.0.3",
+    "eslint": "^10.4.1",
+    "globals": "^17.6.0",
+    "happy-dom": "^20.10.2",
+    "playwright": "^1.60.0",
+    "prettier": "3.8.4",
+    "storybook": "^10.4.4",
+    "stylelint": "^17.13.0",
+    "stylelint-config-css-modules": "^4.6.0",
+    "stylelint-config-standard": "^40.0.0",
+    "stylelint-value-no-unknown-custom-properties": "^6.1.1",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.61.0",
+    "vite": "^8.0.4",
+    "vitest": "^4.1.8",
+    "vitest-browser-vue": "^2.1.0",
+    "vue": "^3.5.38",
+    "vue-tsc": "^3.3.4"
+  }
+}
