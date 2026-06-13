@@ -14,9 +14,21 @@ export {
 
 // Containments
 export {
+  ElmCollapse,
+  type ElmCollapseProps,
+} from "./components/containments/elm-collapse";
+export {
   ElmModal,
   type ElmModalProps,
 } from "./components/containments/elm-modal";
+export {
+  ElmParallax,
+  type ElmParallaxProps,
+} from "./components/containments/elm-parallax";
+export {
+  ElmTooltip,
+  type ElmTooltipProps,
+} from "./components/containments/elm-tooltip";
 
 // Fallback
 export {
@@ -47,6 +59,12 @@ export {
   ElmSquareLoadingIcon,
   type ElmSquareLoadingIconProps,
 } from "./components/icon/elm-square-loading-icon";
+
+// Navigation
+export {
+  ElmPageTop,
+  type ElmPageTopProps,
+} from "./components/navigation/elm-page-top";
 
 // Table
 export * from "./components/table";

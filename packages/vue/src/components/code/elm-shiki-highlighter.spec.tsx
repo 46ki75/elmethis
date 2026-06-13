@@ -11,13 +11,21 @@ import { ElmShikiHighlighter } from "./elm-shiki-highlighter";
 // requests `defaultColor: false`, so each token carries `--shiki-light*` /
 // `--shiki-dark*` custom properties (resolved natively with light-dark() in
 // CSS); asserting those proves the real highlight pipeline ran.
+//
+// The first highlight loads shiki's grammar + oniguruma WASM, which can exceed
+// the 1s default when the three packages' suites run concurrently (pre-commit
+// `check`), so the highlight waits use a generous explicit timeout.
+const HIGHLIGHT_TIMEOUT = { timeout: 10_000 };
 
 describe("[CSR] ElmShikiHighlighter — highlighted output", () => {
   test("emits shiki token markup with dual-theme custom properties", async () => {
     const wrapper = mount(ElmShikiHighlighter, {
       props: { code: "let x = 1;", language: "rust" },
     });
-    await vi.waitFor(() => expect(wrapper.html()).toContain('class="line"'));
+    await vi.waitFor(
+      () => expect(wrapper.html()).toContain('class="line"'),
+      HIGHLIGHT_TIMEOUT,
+    );
     const html = wrapper.html();
     expect(html).toContain("shiki");
     expect(html).toContain('class="line"');
@@ -31,7 +39,10 @@ describe("[CSR] ElmShikiHighlighter — highlighted output", () => {
     const wrapper = mount(ElmShikiHighlighter, {
       props: { code: "const a = 1", language: "typescript" },
     });
-    await vi.waitFor(() => expect(wrapper.html()).toContain("<span"));
+    await vi.waitFor(
+      () => expect(wrapper.html()).toContain("<span"),
+      HIGHLIGHT_TIMEOUT,
+    );
     const spanCount = (wrapper.html().match(/<span/g) ?? []).length;
     expect(spanCount).toBeGreaterThan(1);
   });
@@ -48,7 +59,10 @@ describe("[CSR] ElmShikiHighlighter — highlighted output", () => {
       props: { code: "plain text here", language: "not-a-real-language" },
     });
     // shiki falls back to a plaintext grammar instead of throwing.
-    await vi.waitFor(() => expect(wrapper.html()).toContain("plain text here"));
+    await vi.waitFor(
+      () => expect(wrapper.html()).toContain("plain text here"),
+      HIGHLIGHT_TIMEOUT,
+    );
     expect(wrapper.html()).toContain("shiki");
   });
 
