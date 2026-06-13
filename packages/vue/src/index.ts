@@ -45,7 +45,9 @@ export {
 } from "./components/typography/elm-inline-text";
 
 // Hooks
+export { useClipboard, type UseClipboardOptions } from "./hooks/use-clipboard";
 export {
   THEME_CHANGE_EVENT,
   useElmethisTheme,
 } from "./hooks/use-elmethis-theme";
+export { useModal, type UseModalOptions } from "./hooks/use-modal";
