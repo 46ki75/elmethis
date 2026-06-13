@@ -1,5 +1,6 @@
 import {
   defineComponent,
+  onUnmounted,
   ref,
   type CSSProperties,
   type HTMLAttributes,
@@ -48,6 +49,10 @@ export const ElmButton = defineComponent({
   },
   setup(props, { attrs, slots }) {
     const clicked = ref(false);
+    let timer: ReturnType<typeof setTimeout> | undefined;
+
+    // Clear the ripple timer on unmount so it can't write to a destroyed ref.
+    onUnmounted(() => clearTimeout(timer));
 
     return () => {
       const {
@@ -61,7 +66,8 @@ export const ElmButton = defineComponent({
         if (!props.isLoading && !props.disabled) {
           if (typeof onClick === "function") {
             clicked.value = true;
-            setTimeout(() => (clicked.value = false), 300);
+            clearTimeout(timer);
+            timer = setTimeout(() => (clicked.value = false), 300);
             (onClick as (event: MouseEvent) => void)(event);
           }
         }
