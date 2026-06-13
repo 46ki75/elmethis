@@ -33,6 +33,14 @@ export {
 
 // Fallback
 export {
+  ElmBlockFallback,
+  type ElmBlockFallbackProps,
+} from "./components/fallback/elm-block-fallback";
+export {
+  ElmRectangleWave,
+  type ElmRectangleWaveProps,
+} from "./components/fallback/elm-rectangle-wave";
+export {
   ElmUnsupportedBlock,
   type ElmUnsupportedBlockProps,
 } from "./components/fallback/elm-unsupported-block";
@@ -43,6 +51,10 @@ export {
   type ElmCheckboxProps,
 } from "./components/form/elm-checkbox";
 export { ElmSwitch, type ElmSwitchProps } from "./components/form/elm-switch";
+export {
+  ElmValidation,
+  type ElmValidationProps,
+} from "./components/form/elm-validation";
 
 // Icon
 export {
@@ -53,6 +65,12 @@ export {
   ElmInlineIcon,
   type ElmInlineIconProps,
 } from "./components/icon/elm-inline-icon";
+export {
+  ElmLanguageIcon,
+  LANGUAGES,
+  type Language,
+  type ElmLanguageIconProps,
+} from "./components/icon/elm-language-icon";
 export {
   ElmMdiIcon,
   type ElmMdiIconProps,
@@ -66,7 +84,15 @@ export {
   type ElmToggleThemeProps,
 } from "./components/icon/elm-toggle-theme";
 
+// Media
+export { ElmFile, type ElmFileProps } from "./components/media/elm-file";
+
 // Navigation
+export {
+  ElmBreadcrumb,
+  type ElmBreadcrumbLink,
+  type ElmBreadcrumbProps,
+} from "./components/navigation/elm-breadcrumb";
 export {
   ElmPageTop,
   type ElmPageTopProps,
@@ -87,9 +113,22 @@ export * from "./components/table";
 
 // Typography
 export {
+  ElmBlockQuote,
+  type ElmBlockQuoteProps,
+} from "./components/typography/elm-block-quote";
+export {
+  ElmCallout,
+  type AlertType,
+  type ElmCalloutProps,
+} from "./components/typography/elm-callout";
+export {
   ElmDivider,
   type ElmDividerProps,
 } from "./components/typography/elm-divider";
+export {
+  ElmHeading,
+  type ElmHeadingProps,
+} from "./components/typography/elm-heading";
 export {
   ElmFragmentIdentifier,
   type ElmFragmentIdentifierProps,
