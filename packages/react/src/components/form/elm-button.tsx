@@ -1,4 +1,6 @@
 import {
+  useEffect,
+  useRef,
   useState,
   type ComponentPropsWithoutRef,
   type CSSProperties,
@@ -41,12 +43,16 @@ export const ElmButton = ({
   ...props
 }: ElmButtonProps) => {
   const [clicked, setClicked] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+  useEffect(() => () => clearTimeout(timer.current), []);
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     if (!isLoading && !disabled) {
       if (onClick) {
         setClicked(true);
-        setTimeout(() => setClicked(false), 300);
+        clearTimeout(timer.current);
+        timer.current = setTimeout(() => setClicked(false), 300);
         onClick(event);
       }
     }

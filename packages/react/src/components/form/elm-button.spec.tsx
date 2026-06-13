@@ -81,6 +81,23 @@ describe("[CSR] ElmButton — onClick", () => {
     fireEvent.click(container.querySelector("button")!);
     expect(onClick).not.toHaveBeenCalled();
   });
+
+  it("clears the ripple timer on unmount (no setState after unmount)", () => {
+    vi.useFakeTimers();
+    try {
+      const onClick = vi.fn();
+      const { container, unmount } = render(
+        <ElmButton onClick={onClick}>Go</ElmButton>,
+      );
+      fireEvent.click(container.querySelector("button")!);
+      unmount();
+      // Advancing past the 300ms ripple timer must not fire a setState on the
+      // now-unmounted component.
+      expect(() => vi.advanceTimersByTime(300)).not.toThrow();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
 });
 
 describe("[SSR] ElmButton", () => {
