@@ -30,9 +30,9 @@ const MIN_CALL_SITES = 20;
 const RUNTIME = "react/compiler-runtime";
 const SHIM = "react-compiler-runtime";
 
-const bundles = ["lib/index.react.mjs", "lib/index.react.cjs"];
+const bundles = ["lib/index.react.mjs", "lib/index.react.cjs"] as const;
 
-const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const escapeRe = (s: string): string => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 // The runtime export is the memo-cache hook `c`, but the bundler renames or
 // namespaces it, so we can't grep a fixed token. Both shapes we emit are:
@@ -41,7 +41,7 @@ const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 // We locate whichever import shape the bundle uses, then return a regex that
 // counts that binding's numeric-argument call sites (the `<n>` is the compiler's
 // per-function slot count).
-const callSiteRegex = (source) => {
+const callSiteRegex = (source: string): RegExp | null => {
   // Named/destructured import: `import{c as e}` (ESM) or `{c:e}=require(...)` (CJS).
   const named =
     source.match(
@@ -67,7 +67,7 @@ const callSiteRegex = (source) => {
   return null;
 };
 
-const countCallSites = (source) => {
+const countCallSites = (source: string): number | null => {
   const re = callSiteRegex(source);
   if (!re) return null;
   const matches = source.match(re);
@@ -75,14 +75,14 @@ const countCallSites = (source) => {
 };
 
 let failed = false;
-const fail = (file, msg) => {
+const fail = (file: string, msg: string): void => {
   failed = true;
   console.error(`  ✗ ${file}: ${msg}`);
 };
 
 for (const rel of bundles) {
   const abs = path.join(root, rel);
-  let source;
+  let source: string;
   try {
     source = await readFile(abs, "utf8");
   } catch {
