@@ -17,6 +17,10 @@ export {
   ElmInlineIcon,
   type ElmInlineIconProps,
 } from "./components/icon/elm-inline-icon";
+export {
+  ElmMdiIcon,
+  type ElmMdiIconProps,
+} from "./components/icon/elm-mdi-icon";
 
 // Typography
 export {
