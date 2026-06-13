@@ -1,0 +1,46 @@
+.elm-code-block {
+  display: grid;
+  grid-template: "language-icon caption copy-icon" 2.75rem "divider divider divider" 1px "code code code" 1fr / 2rem 1fr 2.5rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  margin-block-start: var(--elmethis-margin-block-start);
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  background-color: var(--elmethis-color-surface-raised);
+  box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
+}
+
+.language-icon {
+  grid-area: language-icon;
+  padding-inline-start: 0.75rem;
+}
+
+.caption {
+  grid-area: caption;
+  padding: 1rem;
+  font-family: monospace;
+  font-size: 1rem;
+}
+
+.copy-icon {
+  grid-area: copy-icon;
+}
+
+.divider {
+  grid-area: divider;
+  width: calc(100% - 1rem);
+  border: none;
+  border-bottom: solid 1px rgb(128 128 128 / 50%);
+}
+
+.code {
+  grid-area: code;
+  box-sizing: border-box;
+  padding: 0 1rem;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}

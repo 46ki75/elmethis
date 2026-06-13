@@ -7,6 +7,10 @@ import "@elmethis/core/tokens.css";
 // `@elmethis/qwik` reference implementation.
 
 // Code
+export {
+  ElmCodeBlock,
+  type ElmCodeBlockProps,
+} from "./components/code/elm-code-block";
 export { ElmKatex, type ElmKatexProps } from "./components/code/elm-katex";
 export {
   ElmShikiHighlighter,
