@@ -8,3 +8,12 @@ export {
   BLOCK_CATALOG_ID,
   blockCatalogJson,
 } from "./a2ui/v0_9/block-catalog-json";
+export {
+  LANGUAGES,
+  normalizeLanguage,
+  languageIcons,
+  type Language,
+  type GlyphLanguage,
+  type LanguageIcon,
+  type SvgNode,
+} from "./icon/languages";
