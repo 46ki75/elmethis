@@ -92,9 +92,7 @@ describe("blockCatalogJson", () => {
         return;
       }
       if (node && typeof node === "object") {
-        for (const [k, v] of Object.entries(
-          node as Record<string, unknown>,
-        )) {
+        for (const [k, v] of Object.entries(node as Record<string, unknown>)) {
           if (k === "$ref" && typeof v === "string" && !v.startsWith("#/")) {
             externalRefs.push(v);
           }
