@@ -6,6 +6,12 @@ import "@elmethis/core/tokens.css";
 // Components and hooks are re-exported here as they are ported from the
 // `@elmethis/qwik` reference implementation.
 
+// Code
+export {
+  ElmShikiHighlighter,
+  type ElmShikiHighlighterProps,
+} from "./components/code/elm-shiki-highlighter";
+
 // Containments
 export {
   ElmModal,
