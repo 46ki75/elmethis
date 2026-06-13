@@ -152,6 +152,10 @@ export {
   type ElmColorSemanticSampleProps,
 } from "./components/others/elm-color-semantic-sample";
 export {
+  ElmMarkdown,
+  type ElmMarkdownProps,
+} from "./components/others/elm-markdown";
+export {
   useWordle,
   type UseWordleOptions,
   type UseWordleReturn,
