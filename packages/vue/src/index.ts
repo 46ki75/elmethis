@@ -27,3 +27,9 @@ export {
   ElmInlineText,
   type ElmInlineTextProps,
 } from "./components/typography/elm-inline-text";
+
+// Hooks
+export {
+  THEME_CHANGE_EVENT,
+  useElmethisTheme,
+} from "./hooks/use-elmethis-theme";
