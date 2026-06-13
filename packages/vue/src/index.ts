@@ -26,6 +26,10 @@ export {
 
 // Icon
 export {
+  ElmDotLoadingIcon,
+  type ElmDotLoadingIconProps,
+} from "./components/icon/elm-dot-loading-icon";
+export {
   ElmInlineIcon,
   type ElmInlineIconProps,
 } from "./components/icon/elm-inline-icon";
@@ -33,6 +37,10 @@ export {
   ElmMdiIcon,
   type ElmMdiIconProps,
 } from "./components/icon/elm-mdi-icon";
+export {
+  ElmSquareLoadingIcon,
+  type ElmSquareLoadingIconProps,
+} from "./components/icon/elm-square-loading-icon";
 
 // Typography
 export {
