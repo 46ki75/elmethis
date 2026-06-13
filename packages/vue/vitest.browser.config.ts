@@ -13,6 +13,12 @@ import { playwright } from "@vitest/browser-playwright";
 // happy-dom unit environment cannot share a single config.
 export default defineConfig({
   plugins: [vue(), vueJsx()],
+  // Pre-bundle the SSR renderer used by `*.browser.spec.tsx` SSR assertions so
+  // Vite doesn't discover it mid-run and trigger a reload (which Vitest warns
+  // can cause flaky/duplicated runs).
+  optimizeDeps: {
+    include: ["vue/server-renderer"],
+  },
   test: {
     name: "browser",
     include: ["src/**/*.browser.spec.tsx"],

@@ -7,6 +7,7 @@ import "@elmethis/core/tokens.css";
 // `@elmethis/qwik` reference implementation.
 
 // Code
+export { ElmKatex, type ElmKatexProps } from "./components/code/elm-katex";
 export {
   ElmShikiHighlighter,
   type ElmShikiHighlighterProps,
@@ -41,6 +42,7 @@ export {
   ElmCheckbox,
   type ElmCheckboxProps,
 } from "./components/form/elm-checkbox";
+export { ElmSwitch, type ElmSwitchProps } from "./components/form/elm-switch";
 
 // Icon
 export {
@@ -59,12 +61,26 @@ export {
   ElmSquareLoadingIcon,
   type ElmSquareLoadingIconProps,
 } from "./components/icon/elm-square-loading-icon";
+export {
+  ElmToggleTheme,
+  type ElmToggleThemeProps,
+} from "./components/icon/elm-toggle-theme";
 
 // Navigation
 export {
   ElmPageTop,
   type ElmPageTopProps,
 } from "./components/navigation/elm-page-top";
+
+// Others
+export {
+  useWordle,
+  type UseWordleOptions,
+  type UseWordleReturn,
+  type LetterResult,
+  type LetterStatus,
+  type GameStatus,
+} from "./components/others/use-wordle";
 
 // Table
 export * from "./components/table";
