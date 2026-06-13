@@ -44,22 +44,26 @@ describe("[CSR] useElmethisTheme — native color-scheme", () => {
   afterEach(resetRoot);
 
   test("toggle pins the computed color-scheme + data-theme on <html>", async () => {
-    // Seed a persisted "light" so the mount visible-task has a definite,
-    // observable settling point (data-theme="light") to wait on before we
-    // toggle — otherwise a late-firing mount task could clobber the click.
-    localStorage.setItem(KEY, "light");
+    // Seed a persisted "dark" so the mount visible-task flips the signal
+    // (isDark "false" -> "true"), giving a *signal-observable* settling point
+    // to wait on before we toggle. Seeding "light" would leave the signal at
+    // its initial `false`, so the only proof the mount task ran would be its
+    // async DOM write (data-theme) — which races the document-ready task under
+    // suite load and intermittently times out the settle (issue #1624). A
+    // late-firing mount task could otherwise clobber the click. The persisted
+    // "light"/"dark" pinned-at-mount path is covered by the next test.
+    localStorage.setItem(KEY, "dark");
     const screen = await render(<Wrapper />);
-    await vi.waitFor(() =>
-      expect(root().getAttribute("data-theme")).toBe("light"),
-    );
+    await vi.waitFor(() => expect(text(screen, "isDark")).toBe("true"));
 
+    // Toggle back to light; the native pin must flip with it.
     await screen.getByTestId("toggle").click();
 
-    await vi.waitFor(() => expect(text(screen, "isDark")).toBe("true"));
+    await vi.waitFor(() => expect(text(screen, "isDark")).toBe("false"));
     // The real computed value — not just an inline string createDOM can echo.
-    expect(getComputedStyle(root()).colorScheme).toBe("dark");
-    expect(root().getAttribute("data-theme")).toBe("dark");
-    expect(localStorage.getItem(KEY)).toBe("dark");
+    expect(getComputedStyle(root()).colorScheme).toBe("light");
+    expect(root().getAttribute("data-theme")).toBe("light");
+    expect(localStorage.getItem(KEY)).toBe("light");
   });
 
   test("a persisted choice is pinned by the document-ready visible task", async () => {
