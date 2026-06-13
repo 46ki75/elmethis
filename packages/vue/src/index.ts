@@ -65,7 +65,20 @@ export {
   ElmCheckbox,
   type ElmCheckboxProps,
 } from "./components/form/elm-checkbox";
+export {
+  ElmSelect,
+  type ElmSelectOption,
+  type ElmSelectProps,
+} from "./components/form/elm-select";
 export { ElmSwitch, type ElmSwitchProps } from "./components/form/elm-switch";
+export {
+  ElmTextArea,
+  type ElmTextAreaProps,
+} from "./components/form/elm-text-area";
+export {
+  ElmTextField,
+  type ElmTextFieldProps,
+} from "./components/form/elm-text-field";
 export {
   ElmValidation,
   type ElmValidationProps,
@@ -76,6 +89,10 @@ export {
   ElmDotLoadingIcon,
   type ElmDotLoadingIconProps,
 } from "./components/icon/elm-dot-loading-icon";
+export {
+  ElmCopyIcon,
+  type ElmCopyIconProps,
+} from "./components/icon/elm-copy-icon";
 export {
   ElmInlineIcon,
   type ElmInlineIconProps,
@@ -100,6 +117,10 @@ export {
 } from "./components/icon/elm-toggle-theme";
 
 // Media
+export {
+  ElmBlockImage,
+  type ElmBlockImageProps,
+} from "./components/media/elm-block-image";
 export { ElmFile, type ElmFileProps } from "./components/media/elm-file";
 
 // Navigation
@@ -118,6 +139,14 @@ export {
 } from "./components/navigation/elm-page-top";
 
 // Others
+export {
+  ElmColorPrimitiveSample,
+  type ElmColorPrimitiveSampleProps,
+} from "./components/others/elm-color-primitive-sample";
+export {
+  ElmColorSemanticSample,
+  type ElmColorSemanticSampleProps,
+} from "./components/others/elm-color-semantic-sample";
 export {
   useWordle,
   type UseWordleOptions,
