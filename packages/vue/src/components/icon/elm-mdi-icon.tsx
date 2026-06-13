@@ -8,7 +8,7 @@ import { clsx } from "clsx";
 
 import styles from "./elm-mdi-icon.module.css";
 
-export interface ElmMdiIconProps extends /* @vue-ignore */ SVGAttributes {
+export interface ElmMdiIconProps extends SVGAttributes {
   /**
    * The SVG path data (the `d` attribute) — typically an `@mdi/js` icon.
    */
