@@ -6,6 +6,12 @@ import "@elmethis/core/tokens.css";
 // Components and hooks are re-exported here as they are ported from the
 // `@elmethis/qwik` reference implementation.
 
+// Form
+export {
+  ElmCheckbox,
+  type ElmCheckboxProps,
+} from "./components/form/elm-checkbox";
+
 // Icon
 export {
   ElmInlineIcon,
