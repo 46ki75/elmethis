@@ -9,6 +9,7 @@ import { Fragment, type CSSProperties } from "vue";
 import { ElmKatex } from "../../code/elm-katex";
 import { ElmCodeBlock } from "../../code/elm-code-block";
 import { ElmInlineIcon } from "../../icon/elm-inline-icon";
+import { ElmAudioPlayer } from "../../media/elm-audio-player";
 import { ElmBlockImage } from "../../media/elm-block-image";
 import { ElmFile } from "../../media/elm-file";
 import { ElmBookmark } from "../../navigation/elm-bookmark";
@@ -43,6 +44,7 @@ import {
 } from "./catalog-utils";
 import { basicCatalog } from "./basic-catalog";
 import {
+  AudioApi,
   BlockImageApi,
   BlockQuoteApi,
   BookmarkApi,
@@ -68,6 +70,7 @@ import {
   TableRowApi,
   ToggleApi,
   UnsupportedApi,
+  VideoApi,
 } from "@elmethis/core";
 
 /**
@@ -265,6 +268,39 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
       style={firstChildMargin(index)}
     />
   )),
+
+  defineRenderer(AudioApi, ({ props, index, resolve }) => (
+    <ElmAudioPlayer
+      src={resolve(props.src)}
+      title={props.title ? resolve(props.title) : undefined}
+      artist={props.artist ? resolve(props.artist) : undefined}
+      seekStep={props.seekStep}
+      loop={props.loop}
+      autoplay={props.autoPlay}
+      style={firstChildMargin(index)}
+    />
+  )),
+
+  defineRenderer(VideoApi, ({ props, index, resolve }) => {
+    const caption = props.caption ? resolve(props.caption) : undefined;
+    return (
+      <figure style={{ ...firstChildMargin(index), margin: 0 }}>
+        <video
+          src={resolve(props.src)}
+          poster={props.poster ? resolve(props.poster) : undefined}
+          title={props.title ? resolve(props.title) : undefined}
+          width={props.width}
+          height={props.height}
+          loop={props.loop}
+          autoplay={props.autoPlay}
+          muted={props.muted}
+          controls
+          style={{ maxWidth: "100%", height: "auto" }}
+        />
+        {caption ? <figcaption>{caption}</figcaption> : null}
+      </figure>
+    );
+  }),
 
   defineRenderer(BlockImageApi, ({ props, index, resolve }) => (
     <ElmBlockImage

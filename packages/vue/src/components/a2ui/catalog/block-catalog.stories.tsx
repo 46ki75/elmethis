@@ -87,6 +87,37 @@ export const Tabs: Story = {
   },
 };
 
+export const Audio: Story = {
+  args: {
+    messages: surface([
+      {
+        component: "Audio",
+        id: "root",
+        src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+        title: "Midnight Reverie",
+        artist: "SoundHelix",
+      },
+    ]),
+  },
+};
+
+export const Video: Story = {
+  args: {
+    messages: surface([
+      {
+        component: "Video",
+        id: "root",
+        src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+        poster:
+          "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg",
+        caption: "Big Buck Bunny — a sample video clip",
+        width: 640,
+        height: 360,
+      },
+    ]),
+  },
+};
+
 export const Table: Story = {
   args: {
     messages: surface([
