@@ -22,6 +22,23 @@ export default defineConfig({
   test: {
     name: "browser",
     include: ["src/**/*.browser.spec.tsx"],
+    // Browser-layer coverage. Uses `istanbul`, not `v8`: v8's ast-v8-to-istanbul
+    // remapper crashes on Qwik's optimizer-transformed output (QRL extraction),
+    // whereas istanbul instruments the source directly and is unaffected. lcov is
+    // provider-agnostic, so Codecov still merges this `qwik-browser` report with
+    // the unit layer's v8 `qwik-unit` report into one total — no local merge.
+    coverage: {
+      provider: "istanbul",
+      include: ["src/**/*.{ts,tsx}"],
+      exclude: [
+        "src/**/*.spec.{ts,tsx}",
+        "src/**/*.browser.spec.tsx",
+        "src/**/*.stories.tsx",
+        "src/index.ts",
+      ],
+      reporter: ["text", "html", "lcov"],
+      reportsDirectory: "coverage",
+    },
     browser: {
       enabled: true,
       headless: true,

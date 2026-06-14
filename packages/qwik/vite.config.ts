@@ -54,6 +54,22 @@ export default defineConfig(() => {
         "**/lib/**",
         "**/dist/**",
       ],
+      coverage: {
+        provider: "v8",
+        // Pin the source set explicitly — without `include`, v8 only reports
+        // files a test happened to import, so untested modules silently vanish
+        // from the denominator and inflate the percentage. In Vitest 4, setting
+        // `include` makes never-imported files count at 0% by default.
+        include: ["src/**/*.{ts,tsx}"],
+        exclude: [
+          "src/**/*.spec.{ts,tsx}",
+          "src/**/*.browser.spec.tsx",
+          "src/**/*.stories.tsx",
+          "src/index.ts", // root re-export barrel, no logic
+        ],
+        reporter: ["text", "html", "lcov"],
+        reportsDirectory: "coverage",
+      },
     },
   };
 });
