@@ -529,6 +529,69 @@ export const File: Story = {
 };
 
 // ---------------------------------------------------------------------------
+// Audio
+// ---------------------------------------------------------------------------
+
+export const Audio: Story = {
+  args: {
+    messages: [
+      {
+        version: "v0.9",
+        createSurface: { surfaceId: "audio", catalogId: CATALOG_ID },
+      },
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: "audio",
+          components: [
+            {
+              component: "Audio",
+              id: "root",
+              src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+              title: "Midnight Reverie",
+              artist: "SoundHelix",
+            },
+          ],
+        },
+      },
+    ],
+  },
+};
+
+// ---------------------------------------------------------------------------
+// Video
+// ---------------------------------------------------------------------------
+
+export const Video: Story = {
+  args: {
+    messages: [
+      {
+        version: "v0.9",
+        createSurface: { surfaceId: "video", catalogId: CATALOG_ID },
+      },
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: "video",
+          components: [
+            {
+              component: "Video",
+              id: "root",
+              src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+              poster:
+                "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg",
+              caption: "Big Buck Bunny — a sample video clip",
+              width: 640,
+              height: 360,
+            },
+          ],
+        },
+      },
+    ],
+  },
+};
+
+// ---------------------------------------------------------------------------
 // BlockImage
 // ---------------------------------------------------------------------------
 

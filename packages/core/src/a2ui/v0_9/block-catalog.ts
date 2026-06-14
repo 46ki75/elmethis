@@ -318,6 +318,99 @@ export const FileApi = {
 } satisfies ComponentApi;
 
 /**
+ * Audio player with a custom transport (play/pause, skip, seek line, volume)
+ * wrapping a native `<audio>` element.
+ */
+export const AudioApi = {
+  name: "Audio",
+  schema: z
+    .object({
+      ...CommonProps,
+      src: z.string().describe("The source URL of the audio to play."),
+      title: z
+        .string()
+        .describe(
+          "Display title of the track. Falls back to the src filename when omitted.",
+        )
+        .optional(),
+      artist: z
+        .string()
+        .describe("Artist or author name shown beneath the title.")
+        .optional(),
+      seekStep: z
+        .number()
+        .describe(
+          "Number of seconds the skip-back/skip-forward controls jump. Defaults to 10.",
+        )
+        .optional(),
+      loop: z
+        .boolean()
+        .describe("When true, the audio restarts when it reaches the end.")
+        .optional(),
+      autoPlay: z
+        .boolean()
+        .describe(
+          "When true, playback starts automatically once enough data has loaded (subject to the browser's autoplay policy).",
+        )
+        .optional(),
+    })
+    .strict(),
+} satisfies ComponentApi;
+
+/**
+ * Video player wrapping a native `<video>` element with an optional poster
+ * frame and caption.
+ */
+export const VideoApi = {
+  name: "Video",
+  schema: z
+    .object({
+      ...CommonProps,
+      src: z.string().describe("The source URL of the video to play."),
+      title: z
+        .string()
+        .describe(
+          "Display title of the video. Falls back to the src filename when omitted.",
+        )
+        .optional(),
+      poster: z
+        .string()
+        .describe("URL of an image shown before the video begins playing.")
+        .optional(),
+      width: z.number().describe("Intrinsic video width in pixels.").optional(),
+      height: z
+        .number()
+        .describe("Intrinsic video height in pixels.")
+        .optional(),
+      seekStep: z
+        .number()
+        .describe(
+          "Number of seconds the skip-back/skip-forward controls jump. Defaults to 10.",
+        )
+        .optional(),
+      loop: z
+        .boolean()
+        .describe("When true, the video restarts when it reaches the end.")
+        .optional(),
+      autoPlay: z
+        .boolean()
+        .describe(
+          "When true, playback starts automatically once enough data has loaded (subject to the browser's autoplay policy).",
+        )
+        .optional(),
+      muted: z
+        .boolean()
+        .describe("When true, the video starts muted.")
+        .optional(),
+      caption: z
+        .string()
+        .describe("Optional caption shown below the video.")
+        .optional(),
+    })
+    .strict(),
+} satisfies ComponentApi;
+
+/**
  * Block-level image with optional caption and modal zoom.
  * Uses `src` (not `url`) to distinguish it from the basic catalog Image.
  */

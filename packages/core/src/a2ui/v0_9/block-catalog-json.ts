@@ -12,6 +12,7 @@
  */
 import { assembleCatalog, type AssembledCatalog } from "./catalog-assembler";
 import {
+  AudioApi,
   BlockImageApi,
   BlockQuoteApi,
   BookmarkApi,
@@ -38,6 +39,7 @@ import {
   TableRowApi,
   ToggleApi,
   UnsupportedApi,
+  VideoApi,
 } from "./block-catalog";
 
 /**
@@ -65,6 +67,8 @@ const BLOCK_CATALOG_COMPONENTS = [
   ToggleApi,
   BookmarkApi,
   FileApi,
+  AudioApi,
+  VideoApi,
   BlockImageApi,
   CodeBlockApi,
   KatexApi,

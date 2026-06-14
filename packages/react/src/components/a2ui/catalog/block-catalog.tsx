@@ -24,6 +24,7 @@ import {
 } from "@a2ui/react/v0_9";
 import { Catalog } from "@a2ui/web_core/v0_9";
 import {
+  AudioApi,
   BlockImageApi,
   BlockQuoteApi,
   BookmarkApi,
@@ -49,11 +50,13 @@ import {
   TableRowApi,
   ToggleApi,
   UnsupportedApi,
+  VideoApi,
 } from "@elmethis/core";
 
 import { ElmKatex } from "../../code/elm-katex";
 import { ElmCodeBlock } from "../../code/elm-code-block";
 import { ElmInlineIcon } from "../../icon/elm-inline-icon";
+import { ElmAudioPlayer } from "../../media/elm-audio-player";
 import { ElmBlockImage } from "../../media/elm-block-image";
 import { ElmFile } from "../../media/elm-file";
 import { ElmBookmark } from "../../navigation/elm-bookmark";
@@ -222,6 +225,35 @@ const blockImplementations: ReactComponentImplementation[] = [
 
   createComponentImplementation(FileApi, ({ props }: any) => (
     <ElmFile src={props.src} name={props.name} />
+  )),
+
+  createComponentImplementation(AudioApi, ({ props }: any) => (
+    <ElmAudioPlayer
+      src={props.src}
+      title={props.title}
+      artist={props.artist}
+      seekStep={props.seekStep}
+      loop={props.loop}
+      autoPlay={props.autoPlay}
+    />
+  )),
+
+  createComponentImplementation(VideoApi, ({ props }: any) => (
+    <figure style={{ margin: 0 }}>
+      <video
+        src={props.src}
+        poster={props.poster}
+        title={props.title}
+        width={props.width}
+        height={props.height}
+        loop={props.loop}
+        autoPlay={props.autoPlay}
+        muted={props.muted}
+        controls
+        style={{ maxWidth: "100%", height: "auto" }}
+      />
+      {props.caption ? <figcaption>{props.caption}</figcaption> : null}
+    </figure>
   )),
 
   createComponentImplementation(BlockImageApi, ({ props }: any) => (
