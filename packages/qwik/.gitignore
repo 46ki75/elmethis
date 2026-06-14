@@ -40,3 +40,4 @@ lerna-debug.log*
 # Vitest browser mode
 .vitest-attachments
 **/__screenshots__
+coverage/
