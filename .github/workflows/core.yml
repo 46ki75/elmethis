@@ -111,6 +111,15 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Test Unit
-        run: pnpm run test.unit
+      - name: Test Unit (with coverage)
+        run: pnpm run test.coverage
         working-directory: packages/core
+
+      # Visibility only — never fails the build.
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: packages/core/coverage/lcov.info
+          flags: core
+          fail_ci_if_error: false
