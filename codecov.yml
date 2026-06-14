@@ -1,0 +1,41 @@
+# Codecov configuration — lenient coverage gating.
+#
+# Coverage is uploaded per package/layer under flags (core, qwik-unit,
+# qwik-browser, react-unit, react-browser, vue-unit, vue-browser) and Codecov
+# merges them into the project total. These status checks post on PRs; they are
+# intentionally lenient while we calibrate a baseline.
+
+coverage:
+  # Round/precision for the reported numbers.
+  precision: 2
+  round: down
+  range: "50...90" # red below 50%, green at 90% (display only)
+
+  status:
+    # Whole-project coverage. Ratchet, not an absolute bar: compare against the
+    # PR's base commit and tolerate a small drop so unrelated churn doesn't
+    # block merges.
+    project:
+      default:
+        target: auto # base commit's coverage
+        threshold: 1% # allow total coverage to fall up to 1%
+        if_ci_failed: error
+
+    # Coverage of the lines this PR changed. Kept informational for now — it
+    # surfaces undertested new code without blocking the merge. Flip
+    # `informational: false` once the team is comfortable enforcing it.
+    patch:
+      default:
+        target: 60%
+        threshold: 5%
+        informational: true
+
+# Carry a flag's last-known coverage forward when a given commit didn't upload
+# it (e.g. a job was skipped), so the merged total stays stable.
+flag_management:
+  default_rules:
+    carryforward: true
+
+comment:
+  layout: "reach, diff, flags, files"
+  require_changes: false # always post the coverage summary on PRs
