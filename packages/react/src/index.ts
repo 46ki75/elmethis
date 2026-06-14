@@ -128,6 +128,10 @@ export {
 
 // Media
 export {
+  ElmAudioPlayer,
+  type ElmAudioPlayerProps,
+} from "./components/media/elm-audio-player";
+export {
   ElmBlockImage,
   type ElmBlockImageProps,
 } from "./components/media/elm-block-image";

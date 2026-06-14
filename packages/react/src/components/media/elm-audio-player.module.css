@@ -1,0 +1,413 @@
+.elm-audio-player {
+  box-sizing: border-box;
+  width: 100%;
+  margin-block-start: var(--elmethis-margin-block-start);
+  padding: 0.875rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--elmethis-color-surface-sunken);
+  border-radius: 0.75rem;
+  background-color: var(--elmethis-color-surface-raised);
+  user-select: none;
+}
+
+/* Hairline accent that warms as playback advances. */
+.elm-audio-player::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    var(--elmethis-color-primary)
+      calc(var(--elmethis-scoped-progress, 0) * 100%),
+    var(--elmethis-color-neutral-weak)
+      calc(var(--elmethis-scoped-progress, 0) * 100%)
+  );
+  opacity: 0.5;
+  transition: opacity 300ms ease;
+}
+
+.elm-audio-player.loading::before {
+  opacity: 0.3;
+}
+
+/* ---- Header ------------------------------------------------------------- */
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.artwork {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  color: var(--elmethis-color-surface-raised);
+  background: linear-gradient(
+    145deg,
+    var(--elmethis-color-primary-strong),
+    var(--elmethis-color-primary)
+  );
+  box-shadow: 0 0.25rem 0.5rem -0.25rem var(--elmethis-box-shadow-color);
+}
+
+.meta {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.title {
+  overflow: hidden;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--elmethis-color-neutral-strong);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.artist {
+  overflow: hidden;
+  font-family: var(--elmethis-font-family-monospace);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--elmethis-color-neutral);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Now-playing equalizer — four bars that only dance while live. */
+.equalizer {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  width: 1.25rem;
+  height: 1.25rem;
+
+  i {
+    flex: 1;
+    height: 25%;
+    border-radius: 1px;
+    background-color: var(--elmethis-color-neutral-weak);
+    transition: background-color 300ms ease;
+  }
+}
+
+.playing .equalizer i {
+  background-color: var(--elmethis-color-primary);
+  animation: elm-eq 900ms ease-in-out infinite;
+}
+
+.playing .equalizer i:nth-child(1) {
+  animation-delay: -200ms;
+}
+
+.playing .equalizer i:nth-child(2) {
+  animation-delay: -600ms;
+}
+
+.playing .equalizer i:nth-child(3) {
+  animation-delay: -100ms;
+}
+
+.playing .equalizer i:nth-child(4) {
+  animation-delay: -450ms;
+}
+
+@keyframes elm-eq {
+  0%,
+  100% {
+    height: 22%;
+  }
+
+  50% {
+    height: 100%;
+  }
+}
+
+/* ---- Seek line ---------------------------------------------------------- */
+
+/* A roomy hit area so the thin line stays easy to grab. */
+.seekbar {
+  position: relative;
+  width: 100%;
+  height: 1.25rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.seekbar:focus-visible {
+  outline: 2px solid var(--elmethis-color-primary);
+  outline-offset: 4px;
+  border-radius: 0.25rem;
+}
+
+.track {
+  position: relative;
+  width: 100%;
+  height: 0.25rem;
+  border-radius: 999px;
+  background-color: var(--elmethis-color-neutral-weak);
+  overflow: hidden;
+}
+
+.fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--elmethis-scoped-progress, 0) * 100%);
+  border-radius: 999px;
+  background-color: var(--elmethis-color-primary);
+}
+
+.playing .fill {
+  box-shadow: 0 0 0.375rem 0 var(--elmethis-color-primary);
+}
+
+/* Draggable handle, parked at the play position. */
+.thumb {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--elmethis-scoped-progress, 0) * 100%);
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  background-color: var(--elmethis-color-primary-strong);
+  box-shadow: 0 0.125rem 0.375rem -0.0625rem var(--elmethis-box-shadow-color);
+  transform: translate(-50%, -50%);
+  transition: transform 140ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+
+.seekbar:hover .thumb,
+.seekbar:focus-visible .thumb {
+  transform: translate(-50%, -50%) scale(1.25);
+}
+
+/* Faint marker that tracks the cursor on hover. */
+.hover-thumb {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--elmethis-scoped-hover, 0) * 100%);
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  background-color: var(--elmethis-color-primary);
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity 160ms ease;
+  pointer-events: none;
+}
+
+.seekbar:hover .hover-thumb {
+  opacity: 0.35;
+}
+
+.loading .seekbar {
+  cursor: progress;
+}
+
+.loading .track {
+  animation: elm-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes elm-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ---- Controls ----------------------------------------------------------- */
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.time {
+  flex: 0 0 auto;
+  min-width: 3ch;
+  font-family: var(--elmethis-font-family-monospace);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.03em;
+  color: var(--elmethis-color-neutral);
+}
+
+.time-current {
+  color: var(--elmethis-color-primary);
+  text-align: left;
+}
+
+.time-total {
+  text-align: right;
+}
+
+.transport {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.icon-button {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  color: var(--elmethis-color-neutral-strong);
+  background: transparent;
+  cursor: pointer;
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    transform 120ms ease;
+}
+
+.icon-button:hover {
+  color: var(--elmethis-color-primary);
+  background-color: var(--elmethis-color-primary-hover);
+}
+
+.icon-button:active {
+  transform: scale(0.92);
+}
+
+.icon-button:focus-visible {
+  outline: 2px solid var(--elmethis-color-primary);
+  outline-offset: 2px;
+}
+
+.play-button {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  color: var(--elmethis-color-surface-raised);
+  background: linear-gradient(
+    145deg,
+    var(--elmethis-color-primary-strong),
+    var(--elmethis-color-primary)
+  );
+  cursor: pointer;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--elmethis-color-primary) 40%, transparent),
+    0 0.375rem 0.875rem -0.375rem var(--elmethis-color-primary);
+  transition:
+    transform 140ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 160ms ease;
+}
+
+.play-button:hover {
+  transform: scale(1.06);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--elmethis-color-primary) 60%, transparent),
+    0 0.5rem 1.25rem -0.375rem var(--elmethis-color-primary);
+}
+
+.play-button:active {
+  transform: scale(0.96);
+}
+
+.play-button:focus-visible {
+  outline: 2px solid var(--elmethis-color-primary-strong);
+  outline-offset: 3px;
+}
+
+.playing .play-button {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--elmethis-color-primary) 50%, transparent),
+    0 0 0 6px var(--elmethis-color-primary-hover);
+}
+
+/* ---- Volume ------------------------------------------------------------- */
+
+.volume {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.volume-slider {
+  width: 0;
+  height: 0.25rem;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  appearance: none;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    var(--elmethis-color-primary) calc(var(--elmethis-scoped-volume, 1) * 100%),
+    var(--elmethis-color-neutral-weak)
+      calc(var(--elmethis-scoped-volume, 1) * 100%)
+  );
+  cursor: pointer;
+  transition:
+    width 220ms ease,
+    opacity 220ms ease;
+}
+
+.volume:hover .volume-slider,
+.volume:focus-within .volume-slider {
+  width: 4rem;
+  opacity: 1;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 0.75rem;
+  height: 0.75rem;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--elmethis-color-primary-strong);
+  box-shadow: 0 0.125rem 0.25rem -0.0625rem var(--elmethis-box-shadow-color);
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 0.75rem;
+  height: 0.75rem;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--elmethis-color-primary-strong);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .playing .equalizer i,
+  .loading .bars {
+    animation: none;
+  }
+
+  .elm-audio-player *,
+  .elm-audio-player {
+    transition-duration: 0.01ms !important;
+  }
+}
