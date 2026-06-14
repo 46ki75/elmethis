@@ -59,6 +59,13 @@
   box-shadow: 0 0.25rem 0.5rem -0.25rem var(--elmethis-box-shadow-color);
 }
 
+/* Error: the artwork tile turns into a red alert badge. */
+.artwork-error {
+  color: var(--elmethis-color-accent-error);
+  background: var(--elmethis-color-accent-error-surface);
+  box-shadow: none;
+}
+
 .meta {
   flex: 1 1 auto;
   min-width: 0;
@@ -400,9 +407,36 @@
   background-color: var(--elmethis-color-primary-strong);
 }
 
+/* ---- Error -------------------------------------------------------------- */
+
+.errored {
+  border-color: color-mix(
+    in srgb,
+    var(--elmethis-color-accent-error) 45%,
+    var(--elmethis-color-neutral-weak)
+  );
+}
+
+/* Replaces the seek line + transport with a plain, labeled message. */
+.error-notice {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 0.875rem;
+  border-radius: 0.5rem;
+  color: var(--elmethis-color-accent-error);
+  background-color: var(--elmethis-color-accent-error-surface);
+}
+
+.error-message {
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .playing .equalizer i,
-  .loading .bars {
+  .loading .track {
     animation: none;
   }
 

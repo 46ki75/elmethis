@@ -1,15 +1,15 @@
 import { describe, it, expect } from "vitest";
-import { render } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 import { renderToStaticMarkup } from "react-dom/server";
 
 import { ElmAudioPlayer } from "./elm-audio-player";
 
 // ElmAudioPlayer wraps a native <audio> with a custom transport, monospace
-// timecodes, and a clip-masked waveform scrubber. The interesting behaviors —
-// play()/pause(), real `currentTime` seeking, metadata-driven duration — need a
-// real media element, so they live in the browser spec. The unit layer covers
-// the static render contract: structure, deterministic waveform, title/filename
-// resolution, formatted timecodes, and SSR parity (no hydration drift).
+// timecodes, and a thin seek line. The interesting behaviors — play()/pause(),
+// real `currentTime` seeking, metadata-driven duration — need a real media
+// element, so they live in the browser spec. The unit layer covers the static
+// render contract: structure, title/filename resolution, formatted timecodes,
+// the error notice, and SSR parity.
 
 const SRC = "https://example.com/audio/midnight-reverie.mp3";
 
@@ -87,6 +87,38 @@ describe("[CSR] ElmAudioPlayer", () => {
     expect(container.querySelector("audio")).toHaveAttribute("loop");
     expect(container.querySelector('[class*="elm-audio-player"]')).toHaveClass(
       "custom-class",
+    );
+  });
+
+  it("replaces the transport with an accessible alert when the audio errors", () => {
+    const { container } = render(<ElmAudioPlayer src={SRC} />);
+
+    // No alert and a working seek slider before any failure.
+    expect(container.querySelector('[role="alert"]')).toBeNull();
+    expect(container.querySelector('[role="slider"]')).toBeTruthy();
+
+    // The native <audio> reports a load failure.
+    fireEvent.error(container.querySelector("audio")!);
+
+    const alert = container.querySelector('[role="alert"]');
+    expect(alert).toBeTruthy();
+    expect(alert!.textContent).toContain("couldn't be loaded");
+    // The seek slider is swapped out for the notice, so nothing looks playable.
+    expect(container.querySelector('[role="slider"]')).toBeNull();
+    // The root carries the errored modifier (hashed, so match by substring).
+    expect(container.querySelector('[class*="errored"]')).toBeTruthy();
+  });
+
+  it("shows a custom errorMessage in the alert", () => {
+    const { container } = render(
+      <ElmAudioPlayer
+        src={SRC}
+        errorMessage="Stream offline — try again later."
+      />,
+    );
+    fireEvent.error(container.querySelector("audio")!);
+    expect(container.querySelector('[role="alert"]')!.textContent).toContain(
+      "Stream offline — try again later.",
     );
   });
 });

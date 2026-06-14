@@ -9,6 +9,7 @@ import {
 } from "react";
 import { clsx } from "clsx";
 import {
+  mdiAlertCircleOutline,
   mdiFastForward10,
   mdiMusicNote,
   mdiPause,
@@ -41,6 +42,14 @@ export interface ElmAudioPlayerProps extends Omit<
    * Secondary line under the title (artist, album, podcast name, …).
    */
   artist?: string;
+
+  /**
+   * Message shown when the audio fails to load (bad URL, network/CORS error,
+   * unsupported codec). Replaces the transport with a labeled alert.
+   *
+   * @defaultValue "This audio couldn't be loaded."
+   */
+  errorMessage?: string;
 
   /**
    * Seconds the skip-back / skip-forward controls jump.
@@ -87,6 +96,7 @@ export const ElmAudioPlayer = ({
   src,
   title,
   artist,
+  errorMessage = "This audio couldn't be loaded.",
   seekStep = 10,
   loop,
   autoPlay,
@@ -288,8 +298,14 @@ export const ElmAudioPlayer = ({
       />
 
       <div className={styles.header}>
-        <span className={styles.artwork} aria-hidden="true">
-          <ElmMdiIcon d={mdiMusicNote} size="1.25rem" />
+        <span
+          className={clsx(styles.artwork, hasError && styles["artwork-error"])}
+          aria-hidden="true"
+        >
+          <ElmMdiIcon
+            d={hasError ? mdiAlertCircleOutline : mdiMusicNote}
+            size="1.25rem"
+          />
         </span>
 
         <div className={styles.meta}>
@@ -308,96 +324,105 @@ export const ElmAudioPlayer = ({
         </span>
       </div>
 
-      <div
-        ref={trackRef}
-        className={styles.seekbar}
-        role="slider"
-        tabIndex={0}
-        aria-label="Seek"
-        aria-valuemin={0}
-        aria-valuemax={Math.round(duration) || 0}
-        aria-valuenow={Math.round(currentTime)}
-        aria-valuetext={`${formatTime(currentTime)} of ${formatTime(duration)}`}
-        onPointerDown={handleTrackPointerDown}
-        onPointerMove={handleTrackPointerMove}
-        onPointerLeave={() => setHoverRatio(null)}
-        onKeyDown={handleTrackKeyDown}
-      >
-        <div className={styles.track} aria-hidden="true">
-          <div className={styles.fill} />
+      {hasError ? (
+        <div className={styles["error-notice"]} role="alert">
+          <ElmMdiIcon d={mdiAlertCircleOutline} size="1.25rem" />
+          <span className={styles["error-message"]}>{errorMessage}</span>
         </div>
-        {/* Faint marker that follows the cursor on hover. */}
-        <span className={styles["hover-thumb"]} aria-hidden="true" />
-        {/* Draggable handle parked at the play position. */}
-        <span className={styles.thumb} aria-hidden="true" />
-      </div>
-
-      <div className={styles.controls}>
-        <span className={clsx(styles.time, styles["time-current"])}>
-          {formatTime(currentTime)}
-        </span>
-
-        <div className={styles["transport"]}>
-          <button
-            type="button"
-            className={styles["icon-button"]}
-            onClick={() => seekTo(currentTime - seekStep)}
-            aria-label={`Back ${seekStep} seconds`}
+      ) : (
+        <>
+          <div
+            ref={trackRef}
+            className={styles.seekbar}
+            role="slider"
+            tabIndex={0}
+            aria-label="Seek"
+            aria-valuemin={0}
+            aria-valuemax={Math.round(duration) || 0}
+            aria-valuenow={Math.round(currentTime)}
+            aria-valuetext={`${formatTime(currentTime)} of ${formatTime(duration)}`}
+            onPointerDown={handleTrackPointerDown}
+            onPointerMove={handleTrackPointerMove}
+            onPointerLeave={() => setHoverRatio(null)}
+            onKeyDown={handleTrackKeyDown}
           >
-            <ElmMdiIcon d={mdiRewind10} size="1.25rem" />
-          </button>
+            <div className={styles.track} aria-hidden="true">
+              <div className={styles.fill} />
+            </div>
+            {/* Faint marker that follows the cursor on hover. */}
+            <span className={styles["hover-thumb"]} aria-hidden="true" />
+            {/* Draggable handle parked at the play position. */}
+            <span className={styles.thumb} aria-hidden="true" />
+          </div>
 
-          <button
-            type="button"
-            className={styles["play-button"]}
-            onClick={togglePlay}
-            aria-label={isPlaying ? "Pause" : "Play"}
-            aria-pressed={isPlaying}
-          >
-            <ElmMdiIcon d={isPlaying ? mdiPause : mdiPlay} size="1.5rem" />
-          </button>
+          <div className={styles.controls}>
+            <span className={clsx(styles.time, styles["time-current"])}>
+              {formatTime(currentTime)}
+            </span>
 
-          <button
-            type="button"
-            className={styles["icon-button"]}
-            onClick={() => seekTo(currentTime + seekStep)}
-            aria-label={`Forward ${seekStep} seconds`}
-          >
-            <ElmMdiIcon d={mdiFastForward10} size="1.25rem" />
-          </button>
-        </div>
+            <div className={styles["transport"]}>
+              <button
+                type="button"
+                className={styles["icon-button"]}
+                onClick={() => seekTo(currentTime - seekStep)}
+                aria-label={`Back ${seekStep} seconds`}
+              >
+                <ElmMdiIcon d={mdiRewind10} size="1.25rem" />
+              </button>
 
-        <div className={styles.volume}>
-          <button
-            type="button"
-            className={styles["icon-button"]}
-            onClick={toggleMute}
-            aria-label={isMuted ? "Unmute" : "Mute"}
-            aria-pressed={isMuted}
-          >
-            <ElmMdiIcon d={volumeIcon} size="1.25rem" />
-          </button>
-          <input
-            className={styles["volume-slider"]}
-            type="range"
-            min={0}
-            max={1}
-            step={0.01}
-            value={isMuted ? 0 : volume}
-            aria-label="Volume"
-            onChange={(e) => changeVolume(e.currentTarget.valueAsNumber)}
-            style={
-              {
-                "--elmethis-scoped-volume": isMuted ? 0 : volume,
-              } as CSSProperties
-            }
-          />
-        </div>
+              <button
+                type="button"
+                className={styles["play-button"]}
+                onClick={togglePlay}
+                aria-label={isPlaying ? "Pause" : "Play"}
+                aria-pressed={isPlaying}
+              >
+                <ElmMdiIcon d={isPlaying ? mdiPause : mdiPlay} size="1.5rem" />
+              </button>
 
-        <span className={clsx(styles.time, styles["time-total"])}>
-          {formatTime(duration)}
-        </span>
-      </div>
+              <button
+                type="button"
+                className={styles["icon-button"]}
+                onClick={() => seekTo(currentTime + seekStep)}
+                aria-label={`Forward ${seekStep} seconds`}
+              >
+                <ElmMdiIcon d={mdiFastForward10} size="1.25rem" />
+              </button>
+            </div>
+
+            <div className={styles.volume}>
+              <button
+                type="button"
+                className={styles["icon-button"]}
+                onClick={toggleMute}
+                aria-label={isMuted ? "Unmute" : "Mute"}
+                aria-pressed={isMuted}
+              >
+                <ElmMdiIcon d={volumeIcon} size="1.25rem" />
+              </button>
+              <input
+                className={styles["volume-slider"]}
+                type="range"
+                min={0}
+                max={1}
+                step={0.01}
+                value={isMuted ? 0 : volume}
+                aria-label="Volume"
+                onChange={(e) => changeVolume(e.currentTarget.valueAsNumber)}
+                style={
+                  {
+                    "--elmethis-scoped-volume": isMuted ? 0 : volume,
+                  } as CSSProperties
+                }
+              />
+            </div>
+
+            <span className={clsx(styles.time, styles["time-total"])}>
+              {formatTime(duration)}
+            </span>
+          </div>
+        </>
+      )}
     </div>
   );
 };
