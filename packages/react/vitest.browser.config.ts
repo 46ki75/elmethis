@@ -16,6 +16,21 @@ export default defineConfig({
     name: "browser",
     include: ["src/**/*.browser.spec.tsx"],
     setupFiles: ["./vitest.browser.setup.ts"],
+    // Mirrors the unit-layer coverage (vite.config.ts). Uploaded under the
+    // `react-browser` flag — Codecov merges it with the `react-unit` report
+    // into one total, so no local lcov merge is needed.
+    coverage: {
+      provider: "v8",
+      include: ["src/**/*.{ts,tsx}"],
+      exclude: [
+        "src/**/*.spec.{ts,tsx}",
+        "src/**/*.browser.spec.tsx",
+        "src/**/*.stories.tsx",
+        "src/index.ts",
+      ],
+      reporter: ["text", "html", "lcov"],
+      reportsDirectory: "coverage",
+    },
     browser: {
       enabled: true,
       headless: true,
