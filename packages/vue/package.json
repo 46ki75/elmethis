@@ -95,7 +95,7 @@
     "concurrently": "^10.0.3",
     "eslint": "^10.5.0",
     "globals": "^17.6.0",
-    "happy-dom": "^20.10.2",
+    "happy-dom": "^20.10.4",
     "playwright": "^1.60.0",
     "prettier": "3.8.4",
     "storybook": "^10.4.5",
