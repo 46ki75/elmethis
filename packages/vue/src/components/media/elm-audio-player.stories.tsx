@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from "@storybook/vue3-vite";
 
 import { ElmAudioPlayer } from "./elm-audio-player";
 
+import tts from "../../assets/tts.mp3";
+
 const meta = {
   title: "Components/Media/elm-audio-player",
   component: ElmAudioPlayer,
@@ -50,5 +52,13 @@ export const Errored: Story = {
     src: "https://example.com/this-file-does-not-exist.mp3",
     title: "Unavailable track",
     artist: "Broken source",
+  },
+};
+
+export const Short: Story = {
+  args: {
+    src: tts,
+    title: "Short TTS",
+    artist: "Example Artist",
   },
 };
