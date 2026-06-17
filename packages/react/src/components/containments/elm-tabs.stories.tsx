@@ -85,3 +85,36 @@ const ControlledTabs = () => {
 export const Controlled: Story = {
   render: () => <ControlledTabs />,
 };
+
+// Many tabs in a narrow (mobile-sized) frame. The tab list scrolls
+// horizontally instead of clipping the tabs that overflow the container.
+const scrollTabs = [
+  { value: "overview", label: "Overview" },
+  { value: "metrics", label: "Metrics" },
+  { value: "activity", label: "Activity" },
+  { value: "settings", label: "Settings" },
+  { value: "billing", label: "Billing" },
+  { value: "members", label: "Members" },
+];
+
+export const Scrollable: Story = {
+  render: () => (
+    <div style={{ maxWidth: 320, border: "1px dashed gray", padding: 8 }}>
+      <ElmTabs defaultValue="overview">
+        <ElmTabList>
+          {scrollTabs.map((tab) => (
+            <ElmTab key={tab.value} value={tab.value}>
+              {tab.label}
+            </ElmTab>
+          ))}
+        </ElmTabList>
+
+        {scrollTabs.map((tab) => (
+          <ElmTabPanel key={tab.value} value={tab.value}>
+            {tab.label} content
+          </ElmTabPanel>
+        ))}
+      </ElmTabs>
+    </div>
+  ),
+};

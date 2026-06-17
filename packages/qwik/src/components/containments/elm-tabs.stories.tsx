@@ -148,6 +148,41 @@ export const Controlled: Story = {
   render: () => <ControlledTabs />,
 };
 
+// Many tabs in a narrow (mobile-sized) frame. The tab list scrolls
+// horizontally instead of clipping the tabs that overflow the container.
+const scrollTabs = [
+  { value: "overview", label: "Overview" },
+  { value: "metrics", label: "Metrics" },
+  { value: "activity", label: "Activity" },
+  { value: "settings", label: "Settings" },
+  { value: "billing", label: "Billing" },
+  { value: "members", label: "Members" },
+];
+
+export const Scrollable: Story = {
+  render: () => (
+    <div
+      style={{ maxWidth: "320px", border: "1px dashed gray", padding: "8px" }}
+    >
+      <ElmTabs defaultValue="overview">
+        <ElmTabList>
+          {scrollTabs.map((tab) => (
+            <ElmTab key={tab.value} value={tab.value}>
+              <ElmInlineText>{tab.label}</ElmInlineText>
+            </ElmTab>
+          ))}
+        </ElmTabList>
+
+        {scrollTabs.map((tab) => (
+          <ElmTabPanel key={tab.value} value={tab.value}>
+            <ElmInlineText>{tab.label} content</ElmInlineText>
+          </ElmTabPanel>
+        ))}
+      </ElmTabs>
+    </div>
+  ),
+};
+
 // ---------------------------------------------------------------------------
 // Interaction tests. These exercise behavior via play functions and are
 // excluded from autodocs to keep the Docs page focused on visual examples.

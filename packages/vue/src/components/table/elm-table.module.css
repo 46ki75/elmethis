@@ -1,5 +1,65 @@
-.elm-table {
+/* Non-scrolling frame: owns the outer spacing and pins the edge shadows so they
+   stay glued to the viewport edges while the table scrolls underneath. */
+.elm-table-frame {
+  position: relative;
+  width: 100%;
   margin-block-start: var(--elmethis-margin-block-start);
+}
+
+.elm-table-frame::before,
+.elm-table-frame::after {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  width: 1.5rem;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms;
+}
+
+.elm-table-frame::before {
+  inset-inline-start: 0;
+  background: linear-gradient(
+    to right,
+    oklch(from var(--elmethis-color-surface-sunken) l c h / 50%),
+    transparent
+  );
+}
+
+.elm-table-frame::after {
+  inset-inline-end: 0;
+  background: linear-gradient(
+    to left,
+    oklch(from var(--elmethis-color-surface-sunken) l c h / 50%),
+    transparent
+  );
+}
+
+/* Shadows are revealed only when there is content to scroll toward, set from the
+   scroll position in elm-table.tsx. */
+.elm-table-frame[data-overflow-start]::before {
+  opacity: 1;
+}
+
+.elm-table-frame[data-overflow-end]::after {
+  opacity: 1;
+}
+
+/* The actual scroller. Mirrors the house pattern from elm-code-block. */
+.elm-table-scroll {
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--elmethis-color-primary-weak)
+    var(--elmethis-color-surface-base);
+}
+
+.elm-table-scroll:focus-visible {
+  outline: 2px solid var(--elmethis-color-primary);
+  outline-offset: 2px;
+}
+
+.elm-table {
   border-collapse: collapse;
   border-spacing: 0;
   box-shadow: 0 0 0.125rem rgb(0 0 0 / 20%);
@@ -26,4 +86,32 @@
   flex-grow: 1;
   height: 1px;
   background-color: rgb(128 128 128 / 20%);
+}
+
+/* Sticky label column. When the first column holds row headers, pin it so the
+   labels stay visible while the data columns scroll. The structural
+   `:first-child` selector targets the lead cell of every row regardless of
+   whether the caller threaded a `columnIndex` prop, and an opaque background
+   (matched to each row's stripe) keeps scrolled cells from bleeding through. */
+.sticky-row-header :where(thead, tbody) tr > :first-child {
+  position: sticky;
+  inset-inline-start: 0;
+  z-index: 1;
+  box-shadow: 1px 0 0 oklch(from var(--elmethis-color-primary-weak) l c h / 50%);
+}
+
+.sticky-row-header thead tr > :first-child {
+  background-color: var(--elmethis-color-surface-sunken);
+}
+
+.sticky-row-header tbody tr:nth-child(odd) > :first-child {
+  background-color: var(--elmethis-color-surface-raised);
+}
+
+.sticky-row-header tbody tr:nth-child(even) > :first-child {
+  background-color: var(--elmethis-color-surface-base);
+}
+
+.sticky-row-header tbody tr:hover > :first-child {
+  background-color: var(--elmethis-color-surface-sunken);
 }

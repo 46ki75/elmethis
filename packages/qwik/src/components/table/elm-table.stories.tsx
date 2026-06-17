@@ -17,6 +17,51 @@ const meta: Meta<ElmTableProps> = {
 export default meta;
 type Story = StoryObj<ElmTableProps>;
 
+/**
+ * Wide table inside a narrow (mobile-sized) frame. The table scrolls
+ * horizontally, edge shadows hint at off-screen columns, and the row-header
+ * column stays pinned via `hasRowHeader`. The wrapper becomes a focusable,
+ * labeled scroll region while it overflows.
+ */
+export const ScrollableWithRowHeader: Story = {
+  args: { caption: "Monthly Revenue", hasRowHeader: true },
+  render() {
+    const regions = ["North", "South", "East", "West"];
+    const months = ["January", "February", "March", "April", "May", "June"];
+    return (
+      <div
+        style={{ maxWidth: "360px", border: "1px dashed gray", padding: "8px" }}
+      >
+        <ElmTable {...this.args}>
+          <ElmTableHeader>
+            <ElmTableRow>
+              <ElmTableCell isHeader text="Region" />
+              {months.map((month) => (
+                <ElmTableCell key={month} isHeader text={month} />
+              ))}
+            </ElmTableRow>
+          </ElmTableHeader>
+
+          <ElmTableBody>
+            {regions.map((region, row) => (
+              <ElmTableRow key={region}>
+                <ElmTableCell columnIndex={0} text={region} />
+                {months.map((month, col) => (
+                  <ElmTableCell
+                    key={month}
+                    columnIndex={col + 1}
+                    text={`${(row + 1) * (col + 1) * 1000}`}
+                  />
+                ))}
+              </ElmTableRow>
+            ))}
+          </ElmTableBody>
+        </ElmTable>
+      </div>
+    );
+  },
+};
+
 export const Primary: Story = {
   render() {
     return (
