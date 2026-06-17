@@ -48,6 +48,35 @@ export const DefaultSelected: Story = {
   render: () => sampleTemplate("tab3"),
 };
 
+// Many tabs in a narrow (mobile-sized) frame. The tab list scrolls
+// horizontally instead of clipping the tabs that overflow the container.
+export const Scrollable: Story = {
+  render: () => ({
+    components: { ElmTabs, ElmTabList, ElmTab, ElmTabPanel },
+    setup() {
+      const tabs = [
+        { value: "overview", label: "Overview" },
+        { value: "metrics", label: "Metrics" },
+        { value: "activity", label: "Activity" },
+        { value: "settings", label: "Settings" },
+        { value: "billing", label: "Billing" },
+        { value: "members", label: "Members" },
+      ];
+      return { tabs };
+    },
+    template: `
+      <div style="max-width: 320px; border: 1px dashed gray; padding: 8px">
+        <ElmTabs default-value="overview">
+          <ElmTabList>
+            <ElmTab v-for="t in tabs" :key="t.value" :value="t.value">{{ t.label }}</ElmTab>
+          </ElmTabList>
+          <ElmTabPanel v-for="t in tabs" :key="t.value" :value="t.value">{{ t.label }} content</ElmTabPanel>
+        </ElmTabs>
+      </div>
+    `,
+  }),
+};
+
 export const Controlled: Story = {
   render: () => ({
     components: { ElmTabs, ElmTabList, ElmTab, ElmTabPanel, ElmParagraph },
