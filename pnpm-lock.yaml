@@ -22,7 +22,7 @@ importers:
     dependencies:
       '@ag-ui/mastra':
         specifier: ^1.0.3
-        version: 1.0.3(@ag-ui/client@0.0.57)(@ag-ui/core@0.0.57)(@copilotkit/runtime@1.60.1(xrvcmeluqr3a5d7z63jvjauhyu))(@mastra/client-js@1.14.2(@cfworker/json-schema@4.1.1)(@standard-community/standard-json@0.3.5(@standard-schema/spec@1.1.0)(@types/json-schema@7.0.15)(quansync@1.0.0)(valibot@1.2.0(typescript@5.9.3))(zod-to-json-schema@3.25.2(zod@3.25.76))(zod@3.25.76))(@standard-community/standard-openapi@0.2.9(@standard-community/standard-json@0.3.5(@standard-schema/spec@1.1.0)(@types/json-schema@7.0.15)(quansync@1.0.0)(valibot@1.2.0(typescript@5.9.3))(zod-to-json-schema@3.25.2(zod@3.25.76))(zod@3.25.76))(@standard-schema/spec@1.1.0)(openapi-types@12.1.3)(valibot@1.2.0(typescript@5.9.3))(zod@3.25.76))(@types/json-schema@7.0.15)(ai@6.0.197(zod@3.25.76))(openapi-types@12.1.3)(zod@3.25.76))(@mastra/core@1.42.0(@bufbuild/protobuf@2.12.0)(@cfworker/json-schema@4.1.1)(ai@6.0.197(zod@3.25.76))(express@5.2.1)(rxjs@7.8.1)(zod@3.25.76))(zod@3.25.76)
+        version: 1.0.3(@ag-ui/client@0.0.57)(@ag-ui/core@0.0.57)(@copilotkit/runtime@1.60.1(xrvcmeluqr3a5d7z63jvjauhyu))(@mastra/client-js@1.14.2(@cfworker/json-schema@4.1.1)(@standard-community/standard-json@0.3.5(@standard-schema/spec@1.1.0)(@types/json-schema@7.0.15)(quansync@1.0.0)(valibot@1.2.0(typescript@5.9.3))(zod-to-json-schema@3.25.2(zod@3.25.76))(zod@3.25.76))(@standard-community/standard-openapi@0.2.9(@standard-community/standard-json@0.3.5(@standard-schema/spec@1.1.0)(@types/json-schema@7.0.15)(quansync@1.0.0)(valibot@1.2.0(typescript@5.9.3))(zod-to-json-schema@3.25.2(zod@3.25.76))(zod@3.25.76))(@standard-schema/spec@1.1.0)(openapi-types@12.1.3)(valibot@1.2.0(typescript@5.9.3))(zod@3.25.76))(@types/json-schema@7.0.15)(ai@6.0.197(zod@3.25.76))(openapi-types@12.1.3)(zod@3.25.76))(@mastra/core@1.43.0(@bufbuild/protobuf@2.12.0)(@cfworker/json-schema@4.1.1)(ai@6.0.197(zod@3.25.76))(express@5.2.1)(rxjs@7.8.1)(zod@3.25.76))(zod@3.25.76)
       '@ai-sdk/openai':
         specifier: ^3.0.71
         version: 3.0.71(zod@3.25.76)
@@ -36,8 +36,8 @@ importers:
         specifier: ^2.0.4
         version: 2.0.4(hono@4.12.25)
       '@mastra/core':
-        specifier: ^1.42.0
-        version: 1.42.0(@bufbuild/protobuf@2.12.0)(@cfworker/json-schema@4.1.1)(ai@6.0.197(zod@3.25.76))(express@5.2.1)(rxjs@7.8.1)(zod@3.25.76)
+        specifier: ^1.43.0
+        version: 1.43.0(@bufbuild/protobuf@2.12.0)(@cfworker/json-schema@4.1.1)(ai@6.0.197(zod@3.25.76))(express@5.2.1)(rxjs@7.8.1)(zod@3.25.76)
       '@openrouter/ai-sdk-provider':
         specifier: ^2.9.0
         version: 2.9.0(ai@6.0.197(zod@3.25.76))(zod@3.25.76)
@@ -1948,14 +1948,14 @@ packages:
     peerDependencies:
       zod: ^3.25.0 || ^4.0.0
 
-  '@mastra/core@1.42.0':
-    resolution: {integrity: sha512-DsH4jHnPp1/iTlbgNy/3TOH67HJEnItbi7kFj8gKWiv9yiPF50SoGGS7YTFAAsJxrSdpsYYU51ekUviC1GCK8g==}
+  '@mastra/core@1.43.0':
+    resolution: {integrity: sha512-K8owngADLxIny8h+BTgP+szaGmOIrDLxk6g0rh1o/4b2kERuxNZDIWajK0mFWdIl0LKopfNVHjKYqYwHWTl79A==}
     engines: {node: '>=22.13.0'}
     peerDependencies:
       zod: ^3.25.0 || ^4.0.0
 
-  '@mastra/schema-compat@1.2.11':
-    resolution: {integrity: sha512-wN8eTy/g14Mg3kWukhoIjd5SpFtLQ8gOltbELe9nM2Ruzm4jK8tFr1ZZNZwvLYnpq7NJG5a8F0ZFCjXFOEwx0w==}
+  '@mastra/schema-compat@1.2.13':
+    resolution: {integrity: sha512-BimfaruvBm54X8cAnRPGJXySlJsZvM/vOchiP12qqKuKPsj+Ub7NdEa0ofES2B9xdENlcn8LqMGVi7nVJ9dKsA==}
     engines: {node: '>=22.13.0'}
     peerDependencies:
       zod: ^3.25.0 || ^4.0.0
@@ -2527,11 +2527,11 @@ packages:
   '@polka/url@1.0.0-next.29':
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
 
-  '@posthog/core@1.32.4':
-    resolution: {integrity: sha512-xmc6JGLS+HK9gG354e3ws8wRQSQFaekI/QC/uwslokfG1csXjxW7xlGGipLS4juDJ1W1fVM6j2MeHyatmvF22w==}
+  '@posthog/core@1.35.1':
+    resolution: {integrity: sha512-2a9JgJgR+Ow8lrUQHVZYXH9EgXskYDlpbgNW6UvtsVxp8pEEFD8PxjZMnzq73Dx3NhAwNUrnVpb8KeZzHAtoSA==}
 
-  '@posthog/types@1.386.4':
-    resolution: {integrity: sha512-UgE9+5+wkZg7yc2MpW5G32/6zYW8fAbXJkG8WGnrb4X8OKWzNa9cWeNCd82vKok+TSoRpM4qiYQFtBSpJS1dsw==}
+  '@posthog/types@1.389.0':
+    resolution: {integrity: sha512-zoH1xlnOtpsez8LzAZ7edCzuAMbFHgOsZvwBICmH59YGvSNAmSsyI7eAh34ewYAglZT0sWrWRiBzglHPsTrCWw==}
 
   '@preact/signals-core@1.14.1':
     resolution: {integrity: sha512-vxPpfXqrwUe9lpjqfYNjAF/0RF/eFGeLgdJzdmIIZjpOnTmGmAB4BjWone562mJGMRP4frU6iZ6ei3PDsu52Ng==}
@@ -4146,18 +4146,6 @@ packages:
   chardet@2.1.1:
     resolution: {integrity: sha512-PsezH1rqdV9VvyNhxxOW32/d75r01NY7TQCmOqomRo15ZSOKbpTFVsfjghxo6JloQUCGnH4k1LGu0R4yCLlWQQ==}
 
-  chat@4.30.0:
-    resolution: {integrity: sha512-8LXrauKckMmR83FcYC/R8nNEda5VJDDdIhZwUUu+hzaSbk4lqsro0IWm7rB1GGYXONRrUOG2XJlkNr4C15vgMA==}
-    engines: {node: '>=20'}
-    peerDependencies:
-      ai: ^6.0.182
-      zod: ^3.0.0 || ^4.0.0
-    peerDependenciesMeta:
-      ai:
-        optional: true
-      zod:
-        optional: true
-
   chat@4.31.0:
     resolution: {integrity: sha512-F6oJq9JUraLFkITS96/NKgwZwBfZX8aOwOj5qMs5NNwnOGHrSXZ5+osK+EA4HjzfyUEDfFTNiOSmyzgtFLpuWg==}
     engines: {node: '>=20'}
@@ -5734,6 +5722,9 @@ packages:
     resolution: {integrity: sha512-34wB/Y7MW7bzjKRjUKTa46I2Z7eV62Rkhva+KkopW7Qvv/OSWBqvkSY7vusOPrNuZcUG3tApvdVgNB8POj3SPw==}
     engines: {node: '>=10'}
 
+  jpeg-js@0.4.4:
+    resolution: {integrity: sha512-WZzeDOEtTOBK4Mdsar0IqEU5sMr3vSV2RqkAIzUEV2BHnUfKGyswWFPFwK5EeDo93K3FohSHbLAjj0s1Wzd+dg==}
+
   js-beautify@1.15.4:
     resolution: {integrity: sha512-9/KXeZUKKJwqCXUdBxFJ3vPh467OCckSBmYDwSK/EtV090K+iMJ7zx2S3HLVDIWFQdqMIsZWbnaGiba18aWhaA==}
     engines: {node: '>=14'}
@@ -6784,8 +6775,8 @@ packages:
     resolution: {integrity: sha512-FfR8sjd4em2T6fb3I2MwAJU7HWVMr9zba+enmQeeWFfCbm+UOC/0X4DS8XtpUTMwWMGbjKYP7xjfNekzyGmB3A==}
     engines: {node: ^10 || ^12 || >=14}
 
-  posthog-node@5.37.1:
-    resolution: {integrity: sha512-CU2o/FGCyvKQSCsQhc6iA3lc50xMWTqSEpKS8HINABj87YD9iefEqDQWVWJ4TABcpDo5fkbjTyRig/zMe/WNQw==}
+  posthog-node@5.38.0:
+    resolution: {integrity: sha512-xEojUWq7ajYfsMPZIexG9xtvhewpqrPWvL/qRhnm8W3KVZi6BlXHe29tjywZJglrDwEQpqdtYKbRXyg2zF9MWw==}
     engines: {node: ^20.20.0 || >=22.22.0}
     peerDependencies:
       rxjs: ^7.0.0
@@ -8500,14 +8491,14 @@ snapshots:
       - ws
       - zod-to-json-schema
 
-  '@ag-ui/mastra@1.0.3(@ag-ui/client@0.0.57)(@ag-ui/core@0.0.57)(@copilotkit/runtime@1.60.1(xrvcmeluqr3a5d7z63jvjauhyu))(@mastra/client-js@1.14.2(@cfworker/json-schema@4.1.1)(@standard-community/standard-json@0.3.5(@standard-schema/spec@1.1.0)(@types/json-schema@7.0.15)(quansync@1.0.0)(valibot@1.2.0(typescript@5.9.3))(zod-to-json-schema@3.25.2(zod@3.25.76))(zod@3.25.76))(@standard-community/standard-openapi@0.2.9(@standard-community/standard-json@0.3.5(@standard-schema/spec@1.1.0)(@types/json-schema@7.0.15)(quansync@1.0.0)(valibot@1.2.0(typescript@5.9.3))(zod-to-json-schema@3.25.2(zod@3.25.76))(zod@3.25.76))(@standard-schema/spec@1.1.0)(openapi-types@12.1.3)(valibot@1.2.0(typescript@5.9.3))(zod@3.25.76))(@types/json-schema@7.0.15)(ai@6.0.197(zod@3.25.76))(openapi-types@12.1.3)(zod@3.25.76))(@mastra/core@1.42.0(@bufbuild/protobuf@2.12.0)(@cfworker/json-schema@4.1.1)(ai@6.0.197(zod@3.25.76))(express@5.2.1)(rxjs@7.8.1)(zod@3.25.76))(zod@3.25.76)':
+  '@ag-ui/mastra@1.0.3(@ag-ui/client@0.0.57)(@ag-ui/core@0.0.57)(@copilotkit/runtime@1.60.1(xrvcmeluqr3a5d7z63jvjauhyu))(@mastra/client-js@1.14.2(@cfworker/json-schema@4.1.1)(@standard-community/standard-json@0.3.5(@standard-schema/spec@1.1.0)(@types/json-schema@7.0.15)(quansync@1.0.0)(valibot@1.2.0(typescript@5.9.3))(zod-to-json-schema@3.25.2(zod@3.25.76))(zod@3.25.76))(@standard-community/standard-openapi@0.2.9(@standard-community/standard-json@0.3.5(@standard-schema/spec@1.1.0)(@types/json-schema@7.0.15)(quansync@1.0.0)(valibot@1.2.0(typescript@5.9.3))(zod-to-json-schema@3.25.2(zod@3.25.76))(zod@3.25.76))(@standard-schema/spec@1.1.0)(openapi-types@12.1.3)(valibot@1.2.0(typescript@5.9.3))(zod@3.25.76))(@types/json-schema@7.0.15)(ai@6.0.197(zod@3.25.76))(openapi-types@12.1.3)(zod@3.25.76))(@mastra/core@1.43.0(@bufbuild/protobuf@2.12.0)(@cfworker/json-schema@4.1.1)(ai@6.0.197(zod@3.25.76))(express@5.2.1)(rxjs@7.8.1)(zod@3.25.76))(zod@3.25.76)':
     dependencies:
       '@ag-ui/client': 0.0.57
       '@ag-ui/core': 0.0.57
       '@ai-sdk/ui-utils': 1.2.11(zod@3.25.76)
       '@copilotkit/runtime': 1.60.1(xrvcmeluqr3a5d7z63jvjauhyu)
       '@mastra/client-js': 1.14.2(@cfworker/json-schema@4.1.1)(@standard-community/standard-json@0.3.5(@standard-schema/spec@1.1.0)(@types/json-schema@7.0.15)(quansync@1.0.0)(valibot@1.2.0(typescript@5.9.3))(zod-to-json-schema@3.25.2(zod@3.25.76))(zod@3.25.76))(@standard-community/standard-openapi@0.2.9(@standard-community/standard-json@0.3.5(@standard-schema/spec@1.1.0)(@types/json-schema@7.0.15)(quansync@1.0.0)(valibot@1.2.0(typescript@5.9.3))(zod-to-json-schema@3.25.2(zod@3.25.76))(zod@3.25.76))(@standard-schema/spec@1.1.0)(openapi-types@12.1.3)(valibot@1.2.0(typescript@5.9.3))(zod@3.25.76))(@types/json-schema@7.0.15)(ai@6.0.197(zod@3.25.76))(openapi-types@12.1.3)(zod@3.25.76)
-      '@mastra/core': 1.42.0(@bufbuild/protobuf@2.12.0)(@cfworker/json-schema@4.1.1)(ai@6.0.197(zod@3.25.76))(express@5.2.1)(rxjs@7.8.1)(zod@3.25.76)
+      '@mastra/core': 1.43.0(@bufbuild/protobuf@2.12.0)(@cfworker/json-schema@4.1.1)(ai@6.0.197(zod@3.25.76))(express@5.2.1)(rxjs@7.8.1)(zod@3.25.76)
       rxjs: 7.8.1
     transitivePeerDependencies:
       - zod
@@ -9762,7 +9753,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@mastra/core@1.42.0(@bufbuild/protobuf@2.12.0)(@cfworker/json-schema@4.1.1)(ai@6.0.197(zod@3.25.76))(express@5.2.1)(rxjs@7.8.1)(zod@3.25.76)':
+  '@mastra/core@1.43.0(@bufbuild/protobuf@2.12.0)(@cfworker/json-schema@4.1.1)(ai@6.0.197(zod@3.25.76))(express@5.2.1)(rxjs@7.8.1)(zod@3.25.76)':
     dependencies:
       '@a2a-js/sdk': 0.3.13(@bufbuild/protobuf@2.12.0)(express@5.2.1)
       '@ai-sdk/provider-utils-v5': '@ai-sdk/provider-utils@3.0.25(zod@3.25.76)'
@@ -9771,24 +9762,25 @@ snapshots:
       '@ai-sdk/provider-v6': '@ai-sdk/provider@3.0.10'
       '@isaacs/ttlcache': 2.1.5
       '@lukeed/uuid': 2.0.1
-      '@mastra/schema-compat': 1.2.11(zod@3.25.76)
+      '@mastra/schema-compat': 1.2.13(zod@3.25.76)
       '@modelcontextprotocol/sdk': 1.29.0(@cfworker/json-schema@4.1.1)(zod@3.25.76)
       '@sindresorhus/slugify': 2.2.1
       '@standard-schema/spec': 1.1.0
       ajv: 8.20.0
-      chat: 4.30.0(ai@6.0.197(zod@3.25.76))(zod@3.25.76)
+      chat: 4.31.0(ai@6.0.197(zod@3.25.76))(zod@3.25.76)
       croner: 10.0.1
       dotenv: 17.4.2
       execa: 9.6.1
       fastq: 1.20.1
       gray-matter: 4.0.3
       ignore: 7.0.5
+      jpeg-js: 0.4.4
       json-schema: 0.4.0
       lru-cache: 11.5.1
       p-map: 7.0.4
       p-retry: 7.1.1
       picomatch: 4.0.4
-      posthog-node: 5.37.1(rxjs@7.8.1)
+      posthog-node: 5.38.0(rxjs@7.8.1)
       tokenx: 1.3.0
       ws: 8.21.0
       xxhash-wasm: 1.1.0
@@ -9804,7 +9796,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@mastra/schema-compat@1.2.11(zod@3.25.76)':
+  '@mastra/schema-compat@1.2.13(zod@3.25.76)':
     dependencies:
       json-schema-to-zod: 2.8.1
       zod: 3.25.76
@@ -10297,11 +10289,11 @@ snapshots:
 
   '@polka/url@1.0.0-next.29': {}
 
-  '@posthog/core@1.32.4':
+  '@posthog/core@1.35.1':
     dependencies:
-      '@posthog/types': 1.386.4
+      '@posthog/types': 1.389.0
 
-  '@posthog/types@1.386.4': {}
+  '@posthog/types@1.389.0': {}
 
   '@preact/signals-core@1.14.1': {}
 
@@ -12191,21 +12183,6 @@ snapshots:
 
   chardet@2.1.1: {}
 
-  chat@4.30.0(ai@6.0.197(zod@3.25.76))(zod@3.25.76):
-    dependencies:
-      '@workflow/serde': 4.1.0-beta.2
-      mdast-util-to-string: 4.0.0
-      remark-gfm: 4.0.1
-      remark-parse: 11.0.0
-      remark-stringify: 11.0.0
-      remend: 1.3.0
-      unified: 11.0.5
-    optionalDependencies:
-      ai: 6.0.197(zod@3.25.76)
-      zod: 3.25.76
-    transitivePeerDependencies:
-      - supports-color
-
   chat@4.31.0(ai@6.0.197(zod@3.25.76))(zod@3.25.76):
     dependencies:
       '@workflow/serde': 4.1.0-beta.2
@@ -14013,6 +13990,8 @@ snapshots:
 
   joycon@3.1.1: {}
 
+  jpeg-js@0.4.4: {}
+
   js-beautify@1.15.4:
     dependencies:
       config-chain: 1.1.13
@@ -15405,9 +15384,9 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  posthog-node@5.37.1(rxjs@7.8.1):
+  posthog-node@5.38.0(rxjs@7.8.1):
     dependencies:
-      '@posthog/core': 1.32.4
+      '@posthog/core': 1.35.1
     optionalDependencies:
       rxjs: 7.8.1
 
