@@ -16,7 +16,7 @@
         "@ag-ui/mastra": "^1.0.3",
         "@ai-sdk/openai": "^3.0.73",
         "@copilotkit/runtime": "^1.60.1",
-        "@copilotkit/shared": "^1.60.1",
+        "@copilotkit/shared": "^1.61.0",
         "@hono/node-server": "^2.0.4",
         "@mastra/core": "^1.43.0",
         "@openrouter/ai-sdk-provider": "^2.9.0",

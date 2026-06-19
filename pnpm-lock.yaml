@@ -30,8 +30,8 @@ importers:
         specifier: ^1.60.1
         version: 1.60.1(xrvcmeluqr3a5d7z63jvjauhyu)
       '@copilotkit/shared':
-        specifier: ^1.60.1
-        version: 1.60.1(@ag-ui/core@0.0.57)
+        specifier: ^1.61.0
+        version: 1.61.0(@ag-ui/core@0.0.57)
       '@hono/node-server':
         specifier: ^2.0.4
         version: 2.0.4(hono@4.12.25)
@@ -999,6 +999,9 @@ packages:
   '@copilotkit/license-verifier@0.4.2':
     resolution: {integrity: sha512-0+Rdtg4gOwOBFBpZFxYsjgwBcCLja5z03YC6WA3KEntHYhsnoJ2aqNG6c0we8ZExCNYlEO4M7kHIfG5LXzqMYQ==}
 
+  '@copilotkit/license-verifier@0.5.0':
+    resolution: {integrity: sha512-vrwKtIpYwF0FT9ZoYASH8owa2cGV0dhDvJGaCRaRMStwDxpc6DRdydKkhx8cWZXyBRxEYcq/Vygv4JvevhQQdQ==}
+
   '@copilotkit/runtime@1.60.1':
     resolution: {integrity: sha512-c01IZfoiCOrZoK44G1XrRkIRJzD20UCcz8VN+ag+5dMDA/PQYjOU3Wdjb9UQ9q5GFqX+RHSqSZOT/FV+uT/WzQ==}
     peerDependencies:
@@ -1034,6 +1037,11 @@ packages:
 
   '@copilotkit/shared@1.60.1':
     resolution: {integrity: sha512-8KTxK6xnuxmFjGy9pHkHOMDElQl5Smisx0q8hx8je1NEkwrxFKrCK653APqn83QyQLifdPBqExXEUpGkqhoGcw==}
+    peerDependencies:
+      '@ag-ui/core': '>=0.0.48'
+
+  '@copilotkit/shared@1.61.0':
+    resolution: {integrity: sha512-7YZn6z64d9kr+ENvCsNSEXV2w4ITnETgoW5l1X1jr1U0G0VWD5Qb72+6IXR4zOYjHIKfpY7qABEcODJ6qmvEMA==}
     peerDependencies:
       '@ag-ui/core': '>=0.0.48'
 
@@ -8907,6 +8915,8 @@ snapshots:
 
   '@copilotkit/license-verifier@0.4.2': {}
 
+  '@copilotkit/license-verifier@0.5.0': {}
+
   '@copilotkit/runtime@1.60.1(xrvcmeluqr3a5d7z63jvjauhyu)':
     dependencies:
       '@ag-ui/a2ui-middleware': 0.0.8(@ag-ui/client@0.0.57)(rxjs@7.8.1)
@@ -8975,6 +8985,22 @@ snapshots:
       '@ag-ui/client': 0.0.57
       '@ag-ui/core': 0.0.57
       '@copilotkit/license-verifier': 0.4.2
+      '@segment/analytics-node': 2.3.0
+      '@standard-schema/spec': 1.1.0
+      chalk: 4.1.2
+      graphql: 16.14.2
+      partial-json: 0.1.7
+      uuid: 11.1.1
+      zod: 3.25.76
+      zod-to-json-schema: 3.25.2(zod@3.25.76)
+    transitivePeerDependencies:
+      - encoding
+
+  '@copilotkit/shared@1.61.0(@ag-ui/core@0.0.57)':
+    dependencies:
+      '@ag-ui/client': 0.0.57
+      '@ag-ui/core': 0.0.57
+      '@copilotkit/license-verifier': 0.5.0
       '@segment/analytics-node': 2.3.0
       '@standard-schema/spec': 1.1.0
       chalk: 4.1.2
