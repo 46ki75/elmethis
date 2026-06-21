@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import type { AgentSubscriber, BaseEvent, Message } from "@ag-ui/client";
+import type { AgentSubscriber, Message } from "@ag-ui/client";
 import { z } from "zod";
 
 import {
@@ -18,7 +18,6 @@ function makeState(
   return {
     error: null,
     messages: [],
-    events: [],
     isRunning: false,
     status: "idle",
     activity: "idle",
@@ -142,60 +141,6 @@ describe("createAgentSubscriber", () => {
       messages: [assistant({ id: "a", content: "Hello" })],
     });
     expect(state.messages[0].content).toBe("Hello");
-  });
-
-  // -------------------------------------------------------------------------
-  // Event timeline is opt-in and isolated from message handling.
-  // -------------------------------------------------------------------------
-
-  test("onEvent is a no-op when collectEvents is false (default)", () => {
-    const state = makeState();
-    const sub = createAgentSubscriber({
-      state,
-      getTools: () => ({}),
-      onNeedsReRun: vi.fn(),
-    });
-
-    call(sub, "onEvent", {
-      event: { type: "TEXT_MESSAGE_CONTENT", messageId: "m1", delta: "x" },
-    });
-
-    expect(state.events).toEqual([]);
-  });
-
-  test("onEvent compacts into state.events when collectEvents is true", () => {
-    const state = makeState();
-    const sub = createAgentSubscriber({
-      state,
-      getTools: () => ({}),
-      onNeedsReRun: vi.fn(),
-      collectEvents: true,
-    });
-
-    const event = { type: "TEXT_MESSAGE_CONTENT", messageId: "m3", delta: "x" };
-    call(sub, "onEvent", { messages: [], event });
-
-    expect(state.events).toContainEqual(event);
-  });
-
-  test("onEvent does not touch messages even when collecting events", () => {
-    const state = makeState({ messages: [assistant({ id: "m1" })] });
-    const sub = createAgentSubscriber({
-      state,
-      getTools: () => ({}),
-      onNeedsReRun: vi.fn(),
-      collectEvents: true,
-    });
-
-    const before = state.messages;
-    call(sub, "onEvent", {
-      messages: [assistant({ id: "m1" }), assistant({ id: "m2" })],
-      event: { type: "RUN_STARTED" },
-    });
-
-    // Message sync is owned exclusively by onMessagesChanged.
-    expect(state.messages).toBe(before);
-    expect(state.messages.map((m) => m.id)).toEqual(["m1"]);
   });
 
   // -------------------------------------------------------------------------
@@ -475,91 +420,5 @@ describe("createAgentSubscriber", () => {
 
     await call(sub, "onRunFinalized");
     expect(state.activity).toBe("idle");
-  });
-
-  // -------------------------------------------------------------------------
-  // Reactivity-edge-case guards.
-  // -------------------------------------------------------------------------
-
-  test("plain-object state works for both the in-place message and events paths", () => {
-    // The production code mutates `state.messages` in place (via
-    // onMessagesChanged → reconcileMessages) AND reassigns `state.events`
-    // (via onEvent). Both must work on a vanilla object so we don't
-    // accidentally introduce a Qwik-proxy-only access path.
-    const state = makeState();
-    const sub = createAgentSubscriber({
-      state,
-      getTools: () => ({}),
-      onNeedsReRun: vi.fn(),
-      collectEvents: true,
-    });
-
-    call(sub, "onMessagesChanged", {
-      messages: [assistant({ id: "m1", content: "" })],
-    });
-    expect(state.messages.map((m) => m.id)).toEqual(["m1"]);
-
-    const beforeEvents = state.events;
-    call(sub, "onEvent", { messages: [], event: { type: "T", a: 1 } });
-    call(sub, "onEvent", { messages: [], event: { type: "T", a: 2 } });
-    expect(state.events).not.toBe(beforeEvents); // new array reference
-    expect(state.events).toHaveLength(2);
-  });
-
-  test("event collection does not feed reactive store reads back into structuredClone", () => {
-    // Regression: production `state` is a Qwik `useStore` proxy, so reading
-    // `state.events` back returns reactive proxies. For STATE_SNAPSHOT/
-    // STATE_DELTA events `compactEvents` deep-clones the payload via
-    // `structuredClone`, which throws `DataCloneError` on a proxy. We simulate
-    // that here with a getter that "poisons" reads with a non-cloneable value;
-    // the subscriber must read its own plain accumulator instead, so a second
-    // state event compacts without throwing.
-    let backing: BaseEvent[] = [];
-    const state = {
-      error: null,
-      messages: [] as Message[],
-      isRunning: false,
-      get events() {
-        return backing.map((e) =>
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (e as any).type === "STATE_SNAPSHOT"
-            ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              { ...e, snapshot: { ...(e as any).snapshot, fn: () => {} } }
-            : e,
-        );
-      },
-      set events(v: BaseEvent[]) {
-        backing = v;
-      },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any as AgentSubscriberState;
-
-    const sub = createAgentSubscriber({
-      state,
-      getTools: () => ({}),
-      onNeedsReRun: vi.fn(),
-      collectEvents: true,
-    });
-
-    call(sub, "onEvent", {
-      messages: [],
-      event: { type: "STATE_SNAPSHOT", snapshot: { a: 1 } },
-    });
-    expect(() =>
-      call(sub, "onEvent", {
-        messages: [],
-        event: {
-          type: "STATE_DELTA",
-          delta: [{ op: "add", path: "/b", value: 2 }],
-        },
-      }),
-    ).not.toThrow();
-
-    // Both state events collapse into one merged STATE_SNAPSHOT.
-    expect(backing).toHaveLength(1);
-    expect(backing[0]).toMatchObject({
-      type: "STATE_SNAPSHOT",
-      snapshot: { a: 1, b: 2 },
-    });
   });
 });

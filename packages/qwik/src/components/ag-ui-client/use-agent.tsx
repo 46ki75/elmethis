@@ -11,7 +11,6 @@ import {
 
 import {
   type AbstractAgent,
-  type BaseEvent,
   HttpAgent,
   type InputContent,
   type Message,
@@ -49,12 +48,6 @@ export interface UseAgentOptions {
   headers?: Record<string, string>;
   initialMessages?: Message[];
   /**
-   * Maintain the raw protocol-event timeline in `state.events` (for
-   * `ElmAgUiEventRenderer`). Off by default — the chat renders from
-   * `state.messages`, so this is a separate, opt-in observability concern.
-   */
-  collectEvents?: boolean;
-  /**
    * Inject an alternate transport. Primarily for tests. Defaults to
    * `(opts) => new HttpAgent(opts)`.
    */
@@ -67,7 +60,6 @@ export interface UseAgentOptions {
 export interface AgentState {
   error: string | null;
   messages: Message[];
-  events: BaseEvent[];
   context?: { value: string; description: string }[];
   isRunning: boolean;
   /** Coarse run lifecycle — see {@link AgentRunStatus}. */
@@ -85,7 +77,6 @@ export function useAgent({
   context,
   headers,
   initialMessages,
-  collectEvents,
   agentFactory,
 }: UseAgentOptions) {
   const agentRef = useSignal<NoSerialize<AbstractAgent> | null>(null);
@@ -98,14 +89,10 @@ export function useAgent({
   const factoryRef = useSignal<
     NoSerialize<NonNullable<UseAgentOptions["agentFactory"]>>
   >(noSerialize(agentFactory));
-  // Launder the static config flag through a signal: capturing the raw
-  // destructured param inside useVisibleTask$ trips qwik/valid-lexical-scope.
-  const collectEventsRef = useSignal(collectEvents ?? false);
 
   const state = useStore<AgentState>({
     error: null,
     messages: initialMessages ?? [],
-    events: [],
     context,
     isRunning: false,
     status: "idle",
@@ -160,7 +147,6 @@ export function useAgent({
       const subscription = agent.subscribe(
         createAgentSubscriber({
           state,
-          collectEvents: collectEventsRef.value,
           getTools: () =>
             (toolsSignal ? toolsSignal.value : toolsRef.value) ?? {},
           onNeedsReRun: async (pending) => {

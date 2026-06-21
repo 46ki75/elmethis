@@ -1,8 +1,7 @@
-import type { AgentSubscriber, BaseEvent, Message } from "@ag-ui/client";
+import type { AgentSubscriber, Message } from "@ag-ui/client";
 import type { Interrupt } from "@ag-ui/core";
 import { v7 } from "uuid";
 
-import { compactEventsExtended } from "./compactEventsExtended";
 import { reconcileMessages } from "./reconcile-messages";
 import type { ToolRegistry } from "./tool-registry";
 
@@ -45,7 +44,6 @@ export type AgentActivity =
 export interface AgentSubscriberState {
   error: string | null;
   messages: Message[];
-  events: BaseEvent[];
   isRunning: boolean;
   /** Coarse run lifecycle — see {@link AgentRunStatus}. */
   status: AgentRunStatus;
@@ -80,13 +78,6 @@ export interface CreateAgentSubscriberOptions {
    * factory itself stays transport-agnostic.
    */
   onNeedsReRun: (pendingToolMessages: Message[]) => unknown | Promise<unknown>;
-  /**
-   * Maintain the raw protocol-event timeline in `state.events` (consumed by
-   * `ElmAgUiEventRenderer`). Off by default: the chat UI renders from
-   * `state.messages`, so collecting events is a separate, opt-in
-   * observability concern. See the note on `onEvent` below.
-   */
-  collectEvents?: boolean;
 }
 
 /**
@@ -106,19 +97,8 @@ export function createAgentSubscriber({
   state,
   getTools,
   onNeedsReRun,
-  collectEvents = false,
 }: CreateAgentSubscriberOptions): AgentSubscriber {
   let pendingToolMessages: Message[] = [];
-
-  // Plain, non-reactive accumulator that is the source of truth for the
-  // opt-in event timeline. We must NOT read `state.events` back into
-  // `compactEventsExtended`: in production `state` is a Qwik `useStore`
-  // proxy, so its array elements come back as reactive proxies. For
-  // STATE_SNAPSHOT/STATE_DELTA events `compactEvents` deep-clones the payload
-  // via `structuredClone`, which throws `DataCloneError` on a Qwik proxy
-  // (the proxy's hidden container references aren't cloneable). Keeping the
-  // accumulator here guarantees the cloner only ever sees plain objects.
-  let events: BaseEvent[] = collectEvents ? [...state.events] : [];
 
   return {
     onRunInitialized() {
@@ -138,13 +118,6 @@ export function createAgentSubscriber({
     // renderer's fine-grained reactivity (see reconcile-messages.ts).
     onMessagesChanged({ messages }) {
       reconcileMessages(state.messages, messages);
-    },
-
-    // Opt-in raw-event timeline, fully isolated from message handling.
-    onEvent({ event }) {
-      if (!collectEvents) return;
-      events = compactEventsExtended([...events, event]);
-      state.events = events;
     },
 
     // Frontend-executed tool. The SDK has already assembled and JSON-parsed

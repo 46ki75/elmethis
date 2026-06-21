@@ -27,7 +27,6 @@ describe("[CSR] ElmAgUiMessageRenderer — streaming assistant content repaints"
         error: null,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         messages: [{ id: "a1", role: "assistant", content: "" } as any],
-        events: [],
         isRunning: true,
         status: "running",
         activity: "writing",

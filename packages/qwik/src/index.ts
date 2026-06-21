@@ -53,11 +53,6 @@ export {
 } from "@elmethis/core";
 
 // | AG-UI |
-export { compactEventsExtended } from "./components/ag-ui-client/compactEventsExtended";
-export {
-  ElmAgUiEventRenderer,
-  type ElmAgUiEventRendererProps,
-} from "./components/ag-ui-client/elm-ag-ui-event-renderer";
 export {
   ElmAgUiInput,
   type ElmAgUiInputProps,
