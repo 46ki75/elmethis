@@ -134,15 +134,6 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
             handleRetry$={retry$}
           />
 
-          {(state.status === "running" ||
-            state.status === "awaiting_input") && (
-            <ElmAgUiStatus
-              class={styles["status"]}
-              status={state.status}
-              activity={state.activity}
-            />
-          )}
-
           {state.error && (
             <>
               <div class={styles["error"]}>
@@ -166,6 +157,15 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
 
       <div class={styles["agent-input-container"]}>
         <div class={styles["agent-input"]}>
+          {(state.status === "running" ||
+            state.status === "awaiting_input") && (
+            <ElmAgUiStatus
+              class={styles["status"]}
+              status={state.status}
+              activity={state.activity}
+            />
+          )}
+
           {!state.isRunning && (
             <div class={styles["prompt-template-container"]}>
               {state.promptTemplates.map((template, index) => (

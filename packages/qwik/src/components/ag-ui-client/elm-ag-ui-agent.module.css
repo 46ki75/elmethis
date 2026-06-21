@@ -24,10 +24,6 @@
       margin: 0;
       padding: 0 0 50dvh;
 
-      .status {
-        padding: 0.5rem;
-      }
-
       .error {
         box-sizing: border-box;
         padding: 0.5rem;
@@ -52,6 +48,10 @@
       box-sizing: border-box;
       height: min-content;
       margin: 0 auto;
+
+      .status {
+        padding-block: 0.5rem;
+      }
 
       .prompt-template-container {
         width: 100%;
