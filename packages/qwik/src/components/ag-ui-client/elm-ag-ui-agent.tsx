@@ -122,7 +122,10 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
         ...style,
       }}
     >
-      <div class={styles["agent-container"]}>
+      <div
+        class={styles["agent-container"]}
+        style={{ "--elmethis-margin-block-start": "0" }}
+      >
         <div class={styles["messages"]}>
           <ElmAgUiMessageRenderer
             isRunning={state.isRunning}
