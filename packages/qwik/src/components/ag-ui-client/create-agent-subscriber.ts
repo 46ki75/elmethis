@@ -2,6 +2,7 @@ import type { AgentSubscriber, BaseEvent, Message } from "@ag-ui/client";
 import { v7 } from "uuid";
 
 import { compactEventsExtended } from "./compactEventsExtended";
+import { reconcileMessages } from "./reconcile-messages";
 import type { ToolRegistry } from "./tool-registry";
 
 /**
@@ -30,85 +31,79 @@ export interface CreateAgentSubscriberOptions {
    * factory itself stays transport-agnostic.
    */
   onNeedsReRun: (pendingToolMessages: Message[]) => unknown | Promise<unknown>;
+  /**
+   * Maintain the raw protocol-event timeline in `state.events` (consumed by
+   * `ElmAgUiEventRenderer`). Off by default: the chat UI renders from
+   * `state.messages`, so collecting events is a separate, opt-in
+   * observability concern. See the note on `onEvent` below.
+   */
+  collectEvents?: boolean;
 }
 
 /**
- * Build the AG-UI `AgentSubscriber` that owns all event-to-state mapping
- * for `useAgent`. The factory keeps `pendingToolMessages` as a private
- * closure so callers can't accidentally clear it mid-run.
+ * Build the AG-UI `AgentSubscriber` that drives `useAgent`'s reactive state.
+ *
+ * The `@ag-ui/client` agent already runs the full event-to-message reducer
+ * internally: its RxJS pipeline rebuilds the complete message list (deltas
+ * concatenated, tool-call args assembled, snapshots/deltas applied) and hands
+ * it to `onMessagesChanged` on *every* change — including each streaming
+ * delta. So this subscriber is a **view, not a reducer**: it mirrors the
+ * reconstructed messages verbatim instead of re-deriving them. The only
+ * stateful concern it owns is executing frontend tools and queueing their
+ * results for a follow-up run (`pendingToolMessages` is kept as a private
+ * closure so callers can't clear it mid-run).
  */
 export function createAgentSubscriber({
   state,
   getTools,
   onNeedsReRun,
+  collectEvents = false,
 }: CreateAgentSubscriberOptions): AgentSubscriber {
   let pendingToolMessages: Message[] = [];
 
   // Plain, non-reactive accumulator that is the source of truth for the
-  // event list. We must NOT read `state.events` back into
+  // opt-in event timeline. We must NOT read `state.events` back into
   // `compactEventsExtended`: in production `state` is a Qwik `useStore`
   // proxy, so its array elements come back as reactive proxies. For
   // STATE_SNAPSHOT/STATE_DELTA events `compactEvents` deep-clones the payload
   // via `structuredClone`, which throws `DataCloneError` on a Qwik proxy
   // (the proxy's hidden container references aren't cloneable). Keeping the
   // accumulator here guarantees the cloner only ever sees plain objects.
-  let events: BaseEvent[] = [...state.events];
+  let events: BaseEvent[] = collectEvents ? [...state.events] : [];
 
   return {
     onRunInitialized() {
       state.isRunning = true;
+      state.error = null;
     },
 
-    onEvent({ messages: newMessages, event }) {
-      if (state.messages.length < newMessages.length) {
-        state.messages.push(...newMessages.slice(state.messages.length));
-      }
+    // Single source of truth for the message list. The SDK fires this with a
+    // freshly-rebuilt array after every mutation (including each streaming
+    // delta), so there are no per-delta handlers, no `findLast`, and no
+    // tail-append heuristics. We reconcile in place rather than reassigning:
+    // swapping in the SDK's new object identities each delta would defeat the
+    // renderer's fine-grained reactivity (see reconcile-messages.ts).
+    onMessagesChanged({ messages }) {
+      reconcileMessages(state.messages, messages);
+    },
+
+    // Opt-in raw-event timeline, fully isolated from message handling.
+    onEvent({ event }) {
+      if (!collectEvents) return;
       events = compactEventsExtended([...events, event]);
       state.events = events;
     },
 
-    onTextMessageContentEvent({ event }) {
-      const msg = state.messages.findLast((m) => m.role === "assistant");
-      if (msg) msg.content = (msg.content ?? "") + event.delta;
-    },
-
-    onReasoningMessageContentEvent({ event }) {
-      const msg = state.messages.findLast((m) => m.role === "reasoning");
-      if (msg) msg.content = (msg.content ?? "") + event.delta;
-    },
-
-    onActivityDeltaEvent({ activityMessage }) {
-      const msg = state.messages.findLast((m) => m.role === "activity");
-      if (msg && activityMessage) msg.content = activityMessage.content;
-    },
-
-    onToolCallArgsEvent({ event }) {
-      const msg = state.messages.findLast((m) => m.role === "assistant");
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const toolCall = (msg as any)?.toolCalls?.find(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (tc: any) => tc.id === event.toolCallId,
-      );
-      if (toolCall) toolCall.function.arguments += event.delta;
-    },
-
-    async onToolCallEndEvent({ event, toolCallName }) {
-      const registry = getTools();
-      const tool = registry[toolCallName];
+    // Frontend-executed tool. The SDK has already assembled and JSON-parsed
+    // the arguments by the time this fires, so read `toolCallArgs` directly
+    // rather than re-parsing the message copy.
+    async onToolCallEndEvent({ event, toolCallName, toolCallArgs }) {
+      const tool = getTools()[toolCallName];
       if (!tool) return;
-      const msg = state.messages.findLast((m) => m.role === "assistant");
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const toolCall = (msg as any)?.toolCalls?.find(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (tc: any) => tc.id === event.toolCallId,
-      );
-      const args = toolCall?.function.arguments
-        ? JSON.parse(toolCall.function.arguments)
-        : {};
       pendingToolMessages.push({
         id: v7(),
         role: "tool",
-        content: JSON.stringify(await tool.execute(args)),
+        content: JSON.stringify(await tool.execute(toolCallArgs)),
         toolCallId: event.toolCallId,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any);
@@ -126,10 +121,12 @@ export function createAgentSubscriber({
 
     onRunFailed({ error }) {
       state.error = error.message;
+      state.isRunning = false;
     },
 
     onRunErrorEvent({ event }) {
       state.error = event.message;
+      state.isRunning = false;
     },
   };
 }
