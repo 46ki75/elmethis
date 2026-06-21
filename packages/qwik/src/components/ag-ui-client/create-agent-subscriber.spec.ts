@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import type { AgentSubscriber, Message } from "@ag-ui/client";
+import type { AgentSubscriber, BaseEvent, Message } from "@ag-ui/client";
 import { z } from "zod";
 
 import {
@@ -430,5 +430,61 @@ describe("createAgentSubscriber", () => {
     });
     expect(state.events).not.toBe(beforeEvents); // new array reference
     expect(state.events).toHaveLength(2);
+  });
+
+  test("does not feed reactive store reads back into structuredClone (state events)", () => {
+    // Regression: production `state` is a Qwik `useStore` proxy, so reading
+    // `state.events` back returns reactive proxies. For STATE_SNAPSHOT/
+    // STATE_DELTA events `compactEvents` deep-clones the payload via
+    // `structuredClone`, which throws `DataCloneError` on a proxy. We simulate
+    // that here with a getter that "poisons" reads with a non-cloneable value;
+    // the subscriber must read its own plain accumulator instead, so a second
+    // state event compacts without throwing.
+    let backing: BaseEvent[] = [];
+    const state = {
+      error: null,
+      messages: [] as Message[],
+      isRunning: false,
+      get events() {
+        return backing.map((e) =>
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (e as any).type === "STATE_SNAPSHOT"
+            ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              { ...e, snapshot: { ...(e as any).snapshot, fn: () => {} } }
+            : e,
+        );
+      },
+      set events(v: BaseEvent[]) {
+        backing = v;
+      },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any as AgentSubscriberState;
+
+    const sub = createAgentSubscriber({
+      state,
+      getTools: () => ({}),
+      onNeedsReRun: vi.fn(),
+    });
+
+    call(sub, "onEvent", {
+      messages: [],
+      event: { type: "STATE_SNAPSHOT", snapshot: { a: 1 } },
+    });
+    expect(() =>
+      call(sub, "onEvent", {
+        messages: [],
+        event: {
+          type: "STATE_DELTA",
+          delta: [{ op: "add", path: "/b", value: 2 }],
+        },
+      }),
+    ).not.toThrow();
+
+    // Both state events collapse into one merged STATE_SNAPSHOT.
+    expect(backing).toHaveLength(1);
+    expect(backing[0]).toMatchObject({
+      type: "STATE_SNAPSHOT",
+      snapshot: { a: 1, b: 2 },
+    });
   });
 });
