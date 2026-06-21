@@ -225,6 +225,17 @@ const meta: Meta<UseAgentProps> = {
         "http://localhost:19101/copilotkit/mastra/agent/minimax-m2.5/run",
         "http://localhost:19101/copilotkit/mastra/agent/minimax-m2.5-free/run",
         "http://localhost:19101/copilotkit/mastra/agent/kimi-k2.6/run",
+        // @elmethis/ag-ui-stub — deterministic, LLM-free scenarios
+        // (packages/ag-ui-stub). Append `?delay=<ms>` to pace the stream.
+        "http://localhost:19103/stub/agent/full/run",
+        "http://localhost:19103/stub/agent/text-stream/run",
+        "http://localhost:19103/stub/agent/tool-call/run",
+        "http://localhost:19103/stub/agent/state/run",
+        "http://localhost:19103/stub/agent/reasoning/run",
+        "http://localhost:19103/stub/agent/interrupt/run",
+        "http://localhost:19103/stub/agent/messages-snapshot/run",
+        "http://localhost:19103/stub/agent/error/run",
+        "http://localhost:19103/stub/agent/long-stream/run",
       ],
     },
     mcpUrl: {
