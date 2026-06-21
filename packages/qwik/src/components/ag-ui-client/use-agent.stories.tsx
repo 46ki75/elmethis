@@ -210,7 +210,7 @@ const meta: Meta<UseAgentProps> = {
   tags: ["autodocs"],
   args: {
     url: "http://localhost:19101/copilotkit/claude/agent/haiku/run",
-    mcpUrl: "http://localhost:19102/mcp",
+    mcpUrl: "http://localhost:19101/mcp",
   },
   argTypes: {
     url: {
@@ -236,8 +236,9 @@ const meta: Meta<UseAgentProps> = {
     },
     mcpUrl: {
       description:
-        "Streamable HTTP endpoint for the Weather MCP server (packages/mcp-server). " +
-        "Its tools are merged into useAgent under the `weather__` prefix.",
+        "Streamable HTTP endpoint for the stub Weather MCP server (served by " +
+        "packages/copilotkit at /mcp). Its tools are merged into useAgent " +
+        "under the `weather__` prefix.",
       control: "text",
     },
   },
