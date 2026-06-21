@@ -18,7 +18,7 @@ const UseMcpToolsDemo = component$<UseMcpToolsProps>(
       servers: [{ id: "demo", url: mcpUrl }],
     });
 
-    const { state, send$, retry$, abort$ } = useAgent({
+    const { state, send$, retry$, abort$, dequeue$ } = useAgent({
       url: agentUrl,
       tools,
     });
@@ -55,6 +55,7 @@ const UseMcpToolsDemo = component$<UseMcpToolsProps>(
             send$={send$}
             retry$={retry$}
             abort$={abort$}
+            dequeue$={dequeue$}
             class={className}
             style={style}
           />

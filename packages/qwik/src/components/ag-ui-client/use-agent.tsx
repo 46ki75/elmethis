@@ -257,6 +257,14 @@ export function useAgent({
     state.activity = "idle";
   });
 
+  // Remove one specific queued message (the per-chip "×"), as opposed to
+  // `abort`'s newest-first unwind. A no-op if the id has already drained.
+  const dequeue = $((id: string) => {
+    const index = state.queue.findIndex((q) => q.id === id);
+    if (index === -1) return;
+    state.queue.splice(index, 1);
+  });
+
   const setContext = $(
     (newContext: { value: string; description: string }[]) => {
       state.context = newContext;
@@ -276,6 +284,7 @@ export function useAgent({
     send$: send,
     retry$: retry,
     abort$: abort,
+    dequeue$: dequeue,
     addTool$: addTool,
     setContext$: setContext,
     setPromptTemplates$: setPromptTemplates,

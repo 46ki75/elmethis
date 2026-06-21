@@ -85,6 +85,22 @@
             white-space: nowrap;
             text-overflow: ellipsis;
           }
+
+          .queue-item-remove {
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.125rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            color: var(--elmethis-color-neutral);
+            transition: background-color 200ms;
+
+            &:hover {
+              background-color: oklch(from gray l c h / 25%);
+            }
+          }
         }
       }
 

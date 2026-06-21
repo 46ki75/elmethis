@@ -10,6 +10,7 @@ import {
 import {
   mdiAlert,
   mdiClockOutline,
+  mdiClose,
   mdiForumOutline,
   mdiRefresh,
 } from "@mdi/js";
@@ -30,6 +31,8 @@ export interface ElmAgUiAgentProps {
   send$: QRL<(content: InputContent[]) => Promise<void> | void>;
   retry$: QRL<() => Promise<void> | void>;
   abort$: QRL<() => void>;
+  /** Remove one specific message from the run queue (the per-chip "×"). */
+  dequeue$: QRL<(id: string) => void>;
   /**
    * @default "clamp(300px, 100%, 600px)"
    */
@@ -73,6 +76,7 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
     send$,
     retry$,
     abort$,
+    dequeue$,
     width = "clamp(300px, 100%, 600px)",
     class: className,
     style,
@@ -114,6 +118,15 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
         (item) => ({ ...item }) as InputContent,
       ),
     );
+  });
+
+  // Delegated handler shared across every queue chip's "×" — the id rides on
+  // the element's data attribute rather than a per-iteration closure, which
+  // over-captures under the optimizer (see [[feedback_qwik_qrl_in_jsx_iteration]],
+  // and the prompt-template chips above for the same pattern).
+  const onDequeueClick$ = $((_event: Event, element: Element) => {
+    const id = element.getAttribute("data-queue-id");
+    if (id) dequeue$(id);
   });
 
   const onInput$ = $((_event: InputEvent, element: HTMLTextAreaElement) => {
@@ -193,6 +206,14 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
                     <ElmInlineText>
                       {queuePreview(queued.content)}
                     </ElmInlineText>
+                  </span>
+                  <span
+                    class={styles["queue-item-remove"]}
+                    data-queue-id={queued.id}
+                    onClick$={onDequeueClick$}
+                    aria-label="Remove from queue"
+                  >
+                    <ElmMdiIcon d={mdiClose} size="0.875rem" />
                   </span>
                 </div>
               ))}

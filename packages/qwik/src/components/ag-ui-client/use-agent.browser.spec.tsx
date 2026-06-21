@@ -85,11 +85,17 @@ vi.mock("@ag-ui/client", async (importOriginal) => {
 });
 
 const QueueHarness = component$(() => {
-  const { state, send$, retry$, abort$ } = useAgent({
+  const { state, send$, retry$, abort$, dequeue$ } = useAgent({
     url: "http://test.local/run",
   });
   return (
-    <ElmAgUiAgent state={state} send$={send$} retry$={retry$} abort$={abort$} />
+    <ElmAgUiAgent
+      state={state}
+      send$={send$}
+      retry$={retry$}
+      abort$={abort$}
+      dequeue$={dequeue$}
+    />
   );
 });
 
@@ -124,6 +130,18 @@ describe("[CSR] useAgent — message queue", () => {
 
   const stopButton = (screen: Screen) =>
     screen.container.querySelector('[aria-label="Stop"]');
+
+  /** Click the "×" on the queue chip whose text contains `body`. */
+  function removeFromQueue(screen: Screen, body: string) {
+    const container = screen.container.querySelector(
+      '[class*="queue-container"]',
+    );
+    const chip = Array.from(container?.children ?? []).find((c) =>
+      (c.textContent ?? "").includes(body),
+    );
+    const button = chip?.querySelector('[aria-label="Remove from queue"]');
+    (button as HTMLElement).click();
+  }
 
   test("queues while running, stop pops newest, then drains FIFO on completion", async () => {
     const screen = await render(<QueueHarness />);
@@ -163,6 +181,31 @@ describe("[CSR] useAgent — message queue", () => {
     // Nothing left queued — the next completion settles to idle.
     bridge().finish?.();
     await vi.waitFor(() => expect(stopButton(screen)).toBeNull());
+    expect(bridge().aborted).toBe(0);
+  });
+
+  test("a queue chip's remove button drops that specific message", async () => {
+    const screen = await render(<QueueHarness />);
+    await vi.waitFor(() => expect(bridge().constructed).toBe(true));
+
+    await send(screen, "first");
+    await vi.waitFor(() => expect(stopButton(screen)).not.toBeNull());
+
+    await send(screen, "second");
+    await send(screen, "third");
+    await send(screen, "fourth");
+    await vi.waitFor(() =>
+      expect(queueTexts(screen)).toEqual(["second", "third", "fourth"]),
+    );
+
+    // Remove the middle chip — not the newest (that is the stop button's job).
+    removeFromQueue(screen, "third");
+    await vi.waitFor(() =>
+      expect(queueTexts(screen)).toEqual(["second", "fourth"]),
+    );
+
+    // The live run is untouched.
+    expect(stopButton(screen)).not.toBeNull();
     expect(bridge().aborted).toBe(0);
   });
 

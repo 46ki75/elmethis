@@ -34,10 +34,17 @@ export const FixedWord: Story = {
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const WithLLMRender = component$((args: UseWordleOptions) => {
-  const { state, send$, retry$, abort$, addTool$, setPromptTemplates$ } =
-    useAgent({
-      url: "http://localhost:19101/copilotkit/wordle/agent/default/run",
-    });
+  const {
+    state,
+    send$,
+    retry$,
+    abort$,
+    dequeue$,
+    addTool$,
+    setPromptTemplates$,
+  } = useAgent({
+    url: "http://localhost:19101/copilotkit/wordle/agent/default/run",
+  });
 
   const {
     Wordle,
@@ -168,6 +175,7 @@ const WithLLMRender = component$((args: UseWordleOptions) => {
           send$={send$}
           retry$={retry$}
           abort$={abort$}
+          dequeue$={dequeue$}
           enableAutoScroll
         />
       </div>

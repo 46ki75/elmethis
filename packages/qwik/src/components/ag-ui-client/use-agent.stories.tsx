@@ -146,11 +146,12 @@ const UseAgent = component$<UseAgentProps>(
       });
     });
 
-    const { state, send$, retry$, abort$, setPromptTemplates$ } = useAgent({
-      url,
-      context,
-      tools: mergedTools,
-    });
+    const { state, send$, retry$, abort$, dequeue$, setPromptTemplates$ } =
+      useAgent({
+        url,
+        context,
+        tools: mergedTools,
+      });
 
     useTask$(() => {
       context.push({
@@ -195,6 +196,7 @@ const UseAgent = component$<UseAgentProps>(
         send$={send$}
         retry$={retry$}
         abort$={abort$}
+        dequeue$={dequeue$}
         class={className}
         style={style}
         prompts={pickerPrompts.value}
