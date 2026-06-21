@@ -218,6 +218,53 @@ describe("createAgentSubscriber", () => {
     expect(onNeedsReRun).not.toHaveBeenCalled();
   });
 
+  test("onRunFinalized fires onIdle when no tool round-trip is pending", async () => {
+    const state = makeState({ isRunning: true, status: "success" });
+    const onIdle = vi.fn();
+    const sub = createAgentSubscriber({
+      state,
+      getTools: () => ({}),
+      onNeedsReRun: vi.fn(),
+      onIdle,
+    });
+
+    await call(sub, "onRunFinalized");
+
+    expect(onIdle).toHaveBeenCalledTimes(1);
+    expect(state.isRunning).toBe(false);
+  });
+
+  test("onRunFinalized does NOT fire onIdle while a tool round-trip is pending", async () => {
+    const tools: ToolRegistry = {
+      echo: defineTool({
+        description: "echo",
+        schema: z.object({ v: z.string() }),
+        execute: ({ v }) => v,
+      }),
+    };
+    const state = makeState();
+    const onIdle = vi.fn();
+    const sub = createAgentSubscriber({
+      state,
+      getTools: () => tools,
+      onNeedsReRun: vi.fn(),
+      onIdle,
+    });
+
+    await call(sub, "onToolCallEndEvent", {
+      event: { toolCallId: "tc1" },
+      toolCallName: "echo",
+      toolCallArgs: { v: "x" },
+    });
+    // A follow-up run is imminent (onNeedsReRun path) — idle has NOT settled.
+    await call(sub, "onRunFinalized");
+    expect(onIdle).not.toHaveBeenCalled();
+
+    // The follow-up run finalizes with nothing pending — now idle fires.
+    await call(sub, "onRunFinalized");
+    expect(onIdle).toHaveBeenCalledTimes(1);
+  });
+
   test("onRunFinalized with pending fires onNeedsReRun once; second call does not re-fire", async () => {
     const tools: ToolRegistry = {
       echo: defineTool({

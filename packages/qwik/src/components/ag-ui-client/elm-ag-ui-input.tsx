@@ -308,15 +308,29 @@ export const ElmAgUiInput = component$<ElmAgUiInputProps>(
               </div>
             )}
 
+            {/*
+              Send and stop are now separate controls (they used to be one
+              toggling button). The send button is always present so the user
+              can compose while a run streams — `onSubmit$` enqueues in that
+              case. The stop button only appears mid-run; one click peels off
+              a queued message, and the last click aborts the run.
+            */}
+            {isRunning && (
+              <div
+                class={styles["stop-button"]}
+                onClick$={onAbort$}
+                aria-label="Stop"
+              >
+                <ElmMdiIcon d={mdiStop} size="1rem" color="white" />
+              </div>
+            )}
+
             <div
               class={styles["submit-button"]}
-              onClick$={isRunning ? onAbort$ : onSubmit}
+              onClick$={onSubmit}
+              aria-label="Send"
             >
-              <ElmMdiIcon
-                d={isRunning ? mdiStop : mdiSend}
-                size="1rem"
-                color="white"
-              />
+              <ElmMdiIcon d={mdiSend} size="1rem" color="white" />
             </div>
           </div>
         </div>

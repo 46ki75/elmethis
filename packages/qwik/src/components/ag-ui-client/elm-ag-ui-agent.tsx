@@ -7,7 +7,12 @@ import {
   type ClassList,
   type CSSProperties,
 } from "@qwik.dev/core";
-import { mdiAlert, mdiForumOutline, mdiRefresh } from "@mdi/js";
+import {
+  mdiAlert,
+  mdiClockOutline,
+  mdiForumOutline,
+  mdiRefresh,
+} from "@mdi/js";
 import type { InputContent } from "@ag-ui/client";
 
 import styles from "./elm-ag-ui-agent.module.css";
@@ -52,6 +57,15 @@ export interface ElmAgUiAgentProps {
     ) => Promise<InputContent[] | null>
   >;
 }
+
+/** One-line label for a queued message — its first text block, else a
+ *  generic stand-in for attachment-only content. */
+const queuePreview = (content: InputContent[]): string => {
+  const textBlock = content.find(
+    (block): block is { type: "text"; text: string } => block.type === "text",
+  );
+  return textBlock?.text ?? "Attachment";
+};
 
 export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
   const {
@@ -164,6 +178,25 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
               status={state.status}
               activity={state.activity}
             />
+          )}
+
+          {state.queue.length > 0 && (
+            <div class={styles["queue-container"]}>
+              {state.queue.map((queued) => (
+                <div key={queued.id} class={styles["queue-item"]}>
+                  <ElmMdiIcon
+                    class={styles["queue-item-icon"]}
+                    d={mdiClockOutline}
+                    size="1rem"
+                  />
+                  <span class={styles["queue-item-text"]}>
+                    <ElmInlineText>
+                      {queuePreview(queued.content)}
+                    </ElmInlineText>
+                  </span>
+                </div>
+              ))}
+            </div>
           )}
 
           {!state.isRunning && (

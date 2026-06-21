@@ -57,6 +57,12 @@ export interface UseAgentOptions {
   }) => AbstractAgent;
 }
 
+/** A user message composed while a run was in flight, waiting its turn. */
+export interface QueuedMessage {
+  id: string;
+  content: InputContent[];
+}
+
 export interface AgentState {
   error: string | null;
   messages: Message[];
@@ -69,6 +75,13 @@ export interface AgentState {
   /** Unresolved interrupts from the last run (human-in-the-loop). */
   pendingInterrupts: Interrupt[];
   promptTemplates: { description: string; content: InputContent[] }[];
+  /**
+   * Messages submitted while a run was in flight, held FIFO. They are sent
+   * one at a time as each run settles successfully (see `onIdle` wiring).
+   * `send$` appends here instead of starting a run when `isRunning`; `abort$`
+   * pops the newest entry before it will abort an actual run.
+   */
+  queue: QueuedMessage[];
 }
 
 export function useAgent({
@@ -99,6 +112,7 @@ export function useAgent({
     activity: "idle",
     pendingInterrupts: [],
     promptTemplates: [],
+    queue: [],
   });
 
   const executeRun = $(async (withContext: boolean) => {
@@ -154,6 +168,29 @@ export function useAgent({
             agentRef.value.messages.push(...pending);
             await executeRun(false);
           },
+          // The run just settled. If it succeeded and the user queued
+          // messages while it was streaming, send the oldest one now — each
+          // settle drains exactly one, so the chain continues until empty.
+          // On error/abort we leave the queue untouched.
+          onIdle: async () => {
+            if (!agentRef.value) return;
+            if (state.status !== "success") return;
+            const next = state.queue.shift();
+            if (!next) return;
+            const userMessage: UserMessage = {
+              id: next.id,
+              role: "user",
+              // Spread each item to plain objects — HttpAgent structuredClones
+              // messages before sending, which throws on Qwik store proxies
+              // (the queued content has been living in the reactive store).
+              content: next.content.map(
+                (item) => ({ ...item }) as InputContent,
+              ),
+            };
+            agentRef.value.messages.push(userMessage);
+            state.messages.push(userMessage);
+            await executeRun(true);
+          },
         }),
       );
 
@@ -166,6 +203,12 @@ export function useAgent({
 
   const send = $(async (content: InputContent[]) => {
     if (!agentRef.value) return;
+    // A run is in flight — hold the message instead of starting a competing
+    // run. It drains FIFO once the current run settles (see `onIdle`).
+    if (state.isRunning) {
+      state.queue.push({ id: v7(), content });
+      return;
+    }
     const userMessage: UserMessage = {
       id: v7(),
       role: "user",
@@ -202,6 +245,12 @@ export function useAgent({
 
   const abort = $(() => {
     if (!agentRef.value) return;
+    // Stop is a single gesture: it first unwinds queued messages newest-first
+    // (an undo), and only aborts the live run once nothing is left queued.
+    if (state.queue.length > 0) {
+      state.queue.pop();
+      return;
+    }
     agentRef.value.abortRun();
     state.status = "aborted";
     state.isRunning = false;

@@ -78,6 +78,16 @@ export interface CreateAgentSubscriberOptions {
    * factory itself stays transport-agnostic.
    */
   onNeedsReRun: (pendingToolMessages: Message[]) => unknown | Promise<unknown>;
+  /**
+   * Called from `onRunFinalized` once a run has fully settled to idle — i.e.
+   * no frontend-tool round-trip is pending and `isRunning` was just set to
+   * `false`. Fires on *every* terminal path (success, error, abort), so the
+   * handler must inspect `state.status` itself if it only cares about clean
+   * completions. Production wires this to drain any user messages queued
+   * while the run was in flight (see `useAgent`); the factory stays
+   * transport-agnostic and owns no queue.
+   */
+  onIdle?: () => unknown | Promise<unknown>;
 }
 
 /**
@@ -97,6 +107,7 @@ export function createAgentSubscriber({
   state,
   getTools,
   onNeedsReRun,
+  onIdle,
 }: CreateAgentSubscriberOptions): AgentSubscriber {
   let pendingToolMessages: Message[] = [];
 
@@ -179,6 +190,9 @@ export function createAgentSubscriber({
       if (pendingToolMessages.length === 0) {
         state.isRunning = false;
         state.activity = "idle";
+        // The run has fully settled — let the caller drain anything queued
+        // while it was in flight (it decides whether to act on the status).
+        await onIdle?.();
         return;
       }
       const drained = pendingToolMessages;
