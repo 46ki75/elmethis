@@ -13,6 +13,7 @@ import type { InputContent } from "@ag-ui/client";
 import styles from "./elm-ag-ui-agent.module.css";
 
 import { ElmAgUiMessageRenderer } from "./elm-ag-ui-message-renderer";
+import { ElmAgUiStatus } from "./elm-ag-ui-status";
 import { ElmAgUiInput } from "./elm-ag-ui-input";
 import type { ElmAgUiPromptDescriptor } from "./elm-ag-ui-prompt-picker";
 import { ElmInlineText } from "../typography/elm-inline-text";
@@ -132,6 +133,15 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
             messages={state.messages}
             handleRetry$={retry$}
           />
+
+          {(state.status === "running" ||
+            state.status === "awaiting_input") && (
+            <ElmAgUiStatus
+              class={styles["status"]}
+              status={state.status}
+              activity={state.activity}
+            />
+          )}
 
           {state.error && (
             <>

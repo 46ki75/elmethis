@@ -77,6 +77,10 @@ export {
   type ElmAgUiToolExecutionProps,
 } from "./components/ag-ui-client/elm-ag-ui-tool-execution";
 export {
+  ElmAgUiStatus,
+  type ElmAgUiStatusProps,
+} from "./components/ag-ui-client/elm-ag-ui-status";
+export {
   ElmAgUiInputContent,
   type ElmAgUiInputContentImageProps,
 } from "./components/ag-ui-client/input-content/elm-ag-ui-input-content";

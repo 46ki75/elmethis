@@ -24,6 +24,10 @@
       margin: 0;
       padding: 0 0 50dvh;
 
+      .status {
+        padding: 0.5rem;
+      }
+
       .error {
         box-sizing: border-box;
         padding: 0.5rem;

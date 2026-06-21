@@ -1,9 +1,42 @@
 import type { AgentSubscriber, BaseEvent, Message } from "@ag-ui/client";
+import type { Interrupt } from "@ag-ui/core";
 import { v7 } from "uuid";
 
 import { compactEventsExtended } from "./compactEventsExtended";
 import { reconcileMessages } from "./reconcile-messages";
 import type { ToolRegistry } from "./tool-registry";
+
+/**
+ * Coarse run lifecycle, derived from the AG-UI `RUN_*` events:
+ *
+ * - `idle` — no run in flight (initial, or finished and consumed).
+ * - `running` — a run is active (`RUN_STARTED` … before `RUN_FINISHED`).
+ * - `success` — the last run finished with `outcome: "success"`.
+ * - `awaiting_input` — the last run finished with `outcome: "interrupt"`;
+ *   `pendingInterrupts` is populated and a resume run is expected.
+ * - `error` — the run failed (`RUN_ERROR`, or the transport threw).
+ * - `aborted` — the caller cancelled via `abortRun()`.
+ */
+export type AgentRunStatus =
+  | "idle"
+  | "running"
+  | "success"
+  | "awaiting_input"
+  | "error"
+  | "aborted";
+
+/**
+ * What the agent is doing *right now* within a run, derived from the streaming
+ * sub-event triads. Reflects the most recently started sub-activity and resets
+ * to `idle` at run boundaries — it is a presentation hint, not a precise
+ * state machine (overlapping activities collapse to the latest one).
+ */
+export type AgentActivity =
+  | "idle"
+  | "thinking"
+  | "writing"
+  | "calling_tool"
+  | "updating_state";
 
 /**
  * Minimal writable view of the agent state the subscriber mutates. The hook
@@ -14,6 +47,22 @@ export interface AgentSubscriberState {
   messages: Message[];
   events: BaseEvent[];
   isRunning: boolean;
+  /** Coarse run lifecycle — see {@link AgentRunStatus}. */
+  status: AgentRunStatus;
+  /** Live in-run activity hint — see {@link AgentActivity}. */
+  activity: AgentActivity;
+  /**
+   * Unresolved interrupts from the most recent run, populated when
+   * `RUN_FINISHED` arrives with `outcome === "interrupt"`. Cleared when the
+   * next run starts (the resume).
+   */
+  pendingInterrupts: Interrupt[];
+}
+
+/** AbortController-driven cancellation surfaces as a DOMException/Error
+ *  named "AbortError"; treat it as a user abort, not a failure. */
+function isAbortError(error: Error): boolean {
+  return error.name === "AbortError";
 }
 
 export interface CreateAgentSubscriberOptions {
@@ -74,7 +123,11 @@ export function createAgentSubscriber({
   return {
     onRunInitialized() {
       state.isRunning = true;
+      state.status = "running";
+      state.activity = "idle";
       state.error = null;
+      // A fresh run resolves any interrupts the previous one was waiting on.
+      state.pendingInterrupts = [];
     },
 
     // Single source of truth for the message list. The SDK fires this with a
@@ -109,9 +162,50 @@ export function createAgentSubscriber({
       } as any);
     },
 
+    // Live activity hints. Each streaming sub-event triad opens with a START
+    // that names the current activity; we set the latest one and let the run
+    // boundary reset it to idle. These are presentation-only, so they don't
+    // need the precision of the message/lifecycle paths.
+    onTextMessageStartEvent() {
+      state.activity = "writing";
+    },
+    onToolCallStartEvent() {
+      state.activity = "calling_tool";
+    },
+    onReasoningStartEvent() {
+      state.activity = "thinking";
+    },
+    onReasoningMessageStartEvent() {
+      state.activity = "thinking";
+    },
+    onStateSnapshotEvent() {
+      state.activity = "updating_state";
+    },
+    onStateDeltaEvent() {
+      state.activity = "updating_state";
+    },
+
+    // Distinguish the terminal outcome of a run. `outcome: "interrupt"` means
+    // the agent paused for human input (HITL) — surface the interrupts so the
+    // UI can prompt and resume. A plain success is left as-is when a frontend
+    // tool round-trip is queued, since `onRunFinalized` will immediately start
+    // a follow-up run and we don't want to flash "success" in between.
+    onRunFinishedEvent(params) {
+      state.activity = "idle";
+      if (params.outcome === "interrupt") {
+        state.status = "awaiting_input";
+        state.pendingInterrupts = [...params.interrupts];
+        return;
+      }
+      if (pendingToolMessages.length === 0) {
+        state.status = "success";
+      }
+    },
+
     async onRunFinalized() {
       if (pendingToolMessages.length === 0) {
         state.isRunning = false;
+        state.activity = "idle";
         return;
       }
       const drained = pendingToolMessages;
@@ -120,13 +214,22 @@ export function createAgentSubscriber({
     },
 
     onRunFailed({ error }) {
-      state.error = error.message;
       state.isRunning = false;
+      state.activity = "idle";
+      // A user-initiated abort is not a failure; keep it out of the error slot.
+      if (isAbortError(error)) {
+        state.status = "aborted";
+        return;
+      }
+      state.error = error.message;
+      state.status = "error";
     },
 
     onRunErrorEvent({ event }) {
       state.error = event.message;
+      state.status = "error";
       state.isRunning = false;
+      state.activity = "idle";
     },
   };
 }

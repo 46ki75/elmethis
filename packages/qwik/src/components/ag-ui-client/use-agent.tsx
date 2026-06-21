@@ -17,6 +17,7 @@ import {
   type Message,
   type UserMessage,
 } from "@ag-ui/client";
+import type { Interrupt } from "@ag-ui/core";
 import { v7 } from "uuid";
 
 import {
@@ -24,7 +25,11 @@ import {
   type ToolRegistry,
   getToolDefinitions,
 } from "./tool-registry";
-import { createAgentSubscriber } from "./create-agent-subscriber";
+import {
+  createAgentSubscriber,
+  type AgentActivity,
+  type AgentRunStatus,
+} from "./create-agent-subscriber";
 import { normalizePromptTemplates } from "./normalize-prompt-templates";
 
 export interface UseAgentOptions {
@@ -65,6 +70,12 @@ export interface AgentState {
   events: BaseEvent[];
   context?: { value: string; description: string }[];
   isRunning: boolean;
+  /** Coarse run lifecycle — see {@link AgentRunStatus}. */
+  status: AgentRunStatus;
+  /** Live in-run activity hint — see {@link AgentActivity}. */
+  activity: AgentActivity;
+  /** Unresolved interrupts from the last run (human-in-the-loop). */
+  pendingInterrupts: Interrupt[];
   promptTemplates: { description: string; content: InputContent[] }[];
 }
 
@@ -97,6 +108,9 @@ export function useAgent({
     events: [],
     context,
     isRunning: false,
+    status: "idle",
+    activity: "idle",
+    pendingInterrupts: [],
     promptTemplates: [],
   });
 
@@ -118,6 +132,9 @@ export function useAgent({
       });
     } catch {
       state.isRunning = false;
+      // The lifecycle hooks own `error`/`aborted`; only fall back to a generic
+      // error status if the throw bypassed them while a run was still live.
+      if (state.status === "running") state.status = "error";
     }
   });
 
@@ -198,7 +215,11 @@ export function useAgent({
   });
 
   const abort = $(() => {
-    agentRef.value?.abortRun();
+    if (!agentRef.value) return;
+    agentRef.value.abortRun();
+    state.status = "aborted";
+    state.isRunning = false;
+    state.activity = "idle";
   });
 
   const setContext = $(

@@ -29,6 +29,9 @@ describe("[CSR] ElmAgUiMessageRenderer — streaming assistant content repaints"
         messages: [{ id: "a1", role: "assistant", content: "" } as any],
         events: [],
         isRunning: true,
+        status: "running",
+        activity: "writing",
+        pendingInterrupts: [],
       });
 
       // Mimic one streaming delta: the SDK hands a brand-new array of

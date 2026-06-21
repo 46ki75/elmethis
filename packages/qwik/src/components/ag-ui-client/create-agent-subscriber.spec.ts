@@ -20,6 +20,9 @@ function makeState(
     messages: [],
     events: [],
     isRunning: false,
+    status: "idle",
+    activity: "idle",
+    pendingInterrupts: [],
     ...overrides,
   };
 }
@@ -330,6 +333,148 @@ describe("createAgentSubscriber", () => {
 
     expect(state.error).toBe("transport down");
     expect(state.isRunning).toBe(false);
+    expect(state.status).toBe("error");
+  });
+
+  // -------------------------------------------------------------------------
+  // Run status + live activity (for status indicators).
+  // -------------------------------------------------------------------------
+
+  test("onRunInitialized enters running and clears prior interrupts", () => {
+    const state = makeState({
+      status: "awaiting_input",
+      activity: "thinking",
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      pendingInterrupts: [{ id: "i0" } as any],
+    });
+    const sub = createAgentSubscriber({
+      state,
+      getTools: () => ({}),
+      onNeedsReRun: vi.fn(),
+    });
+
+    call(sub, "onRunInitialized");
+
+    expect(state.status).toBe("running");
+    expect(state.activity).toBe("idle");
+    expect(state.pendingInterrupts).toEqual([]);
+  });
+
+  test("onRunFinishedEvent with a success outcome sets status=success", () => {
+    const state = makeState({ status: "running", activity: "writing" });
+    const sub = createAgentSubscriber({
+      state,
+      getTools: () => ({}),
+      onNeedsReRun: vi.fn(),
+    });
+
+    call(sub, "onRunFinishedEvent", { outcome: "success", event: {} });
+
+    expect(state.status).toBe("success");
+    expect(state.activity).toBe("idle");
+  });
+
+  test("onRunFinishedEvent stays running when a tool round-trip is queued", async () => {
+    const tools: ToolRegistry = {
+      echo: defineTool({
+        description: "echo",
+        schema: z.object({ v: z.string() }),
+        execute: ({ v }) => v,
+      }),
+    };
+    const state = makeState({ status: "running" });
+    const sub = createAgentSubscriber({
+      state,
+      getTools: () => tools,
+      onNeedsReRun: vi.fn(),
+    });
+
+    // A frontend tool result is pending, so a follow-up run is imminent — the
+    // success outcome must not flash "success" before it restarts.
+    await call(sub, "onToolCallEndEvent", {
+      event: { toolCallId: "tc1" },
+      toolCallName: "echo",
+      toolCallArgs: { v: "x" },
+    });
+    call(sub, "onRunFinishedEvent", { outcome: "success", event: {} });
+
+    expect(state.status).toBe("running");
+  });
+
+  test("onRunFinishedEvent with an interrupt awaits input and copies interrupts", () => {
+    const state = makeState({ status: "running" });
+    const sub = createAgentSubscriber({
+      state,
+      getTools: () => ({}),
+      onNeedsReRun: vi.fn(),
+    });
+
+    const interrupts = [{ id: "i1", reason: "confirmation" }];
+    call(sub, "onRunFinishedEvent", {
+      outcome: "interrupt",
+      interrupts,
+      event: {},
+    });
+
+    expect(state.status).toBe("awaiting_input");
+    expect(state.pendingInterrupts).toEqual(interrupts);
+    // Copied, not aliased — resuming must not mutate the SDK's own array.
+    expect(state.pendingInterrupts).not.toBe(interrupts);
+  });
+
+  test("onRunFailed maps an AbortError to status=aborted, not error", () => {
+    const state = makeState({ status: "running", isRunning: true });
+    const sub = createAgentSubscriber({
+      state,
+      getTools: () => ({}),
+      onNeedsReRun: vi.fn(),
+    });
+
+    const aborted = new Error("The operation was aborted");
+    aborted.name = "AbortError";
+    call(sub, "onRunFailed", { error: aborted });
+
+    expect(state.status).toBe("aborted");
+    expect(state.error).toBeNull();
+    expect(state.isRunning).toBe(false);
+  });
+
+  test("onRunFailed maps a real error to status=error", () => {
+    const state = makeState({ status: "running" });
+    const sub = createAgentSubscriber({
+      state,
+      getTools: () => ({}),
+      onNeedsReRun: vi.fn(),
+    });
+
+    call(sub, "onRunFailed", { error: new Error("boom") });
+
+    expect(state.status).toBe("error");
+    expect(state.error).toBe("boom");
+  });
+
+  test("activity tracks the latest started sub-activity and resets at run end", async () => {
+    const state = makeState();
+    const sub = createAgentSubscriber({
+      state,
+      getTools: () => ({}),
+      onNeedsReRun: vi.fn(),
+    });
+
+    call(sub, "onReasoningStartEvent", { event: {} });
+    expect(state.activity).toBe("thinking");
+
+    call(sub, "onTextMessageStartEvent", { event: {} });
+    expect(state.activity).toBe("writing");
+
+    call(sub, "onToolCallStartEvent", { event: {} });
+    expect(state.activity).toBe("calling_tool");
+
+    call(sub, "onStateDeltaEvent", { event: {} });
+    expect(state.activity).toBe("updating_state");
+
+    await call(sub, "onRunFinalized");
+    expect(state.activity).toBe("idle");
   });
 
   // -------------------------------------------------------------------------
