@@ -22,6 +22,12 @@ export default defineConfig({
   test: {
     name: "browser",
     include: ["src/**/*.browser.spec.tsx"],
+    // CI runs the whole browser layer against one shared Chromium with istanbul
+    // instrumentation; the 5s default is tight for multi-step interaction specs
+    // under that contention (a single drain→re-park→idle assertion alone can
+    // poll for seconds). Give every browser test room so slowness isn't read
+    // as a regression.
+    testTimeout: 15000,
     // Browser-layer coverage. Uses `istanbul`, not `v8`: v8's ast-v8-to-istanbul
     // remapper crashes on Qwik's optimizer-transformed output (QRL extraction),
     // whereas istanbul instruments the source directly and is unaffected. lcov is

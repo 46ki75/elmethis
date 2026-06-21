@@ -11,12 +11,12 @@ import {
 
 import {
   type AbstractAgent,
-  type BaseEvent,
   HttpAgent,
   type InputContent,
   type Message,
   type UserMessage,
 } from "@ag-ui/client";
+import type { Interrupt } from "@ag-ui/core";
 import { v7 } from "uuid";
 
 import {
@@ -24,7 +24,11 @@ import {
   type ToolRegistry,
   getToolDefinitions,
 } from "./tool-registry";
-import { createAgentSubscriber } from "./create-agent-subscriber";
+import {
+  createAgentSubscriber,
+  type AgentActivity,
+  type AgentRunStatus,
+} from "./create-agent-subscriber";
 import { normalizePromptTemplates } from "./normalize-prompt-templates";
 
 export interface UseAgentOptions {
@@ -53,13 +57,31 @@ export interface UseAgentOptions {
   }) => AbstractAgent;
 }
 
+/** A user message composed while a run was in flight, waiting its turn. */
+export interface QueuedMessage {
+  id: string;
+  content: InputContent[];
+}
+
 export interface AgentState {
   error: string | null;
   messages: Message[];
-  events: BaseEvent[];
   context?: { value: string; description: string }[];
   isRunning: boolean;
+  /** Coarse run lifecycle — see {@link AgentRunStatus}. */
+  status: AgentRunStatus;
+  /** Live in-run activity hint — see {@link AgentActivity}. */
+  activity: AgentActivity;
+  /** Unresolved interrupts from the last run (human-in-the-loop). */
+  pendingInterrupts: Interrupt[];
   promptTemplates: { description: string; content: InputContent[] }[];
+  /**
+   * Messages submitted while a run was in flight, held FIFO. They are sent
+   * one at a time as each run settles successfully (see `onIdle` wiring).
+   * `send$` appends here instead of starting a run when `isRunning`; `abort$`
+   * pops the newest entry before it will abort an actual run.
+   */
+  queue: QueuedMessage[];
 }
 
 export function useAgent({
@@ -84,10 +106,13 @@ export function useAgent({
   const state = useStore<AgentState>({
     error: null,
     messages: initialMessages ?? [],
-    events: [],
     context,
     isRunning: false,
+    status: "idle",
+    activity: "idle",
+    pendingInterrupts: [],
     promptTemplates: [],
+    queue: [],
   });
 
   const executeRun = $(async (withContext: boolean) => {
@@ -108,6 +133,9 @@ export function useAgent({
       });
     } catch {
       state.isRunning = false;
+      // The lifecycle hooks own `error`/`aborted`; only fall back to a generic
+      // error status if the throw bypassed them while a run was still live.
+      if (state.status === "running") state.status = "error";
     }
   });
 
@@ -140,6 +168,29 @@ export function useAgent({
             agentRef.value.messages.push(...pending);
             await executeRun(false);
           },
+          // The run just settled. If it succeeded and the user queued
+          // messages while it was streaming, send the oldest one now — each
+          // settle drains exactly one, so the chain continues until empty.
+          // On error/abort we leave the queue untouched.
+          onIdle: async () => {
+            if (!agentRef.value) return;
+            if (state.status !== "success") return;
+            const next = state.queue.shift();
+            if (!next) return;
+            const userMessage: UserMessage = {
+              id: next.id,
+              role: "user",
+              // Spread each item to plain objects — HttpAgent structuredClones
+              // messages before sending, which throws on Qwik store proxies
+              // (the queued content has been living in the reactive store).
+              content: next.content.map(
+                (item) => ({ ...item }) as InputContent,
+              ),
+            };
+            agentRef.value.messages.push(userMessage);
+            state.messages.push(userMessage);
+            await executeRun(true);
+          },
         }),
       );
 
@@ -152,6 +203,12 @@ export function useAgent({
 
   const send = $(async (content: InputContent[]) => {
     if (!agentRef.value) return;
+    // A run is in flight — hold the message instead of starting a competing
+    // run. It drains FIFO once the current run settles (see `onIdle`).
+    if (state.isRunning) {
+      state.queue.push({ id: v7(), content });
+      return;
+    }
     const userMessage: UserMessage = {
       id: v7(),
       role: "user",
@@ -187,7 +244,25 @@ export function useAgent({
   });
 
   const abort = $(() => {
-    agentRef.value?.abortRun();
+    if (!agentRef.value) return;
+    // Stop is a single gesture: it first unwinds queued messages newest-first
+    // (an undo), and only aborts the live run once nothing is left queued.
+    if (state.queue.length > 0) {
+      state.queue.pop();
+      return;
+    }
+    agentRef.value.abortRun();
+    state.status = "aborted";
+    state.isRunning = false;
+    state.activity = "idle";
+  });
+
+  // Remove one specific queued message (the per-chip "×"), as opposed to
+  // `abort`'s newest-first unwind. A no-op if the id has already drained.
+  const dequeue = $((id: string) => {
+    const index = state.queue.findIndex((q) => q.id === id);
+    if (index === -1) return;
+    state.queue.splice(index, 1);
   });
 
   const setContext = $(
@@ -209,6 +284,7 @@ export function useAgent({
     send$: send,
     retry$: retry,
     abort$: abort,
+    dequeue$: dequeue,
     addTool$: addTool,
     setContext$: setContext,
     setPromptTemplates$: setPromptTemplates,

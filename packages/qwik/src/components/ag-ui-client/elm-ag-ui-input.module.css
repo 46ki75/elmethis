@@ -55,8 +55,8 @@
 
   .button-row {
     display: grid;
-    grid-template-columns: auto 1fr auto;
-    grid-template-areas: "plus spacer send";
+    grid-template-columns: auto 1fr auto auto;
+    grid-template-areas: "plus spacer stop send";
     column-gap: 0.5rem;
     align-items: center;
   }
@@ -84,6 +84,23 @@
     height: 1.5rem;
     border-radius: 0.25rem;
     background-color: oklch(from black l c h / 75%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 200ms;
+
+    &:hover {
+      opacity: 0.75;
+    }
+  }
+
+  .stop-button {
+    grid-area: stop;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 0.25rem;
+    background-color: var(--elmethis-color-accent-error);
     display: flex;
     align-items: center;
     justify-content: center;

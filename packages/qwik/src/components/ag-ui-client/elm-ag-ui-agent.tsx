@@ -7,12 +7,19 @@ import {
   type ClassList,
   type CSSProperties,
 } from "@qwik.dev/core";
-import { mdiAlert, mdiForumOutline, mdiRefresh } from "@mdi/js";
+import {
+  mdiAlert,
+  mdiClockOutline,
+  mdiClose,
+  mdiForumOutline,
+  mdiRefresh,
+} from "@mdi/js";
 import type { InputContent } from "@ag-ui/client";
 
 import styles from "./elm-ag-ui-agent.module.css";
 
 import { ElmAgUiMessageRenderer } from "./elm-ag-ui-message-renderer";
+import { ElmAgUiStatus } from "./elm-ag-ui-status";
 import { ElmAgUiInput } from "./elm-ag-ui-input";
 import type { ElmAgUiPromptDescriptor } from "./elm-ag-ui-prompt-picker";
 import { ElmInlineText } from "../typography/elm-inline-text";
@@ -24,6 +31,8 @@ export interface ElmAgUiAgentProps {
   send$: QRL<(content: InputContent[]) => Promise<void> | void>;
   retry$: QRL<() => Promise<void> | void>;
   abort$: QRL<() => void>;
+  /** Remove one specific message from the run queue (the per-chip "×"). */
+  dequeue$: QRL<(id: string) => void>;
   /**
    * @default "clamp(300px, 100%, 600px)"
    */
@@ -52,12 +61,22 @@ export interface ElmAgUiAgentProps {
   >;
 }
 
+/** One-line label for a queued message — its first text block, else a
+ *  generic stand-in for attachment-only content. */
+const queuePreview = (content: InputContent[]): string => {
+  const textBlock = content.find(
+    (block): block is { type: "text"; text: string } => block.type === "text",
+  );
+  return textBlock?.text ?? "Attachment";
+};
+
 export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
   const {
     state,
     send$,
     retry$,
     abort$,
+    dequeue$,
     width = "clamp(300px, 100%, 600px)",
     class: className,
     style,
@@ -101,6 +120,15 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
     );
   });
 
+  // Delegated handler shared across every queue chip's "×" — the id rides on
+  // the element's data attribute rather than a per-iteration closure, which
+  // over-captures under the optimizer (see [[feedback_qwik_qrl_in_jsx_iteration]],
+  // and the prompt-template chips above for the same pattern).
+  const onDequeueClick$ = $((_event: Event, element: Element) => {
+    const id = element.getAttribute("data-queue-id");
+    if (id) dequeue$(id);
+  });
+
   const onInput$ = $((_event: InputEvent, element: HTMLTextAreaElement) => {
     input.value = element.value;
   });
@@ -122,7 +150,10 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
         ...style,
       }}
     >
-      <div class={styles["agent-container"]}>
+      <div
+        class={styles["agent-container"]}
+        style={{ "--elmethis-margin-block-start": "0" }}
+      >
         <div class={styles["messages"]}>
           <ElmAgUiMessageRenderer
             isRunning={state.isRunning}
@@ -153,6 +184,42 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
 
       <div class={styles["agent-input-container"]}>
         <div class={styles["agent-input"]}>
+          {(state.status === "running" ||
+            state.status === "awaiting_input") && (
+            <ElmAgUiStatus
+              class={styles["status"]}
+              status={state.status}
+              activity={state.activity}
+            />
+          )}
+
+          {state.queue.length > 0 && (
+            <div class={styles["queue-container"]}>
+              {state.queue.map((queued) => (
+                <div key={queued.id} class={styles["queue-item"]}>
+                  <ElmMdiIcon
+                    class={styles["queue-item-icon"]}
+                    d={mdiClockOutline}
+                    size="1rem"
+                  />
+                  <span class={styles["queue-item-text"]}>
+                    <ElmInlineText>
+                      {queuePreview(queued.content)}
+                    </ElmInlineText>
+                  </span>
+                  <span
+                    class={styles["queue-item-remove"]}
+                    data-queue-id={queued.id}
+                    onClick$={onDequeueClick$}
+                    aria-label="Remove from queue"
+                  >
+                    <ElmMdiIcon d={mdiClose} size="0.875rem" />
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+
           {!state.isRunning && (
             <div class={styles["prompt-template-container"]}>
               {state.promptTemplates.map((template, index) => (

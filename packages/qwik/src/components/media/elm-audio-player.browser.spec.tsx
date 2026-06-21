@@ -41,6 +41,12 @@ const silentWavDataUri = (seconds = 2, sampleRate = 8000): string => {
   return `data:audio/wav;base64,${btoa(binary)}`;
 };
 
+// Under the full browser layer (one shared Chromium + istanbul instrumentation)
+// these media-event assertions can take longer than vi.waitFor's 1s default, so
+// give every poll headroom. A real failure still surfaces, just later.
+const waitFor = (cb: () => unknown) =>
+  vi.waitFor(cb, { timeout: 5000, interval: 50 });
+
 type Screen = Awaited<ReturnType<typeof render>>;
 const root = (screen: Screen) => screen.container as HTMLElement;
 const audioEl = (screen: Screen) =>
@@ -55,10 +61,10 @@ describe("[CSR] ElmAudioPlayer media integration", () => {
     const screen = await render(<ElmAudioPlayer src={silentWavDataUri(2)} />);
     const slider = sliderEl(screen);
 
-    await vi.waitFor(() =>
+    await waitFor(() =>
       expect(Number(slider.getAttribute("aria-valuemax"))).toBeGreaterThan(0),
     );
-    await vi.waitFor(() => expect(root(screen).textContent).toMatch(/0:0[12]/));
+    await waitFor(() => expect(root(screen).textContent).toMatch(/0:0[12]/));
   });
 
   test("keyboard seek advances currentTime and updates the slider value", async () => {
@@ -68,15 +74,15 @@ describe("[CSR] ElmAudioPlayer media integration", () => {
     const slider = sliderEl(screen);
     const audio = audioEl(screen);
 
-    await vi.waitFor(() => expect(audio.duration).toBeGreaterThan(2));
+    await waitFor(() => expect(audio.duration).toBeGreaterThan(2));
 
     slider.focus();
     slider.dispatchEvent(
       new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }),
     );
 
-    await vi.waitFor(() => expect(audio.currentTime).toBeGreaterThan(0));
-    await vi.waitFor(() =>
+    await waitFor(() => expect(audio.currentTime).toBeGreaterThan(0));
+    await waitFor(() =>
       expect(
         Number(slider.getAttribute("aria-valuenow")),
       ).toBeGreaterThanOrEqual(1),
@@ -88,7 +94,7 @@ describe("[CSR] ElmAudioPlayer media integration", () => {
     const slider = sliderEl(screen);
     const audio = audioEl(screen);
 
-    await vi.waitFor(() => expect(audio.duration).toBeGreaterThan(4));
+    await waitFor(() => expect(audio.duration).toBeGreaterThan(4));
 
     const rect = slider.getBoundingClientRect();
     slider.dispatchEvent(
@@ -99,7 +105,7 @@ describe("[CSR] ElmAudioPlayer media integration", () => {
       }),
     );
 
-    await vi.waitFor(() =>
+    await waitFor(() =>
       expect(audio.currentTime).toBeGreaterThan(audio.duration * 0.5),
     );
   });
@@ -111,12 +117,12 @@ describe("[CSR] ElmAudioPlayer media integration", () => {
       'input[type="range"]',
     ) as HTMLInputElement;
 
-    await vi.waitFor(() => expect(audio.readyState).toBeGreaterThan(0));
+    await waitFor(() => expect(audio.readyState).toBeGreaterThan(0));
 
     range.value = "0.3";
     range.dispatchEvent(new Event("input", { bubbles: true }));
 
-    await vi.waitFor(() => expect(audio.volume).toBeCloseTo(0.3, 2));
+    await waitFor(() => expect(audio.volume).toBeCloseTo(0.3, 2));
   });
 
   test("play/pause UI wiring flips with the media element's events", async () => {
@@ -129,16 +135,14 @@ describe("[CSR] ElmAudioPlayer media integration", () => {
     // Drive onPlay$/onPause$ via real media events, sidestepping the autoplay
     // policy that would reject play() under a synthetic gesture.
     audio.dispatchEvent(new Event("play"));
-    await vi.waitFor(() =>
+    await waitFor(() =>
       expect(button.getAttribute("aria-label")).toBe("Pause"),
     );
-    await vi.waitFor(() =>
+    await waitFor(() =>
       expect(root(screen).querySelector('[class*="playing"]')).toBeTruthy(),
     );
 
     audio.dispatchEvent(new Event("pause"));
-    await vi.waitFor(() =>
-      expect(button.getAttribute("aria-label")).toBe("Play"),
-    );
+    await waitFor(() => expect(button.getAttribute("aria-label")).toBe("Play"));
   });
 });

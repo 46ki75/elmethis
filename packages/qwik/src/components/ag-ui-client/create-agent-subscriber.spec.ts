@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import type { AgentSubscriber, BaseEvent, Message } from "@ag-ui/client";
+import type { AgentSubscriber, Message } from "@ag-ui/client";
 import { z } from "zod";
 
 import {
@@ -18,8 +18,10 @@ function makeState(
   return {
     error: null,
     messages: [],
-    events: [],
     isRunning: false,
+    status: "idle",
+    activity: "idle",
+    pendingInterrupts: [],
     ...overrides,
   };
 }
@@ -30,7 +32,7 @@ function makeState(
  * The real `AgentSubscriber` callbacks receive `AgentSubscriberParams`
  * (which carries `agent`, `input`, `state`, `messages`) merged with the
  * event-specific fields. The factory's implementation only reads the
- * event-specific fields, so tests pass partial payloads and cast.
+ * fields exercised below, so tests pass partial payloads and cast.
  */
 function call<K extends keyof AgentSubscriber>(
   sub: AgentSubscriber,
@@ -54,24 +56,6 @@ const assistant = (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }) as any;
 
-const reasoning = (overrides: Partial<Message> = {}): Message =>
-  ({
-    id: "m-reasoning",
-    role: "reasoning",
-    content: "",
-    ...overrides,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  }) as any;
-
-const activity = (overrides: Partial<Message> = {}): Message =>
-  ({
-    id: "m-activity",
-    role: "activity",
-    content: "",
-    ...overrides,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  }) as any;
-
 // ---------------------------------------------------------------------------
 // Tests
 // ---------------------------------------------------------------------------
@@ -88,8 +72,8 @@ describe("createAgentSubscriber", () => {
     expect(_typed).toBeDefined();
   });
 
-  test("onRunInitialized flips state.isRunning to true", () => {
-    const state = makeState();
+  test("onRunInitialized flips isRunning on and clears any prior error", () => {
+    const state = makeState({ error: "stale" });
     const sub = createAgentSubscriber({
       state,
       getTools: () => ({}),
@@ -97,163 +81,73 @@ describe("createAgentSubscriber", () => {
     });
     call(sub, "onRunInitialized");
     expect(state.isRunning).toBe(true);
+    expect(state.error).toBeNull();
   });
 
-  test("onEvent appends only the new tail of messages and compacts events", () => {
-    const existing: Message = assistant({ id: "m1", content: "hi" });
-    const state = makeState({ messages: [existing] });
+  // -------------------------------------------------------------------------
+  // The core contract: mirror the SDK's reconstructed message list verbatim.
+  // -------------------------------------------------------------------------
+
+  test("onMessagesChanged reconciles state.messages in place, preserving identity", () => {
+    const state = makeState({ messages: [assistant({ id: "old" })] });
     const sub = createAgentSubscriber({
       state,
       getTools: () => ({}),
       onNeedsReRun: vi.fn(),
     });
 
-    const newMessages: Message[] = [
-      existing,
-      assistant({ id: "m2", content: "second" }),
-      assistant({ id: "m3", content: "third" }),
-    ];
-    const event = { type: "TEXT_MESSAGE_CONTENT", messageId: "m3", delta: "x" };
-
-    call(sub, "onEvent", { messages: newMessages, event });
-
-    expect(state.messages.map((m) => m.id)).toEqual(["m1", "m2", "m3"]);
-    expect(state.events).toContainEqual(event);
-  });
-
-  test("onTextMessageContentEvent appends delta to the last assistant message", () => {
-    const state = makeState({
-      messages: [assistant({ id: "m1", content: "Hello, " })],
-    });
-    const sub = createAgentSubscriber({
-      state,
-      getTools: () => ({}),
-      onNeedsReRun: vi.fn(),
-    });
-
-    call(sub, "onTextMessageContentEvent", { event: { delta: "world!" } });
-
-    expect(state.messages[0].content).toBe("Hello, world!");
-  });
-
-  test("onTextMessageContentEvent is a no-op when no assistant message exists", () => {
-    const state = makeState({ messages: [] });
-    const sub = createAgentSubscriber({
-      state,
-      getTools: () => ({}),
-      onNeedsReRun: vi.fn(),
-    });
-
-    call(sub, "onTextMessageContentEvent", { event: { delta: "lost" } });
-
-    expect(state.messages).toEqual([]);
-  });
-
-  test("onReasoningMessageContentEvent appends to the last reasoning message", () => {
-    const state = makeState({
+    const arrRef = state.messages;
+    call(sub, "onMessagesChanged", {
       messages: [
-        reasoning({ id: "r1", content: "Thinking " }),
-        assistant({ id: "a1", content: "ignored" }),
+        assistant({ id: "m1", content: "hi" }),
+        assistant({ id: "m2", content: "there" }),
       ],
     });
-    const sub = createAgentSubscriber({
-      state,
-      getTools: () => ({}),
-      onNeedsReRun: vi.fn(),
-    });
 
-    call(sub, "onReasoningMessageContentEvent", { event: { delta: "more." } });
+    // Mutated in place (not reassigned) so the renderer's fine-grained
+    // reactivity survives — the array reference is the same object.
+    expect(state.messages).toBe(arrRef);
+    expect(state.messages.map((m) => m.id)).toEqual(["m1", "m2"]);
 
-    expect(state.messages[0].content).toBe("Thinking more.");
-    expect(state.messages[1].content).toBe("ignored");
-  });
-
-  test("onActivityDeltaEvent REPLACES the last activity message's content", () => {
-    const state = makeState({
-      messages: [activity({ id: "ac1", content: "old" })],
-    });
-    const sub = createAgentSubscriber({
-      state,
-      getTools: () => ({}),
-      onNeedsReRun: vi.fn(),
-    });
-
-    call(sub, "onActivityDeltaEvent", {
-      activityMessage: { content: "new" },
-    });
-
-    expect(state.messages[0].content).toBe("new");
-  });
-
-  test("onActivityDeltaEvent is a no-op when activityMessage is missing", () => {
-    const state = makeState({
-      messages: [activity({ id: "ac1", content: "keep" })],
-    });
-    const sub = createAgentSubscriber({
-      state,
-      getTools: () => ({}),
-      onNeedsReRun: vi.fn(),
-    });
-
-    call(sub, "onActivityDeltaEvent", {});
-
-    expect(state.messages[0].content).toBe("keep");
-  });
-
-  test("onToolCallArgsEvent concatenates delta into the matching tool call args", () => {
-    const state = makeState({
+    // A second emit with the same ids patches the existing objects in place
+    // rather than swapping in new identities (the streaming-repaint contract).
+    const firstObj = state.messages[0];
+    call(sub, "onMessagesChanged", {
       messages: [
-        assistant({
-          id: "a1",
-          toolCalls: [
-            { id: "tc1", function: { name: "x", arguments: '{"a":' } },
-          ],
-        }),
+        assistant({ id: "m1", content: "hi there" }),
+        assistant({ id: "m2", content: "there" }),
       ],
     });
+    expect(state.messages[0]).toBe(firstObj);
+    expect(state.messages[0].content).toBe("hi there");
+  });
+
+  test("onMessagesChanged reflects streaming growth on each call", () => {
+    const state = makeState();
     const sub = createAgentSubscriber({
       state,
       getTools: () => ({}),
       onNeedsReRun: vi.fn(),
     });
 
-    call(sub, "onToolCallArgsEvent", {
-      event: { toolCallId: "tc1", delta: "1}" },
+    // The SDK hands a freshly-rebuilt array on every delta; the subscriber
+    // mirrors whatever it receives — no local accumulation.
+    call(sub, "onMessagesChanged", {
+      messages: [assistant({ id: "a", content: "He" })],
     });
+    expect(state.messages[0].content).toBe("He");
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const args = (state.messages[0] as any).toolCalls[0].function.arguments;
-    expect(args).toBe('{"a":1}');
+    call(sub, "onMessagesChanged", {
+      messages: [assistant({ id: "a", content: "Hello" })],
+    });
+    expect(state.messages[0].content).toBe("Hello");
   });
 
-  test("onToolCallArgsEvent is a no-op when toolCallId does not match", () => {
-    const state = makeState({
-      messages: [
-        assistant({
-          id: "a1",
-          toolCalls: [
-            { id: "tc1", function: { name: "x", arguments: "orig" } },
-          ],
-        }),
-      ],
-    });
-    const sub = createAgentSubscriber({
-      state,
-      getTools: () => ({}),
-      onNeedsReRun: vi.fn(),
-    });
+  // -------------------------------------------------------------------------
+  // Frontend tool execution.
+  // -------------------------------------------------------------------------
 
-    call(sub, "onToolCallArgsEvent", {
-      event: { toolCallId: "tc-unknown", delta: "x" },
-    });
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    expect((state.messages[0] as any).toolCalls[0].function.arguments).toBe(
-      "orig",
-    );
-  });
-
-  test("onToolCallEndEvent runs the registered tool and queues a tool message", async () => {
+  test("onToolCallEndEvent runs the registered tool with the SDK-parsed args", async () => {
     const tools: ToolRegistry = {
       addOne: defineTool({
         description: "add 1",
@@ -261,16 +155,7 @@ describe("createAgentSubscriber", () => {
         execute: ({ n }) => ({ result: n + 1 }),
       }),
     };
-    const state = makeState({
-      messages: [
-        assistant({
-          id: "a1",
-          toolCalls: [
-            { id: "tc1", function: { name: "addOne", arguments: '{"n":2}' } },
-          ],
-        }),
-      ],
-    });
+    const state = makeState();
     const onNeedsReRun = vi.fn();
     const sub = createAgentSubscriber({
       state,
@@ -278,13 +163,15 @@ describe("createAgentSubscriber", () => {
       onNeedsReRun,
     });
 
+    // The SDK assembles + JSON-parses args and passes them as `toolCallArgs`.
     await call(sub, "onToolCallEndEvent", {
       event: { toolCallId: "tc1" },
       toolCallName: "addOne",
+      toolCallArgs: { n: 2 },
     });
 
     // Tool message not yet flushed to state — that happens on onRunFinalized.
-    expect(state.messages).toHaveLength(1);
+    expect(state.messages).toHaveLength(0);
 
     await call(sub, "onRunFinalized");
     expect(onNeedsReRun).toHaveBeenCalledTimes(1);
@@ -297,16 +184,7 @@ describe("createAgentSubscriber", () => {
   });
 
   test("onToolCallEndEvent is a no-op when the tool name is not in the registry", async () => {
-    const state = makeState({
-      messages: [
-        assistant({
-          id: "a1",
-          toolCalls: [
-            { id: "tc1", function: { name: "ghost", arguments: "{}" } },
-          ],
-        }),
-      ],
-    });
+    const state = makeState();
     const onNeedsReRun = vi.fn();
     const sub = createAgentSubscriber({
       state,
@@ -317,6 +195,7 @@ describe("createAgentSubscriber", () => {
     await call(sub, "onToolCallEndEvent", {
       event: { toolCallId: "tc1" },
       toolCallName: "ghost",
+      toolCallArgs: {},
     });
     await call(sub, "onRunFinalized");
 
@@ -339,6 +218,53 @@ describe("createAgentSubscriber", () => {
     expect(onNeedsReRun).not.toHaveBeenCalled();
   });
 
+  test("onRunFinalized fires onIdle when no tool round-trip is pending", async () => {
+    const state = makeState({ isRunning: true, status: "success" });
+    const onIdle = vi.fn();
+    const sub = createAgentSubscriber({
+      state,
+      getTools: () => ({}),
+      onNeedsReRun: vi.fn(),
+      onIdle,
+    });
+
+    await call(sub, "onRunFinalized");
+
+    expect(onIdle).toHaveBeenCalledTimes(1);
+    expect(state.isRunning).toBe(false);
+  });
+
+  test("onRunFinalized does NOT fire onIdle while a tool round-trip is pending", async () => {
+    const tools: ToolRegistry = {
+      echo: defineTool({
+        description: "echo",
+        schema: z.object({ v: z.string() }),
+        execute: ({ v }) => v,
+      }),
+    };
+    const state = makeState();
+    const onIdle = vi.fn();
+    const sub = createAgentSubscriber({
+      state,
+      getTools: () => tools,
+      onNeedsReRun: vi.fn(),
+      onIdle,
+    });
+
+    await call(sub, "onToolCallEndEvent", {
+      event: { toolCallId: "tc1" },
+      toolCallName: "echo",
+      toolCallArgs: { v: "x" },
+    });
+    // A follow-up run is imminent (onNeedsReRun path) — idle has NOT settled.
+    await call(sub, "onRunFinalized");
+    expect(onIdle).not.toHaveBeenCalled();
+
+    // The follow-up run finalizes with nothing pending — now idle fires.
+    await call(sub, "onRunFinalized");
+    expect(onIdle).toHaveBeenCalledTimes(1);
+  });
+
   test("onRunFinalized with pending fires onNeedsReRun once; second call does not re-fire", async () => {
     const tools: ToolRegistry = {
       echo: defineTool({
@@ -347,16 +273,7 @@ describe("createAgentSubscriber", () => {
         execute: ({ v }) => v,
       }),
     };
-    const state = makeState({
-      messages: [
-        assistant({
-          id: "a1",
-          toolCalls: [
-            { id: "tc1", function: { name: "echo", arguments: '{"v":"x"}' } },
-          ],
-        }),
-      ],
-    });
+    const state = makeState();
     const onNeedsReRun = vi.fn();
     const sub = createAgentSubscriber({
       state,
@@ -367,6 +284,7 @@ describe("createAgentSubscriber", () => {
     await call(sub, "onToolCallEndEvent", {
       event: { toolCallId: "tc1" },
       toolCallName: "echo",
+      toolCallArgs: { v: "x" },
     });
     await call(sub, "onRunFinalized");
     expect(onNeedsReRun).toHaveBeenCalledTimes(1);
@@ -377,8 +295,12 @@ describe("createAgentSubscriber", () => {
     expect(state.isRunning).toBe(false);
   });
 
-  test("onRunFailed writes error.message to state.error", () => {
-    const state = makeState();
+  // -------------------------------------------------------------------------
+  // Error paths both surface a message AND clear isRunning.
+  // -------------------------------------------------------------------------
+
+  test("onRunFailed writes error.message and clears isRunning", () => {
+    const state = makeState({ isRunning: true });
     const sub = createAgentSubscriber({
       state,
       getTools: () => ({}),
@@ -388,10 +310,11 @@ describe("createAgentSubscriber", () => {
     call(sub, "onRunFailed", { error: new Error("boom") });
 
     expect(state.error).toBe("boom");
+    expect(state.isRunning).toBe(false);
   });
 
-  test("onRunErrorEvent writes event.message to state.error (separate code path)", () => {
-    const state = makeState();
+  test("onRunErrorEvent writes event.message and clears isRunning (separate code path)", () => {
+    const state = makeState({ isRunning: true });
     const sub = createAgentSubscriber({
       state,
       getTools: () => ({}),
@@ -401,13 +324,128 @@ describe("createAgentSubscriber", () => {
     call(sub, "onRunErrorEvent", { event: { message: "transport down" } });
 
     expect(state.error).toBe("transport down");
+    expect(state.isRunning).toBe(false);
+    expect(state.status).toBe("error");
   });
 
-  test("plain-object state works for both .push(...) AND reassignment paths", () => {
-    // Reactivity-edge-case guard: the production code uses
-    // `state.messages.push(...)` (mutation) AND `state.events = [...]`
-    // (reassignment). Both must work on a vanilla object so we don't
-    // accidentally introduce a Qwik-proxy-only access path.
+  // -------------------------------------------------------------------------
+  // Run status + live activity (for status indicators).
+  // -------------------------------------------------------------------------
+
+  test("onRunInitialized enters running and clears prior interrupts", () => {
+    const state = makeState({
+      status: "awaiting_input",
+      activity: "thinking",
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      pendingInterrupts: [{ id: "i0" } as any],
+    });
+    const sub = createAgentSubscriber({
+      state,
+      getTools: () => ({}),
+      onNeedsReRun: vi.fn(),
+    });
+
+    call(sub, "onRunInitialized");
+
+    expect(state.status).toBe("running");
+    expect(state.activity).toBe("idle");
+    expect(state.pendingInterrupts).toEqual([]);
+  });
+
+  test("onRunFinishedEvent with a success outcome sets status=success", () => {
+    const state = makeState({ status: "running", activity: "writing" });
+    const sub = createAgentSubscriber({
+      state,
+      getTools: () => ({}),
+      onNeedsReRun: vi.fn(),
+    });
+
+    call(sub, "onRunFinishedEvent", { outcome: "success", event: {} });
+
+    expect(state.status).toBe("success");
+    expect(state.activity).toBe("idle");
+  });
+
+  test("onRunFinishedEvent stays running when a tool round-trip is queued", async () => {
+    const tools: ToolRegistry = {
+      echo: defineTool({
+        description: "echo",
+        schema: z.object({ v: z.string() }),
+        execute: ({ v }) => v,
+      }),
+    };
+    const state = makeState({ status: "running" });
+    const sub = createAgentSubscriber({
+      state,
+      getTools: () => tools,
+      onNeedsReRun: vi.fn(),
+    });
+
+    // A frontend tool result is pending, so a follow-up run is imminent — the
+    // success outcome must not flash "success" before it restarts.
+    await call(sub, "onToolCallEndEvent", {
+      event: { toolCallId: "tc1" },
+      toolCallName: "echo",
+      toolCallArgs: { v: "x" },
+    });
+    call(sub, "onRunFinishedEvent", { outcome: "success", event: {} });
+
+    expect(state.status).toBe("running");
+  });
+
+  test("onRunFinishedEvent with an interrupt awaits input and copies interrupts", () => {
+    const state = makeState({ status: "running" });
+    const sub = createAgentSubscriber({
+      state,
+      getTools: () => ({}),
+      onNeedsReRun: vi.fn(),
+    });
+
+    const interrupts = [{ id: "i1", reason: "confirmation" }];
+    call(sub, "onRunFinishedEvent", {
+      outcome: "interrupt",
+      interrupts,
+      event: {},
+    });
+
+    expect(state.status).toBe("awaiting_input");
+    expect(state.pendingInterrupts).toEqual(interrupts);
+    // Copied, not aliased — resuming must not mutate the SDK's own array.
+    expect(state.pendingInterrupts).not.toBe(interrupts);
+  });
+
+  test("onRunFailed maps an AbortError to status=aborted, not error", () => {
+    const state = makeState({ status: "running", isRunning: true });
+    const sub = createAgentSubscriber({
+      state,
+      getTools: () => ({}),
+      onNeedsReRun: vi.fn(),
+    });
+
+    const aborted = new Error("The operation was aborted");
+    aborted.name = "AbortError";
+    call(sub, "onRunFailed", { error: aborted });
+
+    expect(state.status).toBe("aborted");
+    expect(state.error).toBeNull();
+    expect(state.isRunning).toBe(false);
+  });
+
+  test("onRunFailed maps a real error to status=error", () => {
+    const state = makeState({ status: "running" });
+    const sub = createAgentSubscriber({
+      state,
+      getTools: () => ({}),
+      onNeedsReRun: vi.fn(),
+    });
+
+    call(sub, "onRunFailed", { error: new Error("boom") });
+
+    expect(state.status).toBe("error");
+    expect(state.error).toBe("boom");
+  });
+
+  test("activity tracks the latest started sub-activity and resets at run end", async () => {
     const state = makeState();
     const sub = createAgentSubscriber({
       state,
@@ -415,76 +453,19 @@ describe("createAgentSubscriber", () => {
       onNeedsReRun: vi.fn(),
     });
 
-    // .push(...) path — exercised by onEvent's message-tail append.
-    call(sub, "onEvent", {
-      messages: [assistant({ id: "m1", content: "" })],
-      event: { type: "T", a: 1 },
-    });
-    expect(state.messages.map((m) => m.id)).toEqual(["m1"]);
+    call(sub, "onReasoningStartEvent", { event: {} });
+    expect(state.activity).toBe("thinking");
 
-    // Reassignment path — exercised by onEvent's events compaction.
-    const beforeEvents = state.events;
-    call(sub, "onEvent", {
-      messages: [],
-      event: { type: "T", a: 2 },
-    });
-    expect(state.events).not.toBe(beforeEvents); // new array reference
-    expect(state.events).toHaveLength(2);
-  });
+    call(sub, "onTextMessageStartEvent", { event: {} });
+    expect(state.activity).toBe("writing");
 
-  test("does not feed reactive store reads back into structuredClone (state events)", () => {
-    // Regression: production `state` is a Qwik `useStore` proxy, so reading
-    // `state.events` back returns reactive proxies. For STATE_SNAPSHOT/
-    // STATE_DELTA events `compactEvents` deep-clones the payload via
-    // `structuredClone`, which throws `DataCloneError` on a proxy. We simulate
-    // that here with a getter that "poisons" reads with a non-cloneable value;
-    // the subscriber must read its own plain accumulator instead, so a second
-    // state event compacts without throwing.
-    let backing: BaseEvent[] = [];
-    const state = {
-      error: null,
-      messages: [] as Message[],
-      isRunning: false,
-      get events() {
-        return backing.map((e) =>
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (e as any).type === "STATE_SNAPSHOT"
-            ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              { ...e, snapshot: { ...(e as any).snapshot, fn: () => {} } }
-            : e,
-        );
-      },
-      set events(v: BaseEvent[]) {
-        backing = v;
-      },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any as AgentSubscriberState;
+    call(sub, "onToolCallStartEvent", { event: {} });
+    expect(state.activity).toBe("calling_tool");
 
-    const sub = createAgentSubscriber({
-      state,
-      getTools: () => ({}),
-      onNeedsReRun: vi.fn(),
-    });
+    call(sub, "onStateDeltaEvent", { event: {} });
+    expect(state.activity).toBe("updating_state");
 
-    call(sub, "onEvent", {
-      messages: [],
-      event: { type: "STATE_SNAPSHOT", snapshot: { a: 1 } },
-    });
-    expect(() =>
-      call(sub, "onEvent", {
-        messages: [],
-        event: {
-          type: "STATE_DELTA",
-          delta: [{ op: "add", path: "/b", value: 2 }],
-        },
-      }),
-    ).not.toThrow();
-
-    // Both state events collapse into one merged STATE_SNAPSHOT.
-    expect(backing).toHaveLength(1);
-    expect(backing[0]).toMatchObject({
-      type: "STATE_SNAPSHOT",
-      snapshot: { a: 1, b: 2 },
-    });
+    await call(sub, "onRunFinalized");
+    expect(state.activity).toBe("idle");
   });
 });

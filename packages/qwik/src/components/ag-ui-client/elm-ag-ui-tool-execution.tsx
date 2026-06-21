@@ -15,9 +15,9 @@ import {
 } from "@mdi/js";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { EventType } from "@ag-ui/core";
-import { ElmCodeBlock } from "../code/elm-code-block";
 import { ElmToggle } from "../containments/elm-toggle";
 import { useThrottledQueue } from "../../hooks/use-throttled-queue";
+import { ElmShikiHighlighter } from "../code/elm-shiki-highlighter";
 
 type ToolEventType =
   | EventType.TOOL_CALL_START
@@ -111,7 +111,7 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
     return (
       <div
         class={[styles["elm-ag-ui-tool-execution"], className]}
-        style={{ "--margin-block": "0", ...style }}
+        style={style}
       >
         <ElmToggle isOpen={isOpen} monochrome>
           <div q:slot="summary" class={styles.summary}>
@@ -142,7 +142,9 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
               </div>
 
               {toolCallArgs != null && (
-                <ElmCodeBlock language="json" code={toolCallArgs} />
+                <div class={styles["tool-args-results-wrapper"]}>
+                  <ElmShikiHighlighter language="json" code={toolCallArgs} />
+                </div>
               )}
             </ElmToggle>
           )}
@@ -176,7 +178,9 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
               </div>
 
               {toolCallResult != null && (
-                <ElmCodeBlock language="json" code={toolCallResult} />
+                <div class={styles["tool-args-results-wrapper"]}>
+                  <ElmShikiHighlighter language="json" code={toolCallResult} />
+                </div>
               )}
             </ElmToggle>
           )}
