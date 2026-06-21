@@ -18,6 +18,8 @@ const meta: Meta<ElmAgUiMessageRendererProps> = {
   tags: ["autodocs"],
   args: {
     isRunning: false,
+    enableToolCalls: true,
+    enableReasoning: true,
   },
 };
 

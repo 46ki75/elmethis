@@ -36,10 +36,30 @@ export interface ElmAgUiMessageRendererProps {
   isRunning: boolean;
 
   messages: Message[];
+
+  /**
+   * Render assistant tool calls (and their results) inline.
+   * @default true
+   */
+  enableToolCalls?: boolean;
+
+  /**
+   * Render `reasoning` (thinking) messages.
+   * @default true
+   */
+  enableReasoning?: boolean;
 }
 
 export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
-  ({ class: className, style, messages, isRunning, handleRetry$ }) => {
+  ({
+    class: className,
+    style,
+    messages,
+    isRunning,
+    handleRetry$,
+    enableToolCalls = true,
+    enableReasoning = true,
+  }) => {
     const renderTool = (toolCall: ToolCall, messages: Message[]) => {
       let toolEventType = EventType.TOOL_CALL_START;
 
@@ -78,12 +98,11 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
         }
 
         case "assistant": {
-          if (message.content != null || message.toolCalls?.length) {
+          const toolCalls = enableToolCalls ? message.toolCalls : undefined;
+          if (message.content != null || toolCalls?.length) {
             return (
               <>
-                {message.toolCalls?.map((toolCall) =>
-                  renderTool(toolCall, messages),
-                )}
+                {toolCalls?.map((toolCall) => renderTool(toolCall, messages))}
 
                 {message.content != null && (
                   <div class={styles["message-content-assistant-wrapper"]}>
@@ -130,6 +149,8 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
         }
 
         case "reasoning": {
+          if (!enableReasoning) return null;
+
           const Reasoning = component$<{
             isReasoningRunning: boolean;
             markdown: string;

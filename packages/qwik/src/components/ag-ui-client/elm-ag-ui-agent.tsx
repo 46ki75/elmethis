@@ -38,6 +38,16 @@ export interface ElmAgUiAgentProps {
    */
   width?: CSSProperties["width"];
   enableAutoScroll?: boolean;
+  /**
+   * Render assistant tool calls (and their results) inline.
+   * @default true
+   */
+  enableToolCalls?: boolean;
+  /**
+   * Render `reasoning` (thinking) messages.
+   * @default true
+   */
+  enableReasoning?: boolean;
   class?: ClassList;
   style?: CSSProperties;
   /**
@@ -78,6 +88,8 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
     abort$,
     dequeue$,
     width = "clamp(300px, 100%, 600px)",
+    enableToolCalls = true,
+    enableReasoning = true,
     class: className,
     style,
     prompts,
@@ -159,6 +171,8 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
             isRunning={state.isRunning}
             messages={state.messages}
             handleRetry$={retry$}
+            enableToolCalls={enableToolCalls}
+            enableReasoning={enableReasoning}
           />
 
           {state.error && (
