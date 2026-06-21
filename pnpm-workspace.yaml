@@ -1,4 +1,5 @@
 packages:
+  - "packages/ag-ui-stub"
   - "packages/copilotkit"
   - "packages/core"
   - "packages/mcp-server"
