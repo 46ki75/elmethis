@@ -31,6 +31,14 @@ interface QueueTestBridge {
 const bridge = (): QueueTestBridge =>
   (globalThis as unknown as { __queueTest: QueueTestBridge }).__queueTest;
 
+// CI runs every browser spec against one shared Chromium with istanbul
+// instrumentation, so these state-transition assertions can take well past
+// vi.waitFor's 1s default under contention — the deepest drain → re-park →
+// idle unwind is the slowest. Give every poll generous headroom; a genuine
+// regression still fails, it just takes longer to surface.
+const waitFor = (cb: () => unknown) =>
+  vi.waitFor(cb, { timeout: 5000, interval: 50 });
+
 vi.mock("@ag-ui/client", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@ag-ui/client")>();
 
@@ -145,34 +153,34 @@ describe("[CSR] useAgent — message queue", () => {
 
   test("queues while running, stop pops newest, then drains FIFO on completion", async () => {
     const screen = await render(<QueueHarness />);
-    await vi.waitFor(() => expect(bridge().constructed).toBe(true));
+    await waitFor(() => expect(bridge().constructed).toBe(true));
 
     // First send starts a run immediately (nothing queued) — stop appears.
     // Wait on the DOM (the stop button), not the window counter: the counter
     // flips a tick before Qwik flushes the re-render.
     await send(screen, "first");
-    await vi.waitFor(() => expect(stopButton(screen)).not.toBeNull());
+    await waitFor(() => expect(stopButton(screen)).not.toBeNull());
     expect(bridge().runStarted).toBe(1);
     expect(queueTexts(screen)).toEqual([]);
 
     // Subsequent sends are held while the run is in flight.
     await send(screen, "second");
-    await vi.waitFor(() => expect(queueTexts(screen)).toEqual(["second"]));
+    await waitFor(() => expect(queueTexts(screen)).toEqual(["second"]));
 
     await send(screen, "third");
-    await vi.waitFor(() =>
+    await waitFor(() =>
       expect(queueTexts(screen)).toEqual(["second", "third"]),
     );
 
     // Stop removes the newest queued message (undo), not the live run.
     await screen.getByLabelText("Stop").click();
-    await vi.waitFor(() => expect(queueTexts(screen)).toEqual(["second"]));
+    await waitFor(() => expect(queueTexts(screen)).toEqual(["second"]));
     expect(stopButton(screen)).not.toBeNull();
     expect(bridge().aborted).toBe(0);
 
     // Completing the run drains the oldest queued message into a fresh run.
     bridge().finish?.();
-    await vi.waitFor(() => {
+    await waitFor(() => {
       expect(queueTexts(screen)).toEqual([]);
       expect(stopButton(screen)).not.toBeNull();
     });
@@ -180,27 +188,27 @@ describe("[CSR] useAgent — message queue", () => {
 
     // Nothing left queued — the next completion settles to idle.
     bridge().finish?.();
-    await vi.waitFor(() => expect(stopButton(screen)).toBeNull());
+    await waitFor(() => expect(stopButton(screen)).toBeNull());
     expect(bridge().aborted).toBe(0);
   });
 
   test("a queue chip's remove button drops that specific message", async () => {
     const screen = await render(<QueueHarness />);
-    await vi.waitFor(() => expect(bridge().constructed).toBe(true));
+    await waitFor(() => expect(bridge().constructed).toBe(true));
 
     await send(screen, "first");
-    await vi.waitFor(() => expect(stopButton(screen)).not.toBeNull());
+    await waitFor(() => expect(stopButton(screen)).not.toBeNull());
 
     await send(screen, "second");
     await send(screen, "third");
     await send(screen, "fourth");
-    await vi.waitFor(() =>
+    await waitFor(() =>
       expect(queueTexts(screen)).toEqual(["second", "third", "fourth"]),
     );
 
     // Remove the middle chip — not the newest (that is the stop button's job).
     removeFromQueue(screen, "third");
-    await vi.waitFor(() =>
+    await waitFor(() =>
       expect(queueTexts(screen)).toEqual(["second", "fourth"]),
     );
 
@@ -211,15 +219,15 @@ describe("[CSR] useAgent — message queue", () => {
 
   test("stop aborts the live run when the queue is empty", async () => {
     const screen = await render(<QueueHarness />);
-    await vi.waitFor(() => expect(bridge().constructed).toBe(true));
+    await waitFor(() => expect(bridge().constructed).toBe(true));
 
     await send(screen, "only");
-    await vi.waitFor(() => expect(stopButton(screen)).not.toBeNull());
+    await waitFor(() => expect(stopButton(screen)).not.toBeNull());
     expect(queueTexts(screen)).toEqual([]);
 
     // No queue to unwind, so stop aborts the transport.
     await screen.getByLabelText("Stop").click();
-    await vi.waitFor(() => expect(bridge().aborted).toBe(1));
-    await vi.waitFor(() => expect(stopButton(screen)).toBeNull());
+    await waitFor(() => expect(bridge().aborted).toBe(1));
+    await waitFor(() => expect(stopButton(screen)).toBeNull());
   });
 });
