@@ -44,6 +44,16 @@ export function createAgentSubscriber({
 }: CreateAgentSubscriberOptions): AgentSubscriber {
   let pendingToolMessages: Message[] = [];
 
+  // Plain, non-reactive accumulator that is the source of truth for the
+  // event list. We must NOT read `state.events` back into
+  // `compactEventsExtended`: in production `state` is a Qwik `useStore`
+  // proxy, so its array elements come back as reactive proxies. For
+  // STATE_SNAPSHOT/STATE_DELTA events `compactEvents` deep-clones the payload
+  // via `structuredClone`, which throws `DataCloneError` on a Qwik proxy
+  // (the proxy's hidden container references aren't cloneable). Keeping the
+  // accumulator here guarantees the cloner only ever sees plain objects.
+  let events: BaseEvent[] = [...state.events];
+
   return {
     onRunInitialized() {
       state.isRunning = true;
@@ -53,7 +63,8 @@ export function createAgentSubscriber({
       if (state.messages.length < newMessages.length) {
         state.messages.push(...newMessages.slice(state.messages.length));
       }
-      state.events = compactEventsExtended([...state.events, event]);
+      events = compactEventsExtended([...events, event]);
+      state.events = events;
     },
 
     onTextMessageContentEvent({ event }) {

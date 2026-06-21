@@ -1,24 +1,20 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
-import { serve } from "@hono/node-server";
 import { Hono } from "hono";
-import { cors } from "hono/cors";
-import {
-  createConsola,
-  LogLevels,
-  type ConsolaInstance,
-} from "consola";
+import { createConsola, LogLevels, type ConsolaInstance } from "consola";
 import { z } from "zod";
 import { randomUUID } from "node:crypto";
 
-const envLevel = process.env.LOG_LEVEL as
-  | keyof typeof LogLevels
-  | undefined;
+// Stub Weather MCP server, merged in from the former `@elmethis/mcp-server`
+// package. It exercises the qwik package's `useMcpTools` / `useAgent` hooks
+// against a real Streamable HTTP MCP endpoint. CORS is applied globally in
+// `server.ts`; the stateless transport sets no `Mcp-Session-Id`, so the
+// default permissive CORS there is sufficient.
+
+const envLevel = process.env.LOG_LEVEL as keyof typeof LogLevels | undefined;
 const rootLogger = createConsola({
   level:
-    envLevel && envLevel in LogLevels
-      ? LogLevels[envLevel]
-      : LogLevels.debug,
+    envLevel && envLevel in LogLevels ? LogLevels[envLevel] : LogLevels.debug,
 });
 
 const CONDITIONS = [
@@ -158,9 +154,7 @@ function buildServer(log: ConsolaInstance): McpServer {
         days,
         interests,
       });
-      const interestsLine = interests
-        ? `\nInterests: ${interests}.`
-        : "";
+      const interestsLine = interests ? `\nInterests: ${interests}.` : "";
       return {
         description: `Trip plan: ${destination} (${days} days)`,
         messages: [
@@ -224,9 +218,14 @@ function buildServer(log: ConsolaInstance): McpServer {
   return server;
 }
 
-const app = new Hono<{ Variables: { log: ConsolaInstance } }>();
+// Sub-app mounted at `/mcp` by `server.ts`. Its middleware is scoped to this
+// app's routes, so it logs only MCP traffic and leaves the CopilotKit routes
+// untouched.
+export const weatherMcpApp = new Hono<{
+  Variables: { log: ConsolaInstance };
+}>();
 
-app.use("*", async (c, next) => {
+weatherMcpApp.use("*", async (c, next) => {
   const reqId = randomUUID().slice(0, 8);
   // withTag prepends `[<reqId>]` to every line, threading the request
   // identity through tool-call logs without re-binding fields.
@@ -242,19 +241,7 @@ app.use("*", async (c, next) => {
   });
 });
 
-// Browsers connecting from Storybook (different port) need CORS. The MCP
-// transport sets `Mcp-Session-Id` on stateful sessions, so expose it.
-app.use(
-  "*",
-  cors({
-    origin: (origin) => origin ?? "*",
-    allowMethods: ["GET", "POST", "DELETE", "OPTIONS"],
-    allowHeaders: ["Content-Type", "Mcp-Session-Id", "Mcp-Protocol-Version"],
-    exposeHeaders: ["Mcp-Session-Id"],
-  }),
-);
-
-app.all("/mcp", async (c) => {
+weatherMcpApp.all("/mcp", async (c) => {
   // Stateless mode: each request gets a fresh server + transport pair
   // bound to the request's tagged logger so tool logs carry the reqId.
   const server = buildServer(c.get("log"));
@@ -263,19 +250,4 @@ app.all("/mcp", async (c) => {
   });
   await server.connect(transport);
   return await transport.handleRequest(c.req.raw);
-});
-
-app.get("/", (c) =>
-  c.json({
-    name: "elmethis-weather-mcp",
-    endpoints: { mcp: "/mcp" },
-  }),
-);
-
-const port = Number(process.env.PORT ?? 19102);
-serve({ fetch: app.fetch, port }, ({ port }) => {
-  rootLogger.success("Weather MCP listening", {
-    port,
-    url: `http://localhost:${port}/mcp`,
-  });
 });
