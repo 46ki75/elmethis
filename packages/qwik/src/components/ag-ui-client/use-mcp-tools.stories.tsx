@@ -69,8 +69,7 @@ const meta: Meta<UseMcpToolsProps> = {
   component: UseMcpToolsDemo,
   tags: ["autodocs"],
   args: {
-    agentUrl:
-      "http://localhost:19101/copilotkit/builtin/agent/minimax-m2.5-free/run",
+    agentUrl: "http://localhost:19101/copilotkit/claude/agent/haiku/run",
     mcpUrl: "http://localhost:19101/mcp",
   },
   argTypes: {

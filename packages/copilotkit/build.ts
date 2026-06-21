@@ -14,8 +14,8 @@ if (cwd.includes("dist")) {
 }
 
 const result = await build({
-  entryPoints: ["src/copilotkit-builtin.ts"],
-  outfile: "dist/copilotkit-builtin.mjs",
+  entryPoints: ["src/server.ts"],
+  outfile: "dist/index.mjs",
   bundle: true,
   platform: "node",
   target: "es2024",

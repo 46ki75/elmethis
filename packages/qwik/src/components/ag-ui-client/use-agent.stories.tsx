@@ -209,7 +209,7 @@ const meta: Meta<UseAgentProps> = {
   component: UseAgent,
   tags: ["autodocs"],
   args: {
-    url: "http://localhost:19101/copilotkit/builtin/agent/minimax-m2.5-free/run",
+    url: "http://localhost:19101/copilotkit/claude/agent/haiku/run",
     mcpUrl: "http://localhost:19102/mcp",
   },
   argTypes: {
@@ -217,14 +217,10 @@ const meta: Meta<UseAgentProps> = {
       description: "The URL of the agent endpoint to connect to.",
       control: "radio",
       options: [
-        "http://localhost:19101/copilotkit/builtin/agent/gpt-5.4-nano/run",
-        "http://localhost:19101/copilotkit/builtin/agent/minimax-m2.5/run",
-        "http://localhost:19101/copilotkit/builtin/agent/minimax-m2.5-free/run",
-        "http://localhost:19101/copilotkit/builtin/agent/kimi-k2.6/run",
-        "http://localhost:19101/copilotkit/mastra/agent/gpt-5.4-nano/run",
-        "http://localhost:19101/copilotkit/mastra/agent/minimax-m2.5/run",
-        "http://localhost:19101/copilotkit/mastra/agent/minimax-m2.5-free/run",
-        "http://localhost:19101/copilotkit/mastra/agent/kimi-k2.6/run",
+        // @elmethis/copilotkit — Claude Agent SDK agents (packages/copilotkit)
+        "http://localhost:19101/copilotkit/claude/agent/opus/run",
+        "http://localhost:19101/copilotkit/claude/agent/sonnet/run",
+        "http://localhost:19101/copilotkit/claude/agent/haiku/run",
         // @elmethis/ag-ui-stub — deterministic, LLM-free scenarios
         // (packages/ag-ui-stub). Append `?delay=<ms>` to pace the stream.
         "http://localhost:19103/stub/agent/full/run",
