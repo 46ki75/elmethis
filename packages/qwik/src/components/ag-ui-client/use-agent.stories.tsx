@@ -32,6 +32,12 @@ const UseAgent = component$<UseAgentProps>(
   ({ class: className, style, url, mcpUrl }) => {
     const context = useStore<Array<{ description: string; value: string }>>([]);
 
+    // Demo toggles for the renderer's display options. Flipping these
+    // re-renders <ElmAgUiAgent> with new props while the agent store
+    // (from useAgent) stays put, so the conversation is preserved.
+    const enableToolCalls = useSignal(true);
+    const enableReasoning = useSignal(true);
+
     // Weather MCP server: tools are listed asynchronously after
     // connect. The returned signal grows as the server becomes ready.
     const { tools: mcpTools } = useMcpTools({
@@ -191,17 +197,71 @@ const UseAgent = component$<UseAgentProps>(
     });
 
     return (
-      <ElmAgUiAgent
-        state={state}
-        send$={send$}
-        retry$={retry$}
-        abort$={abort$}
-        dequeue$={dequeue$}
-        class={className}
-        style={style}
-        prompts={pickerPrompts.value}
-        resolvePrompt$={resolvePrompt$}
-      />
+      <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+        <div
+          style={{
+            flexShrink: 0,
+            display: "flex",
+            gap: "1rem",
+            alignItems: "center",
+            padding: "0.5rem 0.75rem",
+            borderBottom: "1px solid #ccc",
+            fontSize: "0.875rem",
+          }}
+        >
+          <label
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.375rem",
+              cursor: "pointer",
+            }}
+          >
+            <input
+              type="checkbox"
+              checked={enableToolCalls.value}
+              onChange$={(_event, el) => {
+                enableToolCalls.value = el.checked;
+              }}
+            />
+            Tool calls
+          </label>
+
+          <label
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.375rem",
+              cursor: "pointer",
+            }}
+          >
+            <input
+              type="checkbox"
+              checked={enableReasoning.value}
+              onChange$={(_event, el) => {
+                enableReasoning.value = el.checked;
+              }}
+            />
+            Reasoning
+          </label>
+        </div>
+
+        <div style={{ flex: 1, minHeight: 0 }}>
+          <ElmAgUiAgent
+            state={state}
+            send$={send$}
+            retry$={retry$}
+            abort$={abort$}
+            dequeue$={dequeue$}
+            class={className}
+            style={style}
+            prompts={pickerPrompts.value}
+            resolvePrompt$={resolvePrompt$}
+            enableToolCalls={enableToolCalls.value}
+            enableReasoning={enableReasoning.value}
+          />
+        </div>
+      </div>
     );
   },
 );

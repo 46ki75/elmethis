@@ -61,6 +61,16 @@
     align-items: center;
   }
 
+  /* Sits in the `spacer` track between the plus and stop/send buttons.
+     `min-width: 0` lets the track shrink and clip a long label instead
+     of pushing the stop/send buttons out of the row. */
+  .status {
+    grid-area: spacer;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
   .plus-button {
     grid-area: plus;
     width: 1.5rem;

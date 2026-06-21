@@ -17,6 +17,8 @@ import {
   type ElmAgUiPromptDescriptor,
 } from "./elm-ag-ui-prompt-picker";
 import { ElmCollapse } from "../containments/elm-collapse";
+import { ElmAgUiStatus } from "./elm-ag-ui-status";
+import type { AgentActivity, AgentRunStatus } from "./create-agent-subscriber";
 
 export interface ElmAgUiInputProps {
   class?: string;
@@ -24,6 +26,12 @@ export interface ElmAgUiInputProps {
   style?: CSSProperties;
 
   isRunning: boolean;
+
+  /** Coarse run lifecycle; drives the inline status shown in the button row. */
+  status?: AgentRunStatus;
+
+  /** Live in-run activity; only read while running. */
+  activity?: AgentActivity;
 
   onInput$: QRL<(event: InputEvent, element: HTMLTextAreaElement) => void>;
 
@@ -67,6 +75,8 @@ export const ElmAgUiInput = component$<ElmAgUiInputProps>(
     class: className,
     style,
     isRunning,
+    status,
+    activity,
     onInput$,
     onSubmit$,
     onAbort$,
@@ -306,6 +316,14 @@ export const ElmAgUiInput = component$<ElmAgUiInputProps>(
                   color="white"
                 />
               </div>
+            )}
+
+            {(status === "running" || status === "awaiting_input") && (
+              <ElmAgUiStatus
+                class={styles["status"]}
+                status={status}
+                activity={activity}
+              />
             )}
 
             {/*

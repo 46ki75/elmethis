@@ -49,10 +49,6 @@
       height: min-content;
       margin: 0 auto;
 
-      .status {
-        padding-block: 0.5rem;
-      }
-
       .queue-container {
         width: 100%;
         display: flex;

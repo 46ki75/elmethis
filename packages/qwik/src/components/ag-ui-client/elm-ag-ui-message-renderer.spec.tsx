@@ -77,6 +77,77 @@ describe("[CSR] ElmAgUiMessageRenderer — role dispatch", () => {
     expect(screen.outerHTML).toContain("lookup_user");
   });
 
+  test("enableToolCalls={false} suppresses tool execution rendering", async () => {
+    const messages: Message[] = [
+      {
+        id: "1",
+        role: "assistant",
+        content: null,
+        toolCalls: [
+          {
+            id: "tc1",
+            type: "function",
+            function: { name: "lookup_user", arguments: '{"id":1}' },
+          },
+        ],
+      },
+    ] as unknown as Message[];
+    const { screen, render } = await createDOM();
+    await render(
+      <ElmAgUiMessageRenderer
+        isRunning={true}
+        handleRetry$={$(() => {})}
+        messages={messages}
+        enableToolCalls={false}
+      />,
+    );
+    expect(screen.outerHTML).not.toContain("lookup_user");
+  });
+
+  test("enableToolCalls={false} still renders the assistant's text content", async () => {
+    const messages: Message[] = [
+      {
+        id: "1",
+        role: "assistant",
+        content: "answer text",
+        toolCalls: [
+          {
+            id: "tc1",
+            type: "function",
+            function: { name: "lookup_user", arguments: '{"id":1}' },
+          },
+        ],
+      },
+    ] as unknown as Message[];
+    const { screen, render } = await createDOM();
+    await render(
+      <ElmAgUiMessageRenderer
+        isRunning={false}
+        handleRetry$={$(() => {})}
+        messages={messages}
+        enableToolCalls={false}
+      />,
+    );
+    expect(screen.outerHTML).not.toContain("lookup_user");
+    expect(screen.outerHTML).toContain("answer text");
+  });
+
+  test("enableReasoning={false} suppresses reasoning messages", async () => {
+    const messages: Message[] = [
+      { id: "1", role: "reasoning", content: "internal thinking trace" },
+    ] as Message[];
+    const { screen, render } = await createDOM();
+    await render(
+      <ElmAgUiMessageRenderer
+        isRunning={false}
+        handleRetry$={$(() => {})}
+        messages={messages}
+        enableReasoning={false}
+      />,
+    );
+    expect(screen.outerHTML).not.toContain("internal thinking trace");
+  });
+
   test("system / developer / tool roles produce no visible content", async () => {
     const messages: Message[] = [
       { id: "1", role: "system", content: "secret system prompt" },

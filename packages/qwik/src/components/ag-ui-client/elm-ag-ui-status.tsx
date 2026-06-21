@@ -108,6 +108,8 @@ export const ElmAgUiStatus = component$<ElmAgUiStatusProps>(
     const view = resolveView(status, activity);
     if (!view) return null;
 
+    const displayLabel = label ?? view.label;
+
     return (
       <div
         class={[styles["elm-ag-ui-status"], className]}
@@ -115,13 +117,24 @@ export const ElmAgUiStatus = component$<ElmAgUiStatusProps>(
         role="status"
         aria-live="polite"
       >
-        <ElmMdiIcon
-          d={view.d}
-          size="1rem"
-          color={view.color}
-          class={view.pulse ? styles.pulse : undefined}
-        />
-        <ElmInlineText color={view.color}>{label ?? view.label}</ElmInlineText>
+        {/*
+          Reel: the `key` changes whenever the rendered (status, activity,
+          label) tuple does, so Qwik swaps in a fresh node and the CSS
+          roll-in animation replays. The host clips overflow, so the new
+          cell appears to roll up into place — like a slot/odometer.
+        */}
+        <div
+          key={`${status}:${activity}:${displayLabel}`}
+          class={styles["reel"]}
+        >
+          <ElmMdiIcon
+            d={view.d}
+            size="1rem"
+            color={view.color}
+            class={view.pulse ? styles.pulse : undefined}
+          />
+          <ElmInlineText color={view.color}>{displayLabel}</ElmInlineText>
+        </div>
       </div>
     );
   },

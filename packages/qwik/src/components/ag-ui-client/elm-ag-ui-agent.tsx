@@ -19,7 +19,6 @@ import type { InputContent } from "@ag-ui/client";
 import styles from "./elm-ag-ui-agent.module.css";
 
 import { ElmAgUiMessageRenderer } from "./elm-ag-ui-message-renderer";
-import { ElmAgUiStatus } from "./elm-ag-ui-status";
 import { ElmAgUiInput } from "./elm-ag-ui-input";
 import type { ElmAgUiPromptDescriptor } from "./elm-ag-ui-prompt-picker";
 import { ElmInlineText } from "../typography/elm-inline-text";
@@ -38,6 +37,16 @@ export interface ElmAgUiAgentProps {
    */
   width?: CSSProperties["width"];
   enableAutoScroll?: boolean;
+  /**
+   * Render assistant tool calls (and their results) inline.
+   * @default true
+   */
+  enableToolCalls?: boolean;
+  /**
+   * Render `reasoning` (thinking) messages.
+   * @default true
+   */
+  enableReasoning?: boolean;
   class?: ClassList;
   style?: CSSProperties;
   /**
@@ -78,6 +87,8 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
     abort$,
     dequeue$,
     width = "clamp(300px, 100%, 600px)",
+    enableToolCalls = true,
+    enableReasoning = true,
     class: className,
     style,
     prompts,
@@ -159,6 +170,8 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
             isRunning={state.isRunning}
             messages={state.messages}
             handleRetry$={retry$}
+            enableToolCalls={enableToolCalls}
+            enableReasoning={enableReasoning}
           />
 
           {state.error && (
@@ -184,15 +197,6 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
 
       <div class={styles["agent-input-container"]}>
         <div class={styles["agent-input"]}>
-          {(state.status === "running" ||
-            state.status === "awaiting_input") && (
-            <ElmAgUiStatus
-              class={styles["status"]}
-              status={state.status}
-              activity={state.activity}
-            />
-          )}
-
           {state.queue.length > 0 && (
             <div class={styles["queue-container"]}>
               {state.queue.map((queued) => (
@@ -244,6 +248,8 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
             onSubmit$={onSubmit$}
             onAbort$={abort$}
             isRunning={state.isRunning}
+            status={state.status}
+            activity={state.activity}
             prompts={prompts}
             resolvePrompt$={resolvePrompt$}
           />
