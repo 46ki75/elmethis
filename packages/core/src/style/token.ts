@@ -58,8 +58,13 @@ const PRIMITIVE_VALUES = {
   },
   font: {
     family: {
+      // English primary is "DM Sans"; Japanese falls through to "Zen Kaku
+      // Gothic New" (DM Sans carries no CJK glyphs), then platform sans.
+      sans: '"DM Sans", "Zen Kaku Gothic New", -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif',
+      // English monospace is "DM Mono"; "Zen Kaku Gothic New" covers CJK glyphs
+      // in code before the generic fallback (no true JP monospace exists).
       monospace:
-        '"DM Mono", "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", monospace',
+        '"DM Mono", "Source Code Pro", Menlo, Consolas, "DejaVu Sans Mono", "Zen Kaku Gothic New", monospace',
     },
   },
 } as const;
@@ -124,6 +129,7 @@ const { color, font } = primitive;
 export const semanticTokens = {
   "margin-block-start": common("2rem"),
 
+  "font-family-sans": common(font.family.sans),
   "font-family-monospace": common(font.family.monospace),
 
   "box-shadow-color": theme(

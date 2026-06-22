@@ -27,6 +27,23 @@ describe("tokenVars", () => {
     expect(tokenVars["--elmethis-margin-block-start"]).toBe("2rem");
   });
 
+  it("emits the font-family stacks (DM Sans / DM Mono primary)", () => {
+    // Semantic font tokens reference the primitive layer, like every other.
+    expect(tokenVars["--elmethis-font-family-sans"]).toBe(
+      "var(--elmethis-primitive-font-family-sans)",
+    );
+    expect(tokenVars["--elmethis-font-family-monospace"]).toBe(
+      "var(--elmethis-primitive-font-family-monospace)",
+    );
+    // The primitive layer carries the literal stacks.
+    expect(tokenVars["--elmethis-primitive-font-family-sans"]).toMatch(
+      /^"DM Sans", "Zen Kaku Gothic New",/,
+    );
+    expect(tokenVars["--elmethis-primitive-font-family-monospace"]).toMatch(
+      /^"DM Mono", "Source Code Pro",/,
+    );
+  });
+
   it("keeps non-primitive literals (computed oklch) verbatim", () => {
     expect(tokenVars["--elmethis-color-primary-hover"]).toBe(
       "oklch(from var(--elmethis-color-primary) l c h / 15%)",
