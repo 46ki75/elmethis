@@ -1,6 +1,7 @@
 import {
   $,
   component$,
+  type CSSProperties,
   PropsOf,
   useComputed$,
   useSignal,
@@ -88,6 +89,7 @@ const fileNameFromSrc = (src: string): string => {
 export const ElmAudioPlayer = component$<ElmAudioPlayerProps>((props) => {
   const {
     class: className,
+    style,
     src,
     title,
     artist,
@@ -201,6 +203,7 @@ export const ElmAudioPlayer = component$<ElmAudioPlayerProps>((props) => {
       style={{
         "--elmethis-scoped-progress": progress.value,
         "--elmethis-scoped-hover": hoverRatio.value ?? 0,
+        ...(style as CSSProperties),
       }}
       {...rest}
     >
