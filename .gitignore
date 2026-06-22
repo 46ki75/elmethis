@@ -39,3 +39,16 @@ out/
 # Rust
 
 target/
+
+# design-sync (claude.ai/design) — ignore transient state, keep the durable set committed
+.design-sync/sb-reference/
+.design-sync/learnings/
+.design-sync/.cache/
+.design-sync/node_modules
+.design-sync/shiki-slim/node_modules
+.design-sync/shiki-slim/install.log
+.design-sync/.*.mjs
+.design-sync/.*.log
+.ds-sync/
+ds-bundle/
+packages/react/.ds-style-entry.css
