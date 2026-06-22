@@ -21,12 +21,13 @@ const OUT = "packages/react/.ds-style-entry.css";
 const helper = `/* design-sync: lightningcss light-dark() runtime helper (see make-css-entry.mjs) */
 :root{--lightningcss-light:initial;--lightningcss-dark: ;}
 @media (prefers-color-scheme:dark){:root{--lightningcss-light: ;--lightningcss-dark:initial;}}
-/* design-sync: ambient body font. @elmethis/core ships only a monospace token,
-   no body/sans token — the DS relies on the host's default. Storybook's sb.css
-   sets html{font-family:sans-serif}; mirror it so text renders sans (not the
-   browser-default serif) in both preview cards and agent-built designs.
-   Monospace components set their own font explicitly, so they're unaffected. */
-html{font-family:sans-serif;}
+/* design-sync: ambient body font. @elmethis/core's tokens.css already sets
+   :root{font-family:var(--elmethis-font-family-sans)} (DM Sans → Zen Kaku Gothic
+   New → system sans); this restates it on html as a belt-and-suspenders so text
+   renders in the brand font (not the browser-default serif) even if tokens.css
+   loads late. The vendored woff2 (cfg.extraFonts → fonts/fonts.css) back the
+   stack. Monospace components set their own font explicitly. */
+html{font-family:var(--elmethis-font-family-sans, sans-serif);}
 `;
 
 const libCss = readFileSync(LIB_CSS, "utf8");
