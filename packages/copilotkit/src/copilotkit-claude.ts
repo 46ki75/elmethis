@@ -1,5 +1,6 @@
 import { CopilotRuntime, InMemoryAgentRunner } from "@copilotkit/runtime/v2";
 import { ClaudeAgentAdapter } from "@ag-ui/claude-agent-sdk";
+import type { AgentDefinition } from "@anthropic-ai/claude-agent-sdk";
 import type { AbstractAgent } from "@ag-ui/client";
 
 // Work around an upstream bug in @ag-ui/claude-agent-sdk@0.0.3: its `clone()`
@@ -35,9 +36,11 @@ const AWS_KNOWLEDGE_MCP_URL = "https://knowledge-mcp.global.api.aws";
 const SYSTEM_PROMPT = "You are a helpful assistant!";
 
 // The Claude Agent SDK ships the full Claude Code tool belt (shell, file
-// read/write, sub-agents, …). For this chat test-harness we only want the LLM
-// plus our MCP tools, so block the local-machine tools — the assistant should
-// never touch the dev's filesystem or shell.
+// read/write, …). For this chat test-harness we want the LLM, our MCP tools,
+// and the `Agent` tool (to spawn the backend subagents in `AGENTS`), so block
+// the local-machine tools — the assistant should never touch the dev's
+// filesystem or shell. NOTE: `disallowedTools` is a global deny, so it also
+// constrains the subagents — they inherit this same no-filesystem sandbox.
 const DISALLOWED_TOOLS = [
   "Bash",
   "BashOutput",
@@ -48,11 +51,25 @@ const DISALLOWED_TOOLS = [
   "NotebookEdit",
   "Glob",
   "Grep",
-  "Task",
-  "WebFetch",
-  "WebSearch",
   "TodoWrite",
 ];
+
+// Backend subagents the assistant can spawn via the `Agent` tool. Each inherits
+// `DISALLOWED_TOOLS` (a global deny), so its `tools` allow-list can only widen
+// within what survives that deny — here, the AWS Knowledge MCP plus web access.
+const AGENTS: Record<string, AgentDefinition> = {
+  "web-search-agent": {
+    description:
+      "Researches a question on the public web. Delegate any question that " +
+      "needs up-to-date or general-knowledge information to it.",
+    prompt:
+      "You research questions using the public web. Use WebSearch to find " +
+      "relevant sources and WebFetch to read them, then report a concise, " +
+      "cited summary back to the main assistant. For AWS-specific questions, " +
+      "prefer the AWS Knowledge MCP tools.",
+    tools: ["WebSearch", "WebFetch", "mcp__aws-knowledge"],
+  },
+};
 
 // Authentication is via the ANTHROPIC_API_KEY environment variable, read by
 // the underlying Claude Agent SDK (`query()` spawns a CLI child process). The
@@ -77,9 +94,12 @@ const generateAgent = (
         url: AWS_KNOWLEDGE_MCP_URL,
       },
     },
-    // Permit the AWS Knowledge MCP server's tools. Frontend tools delivered via
-    // `RunAgentInput.tools` are wired up by the adapter automatically.
-    allowedTools: ["mcp__aws-knowledge"],
+    // Backend subagents the assistant can delegate to via the `Agent` tool.
+    agents: AGENTS,
+    // Permit the AWS Knowledge MCP server's tools and the `Agent` tool (so the
+    // assistant can spawn the subagents in `AGENTS`). Frontend tools delivered
+    // via `RunAgentInput.tools` are wired up by the adapter automatically.
+    allowedTools: ["mcp__aws-knowledge", "Agent", "WebFetch", "WebSearch"],
     disallowedTools: DISALLOWED_TOOLS,
     // The adapter and @copilotkit/runtime each resolve `@ag-ui/client` through
     // their own pnpm peer-dependency context, so TypeScript treats their
