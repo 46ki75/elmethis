@@ -1,0 +1,10 @@
+{
+  "comment": "design-sync only: alias the bare `shiki` specifier to the slim shim so the bundle stays under the 5 MB upload cap. See shiki-slim.mjs. The package builds from lib/ (no source aliases) so this is the only path needed.",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "shiki": ["./shiki-slim/index.mjs"],
+      "react/compiler-runtime": ["./react-compiler-runtime.mjs"]
+    }
+  }
+}

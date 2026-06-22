@@ -1,0 +1,29 @@
+/*
+ * design-sync only: the DS's monospace token stack starts with "DM Mono",
+ * "Source Code Pro" (then Menlo/Consolas/monospace), but @elmethis ships no
+ * @font-face for them — the host app is expected to provide them (both are
+ * Google Fonts). These OFL-licensed woff2 (latin subset) are vendored so code
+ * blocks render in the intended font inside claude.ai/design, offline. Wired
+ * via cfg.extraFonts; the converter copies the woff2 into the bundle's fonts/.
+ */
+@font-face {
+  font-family: "DM Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./dm-mono-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "DM Mono";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("./dm-mono-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Source Code Pro";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./source-code-pro-400.woff2") format("woff2");
+}
