@@ -49,11 +49,12 @@
     "lint:css": "stylelint \"src/**/*.css\"",
     "test": "pnpm run test:unit && pnpm run test:browser",
     "test:unit": "vitest --run",
+    "test:type": "tsc --noEmit -p tsconfig.app.json",
     "test:coverage": "vitest --run --coverage",
     "test:browser": "vitest --run --config vitest.browser.config.ts",
     "test:coverage:browser": "vitest --run --coverage --config vitest.browser.config.ts",
     "test:build": "pnpm run build && pnpm run build-storybook",
-    "check": "concurrently -g \"pnpm:fmt:check\" \"pnpm:lint\" \"pnpm:lint:css\" \"pnpm:build:types\"",
+    "check": "concurrently -g \"pnpm:fmt:check\" \"pnpm:lint\" \"pnpm:lint:css\" \"pnpm:build:types\" \"pnpm:test:type\"",
     "check:ci": "concurrently -g \"pnpm:check\" \"pnpm:test:build\" \"pnpm:test:unit\" \"pnpm:test:browser\"",
     "prepublishOnly": "pnpm run build"
   },

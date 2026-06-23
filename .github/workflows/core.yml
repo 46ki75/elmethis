@@ -63,6 +63,32 @@ jobs:
         run: pnpm run fmt:check
         working-directory: packages/core
 
+  type-check:
+    name: Type Check (@elmethis/core)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: "https://registry.npmjs.org"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Type Check
+        run: pnpm run test:type
+        working-directory: packages/core
+
   build:
     name: Build (@elmethis/core)
     runs-on: ubuntu-latest

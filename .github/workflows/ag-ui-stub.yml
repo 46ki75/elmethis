@@ -86,7 +86,7 @@ jobs:
         run: pnpm install
 
       - name: Type Check
-        run: pnpm run build:types
+        run: pnpm run test:type
         working-directory: packages/ag-ui-stub
 
   build:

@@ -37,15 +37,15 @@
   ],
   "scripts": {
     "build": "tsdown && tsx scripts/emit-catalog.ts && tsx scripts/build-tokens.ts",
-    "build:types": "exit 0",
     "dev": "tsdown --watch",
     "fmt": "prettier --write ./src",
     "fmt:check": "prettier --check ./src",
     "lint": "eslint \"src/**/*.ts*\"",
     "test:unit": "vitest --run",
     "test:coverage": "vitest --run --coverage",
+    "test:type": "tsc --noEmit",
     "prepublishOnly": "pnpm run build",
-    "check": "concurrently -g \"pnpm:fmt:check\" \"pnpm:lint\" \"pnpm:build:types\"",
+    "check": "concurrently -g \"pnpm:fmt:check\" \"pnpm:lint\" \"pnpm:test:type\"",
     "check:ci": "concurrently -g \"pnpm:check\" \"pnpm:build\" \"pnpm:test:unit\""
   },
   "peerDependencies": {

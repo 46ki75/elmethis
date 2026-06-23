@@ -18,6 +18,7 @@ lead/base-reference implementation:
 | `pnpm build`         | Build the library (`vite build`) + types (`tsc`)    |
 | `pnpm test:unit`     | Unit specs (happy-dom + React Testing Library, SSR) |
 | `pnpm test:browser`  | Browser specs (real Chromium via Playwright)        |
+| `pnpm test:type`     | Type-check, no emit (`tsc --noEmit`)                |
 | `pnpm lint`          | ESLint                                              |
 | `pnpm lint:css`      | Stylelint                                           |
 | `pnpm fmt`           | Prettier                                            |
