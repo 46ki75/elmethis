@@ -59,7 +59,7 @@ Qwik's signal/store split does not exist in React; some hooks consolidate.
 
 `[B]` = also needs `*.browser.spec.tsx`.
 
-### Wave 0 — 35 leaves ✅ COMPLETE (all green: lint, lint.css, 151 unit + 12 browser tests, build)
+### Wave 0 — 35 leaves ✅ COMPLETE (all green: lint, lint:css, 151 unit + 12 browser tests, build)
 
 > Note: `components/table/index.ts` currently re-exports only `elm-table-row` +
 > `table-context`; uncomment the `elm-table` / `-header` / `-body` / `-cell`

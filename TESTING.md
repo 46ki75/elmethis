@@ -10,10 +10,10 @@ the two never share global state.
 
 | Suffix                     | Layer       | Environment                                             | Runs                |
 | -------------------------- | ----------- | ------------------------------------------------------- | ------------------- |
-| `*.spec.ts` / `*.spec.tsx` | **unit**    | node + test-util (`createDOM`) / SSR (`renderToString`) | `pnpm test.unit`    |
-| `*.browser.spec.tsx`       | **browser** | real Chromium via Playwright                            | `pnpm test.browser` |
+| `*.spec.ts` / `*.spec.tsx` | **unit**    | node + test-util (`createDOM`) / SSR (`renderToString`) | `pnpm test:unit`    |
+| `*.browser.spec.tsx`       | **browser** | real Chromium via Playwright                            | `pnpm test:browser` |
 
-`pnpm test` runs `test.unit` then `test.browser`.
+`pnpm test` runs `test:unit` then `test:browser`.
 
 ### `*.spec.tsx` — CSR (with test utils) + SSR
 

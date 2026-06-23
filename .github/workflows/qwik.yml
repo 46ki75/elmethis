@@ -64,7 +64,7 @@ jobs:
         run: pnpm install
 
       - name: Format Check
-        run: pnpm run fmt.check
+        run: pnpm run fmt:check
         working-directory: packages/qwik
 
   build:
@@ -154,7 +154,7 @@ jobs:
         working-directory: packages/core
 
       - name: Test Unit (with coverage)
-        run: pnpm run test.coverage
+        run: pnpm run test:coverage
         working-directory: packages/qwik
 
       # Visibility only — never fails the build. Reports unit-layer coverage;
@@ -199,7 +199,7 @@ jobs:
         working-directory: packages/core
 
       - name: Test Browser (with coverage)
-        run: pnpm run test.coverage.browser
+        run: pnpm run test:coverage:browser
         working-directory: packages/qwik
 
       # Uploaded under the `qwik-browser` flag — Codecov merges it with the

@@ -99,12 +99,12 @@ Two layers, split by file suffix (full conventions in `TESTING.md`):
 
 - `*.spec.ts(x)` → **unit**: pure logic, CSR via the framework test util
   (Qwik `createDOM`, RTL, Vue Test Utils), and SSR (`renderToString`). Run with
-  `pnpm test.unit`.
+  `pnpm test:unit`.
 - `*.browser.spec.tsx` → **browser**: real Chromium via Playwright
   (`vitest-browser-qwik` / `-react` / `-vue`). Only for behavior the test-util
   DOM can't fake — `useVisibleTask$`/`document-ready`, real QRL resolution,
   native `<dialog>`/focus/layout, real Web APIs (`localStorage`, `StorageEvent`,
-  `color-scheme`). Run with `pnpm test.browser`.
+  `color-scheme`). Run with `pnpm test:browser`.
 
 Default to the unit layer; reach for `*.browser.spec.tsx` only when the test
 genuinely needs a real browser. Specs are co-located with their source.

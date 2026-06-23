@@ -60,7 +60,7 @@ jobs:
         run: pnpm install
 
       - name: Format Check
-        run: pnpm run fmt.check
+        run: pnpm run fmt:check
         working-directory: packages/core
 
   build:
@@ -112,7 +112,7 @@ jobs:
         run: pnpm install
 
       - name: Test Unit (with coverage)
-        run: pnpm run test.coverage
+        run: pnpm run test:coverage
         working-directory: packages/core
 
       # Visibility only — never fails the build.

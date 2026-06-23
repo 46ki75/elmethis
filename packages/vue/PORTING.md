@@ -65,7 +65,7 @@ Each component ships five things, matching the react/qwik shape:
 - `x.stories.tsx` — Storybook (`@storybook/vue3-vite`).
 - An export added to `src/index.ts`.
 
-Green through **`pnpm check`** (now includes `build.types`).
+Green through **`pnpm check`** (now includes `build:types`).
 
 ## Testing layers
 

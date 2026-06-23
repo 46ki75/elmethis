@@ -40,16 +40,16 @@ child functions, `v-model` is manual `modelValue` + `onUpdate:modelValue`).
 | ------------------- | ---------------------------------------------------- |
 | `pnpm dev`          | Storybook dev server (port 19231)                    |
 | `pnpm build`        | Build the library (`vite build`) + types (`vue-tsc`) |
-| `pnpm test.unit`    | Unit specs (happy-dom + Vue Test Utils, SSR)         |
-| `pnpm test.browser` | Browser specs (real Chromium via Playwright)         |
+| `pnpm test:unit`    | Unit specs (happy-dom + Vue Test Utils, SSR)         |
+| `pnpm test:browser` | Browser specs (real Chromium via Playwright)         |
 | `pnpm lint`         | ESLint                                               |
-| `pnpm lint.css`     | Stylelint                                            |
+| `pnpm lint:css`     | Stylelint                                            |
 | `pnpm fmt`          | Prettier                                             |
 
 ## Testing layers
 
-- `*.spec.ts(x)` → unit (`pnpm test.unit`): pure logic, CSR via Vue Test Utils,
+- `*.spec.ts(x)` → unit (`pnpm test:unit`): pure logic, CSR via Vue Test Utils,
   and SSR via `renderToString` from `vue/server-renderer`.
-- `*.browser.spec.tsx` → browser (`pnpm test.browser`): real Chromium, only for
+- `*.browser.spec.tsx` → browser (`pnpm test:browser`): real Chromium, only for
   behavior the unit DOM can't fake (native `<dialog>`/focus/layout, real Web
   APIs, `color-scheme`).

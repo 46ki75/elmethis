@@ -38,13 +38,13 @@
     "serve": "PORT=19103 tsx watch src/server.ts",
     "start": "PORT=19103 tsx src/server.ts",
     "fmt": "prettier --write ./src",
-    "fmt.check": "prettier --check ./src",
+    "fmt:check": "prettier --check ./src",
     "lint": "eslint \"src/**/*.ts*\"",
-    "build.types": "tsc --noEmit -p tsconfig.json",
-    "test.unit": "vitest --run",
-    "test.coverage": "vitest --run --coverage",
-    "check": "concurrently -g \"pnpm:fmt.check\" \"pnpm:lint\" \"pnpm:build.types\"",
-    "check.ci": "concurrently -g \"pnpm:check\" \"pnpm:build\" \"pnpm:test.unit\""
+    "build:types": "tsc --noEmit -p tsconfig.json",
+    "test:unit": "vitest --run",
+    "test:coverage": "vitest --run --coverage",
+    "check": "concurrently -g \"pnpm:fmt:check\" \"pnpm:lint\" \"pnpm:build:types\"",
+    "check:ci": "concurrently -g \"pnpm:check\" \"pnpm:build\" \"pnpm:test:unit\""
   },
   "dependencies": {
     "@ag-ui/core": "0.0.57",

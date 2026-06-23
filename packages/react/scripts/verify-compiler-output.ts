@@ -86,7 +86,7 @@ for (const rel of bundles) {
   try {
     source = await readFile(abs, "utf8");
   } catch {
-    fail(rel, "bundle not found — run `pnpm run build.lib` first");
+    fail(rel, "bundle not found — run `pnpm run build:lib` first");
     continue;
   }
 
