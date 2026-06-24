@@ -15,6 +15,7 @@ import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 import { ElmInlineIcon } from "../icon/elm-inline-icon";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { ElmCollapse } from "../containments/elm-collapse";
+import { useBindableSignal } from "../../hooks/use-bindable-signal";
 
 import styles from "./elm-button-dropdown.module.css";
 import textStyles from "../../styles/text.module.css";
@@ -41,12 +42,13 @@ export interface ElmButtonDropdownProps extends Omit<
   "onClick"
 > {
   /**
-   * Content of the main button.
+   * Main button content shown when no option is selected (placeholder).
    */
   label?: ReactNode;
 
   /**
-   * Optional icon rendered before the main button label.
+   * Optional icon rendered before the main button label in the placeholder
+   * (no selection) state.
    */
   icon?: ReactNode;
 
@@ -54,6 +56,22 @@ export interface ElmButtonDropdownProps extends Omit<
    * Entries shown in the dropdown menu.
    */
   items: ElmButtonDropdownItem[];
+
+  /**
+   * Currently selected option id (controlled). The main button displays the
+   * matching item.
+   */
+  selectedOptionId?: string | null;
+
+  /**
+   * Initial selected option id for the uncontrolled case.
+   */
+  defaultSelectedOptionId?: string | null;
+
+  /**
+   * Called whenever the selected option id changes.
+   */
+  onSelectedOptionIdChange?: (selectedOptionId: string | null) => void;
 
   /**
    * Whether the button uses the primary style. Defaults to `true`.
@@ -104,9 +122,10 @@ export interface ElmButtonDropdownProps extends Omit<
   dropdownIcon?: string;
 
   /**
-   * Main button click handler.
+   * Main button click handler. Receives the currently selected item, or
+   * `null` when nothing is selected.
    */
-  onClick?: () => void;
+  onClick?: (selectedItem: ElmButtonDropdownItem | null) => void;
 
   /**
    * Called with the clicked dropdown item.
@@ -125,6 +144,9 @@ export const ElmButtonDropdown = ({
   label,
   icon,
   items,
+  selectedOptionId,
+  defaultSelectedOptionId = null,
+  onSelectedOptionIdChange,
   primary = true,
   color,
   block,
@@ -141,6 +163,14 @@ export const ElmButtonDropdown = ({
 }: ElmButtonDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+
+  const [selected, setSelected] = useBindableSignal<string | null>({
+    value: selectedOptionId,
+    defaultValue: defaultSelectedOptionId,
+    onChange: onSelectedOptionIdChange,
+  });
+
+  const selectedItem = items.find((item) => item.id === selected) ?? null;
 
   const setOpen = useCallback(
     (next: boolean) => {
@@ -173,11 +203,12 @@ export const ElmButtonDropdown = ({
   const handleItemClick = useCallback(
     (item: ElmButtonDropdownItem) => {
       if (item.disabled) return;
+      setSelected(item.id);
       item.onClick?.();
       onItemClick?.(item);
       if (autoClose) setOpen(false);
     },
-    [autoClose, onItemClick, setOpen],
+    [setSelected, autoClose, onItemClick, setOpen],
   );
 
   const caret = <ElmMdiIcon d={dropdownIcon} size="1.25rem" />;
@@ -200,10 +231,19 @@ export const ElmButtonDropdown = ({
         color={color}
         isLoading={isLoading}
         disabled={mainDisabled}
-        onClick={() => onClick?.()}
+        onClick={() => onClick?.(selectedItem)}
       >
-        {icon}
-        {label}
+        {selectedItem ? (
+          <>
+            {selectedItem.icon && <ElmInlineIcon src={selectedItem.icon} />}
+            {selectedItem.label}
+          </>
+        ) : (
+          <>
+            {icon}
+            {label}
+          </>
+        )}
       </ElmButton>
 
       <ElmButton
@@ -226,8 +266,10 @@ export const ElmButtonDropdown = ({
             className={clsx(
               styles["item"],
               textStyles.text,
+              item.id === selected && styles["selected"],
               item.disabled && styles["item-disabled"],
             )}
+            aria-selected={item.id === selected}
             onClick={(e) => {
               e.stopPropagation();
               handleItemClick(item);

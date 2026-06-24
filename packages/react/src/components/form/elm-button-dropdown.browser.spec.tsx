@@ -56,6 +56,25 @@ describe("[CSR] ElmButtonDropdown", () => {
     await vi.waitFor(() => expect(expanded(caret.element())).toBe(false));
   });
 
+  test("selecting an item updates the displayed main button label", async () => {
+    const screen = await render(<Harness />);
+
+    // The main button starts on the placeholder label.
+    expect(screen.getByRole("button", { name: "Run" }).element()).toBeTruthy();
+
+    const caret = screen.getByRole("button", { name: "Toggle dropdown" });
+    await caret.click();
+    await screen.getByText("Remove").click();
+
+    // The main action button now reflects the chosen option. It is the only
+    // <button> carrying that name — menu rows are <div>s.
+    await vi.waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: "Remove" }).element(),
+      ).toBeTruthy(),
+    );
+  });
+
   test("the main button fires onClick without opening the menu", async () => {
     const onClick = vi.fn();
     const onItemClick = vi.fn();

@@ -68,6 +68,14 @@
         );
       }
 
+      &.selected {
+        background-color: light-dark(
+          rgb(190 194 202 / 25%),
+          rgb(190 194 202 / 15%)
+        );
+        color: var(--elmethis-color-primary-weak);
+      }
+
       &.item-disabled {
         opacity: 0.5;
         cursor: not-allowed;

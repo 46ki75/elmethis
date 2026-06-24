@@ -1,28 +1,22 @@
 import { useState, type ComponentProps } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { mdiContentSave } from "@mdi/js";
 
 import {
   ElmButtonDropdown,
   type ElmButtonDropdownItem,
 } from "./elm-button-dropdown";
-import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 
-const Claude =
-  "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/claude-color.svg";
+const MiniMax =
+  "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/minimax-color.svg";
 const OpenAI =
   "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/openai.svg";
-
-const ITEMS: ElmButtonDropdownItem[] = [
-  { id: "save", label: "Save" },
-  { id: "save-as", label: "Save as…" },
-  { id: "duplicate", label: "Duplicate" },
-  { id: "delete", label: "Delete", disabled: true },
-];
+const Claude =
+  "https://registry.npmmirror.com/@lobehub/icons-static-svg/latest/files/icons/claude-color.svg";
 
 const MODELS: ElmButtonDropdownItem[] = [
   { id: "claude", label: "Claude Opus 4.7", icon: Claude },
   { id: "gpt", label: "GPT-5.4 Mini", icon: OpenAI },
+  { id: "minimax", label: "MiniMax M2.5", icon: MiniMax },
 ];
 
 const meta = {
@@ -30,9 +24,8 @@ const meta = {
   component: ElmButtonDropdown,
   tags: ["autodocs"],
   args: {
-    label: "Save",
-    icon: <ElmMdiIcon d={mdiContentSave} />,
-    items: ITEMS,
+    label: "Select a model",
+    items: MODELS,
   },
 } satisfies Meta<typeof ElmButtonDropdown>;
 
@@ -41,11 +34,9 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {};
 
-export const WithItemIcons: Story = {
+export const Preselected: Story = {
   args: {
-    label: "Model",
-    icon: undefined,
-    items: MODELS,
+    defaultSelectedOptionId: "claude",
   },
 };
 
@@ -79,23 +70,27 @@ export const Loading: Story = {
   },
 };
 
-const InteractiveStory = (args: ComponentProps<typeof ElmButtonDropdown>) => {
+const ControlledStory = (args: ComponentProps<typeof ElmButtonDropdown>) => {
+  const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
   const [log, setLog] = useState<string>("none");
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
       <ElmButtonDropdown
         {...args}
-        onClick={() => setLog("main button clicked")}
-        onItemClick={(item) => setLog(`item clicked: ${item.id}`)}
+        selectedOptionId={selectedOptionId}
+        onSelectedOptionIdChange={setSelectedOptionId}
+        onClick={(item) => setLog(`run: ${item?.id ?? "none"}`)}
       />
       <div style={{ fontFamily: "monospace", fontSize: "0.85rem" }}>
-        last action: {log}
+        <div>selected: {selectedOptionId ?? "none"}</div>
+        <div>last run: {log}</div>
       </div>
+      <button onClick={() => setSelectedOptionId(null)}>Clear selection</button>
     </div>
   );
 };
 
-export const Interactive: Story = {
-  render: (args) => <InteractiveStory {...args} />,
+export const Controlled: Story = {
+  render: (args) => <ControlledStory {...args} />,
 };

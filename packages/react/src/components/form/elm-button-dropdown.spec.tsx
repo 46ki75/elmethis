@@ -21,6 +21,25 @@ describe("[SSR] ElmButtonDropdown", () => {
     expect(html).toContain("Delete");
   });
 
+  it("shows the placeholder when nothing is selected and the option once selected", () => {
+    const placeholder = renderToStaticMarkup(
+      <ElmButtonDropdown label="Pick an action" items={ITEMS} />,
+    );
+    expect(placeholder).toContain("Pick an action");
+
+    const selected = renderToStaticMarkup(
+      <ElmButtonDropdown
+        label="Pick an action"
+        selectedOptionId="save"
+        items={ITEMS}
+      />,
+    );
+    // The main button now reflects the selected option, so the placeholder is
+    // gone and "Save" appears for both the main button and the menu row.
+    expect(selected).not.toContain("Pick an action");
+    expect(selected.split("Save").length - 1).toBe(2);
+  });
+
   it("renders two buttons: the main action and the caret toggle", () => {
     const html = renderToStaticMarkup(
       <ElmButtonDropdown label="Save" items={ITEMS} />,
