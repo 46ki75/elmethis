@@ -15,8 +15,8 @@ would send; `run.sh` substitutes the real repo root before piping.
 
 | Stub                    | Hook                | Exercises                                            |
 | ----------------------- | ------------------- | --------------------------------------------------- |
-| `fmt-formattable.json`  | `lefthook-fmt.sh`   | package file → `prettier-core` formats it           |
-| `fmt-non-matching.json` | `lefthook-fmt.sh`   | in-repo but no per-package fmt job matches → skipped |
+| `fmt-formattable.json`  | `lefthook-fmt.sh`   | matching glob → `prettier` formats it               |
+| `fmt-non-matching.json` | `lefthook-fmt.sh`   | in-repo but glob miss (`.md`) → fmt job skipped      |
 | `fmt-outside-repo.json` | `lefthook-fmt.sh`   | path outside the repo → guard skips, exit 0          |
 | `fmt-no-path.json`      | `lefthook-fmt.sh`   | no `tool_input.file_path` → early exit 0             |
 | `stop-inactive.json`    | `lefthook-check.sh` | `stop_hook_active: false` → runs `lefthook run check` over changed files |
@@ -26,9 +26,10 @@ would send; `run.sh` substitutes the real repo root before piping.
 
 - Both hooks always exit 0; they signal via stdout (the `block` decision),
   not the exit code — so judge `stop-*` runs by the printed JSON, not "exit 0".
-- Both `fmt` and `check` only act on files under `packages/<pkg>/`; the formatter
-  and linters run per-package (`root:`) so each package's own config applies.
-  Edits outside a package (root files, `.claude/`) match no job and are skipped.
+- `fmt` runs prettier once from the repo root (it has no per-package config), so
+  it formats any matching file. `check` runs eslint/stylelint/vitest per-package
+  (`root:`) since each needs its own config, so it only acts on files under
+  `packages/<pkg>/`; edits outside a package match no check job and are skipped.
 - The fmt hook is silent on success, and `fmt-formattable.json` targets a clean
   file so it's a no-op. To see formatting happen, add messy spacing to
   `packages/core/src/index.ts`, run `run.sh fmt-formattable.json`, then
