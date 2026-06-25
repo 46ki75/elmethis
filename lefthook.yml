@@ -1,0 +1,98 @@
+output:
+  - failure
+  - summary
+
+pre-commit:
+  parallel: true
+  jobs:
+    - name: check
+      run: pnpm run --recursive check
+
+fmt:
+  parallel: true
+  jobs:
+    # prettier runs once from the repo root: unlike eslint/stylelint/vitest it
+    # has no per-package config, so there's nothing to resolve per-package. From
+    # the root it reads the single root .prettierignore (and .gitignore) by
+    # default, and also covers non-package files (root configs, docs, .claude/).
+    - name: prettier
+      run: pnpm exec prettier --write {files}
+      glob: "*.{js,ts,jsx,tsx,json}"
+
+check:
+  parallel: true
+  jobs:
+    # Every job runs per-package: `root:` sets the CWD so each package's own
+    # config (eslint.config.js / stylelint.config.mjs / vitest config) resolves
+    # deterministically instead of relying on the tool walking up from the repo
+    # root, and rebases {files} relative to it. The glob is matched against the
+    # repo-root-relative path; `**` matches one-or-more dirs deep, so
+    # `packages/<pkg>/**` covers everything under the package (e.g. src/) while
+    # skipping top-level package config files.
+
+    - name: eslint-core
+      root: "packages/core/"
+      glob: "packages/core/**/*.{ts,tsx}"
+      run: pnpm exec eslint {files}
+
+    - name: eslint-qwik
+      root: "packages/qwik/"
+      glob: "packages/qwik/**/*.{ts,tsx}"
+      run: pnpm exec eslint {files}
+
+    - name: eslint-react
+      root: "packages/react/"
+      glob: "packages/react/**/*.{ts,tsx}"
+      run: pnpm exec eslint {files}
+
+    - name: eslint-vue
+      root: "packages/vue/"
+      glob: "packages/vue/**/*.{ts,tsx}"
+      run: pnpm exec eslint {files}
+
+    - name: eslint-ag-ui-stub
+      root: "packages/ag-ui-stub/"
+      glob: "packages/ag-ui-stub/**/*.{ts,tsx}"
+      run: pnpm exec eslint {files}
+
+    - name: stylelint-qwik
+      root: "packages/qwik/"
+      glob: "packages/qwik/**/*.{css,scss,sass,less}"
+      run: pnpm exec stylelint {files}
+
+    - name: stylelint-react
+      root: "packages/react/"
+      glob: "packages/react/**/*.{css,scss,sass,less}"
+      run: pnpm exec stylelint {files}
+
+    - name: stylelint-vue
+      root: "packages/vue/"
+      glob: "packages/vue/**/*.{css,scss,sass,less}"
+      run: pnpm exec stylelint {files}
+
+    # vitest: `related` runs only the unit tests covering the changed files, and
+    # --passWithNoTests keeps edits with no related test green.
+    - name: vitest-core
+      root: "packages/core/"
+      glob: "packages/core/**/*.{ts,tsx}"
+      run: pnpm exec vitest related --run --passWithNoTests {files}
+
+    - name: vitest-qwik
+      root: "packages/qwik/"
+      glob: "packages/qwik/**/*.{ts,tsx}"
+      run: pnpm exec vitest related --run --passWithNoTests {files}
+
+    - name: vitest-react
+      root: "packages/react/"
+      glob: "packages/react/**/*.{ts,tsx}"
+      run: pnpm exec vitest related --run --passWithNoTests {files}
+
+    - name: vitest-vue
+      root: "packages/vue/"
+      glob: "packages/vue/**/*.{ts,tsx}"
+      run: pnpm exec vitest related --run --passWithNoTests {files}
+
+    - name: vitest-ag-ui-stub
+      root: "packages/ag-ui-stub/"
+      glob: "packages/ag-ui-stub/**/*.{ts,tsx}"
+      run: pnpm exec vitest related --run --passWithNoTests {files}

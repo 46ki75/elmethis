@@ -1,0 +1,26 @@
+# Prettier ignore (repo root). Honored when prettier runs from the workspace
+# root — e.g. the lefthook fmt/check hooks (`pnpm exec prettier ... {files}`).
+# Per-package .prettierignore files (e.g. packages/qwik) still apply when
+# prettier runs inside that package (its own `fmt` script).
+
+# Dependencies & build output
+node_modules
+dist
+lib
+lib-types
+storybook-static
+
+# Logs & OS cruft
+**/*.log
+**/.DS_Store
+
+# Lockfiles & manifests (managed by tooling, not prettier)
+pnpm-lock.yaml
+package-lock.json
+package.json
+tsconfig.json
+tsconfig.*.json
+
+# Config files
+eslint.config.js
+prettier.config.js

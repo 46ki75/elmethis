@@ -1,5 +1,30 @@
 {
   "enabledPlugins": {
     "web-view-transition@46ki75-plugins": true
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/lefthook-fmt.sh",
+            "timeout": 60
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/lefthook-check.sh",
+            "timeout": 600
+          }
+        ]
+      }
+    ]
   }
 }

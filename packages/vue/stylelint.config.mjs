@@ -1,3 +1,10 @@
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+// Resolve `importFrom` against this config's directory, not the CWD, so
+// stylelint works both from the package dir and from the repo root (lefthook).
+const dir = path.dirname(fileURLToPath(import.meta.url));
+
 /** @type {import('stylelint').Config} */
 export default {
   extends: ["stylelint-config-standard", "stylelint-config-css-modules"],
@@ -7,8 +14,8 @@ export default {
       true,
       {
         importFrom: [
-          "./node_modules/@elmethis/core/dist/tokens.css",
-          "./src/styles/_component-vars.css",
+          path.join(dir, "node_modules/@elmethis/core/dist/tokens.css"),
+          path.join(dir, "src/styles/_component-vars.css"),
         ],
       },
     ],
