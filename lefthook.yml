@@ -1,4 +1,27 @@
+output:
+  - failure
+  - summary
+
 pre-commit:
+  parallel: true
   jobs:
     - name: check
       run: pnpm run --recursive check
+
+fmt:
+  parallel: true
+  jobs:
+    - name: prettier
+      run: pnpm exec prettier --write {files}
+      glob: "*.{js,ts,jsx,tsx}"
+
+check:
+  parallel: true
+  jobs:
+    - name: eslint
+      run: pnpm exec eslint {files}
+      glob: "*.{js,ts,jsx,tsx}"
+
+    - name: stylelint
+      run: pnpm exec stylelint {files}
+      glob: "*.{css,scss,sass,less}"
