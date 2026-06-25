@@ -13,7 +13,7 @@ fmt:
   jobs:
     - name: prettier
       run: pnpm exec prettier --write {files}
-      glob: "*.{js,ts,jsx,tsx}"
+      glob: "*.{js,ts,jsx,tsx,json}"
 
 check:
   parallel: true
