@@ -1,0 +1,4 @@
+pre-commit:
+  jobs:
+    - name: check
+      run: pnpm run --recursive check
