@@ -25,3 +25,32 @@ check:
     - name: stylelint
       run: pnpm exec stylelint {files}
       glob: "*.{css,scss,sass,less}"
+
+    # vitest runs per-package: there is no root vitest config, so `root:` sets
+    # the CWD (resolves the package's config) and rebases {files} relative to
+    # it. `related` runs only the unit tests covering the changed files, and
+    # --passWithNoTests keeps edits with no related test green.
+    - name: vitest-core
+      root: "packages/core/"
+      glob: "packages/core/**/*.{ts,tsx}"
+      run: pnpm exec vitest related --run --passWithNoTests {files}
+
+    - name: vitest-qwik
+      root: "packages/qwik/"
+      glob: "packages/qwik/**/*.{ts,tsx}"
+      run: pnpm exec vitest related --run --passWithNoTests {files}
+
+    - name: vitest-react
+      root: "packages/react/"
+      glob: "packages/react/**/*.{ts,tsx}"
+      run: pnpm exec vitest related --run --passWithNoTests {files}
+
+    - name: vitest-vue
+      root: "packages/vue/"
+      glob: "packages/vue/**/*.{ts,tsx}"
+      run: pnpm exec vitest related --run --passWithNoTests {files}
+
+    - name: vitest-ag-ui-stub
+      root: "packages/ag-ui-stub/"
+      glob: "packages/ag-ui-stub/**/*.{ts,tsx}"
+      run: pnpm exec vitest related --run --passWithNoTests {files}

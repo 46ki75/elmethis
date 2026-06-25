@@ -1,0 +1,13 @@
+{
+  "session_id": "stub-session",
+  "transcript_path": "/tmp/stub-transcript.jsonl",
+  "cwd": "__PROJECT_DIR__",
+  "hook_event_name": "PostToolUse",
+  "tool_name": "Bash",
+  "tool_input": {
+    "command": "echo this payload has no file_path"
+  },
+  "tool_response": {
+    "stdout": "this payload has no file_path\n"
+  }
+}
