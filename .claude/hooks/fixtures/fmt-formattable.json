@@ -5,12 +5,12 @@
   "hook_event_name": "PostToolUse",
   "tool_name": "Edit",
   "tool_input": {
-    "file_path": "__PROJECT_DIR__/.claude/hooks/fixtures/sample.json",
-    "old_string": "\"sample\": true",
-    "new_string": "\"sample\": true"
+    "file_path": "__PROJECT_DIR__/packages/core/src/index.ts",
+    "old_string": "x",
+    "new_string": "x"
   },
   "tool_response": {
-    "filePath": "__PROJECT_DIR__/.claude/hooks/fixtures/sample.json",
+    "filePath": "__PROJECT_DIR__/packages/core/src/index.ts",
     "success": true
   }
 }

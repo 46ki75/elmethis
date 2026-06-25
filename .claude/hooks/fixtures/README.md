@@ -15,8 +15,8 @@ would send; `run.sh` substitutes the real repo root before piping.
 
 | Stub                    | Hook                | Exercises                                            |
 | ----------------------- | ------------------- | --------------------------------------------------- |
-| `fmt-formattable.json`  | `lefthook-fmt.sh`   | matching glob → `prettier --write sample.json`      |
-| `fmt-non-matching.json` | `lefthook-fmt.sh`   | in-repo but glob miss (`.md`) → fmt job skipped      |
+| `fmt-formattable.json`  | `lefthook-fmt.sh`   | package file → `prettier-core` formats it           |
+| `fmt-non-matching.json` | `lefthook-fmt.sh`   | in-repo but no per-package fmt job matches → skipped |
 | `fmt-outside-repo.json` | `lefthook-fmt.sh`   | path outside the repo → guard skips, exit 0          |
 | `fmt-no-path.json`      | `lefthook-fmt.sh`   | no `tool_input.file_path` → early exit 0             |
 | `stop-inactive.json`    | `lefthook-check.sh` | `stop_hook_active: false` → runs `lefthook run check` over changed files |
@@ -26,9 +26,12 @@ would send; `run.sh` substitutes the real repo root before piping.
 
 - Both hooks always exit 0; they signal via stdout (the `block` decision),
   not the exit code — so judge `stop-*` runs by the printed JSON, not "exit 0".
-- The fmt hook is silent on success. To see formatting happen, add messy spacing
-  to `sample.json`, run `run.sh fmt-formattable.json`, then `git diff sample.json`.
-  (`sample.json` is a `.json` so the fmt glob formats it while the eslint-based
-  check hook — which has no repo-root config — ignores it.)
+- Both `fmt` and `check` only act on files under `packages/<pkg>/`; the formatter
+  and linters run per-package (`root:`) so each package's own config applies.
+  Edits outside a package (root files, `.claude/`) match no job and are skipped.
+- The fmt hook is silent on success, and `fmt-formattable.json` targets a clean
+  file so it's a no-op. To see formatting happen, add messy spacing to
+  `packages/core/src/index.ts`, run `run.sh fmt-formattable.json`, then
+  `git diff packages/core/src/index.ts` (and `git checkout` to restore).
 - `stop-inactive.json` runs the real `check` over your current working tree, so
   its output depends on what you have changed.

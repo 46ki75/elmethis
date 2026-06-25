@@ -1,5 +1,0 @@
-{
-  "note": "Throwaway target for fmt-formattable.json. The fmt hook runs `prettier --write` on this file. JSON is in the fmt glob but not the eslint/check glob, so the check hook leaves it alone.",
-  "tip": "Add messy spacing here, run `run.sh fmt-formattable.json`, then `git diff sample.json` to watch prettier fix it.",
-  "sample": true
-}

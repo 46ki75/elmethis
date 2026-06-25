@@ -11,9 +11,33 @@ pre-commit:
 fmt:
   parallel: true
   jobs:
-    - name: prettier
+    # prettier runs per-package: `root:` sets the CWD so each package's prettier
+    # config and .prettierignore (e.g. packages/qwik/.prettierignore) apply, and
+    # rebases {files} relative to it. The glob is matched repo-root-relative.
+    - name: prettier-core
+      root: "packages/core/"
+      glob: "packages/core/**/*.{js,ts,jsx,tsx,json}"
       run: pnpm exec prettier --write {files}
-      glob: "*.{js,ts,jsx,tsx,json}"
+
+    - name: prettier-qwik
+      root: "packages/qwik/"
+      glob: "packages/qwik/**/*.{js,ts,jsx,tsx,json}"
+      run: pnpm exec prettier --write {files}
+
+    - name: prettier-react
+      root: "packages/react/"
+      glob: "packages/react/**/*.{js,ts,jsx,tsx,json}"
+      run: pnpm exec prettier --write {files}
+
+    - name: prettier-vue
+      root: "packages/vue/"
+      glob: "packages/vue/**/*.{js,ts,jsx,tsx,json}"
+      run: pnpm exec prettier --write {files}
+
+    - name: prettier-ag-ui-stub
+      root: "packages/ag-ui-stub/"
+      glob: "packages/ag-ui-stub/**/*.{js,ts,jsx,tsx,json}"
+      run: pnpm exec prettier --write {files}
 
 check:
   parallel: true
