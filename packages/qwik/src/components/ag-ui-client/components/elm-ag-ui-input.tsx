@@ -9,16 +9,19 @@ import {
 import type { InputContent } from "@ag-ui/client";
 
 import styles from "./elm-ag-ui-input.module.css";
-import textStyle from "../../styles/text.module.css";
-import { ElmMdiIcon } from "../icon/elm-mdi-icon";
+import textStyle from "../../../styles/text.module.css";
+import { ElmMdiIcon } from "../../icon/elm-mdi-icon";
 import { mdiClose, mdiPlus, mdiSend, mdiStop } from "@mdi/js";
 import {
   ElmAgUiPromptPicker,
   type ElmAgUiPromptDescriptor,
 } from "./elm-ag-ui-prompt-picker";
-import { ElmCollapse } from "../containments/elm-collapse";
+import { ElmCollapse } from "../../containments/elm-collapse";
 import { ElmAgUiStatus } from "./elm-ag-ui-status";
-import type { AgentActivity, AgentRunStatus } from "./create-agent-subscriber";
+import type {
+  AgentActivity,
+  AgentRunStatus,
+} from "../internal/create-agent-subscriber";
 
 export interface ElmAgUiInputProps {
   class?: string;

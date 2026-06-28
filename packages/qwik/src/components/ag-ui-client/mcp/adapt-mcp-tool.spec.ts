@@ -2,7 +2,7 @@ import { describe, expect, test, vi } from "vitest";
 
 import { adaptMcpTool } from "./adapt-mcp-tool";
 import type { McpToolDescriptor } from "./mcp-types";
-import type { JsonSchemaToolDef } from "./tool-registry";
+import type { JsonSchemaToolDef } from "../internal/tool-registry";
 
 const baseDescriptor: McpToolDescriptor = {
   name: "read_file",

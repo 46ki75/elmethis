@@ -21,9 +21,9 @@ import styles from "./elm-ag-ui-agent.module.css";
 import { ElmAgUiMessageRenderer } from "./elm-ag-ui-message-renderer";
 import { ElmAgUiInput } from "./elm-ag-ui-input";
 import type { ElmAgUiPromptDescriptor } from "./elm-ag-ui-prompt-picker";
-import { ElmInlineText } from "../typography/elm-inline-text";
-import { ElmMdiIcon } from "../icon/elm-mdi-icon";
-import type { AgentState } from "./use-agent";
+import { ElmInlineText } from "../../typography/elm-inline-text";
+import { ElmMdiIcon } from "../../icon/elm-mdi-icon";
+import type { AgentState } from "../hooks/use-agent";
 
 export interface ElmAgUiAgentProps {
   state: AgentState;

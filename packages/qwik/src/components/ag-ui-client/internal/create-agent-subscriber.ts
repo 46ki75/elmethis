@@ -1,5 +1,5 @@
 import type { AgentSubscriber, Message } from "@ag-ui/client";
-import type { Interrupt } from "@ag-ui/core";
+import type { Interrupt, ToolMessage } from "@ag-ui/core";
 import { v7 } from "uuid";
 
 import { reconcileMessages } from "./reconcile-messages";
@@ -137,13 +137,13 @@ export function createAgentSubscriber({
     async onToolCallEndEvent({ event, toolCallName, toolCallArgs }) {
       const tool = getTools()[toolCallName];
       if (!tool) return;
-      pendingToolMessages.push({
+      const toolMessage: ToolMessage = {
         id: v7(),
         role: "tool",
         content: JSON.stringify(await tool.execute(toolCallArgs)),
         toolCallId: event.toolCallId,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any);
+      };
+      pendingToolMessages.push(toolMessage);
     },
 
     // Live activity hints. Each streaming sub-event triad opens with a START

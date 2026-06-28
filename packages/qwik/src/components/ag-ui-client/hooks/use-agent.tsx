@@ -23,13 +23,19 @@ import {
   type AnyToolDef,
   type ToolRegistry,
   getToolDefinitions,
-} from "./tool-registry";
+} from "../internal/tool-registry";
 import {
   createAgentSubscriber,
   type AgentActivity,
   type AgentRunStatus,
-} from "./create-agent-subscriber";
-import { normalizePromptTemplates } from "./normalize-prompt-templates";
+} from "../internal/create-agent-subscriber";
+import { normalizePromptTemplates } from "../internal/normalize-prompt-templates";
+
+/** A single contextual hint passed to the agent on each run. */
+export interface AgentContext {
+  value: string;
+  description: string;
+}
 
 export interface UseAgentOptions {
   url: string;
@@ -44,7 +50,7 @@ export interface UseAgentOptions {
    *   in this mode — mutate the signal's source instead.
    */
   tools?: ToolRegistry | Signal<NoSerialize<ToolRegistry> | undefined>;
-  context?: { value: string; description: string }[];
+  context?: AgentContext[];
   headers?: Record<string, string>;
   initialMessages?: Message[];
   /**
@@ -66,7 +72,7 @@ export interface QueuedMessage {
 export interface AgentState {
   error: string | null;
   messages: Message[];
-  context?: { value: string; description: string }[];
+  context?: AgentContext[];
   isRunning: boolean;
   /** Coarse run lifecycle — see {@link AgentRunStatus}. */
   status: AgentRunStatus;
@@ -265,11 +271,9 @@ export function useAgent({
     state.queue.splice(index, 1);
   });
 
-  const setContext = $(
-    (newContext: { value: string; description: string }[]) => {
-      state.context = newContext;
-    },
-  );
+  const setContext = $((newContext: AgentContext[]) => {
+    state.context = newContext;
+  });
 
   const setPromptTemplates = $(
     (

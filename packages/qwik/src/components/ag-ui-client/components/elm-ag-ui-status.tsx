@@ -12,9 +12,12 @@ import {
 } from "@mdi/js";
 
 import styles from "./elm-ag-ui-status.module.css";
-import { ElmMdiIcon } from "../icon/elm-mdi-icon";
-import { ElmInlineText } from "../typography/elm-inline-text";
-import type { AgentActivity, AgentRunStatus } from "./create-agent-subscriber";
+import { ElmMdiIcon } from "../../icon/elm-mdi-icon";
+import { ElmInlineText } from "../../typography/elm-inline-text";
+import type {
+  AgentActivity,
+  AgentRunStatus,
+} from "../internal/create-agent-subscriber";
 
 export interface ElmAgUiStatusProps {
   /** Coarse run lifecycle from `useAgent`'s `state.status`. */

@@ -14,12 +14,12 @@ import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { v4, v7 } from "uuid";
 import { z } from "zod";
 import { useAgent } from "./use-agent";
-import { ElmAgUiAgent } from "./elm-ag-ui-agent";
-import { defineTool } from "./tool-registry";
-import type { ToolRegistry } from "./tool-registry";
-import { useMcpTools } from "./use-mcp-tools";
-import { useMcpPrompts } from "./use-mcp-prompts";
-import type { ElmAgUiPromptDescriptor } from "./elm-ag-ui-prompt-picker";
+import { ElmAgUiAgent } from "../components/elm-ag-ui-agent";
+import { defineTool } from "../internal/tool-registry";
+import type { ToolRegistry } from "../internal/tool-registry";
+import { useMcpTools } from "../mcp/use-mcp-tools";
+import { useMcpPrompts } from "../mcp/use-mcp-prompts";
+import type { ElmAgUiPromptDescriptor } from "../components/elm-ag-ui-prompt-picker";
 
 export interface UseAgentProps {
   class?: string;

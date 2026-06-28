@@ -1,9 +1,7 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { component$, useTask$ } from "@qwik.dev/core";
 import { useWordle, type UseWordleOptions } from "./use-wordle";
-import { useAgent } from "../ag-ui-client/use-agent";
-import { ElmAgUiAgent } from "../ag-ui-client/elm-ag-ui-agent";
-import { defineTool } from "../ag-ui-client/tool-registry";
+import { useAgent, ElmAgUiAgent, defineTool } from "../ag-ui-client";
 import z from "zod";
 
 import prompt from "./wordle/prompt.md?raw";

@@ -16,14 +16,14 @@ import {
   ToolCallResultEvent,
   ToolCall,
 } from "@ag-ui/core";
-import { ElmInlineText } from "../typography/elm-inline-text";
-import { ElmMarkdown } from "../others/elm-markdown";
-import { ElmMdiIcon } from "../icon/elm-mdi-icon";
+import { ElmInlineText } from "../../typography/elm-inline-text";
+import { ElmMarkdown } from "../../others/elm-markdown";
+import { ElmMdiIcon } from "../../icon/elm-mdi-icon";
 import { mdiAccount, mdiCreation, mdiLightbulbOn, mdiRefresh } from "@mdi/js";
 import { ElmAgUiToolExecution } from "./elm-ag-ui-tool-execution";
-import { ElmCopyIcon } from "../icon/elm-copy-icon";
-import { ElmToggle } from "../containments/elm-toggle";
-import { ElmA2ui } from "../a2ui/elm-a2ui";
+import { ElmCopyIcon } from "../../icon/elm-copy-icon";
+import { ElmToggle } from "../../containments/elm-toggle";
+import { ElmA2ui } from "../../a2ui/elm-a2ui";
 import { ElmAgUiInputContent } from "./input-content/elm-ag-ui-input-content";
 
 export interface ElmAgUiMessageRendererProps {
@@ -289,7 +289,10 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
     };
 
     return (
-      <div class={[styles["elm-my-something"], className]} style={style}>
+      <div
+        class={[styles["elm-ag-ui-message-renderer"], className]}
+        style={style}
+      >
         {messages.map((msg, i) => (
           <div key={msg.id ?? i}>{render(msg, i)}</div>
         ))}

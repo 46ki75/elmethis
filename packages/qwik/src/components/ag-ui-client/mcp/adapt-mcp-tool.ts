@@ -1,4 +1,4 @@
-import type { AnyToolDef, JsonSchemaToolDef } from "./tool-registry";
+import type { AnyToolDef, JsonSchemaToolDef } from "../internal/tool-registry";
 import type { McpToolDescriptor } from "./mcp-types";
 
 /**

@@ -2,7 +2,7 @@ import { component$, type CSSProperties } from "@qwik.dev/core";
 
 import styles from "./elm-ag-ui-input-content.module.css";
 
-import { ElmMdiIcon } from "../../icon/elm-mdi-icon";
+import { ElmMdiIcon } from "../../../icon/elm-mdi-icon";
 import { mdiImage, mdiTextBox } from "@mdi/js";
 import { UserMessage } from "@ag-ui/client";
 
