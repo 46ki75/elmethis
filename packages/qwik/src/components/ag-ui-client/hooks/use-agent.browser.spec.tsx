@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, test, vi } from "vitest";
 import type { AgentSubscriber } from "@ag-ui/client";
 
 import { useAgent } from "./use-agent";
-import { ElmAgUiAgent } from "./elm-ag-ui-agent";
+import { ElmAgUiAgent } from "../components/elm-ag-ui-agent";
 
 // The message-queue behavior lives in `useAgent` (send$ enqueues while running,
 // abort$ pops newest-then-aborts, and the subscriber's onIdle drains FIFO). It

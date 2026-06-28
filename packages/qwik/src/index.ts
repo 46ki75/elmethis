@@ -54,36 +54,42 @@ export {
 
 // | AG-UI |
 export {
+  ElmAgUiAgent,
+  type ElmAgUiAgentProps,
   ElmAgUiInput,
   type ElmAgUiInputProps,
-} from "./components/ag-ui-client/elm-ag-ui-input";
-export {
   ElmAgUiPromptPicker,
   type ElmAgUiPromptPickerProps,
   type ElmAgUiPromptDescriptor,
   type ElmAgUiPromptArgument,
-} from "./components/ag-ui-client/elm-ag-ui-prompt-picker";
-export {
   ElmAgUiMessageRenderer,
   type ElmAgUiMessageRendererProps,
-} from "./components/ag-ui-client/elm-ag-ui-message-renderer";
-export {
   ElmAgUiToolExecution,
   type ElmAgUiToolExecutionProps,
-} from "./components/ag-ui-client/elm-ag-ui-tool-execution";
-export {
   ElmAgUiStatus,
   type ElmAgUiStatusProps,
-} from "./components/ag-ui-client/elm-ag-ui-status";
-export {
   ElmAgUiInputContent,
   type ElmAgUiInputContentImageProps,
-} from "./components/ag-ui-client/input-content/elm-ag-ui-input-content";
-export {
-  ElmAgUiAgent,
-  type ElmAgUiAgentProps,
-} from "./components/ag-ui-client/elm-ag-ui-agent";
-export {
+  useAgent,
+  type AgentContext,
+  type AgentState,
+  type UseAgentOptions,
+  useMcpTools,
+  type UseMcpToolsOptions,
+  type UseMcpToolsReturn,
+  useMcpPrompts,
+  type UseMcpPromptsOptions,
+  type UseMcpPromptsReturn,
+  type AnnotatedMcpPromptDescriptor,
+  type McpClientHandle,
+  type McpPromptArgument,
+  type McpPromptContent,
+  type McpPromptDescriptor,
+  type McpPromptMessage,
+  type McpPromptResult,
+  type McpServerConfig,
+  type McpServerStatus,
+  type McpToolDescriptor,
   defineTool,
   defineJsonSchemaTool,
   type AnyToolDef,
@@ -91,34 +97,7 @@ export {
   type ToolDef,
   type ToolParameters,
   type ToolRegistry,
-} from "./components/ag-ui-client/tool-registry";
-export {
-  useAgent,
-  type AgentState,
-  type UseAgentOptions,
-} from "./components/ag-ui-client/use-agent";
-export {
-  useMcpTools,
-  type UseMcpToolsOptions,
-  type UseMcpToolsReturn,
-} from "./components/ag-ui-client/use-mcp-tools";
-export {
-  useMcpPrompts,
-  type UseMcpPromptsOptions,
-  type UseMcpPromptsReturn,
-  type AnnotatedMcpPromptDescriptor,
-} from "./components/ag-ui-client/use-mcp-prompts";
-export type {
-  McpClientHandle,
-  McpPromptArgument,
-  McpPromptContent,
-  McpPromptDescriptor,
-  McpPromptMessage,
-  McpPromptResult,
-  McpServerConfig,
-  McpServerStatus,
-  McpToolDescriptor,
-} from "./components/ag-ui-client/mcp-types";
+} from "./components/ag-ui-client";
 
 // | Code |
 export {

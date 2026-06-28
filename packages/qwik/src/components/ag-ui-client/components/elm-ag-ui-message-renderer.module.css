@@ -1,3 +1,7 @@
+.elm-ag-ui-message-renderer {
+  box-sizing: border-box;
+}
+
 .message-content-assistant-wrapper {
   display: flex;
   flex-direction: column;

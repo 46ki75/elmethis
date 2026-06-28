@@ -1,24 +1,20 @@
 import {
   $,
-  noSerialize,
   useSignal,
-  useStore,
-  useVisibleTask$,
   type NoSerialize,
   type QRL,
   type Signal,
 } from "@qwik.dev/core";
 import type { InputContent } from "@ag-ui/client";
 
-import { createMcpClient } from "./create-mcp-client";
+import { useMcpConnections } from "./use-mcp-connections";
+import { validateServers } from "./validate-servers";
 import type {
   McpClientHandle,
   McpPromptDescriptor,
   McpServerConfig,
   McpServerStatus,
 } from "./mcp-types";
-
-const VALID_SERVER_ID = /^[a-zA-Z0-9_-]+$/;
 
 /**
  * A prompt descriptor annotated with its source server id. The id is
@@ -76,27 +72,14 @@ export interface UseMcpPromptsReturn {
   >;
 }
 
-function validateServers(servers: McpServerConfig[]): void {
-  const seen = new Set<string>();
-  for (const s of servers) {
-    if (!VALID_SERVER_ID.test(s.id)) {
-      throw new Error(`MCP server id "${s.id}" must match /^[a-zA-Z0-9_-]+$/.`);
-    }
-    if (seen.has(s.id)) {
-      throw new Error(`Duplicate MCP server id: "${s.id}".`);
-    }
-    seen.add(s.id);
-  }
-}
-
 /**
  * Connect to one or more MCP servers over Streamable HTTP, list their
  * prompts, and surface them as a single annotated list plus a
  * `resolve$` QRL that renders one of them into `InputContent[]`.
  *
- * Mirrors `useMcpTools` in shape. The two hooks open independent
- * connections — fine for v1; a shared-connection variant can come
- * later if needed.
+ * Mirrors `useMcpTools` in shape — both sit on the shared
+ * `useMcpConnections` lifecycle. The two hooks open independent
+ * connections; a shared-connection variant can come later if needed.
  *
  * @example
  * ```tsx
@@ -141,102 +124,27 @@ export function useMcpPrompts(
   validateServers(servers);
 
   const prompts = useSignal<AnnotatedMcpPromptDescriptor[]>([]);
-  const status = useStore<Record<string, McpServerStatus>>(
-    Object.fromEntries(servers.map((s) => [s.id, { state: "connecting" }])),
-  );
 
-  const serversRef = useSignal<NoSerialize<McpServerConfig[]>>(
-    noSerialize(servers),
-  );
-  const factoryRef = useSignal<
-    NoSerialize<(cfg: McpServerConfig) => Promise<McpClientHandle>>
-  >(() => clientFactory ?? noSerialize(createMcpClient));
+  // Replace this server's entries while keeping others intact — each
+  // connection lists independently per server.
+  const onConnect = async (cfg: McpServerConfig, handle: McpClientHandle) => {
+    const descriptors = await handle.listPrompts();
+    const annotated: AnnotatedMcpPromptDescriptor[] = descriptors.map((d) => ({
+      ...d,
+      serverId: cfg.id,
+    }));
+    prompts.value = [
+      ...prompts.value.filter((p) => p.serverId !== cfg.id),
+      ...annotated,
+    ];
+    return descriptors.length;
+  };
 
-  // Resolves to the imperative `prompts/get` dispatcher once the
-  // visible task has populated the per-server handle map. Public
-  // `resolve$` delegates here; no-op before mount and after unmount.
-  const resolveOp = useSignal<
-    | NoSerialize<
-        (
-          serverId: string,
-          name: string,
-          args: Record<string, string>,
-        ) => Promise<InputContent[] | null>
-      >
-    | undefined
-  >(undefined);
-
-  // eslint-disable-next-line qwik/no-use-visible-task
-  useVisibleTask$(
-    ({ cleanup }) => {
-      const handles = new Map<string, McpClientHandle>();
-
-      const open = async (cfg: McpServerConfig) => {
-        const factory = factoryRef.value;
-        if (!factory) return;
-        status[cfg.id] = { state: "connecting" };
-        try {
-          const handle = await factory(cfg);
-          handles.set(cfg.id, handle);
-          const descriptors = await handle.listPrompts();
-          const annotated: AnnotatedMcpPromptDescriptor[] = descriptors.map(
-            (d) => ({ ...d, serverId: cfg.id }),
-          );
-          // Replace this server's entries while keeping others intact —
-          // each `open()` runs independently per server.
-          prompts.value = [
-            ...prompts.value.filter((p) => p.serverId !== cfg.id),
-            ...annotated,
-          ];
-          status[cfg.id] = {
-            state: "ready",
-            toolCount: descriptors.length,
-          };
-        } catch (err) {
-          status[cfg.id] = {
-            state: "error",
-            error: err instanceof Error ? err.message : String(err),
-          };
-        }
-      };
-
-      resolveOp.value = noSerialize(
-        async (
-          serverId: string,
-          name: string,
-          args: Record<string, string>,
-        ): Promise<InputContent[] | null> => {
-          const handle = handles.get(serverId);
-          if (!handle) return null;
-          const result = await handle.getPrompt(name, args);
-          const content: InputContent[] = [];
-          for (const message of result.messages) {
-            if (
-              message.content?.type === "text" &&
-              typeof (message.content as { text?: unknown }).text === "string"
-            ) {
-              content.push({
-                type: "text",
-                text: (message.content as { text: string }).text,
-              });
-            }
-          }
-          return content.length > 0 ? content : null;
-        },
-      );
-
-      void Promise.allSettled((serversRef.value ?? []).map((cfg) => open(cfg)));
-
-      cleanup(() => {
-        resolveOp.value = undefined;
-        for (const [, handle] of handles) {
-          void handle.close().catch(() => {});
-        }
-        handles.clear();
-      });
-    },
-    { strategy: "document-ready" },
-  );
+  const { status, getHandle$ } = useMcpConnections({
+    servers,
+    clientFactory,
+    onConnect,
+  });
 
   const resolve$ = $(
     async (
@@ -244,9 +152,22 @@ export function useMcpPrompts(
       name: string,
       args: Record<string, string>,
     ): Promise<InputContent[] | null> => {
-      const op = resolveOp.value;
-      if (!op) return null;
-      return await op(serverId, name, args);
+      const handle = await getHandle$(serverId);
+      if (!handle) return null;
+      const result = await handle.getPrompt(name, args);
+      const content: InputContent[] = [];
+      for (const message of result.messages) {
+        if (
+          message.content?.type === "text" &&
+          typeof (message.content as { text?: unknown }).text === "string"
+        ) {
+          content.push({
+            type: "text",
+            text: (message.content as { text: string }).text,
+          });
+        }
+      }
+      return content.length > 0 ? content : null;
     },
   );
 

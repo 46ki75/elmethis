@@ -1,8 +1,8 @@
 import { component$, type CSSProperties } from "@qwik.dev/core";
 import type { Meta, StoryObj } from "storybook-framework-qwik";
 
-import { useAgent } from "./use-agent";
-import { ElmAgUiAgent } from "./elm-ag-ui-agent";
+import { useAgent } from "../hooks/use-agent";
+import { ElmAgUiAgent } from "../components/elm-ag-ui-agent";
 import { useMcpTools } from "./use-mcp-tools";
 
 export interface UseMcpToolsProps {

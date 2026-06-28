@@ -5,8 +5,8 @@ import {
 } from "./elm-ag-ui-tool-execution";
 import { EventType } from "@ag-ui/core";
 import { $, component$, useStore, useVisibleTask$ } from "@qwik.dev/core";
-import { ElmInlineText } from "../typography/elm-inline-text";
-import { ElmButton } from "../form/elm-button";
+import { ElmInlineText } from "../../typography/elm-inline-text";
+import { ElmButton } from "../../form/elm-button";
 
 const meta: Meta<ElmAgUiToolExecutionProps> = {
   title: "Components/AG-UI/elm-ag-ui-tool-execution",

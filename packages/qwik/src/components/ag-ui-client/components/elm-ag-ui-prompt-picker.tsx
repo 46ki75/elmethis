@@ -11,7 +11,7 @@ import {
 } from "@qwik.dev/core";
 
 import styles from "./elm-ag-ui-prompt-picker.module.css";
-import { useModal } from "../../hooks/use-modal";
+import { useModal } from "../../../hooks/use-modal";
 
 /**
  * Descriptor shape consumed by `ElmAgUiPromptPicker`. Intentionally

@@ -6,18 +6,18 @@ import {
 } from "@qwik.dev/core";
 
 import styles from "./elm-ag-ui-tool-execution.module.css";
-import { ElmMdiIcon } from "../icon/elm-mdi-icon";
+import { ElmMdiIcon } from "../../icon/elm-mdi-icon";
 import {
   mdiCodeJson,
   mdiFunctionVariant,
   mdiHammerScrewdriver,
   mdiWrenchClock,
 } from "@mdi/js";
-import { ElmInlineText } from "../typography/elm-inline-text";
+import { ElmInlineText } from "../../typography/elm-inline-text";
 import { EventType } from "@ag-ui/core";
-import { ElmToggle } from "../containments/elm-toggle";
-import { useThrottledQueue } from "../../hooks/use-throttled-queue";
-import { ElmShikiHighlighter } from "../code/elm-shiki-highlighter";
+import { ElmToggle } from "../../containments/elm-toggle";
+import { useThrottledQueue } from "../../../hooks/use-throttled-queue";
+import { ElmShikiHighlighter } from "../../code/elm-shiki-highlighter";
 
 type ToolEventType =
   | EventType.TOOL_CALL_START
@@ -119,20 +119,21 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
             <ElmInlineText>{toolName}</ElmInlineText>
           </div>
 
-          {
-            <div class={styles.summary}>
-              <ElmMdiIcon
-                d={mdiFunctionVariant}
-                size="1rem"
-                color={
-                  toolEventType === EventType.TOOL_CALL_START
-                    ? "var(--elmethis-color-accent-info)"
-                    : "var(--elmethis-color-accent-success)"
-                }
-              />
-              <ElmInlineText>Preparing arguments...</ElmInlineText>
-            </div>
-          }
+          {/* Step 1 of the progress checklist — always present once a tool
+              call exists. Icon color flips info→success once the run moves
+              past TOOL_CALL_START (i.e. arguments have been prepared). */}
+          <div class={styles.summary}>
+            <ElmMdiIcon
+              d={mdiFunctionVariant}
+              size="1rem"
+              color={
+                toolEventType === EventType.TOOL_CALL_START
+                  ? "var(--elmethis-color-accent-info)"
+                  : "var(--elmethis-color-accent-success)"
+              }
+            />
+            <ElmInlineText>Preparing arguments...</ElmInlineText>
+          </div>
 
           {isArgsShown.value && (
             <ElmToggle isOpen={isArgsOpen} monochrome>

@@ -1,4 +1,4 @@
-import type { ToolParameters } from "./tool-registry";
+import type { ToolParameters } from "../internal/tool-registry";
 
 /**
  * Configuration for a single MCP server connection.

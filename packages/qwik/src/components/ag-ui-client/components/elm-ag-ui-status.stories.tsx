@@ -2,8 +2,11 @@ import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { component$, useStore, useVisibleTask$ } from "@qwik.dev/core";
 
 import { ElmAgUiStatus, type ElmAgUiStatusProps } from "./elm-ag-ui-status";
-import type { AgentActivity, AgentRunStatus } from "./create-agent-subscriber";
-import { ElmInlineText } from "../typography/elm-inline-text";
+import type {
+  AgentActivity,
+  AgentRunStatus,
+} from "../internal/create-agent-subscriber";
+import { ElmInlineText } from "../../typography/elm-inline-text";
 
 const meta: Meta<ElmAgUiStatusProps> = {
   title: "Components/AG-UI/elm-ag-ui-status",

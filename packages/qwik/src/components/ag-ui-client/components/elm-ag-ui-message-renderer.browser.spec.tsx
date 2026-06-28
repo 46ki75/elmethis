@@ -6,7 +6,7 @@ import { ElmAgUiMessageRenderer } from "./elm-ag-ui-message-renderer";
 import {
   createAgentSubscriber,
   type AgentSubscriberState,
-} from "./create-agent-subscriber";
+} from "../internal/create-agent-subscriber";
 
 // Streaming regression: the SDK rebuilds the whole message list and hands a
 // fresh array (new object identities) to `onMessagesChanged` on EVERY delta.
