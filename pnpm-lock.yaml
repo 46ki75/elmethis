@@ -31,13 +31,13 @@ importers:
         version: 0.0.57
       '@hono/node-server':
         specifier: ^2.0.6
-        version: 2.0.6(hono@4.12.26)
+        version: 2.0.6(hono@4.12.27)
       consola:
         specifier: ^3.4.2
         version: 3.4.2
       hono:
-        specifier: ^4.12.25
-        version: 4.12.26
+        specifier: ^4.12.27
+        version: 4.12.27
     devDependencies:
       '@eslint/js':
         specifier: latest
@@ -101,7 +101,7 @@ importers:
         version: 1.61.0(@ag-ui/core@0.0.57)
       '@hono/node-server':
         specifier: ^2.0.6
-        version: 2.0.6(hono@4.12.25)
+        version: 2.0.6(hono@4.12.27)
       '@modelcontextprotocol/sdk':
         specifier: ^1.29.0
         version: 1.29.0(@cfworker/json-schema@4.1.1)(zod@4.4.3)
@@ -112,8 +112,8 @@ importers:
         specifier: ^17.4.2
         version: 17.4.2
       hono:
-        specifier: ^4.12.25
-        version: 4.12.25
+        specifier: ^4.12.27
+        version: 4.12.27
       zod:
         specifier: ^4.0.0
         version: 4.4.3
@@ -5136,12 +5136,8 @@ packages:
   hermes-parser@0.25.1:
     resolution: {integrity: sha512-6pEjquH3rqaI6cYAXYPcz9MS4rY6R4ngRgrgfDshRptUZIc3lw0MCIJIGDj9++mfySOuPTHB4nrSW99BCvOPIA==}
 
-  hono@4.12.25:
-    resolution: {integrity: sha512-2NFaIyNVgJmBs/ecmtGzlmluTFs5cHEWGTdu0t1HBwYzoGXOL5nUQBRMXsXWla5i4KkG//QMzVP88m1+I3fdAQ==}
-    engines: {node: '>=16.9.0'}
-
-  hono@4.12.26:
-    resolution: {integrity: sha512-uyZtpnYxM9CmQ7QsQknM4zN8EftNqhON1qYeIKM0Se67CCEe2c44xyGURwB0axX2fBDu1dqHrHAc1hmNT8ITkw==}
+  hono@4.12.27:
+    resolution: {integrity: sha512-1yrb/+w6HWQJrUCLkJ2IF5jNIPvvFkblV5RNOYl6bV+OA6p9GLcMpHFFGTosSvHvcAUibuUukRqhlYI4z32C7Q==}
     engines: {node: '>=16.9.0'}
 
   hookable@6.1.1:
@@ -5214,8 +5210,8 @@ packages:
     resolution: {integrity: sha512-xQjs+2vrxLnAjCq+omuNkd5UQTld9/bP8+YT0LyYTlKfuSQtgUBvqhUwGugzSAh6sCdN+LnROMuLswn5hZ9Fhg==}
     engines: {node: '>=20.0.0'}
 
-  immutable@5.1.8:
-    resolution: {integrity: sha512-TM5YqrGeTsVIPPpILzeqZ8D2Zc2TvNgSDi88zPF2a4cyqQdWV/wVWBDRDbNzzrLeRWScrFcOX9lW2iX6GOtUDw==}
+  immutable@5.1.9:
+    resolution: {integrity: sha512-m8nVez3rwrgmWxtLMt1ZYXB2Lv7OKYn/disyxAlSDYAlKSlFoPPfIAmAM/M5xqL4m4C/wAPw7S2/CNaUii1Hxg==}
 
   import-fresh@3.3.1:
     resolution: {integrity: sha512-TR3KfrTZTYLPB6jUjfx6MF9WcWrHL9su5TObK4ZkYgBdWKPOFoSoQIdEuTuR82pmtxH2spWG9h6etwfr1pLBqQ==}
@@ -8735,7 +8731,7 @@ snapshots:
       '@copilotkit/license-verifier': 0.5.0
       '@copilotkit/shared': 1.61.2(@ag-ui/core@0.0.57)
       '@graphql-yoga/plugin-defer-stream': 3.21.2(graphql-yoga@5.21.2(graphql@16.14.2))(graphql@16.14.2)
-      '@hono/node-server': 1.19.14(hono@4.12.26)
+      '@hono/node-server': 1.19.14(hono@4.12.27)
       '@langchain/core': 1.2.1(@opentelemetry/api@1.9.1)(@opentelemetry/exporter-trace-otlp-proto@0.203.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.7.0(@opentelemetry/api@1.9.1))(openai@6.42.0(ws@8.21.0)(zod@4.4.3))(ws@8.21.0)
       '@modelcontextprotocol/sdk': 1.29.0(@cfworker/json-schema@4.1.1)(zod@3.25.76)
       '@remix-run/node-fetch-server': 0.13.3
@@ -8750,7 +8746,7 @@ snapshots:
       graphql: 16.14.2
       graphql-scalars: 1.25.0(graphql@16.14.2)
       graphql-yoga: 5.21.2(graphql@16.14.2)
-      hono: 4.12.26
+      hono: 4.12.27
       partial-json: 0.1.7
       phoenix: 1.8.8
       pino: 9.14.0
@@ -9177,17 +9173,13 @@ snapshots:
       '@repeaterjs/repeater': 3.1.0
       tslib: 2.8.1
 
-  '@hono/node-server@1.19.14(hono@4.12.26)':
+  '@hono/node-server@1.19.14(hono@4.12.27)':
     dependencies:
-      hono: 4.12.26
+      hono: 4.12.27
 
-  '@hono/node-server@2.0.6(hono@4.12.25)':
+  '@hono/node-server@2.0.6(hono@4.12.27)':
     dependencies:
-      hono: 4.12.25
-
-  '@hono/node-server@2.0.6(hono@4.12.26)':
-    dependencies:
-      hono: 4.12.26
+      hono: 4.12.27
 
   '@humanfs/core@0.19.2':
     dependencies:
@@ -9568,7 +9560,7 @@ snapshots:
 
   '@modelcontextprotocol/sdk@1.29.0(@cfworker/json-schema@4.1.1)(zod@3.25.76)':
     dependencies:
-      '@hono/node-server': 1.19.14(hono@4.12.26)
+      '@hono/node-server': 1.19.14(hono@4.12.27)
       ajv: 8.20.0
       ajv-formats: 3.0.1(ajv@8.20.0)
       content-type: 1.0.5
@@ -9578,7 +9570,7 @@ snapshots:
       eventsource-parser: 3.0.8
       express: 5.2.1
       express-rate-limit: 8.5.1(express@5.2.1)
-      hono: 4.12.26
+      hono: 4.12.27
       jose: 6.2.3
       json-schema-typed: 8.0.2
       pkce-challenge: 5.0.1
@@ -9592,7 +9584,7 @@ snapshots:
 
   '@modelcontextprotocol/sdk@1.29.0(@cfworker/json-schema@4.1.1)(zod@4.4.3)':
     dependencies:
-      '@hono/node-server': 1.19.14(hono@4.12.26)
+      '@hono/node-server': 1.19.14(hono@4.12.27)
       ajv: 8.20.0
       ajv-formats: 3.0.1(ajv@8.20.0)
       content-type: 1.0.5
@@ -9602,7 +9594,7 @@ snapshots:
       eventsource-parser: 3.0.8
       express: 5.2.1
       express-rate-limit: 8.5.1(express@5.2.1)
-      hono: 4.12.26
+      hono: 4.12.27
       jose: 6.2.3
       json-schema-typed: 8.0.2
       pkce-challenge: 5.0.1
@@ -13232,9 +13224,7 @@ snapshots:
     dependencies:
       hermes-estree: 0.25.1
 
-  hono@4.12.25: {}
-
-  hono@4.12.26: {}
+  hono@4.12.27: {}
 
   hookable@6.1.1: {}
 
@@ -13297,7 +13287,7 @@ snapshots:
   imagetools-core@9.1.0:
     optional: true
 
-  immutable@5.1.8:
+  immutable@5.1.9:
     optional: true
 
   import-fresh@3.3.1:
@@ -15691,7 +15681,7 @@ snapshots:
   sass@1.101.0:
     dependencies:
       chokidar: 5.0.0
-      immutable: 5.1.8
+      immutable: 5.1.9
       source-map-js: 1.2.1
     optionalDependencies:
       '@parcel/watcher': 2.5.6
