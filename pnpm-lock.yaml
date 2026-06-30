@@ -30,8 +30,8 @@ importers:
         specifier: 0.0.57
         version: 0.0.57
       '@hono/node-server':
-        specifier: ^2.0.5
-        version: 2.0.5(hono@4.12.26)
+        specifier: ^2.0.6
+        version: 2.0.6(hono@4.12.26)
       consola:
         specifier: ^3.4.2
         version: 3.4.2
@@ -100,8 +100,8 @@ importers:
         specifier: ^1.61.0
         version: 1.61.0(@ag-ui/core@0.0.57)
       '@hono/node-server':
-        specifier: ^2.0.5
-        version: 2.0.5(hono@4.12.25)
+        specifier: ^2.0.6
+        version: 2.0.6(hono@4.12.25)
       '@modelcontextprotocol/sdk':
         specifier: ^1.29.0
         version: 1.29.0(@cfworker/json-schema@4.1.1)(zod@4.4.3)
@@ -1575,8 +1575,8 @@ packages:
     peerDependencies:
       hono: ^4
 
-  '@hono/node-server@2.0.5':
-    resolution: {integrity: sha512-yQFvDmyDo3y6rEOJZDUYPJ49DIKTPpIk4kGvm40xx4Ejne0Pu9a1+exxPN+C1UppWK/WGZX9F++/Xs231tE86g==}
+  '@hono/node-server@2.0.6':
+    resolution: {integrity: sha512-7DeRlKG57JDBNZ5Qj2jwVdgwQy4b0tLubRLl3zCf91/rCf9i7p1V5FtW/yWibm1uUHE493ts9ZXH/7g/LQWl+g==}
     engines: {node: '>=20'}
     peerDependencies:
       hono: ^4
@@ -9174,11 +9174,11 @@ snapshots:
     dependencies:
       hono: 4.12.26
 
-  '@hono/node-server@2.0.5(hono@4.12.25)':
+  '@hono/node-server@2.0.6(hono@4.12.25)':
     dependencies:
       hono: 4.12.25
 
-  '@hono/node-server@2.0.5(hono@4.12.26)':
+  '@hono/node-server@2.0.6(hono@4.12.26)':
     dependencies:
       hono: 4.12.26
 
