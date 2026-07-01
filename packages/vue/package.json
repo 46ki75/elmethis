@@ -87,7 +87,7 @@
     "@types/katex": "^0.16.8",
     "@types/node": "^26.1.0",
     "@vitejs/plugin-vue": "^6.0.7",
-    "@vitejs/plugin-vue-jsx": "^5.1.5",
+    "@vitejs/plugin-vue-jsx": "^5.1.6",
     "@vitest/browser-playwright": "^4.1.9",
     "@vitest/coverage-v8": "^4.1.9",
     "@vitest/ui": "^4.1.9",
