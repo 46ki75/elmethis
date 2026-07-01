@@ -17,12 +17,7 @@ import type { ToolRegistry } from "./tool-registry";
  * - `aborted` — the caller cancelled via `abortRun()`.
  */
 export type AgentRunStatus =
-  | "idle"
-  | "running"
-  | "success"
-  | "awaiting_input"
-  | "error"
-  | "aborted";
+  "idle" | "running" | "success" | "awaiting_input" | "error" | "aborted";
 
 /**
  * What the agent is doing *right now* within a run, derived from the streaming
@@ -31,11 +26,7 @@ export type AgentRunStatus =
  * state machine (overlapping activities collapse to the latest one).
  */
 export type AgentActivity =
-  | "idle"
-  | "thinking"
-  | "writing"
-  | "calling_tool"
-  | "updating_state";
+  "idle" | "thinking" | "writing" | "calling_tool" | "updating_state";
 
 /**
  * Minimal writable view of the agent state the subscriber mutates. The hook

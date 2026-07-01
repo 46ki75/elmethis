@@ -31,8 +31,7 @@ export interface JsonSchemaToolDef {
 }
 
 export type AnyToolDef =
-  | ToolDef<z.ZodObject<z.ZodRawShape>>
-  | JsonSchemaToolDef;
+  ToolDef<z.ZodObject<z.ZodRawShape>> | JsonSchemaToolDef;
 
 export type ToolRegistry = Record<string, AnyToolDef>;
 
