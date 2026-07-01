@@ -72,7 +72,7 @@
     "tsdown": "^0.22.3",
     "tsx": "^4.22.4",
     "typescript": "5.9.3",
-    "typescript-eslint": "^8.62.0",
+    "typescript-eslint": "^8.62.1",
     "vitest": "^4.1.8",
     "zod": "^3"
   }
