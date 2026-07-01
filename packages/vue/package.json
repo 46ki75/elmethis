@@ -94,7 +94,7 @@
     "@vue/test-utils": "^2.4.11",
     "concurrently": "^10.0.3",
     "eslint": "^10.6.0",
-    "globals": "^17.6.0",
+    "globals": "^17.7.0",
     "happy-dom": "^20.10.6",
     "playwright": "^1.61.1",
     "prettier": "3.9.4",
