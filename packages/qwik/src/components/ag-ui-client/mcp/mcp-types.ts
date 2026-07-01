@@ -56,8 +56,7 @@ export interface McpPromptDescriptor {
  * resolve time so the rest of the pipeline never sees them.
  */
 export type McpPromptContent =
-  | { type: "text"; text: string }
-  | { type: string; [k: string]: unknown };
+  { type: "text"; text: string } | { type: string; [k: string]: unknown };
 
 /**
  * Shape of a message returned by `prompts/get`. The MCP spec allows
