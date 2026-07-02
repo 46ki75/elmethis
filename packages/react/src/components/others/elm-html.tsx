@@ -51,33 +51,33 @@ export const ElmHtml = ({
   }
 
   // Measuring content height needs `allow-same-origin` (to read
-  // `contentDocument`), so it's only ever present while `autoHeight` is on —
+  // `contentDocument`), so it's only ever ADDED while `autoHeight` is on —
   // never together with allow-scripts (combining allow-scripts with
   // allow-same-origin lets the embedded document escape the sandbox
   // entirely, becoming same-origin with the parent while still able to run
   // script), even at the cost of autoHeight not being able to measure there.
-  // This must both never ADD allow-same-origin onto a sandbox that already
-  // allows scripts, and never leave one in place if the caller supplied both
-  // tokens together directly — otherwise a caller-supplied
-  // "allow-scripts allow-same-origin" sandbox would pass straight through
-  // unmodified, recreating the exact escape this guard exists to prevent.
-  // The allow-scripts check is case-insensitive: the HTML `sandbox` attribute
-  // matches its keywords case-insensitively, so a case-sensitive check here
-  // could be defeated by a differently-cased token.
+  // The strip below, unlike the add, must run UNCONDITIONALLY — regardless of
+  // `autoHeight` — because it's enforcing a global invariant ("these two
+  // tokens must never coexist on this iframe"), not just guarding what this
+  // component itself adds. Gating the strip on `autoHeight` would let a
+  // caller-supplied "allow-scripts allow-same-origin" sandbox pass straight
+  // through unmodified whenever `autoHeight={false}`, recreating the exact
+  // escape this guard exists to prevent via a different, equally-supported
+  // prop combination. The allow-scripts check is case-insensitive: the HTML
+  // `sandbox` attribute matches its keywords case-insensitively, so a
+  // case-sensitive check here could be defeated by a differently-cased token.
   const sandboxTokens = new Set(sandbox?.split(/\s+/).filter(Boolean) ?? []);
-  if (autoHeight) {
-    const hasAllowScripts = [...sandboxTokens].some(
-      (token) => token.toLowerCase() === "allow-scripts",
-    );
-    if (hasAllowScripts) {
-      for (const token of sandboxTokens) {
-        if (token.toLowerCase() === "allow-same-origin") {
-          sandboxTokens.delete(token);
-        }
+  const hasAllowScripts = [...sandboxTokens].some(
+    (token) => token.toLowerCase() === "allow-scripts",
+  );
+  if (hasAllowScripts) {
+    for (const token of sandboxTokens) {
+      if (token.toLowerCase() === "allow-same-origin") {
+        sandboxTokens.delete(token);
       }
-    } else {
-      sandboxTokens.add("allow-same-origin");
     }
+  } else if (autoHeight) {
+    sandboxTokens.add("allow-same-origin");
   }
   const effectiveSandbox = [...sandboxTokens].join(" ");
 
@@ -95,6 +95,7 @@ export const ElmHtml = ({
     const attachObserver = () => {
       const root = iframe.contentDocument?.documentElement;
       if (!root) return;
+      observer?.disconnect();
       observer = new ResizeObserver(measure);
       observer.observe(root);
     };
@@ -144,8 +145,6 @@ export const ElmHtml = ({
       ref={iframeRef}
       title={title ?? "Embedded HTML content"}
       className={clsx(styles["elm-html"], className)}
-      srcDoc={html}
-      sandbox={effectiveSandbox}
       style={
         autoHeight
           ? { ...style, height: contentHeight ?? style?.height }
@@ -159,6 +158,16 @@ export const ElmHtml = ({
           : height
       }
       {...safeRest}
+      // Both placed after `{...safeRest}` on purpose: a differently-cased
+      // key (e.g. `Sandbox`, `Srcdoc`) smuggled through a loosely-typed
+      // props bag isn't caught by the exact-key destructures above, so it
+      // survives into `safeRest` — but `setAttribute` lowercases attribute
+      // names for HTML elements, so any such key still resolves to these
+      // same `sandbox`/`srcdoc` DOM attributes. Applying ours last
+      // guarantees they always win, regardless of what casing a smuggled key
+      // used.
+      srcDoc={html}
+      sandbox={effectiveSandbox}
     />
   );
 };
