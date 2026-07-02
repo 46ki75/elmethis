@@ -21,17 +21,41 @@ import styles from "./elm-html.module.css";
 // parsing it, so it can't be used alone here: this component needs a real
 // key/value view of the caller's style to merge in a measured `height`, so a
 // string has to be parsed into one explicitly.
+// A plain `.split(";")` would cut a value's own `;` in half (e.g. a data
+// URI's MIME parameter, `url(data:image/png;base64,...)`), so declarations
+// are split only on a `;` outside of any parentheses.
+const splitDeclarations = (css: string): string[] => {
+  const declarations: string[] = [];
+  let depth = 0;
+  let start = 0;
+  for (let i = 0; i < css.length; i++) {
+    const char = css[i];
+    if (char === "(") depth++;
+    else if (char === ")") depth = Math.max(0, depth - 1);
+    else if (char === ";" && depth === 0) {
+      declarations.push(css.slice(start, i));
+      start = i + 1;
+    }
+  }
+  declarations.push(css.slice(start));
+  return declarations;
+};
+
 const parseStyleString = (css: string): CSSProperties => {
   const result: Record<string, string> = {};
-  for (const declaration of css.split(";")) {
+  for (const declaration of splitDeclarations(css)) {
     const separatorIndex = declaration.indexOf(":");
     if (separatorIndex === -1) continue;
     const property = declaration.slice(0, separatorIndex).trim();
     const value = declaration.slice(separatorIndex + 1).trim();
     if (!property || !value) continue;
-    const camelProperty = property.replace(/-([a-z])/g, (_, letter: string) =>
-      letter.toUpperCase(),
-    );
+    // A leading `--` marks a CSS custom property, whose name is
+    // case-sensitive and must be left exactly as written.
+    const camelProperty = property.startsWith("--")
+      ? property
+      : property.replace(/-([a-z])/g, (_, letter: string) =>
+          letter.toUpperCase(),
+        );
     result[camelProperty] = value;
   }
   return result as CSSProperties;
@@ -139,6 +163,7 @@ export const ElmHtml = defineComponent({
       const attachObserver = () => {
         const root = iframe.contentDocument?.documentElement;
         if (!root) return;
+        observer?.disconnect();
         observer = new ResizeObserver(measure);
         observer.observe(root);
       };
@@ -190,36 +215,37 @@ export const ElmHtml = defineComponent({
       const callerStyleHeight = callerStyle?.height;
 
       // Measuring content height needs `allow-same-origin` (to read
-      // `contentDocument`), so it's only ever present while `autoHeight` is
-      // on — never together with allow-scripts (combining allow-scripts with
+      // `contentDocument`), so it's only ever ADDED while `autoHeight` is on
+      // — never together with allow-scripts (combining allow-scripts with
       // allow-same-origin lets the embedded document escape the sandbox
       // entirely, becoming same-origin with the parent while still able to
       // run script), even at the cost of autoHeight not being able to
-      // measure there. This must both never ADD allow-same-origin onto a
-      // sandbox that already allows scripts, and never leave one in place if
-      // the caller supplied both tokens together directly — otherwise a
-      // caller-supplied "allow-scripts allow-same-origin" sandbox would pass
-      // straight through unmodified, recreating the exact escape this guard
-      // exists to prevent. The allow-scripts check is case-insensitive: the
-      // HTML `sandbox` attribute matches its keywords case-insensitively, so
-      // a case-sensitive check here could be defeated by a differently-cased
+      // measure there. The strip below, unlike the add, must run
+      // UNCONDITIONALLY — regardless of `autoHeight` — because it's
+      // enforcing a global invariant ("these two tokens must never coexist
+      // on this iframe"), not just guarding what this component itself
+      // adds. Gating the strip on `autoHeight` would let a caller-supplied
+      // "allow-scripts allow-same-origin" sandbox pass straight through
+      // unmodified whenever `autoHeight: false`, recreating the exact escape
+      // this guard exists to prevent via a different, equally-supported prop
+      // combination. The allow-scripts check is case-insensitive: the HTML
+      // `sandbox` attribute matches its keywords case-insensitively, so a
+      // case-sensitive check here could be defeated by a differently-cased
       // token.
       const sandboxTokens = new Set(
         props.sandbox?.split(/\s+/).filter(Boolean) ?? [],
       );
-      if (props.autoHeight) {
-        const hasAllowScripts = [...sandboxTokens].some(
-          (token) => token.toLowerCase() === "allow-scripts",
-        );
-        if (hasAllowScripts) {
-          for (const token of sandboxTokens) {
-            if (token.toLowerCase() === "allow-same-origin") {
-              sandboxTokens.delete(token);
-            }
+      const hasAllowScripts = [...sandboxTokens].some(
+        (token) => token.toLowerCase() === "allow-scripts",
+      );
+      if (hasAllowScripts) {
+        for (const token of sandboxTokens) {
+          if (token.toLowerCase() === "allow-same-origin") {
+            sandboxTokens.delete(token);
           }
-        } else {
-          sandboxTokens.add("allow-same-origin");
         }
+      } else if (props.autoHeight) {
+        sandboxTokens.add("allow-same-origin");
       }
       const effectiveSandbox = [...sandboxTokens].join(" ");
 
@@ -237,8 +263,6 @@ export const ElmHtml = defineComponent({
           ref={iframeRef}
           title={props.title ?? "Embedded HTML content"}
           class={clsx(styles["elm-html"], className as string | undefined)}
-          srcdoc={props.html}
-          sandbox={effectiveSandbox}
           style={
             props.autoHeight
               ? ({
@@ -265,6 +289,16 @@ export const ElmHtml = defineComponent({
               : props.height
           }
           {...safeRest}
+          // Both placed after `{...safeRest}` on purpose: a differently-cased
+          // key (e.g. `Sandbox`, `Srcdoc`) smuggled through `attrs` isn't
+          // caught by Vue's exact-key prop/destructure matching above, so it
+          // survives into `safeRest` — but `setAttribute` lowercases
+          // attribute names for HTML elements, so any such key still
+          // resolves to these same `sandbox`/`srcdoc` DOM attributes.
+          // Applying ours last guarantees they always win, regardless of
+          // what casing a smuggled key used.
+          srcdoc={props.html}
+          sandbox={effectiveSandbox}
         />
       );
     };
