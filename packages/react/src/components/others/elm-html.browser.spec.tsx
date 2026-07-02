@@ -116,6 +116,82 @@ describe("[CSR] ElmHtml — ResizeObserver keeps tracking real content", () => {
   });
 });
 
+describe("[CSR] ElmHtml — toggling autoHeight with unchanged html", () => {
+  // BUG: `loadedHtmlRef` only tracks the `html` string, not which iframe DOM
+  // node actually loaded it — but `key={String(autoHeight)}` replaces the
+  // iframe node on every toggle. Toggling autoHeight off and immediately back
+  // on (with `html` unchanged) leaves `loadedHtmlRef.current === html` true
+  // from the very first real load, so the "already loaded" shortcut wrongly
+  // fires against the brand-new (remounted) iframe and attaches a
+  // ResizeObserver to it. The real `load` event for that same node still
+  // fires afterward and attaches a *second* ResizeObserver, silently
+  // replacing the first in the effect's closure — the first is never
+  // disconnected. A native ResizeObserver subclass counts constructions and
+  // disconnects (see project convention for native-constructor spies) to
+  // prove that every observer except the currently-live one gets cleaned up.
+  test("does not leak a ResizeObserver when autoHeight is toggled off and back on with the same html", async () => {
+    const OriginalResizeObserver = globalThis.ResizeObserver;
+    const instances: { disconnected: boolean }[] = [];
+
+    class TrackingResizeObserver extends OriginalResizeObserver {
+      disconnected = false;
+
+      constructor(callback: ResizeObserverCallback) {
+        super(callback);
+        instances.push(this);
+      }
+
+      disconnect() {
+        this.disconnected = true;
+        super.disconnect();
+      }
+    }
+
+    globalThis.ResizeObserver = TrackingResizeObserver as typeof ResizeObserver;
+
+    try {
+      const screen = await render(<ElmHtml html={TALL_HTML} />);
+      const getIframe = () => screen.container.querySelector("iframe")!;
+
+      await vi.waitFor(
+        () => {
+          expect(parseInt(getIframe().style.height || "0", 10)).toBeGreaterThan(
+            800,
+          );
+        },
+        { timeout: 2000 },
+      );
+
+      await screen.rerender(<ElmHtml html={TALL_HTML} autoHeight={false} />);
+      await screen.rerender(<ElmHtml html={TALL_HTML} autoHeight={true} />);
+
+      // The remounted iframe's real navigation can still be pending even
+      // once the height has already converged (a wrongly-taken "already
+      // loaded" shortcut can measure the same eventual value ahead of the
+      // real event) -- and `readyState === "complete"` is a false-positive
+      // signal here too, since a brand-new iframe's transient about:blank
+      // document is *also* trivially "complete". Poll for the real content
+      // instead, so the assertion below isn't racing the real `onLoad`
+      // handler that creates the (correctly, single) or leaked (buggy,
+      // duplicate) ResizeObserver.
+      const iframe = getIframe();
+      await vi.waitFor(
+        () => {
+          expect(
+            iframe.contentDocument?.documentElement?.textContent,
+          ).toContain("tall");
+        },
+        { timeout: 2000 },
+      );
+
+      expect(instances.length).toBeGreaterThan(1);
+      expect(instances.slice(0, -1).every((o) => o.disconnected)).toBe(true);
+    } finally {
+      globalThis.ResizeObserver = OriginalResizeObserver;
+    }
+  });
+});
+
 describe("[CSR] ElmHtml — layout defaults", () => {
   // BUG: the module CSS only sets `border: none`, so with no width supplied
   // by the caller the iframe falls back to its ~300px intrinsic default
