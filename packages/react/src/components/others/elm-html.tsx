@@ -35,19 +35,20 @@ export const ElmHtml = ({
 }: ElmHtmlProps) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [contentHeight, setContentHeight] = useState<number>();
-  // The (iframe node, html) pair the `load` event has actually fired for —
-  // set only from inside the real `load` handler below, never inferred from
-  // prop-diffing. A prop-diffing heuristic (e.g. "did html change since last
-  // render?") is fooled by a React StrictMode double-invoke (the second
-  // invocation sees no prop change and wrongly assumes the doc already
-  // loaded). Tracking the node too (not just the html string) matters
-  // because `key={String(autoHeight)}` below replaces the iframe with a
-  // fresh, unloaded node on every autoHeight toggle — without the node
-  // check, toggling off and back on with unchanged html would wrongly match
-  // an earlier load that happened on a now-discarded node.
-  const loadedRef = useRef<
-    { node: HTMLIFrameElement; html: string } | undefined
-  >(undefined);
+
+  // `key={String(autoHeight)}` (below) gives a fresh, unloaded iframe node
+  // on an autoHeight toggle, and a plain html change is a fresh navigation
+  // too — either way the previously-measured height goes stale the moment
+  // `html`/`autoHeight` change, well before the effect that re-measures it
+  // gets to run. Resetting it here, during render (React's documented
+  // pattern for adjusting state in response to a prop change), avoids an
+  // extra render showing the stale value that a reset inside the effect
+  // would cause.
+  const [loadKey, setLoadKey] = useState({ html, autoHeight });
+  if (loadKey.html !== html || loadKey.autoHeight !== autoHeight) {
+    setLoadKey({ html, autoHeight });
+    if (autoHeight) setContentHeight(undefined);
+  }
 
   // Measuring content height needs `allow-same-origin` (to read
   // `contentDocument`), so it's only ever added while `autoHeight` is on —
@@ -87,7 +88,6 @@ export const ElmHtml = ({
     };
 
     const onLoad = () => {
-      loadedRef.current = { node: iframe, html };
       if (autoHeight) {
         measure();
         attachObserver();
@@ -95,26 +95,6 @@ export const ElmHtml = ({
     };
 
     iframe.addEventListener("load", onLoad);
-
-    if (autoHeight) {
-      if (
-        loadedRef.current?.node === iframe &&
-        loadedRef.current.html === html
-      ) {
-        // This exact iframe node already finished loading this exact html
-        // before this effect ran (a StrictMode remount, which reuses the
-        // same DOM node) — 'load' won't fire again, so sync against the
-        // already-settled document directly instead of waiting for it. The
-        // node check matters because `key={String(autoHeight)}` below
-        // replaces the iframe with an unloaded node on every autoHeight
-        // toggle; without it, this would wrongly match a load that
-        // happened on a now-discarded node.
-        measure();
-        attachObserver();
-      } else {
-        setContentHeight(undefined);
-      }
-    }
 
     return () => {
       iframe.removeEventListener("load", onLoad);
