@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 import { render } from "@testing-library/react";
 
-import { ElmHtml } from "./elm-html";
+import { ElmHtml, type ElmHtmlProps } from "./elm-html";
 
 // ---------------------------------------------------------------------------
 // [CSR]
@@ -29,5 +29,62 @@ describe("[CSR] ElmHtml — explicit height while autoHeight is on", () => {
     const iframe = container.querySelector("iframe")!;
 
     expect(iframe.style.height).toBe("400px");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// [CSR]
+//
+// Reproduces bugs found in a third code-review round, all visible on the
+// synchronous first render — no real iframe navigation needed, so these live
+// in the unit layer rather than *.browser.spec.tsx.
+// ---------------------------------------------------------------------------
+describe("[CSR] ElmHtml — sandboxing correctness", () => {
+  // BUG: `src`/`srcDoc` are excluded from `ElmHtmlProps` only at the type
+  // level (`Omit<..., "src" | "srcDoc">`); the runtime destructure doesn't
+  // strip them, so a `srcDoc` key that reaches `...rest` (e.g. forwarded from
+  // a loosely-typed props bag) is spread onto the iframe after the
+  // component's own `srcDoc={html}` and silently wins.
+  test("a forwarded `srcDoc` cannot silently override the intended `html`", () => {
+    const props = {
+      html: "<p>trusted</p>",
+      srcDoc: "<p>injected</p>",
+    } as unknown as ElmHtmlProps;
+    const { container } = render(<ElmHtml {...props} />);
+    const iframe = container.querySelector("iframe")!;
+
+    expect(iframe.getAttribute("srcdoc")).toBe("<p>trusted</p>");
+  });
+
+  // BUG: the allow-scripts guard does `sandboxTokens.has("allow-scripts")`,
+  // a case-sensitive Set lookup — but the HTML `sandbox` attribute matches
+  // its keywords case-insensitively, so a differently-cased caller token
+  // slips past the guard and still gets `allow-same-origin` force-added,
+  // recreating the sandbox-escape the guard exists to prevent.
+  test("never adds allow-same-origin when the caller's sandbox override allows scripts, regardless of keyword casing", () => {
+    const { container } = render(
+      <ElmHtml html="<p>x</p>" sandbox="Allow-Scripts" />,
+    );
+    const iframe = container.querySelector("iframe")!;
+
+    expect(
+      iframe.getAttribute("sandbox")?.toLowerCase().split(/\s+/),
+    ).not.toContain("allow-same-origin");
+  });
+
+  // BUG: the allow-same-origin merge runs unconditionally, even when
+  // `autoHeight={false}` — the only reason `allow-same-origin` is ever
+  // needed (reading `contentDocument` to measure height). With autoHeight
+  // off there's no measurement happening, so the extra privilege is pure
+  // unwanted exposure with no way for the caller to opt out.
+  test("does not add allow-same-origin when autoHeight is off", () => {
+    const { container } = render(
+      <ElmHtml html="<p>x</p>" autoHeight={false} sandbox="allow-forms" />,
+    );
+    const iframe = container.querySelector("iframe")!;
+
+    expect(iframe.getAttribute("sandbox")?.split(/\s+/)).not.toContain(
+      "allow-same-origin",
+    );
   });
 });
