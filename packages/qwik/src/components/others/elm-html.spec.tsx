@@ -62,6 +62,21 @@ describe("[CSR] ElmHtml — sandboxing correctness", () => {
     expect(iframe.getAttribute("srcdoc")).toBe("<p>trusted</p>");
   });
 
+  // BUG: only the two known casings (`srcdoc`, `srcDoc`) are stripped from
+  // `rest` — any other casing (e.g. `Srcdoc`) survives the destructure and,
+  // spread after the component's own `srcdoc={html}`, silently overrides it.
+  // Same defect class as the sandbox-casing bug fixed above; same fix
+  // (reposition the component's own assignment after the spread) applies.
+  test("a forwarded differently-cased `Srcdoc` cannot silently override the intended `html` either", async () => {
+    const props = {
+      html: "<p>trusted</p>",
+      Srcdoc: "<p>injected</p>",
+    } as unknown as ElmHtmlProps;
+    const iframe = await renderIframe(<ElmHtml {...props} />);
+
+    expect(iframe.getAttribute("srcdoc")).toBe("<p>trusted</p>");
+  });
+
   test("never adds allow-same-origin when the caller's sandbox override allows scripts, regardless of keyword casing", async () => {
     const iframe = await renderIframe(
       <ElmHtml html="<p>x</p>" sandbox="Allow-Scripts" />,
@@ -82,10 +97,50 @@ describe("[CSR] ElmHtml — sandboxing correctness", () => {
     const iframe = await renderIframe(
       <ElmHtml html="<p>x</p>" sandbox="allow-scripts allow-same-origin" />,
     );
+    const tokens = iframe.getAttribute("sandbox")?.toLowerCase().split(/\s+/);
 
-    expect(
-      iframe.getAttribute("sandbox")?.toLowerCase().split(/\s+/),
-    ).not.toContain("allow-same-origin");
+    expect(tokens).toContain("allow-scripts");
+    expect(tokens).not.toContain("allow-same-origin");
+  });
+
+  // BUG: the strip above only runs inside `if (autoHeight)` — with
+  // `autoHeight={false}`, none of the strip logic executes at all, so a
+  // caller-supplied "allow-scripts allow-same-origin" sandbox passes straight
+  // through unmodified, recreating the exact escape combo this component
+  // exists to prevent, just reached via a different (equally supported) prop
+  // combination.
+  test("strips a caller-supplied allow-same-origin even when autoHeight is off", async () => {
+    const iframe = await renderIframe(
+      <ElmHtml
+        html="<p>x</p>"
+        autoHeight={false}
+        sandbox="allow-scripts allow-same-origin"
+      />,
+    );
+    const tokens = iframe.getAttribute("sandbox")?.toLowerCase().split(/\s+/);
+
+    expect(tokens).toContain("allow-scripts");
+    expect(tokens).not.toContain("allow-same-origin");
+  });
+
+  // BUG: a differently-cased `Sandbox` key smuggled in via a loosely-typed
+  // props bag isn't captured by the `sandbox` destructure (an exact-key
+  // match), so it flows into `...rest`, which is spread after the
+  // component's own `sandbox={effectiveSandbox}` in the JSX. `setAttribute`
+  // lowercases attribute names for HTML elements, so both keys resolve to
+  // the same `sandbox` DOM attribute — and since the smuggled key is applied
+  // later, it silently overwrites the sanitized value, recreating the exact
+  // escape this component exists to prevent.
+  test("a differently-cased `Sandbox` prop cannot override the sanitized sandbox", async () => {
+    const props = {
+      html: "<p>x</p>",
+      sandbox: "allow-forms",
+      Sandbox: "allow-scripts allow-same-origin",
+    } as unknown as ElmHtmlProps;
+    const iframe = await renderIframe(<ElmHtml {...props} />);
+    const tokens = iframe.getAttribute("sandbox")?.toLowerCase().split(/\s+/);
+
+    expect(tokens).not.toContain("allow-scripts");
   });
 
   test("does not add allow-same-origin when autoHeight is off", async () => {
