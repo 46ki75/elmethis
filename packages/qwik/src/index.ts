@@ -280,6 +280,7 @@ export {
   ElmColorSemanticSample,
   type ElmColorSemanticSampleProps,
 } from "./components/others/elm-color-semantic-sample";
+export { ElmHtml, type ElmHtmlProps } from "./components/others/elm-html";
 export {
   ElmMarkdown,
   type ElmMarkdownProps,
