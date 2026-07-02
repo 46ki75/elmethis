@@ -56,6 +56,21 @@ describe("[CSR] ElmHtml — sandboxing correctness", () => {
     expect(iframe.getAttribute("srcdoc")).toBe("<p>trusted</p>");
   });
 
+  // BUG: the strip only removes the key `srcDoc` (camelCase) — the DOM
+  // attribute is spelled `srcdoc`, and a loosely-typed caller forwarding that
+  // exact lowercase key reaches `...rest` untouched, silently overriding the
+  // component's own `srcDoc={html}`.
+  test("a forwarded lowercase `srcdoc` cannot silently override the intended `html` either", () => {
+    const props = {
+      html: "<p>trusted</p>",
+      srcdoc: "<p>injected</p>",
+    } as unknown as ElmHtmlProps;
+    const { container } = render(<ElmHtml {...props} />);
+    const iframe = container.querySelector("iframe")!;
+
+    expect(iframe.getAttribute("srcdoc")).toBe("<p>trusted</p>");
+  });
+
   // BUG: the allow-scripts guard does `sandboxTokens.has("allow-scripts")`,
   // a case-sensitive Set lookup — but the HTML `sandbox` attribute matches
   // its keywords case-insensitively, so a differently-cased caller token
@@ -64,6 +79,23 @@ describe("[CSR] ElmHtml — sandboxing correctness", () => {
   test("never adds allow-same-origin when the caller's sandbox override allows scripts, regardless of keyword casing", () => {
     const { container } = render(
       <ElmHtml html="<p>x</p>" sandbox="Allow-Scripts" />,
+    );
+    const iframe = container.querySelector("iframe")!;
+
+    expect(
+      iframe.getAttribute("sandbox")?.toLowerCase().split(/\s+/),
+    ).not.toContain("allow-same-origin");
+  });
+
+  // BUG: the guard above only prevents this component from ADDING
+  // allow-same-origin when allow-scripts is present — it never strips one the
+  // caller already supplied alongside allow-scripts. A caller-supplied
+  // "allow-scripts allow-same-origin" sandbox therefore passes straight
+  // through unmodified, recreating the exact escape combo this component
+  // exists to prevent.
+  test("strips a caller-supplied allow-same-origin when the caller's sandbox override already allows scripts too", () => {
+    const { container } = render(
+      <ElmHtml html="<p>x</p>" sandbox="allow-scripts allow-same-origin" />,
     );
     const iframe = container.querySelector("iframe")!;
 
