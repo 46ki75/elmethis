@@ -51,7 +51,7 @@
     "fmt": "prettier --write ./src",
     "fmt.check": "prettier --check ./src",
     "lint": "eslint \"src/**/*.ts*\"",
-    "lint.css": "stylelint \"src/**/*.css\"",
+    "lint.css": "stylelint \"{src,.storybook}/**/*.css\"",
     "test": "pnpm run test.unit && pnpm run test.browser",
     "test.unit": "vitest --run",
     "test.coverage": "vitest --run --coverage",

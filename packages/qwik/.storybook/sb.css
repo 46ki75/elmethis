@@ -5,6 +5,5 @@ html {
 body,
 .docs-story {
   transition: background-color 200ms;
-
   background-color: light-dark(#efecea, #393e46);
 }
