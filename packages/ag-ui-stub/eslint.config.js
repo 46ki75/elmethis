@@ -14,6 +14,9 @@ export default defineConfig([
         ...globals.node,
         ...globals.browser,
       },
+      parserOptions: {
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
     rules: {
       "@typescript-eslint/no-empty-object-type": "off",
