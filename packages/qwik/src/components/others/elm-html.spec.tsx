@@ -48,9 +48,39 @@ describe("[CSR] ElmHtml — sandboxing correctness", () => {
     expect(iframe.getAttribute("srcdoc")).toBe("<p>trusted</p>");
   });
 
+  // BUG: the strip only removes the key `srcdoc` (lowercase, matching the DOM
+  // attribute) — a loosely-typed caller forwarding the camelCase `srcDoc` key
+  // instead reaches `...rest` untouched, silently overriding the component's
+  // own `srcdoc={html}`.
+  test("a forwarded camelCase `srcDoc` cannot silently override the intended `html` either", async () => {
+    const props = {
+      html: "<p>trusted</p>",
+      srcDoc: "<p>injected</p>",
+    } as unknown as ElmHtmlProps;
+    const iframe = await renderIframe(<ElmHtml {...props} />);
+
+    expect(iframe.getAttribute("srcdoc")).toBe("<p>trusted</p>");
+  });
+
   test("never adds allow-same-origin when the caller's sandbox override allows scripts, regardless of keyword casing", async () => {
     const iframe = await renderIframe(
       <ElmHtml html="<p>x</p>" sandbox="Allow-Scripts" />,
+    );
+
+    expect(
+      iframe.getAttribute("sandbox")?.toLowerCase().split(/\s+/),
+    ).not.toContain("allow-same-origin");
+  });
+
+  // BUG: the guard above only prevents this component from ADDING
+  // allow-same-origin when allow-scripts is present — it never strips one the
+  // caller already supplied alongside allow-scripts. A caller-supplied
+  // "allow-scripts allow-same-origin" sandbox therefore passes straight
+  // through unmodified, recreating the exact escape combo this component
+  // exists to prevent.
+  test("strips a caller-supplied allow-same-origin when the caller's sandbox override already allows scripts too", async () => {
+    const iframe = await renderIframe(
+      <ElmHtml html="<p>x</p>" sandbox="allow-scripts allow-same-origin" />,
     );
 
     expect(

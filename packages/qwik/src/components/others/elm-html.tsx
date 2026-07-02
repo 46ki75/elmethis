@@ -40,12 +40,17 @@ export const ElmHtml = component$<ElmHtmlProps>((props) => {
     // (`Omit<..., "src" | "srcdoc">`) — a loosely-typed caller can still
     // smuggle one into `rest` at runtime, where spreading it last onto the
     // iframe would silently override our own `srcdoc={html}` below. Strip
-    // both defensively so `html` stays the single source of truth for what
-    // renders.
+    // both castings of `srcdoc` (a caller could pass either) defensively so
+    // `html` stays the single source of truth for what renders.
     src: _src,
     srcdoc: _srcdoc,
+    srcDoc: _srcDoc,
     ...rest
-  } = props as ElmHtmlProps & { src?: unknown; srcdoc?: unknown };
+  } = props as ElmHtmlProps & {
+    src?: unknown;
+    srcdoc?: unknown;
+    srcDoc?: unknown;
+  };
 
   const iframeRef = useSignal<HTMLIFrameElement>();
   const contentHeight = useSignal<number>();
@@ -62,21 +67,33 @@ export const ElmHtml = component$<ElmHtmlProps>((props) => {
   });
 
   // Measuring content height needs `allow-same-origin` (to read
-  // `contentDocument`), so it's only ever added while `autoHeight` is on —
-  // never when a caller's sandbox override already allows scripts (combining
-  // allow-scripts with allow-same-origin lets the embedded document escape
-  // the sandbox entirely, becoming same-origin with the parent while still
-  // able to run script), even at the cost of autoHeight not being able to
-  // measure there. The allow-scripts check is case-insensitive: the HTML
-  // `sandbox` attribute matches its keywords case-insensitively, so a
-  // case-sensitive check here could be defeated by a differently-cased
-  // token.
+  // `contentDocument`), so it's only ever present while `autoHeight` is on —
+  // never together with allow-scripts (combining allow-scripts with
+  // allow-same-origin lets the embedded document escape the sandbox
+  // entirely, becoming same-origin with the parent while still able to run
+  // script), even at the cost of autoHeight not being able to measure there.
+  // This must both never ADD allow-same-origin onto a sandbox that already
+  // allows scripts, and never leave one in place if the caller supplied both
+  // tokens together directly — otherwise a caller-supplied
+  // "allow-scripts allow-same-origin" sandbox would pass straight through
+  // unmodified, recreating the exact escape this guard exists to prevent.
+  // The allow-scripts check is case-insensitive: the HTML `sandbox` attribute
+  // matches its keywords case-insensitively, so a case-sensitive check here
+  // could be defeated by a differently-cased token.
   const sandboxTokens = new Set(sandbox?.split(/\s+/).filter(Boolean) ?? []);
   if (autoHeight) {
     const hasAllowScripts = [...sandboxTokens].some(
       (token) => token.toLowerCase() === "allow-scripts",
     );
-    if (!hasAllowScripts) sandboxTokens.add("allow-same-origin");
+    if (hasAllowScripts) {
+      for (const token of sandboxTokens) {
+        if (token.toLowerCase() === "allow-same-origin") {
+          sandboxTokens.delete(token);
+        }
+      }
+    } else {
+      sandboxTokens.add("allow-same-origin");
+    }
   }
   const effectiveSandbox = [...sandboxTokens].join(" ");
 
