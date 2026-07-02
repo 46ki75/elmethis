@@ -124,7 +124,9 @@ describe("[CSR] ElmHtml — toggling autoHeight with unchanged html", () => {
     globalThis.ResizeObserver = TrackingResizeObserver as typeof ResizeObserver;
 
     try {
-      const screen = render(ElmHtml, { props: { html: TALL_HTML } });
+      const screen = render(ElmHtml, {
+        props: { html: TALL_HTML, autoHeight: true },
+      });
       const getIframe = () => screen.container.querySelector("iframe")!;
 
       await vi.waitFor(
