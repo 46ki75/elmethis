@@ -79,6 +79,26 @@ describe("[CSR] ElmHtml — sandboxing correctness", () => {
     ).not.toContain("allow-same-origin");
   });
 
+  // BUG: the guard above only prevents this component from ADDING
+  // allow-same-origin when allow-scripts is present — it never strips one the
+  // caller already supplied alongside allow-scripts. A caller-supplied
+  // "allow-scripts allow-same-origin" sandbox therefore passes straight
+  // through unmodified, recreating the exact escape combo this component
+  // exists to prevent.
+  test("strips a caller-supplied allow-same-origin when the caller's sandbox override already allows scripts too", () => {
+    const wrapper = mount(ElmHtml, {
+      props: {
+        html: "<p>x</p>",
+        sandbox: "allow-scripts allow-same-origin",
+      },
+    });
+    const iframe = wrapper.find("iframe");
+
+    expect(
+      iframe.attributes("sandbox")?.toLowerCase().split(/\s+/),
+    ).not.toContain("allow-same-origin");
+  });
+
   // The allow-same-origin merge must not run when `autoHeight={false}` — the
   // only reason `allow-same-origin` is ever needed (reading `contentDocument`
   // to measure height). With autoHeight off there's no measurement
@@ -93,5 +113,35 @@ describe("[CSR] ElmHtml — sandboxing correctness", () => {
     expect(iframe.attributes("sandbox")?.split(/\s+/)).not.toContain(
       "allow-same-origin",
     );
+  });
+});
+
+// ---------------------------------------------------------------------------
+// [CSR]
+//
+// `ElmHtmlProps` inherits `style` from vue's `HTMLAttributes`, whose type is
+// `string | CSSProperties | Array<StyleValue> | ...` — legal, idiomatic vue
+// usage includes a plain string. The component always treats it as a single
+// object and spreads it (`{...callerStyle, height: ...}`); spreading a string
+// indexes its characters as numeric keys instead of merging properties,
+// crashing the render entirely (`patchStyle` then tries to assign a numeric
+// index of `CSSStyleDeclaration`, which only has a getter). No real iframe
+// navigation is needed to see this: it's true of the very first synchronous
+// render, which is why this lives in the unit layer rather than
+// *.browser.spec.tsx.
+//
+// (An array-form `style`, also legal per the type, was checked too but does
+// not reproduce: vue normalizes it to a plain object before this component's
+// `attrs.style` ever sees it, so only the string form is a confirmed bug.)
+// ---------------------------------------------------------------------------
+describe("[CSR] ElmHtml — a non-object `style` value while autoHeight is on", () => {
+  test("does not corrupt a caller-supplied string `style`", () => {
+    const wrapper = mount(ElmHtml, {
+      props: { html: "<p>x</p>" },
+      attrs: { style: "color: red;" },
+    });
+    const iframe = wrapper.find("iframe");
+
+    expect(iframe.element.style.color).toBe("red");
   });
 });

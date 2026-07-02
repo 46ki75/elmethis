@@ -1,5 +1,6 @@
 import {
   defineComponent,
+  normalizeStyle,
   onBeforeUnmount,
   onMounted,
   ref,
@@ -11,6 +12,38 @@ import {
 import { clsx } from "clsx";
 
 import styles from "./elm-html.module.css";
+
+// `HTMLAttributes["style"]` legally includes a plain CSS-text string (unlike
+// react, whose `style` prop is object-only) — vue's own DOM patcher writes a
+// string straight to `element.style.cssText` instead of merging it key by
+// key. `normalizeStyle` (vue's own array/object merge utility, used
+// internally by its DOM patcher) leaves a string untouched rather than
+// parsing it, so it can't be used alone here: this component needs a real
+// key/value view of the caller's style to merge in a measured `height`, so a
+// string has to be parsed into one explicitly.
+const parseStyleString = (css: string): CSSProperties => {
+  const result: Record<string, string> = {};
+  for (const declaration of css.split(";")) {
+    const separatorIndex = declaration.indexOf(":");
+    if (separatorIndex === -1) continue;
+    const property = declaration.slice(0, separatorIndex).trim();
+    const value = declaration.slice(separatorIndex + 1).trim();
+    if (!property || !value) continue;
+    const camelProperty = property.replace(/-([a-z])/g, (_, letter: string) =>
+      letter.toUpperCase(),
+    );
+    result[camelProperty] = value;
+  }
+  return result as CSSProperties;
+};
+
+const toStyleObject = (
+  style: HTMLAttributes["style"],
+): CSSProperties | undefined => {
+  if (style === undefined) return undefined;
+  if (typeof style === "string") return parseStyleString(style);
+  return normalizeStyle(style) as CSSProperties;
+};
 
 export interface ElmHtmlProps extends HTMLAttributes {
   /** Raw HTML markup to render, e.g. a Claude-authored artifact or a Notion page export. */
@@ -153,19 +186,24 @@ export const ElmHtml = defineComponent({
         ...safeRest
       } = attrs as Record<string, unknown>;
 
-      const callerStyle = style as Record<string, unknown> | undefined;
+      const callerStyle = toStyleObject(style as HTMLAttributes["style"]);
       const callerStyleHeight = callerStyle?.height;
 
       // Measuring content height needs `allow-same-origin` (to read
-      // `contentDocument`), so it's only ever added while `autoHeight` is on
-      // — never when a caller's sandbox override already allows scripts
-      // (combining allow-scripts with allow-same-origin lets the embedded
-      // document escape the sandbox entirely, becoming same-origin with the
-      // parent while still able to run script), even at the cost of
-      // autoHeight not being able to measure there. The allow-scripts check
-      // is case-insensitive: the HTML `sandbox` attribute matches its
-      // keywords case-insensitively, so a case-sensitive check here could be
-      // defeated by a differently-cased token.
+      // `contentDocument`), so it's only ever present while `autoHeight` is
+      // on — never together with allow-scripts (combining allow-scripts with
+      // allow-same-origin lets the embedded document escape the sandbox
+      // entirely, becoming same-origin with the parent while still able to
+      // run script), even at the cost of autoHeight not being able to
+      // measure there. This must both never ADD allow-same-origin onto a
+      // sandbox that already allows scripts, and never leave one in place if
+      // the caller supplied both tokens together directly — otherwise a
+      // caller-supplied "allow-scripts allow-same-origin" sandbox would pass
+      // straight through unmodified, recreating the exact escape this guard
+      // exists to prevent. The allow-scripts check is case-insensitive: the
+      // HTML `sandbox` attribute matches its keywords case-insensitively, so
+      // a case-sensitive check here could be defeated by a differently-cased
+      // token.
       const sandboxTokens = new Set(
         props.sandbox?.split(/\s+/).filter(Boolean) ?? [],
       );
@@ -173,7 +211,15 @@ export const ElmHtml = defineComponent({
         const hasAllowScripts = [...sandboxTokens].some(
           (token) => token.toLowerCase() === "allow-scripts",
         );
-        if (!hasAllowScripts) sandboxTokens.add("allow-same-origin");
+        if (hasAllowScripts) {
+          for (const token of sandboxTokens) {
+            if (token.toLowerCase() === "allow-same-origin") {
+              sandboxTokens.delete(token);
+            }
+          }
+        } else {
+          sandboxTokens.add("allow-same-origin");
+        }
       }
       const effectiveSandbox = [...sandboxTokens].join(" ");
 
