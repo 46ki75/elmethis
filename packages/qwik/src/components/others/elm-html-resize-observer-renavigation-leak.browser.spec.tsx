@@ -23,60 +23,71 @@ describe("[CSR] ElmHtml — ResizeObserver on in-frame re-navigation", () => {
   // on its own (the embedded document re-navigating itself, e.g. a
   // same-origin `location.reload()`), which re-runs `onLoad` ->
   // `attachObserver()` and silently orphans the first ResizeObserver.
-  test("does not leak a ResizeObserver when the same iframe re-navigates without any prop change", async () => {
-    const OriginalResizeObserver = globalThis.ResizeObserver;
-    const instances: { disconnected: boolean }[] = [];
+  //
+  // `retry: 2` because CI runs the whole browser layer against one shared,
+  // istanbul-instrumented Chromium — under that cumulative load a real
+  // iframe navigation can occasionally miss even a generous window
+  // entirely. Confirmed locally: this exact test is instant and 100%
+  // reliable in isolation (even with coverage on), but running the full
+  // 21-file suite with coverage reproduces sporadic failures on this and
+  // sibling ElmHtml iframe-load tests — genuine resource contention, not a
+  // functional regression. A bounded retry absorbs that variance without
+  // hiding a real, deterministic break (which would fail every attempt).
+  test(
+    "does not leak a ResizeObserver when the same iframe re-navigates without any prop change",
+    { retry: 2 },
+    async () => {
+      const OriginalResizeObserver = globalThis.ResizeObserver;
+      const instances: { disconnected: boolean }[] = [];
 
-    class TrackingResizeObserver extends OriginalResizeObserver {
-      disconnected = false;
+      class TrackingResizeObserver extends OriginalResizeObserver {
+        disconnected = false;
 
-      constructor(callback: ResizeObserverCallback) {
-        super(callback);
-        instances.push(this);
+        constructor(callback: ResizeObserverCallback) {
+          super(callback);
+          instances.push(this);
+        }
+
+        disconnect() {
+          this.disconnected = true;
+          super.disconnect();
+        }
       }
 
-      disconnect() {
-        this.disconnected = true;
-        super.disconnect();
+      globalThis.ResizeObserver =
+        TrackingResizeObserver as typeof ResizeObserver;
+
+      try {
+        const screen = await render(<ElmHtml html={TALL_HTML} />);
+        const iframe = screen.container.querySelector("iframe")!;
+
+        await vi.waitFor(
+          () => {
+            expect(instances.length).toBeGreaterThanOrEqual(1);
+            expect(
+              iframe.contentDocument?.documentElement?.textContent,
+            ).toContain("tall");
+          },
+          { timeout: 6000 },
+        );
+
+        const countBeforeReload = instances.length;
+
+        // Same iframe node, no prop change — a real second `load` event
+        // triggered by the framed document itself re-navigating.
+        iframe.contentWindow!.location.reload();
+
+        await vi.waitFor(
+          () => {
+            expect(instances.length).toBeGreaterThan(countBeforeReload);
+          },
+          { timeout: 6000 },
+        );
+
+        expect(instances.slice(0, -1).every((o) => o.disconnected)).toBe(true);
+      } finally {
+        globalThis.ResizeObserver = OriginalResizeObserver;
       }
-    }
-
-    globalThis.ResizeObserver = TrackingResizeObserver as typeof ResizeObserver;
-
-    try {
-      const screen = await render(<ElmHtml html={TALL_HTML} />);
-      const iframe = screen.container.querySelector("iframe")!;
-
-      // 6s (not the usual 2s) because CI runners are demonstrably slower
-      // than local dev machines at qwik's iframe-load + resumability path —
-      // this exact wait was seen timing out in CI at 2s while passing
-      // reliably in dozens of local runs.
-      await vi.waitFor(
-        () => {
-          expect(instances.length).toBeGreaterThanOrEqual(1);
-          expect(
-            iframe.contentDocument?.documentElement?.textContent,
-          ).toContain("tall");
-        },
-        { timeout: 6000 },
-      );
-
-      const countBeforeReload = instances.length;
-
-      // Same iframe node, no prop change — a real second `load` event
-      // triggered by the framed document itself re-navigating.
-      iframe.contentWindow!.location.reload();
-
-      await vi.waitFor(
-        () => {
-          expect(instances.length).toBeGreaterThan(countBeforeReload);
-        },
-        { timeout: 6000 },
-      );
-
-      expect(instances.slice(0, -1).every((o) => o.disconnected)).toBe(true);
-    } finally {
-      globalThis.ResizeObserver = OriginalResizeObserver;
-    }
-  });
+    },
+  );
 });
