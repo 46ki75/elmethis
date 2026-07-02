@@ -37,11 +37,11 @@ describe("[CSR] ElmHtml — autoHeight measurement", () => {
       () => {
         expect(parseInt(iframe.style.height || "0", 10)).toBeGreaterThan(800);
       },
-      // 5s (not the usual 2s) because CI runners are demonstrably slower
+      // 12s (not the usual 2s) because CI runners are demonstrably slower
       // than local dev machines at qwik's iframe-load + resumability path —
       // this exact wait was seen timing out in CI at 2s while passing
       // reliably in dozens of local runs.
-      { timeout: 5000 },
+      { timeout: 12000 },
     );
   });
 
@@ -59,11 +59,11 @@ describe("[CSR] ElmHtml — autoHeight measurement", () => {
       () => {
         expect(parseInt(iframe.style.height || "0", 10)).toBeGreaterThan(800);
       },
-      // 5s (not the usual 2s) because CI runners are demonstrably slower
+      // 12s (not the usual 2s) because CI runners are demonstrably slower
       // than local dev machines at qwik's iframe-load + resumability path —
       // this exact wait was seen timing out in CI at 2s while passing
       // reliably in dozens of local runs.
-      { timeout: 5000 },
+      { timeout: 12000 },
     );
   });
 

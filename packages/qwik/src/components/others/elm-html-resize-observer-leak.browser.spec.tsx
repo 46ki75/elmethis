@@ -67,7 +67,7 @@ describe("[CSR] ElmHtml — toggling autoHeight with unchanged html", () => {
       const screen = await render(<AutoHeightToggle />);
       const getIframe = () => screen.container.querySelector("iframe")!;
 
-      // 5s (not the usual 2s) because CI runners are demonstrably slower
+      // 6s (not the usual 2s) because CI runners are demonstrably slower
       // than local dev machines at qwik's iframe-load + resumability path —
       // this exact wait was seen timing out in CI at 2s while passing
       // reliably in dozens of local runs.
@@ -77,7 +77,7 @@ describe("[CSR] ElmHtml — toggling autoHeight with unchanged html", () => {
             800,
           );
         },
-        { timeout: 5000 },
+        { timeout: 6000 },
       );
 
       await screen.getByTestId("toggle-auto-height").click(); // autoHeight -> false
@@ -97,7 +97,7 @@ describe("[CSR] ElmHtml — toggling autoHeight with unchanged html", () => {
             iframe.contentDocument?.documentElement?.textContent,
           ).toContain("tall");
         },
-        { timeout: 5000 },
+        { timeout: 6000 },
       );
 
       expect(instances.length).toBeGreaterThan(1);

@@ -47,7 +47,7 @@ describe("[CSR] ElmHtml — ResizeObserver on in-frame re-navigation", () => {
       const screen = await render(<ElmHtml html={TALL_HTML} />);
       const iframe = screen.container.querySelector("iframe")!;
 
-      // 5s (not the usual 2s) because CI runners are demonstrably slower
+      // 6s (not the usual 2s) because CI runners are demonstrably slower
       // than local dev machines at qwik's iframe-load + resumability path —
       // this exact wait was seen timing out in CI at 2s while passing
       // reliably in dozens of local runs.
@@ -58,7 +58,7 @@ describe("[CSR] ElmHtml — ResizeObserver on in-frame re-navigation", () => {
             iframe.contentDocument?.documentElement?.textContent,
           ).toContain("tall");
         },
-        { timeout: 5000 },
+        { timeout: 6000 },
       );
 
       const countBeforeReload = instances.length;
@@ -71,7 +71,7 @@ describe("[CSR] ElmHtml — ResizeObserver on in-frame re-navigation", () => {
         () => {
           expect(instances.length).toBeGreaterThan(countBeforeReload);
         },
-        { timeout: 5000 },
+        { timeout: 6000 },
       );
 
       expect(instances.slice(0, -1).every((o) => o.disconnected)).toBe(true);
