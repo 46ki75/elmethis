@@ -222,6 +222,43 @@ describe("[CSR] ElmHtml — a non-object `style` value while autoHeight is on", 
     expect(iframe.element.style.border).toContain("red");
   });
 
+  // BUG: `splitDeclarations` tracks paren depth but not quote state, so a
+  // `;` inside a quoted value (legal CSS, e.g. `content: 'a;b'`) is treated
+  // as a declaration separator — truncating the quoted value mid-string and
+  // dropping/mangling the declarations around it.
+  test("does not split a declaration on a semicolon inside a quoted value", () => {
+    const wrapper = mount(ElmHtml, {
+      props: { html: "<p>x</p>" },
+      attrs: {
+        style: "content: 'a;b'; color: red;",
+      },
+    });
+    const iframe = wrapper.find("iframe");
+
+    expect(iframe.element.style.getPropertyValue("content")).toContain("a;b");
+    expect(iframe.element.style.color).toBe("red");
+  });
+
+  // BUG: same root cause as above, worse blast radius — an unmatched `(`
+  // inside a quoted value (e.g. `content: '(';`) permanently inflates
+  // `depth`, since the matching `)` is never seen (it's plain text inside
+  // the string, not a real paren). Every subsequent `;` for the rest of the
+  // style string is then treated as still "inside parens", swallowing all
+  // later declarations into one malformed value instead of just the one
+  // containing the quote.
+  test("does not let an unmatched paren inside a quoted value swallow the rest of the style string", () => {
+    const wrapper = mount(ElmHtml, {
+      props: { html: "<p>x</p>" },
+      attrs: {
+        style: "content: '('; color: red; border: 1px solid blue;",
+      },
+    });
+    const iframe = wrapper.find("iframe");
+
+    expect(iframe.element.style.color).toBe("red");
+    expect(iframe.element.style.border).toContain("blue");
+  });
+
   // BUG: the kebab-to-camel conversion (`property.replace(/-([a-z])/g, ...)`)
   // doesn't special-case a leading `--`, so a CSS custom property like
   // `--my-radius` gets mangled into the invalid key `-MyRadius` instead of
