@@ -24,13 +24,28 @@ import styles from "./elm-html.module.css";
 // A plain `.split(";")` would cut a value's own `;` in half (e.g. a data
 // URI's MIME parameter, `url(data:image/png;base64,...)`), so declarations
 // are split only on a `;` outside of any parentheses.
+// Parens/quotes inside a quoted string (e.g. `content: '(';`) aren't real
+// nesting — they're just characters of the string — so quote state is
+// tracked too: once inside a `'`/`"` string, `(`/`)` are ignored and only the
+// matching, unescaped closing quote ends it. Without this, a `;` inside a
+// quoted value would be split on (corrupting/truncating that declaration),
+// and an unmatched `(` inside one would permanently inflate `depth`,
+// swallowing every remaining declaration in the string into one malformed
+// value.
 const splitDeclarations = (css: string): string[] => {
   const declarations: string[] = [];
   let depth = 0;
+  let quote: '"' | "'" | undefined;
   let start = 0;
   for (let i = 0; i < css.length; i++) {
     const char = css[i];
-    if (char === "(") depth++;
+    if (quote) {
+      if (char === "\\") i++;
+      else if (char === quote) quote = undefined;
+      continue;
+    }
+    if (char === '"' || char === "'") quote = char;
+    else if (char === "(") depth++;
     else if (char === ")") depth = Math.max(0, depth - 1);
     else if (char === ";" && depth === 0) {
       declarations.push(css.slice(start, i));

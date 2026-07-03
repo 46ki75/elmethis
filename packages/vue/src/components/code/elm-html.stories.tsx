@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
+import type { Meta, StoryObj } from "@storybook/vue3-vite";
 
 import { ElmHtml } from "./elm-html";
 
 const meta = {
-  title: "Components/Others/elm-html",
+  title: "Components/Code/elm-html",
   component: ElmHtml,
   tags: ["autodocs"],
   args: {

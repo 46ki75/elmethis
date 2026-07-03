@@ -1,19 +1,17 @@
-import type { Meta, StoryObj } from "storybook-framework-qwik";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { ElmHtml, type ElmHtmlProps } from "./elm-html";
+import { ElmHtmlViewer } from "./elm-html-viewer";
 
-const meta: Meta<ElmHtmlProps> = {
-  title: "Components/Others/elm-html",
-  component: ElmHtml,
+const meta = {
+  title: "Components/Code/elm-html-viewer",
+  component: ElmHtmlViewer,
   tags: ["autodocs"],
-  args: {
-    style: { width: "100%" },
-  },
-};
+  args: {},
+} satisfies Meta<typeof ElmHtmlViewer>;
 
 export default meta;
 
-type Story = StoryObj<ElmHtmlProps>;
+type Story = StoryObj<typeof meta>;
 
 const CLAUDE_ARTIFACT_HTML = `
 <!doctype html>
@@ -60,28 +58,5 @@ export const ClaudeArtifact: Story = {
 export const NotionExport: Story = {
   args: {
     html: NOTION_EXPORT_HTML,
-  },
-};
-
-const IMAGES_HTML = `
-<p>Absolute URL:</p>
-<img src="https://picsum.photos/seed/elmethis/200/120" width="200" height="120" />
-<p>Relative URL (resolves against the host page, not the HTML's source — breaks unless the source uses absolute URLs):</p>
-<img src="./not-a-real-image.png" width="200" height="120" />
-<p>Data URI:</p>
-<img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='120'%3E%3Crect width='200' height='120' fill='%236b4fbb'/%3E%3C/svg%3E" width="200" height="120" />
-`;
-
-export const Images: Story = {
-  args: {
-    html: IMAGES_HTML,
-  },
-};
-
-export const FixedHeight: Story = {
-  args: {
-    html: CLAUDE_ARTIFACT_HTML,
-    autoHeight: false,
-    style: { width: "100%", height: "150px" },
   },
 };
