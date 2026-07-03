@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ElmHtml } from "./elm-html";
 
 const meta = {
-  title: "Components/Others/elm-html",
+  title: "Components/Code/elm-html",
   component: ElmHtml,
   tags: ["autodocs"],
   args: {

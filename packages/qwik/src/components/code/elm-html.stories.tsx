@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "storybook-framework-qwik";
 import { ElmHtml, type ElmHtmlProps } from "./elm-html";
 
 const meta: Meta<ElmHtmlProps> = {
-  title: "Components/Others/elm-html",
+  title: "Components/Code/elm-html",
   component: ElmHtml,
   tags: ["autodocs"],
   args: {
