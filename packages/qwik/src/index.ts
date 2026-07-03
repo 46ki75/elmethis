@@ -104,6 +104,7 @@ export {
   ElmCodeBlock,
   type ElmCodeBlockProps,
 } from "./components/code/elm-code-block";
+export { ElmHtml, type ElmHtmlProps } from "./components/code/elm-html";
 export { ElmKatex, type ElmKatexProps } from "./components/code/elm-katex";
 export {
   ElmShikiHighlighter,
@@ -280,7 +281,6 @@ export {
   ElmColorSemanticSample,
   type ElmColorSemanticSampleProps,
 } from "./components/others/elm-color-semantic-sample";
-export { ElmHtml, type ElmHtmlProps } from "./components/others/elm-html";
 export {
   ElmMarkdown,
   type ElmMarkdownProps,
