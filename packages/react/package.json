@@ -71,7 +71,7 @@
     "@radix-ui/react-use-controllable-state": "^1.2.3",
     "clsx": "^2.1.1",
     "dompurify": "^3.4.2",
-    "es-toolkit": "^1.48.1",
+    "es-toolkit": "^1.49.0",
     "katex": "^0.17.0",
     "marked": "^18.0.5",
     "shiki": "^4.3.0",
