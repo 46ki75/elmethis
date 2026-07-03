@@ -55,13 +55,14 @@ export const ElmHtmlViewer = defineComponent({
           "<\\/",
         );
         const wrapper = `<!doctype html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8" />
+<title>Embedded HTML content</title>
 <style>html,body{margin:0;height:100%;}iframe{display:block;width:100%;height:100%;border:0;}</style>
 </head>
 <body>
-<iframe sandbox></iframe>
+<iframe sandbox title="Embedded HTML content"></iframe>
 <script>document.querySelector("iframe").srcdoc = ${serializedHtml};</script>
 </body>
 </html>`;

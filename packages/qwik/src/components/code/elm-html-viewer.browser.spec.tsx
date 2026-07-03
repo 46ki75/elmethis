@@ -151,6 +151,37 @@ describe("[CSR] ElmHtmlViewer — open in new tab", () => {
     expect(wrapperDoc.querySelector("p")).toBeNull();
   });
 
+  test("titles the wrapper page and its iframe for accessibility", async () => {
+    const createObjectURLSpy = vi.spyOn(URL, "createObjectURL");
+    const screen = await render(<ElmHtmlViewer html={SIMPLE_HTML} />);
+
+    await screen.getByRole("button", { name: "Open in new tab" }).click();
+
+    await vi.waitFor(() => {
+      expect(createObjectURLSpy).toHaveBeenCalledTimes(1);
+    });
+    const wrapperBlob = createObjectURLSpy.mock.calls[0]![0] as Blob;
+    const wrapperHtml = await wrapperBlob.text();
+    const wrapperDoc = new DOMParser().parseFromString(
+      wrapperHtml,
+      "text/html",
+    );
+    createObjectURLSpy.mockRestore();
+
+    // BUG this guards against regressing: a screen-reader user landing on
+    // the new tab previously heard no page title, and — on entering the
+    // iframe, the only content on the page — no frame name either, unlike
+    // ElmHtml's own iframe which always defaults `title` to "Embedded HTML
+    // content". The wrapper document also had no `lang`, and its `<head>`
+    // had no `<title>` at all.
+    expect(wrapperDoc.querySelector("title")?.textContent).toBe(
+      "Embedded HTML content",
+    );
+    expect(wrapperDoc.documentElement.getAttribute("lang")).toBeTruthy();
+    const iframe = wrapperDoc.querySelector("iframe");
+    expect(iframe?.getAttribute("title")).toBe("Embedded HTML content");
+  });
+
   test("revokes the object URL when window.open doesn't return a popup (e.g. blocked)", async () => {
     const revokeSpy = vi.spyOn(URL, "revokeObjectURL");
     const screen = await render(<ElmHtmlViewer html={SIMPLE_HTML} />);

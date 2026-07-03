@@ -31,14 +31,24 @@ export const ElmHtmlViewer = component$<ElmHtmlViewerProps>(
         // escaped separately because the HTML parser looks for that literal
         // byte sequence before the wrapper's own script is parsed as JS.
         const serializedHtml = JSON.stringify(html).replace(/<\//g, "<\\/");
+        // Matches the `title ?? "Embedded HTML content"` fallback ElmHtml's
+        // own iframe always gets, so a screen-reader user landing on this
+        // new tab hears a page title and, on entering the iframe (the only
+        // content on the page), a frame name — same as the inline preview.
+        // This string is a fixed constant, not derived from `html`, so
+        // embedding it directly as markup (rather than routing it through
+        // the script like `html` itself) carries none of the
+        // attribute-escaping risk that motivated the srcdoc approach above.
+        const wrapperTitle = "Embedded HTML content";
         const wrapper = `<!doctype html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8" />
+<title>${wrapperTitle}</title>
 <style>html,body{margin:0;height:100%;}iframe{display:block;width:100%;height:100%;border:0;}</style>
 </head>
 <body>
-<iframe sandbox></iframe>
+<iframe sandbox title="${wrapperTitle}"></iframe>
 <script>document.querySelector("iframe").srcdoc = ${serializedHtml};</script>
 </body>
 </html>`;

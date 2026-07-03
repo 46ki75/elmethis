@@ -135,6 +135,32 @@ describe("[CSR] ElmHtmlViewer — open in new tab", () => {
     expect(wrapperDoc.querySelector("p")).toBeNull();
   });
 
+  test("labels the popup document and its wrapper iframe for accessibility", async () => {
+    const createObjectURLSpy = vi.spyOn(URL, "createObjectURL");
+    const screen = render(ElmHtmlViewer, { props: { html: SIMPLE_HTML } });
+
+    await screen.getByRole("button", { name: "Open in new tab" }).click();
+
+    const wrapperBlob = createObjectURLSpy.mock.calls[0]![0] as Blob;
+    const wrapperHtml = await wrapperBlob.text();
+    const wrapperDoc = new DOMParser().parseFromString(
+      wrapperHtml,
+      "text/html",
+    );
+    createObjectURLSpy.mockRestore();
+
+    // BUG this guards against regressing: the wrapper document previously
+    // had no <title> and no `lang`, and its iframe had no accessible name —
+    // an AT user opening the new tab got nothing announced, unlike the
+    // inline ElmHtml preview which always defaults to "Embedded HTML
+    // content".
+    expect(wrapperDoc.title).toBe("Embedded HTML content");
+    expect(wrapperDoc.documentElement.lang).toBe("en");
+    expect(wrapperDoc.querySelector("iframe")?.getAttribute("title")).toBe(
+      "Embedded HTML content",
+    );
+  });
+
   test("revokes the object URL when window.open doesn't return a popup (e.g. blocked)", async () => {
     const revokeSpy = vi.spyOn(URL, "revokeObjectURL");
     const screen = render(ElmHtmlViewer, { props: { html: SIMPLE_HTML } });

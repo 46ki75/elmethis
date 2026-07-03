@@ -139,6 +139,34 @@ describe("[CSR] ElmHtmlViewer — open in new tab", () => {
     expect(wrapperDoc.querySelector("p")).toBeNull();
   });
 
+  test("labels the wrapper document and iframe for accessibility, like the inline ElmHtml preview", async () => {
+    const createObjectURLSpy = vi.spyOn(URL, "createObjectURL");
+    const screen = await render(<ElmHtmlViewer html={SIMPLE_HTML} />);
+
+    await screen.getByRole("button", { name: "Open in new tab" }).click();
+
+    const wrapperBlob = createObjectURLSpy.mock.calls[0]![0] as Blob;
+    const wrapperHtml = await wrapperBlob.text();
+    const wrapperDoc = new DOMParser().parseFromString(
+      wrapperHtml,
+      "text/html",
+    );
+    createObjectURLSpy.mockRestore();
+
+    // The inline preview (ElmHtml) always defaults its iframe's accessible
+    // name to "Embedded HTML content"; the popup wrapper's own iframe should
+    // be labeled the same way instead of leaving AT users with no accessible
+    // name for it.
+    const iframe = wrapperDoc.querySelector("iframe");
+    expect(iframe?.getAttribute("title")).toBe("Embedded HTML content");
+    // The blob: document itself also needs a <title> and a `lang` on <html>
+    // so a screen reader announces something when the tab opens.
+    expect(wrapperDoc.querySelector("title")?.textContent).toBe(
+      "Embedded HTML content",
+    );
+    expect(wrapperDoc.documentElement.getAttribute("lang")).toBeTruthy();
+  });
+
   test("revokes the object URL when window.open doesn't return a popup (e.g. blocked)", async () => {
     const revokeSpy = vi.spyOn(URL, "revokeObjectURL");
     const screen = await render(<ElmHtmlViewer html={SIMPLE_HTML} />);

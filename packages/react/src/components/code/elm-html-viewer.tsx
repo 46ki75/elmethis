@@ -40,14 +40,20 @@ export const ElmHtmlViewer = ({
       // escaped separately because the HTML parser looks for that literal
       // byte sequence before the wrapper's own script is parsed as JS.
       const serializedHtml = JSON.stringify(html).replace(/<\//g, "<\\/");
+      // Matches ElmHtml's own default iframe title, so the popup stays
+      // exactly as accessible as the inline preview: a <title> and `lang`
+      // on the wrapper document give AT users something to announce when
+      // the tab opens, and the `title` on the wrapping iframe gives it an
+      // accessible name.
       const wrapper = `<!doctype html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8" />
+<title>Embedded HTML content</title>
 <style>html,body{margin:0;height:100%;}iframe{display:block;width:100%;height:100%;border:0;}</style>
 </head>
 <body>
-<iframe sandbox></iframe>
+<iframe sandbox title="Embedded HTML content"></iframe>
 <script>document.querySelector("iframe").srcdoc = ${serializedHtml};</script>
 </body>
 </html>`;
