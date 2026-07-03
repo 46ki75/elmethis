@@ -105,6 +105,10 @@ export {
   type ElmCodeBlockProps,
 } from "./components/code/elm-code-block";
 export { ElmHtml, type ElmHtmlProps } from "./components/code/elm-html";
+export {
+  ElmHtmlViewer,
+  type ElmHtmlViewerProps,
+} from "./components/code/elm-html-viewer";
 export { ElmKatex, type ElmKatexProps } from "./components/code/elm-katex";
 export {
   ElmShikiHighlighter,

@@ -1,0 +1,62 @@
+.elm-html-viewer {
+  display: grid;
+  grid-template: "header" 2.75rem "divider" 1px "content" 1fr / 1fr;
+  align-items: center;
+  gap: 0;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  margin-block-start: var(--elmethis-margin-block-start);
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  background-color: var(--elmethis-color-surface-raised);
+  box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
+}
+
+.header {
+  grid-area: header;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  padding-inline-end: 0.25rem;
+}
+
+.icon-button {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  color: var(--elmethis-color-neutral-strong);
+  background: transparent;
+  cursor: pointer;
+  transition:
+    color 160ms ease,
+    background-color 160ms ease;
+}
+
+.icon-button:hover {
+  color: var(--elmethis-color-primary);
+  background-color: var(--elmethis-color-primary-hover);
+}
+
+.icon-button:focus-visible {
+  outline: 2px solid var(--elmethis-color-primary);
+  outline-offset: 2px;
+}
+
+.divider {
+  grid-area: divider;
+  width: calc(100% - 1rem);
+  margin-inline: auto;
+  border: none;
+  border-bottom: solid 1px rgb(128 128 128 / 50%);
+}
+
+.content {
+  grid-area: content;
+  box-sizing: border-box;
+  padding: 0 0.25rem;
+}
