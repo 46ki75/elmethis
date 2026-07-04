@@ -115,6 +115,7 @@
 
 .vertical .fill {
   inset: auto 0 0;
+  width: auto;
   bottom: calc(var(--elmethis-scoped-inner-min-ratio, 0) * 100%);
   height: calc(
     (
@@ -159,6 +160,74 @@
 
 /* ---- Markers ---------------------------------------------------------------- */
 
+/*
+ * `.marks` and its descendants are `position: absolute` so a tick/label can
+ * sit at an arbitrary percentage along the track without disturbing the
+ * track's own flex layout — but that also means none of it ever contributes
+ * to `.track`'s or `.elm-slider`'s box size. Reserve the extra space these
+ * rows need on the element that participates in normal flow (`.elm-slider`),
+ * sized generously enough to fit a tick, the gap, and a label's line box.
+ */
+.elm-slider.has-markers {
+  padding-block-end: 0.5rem;
+}
+
+.elm-slider.has-marker-labels {
+  padding-block-end: 1.75rem;
+}
+
+.elm-slider.vertical.has-markers {
+  padding-block-end: 0;
+
+  /*
+   * Physical, not logical: `.vertical .mark`'s `left: 50%` +
+   * `transform: translate(0.75rem, ...)` (and the tick/label layout that
+   * follows) always render on the physical right regardless of `dir` — they
+   * don't participate in the inline axis at all. A logical
+   * `padding-inline-end` would flip to physical `padding-left` under
+   * `dir="rtl"`, reserving space on the side opposite the one the marks
+   * actually occupy.
+   */
+  padding-right: 0.5rem;
+}
+
+.elm-slider.vertical.has-marker-labels {
+  padding-block-end: 0;
+
+  /*
+   * Unlike the horizontal axis (where the reserved `padding-block-end` only
+   * ever needs to hold a label's roughly-constant line-height), a vertical
+   * label's *width* scales with its character count — a fixed rem constant
+   * only fits short labels and lets 4+ digit values (or wide negative
+   * values) spill past this element's own inline-end edge.
+   *
+   * `0.75rem` covers the fixed part of the offset from the track's
+   * inline-end edge to where the label starts (the mark's own translate
+   * plus the tick + gap that precede the label in `.mark`'s row layout).
+   * The remainder scales with the longest rendered label's character count,
+   * via `1ch` — exact here because `.mark-label` uses a monospace font, so
+   * every character has the same advance width. `font-family`/`font-size`
+   * are set to match `.mark-label` so `ch` resolves against the same font
+   * metrics; this element renders no text of its own, so it doesn't leak
+   * into any child that doesn't set its own font (they all do). The extra
+   * `0.5ch` is a small rounding buffer for subpixel layout drift between
+   * this element's `ch` and the label's own rendered width.
+   *
+   * This is a physical `padding-right`, not the logical `padding-inline-end`
+   * its name suggests it should be: `.vertical .mark`'s `left: 50%` +
+   * `transform: translate(0.75rem, ...)` (and everything downstream of it —
+   * the tick, the gap, the label) render on the physical right regardless of
+   * `dir` — none of it is expressed in logical/inline terms. Reserving the
+   * space with a logical property would flip it to physical `padding-left`
+   * under `dir="rtl"`, leaving the actual marks unprotected on the right.
+   */
+  font-family: var(--elmethis-font-family-monospace);
+  font-size: 0.7rem;
+  padding-right: calc(
+    0.75rem + (var(--elmethis-scoped-max-marker-label-chars, 4) + 0.5) * 1ch
+  );
+}
+
 .marks {
   position: absolute;
   inset: 0;
@@ -182,6 +251,25 @@
   bottom: calc(var(--elmethis-scoped-marker-ratio, 0) * 100%);
   flex-direction: row;
   transform: translate(0.75rem, 50%);
+}
+
+/* The default transform centers a tick/label on its marker position, which
+   pushes the first/last mark half its own size past the track's start/end
+   edge. Align those two inward instead of centering them. */
+.mark-start {
+  transform: translate(0, 0.75rem);
+}
+
+.mark-end {
+  transform: translate(-100%, 0.75rem);
+}
+
+.vertical .mark-start {
+  transform: translate(0.75rem, 0);
+}
+
+.vertical .mark-end {
+  transform: translate(0.75rem, 100%);
 }
 
 .tick {
