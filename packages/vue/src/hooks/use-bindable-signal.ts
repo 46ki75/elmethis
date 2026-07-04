@@ -42,7 +42,15 @@ export function useBindableSignal<P extends object, K extends keyof P>(args: {
   emit: (event: `update:${string & K}`, ...payload: unknown[]) => void;
   /** Initial value for the internal state when unbound. */
   defaultValue: NonNullable<P[K]>;
-}): Ref<UnwrapRef<P[K]>> {
+}): Ref<NonNullable<UnwrapRef<P[K]>>> {
   const { props, key, emit, defaultValue } = args;
-  return useVModel(props, key, emit, { passive: true, defaultValue });
+  // `useVModel`'s own return type is `Ref<UnwrapRef<P[K]>>` (which still
+  // carries the prop's optional `| undefined`, since a model prop must
+  // default to `undefined` to be distinguishable from "unbound") — but a
+  // required `defaultValue` guarantees the ref is never actually undefined
+  // at runtime (unbound reads fall back to it, and the JSDoc above promises
+  // callers a `Ref<T>`, not `Ref<T | undefined>`). Narrow the type to match.
+  return useVModel(props, key, emit, { passive: true, defaultValue }) as Ref<
+    NonNullable<UnwrapRef<P[K]>>
+  >;
 }
