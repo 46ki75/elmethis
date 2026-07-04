@@ -285,6 +285,23 @@ describe("[CSR] ElmSlider — hardened edge cases", () => {
     expect(slider(wrapper).getAttribute("aria-label")).toBe("Volume");
   });
 
+  it("applies a caller-supplied class/style to the outer wrapper, not the inner track", () => {
+    const wrapper = mount(ElmSlider, {
+      attrs: { class: "my-class", style: { margin: "1rem" } },
+    });
+    const outer = wrapper.find('[class*="elm-slider"]').element as HTMLElement;
+    const track = slider(wrapper);
+
+    // Mirrors the React port: `className`/`style` land on the outer
+    // `.elm-slider` wrapper, exactly like `rest` (aria-label, data-*, ...)
+    // lands on the inner track.
+    expect(outer.classList.contains("my-class")).toBe(true);
+    expect(outer.style.margin).toBe("1rem");
+
+    expect(track.classList.contains("my-class")).toBe(false);
+    expect(track.style.margin).toBe("");
+  });
+
   it("renders tick/label values on the actual step grid, not an evenly-resampled one", () => {
     const wrapper = mount(ElmSlider, {
       props: { min: 0, max: 10, step: 3, markers: true, markerLabels: true },
@@ -387,6 +404,24 @@ describe("[CSR] ElmSlider — hardened edge cases", () => {
     expect(el.getAttribute("aria-valuenow")).toBe("79");
   });
 
+  it("does not let a caller-supplied aria-valuenow (via attrs) override the slider's own computed value", () => {
+    // `attrs` (aria-valuenow, role, aria-orientation, aria-valuemin/max,
+    // aria-disabled, ...) is fallthrough content spread onto the track
+    // element — it must never be able to overwrite the slider's own
+    // internally-computed ARIA state, which is what actually reflects the
+    // real, current value/orientation/bounds.
+    const wrapper = mount(ElmSlider, {
+      props: { defaultValue: 50 },
+      attrs: { "aria-valuenow": 999, role: "button" },
+    });
+    const el = wrapper.element.querySelector(
+      "[aria-orientation]",
+    ) as HTMLElement;
+
+    expect(el.getAttribute("role")).toBe("slider");
+    expect(el.getAttribute("aria-valuenow")).toBe("50");
+  });
+
   it("respects a caller-supplied tabindex instead of forcing it from `disabled`", () => {
     const wrapper = mount(ElmSlider, { attrs: { tabindex: -1 } });
     const el = slider(wrapper);
@@ -420,12 +455,13 @@ describe("[CSR] ElmSlider — hardened edge cases", () => {
     expect(el.getAttribute("aria-valuenow")).toBe("51");
   });
 
-  it("still invokes a caller-supplied onKeydown (via attrs) when disabled, but the internal step stays gated", async () => {
-    // `mergeProps` composes independent handlers — the internal handler's
-    // own `if (disabled) return` guard has no way to suppress a *different*,
-    // caller-supplied function in the merged array. This mirrors
-    // elm-checkbox's own disabled + attrs-onClick behavior: the internal
-    // action stays gated, but an externally attached handler still fires.
+  it("does not invoke a caller-supplied onKeydown (via attrs) when disabled", async () => {
+    // Mirrors the React port's contract (elm-slider.spec.tsx, "does not
+    // invoke a caller-supplied onKeyDown when disabled"): `disabled` must
+    // fully suppress interaction, including a caller-attached handler that
+    // `mergeProps` would otherwise compose in unconditionally. A caller
+    // relying on `disabled` to suppress interaction (e.g. analytics, a
+    // toast) must not see it fire.
     const onKeydownSpy = vi.fn();
     const wrapper = mount(ElmSlider, {
       props: { defaultValue: 50, disabled: true },
@@ -437,7 +473,7 @@ describe("[CSR] ElmSlider — hardened edge cases", () => {
       new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }),
     );
 
-    expect(onKeydownSpy).toHaveBeenCalledTimes(1);
+    expect(onKeydownSpy).not.toHaveBeenCalled();
     expect(el.getAttribute("aria-valuenow")).toBe("50");
   });
 

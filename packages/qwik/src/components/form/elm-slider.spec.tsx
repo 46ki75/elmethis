@@ -158,6 +158,26 @@ describe("[CSR] ElmSlider — keyboard interaction", () => {
     expect(slider(screen).getAttribute("aria-valuenow")).toBe("50");
   });
 
+  // Regression: the internal onKeyDown$'s `disabled` guard lives inside the
+  // exact same handler that `{...rest}` fully overwrites when a caller
+  // supplies its own onKeyDown$ (the "caller wins outright" convention — see
+  // "a caller-supplied onKeyDown$ fully replaces the internal keyboard
+  // handling" below). That let a caller-supplied handler run — and the
+  // slider's own stepping still needed to stay inert — even while `disabled`
+  // is true, unlike the sibling test above.
+  test("ignores a caller-supplied onKeyDown$ when disabled", async () => {
+    const onKeyDownSpy = vi.fn();
+    const { screen, render, userEvent } = await createDOM();
+    await render(
+      <ElmSlider defaultValue={50} disabled onKeyDown$={onKeyDownSpy} />,
+    );
+
+    await userEvent(SLIDER, "keydown", { key: "ArrowRight" });
+
+    expect(onKeyDownSpy).not.toHaveBeenCalled();
+    expect(slider(screen).getAttribute("aria-valuenow")).toBe("50");
+  });
+
   test("writes through to a bound parent signal", async () => {
     const Harness = component$(() => {
       const value = useSignal(50);
@@ -436,6 +456,36 @@ describe("[CSR] ElmSlider — hardened edge cases", () => {
     expect(el.getAttribute("aria-valuemin")).toBe("0");
     expect(el.getAttribute("aria-valuemax")).toBe("100");
     expect(el.getAttribute("aria-valuenow")).toBe("30");
+  });
+
+  test("still renders tick marks for a reversed range (min > max)", async () => {
+    const { screen, render } = await createDOM();
+    await render(
+      <ElmSlider min={100} max={0} step={10} markers markerLabels />,
+    );
+    // `buildMarks`'s empty-range guard must only reject a truly empty range
+    // (max === min), not any `max <= min` — a reversed/declining range
+    // (min > max) is a legitimate track (see `ratioOf`'s plain
+    // interpolation and the innerMin/innerMax hardening above), so ticks
+    // must still render walking down from 100 to 0: 100, 90, ..., 0.
+    const ticks = screen.querySelectorAll('[class*="tick"]');
+    expect(ticks).toHaveLength(11);
+    const labels = Array.from(
+      screen.querySelectorAll('[class*="mark-label"]'),
+    ).map((el) => el.textContent);
+    expect(labels).toEqual([
+      "100",
+      "90",
+      "80",
+      "70",
+      "60",
+      "50",
+      "40",
+      "30",
+      "20",
+      "10",
+      "0",
+    ]);
   });
 });
 

@@ -128,11 +128,14 @@ const nodeToText = (node: unknown): string => {
 
 export const ElmSlider = defineComponent({
   name: "ElmSlider",
-  // `rest`/`attrs` (aria-label, id, data-*, tabindex overrides, ...) belongs
-  // on the interactive element itself (the `role="slider"` track), not the
-  // outer wrapper — the wrapper only exists to carry the CSS custom
-  // properties. This component IS a slider, unlike e.g. ElmAudioPlayer where
-  // the root is a larger widget and the seek bar is just one control in it.
+  // `rest` (aria-label, id, data-*, tabindex overrides, ...) belongs on the
+  // interactive element itself (the `role="slider"` track), not the outer
+  // wrapper — the wrapper only exists to carry the CSS custom properties.
+  // This component IS a slider, unlike e.g. ElmAudioPlayer where the root is
+  // a larger widget and the seek bar is just one control in it. `class`/
+  // `style` are the one exception: like the React port, they're pulled out
+  // of `attrs` and applied to the outer wrapper instead of `rest`'s default
+  // destination.
   inheritAttrs: false,
   props: {
     min: { type: Number, default: 0 },
@@ -389,7 +392,19 @@ export const ElmSlider = defineComponent({
     });
 
     return () => {
-      const { class: attrClass, ...rest } = attrs as Record<string, unknown>;
+      // `onKeydown` is pulled out of `rest` (rather than left to spread
+      // verbatim) so it isn't composed in unconditionally by Vue's
+      // `mergeProps` — spreading it alongside the JSX-literal `onKeydown`
+      // below would let a caller-supplied handler fire even while
+      // `disabled`, bypassing the `if (props.disabled) return` guard that
+      // only gates the internal handler. Composing it manually lets
+      // `disabled` suppress both, mirroring the React port's contract.
+      const {
+        class: attrClass,
+        style: attrStyle,
+        onKeydown: attrsOnKeydown,
+        ...rest
+      } = attrs as Record<string, unknown>;
 
       const valueRatio = ratioOf(displayValue.value);
       const innerMinRatio = ratioOf(effectiveInnerMin.value);
@@ -410,6 +425,7 @@ export const ElmSlider = defineComponent({
             // bottom (or, in vertical orientation, its inline-end) edge.
             props.markers && styles["has-markers"],
             props.markerLabels && styles["has-marker-labels"],
+            attrClass as string | undefined,
           )}
           style={
             {
@@ -418,23 +434,39 @@ export const ElmSlider = defineComponent({
               "--elmethis-scoped-inner-max-ratio": innerMaxRatio,
               "--elmethis-scoped-max-marker-label-chars":
                 maxMarkerLabelChars.value,
+              ...(attrStyle as CSSProperties | undefined),
             } as CSSProperties
           }
         >
           <div
             ref={trackRef}
-            class={clsx(styles.track, attrClass as string | undefined)}
+            class={styles.track}
+            tabindex={props.disabled ? -1 : 0}
+            onPointerdown={handlePointerDown}
+            onPointermove={handlePointerMove}
+            onKeydown={(event: KeyboardEvent) => {
+              handleKeyDown(event);
+              if (props.disabled) return;
+              (
+                attrsOnKeydown as ((event: KeyboardEvent) => void) | undefined
+              )?.(event);
+            }}
+            {...rest}
+            // `role`/`aria-*` are written *after* `{...rest}` on purpose:
+            // the JSX compiles to `mergeProps({...}, rest)`, and for plain
+            // (non-class/style/on*) keys mergeProps lets the later object
+            // win. Placing these after `rest` means the slider's own
+            // computed ARIA state always wins over a same-named, type-legal
+            // attr a caller passes through — mirroring the React port,
+            // where these are written after `{...rest}` for the same
+            // reason. `tabindex` intentionally stays before `rest` so a
+            // caller can still override it (e.g. opt out of tab order).
             role="slider"
             aria-orientation={props.orientation}
             aria-valuemin={effectiveInnerMin.value}
             aria-valuemax={effectiveInnerMax.value}
             aria-valuenow={displayValue.value}
             aria-disabled={props.disabled || undefined}
-            tabindex={props.disabled ? -1 : 0}
-            onPointerdown={handlePointerDown}
-            onPointermove={handlePointerMove}
-            onKeydown={handleKeyDown}
-            {...rest}
           >
             <div class={styles.rail} aria-hidden="true">
               <div class={styles["restricted-start"]} />

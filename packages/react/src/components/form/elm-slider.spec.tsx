@@ -437,6 +437,32 @@ describe("[CSR] ElmSlider — known bugs (regression)", () => {
     expect(el.getAttribute("aria-valuemax")).toBe("100");
     expect(el.getAttribute("aria-valuenow")).toBe("30");
   });
+
+  it("still renders tick marks for a reversed range (min > max)", () => {
+    // `marks`' guard treated any `max <= min` as an empty range, silently
+    // dropping every tick/label even though a reversed range is a legitimate
+    // declining track elsewhere in this component (see the two tests above).
+    const { container } = render(
+      <ElmSlider min={100} max={0} step={10} markers markerLabels />,
+    );
+
+    const ticks = container.querySelectorAll('[class*="tick"]');
+    const labels = container.querySelectorAll('[class*="mark-label"]');
+    expect(ticks.length).toBe(11);
+    expect(Array.from(labels).map((l) => l.textContent)).toEqual([
+      "100",
+      "90",
+      "80",
+      "70",
+      "60",
+      "50",
+      "40",
+      "30",
+      "20",
+      "10",
+      "0",
+    ]);
+  });
 });
 
 describe("[SSR] ElmSlider", () => {

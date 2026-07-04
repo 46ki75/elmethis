@@ -330,23 +330,30 @@ export const ElmSlider = ({
     // keyboard handler's `Math.abs(step)` so a negative step still renders
     // ticks (only `step === 0` or an empty range means "no ticks").
     const magnitude = Math.abs(step);
-    if (magnitude <= 0 || max <= min) return [];
+    // `max === min` is the only genuinely empty range (mirrors `ratioOf`'s
+    // own `max === min` check) — `max < min` is a legitimate reversed/
+    // declining track (see the `rangeLow`/`rangeHigh` handling above) and
+    // must still produce ticks, just walking down from `min` to `max`.
+    if (magnitude <= 0 || max === min) return [];
+    // The real step grid walks from `min` toward `max`, so the per-tick
+    // increment must carry `max - min`'s sign, not just its magnitude.
+    const signedStep = max > min ? magnitude : -magnitude;
     // `preciseRound` absorbs float dust in (max-min)/step (e.g.
     // 0.3/0.1 -> 2.9999999999999996, which must count as 3) without
     // rounding a genuine fraction up to the next integer (e.g.
     // 10/6 -> 1.6666666666666667 must floor to 1, not round up to 2 and
     // generate a tick beyond `max`).
-    const realCount = Math.floor(preciseRound((max - min) / magnitude));
+    const realCount = Math.floor(preciseRound(Math.abs(max - min) / magnitude));
     const out: { value: number; ratio: number }[] = [];
     if (realCount <= MAX_MARKERS) {
       // Tick every real step — these are exactly the values `snap()` can
       // ever produce — then force a trailing tick at `max` if `step`
       // doesn't divide `max - min` evenly.
       for (let i = 0; i <= realCount; i++) {
-        const v = preciseRound(min + i * magnitude);
+        const v = preciseRound(min + i * signedStep);
         out.push({ value: v, ratio: ratioOf(v) });
       }
-      if (preciseRound(min + realCount * magnitude) !== preciseRound(max)) {
+      if (preciseRound(min + realCount * signedStep) !== preciseRound(max)) {
         out.push({ value: max, ratio: ratioOf(max) });
       }
     } else {
