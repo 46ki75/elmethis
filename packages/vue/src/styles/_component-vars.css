@@ -34,6 +34,13 @@
   --elmethis-scoped-size: initial;
   --elmethis-scoped-width: initial;
 
+  /* elm-slider knobs */
+  --elmethis-scoped-value-ratio: initial;
+  --elmethis-scoped-inner-min-ratio: initial;
+  --elmethis-scoped-inner-max-ratio: initial;
+  --elmethis-scoped-marker-ratio: initial;
+  --elmethis-scoped-max-marker-label-chars: initial;
+
   /* Animation timing knobs */
   --elmethis-scoped-delay: initial;
   --elmethis-scoped-duration: initial;

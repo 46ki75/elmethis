@@ -102,6 +102,11 @@ export {
   type ElmSelectOption,
   type ElmSelectProps,
 } from "./components/form/elm-select";
+export {
+  ElmSlider,
+  type ElmSliderOrientation,
+  type ElmSliderProps,
+} from "./components/form/elm-slider";
 export { ElmSwitch, type ElmSwitchProps } from "./components/form/elm-switch";
 export {
   ElmTextArea,

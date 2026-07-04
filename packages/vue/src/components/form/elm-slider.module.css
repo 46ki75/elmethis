@@ -1,0 +1,301 @@
+.elm-slider {
+  box-sizing: border-box;
+  width: 100%;
+  margin-block-start: var(--elmethis-margin-block-start);
+  user-select: none;
+}
+
+.elm-slider.vertical {
+  width: fit-content;
+  height: 12rem;
+}
+
+.elm-slider.disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+/* ---- Track ---------------------------------------------------------------- */
+
+/* A roomy hit area so the thin rail stays easy to grab/tap. */
+.track {
+  position: relative;
+  width: 100%;
+  height: 1.25rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.vertical .track {
+  flex-direction: column;
+  width: 1.25rem;
+  height: 100%;
+}
+
+.disabled .track {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.track:focus-visible {
+  outline: 2px solid var(--elmethis-color-primary);
+  outline-offset: 4px;
+  border-radius: 0.25rem;
+}
+
+.rail {
+  position: relative;
+  width: 100%;
+  height: 0.25rem;
+  border-radius: 999px;
+  background-color: var(--elmethis-color-neutral-weak);
+  overflow: hidden;
+}
+
+.vertical .rail {
+  width: 0.25rem;
+  height: 100%;
+}
+
+/* Regions of the track outside [innerMin, innerMax] — visually unreachable. */
+.restricted-start,
+.restricted-end {
+  position: absolute;
+  background-color: var(--elmethis-color-neutral-weak);
+  background-image: repeating-linear-gradient(
+    45deg,
+    color-mix(in srgb, var(--elmethis-color-neutral) 35%, transparent) 0,
+    color-mix(in srgb, var(--elmethis-color-neutral) 35%, transparent) 2px,
+    transparent 2px,
+    transparent 6px
+  );
+}
+
+.restricted-start {
+  inset: 0 auto 0 0;
+  width: calc(var(--elmethis-scoped-inner-min-ratio, 0) * 100%);
+}
+
+.restricted-end {
+  inset: 0 0 0 auto;
+  width: calc((1 - var(--elmethis-scoped-inner-max-ratio, 1)) * 100%);
+}
+
+.vertical .restricted-start,
+.vertical .restricted-end {
+  width: auto;
+}
+
+.vertical .restricted-start {
+  inset: auto 0 0;
+  height: calc(var(--elmethis-scoped-inner-min-ratio, 0) * 100%);
+}
+
+.vertical .restricted-end {
+  inset: 0 0 auto;
+  height: calc((1 - var(--elmethis-scoped-inner-max-ratio, 1)) * 100%);
+}
+
+.fill {
+  position: absolute;
+  inset: 0 auto;
+  left: calc(var(--elmethis-scoped-inner-min-ratio, 0) * 100%);
+  width: calc(
+    (
+        var(--elmethis-scoped-value-ratio, 0) -
+          var(--elmethis-scoped-inner-min-ratio, 0)
+      ) *
+      100%
+  );
+  border-radius: 999px;
+  background-color: var(--elmethis-color-primary);
+}
+
+.vertical .fill {
+  inset: auto 0 0;
+  width: auto;
+  bottom: calc(var(--elmethis-scoped-inner-min-ratio, 0) * 100%);
+  height: calc(
+    (
+        var(--elmethis-scoped-value-ratio, 0) -
+          var(--elmethis-scoped-inner-min-ratio, 0)
+      ) *
+      100%
+  );
+}
+
+/* Draggable handle. */
+.thumb {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--elmethis-scoped-value-ratio, 0) * 100%);
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: 50%;
+  background-color: var(--elmethis-color-primary-strong);
+  box-shadow: 0 0.125rem 0.375rem -0.0625rem var(--elmethis-box-shadow-color);
+  transform: translate(-50%, -50%);
+  transition: transform 140ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+
+.vertical .thumb {
+  top: auto;
+  left: 50%;
+  bottom: calc(var(--elmethis-scoped-value-ratio, 0) * 100%);
+  transform: translate(-50%, 50%);
+}
+
+.track:hover .thumb,
+.track:focus-visible .thumb {
+  transform: translate(-50%, -50%) scale(1.2);
+}
+
+.vertical .track:hover .thumb,
+.vertical .track:focus-visible .thumb {
+  transform: translate(-50%, 50%) scale(1.2);
+}
+
+/* ---- Markers ---------------------------------------------------------------- */
+
+/*
+ * `.marks` and its descendants are `position: absolute` so a tick/label can
+ * sit at an arbitrary percentage along the track without disturbing the
+ * track's own flex layout — but that also means none of it ever contributes
+ * to `.track`'s or `.elm-slider`'s box size. Reserve the extra space these
+ * rows need on the element that participates in normal flow (`.elm-slider`),
+ * sized generously enough to fit a tick, the gap, and a label's line box.
+ */
+.elm-slider.has-markers {
+  padding-block-end: 0.5rem;
+}
+
+.elm-slider.has-marker-labels {
+  padding-block-end: 1.75rem;
+}
+
+.elm-slider.vertical.has-markers {
+  padding-block-end: 0;
+
+  /*
+   * Physical, not logical: `.vertical .mark`'s `left: 50%` +
+   * `transform: translate(0.75rem, ...)` (and the tick/label layout that
+   * follows) always render on the physical right regardless of `dir` — they
+   * don't participate in the inline axis at all. A logical
+   * `padding-inline-end` would flip to physical `padding-left` under
+   * `dir="rtl"`, reserving space on the side opposite the one the marks
+   * actually occupy.
+   */
+  padding-right: 0.5rem;
+}
+
+.elm-slider.vertical.has-marker-labels {
+  padding-block-end: 0;
+
+  /*
+   * Unlike the horizontal axis (where the reserved `padding-block-end` only
+   * ever needs to hold a label's roughly-constant line-height), a vertical
+   * label's *width* scales with its character count — a fixed rem constant
+   * only fits short labels and lets 4+ digit values (or wide negative
+   * values) spill past this element's own inline-end edge.
+   *
+   * `0.75rem` covers the fixed part of the offset from the track's
+   * inline-end edge to where the label starts (the mark's own translate
+   * plus the tick + gap that precede the label in `.mark`'s row layout).
+   * The remainder scales with the longest rendered label's character count,
+   * via `1ch` — exact here because `.mark-label` uses a monospace font, so
+   * every character has the same advance width. `font-family`/`font-size`
+   * are set to match `.mark-label` so `ch` resolves against the same font
+   * metrics; this element renders no text of its own, so it doesn't leak
+   * into any child that doesn't set its own font (they all do). The extra
+   * `0.5ch` is a small rounding buffer for subpixel layout drift between
+   * this element's `ch` and the label's own rendered width.
+   *
+   * This is a physical `padding-right`, not the logical `padding-inline-end`
+   * its name suggests it should be: `.vertical .mark`'s `left: 50%` +
+   * `transform: translate(0.75rem, ...)` (and everything downstream of it —
+   * the tick, the gap, the label) render on the physical right regardless of
+   * `dir` — none of it is expressed in logical/inline terms. Reserving the
+   * space with a logical property would flip it to physical `padding-left`
+   * under `dir="rtl"`, leaving the actual marks unprotected on the right.
+   */
+  font-family: var(--elmethis-font-family-monospace);
+  font-size: 0.7rem;
+  padding-right: calc(
+    0.75rem + (var(--elmethis-scoped-max-marker-label-chars, 4) + 0.5) * 1ch
+  );
+}
+
+.marks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.mark {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--elmethis-scoped-marker-ratio, 0) * 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  transform: translate(-50%, 0.75rem);
+}
+
+.vertical .mark {
+  top: auto;
+  left: 50%;
+  bottom: calc(var(--elmethis-scoped-marker-ratio, 0) * 100%);
+  flex-direction: row;
+  transform: translate(0.75rem, 50%);
+}
+
+/* The default transform centers a tick/label on its marker position, which
+   pushes the first/last mark half its own size past the track's start/end
+   edge. Align those two inward instead of centering them. */
+.mark-start {
+  transform: translate(0, 0.75rem);
+}
+
+.mark-end {
+  transform: translate(-100%, 0.75rem);
+}
+
+.vertical .mark-start {
+  transform: translate(0.75rem, 0);
+}
+
+.vertical .mark-end {
+  transform: translate(0.75rem, 100%);
+}
+
+.tick {
+  width: 0.125rem;
+  height: 0.375rem;
+  border-radius: 999px;
+  background-color: var(--elmethis-color-neutral);
+  font-style: normal;
+}
+
+.vertical .tick {
+  width: 0.375rem;
+  height: 0.125rem;
+}
+
+.mark-restricted .tick {
+  background-color: var(--elmethis-color-neutral-weak);
+}
+
+.mark-label {
+  font-family: var(--elmethis-font-family-monospace);
+  font-size: 0.7rem;
+  color: var(--elmethis-color-neutral);
+  white-space: nowrap;
+}
+
+.mark-restricted .mark-label {
+  opacity: 0.6;
+}
