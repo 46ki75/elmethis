@@ -624,6 +624,34 @@ export const BlockImage: Story = {
 };
 
 // ---------------------------------------------------------------------------
+// Html
+// ---------------------------------------------------------------------------
+
+export const Html: Story = {
+  args: {
+    messages: [
+      {
+        version: "v0.9",
+        createSurface: { surfaceId: "html", catalogId: CATALOG_ID },
+      },
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: "html",
+          components: [
+            {
+              component: "Html",
+              id: "root",
+              html: '<!doctype html><html><body style="font-family: sans-serif; margin: 0; padding: 1rem;"><h1>Hello from an iframe</h1><p>This markup is rendered inside a sandboxed <code>&lt;iframe&gt;</code>.</p></body></html>',
+            },
+          ],
+        },
+      },
+    ],
+  },
+};
+
+// ---------------------------------------------------------------------------
 // CodeBlock
 // ---------------------------------------------------------------------------
 
