@@ -432,6 +432,37 @@ describe("notionBlockCatalog: media and embed", () => {
     );
     expect(html).not.toMatch(/sandbox="[^"]*\ballow-scripts\b[^"]*"/);
   });
+
+  // A default fallback height matters here specifically: allowScripts
+  // defaults to true in this catalog, and content requiring scripts to
+  // render can never be measured by autoHeight (see elm-html.tsx) — without
+  // a default, an author who doesn't think to set one gets an unreadable
+  // ~150px sliver instead of a usable box.
+  test("Html falls back to a default height of 400 when none is given", async () => {
+    const html = await renderArgs(
+      buildArgs({
+        component: "Html",
+        id: "e",
+        html: "<p>hello</p>",
+      }),
+      "Html",
+    );
+    expect(html).toContain('height="400"');
+  });
+
+  test("Html uses a caller-supplied height instead of the default", async () => {
+    const html = await renderArgs(
+      buildArgs({
+        component: "Html",
+        id: "e",
+        html: "<p>hello</p>",
+        height: 800,
+      }),
+      "Html",
+    );
+    expect(html).toContain('height="800"');
+    expect(html).not.toContain('height="400"');
+  });
 });
 
 describe("notionBlockCatalog: code and math", () => {

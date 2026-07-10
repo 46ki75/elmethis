@@ -321,6 +321,7 @@ export const notionBlockCatalog: CatalogRenderer = basicCatalog.extend(
       src={props.src ? resolve(props.src) : undefined}
       autoHeight={props.autoHeight}
       allowScripts={props.allowScripts ?? true}
+      height={props.height ?? 400}
     />
   )),
 

@@ -294,6 +294,7 @@ const blockImplementations: ReactComponentImplementation[] = [
       src={props.src}
       autoHeight={props.autoHeight}
       allowScripts={props.allowScripts ?? true}
+      height={props.height ?? 400}
     />
   )),
 
