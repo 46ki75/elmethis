@@ -37,6 +37,7 @@ import {
   DividerApi,
   FileApi,
   HeadingApi,
+  HtmlApi,
   IconApi,
   KatexApi,
   LinkTextApi,
@@ -56,6 +57,7 @@ import {
 
 import { ElmKatex } from "../../code/elm-katex";
 import { ElmCodeBlock } from "../../code/elm-code-block";
+import { ElmHtml } from "../../code/elm-html";
 import { ElmInlineIcon } from "../../icon/elm-inline-icon";
 import { ElmAudioPlayer } from "../../media/elm-audio-player";
 import { ElmBlockImage } from "../../media/elm-block-image";
@@ -283,6 +285,10 @@ const blockImplementations: ReactComponentImplementation[] = [
       caption={props.caption}
       enableModal={true}
     />
+  )),
+
+  createComponentImplementation(HtmlApi, ({ props }: any) => (
+    <ElmHtml html={props.html} autoHeight={props.autoHeight} />
   )),
 
   // ----- Code / math / diagram -----

@@ -25,6 +25,7 @@ describe("blockCatalog — composition", () => {
       "Bookmark",
       "File",
       "BlockImage",
+      "Html",
       "Table",
       "TableRow",
       "TableCell",

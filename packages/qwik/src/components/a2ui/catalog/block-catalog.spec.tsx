@@ -24,6 +24,7 @@ import {
   ContentTabApi,
   ContentTabsApi,
   HeadingApi,
+  HtmlApi,
   IconApi,
   KatexApi,
   LinkTextApi,
@@ -52,6 +53,7 @@ const BLOCK_COMPONENTS: ComponentApi[] = [
   BlockQuoteApi,
   BookmarkApi,
   CodeBlockApi,
+  HtmlApi,
   KatexApi,
   MermaidApi,
   ContentTabApi,
@@ -358,6 +360,21 @@ describe("blockCatalog: tabs", () => {
     // Both the label and content children should appear via the stub renderChild.
     expect(html).toContain('data-child-id="label-comp"');
     expect(html).toContain('data-child-id="content-comp"');
+  });
+});
+
+describe("blockCatalog: media and embed", () => {
+  test("Html renders a sandboxed iframe with the given markup", async () => {
+    const html = await renderArgs(
+      buildArgs({
+        component: "Html",
+        id: "e",
+        html: "<p>hello</p>",
+      }),
+      "Html",
+    );
+    expect(html.toLowerCase()).toContain("<iframe");
+    expect(html).toContain('srcdoc="<p>hello</p>"');
   });
 });
 

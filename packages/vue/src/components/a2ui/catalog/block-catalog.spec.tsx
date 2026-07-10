@@ -142,6 +142,19 @@ describe("blockCatalog — inline", () => {
   });
 });
 
+describe("blockCatalog — media & embed", () => {
+  it("Html renders a sandboxed iframe with the given markup", async () => {
+    const wrapper = mountSurface([
+      { component: "Html", id: "root", html: "<p>hello</p>" },
+    ]);
+    await vi.waitFor(() => {
+      const iframe = wrapper.find("iframe");
+      expect(iframe.exists()).toBe(true);
+      expect(iframe.attributes("srcdoc")).toBe("<p>hello</p>");
+    });
+  });
+});
+
 describe("blockCatalog — code & table", () => {
   it("CodeBlock renders the <figure> shell with its language caption", async () => {
     const wrapper = mountSurface([

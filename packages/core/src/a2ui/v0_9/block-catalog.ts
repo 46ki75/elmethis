@@ -501,6 +501,28 @@ export const BlockImageApi = {
     .strict(),
 } satisfies ComponentApi;
 
+/**
+ * Sandboxed raw-HTML embed. Renders `html` inside an iframe (e.g. a
+ * Claude-authored artifact or a Notion page export).
+ */
+export const HtmlApi = {
+  name: "Html",
+  schema: z
+    .object({
+      ...CommonProps,
+      html: z
+        .string()
+        .describe("Raw HTML markup to render inside a sandboxed iframe."),
+      autoHeight: z
+        .boolean()
+        .describe(
+          "Stretch the iframe to fit its content height. Defaults to true.",
+        )
+        .optional(),
+    })
+    .strict(),
+} satisfies ComponentApi;
+
 // ---------------------------------------------------------------------------
 // Code / math / diagram
 // ---------------------------------------------------------------------------
