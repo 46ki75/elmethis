@@ -85,12 +85,34 @@ const toStyleObject = (
 };
 
 export interface ElmHtmlProps extends HTMLAttributes {
-  /** Raw HTML markup to render, e.g. a Claude-authored artifact or a Notion page export. */
-  html: string;
+  /**
+   * Raw HTML markup to render, e.g. a Claude-authored artifact or a Notion
+   * page export. Mutually exclusive with `src` — provide exactly one of the
+   * two.
+   */
+  html?: string;
+
+  /**
+   * URL of a remote document to load in place of inline `html` (e.g. a
+   * presigned, time-limited link). Mutually exclusive with `html` — provide
+   * exactly one of the two.
+   *
+   * The framed document always gets `referrerpolicy="no-referrer"` so a
+   * token embedded in the URL's query string (as presigned links often
+   * carry) can't leak via the `Referer` header on requests the framed page
+   * itself makes. `autoHeight` has no effect in this mode — the browser
+   * blocks `contentDocument` access across origins regardless of sandbox
+   * flags, so cross-origin content can never be measured; size it with
+   * `height`/`style` instead. If the URL is time-limited, refreshing it
+   * before it expires is the caller's responsibility — this component never
+   * retries or reloads on its own.
+   */
+  src?: string;
 
   /**
    * Stretch the iframe to fit its content height. Set to false to size it
-   * yourself instead (via `style`, `height`, or a CSS class).
+   * yourself instead (via `style`, `height`, or a CSS class). Only takes
+   * effect in `html` mode — see `src` for why.
    * @default true
    */
   autoHeight?: boolean;
@@ -115,7 +137,8 @@ export const ElmHtml = defineComponent({
   // <iframe> manually below, same convention as elm-table.tsx.
   inheritAttrs: false,
   props: {
-    html: { type: String, required: true },
+    html: { type: String, default: undefined },
+    src: { type: String, default: undefined },
     autoHeight: { type: Boolean, default: true },
     sandbox: { type: String, default: undefined },
     height: {
@@ -128,25 +151,31 @@ export const ElmHtml = defineComponent({
     const iframeRef = ref<HTMLIFrameElement | null>(null);
     const contentHeight = ref<number | undefined>(undefined);
 
+    // `html` and `src` are mutually exclusive (enforced by convention/docs,
+    // not a runtime check — this catalog doesn't validate cross-field
+    // constraints elsewhere either). `src` wins if a caller somehow supplies
+    // both.
+    const usingSrc = () => props.src !== undefined;
+
     // The `key={String(autoHeight)}` on the <iframe> below (and a plain
-    // `html` change, which is a fresh navigation on its own) both make a
-    // previously-measured height stale the moment `html`/`autoHeight`
+    // `html`/`src` change, which is a fresh navigation on its own) both make
+    // a previously-measured height stale the moment `html`/`src`/`autoHeight`
     // change — well before the watcher below that re-measures it gets to
     // run. `flush: "pre"` runs this before the DOM patches, so (unlike
     // react, which needed an awkward render-time-state-adjustment workaround
     // purely to satisfy a lint rule vue doesn't have) there's no stale-paint
     // frame to guard against.
     watch(
-      () => [props.html, props.autoHeight] as const,
-      ([, autoHeight]) => {
+      () => [props.html, props.src, props.autoHeight] as const,
+      ([, , autoHeight]) => {
         if (autoHeight) contentHeight.value = undefined;
       },
       { flush: "pre" },
     );
 
     // ResizeObserver + `load` listener attach/cleanup, rerunning whenever
-    // `html`/`autoHeight` change — mirrors react's `useEffect(fn, [html,
-    // autoHeight])` cleanup-per-run semantics.
+    // `html`/`src`/`autoHeight` change — mirrors react's `useEffect(fn,
+    // [html, usingSrc, autoHeight])` cleanup-per-run semantics.
     //
     // This is NOT a single `watch(..., { immediate: true, flush: "post" })`,
     // even though that reads as the obvious vue equivalent. It was tried
@@ -165,6 +194,11 @@ export const ElmHtml = defineComponent({
     let disposeLifecycle: (() => void) | undefined;
 
     const attachLifecycle = (autoHeight: boolean) => {
+      // Cross-origin `src` content can never be measured (see the `src` doc
+      // comment) — don't attempt it, and don't attach a load listener that
+      // could never do anything useful.
+      if (usingSrc()) return;
+
       const iframe = iframeRef.value;
       if (!iframe) return;
 
@@ -200,8 +234,8 @@ export const ElmHtml = defineComponent({
     onMounted(() => attachLifecycle(props.autoHeight));
 
     watch(
-      () => [props.html, props.autoHeight] as const,
-      ([, autoHeight]) => {
+      () => [props.html, props.src, props.autoHeight] as const,
+      ([, , autoHeight]) => {
         disposeLifecycle?.();
         attachLifecycle(autoHeight);
       },
@@ -211,18 +245,21 @@ export const ElmHtml = defineComponent({
     onBeforeUnmount(() => disposeLifecycle?.());
 
     return () => {
-      // `src`/`srcdoc` are excluded from `ElmHtmlProps` only at the type
-      // level — a loosely-typed caller can still smuggle one into `attrs` at
-      // runtime, where spreading it last onto the iframe would silently
-      // override our own `srcdoc={props.html}` below. Strip both defensively
-      // (both castings of `srcDoc`, since a caller could pass either) so
-      // `html` stays the single source of truth for what renders.
+      const usingSrcValue = usingSrc();
+
+      // `srcdoc`/`referrerpolicy` are excluded from `ElmHtmlProps` only at
+      // the type level — a loosely-typed caller can still smuggle one into
+      // `attrs` at runtime, where spreading it last onto the iframe would
+      // silently override our own values below. Strip every casing a caller
+      // could plausibly use so `html`/`src` and the no-referrer hardening
+      // stay the single source of truth.
       const {
         class: className,
         style,
-        src: _src,
         srcDoc: _srcDoc,
         srcdoc: _srcdoc,
+        referrerPolicy: _referrerPolicy,
+        referrerpolicy: _referrerpolicy,
         ...safeRest
       } = attrs as Record<string, unknown>;
 
@@ -259,7 +296,11 @@ export const ElmHtml = defineComponent({
             sandboxTokens.delete(token);
           }
         }
-      } else if (props.autoHeight) {
+      } else if (props.autoHeight && !usingSrcValue) {
+        // Cross-origin `src` content can never expose `contentDocument`
+        // (the browser blocks it regardless of sandbox flags — see the
+        // `src` doc comment), so granting allow-same-origin here would buy
+        // nothing; only widen the sandbox for no benefit.
         sandboxTokens.add("allow-same-origin");
       }
       const effectiveSandbox = [...sandboxTokens].join(" ");
@@ -309,11 +350,23 @@ export const ElmHtml = defineComponent({
           // caught by Vue's exact-key prop/destructure matching above, so it
           // survives into `safeRest` — but `setAttribute` lowercases
           // attribute names for HTML elements, so any such key still
-          // resolves to these same `sandbox`/`srcdoc` DOM attributes.
-          // Applying ours last guarantees they always win, regardless of
-          // what casing a smuggled key used.
-          srcdoc={props.html}
+          // resolves to these same `sandbox`/`srcdoc`/`referrerpolicy` DOM
+          // attributes. Applying ours last guarantees they always win,
+          // regardless of what casing a smuggled key used.
+          //
+          // Exactly one of `src`/`srcdoc` is ever set — the HTML spec has
+          // `srcdoc` take precedence when both are present, so leaving the
+          // other one as `undefined` (never `""`) is required, not
+          // cosmetic: a literal `src=""` would self-navigate the iframe to
+          // the host page.
+          src={usingSrcValue ? props.src : undefined}
+          srcdoc={usingSrcValue ? undefined : (props.html ?? "")}
           sandbox={effectiveSandbox}
+          // Only forced for `src` — a presigned URL's query-string token
+          // must never reach a third party via `Referer`. `html`/`srcdoc`
+          // content has no URL of its own to leak, so it's left at the
+          // caller's/browser's default.
+          referrerpolicy={usingSrcValue ? "no-referrer" : undefined}
         />
       );
     };

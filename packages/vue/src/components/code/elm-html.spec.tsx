@@ -172,6 +172,82 @@ describe("[CSR] ElmHtml — sandboxing correctness", () => {
   });
 });
 
+// happy-dom (this file's unit-layer environment, via @vue/test-utils) also
+// simulates real navigation for an iframe's `src` — including an actual
+// outbound `fetch()` — unlike srcdoc, which it renders locally. A `data:`
+// URI stands in for "some remote src value" throughout: it exercises the
+// exact same attribute-level code path without leaving the process.
+const REMOTE_SRC = "data:text/html,<p>remote</p>";
+const REMOTE_SRC_WITH_TOKEN = "data:text/html,<p>remote</p>?token=secret";
+
+describe("[CSR] ElmHtml — remote src", () => {
+  test("renders the iframe's src attribute and omits srcdoc", () => {
+    const wrapper = mount(ElmHtml, { props: { src: REMOTE_SRC } });
+    const iframe = wrapper.find("iframe");
+
+    expect(iframe.attributes("src")).toBe(REMOTE_SRC);
+    expect(iframe.attributes("srcdoc")).toBeUndefined();
+  });
+
+  test("html mode omits the src attribute", () => {
+    const wrapper = mount(ElmHtml, { props: { html: "<p>hi</p>" } });
+    const iframe = wrapper.find("iframe");
+
+    expect(iframe.attributes("src")).toBeUndefined();
+    expect(iframe.attributes("srcdoc")).toBe("<p>hi</p>");
+  });
+
+  test("src wins when both html and src are supplied", () => {
+    const wrapper = mount(ElmHtml, {
+      props: { html: "<p>trusted</p>", src: REMOTE_SRC },
+    });
+    const iframe = wrapper.find("iframe");
+
+    expect(iframe.attributes("src")).toBe(REMOTE_SRC);
+    expect(iframe.attributes("srcdoc")).toBeUndefined();
+  });
+
+  test("forces referrerpolicy=no-referrer so a presigned URL's query string can't leak via Referer", () => {
+    const wrapper = mount(ElmHtml, {
+      props: { src: REMOTE_SRC_WITH_TOKEN },
+    });
+    const iframe = wrapper.find("iframe");
+
+    expect(iframe.attributes("referrerpolicy")).toBe("no-referrer");
+  });
+
+  // BUG-shaped regression: a differently-cased `referrerPolicy` smuggled
+  // through `attrs` must not be able to weaken the no-referrer hardening —
+  // same defect class as the Sandbox/Srcdoc casing bugs above.
+  test("a smuggled differently-cased referrerPolicy cannot override the forced no-referrer", () => {
+    const wrapper = mount(ElmHtml, {
+      props: { src: REMOTE_SRC_WITH_TOKEN },
+      attrs: { referrerPolicy: "unsafe-url" },
+    });
+    const iframe = wrapper.find("iframe");
+
+    expect(iframe.attributes("referrerpolicy")).toBe("no-referrer");
+  });
+
+  test("does not force referrerpolicy for html mode", () => {
+    const wrapper = mount(ElmHtml, { props: { html: "<p>hi</p>" } });
+    const iframe = wrapper.find("iframe");
+
+    expect(iframe.attributes("referrerpolicy")).toBeUndefined();
+  });
+
+  test("never adds allow-same-origin for src content, even with autoHeight on and no allow-scripts", () => {
+    const wrapper = mount(ElmHtml, {
+      props: { src: REMOTE_SRC, autoHeight: true },
+    });
+    const iframe = wrapper.find("iframe");
+
+    expect(iframe.attributes("sandbox")?.split(/\s+/)).not.toContain(
+      "allow-same-origin",
+    );
+  });
+});
+
 // ---------------------------------------------------------------------------
 // [CSR]
 //

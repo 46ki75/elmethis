@@ -254,6 +254,31 @@ describe("[CSR] ElmHtml — ResizeObserver on in-frame re-navigation", () => {
   });
 });
 
+describe("[CSR] ElmHtml — remote src", () => {
+  // A `data:` URL gets a unique opaque origin per navigation — the same
+  // cross-origin protection a real https:// src would get — so it exercises
+  // the "contentDocument is inaccessible" path without a network dependency.
+  const OPAQUE_ORIGIN_SRC =
+    "data:text/html,<div style=%22height:900px%22></div>";
+
+  test("navigates the iframe without crashing and never measures a height", async () => {
+    const screen = await render(
+      <ElmHtml src={OPAQUE_ORIGIN_SRC} autoHeight={true} height={200} />,
+    );
+    const iframe = screen.container.querySelector("iframe")!;
+
+    await vi.waitFor(() => {
+      expect(iframe.getAttribute("src")).toBe(OPAQUE_ORIGIN_SRC);
+    });
+
+    // Give any (incorrect) measurement attempt a chance to fire, then assert
+    // it never did: contentHeight stays unset, so the explicit `height` prop
+    // — not a measured value — is still what's applied.
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    expect(iframe.getAttribute("height")).toBe("200");
+  });
+});
+
 describe("[CSR] ElmHtml — layout defaults", () => {
   // BUG: the module CSS only sets `border: none`, so with no width supplied
   // by the caller the iframe falls back to its ~300px intrinsic default
