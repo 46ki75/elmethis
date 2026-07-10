@@ -153,6 +153,29 @@ describe("blockCatalog — media & embed", () => {
       expect(iframe.attributes("srcdoc")).toBe("<p>hello</p>");
     });
   });
+
+  // A `data:` URI avoids the real outbound `fetch()` happy-dom performs for
+  // an iframe's `src` (unlike `srcdoc`, which it renders locally) — keeping
+  // this unit-layer test hermetic while still exercising the same
+  // attribute-level code path a real remote URL would.
+  it("Html renders a remote src iframe with no-referrer hardening", async () => {
+    const wrapper = mountSurface([
+      {
+        component: "Html",
+        id: "root",
+        src: "data:text/html,<p>remote</p>?token=secret",
+      },
+    ]);
+    await vi.waitFor(() => {
+      const iframe = wrapper.find("iframe");
+      expect(iframe.exists()).toBe(true);
+      expect(iframe.attributes("src")).toBe(
+        "data:text/html,<p>remote</p>?token=secret",
+      );
+      expect(iframe.attributes("srcdoc")).toBeUndefined();
+      expect(iframe.attributes("referrerpolicy")).toBe("no-referrer");
+    });
+  });
 });
 
 describe("blockCatalog — code & table", () => {

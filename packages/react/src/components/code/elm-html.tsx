@@ -10,14 +10,36 @@ import styles from "./elm-html.module.css";
 
 export interface ElmHtmlProps extends Omit<
   ComponentPropsWithoutRef<"iframe">,
-  "src" | "srcDoc"
+  "src" | "srcDoc" | "referrerPolicy"
 > {
-  /** Raw HTML markup to render, e.g. a Claude-authored artifact or a Notion page export. */
-  html: string;
+  /**
+   * Raw HTML markup to render, e.g. a Claude-authored artifact or a Notion
+   * page export. Mutually exclusive with `src` — provide exactly one of the
+   * two.
+   */
+  html?: string;
+
+  /**
+   * URL of a remote document to load in place of inline `html` (e.g. a
+   * presigned, time-limited link). Mutually exclusive with `html` — provide
+   * exactly one of the two.
+   *
+   * The framed document always gets `referrerPolicy="no-referrer"` so a
+   * token embedded in the URL's query string (as presigned links often
+   * carry) can't leak via the `Referer` header on requests the framed page
+   * itself makes. `autoHeight` has no effect in this mode — the browser
+   * blocks `contentDocument` access across origins regardless of sandbox
+   * flags, so cross-origin content can never be measured; size it with
+   * `height`/`style` instead. If the URL is time-limited, refreshing it
+   * before it expires is the caller's responsibility — this component never
+   * retries or reloads on its own.
+   */
+  src?: string;
 
   /**
    * Stretch the iframe to fit its content height. Set to false to size it
-   * yourself instead (via `style`, `height`, or a CSS class).
+   * yourself instead (via `style`, `height`, or a CSS class). Only takes
+   * effect in `html` mode — see `src` for why.
    * @default true
    */
   autoHeight?: boolean;
@@ -26,6 +48,7 @@ export interface ElmHtmlProps extends Omit<
 export const ElmHtml = ({
   className,
   html,
+  src,
   sandbox,
   style,
   height,
@@ -33,20 +56,30 @@ export const ElmHtml = ({
   title,
   ...rest
 }: ElmHtmlProps) => {
+  // `html` and `src` are mutually exclusive (enforced by convention/docs,
+  // not a runtime check — this catalog doesn't validate cross-field
+  // constraints elsewhere either). `src` wins if a caller somehow supplies
+  // both.
+  const usingSrc = src !== undefined;
+
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [contentHeight, setContentHeight] = useState<number>();
 
   // `key={String(autoHeight)}` (below) gives a fresh, unloaded iframe node
-  // on an autoHeight toggle, and a plain html change is a fresh navigation
-  // too — either way the previously-measured height goes stale the moment
-  // `html`/`autoHeight` change, well before the effect that re-measures it
-  // gets to run. Resetting it here, during render (React's documented
-  // pattern for adjusting state in response to a prop change), avoids an
-  // extra render showing the stale value that a reset inside the effect
-  // would cause.
-  const [loadKey, setLoadKey] = useState({ html, autoHeight });
-  if (loadKey.html !== html || loadKey.autoHeight !== autoHeight) {
-    setLoadKey({ html, autoHeight });
+  // on an autoHeight toggle, and a plain html/src change is a fresh
+  // navigation too — either way the previously-measured height goes stale
+  // the moment `html`/`src`/`autoHeight` change, well before the effect that
+  // re-measures it gets to run. Resetting it here, during render (React's
+  // documented pattern for adjusting state in response to a prop change),
+  // avoids an extra render showing the stale value that a reset inside the
+  // effect would cause.
+  const [loadKey, setLoadKey] = useState({ html, src, autoHeight });
+  if (
+    loadKey.html !== html ||
+    loadKey.src !== src ||
+    loadKey.autoHeight !== autoHeight
+  ) {
+    setLoadKey({ html, src, autoHeight });
     if (autoHeight) setContentHeight(undefined);
   }
 
@@ -76,12 +109,21 @@ export const ElmHtml = ({
         sandboxTokens.delete(token);
       }
     }
-  } else if (autoHeight) {
+  } else if (autoHeight && !usingSrc) {
+    // Cross-origin `src` content can never expose `contentDocument` (the
+    // browser blocks it regardless of sandbox flags — see the `src` doc
+    // comment), so granting allow-same-origin here would buy nothing; only
+    // widen the sandbox for no benefit.
     sandboxTokens.add("allow-same-origin");
   }
   const effectiveSandbox = [...sandboxTokens].join(" ");
 
   useEffect(() => {
+    // Cross-origin `src` content can never be measured (see the `src` doc
+    // comment) — don't attempt it, and don't attach a load listener that
+    // could never do anything useful.
+    if (usingSrc) return;
+
     const iframe = iframeRef.current;
     if (!iframe) return;
 
@@ -113,23 +155,25 @@ export const ElmHtml = ({
       iframe.removeEventListener("load", onLoad);
       observer?.disconnect();
     };
-  }, [html, autoHeight]);
+  }, [html, usingSrc, autoHeight]);
 
-  // `src`/`srcDoc` are excluded from `ElmHtmlProps` only at the type level
-  // (`Omit<..., "src" | "srcDoc">`) — a loosely-typed caller can still
-  // smuggle one into `rest` at runtime, where spreading it last onto the
-  // iframe would silently override our own `srcDoc={html}` below. Strip both
-  // castings of `srcDoc` (a caller could pass either) defensively so `html`
-  // stays the single source of truth for what renders.
+  // `srcDoc`/`referrerPolicy` are excluded from `ElmHtmlProps` only at the
+  // type level (`Omit<..., ...>`) — a loosely-typed caller can still smuggle
+  // one into `rest` at runtime, where spreading it last onto the iframe
+  // would silently override our own values below. Strip every casing a
+  // caller could plausibly use so `html`/`src` and the no-referrer hardening
+  // stay the single source of truth.
   const {
-    src: _src,
     srcDoc: _srcDoc,
     srcdoc: _srcdoc,
+    referrerPolicy: _referrerPolicy,
+    referrerpolicy: _referrerpolicy,
     ...safeRest
   } = rest as typeof rest & {
-    src?: unknown;
     srcDoc?: unknown;
     srcdoc?: unknown;
+    referrerPolicy?: unknown;
+    referrerpolicy?: unknown;
   };
 
   return (
@@ -163,11 +207,22 @@ export const ElmHtml = ({
       // props bag isn't caught by the exact-key destructures above, so it
       // survives into `safeRest` — but `setAttribute` lowercases attribute
       // names for HTML elements, so any such key still resolves to these
-      // same `sandbox`/`srcdoc` DOM attributes. Applying ours last
-      // guarantees they always win, regardless of what casing a smuggled key
-      // used.
-      srcDoc={html}
+      // same `sandbox`/`srcdoc`/`referrerpolicy` DOM attributes. Applying
+      // ours last guarantees they always win, regardless of what casing a
+      // smuggled key used.
+      //
+      // Exactly one of `src`/`srcDoc` is ever set — the HTML spec has
+      // `srcDoc` take precedence when both are present, so leaving the
+      // other one as `undefined` (never `""`) is required, not cosmetic: a
+      // literal `src=""` would self-navigate the iframe to the host page.
+      src={usingSrc ? src : undefined}
+      srcDoc={usingSrc ? undefined : (html ?? "")}
       sandbox={effectiveSandbox}
+      // Only forced for `src` — a presigned URL's query-string token must
+      // never reach a third party via `Referer`. `html`/`srcDoc` content has
+      // no URL of its own to leak, so it's left at the caller's/browser's
+      // default.
+      referrerPolicy={usingSrc ? "no-referrer" : undefined}
     />
   );
 };

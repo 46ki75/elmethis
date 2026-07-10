@@ -502,8 +502,10 @@ export const BlockImageApi = {
 } satisfies ComponentApi;
 
 /**
- * Sandboxed raw-HTML embed. Renders `html` inside an iframe (e.g. a
- * Claude-authored artifact or a Notion page export).
+ * Sandboxed HTML embed, rendered inside an iframe. Provide exactly one of
+ * `html` (inline markup, e.g. a Claude-authored artifact or a Notion page
+ * export) or `src` (a remote document URL) — this catalog doesn't validate
+ * cross-field constraints, so the contract is documentation-only.
  */
 export const HtmlApi = {
   name: "Html",
@@ -512,11 +514,20 @@ export const HtmlApi = {
       ...CommonProps,
       html: z
         .string()
-        .describe("Raw HTML markup to render inside a sandboxed iframe."),
+        .describe(
+          "Raw HTML markup to render inside a sandboxed iframe. Mutually exclusive with `src` — provide exactly one of the two.",
+        )
+        .optional(),
+      src: z
+        .string()
+        .describe(
+          "URL of a remote document to render inside the iframe instead of inline `html` (e.g. a presigned, time-limited link). Mutually exclusive with `html` — provide exactly one of the two. `autoHeight` doesn't apply here since cross-origin content can't be measured, and a time-limited URL isn't refreshed automatically — the caller is responsible for keeping it current.",
+        )
+        .optional(),
       autoHeight: z
         .boolean()
         .describe(
-          "Stretch the iframe to fit its content height. Defaults to true.",
+          "Stretch the iframe to fit its content height. Defaults to true. Only takes effect for `html`-rendered content.",
         )
         .optional(),
     })

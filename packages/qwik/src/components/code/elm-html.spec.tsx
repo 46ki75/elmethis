@@ -153,3 +153,71 @@ describe("[CSR] ElmHtml — sandboxing correctness", () => {
     );
   });
 });
+
+describe("[CSR] ElmHtml — remote src", () => {
+  test("renders the iframe's src attribute and omits srcdoc", async () => {
+    const iframe = await renderIframe(
+      <ElmHtml src="https://example.com/doc.html" />,
+    );
+
+    expect(iframe.getAttribute("src")).toBe("https://example.com/doc.html");
+    expect(iframe.hasAttribute("srcdoc")).toBe(false);
+  });
+
+  test("html mode omits the src attribute", async () => {
+    const iframe = await renderIframe(<ElmHtml html="<p>hi</p>" />);
+
+    expect(iframe.hasAttribute("src")).toBe(false);
+    expect(iframe.getAttribute("srcdoc")).toBe("<p>hi</p>");
+  });
+
+  test("src wins when both html and src are supplied", async () => {
+    const props = {
+      html: "<p>trusted</p>",
+      src: "https://example.com/doc.html",
+    } as unknown as ElmHtmlProps;
+    const iframe = await renderIframe(<ElmHtml {...props} />);
+
+    expect(iframe.getAttribute("src")).toBe("https://example.com/doc.html");
+    expect(iframe.hasAttribute("srcdoc")).toBe(false);
+  });
+
+  test("forces referrerPolicy=no-referrer so a presigned URL's query string can't leak via Referer", async () => {
+    const iframe = await renderIframe(
+      <ElmHtml src="https://example.com/doc.html?token=secret" />,
+    );
+
+    expect(iframe.getAttribute("referrerpolicy")).toBe("no-referrer");
+  });
+
+  // BUG-shaped regression: a differently-cased `referrerpolicy` (matching the
+  // HTML attribute spelling rather than the `referrerPolicy` IDL name)
+  // smuggled through a loosely-typed props bag must not be able to weaken
+  // the no-referrer hardening — same defect class as the Sandbox/Srcdoc
+  // casing bugs above.
+  test("a smuggled differently-cased referrerpolicy cannot override the forced no-referrer", async () => {
+    const props = {
+      src: "https://example.com/doc.html?token=secret",
+      referrerpolicy: "unsafe-url",
+    } as unknown as ElmHtmlProps;
+    const iframe = await renderIframe(<ElmHtml {...props} />);
+
+    expect(iframe.getAttribute("referrerpolicy")).toBe("no-referrer");
+  });
+
+  test("does not force referrerPolicy for html mode", async () => {
+    const iframe = await renderIframe(<ElmHtml html="<p>hi</p>" />);
+
+    expect(iframe.hasAttribute("referrerpolicy")).toBe(false);
+  });
+
+  test("never adds allow-same-origin for src content, even with autoHeight on and no allow-scripts", async () => {
+    const iframe = await renderIframe(
+      <ElmHtml src="https://example.com/doc.html" autoHeight={true} />,
+    );
+
+    expect(iframe.getAttribute("sandbox")?.split(/\s+/)).not.toContain(
+      "allow-same-origin",
+    );
+  });
+});

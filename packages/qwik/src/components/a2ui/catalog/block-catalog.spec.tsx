@@ -376,6 +376,21 @@ describe("blockCatalog: media and embed", () => {
     expect(html.toLowerCase()).toContain("<iframe");
     expect(html).toContain('srcdoc="<p>hello</p>"');
   });
+
+  test("Html renders a remote src iframe with no-referrer hardening", async () => {
+    const html = await renderArgs(
+      buildArgs({
+        component: "Html",
+        id: "e",
+        src: "https://example.com/doc.html?token=secret",
+      }),
+      "Html",
+    );
+    expect(html.toLowerCase()).toContain("<iframe");
+    expect(html).toContain('src="https://example.com/doc.html?token=secret"');
+    expect(html).not.toContain("srcdoc=");
+    expect(html).toContain('referrerpolicy="no-referrer"');
+  });
 });
 
 describe("blockCatalog: code and math", () => {

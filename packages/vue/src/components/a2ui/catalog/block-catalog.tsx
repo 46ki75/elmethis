@@ -316,7 +316,11 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
   )),
 
   defineRenderer(HtmlApi, ({ props, resolve }) => (
-    <ElmHtml html={resolve(props.html)} autoHeight={props.autoHeight} />
+    <ElmHtml
+      html={props.html ? resolve(props.html) : undefined}
+      src={props.src ? resolve(props.src) : undefined}
+      autoHeight={props.autoHeight}
+    />
   )),
 
   // -------------------------------------------------------------------------
