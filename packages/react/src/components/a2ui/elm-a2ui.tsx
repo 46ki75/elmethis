@@ -18,7 +18,6 @@ import {
   useRef,
   useState,
   type ComponentPropsWithoutRef,
-  type CSSProperties,
 } from "react";
 import clsx from "clsx";
 import { marked } from "marked";
@@ -53,10 +52,6 @@ const renderMarkdown = async (markdown: string): Promise<string> => {
   const html = marked.parse(markdown, { async: false, gfm: true });
   return DOMPurify.sanitize(html);
 };
-
-const surfaceStyle = {
-  "--elmethis-margin-block-start": "2rem",
-} as CSSProperties;
 
 export interface ElmA2uiProps extends Omit<
   ComponentPropsWithoutRef<"div">,
@@ -251,7 +246,7 @@ export const ElmA2ui = ({
     >
       <MarkdownContext.Provider value={renderMarkdown}>
         {surfaces.map((surface) => (
-          <div key={surface.id} className={styles.surface} style={surfaceStyle}>
+          <div key={surface.id} className={styles.surface}>
             <A2uiSurface surface={surface} />
           </div>
         ))}

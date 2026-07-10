@@ -158,6 +158,7 @@ const blockImplementations: ReactComponentImplementation[] = [
         flex: props.widthRatio != null ? String(props.widthRatio) : undefined,
         boxSizing: "border-box",
         padding: "0.125rem",
+        gap: "var(--elmethis-stack-gap)",
       }}
     >
       {renderChildList(props.children, buildChild)}

@@ -16,6 +16,7 @@ import {
 
 import { type RenderArgs } from "./catalog";
 import { basicCatalog } from "./basic-catalog";
+import styles from "../elm-a2ui.module.css";
 
 const CATALOG_ID = "https://a2ui.org/specification/v0_9/basic_catalog.json";
 
@@ -410,13 +411,13 @@ describe("basicCatalog: containers & leaves", () => {
     expect(html).toContain('data-icon="star"');
   });
 
-  test("Column wraps each child and applies its block-margin var", async () => {
+  test("Column wraps each child and spaces them with the shared stack gap", async () => {
     const html = await renderArgs(
       buildArgs({ component: "Column", id: "col", children: ["a", "b"] }),
       "Column",
     );
     expect(html).toContain('data-child-id="a"');
     expect(html).toContain('data-child-id="b"');
-    expect(html.replace(/\s/g, "")).toContain("--margin-block:2rem");
+    expect(html).toContain(`class="${styles.column}"`);
   });
 });

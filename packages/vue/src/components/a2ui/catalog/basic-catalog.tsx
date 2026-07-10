@@ -9,7 +9,6 @@
  * coupling. (Vue has no QRL boundary, so these are plain functions — unlike the
  * qwik lead's `setBinding$` / `dispatchAction$` QRLs.)
  */
-import { type CSSProperties } from "vue";
 import { clsx } from "clsx";
 
 import {
@@ -100,10 +99,7 @@ export const basicCatalog: CatalogRenderer = new CatalogRenderer([
   )),
 
   defineRenderer(ColumnApi, ({ props, childRefs, renderChild }) => (
-    <div
-      class={styles.column}
-      style={{ "--margin-block": "2rem" } as CSSProperties}
-    >
+    <div class={styles.column}>
       {childRefs(props.children).map(({ id, path }, i) => (
         <span key={`${id}:${i}`} class={styles["child-wrap"]}>
           {renderChild(id, path, i)}

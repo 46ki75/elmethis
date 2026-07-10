@@ -37,11 +37,7 @@ import {
 import { ElmUnsupportedBlock } from "../../fallback/elm-unsupported-block";
 
 import { CatalogRenderer, defineRenderer } from "./catalog";
-import {
-  alignItemsMap,
-  firstChildMargin,
-  justifyContentMap,
-} from "./catalog-utils";
+import { alignItemsMap, justifyContentMap } from "./catalog-utils";
 import { basicCatalog } from "./basic-catalog";
 import {
   AudioApi,
@@ -140,7 +136,7 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
   // Layout (overrides Column from basicCatalog with widthRatio support)
   // -------------------------------------------------------------------------
 
-  defineRenderer(ColumnApi, ({ props, index, childRefs, renderChild }) => (
+  defineRenderer(ColumnApi, ({ props, childRefs, renderChild }) => (
     <div
       style={{
         display: "flex",
@@ -150,7 +146,7 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
         flex: props.widthRatio != null ? String(props.widthRatio) : undefined,
         boxSizing: "border-box",
         padding: "0.125rem",
-        ...firstChildMargin(index),
+        gap: "var(--elmethis-stack-gap)",
       }}
     >
       {childRefs(props.children).map(({ id, path }, i) => (
@@ -159,8 +155,8 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
     </div>
   )),
 
-  defineRenderer(ColumnListApi, ({ props, index, childRefs, renderChild }) => (
-    <div style={{ ...columnListStyle, ...firstChildMargin(index) }}>
+  defineRenderer(ColumnListApi, ({ props, childRefs, renderChild }) => (
+    <div style={columnListStyle}>
       {childRefs(props.children).map(({ id, path }, i) => (
         <Fragment key={`${id}:${i}`}>{renderChild(id, path, i)}</Fragment>
       ))}
@@ -171,31 +167,24 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
   // Block typography
   // -------------------------------------------------------------------------
 
-  defineRenderer(HeadingApi, ({ props, index, childRefs, renderChild }) => (
-    <ElmHeading level={props.level} style={firstChildMargin(index)}>
+  defineRenderer(HeadingApi, ({ props, childRefs, renderChild }) => (
+    <ElmHeading level={props.level}>
       {childRefs(props.children).map(({ id, path }, i) => (
         <Fragment key={`${id}:${i}`}>{renderChild(id, path, i)}</Fragment>
       ))}
     </ElmHeading>
   )),
 
-  defineRenderer(ParagraphApi, ({ props, index, childRefs, renderChild }) => (
-    <ElmParagraph
-      color={props.color}
-      backgroundColor={props.backgroundColor}
-      style={firstChildMargin(index)}
-    >
+  defineRenderer(ParagraphApi, ({ props, childRefs, renderChild }) => (
+    <ElmParagraph color={props.color} backgroundColor={props.backgroundColor}>
       {childRefs(props.children).map(({ id, path }, i) => (
         <span key={`${id}:${i}`}>{renderChild(id, path, i)}</span>
       ))}
     </ElmParagraph>
   )),
 
-  defineRenderer(ListApi, ({ props, index, childRefs, renderChild }) => (
-    <ElmList
-      listStyle={props.style ?? "unordered"}
-      style={firstChildMargin(index)}
-    >
+  defineRenderer(ListApi, ({ props, childRefs, renderChild }) => (
+    <ElmList listStyle={props.style ?? "unordered"}>
       {childRefs(props.children).map(({ id, path }, i) => (
         <li key={`${id}:${i}`}>{renderChild(id, path, i)}</li>
       ))}
@@ -210,28 +199,26 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
     </>
   )),
 
-  defineRenderer(BlockQuoteApi, ({ props, index, childRefs, renderChild }) => (
-    <ElmBlockQuote cite={props.cite} style={firstChildMargin(index)}>
+  defineRenderer(BlockQuoteApi, ({ props, childRefs, renderChild }) => (
+    <ElmBlockQuote cite={props.cite}>
       {childRefs(props.children).map(({ id, path }, i) => (
         <Fragment key={`${id}:${i}`}>{renderChild(id, path, i)}</Fragment>
       ))}
     </ElmBlockQuote>
   )),
 
-  defineRenderer(CalloutApi, ({ props, index, childRefs, renderChild }) => (
-    <ElmCallout type={props.type} style={firstChildMargin(index)}>
+  defineRenderer(CalloutApi, ({ props, childRefs, renderChild }) => (
+    <ElmCallout type={props.type}>
       {childRefs(props.children).map(({ id, path }, i) => (
         <Fragment key={`${id}:${i}`}>{renderChild(id, path, i)}</Fragment>
       ))}
     </ElmCallout>
   )),
 
-  defineRenderer(DividerApi, ({ index }) => (
-    <ElmDivider style={firstChildMargin(index)} />
-  )),
+  defineRenderer(DividerApi, () => <ElmDivider />),
 
-  defineRenderer(ToggleApi, ({ props, index, childRefs, renderChild }) => (
-    <ElmToggle style={firstChildMargin(index)}>
+  defineRenderer(ToggleApi, ({ props, childRefs, renderChild }) => (
+    <ElmToggle>
       <div q:slot="summary">
         {childRefs(props.summary).map(({ id, path }, i) => (
           <span key={`${id}:${i}`}>{renderChild(id, path, i)}</span>
@@ -247,25 +234,23 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
   // Media / embed
   // -------------------------------------------------------------------------
 
-  defineRenderer(BookmarkApi, ({ props, index, resolve }) => (
+  defineRenderer(BookmarkApi, ({ props, resolve }) => (
     <ElmBookmark
       url={resolve(props.url)}
       title={props.title ? resolve(props.title) : undefined}
       description={props.description ? resolve(props.description) : undefined}
       image={props.image ? resolve(props.image) : undefined}
-      style={firstChildMargin(index)}
     />
   )),
 
-  defineRenderer(FileApi, ({ props, index, resolve }) => (
+  defineRenderer(FileApi, ({ props, resolve }) => (
     <ElmFile
       src={resolve(props.src)}
       name={props.name ? resolve(props.name) : undefined}
-      style={firstChildMargin(index)}
     />
   )),
 
-  defineRenderer(AudioApi, ({ props, index, resolve }) => (
+  defineRenderer(AudioApi, ({ props, resolve }) => (
     <ElmAudioPlayer
       src={resolve(props.src)}
       title={props.title ? resolve(props.title) : undefined}
@@ -273,14 +258,13 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
       seekStep={props.seekStep}
       loop={props.loop}
       autoPlay={props.autoPlay}
-      style={firstChildMargin(index)}
     />
   )),
 
-  defineRenderer(VideoApi, ({ props, index, resolve }) => {
+  defineRenderer(VideoApi, ({ props, resolve }) => {
     const caption = props.caption ? resolve(props.caption) : undefined;
     return (
-      <figure style={{ ...firstChildMargin(index), margin: 0 }}>
+      <figure style={{ margin: 0 }}>
         <video
           src={resolve(props.src)}
           poster={props.poster ? resolve(props.poster) : undefined}
@@ -298,7 +282,7 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
     );
   }),
 
-  defineRenderer(BlockImageApi, ({ props, index, resolve }) => (
+  defineRenderer(BlockImageApi, ({ props, resolve }) => (
     <ElmBlockImage
       src={resolve(props.src)}
       alt={props.alt ? resolve(props.alt) : undefined}
@@ -308,7 +292,6 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
       sizes={props.sizes ? resolve(props.sizes) : undefined}
       caption={props.caption ? resolve(props.caption) : undefined}
       enableModal={true}
-      style={firstChildMargin(index)}
     />
   )),
 
@@ -316,32 +299,23 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
   // Code / math / diagram
   // -------------------------------------------------------------------------
 
-  defineRenderer(CodeBlockApi, ({ props, index, resolve }) => (
+  defineRenderer(CodeBlockApi, ({ props, resolve }) => (
     <ElmCodeBlock
       code={resolve(props.code)}
       language={props.language ? resolve(props.language) : undefined}
       caption={props.caption ? resolve(props.caption) : undefined}
-      style={firstChildMargin(index)}
     />
   )),
 
-  defineRenderer(KatexApi, ({ props, index, resolve }) => (
-    <ElmKatex
-      expression={resolve(props.expression)}
-      block={true}
-      style={firstChildMargin(index)}
-    />
+  defineRenderer(KatexApi, ({ props, resolve }) => (
+    <ElmKatex expression={resolve(props.expression)} block={true} />
   )),
 
   // Mermaid is rendered as a syntax-highlighted code block — no dedicated
   // Mermaid renderer in this package. The diagram source is preserved so a
   // host application can post-process if needed.
-  defineRenderer(MermaidApi, ({ props, index, resolve }) => (
-    <ElmCodeBlock
-      code={resolve(props.code)}
-      language="mermaid"
-      style={firstChildMargin(index)}
-    />
+  defineRenderer(MermaidApi, ({ props, resolve }) => (
+    <ElmCodeBlock code={resolve(props.code)} language="mermaid" />
   )),
 
   // -------------------------------------------------------------------------
@@ -351,7 +325,7 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
 
   defineRenderer(ContentTabApi, () => null),
 
-  defineRenderer(ContentTabsApi, ({ props, index, surface, renderChild }) => {
+  defineRenderer(ContentTabsApi, ({ props, surface, renderChild }) => {
     const tabIds = Array.isArray(props.children) ? props.children : [];
     const tabs = tabIds.map((tabId) => {
       const tabModel = surface.componentsModel.get(tabId);
@@ -362,7 +336,7 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
       };
     });
     return (
-      <ElmTabs defaultValue="0" style={firstChildMargin(index)}>
+      <ElmTabs defaultValue="0">
         <ElmTabList>
           {tabs.map(({ tabId, labelIds }, idx) => (
             <ElmTab key={tabId} value={String(idx)}>
@@ -391,11 +365,10 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
   // Table
   // -------------------------------------------------------------------------
 
-  defineRenderer(TableApi, ({ props, index, childRefs, renderChild }) => (
+  defineRenderer(TableApi, ({ props, childRefs, renderChild }) => (
     <ElmTable
       caption={props.caption ? String(props.caption) : undefined}
       hasRowHeader={props.hasRowHeader}
-      style={firstChildMargin(index)}
     >
       {props.header && props.header.length > 0 && (
         <ElmTableHeader>
@@ -420,6 +393,9 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
     </ElmTableRow>
   )),
 
+  // `index` is threaded through as `columnIndex` here — unrelated to margin
+  // spacing, drives row-header (<th scope="row">) promotion for the first
+  // column when `hasRowHeader` is set. See elm-table-cell.tsx.
   defineRenderer(TableCellApi, ({ props, index, childRefs, renderChild }) => (
     <ElmTableCell isHeader={props.isHeader} columnIndex={index}>
       {childRefs(props.children).map(({ id, path }, i) => (
@@ -432,14 +408,13 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
   // Fallback
   // -------------------------------------------------------------------------
 
-  defineRenderer(UnsupportedApi, ({ props, index }) => (
+  defineRenderer(UnsupportedApi, ({ props }) => (
     <ElmUnsupportedBlock
       details={
         props.details
           ? `Unsupported component type: ${String(props.details)}`
           : "Unsupported component type"
       }
-      style={firstChildMargin(index)}
     />
   )),
 );

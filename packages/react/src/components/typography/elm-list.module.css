@@ -1,5 +1,4 @@
 .elm-list {
-  margin-block-start: var(--elmethis-margin-block-start);
   opacity: var(--elmethis-scoped-opacity);
   transition: opacity 800ms;
   box-sizing: border-box;

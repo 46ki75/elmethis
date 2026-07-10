@@ -4,7 +4,6 @@
   font-size: var(--elmethis-scoped-font-size);
   line-height: var(--elmethis-scoped-font-size);
   opacity: var(--elmethis-scoped-opacity);
-  margin-block-start: var(--elmethis-margin-block-start);
   transition:
     color 400ms,
     opacity 800ms;

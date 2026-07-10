@@ -1,7 +1,6 @@
 .elm-slider {
   box-sizing: border-box;
   width: 100%;
-  margin-block-start: var(--elmethis-margin-block-start);
   user-select: none;
 }
 

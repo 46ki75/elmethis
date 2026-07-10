@@ -250,19 +250,19 @@ describe("blockCatalog: layout", () => {
     expect(html.replace(/\s/g, "")).toContain("flex:2");
   });
 
-  test("Column suppresses top margin when it is the first child", async () => {
-    const args = buildArgs({
-      component: "Column",
-      id: "c",
-      children: ["a"],
-    });
-    // simulate "first child" — buildArgs uses index: 0 by default
-    expect(args.index).toBe(0);
-    const html = await renderArgs(args, "Column");
-    // First child suppresses its top margin by setting `margin-block-start: 0`
-    // directly (NOT the inheriting `--elmethis-margin-block-start` custom
-    // property, which would cascade into nested blocks). See firstChildMargin.
-    expect(html.replace(/\s/g, "")).toContain("margin-block-start:0");
+  test("Column spaces its children with the shared stack gap", async () => {
+    const html = await renderArgs(
+      buildArgs({
+        component: "Column",
+        id: "c",
+        children: ["a"],
+      }),
+      "Column",
+    );
+    // Spacing between stacked children comes from `gap` on the flex
+    // container, not a per-child leading margin — so there's no first-child
+    // case to special-case (unlike the old firstChildMargin() mechanism).
+    expect(html.replace(/\s/g, "")).toContain("gap:var(--elmethis-stack-gap)");
   });
 });
 
