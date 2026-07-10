@@ -68,7 +68,7 @@
 .column {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--elmethis-stack-gap);
 }
 
 /* child-wrap lets Row/Column children participate in flex without extra styles */
