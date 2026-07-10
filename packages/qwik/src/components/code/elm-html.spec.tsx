@@ -152,6 +152,34 @@ describe("[CSR] ElmHtml — sandboxing correctness", () => {
       "allow-same-origin",
     );
   });
+
+  test("allowScripts adds allow-scripts to the sandbox", async () => {
+    const iframe = await renderIframe(
+      <ElmHtml html="<p>x</p>" allowScripts={true} />,
+    );
+
+    expect(iframe.getAttribute("sandbox")?.split(/\s+/)).toContain(
+      "allow-scripts",
+    );
+  });
+
+  test("does not add allow-scripts when allowScripts is unset", async () => {
+    const iframe = await renderIframe(<ElmHtml html="<p>x</p>" />);
+
+    expect(iframe.getAttribute("sandbox")?.split(/\s+/)).not.toContain(
+      "allow-scripts",
+    );
+  });
+
+  test("allowScripts still strips allow-same-origin even with autoHeight on", async () => {
+    const iframe = await renderIframe(
+      <ElmHtml html="<p>x</p>" allowScripts={true} autoHeight={true} />,
+    );
+    const tokens = iframe.getAttribute("sandbox")?.split(/\s+/);
+
+    expect(tokens).toContain("allow-scripts");
+    expect(tokens).not.toContain("allow-same-origin");
+  });
 });
 
 describe("[CSR] ElmHtml — remote src", () => {

@@ -176,6 +176,37 @@ describe("blockCatalog — media & embed", () => {
       expect(iframe.attributes("referrerpolicy")).toBe("no-referrer");
     });
   });
+
+  it("Html adds allow-scripts to the sandbox when allowScripts is set", async () => {
+    const wrapper = mountSurface([
+      {
+        component: "Html",
+        id: "root",
+        html: "<p>hello</p>",
+        allowScripts: true,
+      },
+    ]);
+    await vi.waitFor(() => {
+      const iframe = wrapper.find("iframe");
+      expect(iframe.exists()).toBe(true);
+      expect(iframe.attributes("sandbox")?.split(/\s+/)).toContain(
+        "allow-scripts",
+      );
+    });
+  });
+
+  it("Html omits allow-scripts from the sandbox by default", async () => {
+    const wrapper = mountSurface([
+      { component: "Html", id: "root", html: "<p>hello</p>" },
+    ]);
+    await vi.waitFor(() => {
+      const iframe = wrapper.find("iframe");
+      expect(iframe.exists()).toBe(true);
+      expect(iframe.attributes("sandbox")?.split(/\s+/)).not.toContain(
+        "allow-scripts",
+      );
+    });
+  });
 });
 
 describe("blockCatalog — code & table", () => {

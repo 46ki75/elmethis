@@ -288,7 +288,12 @@ const blockImplementations: ReactComponentImplementation[] = [
   )),
 
   createComponentImplementation(HtmlApi, ({ props }: any) => (
-    <ElmHtml html={props.html} src={props.src} autoHeight={props.autoHeight} />
+    <ElmHtml
+      html={props.html}
+      src={props.src}
+      autoHeight={props.autoHeight}
+      allowScripts={props.allowScripts}
+    />
   )),
 
   // ----- Code / math / diagram -----

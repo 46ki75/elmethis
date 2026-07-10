@@ -85,3 +85,37 @@ export const FixedHeight: Story = {
     style: { width: "100%", height: "150px" },
   },
 };
+
+const SCRIPTED_HTML = `
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body { font-family: sans-serif; margin: 1.5rem; }
+    </style>
+  </head>
+  <body>
+    <p>Counter: <span id="count">0</span></p>
+    <button onclick="document.getElementById('count').textContent = Number(document.getElementById('count').textContent) + 1">
+      Increment
+    </button>
+    <script>
+      document.title = "Script ran";
+    </script>
+  </body>
+</html>
+`;
+
+/**
+ * With `allowScripts`, the embedded document may run JavaScript
+ * (`sandbox="allow-scripts"`). `allow-same-origin` is still never granted,
+ * so the embedded document can't read/write the host page or its own
+ * `contentDocument` — only run script within its own sandboxed origin.
+ */
+export const AllowScripts: Story = {
+  args: {
+    html: SCRIPTED_HTML,
+    allowScripts: true,
+  },
+};

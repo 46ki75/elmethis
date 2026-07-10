@@ -177,6 +177,37 @@ describe("[CSR] ElmHtml — sandboxing correctness", () => {
       "allow-same-origin",
     );
   });
+
+  test("allowScripts adds allow-scripts to the sandbox", () => {
+    const { container } = render(
+      <ElmHtml html="<p>x</p>" allowScripts={true} />,
+    );
+    const iframe = container.querySelector("iframe")!;
+
+    expect(iframe.getAttribute("sandbox")?.split(/\s+/)).toContain(
+      "allow-scripts",
+    );
+  });
+
+  test("does not add allow-scripts when allowScripts is unset", () => {
+    const { container } = render(<ElmHtml html="<p>x</p>" />);
+    const iframe = container.querySelector("iframe")!;
+
+    expect(iframe.getAttribute("sandbox")?.split(/\s+/)).not.toContain(
+      "allow-scripts",
+    );
+  });
+
+  test("allowScripts still strips allow-same-origin even with autoHeight on", () => {
+    const { container } = render(
+      <ElmHtml html="<p>x</p>" allowScripts={true} autoHeight={true} />,
+    );
+    const iframe = container.querySelector("iframe")!;
+    const tokens = iframe.getAttribute("sandbox")?.split(/\s+/);
+
+    expect(tokens).toContain("allow-scripts");
+    expect(tokens).not.toContain("allow-same-origin");
+  });
 });
 
 // happy-dom (this file's unit-layer environment) simulates real navigation

@@ -391,6 +391,31 @@ describe("blockCatalog: media and embed", () => {
     expect(html).not.toContain("srcdoc=");
     expect(html).toContain('referrerpolicy="no-referrer"');
   });
+
+  test("Html adds allow-scripts to the sandbox when allowScripts is set", async () => {
+    const html = await renderArgs(
+      buildArgs({
+        component: "Html",
+        id: "e",
+        html: "<p>hello</p>",
+        allowScripts: true,
+      }),
+      "Html",
+    );
+    expect(html).toMatch(/sandbox="[^"]*\ballow-scripts\b[^"]*"/);
+  });
+
+  test("Html omits allow-scripts from the sandbox by default", async () => {
+    const html = await renderArgs(
+      buildArgs({
+        component: "Html",
+        id: "e",
+        html: "<p>hello</p>",
+      }),
+      "Html",
+    );
+    expect(html).not.toMatch(/sandbox="[^"]*\ballow-scripts\b[^"]*"/);
+  });
 });
 
 describe("blockCatalog: code and math", () => {
