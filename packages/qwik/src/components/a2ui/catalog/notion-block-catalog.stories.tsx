@@ -1,20 +1,20 @@
 import type { Meta, StoryObj } from "storybook-framework-qwik";
-import { blockCatalog } from "./block-catalog";
+import { notionBlockCatalog } from "./notion-block-catalog";
 import { component$ } from "@qwik.dev/core";
 import { ElmA2ui, type ElmA2uiProps } from "../elm-a2ui";
 
 const CATALOG_ID =
   "https://elmethis.example.com/catalogs/block/v1/catalog.json";
 
-// blockCatalog already composes the basic catalog underneath.
+// notionBlockCatalog already composes the basic catalog underneath.
 
 const meta: Meta<ElmA2uiProps> = {
-  title: "Components/A2UI/Catalog/block-catalog",
+  title: "Components/A2UI/Catalog/notion-block-catalog",
   component: ElmA2ui,
   tags: ["autodocs"],
   args: {
     catalogId: CATALOG_ID,
-    catalog: blockCatalog,
+    catalog: notionBlockCatalog,
     messages: [{}],
   },
   render: (args) => {

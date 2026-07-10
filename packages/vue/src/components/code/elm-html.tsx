@@ -84,6 +84,51 @@ const toStyleObject = (
   return normalizeStyle(style) as CSSProperties;
 };
 
+// Shared by both the render body (to decide the sandbox) and
+// `attachLifecycle` below (to decide the measurement strategy) — kept as a
+// module-level pure function so it's reused rather than duplicated. The
+// check is case-insensitive: the HTML `sandbox` attribute matches its
+// keywords case-insensitively, so a case-sensitive check here could be
+// defeated by a differently-cased caller-supplied token.
+const sandboxHasAllowScripts = (
+  sandbox: string | undefined,
+  allowScripts: boolean,
+): boolean => {
+  if (allowScripts) return true;
+  const tokens = sandbox?.split(/\s+/).filter(Boolean) ?? [];
+  return tokens.some((token) => token.toLowerCase() === "allow-scripts");
+};
+
+// Namespaced so a stray same-shaped message from unrelated page content isn't
+// mistaken for a height report; the `event.source` check in the listener
+// below is what actually makes this safe against spoofing (it can't be
+// forged from message data), this is just collision-avoidance.
+const AUTO_HEIGHT_MESSAGE_KIND = "elmethis:elm-html:auto-height";
+
+// Appended (not wrapped) so it always runs after any of the caller's own
+// inline scripts, regardless of the document's structure — the HTML parser
+// accepts a trailing <script> even with no explicit <body>/</body> in the
+// source. Only used when scripts are allowed AND `contentDocument` is opaque
+// to the parent (see the sandbox-token guard in the render function), as the
+// sole way left to learn the rendered height: `postMessage` crosses the
+// sandbox boundary by design, unlike `contentDocument`, so it works under
+// allow-scripts alone, without ever needing allow-same-origin.
+const withAutoHeightReporter = (html: string): string => {
+  return `${html}
+<script>(function () {
+  var send = function () {
+    try {
+      parent.postMessage(
+        { kind: ${JSON.stringify(AUTO_HEIGHT_MESSAGE_KIND)}, height: document.documentElement.scrollHeight },
+        "*",
+      );
+    } catch (e) {}
+  };
+  new ResizeObserver(send).observe(document.documentElement);
+  send();
+})();</script>`;
+};
+
 export interface ElmHtmlProps extends HTMLAttributes {
   /**
    * Raw HTML markup to render, e.g. a Claude-authored artifact or a Notion
@@ -94,25 +139,27 @@ export interface ElmHtmlProps extends HTMLAttributes {
 
   /**
    * URL of a remote document to load in place of inline `html` (e.g. a
-   * presigned, time-limited link). Mutually exclusive with `html` — provide
-   * exactly one of the two.
+   * presigned, time-limited link, or a same-origin static asset). Mutually
+   * exclusive with `html` — provide exactly one of the two.
    *
    * The framed document always gets `referrerpolicy="no-referrer"` so a
    * token embedded in the URL's query string (as presigned links often
    * carry) can't leak via the `Referer` header on requests the framed page
-   * itself makes. `autoHeight` has no effect in this mode — the browser
-   * blocks `contentDocument` access across origins regardless of sandbox
-   * flags, so cross-origin content can never be measured; size it with
-   * `height`/`style` instead. If the URL is time-limited, refreshing it
-   * before it expires is the caller's responsibility — this component never
-   * retries or reloads on its own.
+   * itself makes. `autoHeight` still measures here when the URL happens to
+   * be same-origin (or `allow-same-origin` otherwise applies to it, e.g. a
+   * `blob:` URL created by this same window) — the browser only blocks
+   * `contentDocument` access for a genuinely cross-origin document,
+   * regardless of sandbox flags, so that case still can't be measured; size
+   * it with `height`/`style` instead. If the URL is time-limited, refreshing
+   * it before it expires is the caller's responsibility — this component
+   * never retries or reloads on its own.
    */
   src?: string;
 
   /**
    * Stretch the iframe to fit its content height. Set to false to size it
-   * yourself instead (via `style`, `height`, or a CSS class). Only takes
-   * effect in `html` mode — see `src` for why.
+   * yourself instead (via `style`, `height`, or a CSS class). Has no effect
+   * on a genuinely cross-origin `src` — see `src` for why.
    * @default true
    */
   autoHeight?: boolean;
@@ -204,14 +251,55 @@ export const ElmHtml = defineComponent({
     // `flush: "post"` correctly.
     let disposeLifecycle: (() => void) | undefined;
 
-    const attachLifecycle = (autoHeight: boolean) => {
-      // Cross-origin `src` content can never be measured (see the `src` doc
-      // comment) — don't attempt it, and don't attach a load listener that
-      // could never do anything useful.
-      if (usingSrc()) return;
-
+    const attachLifecycle = (
+      autoHeight: boolean,
+      sandbox: string | undefined,
+      allowScripts: boolean,
+    ) => {
       const iframe = iframeRef.value;
       if (!iframe) return;
+      if (!autoHeight) return;
+
+      // In `src` mode there's no markup of ours to inject a reporter script
+      // into (the document is whatever the remote URL serves), so once
+      // scripts are allowed — and `contentDocument` is therefore opaque, see
+      // below — there's no way left to measure at all. Just don't attach
+      // anything. A same-origin (or otherwise `allow-same-origin`-eligible)
+      // `src` without allow-scripts falls through to the `contentDocument` +
+      // `ResizeObserver` path below like `html` mode, since that path just
+      // reads `iframe.contentDocument` generically.
+      if (usingSrc() && sandboxHasAllowScripts(sandbox, allowScripts)) return;
+
+      // `contentDocument` is opaque whenever scripts are allowed
+      // (allow-same-origin is never granted alongside allow-scripts — see
+      // the sandbox-token guard in the render function below), so the
+      // embedded reporter script appended to `srcdoc` (only present in this
+      // same case) posts its own measured height instead. `postMessage`
+      // crosses the sandbox boundary by design, so this works under
+      // allow-scripts alone.
+      if (sandboxHasAllowScripts(sandbox, allowScripts)) {
+        const onMessage = (event: MessageEvent) => {
+          // `event.source` is set by the browser to the actual sender
+          // window and can't be forged via message content, so this alone
+          // is sufficient to reject reports from any other frame/page.
+          if (event.source !== iframe.contentWindow) return;
+          const data = event.data as
+            { kind?: unknown; height?: unknown } | null | undefined;
+          if (
+            !data ||
+            data.kind !== AUTO_HEIGHT_MESSAGE_KIND ||
+            typeof data.height !== "number"
+          ) {
+            return;
+          }
+          contentHeight.value = data.height;
+        };
+        window.addEventListener("message", onMessage);
+        disposeLifecycle = () => {
+          window.removeEventListener("message", onMessage);
+        };
+        return;
+      }
 
       let observer: ResizeObserver | undefined;
 
@@ -229,10 +317,8 @@ export const ElmHtml = defineComponent({
       };
 
       const onLoad = () => {
-        if (autoHeight) {
-          measure();
-          attachObserver();
-        }
+        measure();
+        attachObserver();
       };
 
       iframe.addEventListener("load", onLoad);
@@ -242,13 +328,22 @@ export const ElmHtml = defineComponent({
       };
     };
 
-    onMounted(() => attachLifecycle(props.autoHeight));
+    onMounted(() =>
+      attachLifecycle(props.autoHeight, props.sandbox, props.allowScripts),
+    );
 
     watch(
-      () => [props.html, props.src, props.autoHeight] as const,
-      ([, , autoHeight]) => {
+      () =>
+        [
+          props.html,
+          props.src,
+          props.autoHeight,
+          props.sandbox,
+          props.allowScripts,
+        ] as const,
+      ([, , autoHeight, sandbox, allowScripts]) => {
         disposeLifecycle?.();
-        attachLifecycle(autoHeight);
+        attachLifecycle(autoHeight, sandbox, allowScripts);
       },
       { flush: "post" },
     );
@@ -308,11 +403,14 @@ export const ElmHtml = defineComponent({
             sandboxTokens.delete(token);
           }
         }
-      } else if (props.autoHeight && !usingSrcValue) {
-        // Cross-origin `src` content can never expose `contentDocument`
-        // (the browser blocks it regardless of sandbox flags — see the
-        // `src` doc comment), so granting allow-same-origin here would buy
-        // nothing; only widen the sandbox for no benefit.
+      } else if (props.autoHeight) {
+        // Not skipped for `src` mode: a `src` URL that happens to be
+        // same-origin (or otherwise gets `allow-same-origin` treatment, e.g.
+        // a `blob:` URL created by this same window) genuinely benefits from
+        // this — the browser only refuses `contentDocument` access for a
+        // truly cross-origin document regardless of sandbox flags, in which
+        // case granting this buys nothing but also costs nothing (see the
+        // `src` doc comment).
         sandboxTokens.add("allow-same-origin");
       }
       const effectiveSandbox = [...sandboxTokens].join(" ");
@@ -372,7 +470,13 @@ export const ElmHtml = defineComponent({
           // cosmetic: a literal `src=""` would self-navigate the iframe to
           // the host page.
           src={usingSrcValue ? props.src : undefined}
-          srcdoc={usingSrcValue ? undefined : (props.html ?? "")}
+          srcdoc={
+            usingSrcValue
+              ? undefined
+              : props.autoHeight && hasAllowScripts
+                ? withAutoHeightReporter(props.html ?? "")
+                : (props.html ?? "")
+          }
           sandbox={effectiveSandbox}
           // Only forced for `src` — a presigned URL's query-string token
           // must never reach a third party via `Referer`. `html`/`srcdoc`

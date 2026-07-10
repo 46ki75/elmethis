@@ -4,7 +4,7 @@
  * lookup of component type names → render functions.
  *
  * Catalogs compose with `.extend(...)`. Library consumers typically extend the
- * built-in `basicCatalog` or `blockCatalog` to override individual components
+ * built-in `basicCatalog` or `notionBlockCatalog` to override individual components
  * while reusing the rest.
  */
 import { type VNodeChild } from "vue";

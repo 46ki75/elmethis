@@ -20,7 +20,45 @@ const GROWING_HTML = `<style>
   div { animation: grow 0.2s forwards; }
 </style><div>content</div>`;
 
+// Builds its entire visible DOM via an inline script rather than static
+// markup — mirrors the real `advanced-rag-pipeline.html` fixture (a Claude
+// Artifact export) that motivated this test. `allow-same-origin` is never
+// granted alongside `allow-scripts` (a real security invariant, not a bug),
+// so `contentDocument` is opaque here and the `contentDocument`-based
+// measurement path can never see this content — regardless of how tall it
+// ends up.
+const SCRIPT_BUILT_HTML = `<div id="root"></div>
+<script>
+  var el = document.createElement("div");
+  el.style.height = "900px";
+  el.textContent = "built by script";
+  document.getElementById("root").appendChild(el);
+</script>`;
+
 describe("[CSR] ElmHtml — autoHeight measurement", () => {
+  // BUG: with `allowScripts`, `allow-same-origin` is (correctly) never
+  // granted, so `contentDocument` is opaque and the `load`-based
+  // `contentDocument`-measurement path can never run — autoHeight silently
+  // never measures anything here, leaving the iframe stuck at the browser's
+  // ~150px default no matter how tall the real (script-built) content is.
+  test(
+    "measures content height even when allowScripts makes contentDocument opaque",
+    { retry: 2 },
+    async () => {
+      const screen = await render(
+        <ElmHtml html={SCRIPT_BUILT_HTML} allowScripts />,
+      );
+      const iframe = screen.container.querySelector("iframe")!;
+
+      await vi.waitFor(
+        () => {
+          expect(parseInt(iframe.style.height || "0", 10)).toBeGreaterThan(800);
+        },
+        { timeout: 2000 },
+      );
+    },
+  );
+
   test("measures and applies the content height by default", async () => {
     const screen = await render(<ElmHtml html={TALL_HTML} />);
     const iframe = screen.container.querySelector("iframe")!;
@@ -277,6 +315,41 @@ describe("[CSR] ElmHtml — remote src", () => {
     await new Promise((resolve) => setTimeout(resolve, 300));
     expect(iframe.getAttribute("height")).toBe("200");
   });
+
+  // BUG: a blanket `if (usingSrc) return;` at the top of the measurement
+  // effect bailed out for EVERY `src`, even one that's actually same-origin
+  // (or otherwise gets `allow-same-origin` treatment). A `blob:` URL created
+  // by this same window is exactly that case — its origin is this window's
+  // own origin — so `contentDocument` access works fine, same as `html`
+  // mode, and autoHeight should measure it instead of silently doing
+  // nothing.
+  test(
+    "measures content height for a same-origin (blob:) src",
+    { retry: 2 },
+    async () => {
+      const blobUrl = URL.createObjectURL(
+        new Blob(['<div style="height: 900px;">tall</div>'], {
+          type: "text/html",
+        }),
+      );
+
+      try {
+        const screen = await render(<ElmHtml src={blobUrl} />);
+        const iframe = screen.container.querySelector("iframe")!;
+
+        await vi.waitFor(
+          () => {
+            expect(parseInt(iframe.style.height || "0", 10)).toBeGreaterThan(
+              800,
+            );
+          },
+          { timeout: 2000 },
+        );
+      } finally {
+        URL.revokeObjectURL(blobUrl);
+      }
+    },
+  );
 });
 
 describe("[CSR] ElmHtml — layout defaults", () => {

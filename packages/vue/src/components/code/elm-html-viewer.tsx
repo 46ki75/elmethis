@@ -1,4 +1,4 @@
-import { defineComponent, type HTMLAttributes } from "vue";
+import { defineComponent, type HTMLAttributes, type PropType } from "vue";
 import { clsx } from "clsx";
 import { mdiDownload, mdiOpenInNew } from "@mdi/js";
 
@@ -8,14 +8,36 @@ import { ElmHtml } from "./elm-html";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 
 export interface ElmHtmlViewerProps extends HTMLAttributes {
-  /** Raw HTML markup to render, and to open in a new tab or download. */
-  html: string;
+  /**
+   * Raw HTML markup to render, and to open in a new tab or download.
+   * Mutually exclusive with `src` — provide exactly one of the two.
+   */
+  html?: string;
 
   /**
-   * Filename used when downloading the HTML via the header's download button.
+   * URL of a remote document to render instead of inline `html`. Mutually
+   * exclusive with `html` — provide exactly one of the two. "Open in new
+   * tab" navigates straight to this URL (it's already reachable there, so
+   * no blob-wrapping is needed the way inline `html` requires); "download"
+   * points the download link at it directly, so whether the browser
+   * actually downloads it (vs. opens it) depends on the response's own
+   * headers, same as any cross-origin link.
+   */
+  src?: string;
+
+  /**
+   * Filename used when downloading `html`-mode content via the header's
+   * download button. Ignored in `src` mode (the browser/response decide).
    * @default "download.html"
    */
   filename?: string;
+
+  /**
+   * Forwarded to the wrapped `ElmHtml`: allow the embedded content to run
+   * JavaScript.
+   * @default false
+   */
+  allowScripts?: boolean;
 
   /**
    * Sandbox flags forwarded to the wrapped `ElmHtml`'s iframe (space-separated,
@@ -29,18 +51,39 @@ export interface ElmHtmlViewerProps extends HTMLAttributes {
    * @default true
    */
   autoHeight?: boolean;
+
+  /**
+   * Forwarded to the wrapped `ElmHtml`: native iframe `height`, in pixels.
+   * Sizes the inner iframe directly — the outer `<figure>`'s own
+   * `style`/`class` only target the wrapper, not this. Useful when
+   * `autoHeight` genuinely can't measure (e.g. `src` mode with
+   * `allowScripts` — see `ElmHtml`'s `src` doc comment).
+   */
+  height?: number | `${number}`;
 }
 
 export const ElmHtmlViewer = defineComponent({
   name: "ElmHtmlViewer",
   props: {
-    html: { type: String, required: true },
+    html: { type: String, default: undefined },
+    src: { type: String, default: undefined },
     filename: { type: String, default: undefined },
     sandbox: { type: String, default: undefined },
     autoHeight: { type: Boolean, default: undefined },
+    allowScripts: { type: Boolean, default: undefined },
+    height: {
+      type: [Number, String] as PropType<number | `${number}`>,
+      default: undefined,
+    },
   },
   setup(props) {
+    const usingSrc = () => props.src !== undefined;
+
     const handleOpenInNewTab = () => {
+      if (usingSrc()) {
+        window.open(props.src, "_blank", "noreferrer");
+        return;
+      }
       let url: string | undefined;
       try {
         // The new tab must stay exactly as sandboxed as the inline preview:
@@ -50,7 +93,7 @@ export const ElmHtmlViewer = defineComponent({
         // attribute to avoid manual attribute-escaping bugs; "</script" is
         // escaped separately because the HTML parser looks for that literal
         // byte sequence before the wrapper's own script is parsed as JS.
-        const serializedHtml = JSON.stringify(props.html).replace(
+        const serializedHtml = JSON.stringify(props.html ?? "").replace(
           /<\//g,
           "<\\/",
         );
@@ -89,11 +132,15 @@ export const ElmHtmlViewer = defineComponent({
       let url: string | undefined;
       let link: HTMLAnchorElement | undefined;
       try {
-        url = URL.createObjectURL(
-          new Blob([props.html], { type: "text/html" }),
-        );
         link = document.createElement("a");
-        link.href = url;
+        if (usingSrc()) {
+          link.href = props.src!;
+        } else {
+          url = URL.createObjectURL(
+            new Blob([props.html ?? ""], { type: "text/html" }),
+          );
+          link.href = url;
+        }
         link.download = props.filename || "download.html";
         document.body.appendChild(link);
         link.click();
@@ -133,8 +180,11 @@ export const ElmHtmlViewer = defineComponent({
         <div class={styles.content}>
           <ElmHtml
             html={props.html}
+            src={props.src}
             sandbox={props.sandbox}
             autoHeight={props.autoHeight}
+            allowScripts={props.allowScripts}
+            height={props.height}
           />
         </div>
       </figure>

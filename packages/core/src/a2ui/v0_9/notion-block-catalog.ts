@@ -521,19 +521,25 @@ export const HtmlApi = {
       src: z
         .string()
         .describe(
-          "URL of a remote document to render inside the iframe instead of inline `html` (e.g. a presigned, time-limited link). Mutually exclusive with `html` — provide exactly one of the two. `autoHeight` doesn't apply here since cross-origin content can't be measured, and a time-limited URL isn't refreshed automatically — the caller is responsible for keeping it current.",
+          "URL of a remote document to render inside the iframe instead of inline `html` (e.g. a presigned, time-limited link, or a same-origin asset). Mutually exclusive with `html` — provide exactly one of the two. `autoHeight` can still measure a same-origin `src`, but not a genuinely cross-origin one, and a time-limited URL isn't refreshed automatically — the caller is responsible for keeping it current.",
         )
         .optional(),
       autoHeight: z
         .boolean()
         .describe(
-          "Stretch the iframe to fit its content height. Defaults to true. Only takes effect for `html`-rendered content.",
+          "Stretch the iframe to fit its content height. Defaults to true. Has no effect on genuinely cross-origin `src` content, or on any content once `allowScripts` is on (measuring requires DOM access the sandbox never grants alongside script execution) — `height` is the fallback size for those cases.",
         )
         .optional(),
       allowScripts: z
         .boolean()
         .describe(
-          "Allow the embedded content to run JavaScript (adds the iframe sandbox's `allow-scripts` token). Defaults to false — script execution is disabled by default. `allow-same-origin` is never granted together with this, in `html` or `src` mode, so the embedded document can never escape the sandbox even with scripts enabled.",
+          "Allow the embedded content to run JavaScript (adds the iframe sandbox's `allow-scripts` token). Defaults to true when rendered through the Notion block catalog — pass `false` explicitly to disable script execution. (The underlying `ElmHtml` component still defaults to `false` when used directly, outside the A2UI catalog.) `allow-same-origin` is never granted together with this, in `html` or `src` mode, so the embedded document can never escape the sandbox even with scripts enabled.",
+        )
+        .optional(),
+      height: z
+        .number()
+        .describe(
+          "Fallback pixel height for the iframe, used whenever `autoHeight` can't measure the actual content (e.g. `allowScripts` content, or a genuinely cross-origin `src`). Defaults to 400 when omitted. Ignored once `autoHeight` successfully measures real content — it only ever applies as a starting/fallback size, never a hard cap.",
         )
         .optional(),
     })

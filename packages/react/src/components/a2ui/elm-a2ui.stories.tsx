@@ -17,8 +17,8 @@ const meta = {
           "pre-collected `messages` array of A2UI protocol messages — the " +
           "component manages the `MessageProcessor` internally and renders " +
           "each surface through the official `@a2ui/react` host. The default " +
-          "catalog is the Elm block catalog (official basic primitives + the " +
-          "project's `Elm*` block renderers).",
+          "catalog is the Elm Notion block catalog (official basic " +
+          "primitives + the project's `Elm*` block renderers).",
       },
     },
   },
@@ -288,10 +288,10 @@ export const Tabs: Story = {
 };
 
 // ---------------------------------------------------------------------------
-// Block catalog (Elm component renderers)
+// Notion block catalog (Elm component renderers)
 // ---------------------------------------------------------------------------
 
-export const BlockCatalog: Story = {
+export const NotionBlockCatalog: Story = {
   parameters: {
     docs: {
       description: {

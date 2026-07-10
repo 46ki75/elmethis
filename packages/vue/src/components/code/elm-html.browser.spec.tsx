@@ -68,6 +68,39 @@ describe("[CSR] ElmHtml — autoHeight measurement", () => {
   });
 });
 
+// Built entirely by an inline bootstrap <script> rather than static markup —
+// mirrors the real `advanced-rag-pipeline.html` fixture (a Claude Artifact
+// export), where the whole visible DOM only exists after the script runs.
+const SCRIPT_BUILT_HTML = `<div id="root"></div>
+<script>
+  var el = document.createElement("div");
+  el.style.height = "900px";
+  el.textContent = "built by script";
+  document.getElementById("root").appendChild(el);
+</script>`;
+
+describe("[CSR] ElmHtml — autoHeight measurement with allowScripts", () => {
+  // BUG: `allow-same-origin` is never granted together with `allow-scripts`
+  // (see elm-html.tsx for why), so `contentDocument` is opaque whenever
+  // `allowScripts` is true — the `load` + ResizeObserver strategy below can
+  // never read `contentDocument.documentElement`, so the height silently
+  // stays stuck at the browser's ~150px iframe default no matter how tall
+  // the real content is.
+  test("measures the content height even when allowScripts is on (contentDocument is opaque)", async () => {
+    const screen = render(ElmHtml, {
+      props: { html: SCRIPT_BUILT_HTML, allowScripts: true },
+    });
+    const iframe = screen.container.querySelector("iframe")!;
+
+    await vi.waitFor(
+      () => {
+        expect(parseInt(iframe.style.height || "0", 10)).toBeGreaterThan(800);
+      },
+      { timeout: 2000 },
+    );
+  });
+});
+
 describe("[CSR] ElmHtml — ResizeObserver keeps tracking real content", () => {
   // While `autoHeight` is off, `srcdoc` (bound unconditionally) may still be
   // navigating when it's flipped back on. The observer/`load` watcher must
@@ -251,6 +284,37 @@ describe("[CSR] ElmHtml — remote src", () => {
     await new Promise((resolve) => setTimeout(resolve, 300));
     expect(iframe.getAttribute("height")).toBe("200");
   });
+
+  // A `blob:` URL's origin is the creating window's own origin (per spec),
+  // unlike a `data:` URL above — so it's a network-free stand-in for a
+  // same-origin `src` (e.g. a static asset served by this same app), which
+  // should still be measurable.
+  test(
+    "measures height for a same-origin src, unlike a genuinely cross-origin one",
+    { retry: 2 },
+    async () => {
+      const blobUrl = URL.createObjectURL(
+        new Blob(['<div style="height: 900px;">tall</div>'], {
+          type: "text/html",
+        }),
+      );
+      try {
+        const screen = render(ElmHtml, { props: { src: blobUrl } });
+        const iframe = screen.container.querySelector("iframe")!;
+
+        await vi.waitFor(
+          () => {
+            expect(parseInt(iframe.style.height || "0", 10)).toBeGreaterThan(
+              800,
+            );
+          },
+          { timeout: 6000 },
+        );
+      } finally {
+        URL.revokeObjectURL(blobUrl);
+      }
+    },
+  );
 });
 
 describe("[CSR] ElmHtml — layout defaults", () => {

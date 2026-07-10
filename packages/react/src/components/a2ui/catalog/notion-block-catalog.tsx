@@ -1,6 +1,7 @@
 /**
- * Elmethis "block" catalog — typography, media, code, math, table, tabs, and a
- * fallback. Built on the **official** `@a2ui/react` generic binder: each entry
+ * Elmethis "Notion block" catalog — typography, media, code, math, table,
+ * tabs, and a fallback. Built on the **official** `@a2ui/react` generic
+ * binder: each entry
  * is a `createComponentImplementation(api, ReactFC)` mapping an `@elmethis/core`
  * component API onto the project's `Elm*` components. The official `basicCatalog`
  * (A2UI v0.9 Basic Catalog) is merged underneath so a single catalog serves
@@ -57,7 +58,7 @@ import {
 
 import { ElmKatex } from "../../code/elm-katex";
 import { ElmCodeBlock } from "../../code/elm-code-block";
-import { ElmHtml } from "../../code/elm-html";
+import { ElmHtmlViewer } from "../../code/elm-html-viewer";
 import { ElmInlineIcon } from "../../icon/elm-inline-icon";
 import { ElmAudioPlayer } from "../../media/elm-audio-player";
 import { ElmBlockImage } from "../../media/elm-block-image";
@@ -95,7 +96,7 @@ import {
   renderChildList,
 } from "./catalog-utils";
 
-const BLOCK_CATALOG_ID =
+const NOTION_BLOCK_CATALOG_ID =
   "https://a2ui.org/specification/v0_9/basic_catalog.json";
 
 // Multi-column layout for the ColumnList block.
@@ -288,11 +289,12 @@ const blockImplementations: ReactComponentImplementation[] = [
   )),
 
   createComponentImplementation(HtmlApi, ({ props }: any) => (
-    <ElmHtml
+    <ElmHtmlViewer
       html={props.html}
       src={props.src}
       autoHeight={props.autoHeight}
-      allowScripts={props.allowScripts}
+      allowScripts={props.allowScripts ?? true}
+      height={props.height ?? 400}
     />
   )),
 
@@ -399,21 +401,22 @@ const blockImplementations: ReactComponentImplementation[] = [
  * `Column` / `List` / `Divider` / `Icon` resolve to the Elm versions). This is
  * the unit `ElmA2ui` registers under each referenced catalog id.
  */
-export const blockComponents: ReactComponentImplementation[] = [
+export const notionBlockComponents: ReactComponentImplementation[] = [
   ...basicCatalog.components.values(),
   ...blockImplementations,
 ];
 
 /** Shared catalog functions (from the official basic catalog). */
-export const blockFunctions = Array.from(basicCatalog.functions.values());
+export const notionBlockFunctions = Array.from(basicCatalog.functions.values());
 
 /**
- * A ready-to-use `Catalog` of {@link blockComponents}, registered under the
- * basic-catalog id. `ElmA2ui` rebuilds equivalent catalogs per referenced id;
- * this export is for direct/standalone use.
+ * A ready-to-use `Catalog` of {@link notionBlockComponents}, registered under
+ * the basic-catalog id. `ElmA2ui` rebuilds equivalent catalogs per referenced
+ * id; this export is for direct/standalone use.
  */
-export const blockCatalog: Catalog<ReactComponentImplementation> = new Catalog(
-  BLOCK_CATALOG_ID,
-  blockComponents,
-  blockFunctions,
-);
+export const notionBlockCatalog: Catalog<ReactComponentImplementation> =
+  new Catalog(
+    NOTION_BLOCK_CATALOG_ID,
+    notionBlockComponents,
+    notionBlockFunctions,
+  );

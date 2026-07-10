@@ -45,6 +45,44 @@ describe("[CSR] ElmHtmlViewer — rendering", () => {
 
     expect(iframe.getAttribute("sandbox")).toBe("allow-forms");
   });
+
+  test("forwards allowScripts to the inner ElmHtml", async () => {
+    const screen = await render(
+      <ElmHtmlViewer html={SIMPLE_HTML} allowScripts />,
+    );
+    const iframe = screen.container.querySelector("iframe")!;
+
+    expect(iframe.getAttribute("sandbox")?.split(/\s+/)).toContain(
+      "allow-scripts",
+    );
+  });
+
+  test("renders src content inside the wrapped ElmHtml's iframe instead of html", async () => {
+    const screen = await render(
+      <ElmHtmlViewer src="https://example.com/doc.html" />,
+    );
+    const iframe = screen.container.querySelector("iframe")!;
+
+    expect(iframe.getAttribute("src")).toBe("https://example.com/doc.html");
+    expect(iframe.hasAttribute("srcdoc")).toBe(false);
+  });
+
+  // Regression coverage for the `RemoteSrc` story: `src` + `allowScripts`
+  // can never auto-size (see elm-html.tsx's autoHeight docs), so `height`
+  // must be forwarded to the inner ElmHtml for a caller to size it
+  // explicitly instead.
+  test("forwards height to the inner ElmHtml (RemoteSrc story args)", async () => {
+    const screen = await render(
+      <ElmHtmlViewer
+        src="/fixtures/advanced-rag-pipeline.html"
+        allowScripts
+        height={600}
+      />,
+    );
+    const iframe = screen.container.querySelector("iframe")!;
+
+    expect(iframe.getAttribute("height")).toBe("600");
+  });
 });
 
 const spyOnWindowOpen = () => vi.spyOn(window, "open");
@@ -178,6 +216,24 @@ describe("[CSR] ElmHtmlViewer — open in new tab", () => {
       revokeSpy.mockRestore();
     }
   });
+
+  test("src mode: navigates straight to the URL, no blob-wrapping", async () => {
+    const createObjectURLSpy = vi.spyOn(URL, "createObjectURL");
+    const screen = await render(
+      <ElmHtmlViewer src="https://example.com/doc.html" />,
+    );
+
+    await screen.getByRole("button", { name: "Open in new tab" }).click();
+
+    expect(openSpy).toHaveBeenCalledTimes(1);
+    expect(openSpy).toHaveBeenCalledWith(
+      "https://example.com/doc.html",
+      "_blank",
+      "noreferrer",
+    );
+    expect(createObjectURLSpy).not.toHaveBeenCalled();
+    createObjectURLSpy.mockRestore();
+  });
 });
 
 describe("[CSR] ElmHtmlViewer — download", () => {
@@ -245,5 +301,19 @@ describe("[CSR] ElmHtmlViewer — download", () => {
 
     expect(revokeSpy).toHaveBeenCalledTimes(1);
     expect(document.querySelectorAll("a[download]").length).toBe(0);
+  });
+
+  test("src mode: points the anchor directly at the URL, no blob", async () => {
+    const createObjectURLSpy = vi.spyOn(URL, "createObjectURL");
+    const screen = await render(
+      <ElmHtmlViewer src="https://example.com/doc.html" />,
+    );
+
+    await screen.getByRole("button", { name: "Download" }).click();
+
+    expect(clicks).toHaveLength(1);
+    expect(clicks[0]!.href).toBe("https://example.com/doc.html");
+    expect(createObjectURLSpy).not.toHaveBeenCalled();
+    createObjectURLSpy.mockRestore();
   });
 });

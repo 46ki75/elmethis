@@ -10,7 +10,7 @@
  * approach this replaced, which needed exactly that override here).
  *
  * The official `@a2ui/react` binder inserts no wrapper around a resolved
- * child (see block-catalog.tsx's top comment), so each rendered block's
+ * child (see notion-block-catalog.tsx's top comment), so each rendered block's
  * real root element becomes a direct flex item of `.surface` — `gap`
  * reaches it with no extra plumbing.
  */

@@ -267,9 +267,28 @@ describe("[CSR] ElmHtml — remote src", () => {
     expect(iframe.attributes("referrerpolicy")).toBeUndefined();
   });
 
-  test("never adds allow-same-origin for src content, even with autoHeight on and no allow-scripts", () => {
+  // Whether this URL is actually same-origin isn't knowable statically (it
+  // could be a relative path to a same-origin static asset, or a genuinely
+  // cross-origin link) — granting allow-same-origin here is safe either way
+  // (it's only dangerous combined with allow-scripts, which this doesn't
+  // request) and lets a same-origin src get measured — see
+  // elm-html.browser.spec.tsx's "measures height for a same-origin src" for
+  // that positive case; the browser's own cross-origin protection is what
+  // keeps a genuinely cross-origin document's contentDocument inaccessible.
+  test("adds allow-same-origin for src content too, when autoHeight is on and scripts aren't", () => {
     const wrapper = mount(ElmHtml, {
       props: { src: REMOTE_SRC, autoHeight: true },
+    });
+    const iframe = wrapper.find("iframe");
+
+    expect(iframe.attributes("sandbox")?.split(/\s+/)).toContain(
+      "allow-same-origin",
+    );
+  });
+
+  test("never adds allow-same-origin for src content when scripts are allowed", () => {
+    const wrapper = mount(ElmHtml, {
+      props: { src: REMOTE_SRC, autoHeight: true, allowScripts: true },
     });
     const iframe = wrapper.find("iframe");
 

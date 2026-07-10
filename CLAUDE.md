@@ -13,9 +13,9 @@ Vue), each shipped as a Storybook to GitHub Pages.
 | Package                | Path                  | Published    | Purpose                                                                                                                                            |
 | ---------------------- | --------------------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `@elmethis/core`       | `packages/core`       | yes          | Framework-agnostic hub: shared Zod schemas/types, design tokens, A2UI catalogs, language icons. Every framework lib depends on it (`workspace:^`). |
-| `@elmethis/qwik`       | `packages/qwik`       | yes          | **Lead** implementation (Qwik 2). Components + hooks. Storybook :19211                                                                             |
-| `@elmethis/react`      | `packages/react`      | yes          | React 19 port; mirrors qwik. Storybook :19221                                                                                                      |
-| `@elmethis/vue`        | `packages/vue`        | yes          | Vue 3 port (authored in TSX); mirrors qwik. Storybook :19231                                                                                       |
+| `@elmethis/qwik`       | `packages/qwik`       | yes          | Qwik 2 implementation. Components + hooks. Storybook :19211                                                                                        |
+| `@elmethis/react`      | `packages/react`      | yes          | React 19 implementation; same component surface as qwik/vue. Storybook :19221                                                                      |
+| `@elmethis/vue`        | `packages/vue`        | yes          | Vue 3 implementation (authored in TSX); same component surface as qwik/react. Storybook :19231                                                     |
 | `@elmethis/ag-ui-stub` | `packages/ag-ui-stub` | no (private) | Deterministic, LLM-free AG-UI test-double server (Hono :19103)                                                                                     |
 | `backend` (copilotkit) | `packages/copilotkit` | no           | CopilotKit backend on the Claude Agent SDK (Hono :19101; also serves a stub Weather MCP at `/mcp`)                                                 |
 
@@ -49,11 +49,14 @@ runs eslint / stylelint / vitest-related per package.
 ## Architecture
 
 - **core is the single source of truth.** Design tokens (`src/style/token.ts` → emitted
-  `tokens.css`), A2UI block catalogs, JSON schemas, and language-icon registries live here and are
-  consumed by all three framework libs — defined once, mirrored everywhere.
-- **qwik leads; react and vue follow.** qwik is the reference implementation; react and vue recreate
-  the same component surface (same names, same props) per framework idiom. When changing a
-  component, qwik is usually the source of truth.
+  `tokens.css`), A2UI Notion block catalogs, JSON schemas, and language-icon registries live here and
+  are consumed by all three framework libs — defined once, mirrored everywhere.
+- **Component leadership is per-feature, not fixed to one framework.** All three keep the same
+  component surface (same names, same props) per framework idiom, but which framework originates a
+  given component varies — qwik led the original recreation-wave surface, while several recent
+  components (`ElmButtonDropdown`, `ElmHtml`, `ElmSlider`) landed in react first and were ported to
+  qwik/vue afterward. Check `git log` for a component before assuming which framework is its source
+  of truth.
 - **Three Storybooks → one GitHub Pages site.** `pages-deploy.yml` builds core, then each Storybook,
   and assembles them under `/qwik`, `/react`, `/vue` (plus the A2UI catalog JSON). Deploys on push
   to `main`.

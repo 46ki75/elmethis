@@ -4,11 +4,11 @@
  * (Row, Image, etc.) come from `basicCatalog`; this catalog adds richer block
  * elements that wrap project-specific Elm* components.
  */
-import { Fragment, type CSSProperties } from "@qwik.dev/core";
+import { Fragment, type CSSProperties } from "vue";
 
 import { ElmKatex } from "../../code/elm-katex";
 import { ElmCodeBlock } from "../../code/elm-code-block";
-import { ElmHtml } from "../../code/elm-html";
+import { ElmHtmlViewer } from "../../code/elm-html-viewer";
 import { ElmInlineIcon } from "../../icon/elm-inline-icon";
 import { ElmAudioPlayer } from "../../media/elm-audio-player";
 import { ElmBlockImage } from "../../media/elm-block-image";
@@ -97,11 +97,11 @@ const columnListStyle: CSSProperties = {
 };
 
 /**
- * The block catalog stands on top of the basic catalog. Use it directly
- * (`blockCatalog`) when you want both the basic primitives and the typography
- * block components.
+ * The Notion block catalog stands on top of the basic catalog. Use it directly
+ * (`notionBlockCatalog`) when you want both the basic primitives and the
+ * typography block components.
  */
-export const blockCatalog: CatalogRenderer = basicCatalog.extend(
+export const notionBlockCatalog: CatalogRenderer = basicCatalog.extend(
   // -------------------------------------------------------------------------
   // Inline components
   // -------------------------------------------------------------------------
@@ -204,7 +204,9 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
   )),
 
   defineRenderer(BlockQuoteApi, ({ props, childRefs, renderChild }) => (
-    <ElmBlockQuote cite={props.cite}>
+    // `cite` is a native <blockquote> attribute forwarded via fallthrough; vue's
+    // ElmBlockQuote doesn't declare it, so it's passed as a spread attr.
+    <ElmBlockQuote {...{ cite: props.cite }}>
       {childRefs(props.children).map(({ id, path }, i) => (
         <Fragment key={`${id}:${i}`}>{renderChild(id, path, i)}</Fragment>
       ))}
@@ -235,14 +237,16 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
 
   defineRenderer(ToggleApi, ({ props, childRefs, renderChild }) => (
     <ElmToggle>
-      <div q:slot="summary">
-        {childRefs(props.summary).map(({ id, path }, i) => (
-          <span key={`${id}:${i}`}>{renderChild(id, path, i)}</span>
-        ))}
-      </div>
-      {childRefs(props.children).map(({ id, path }, i) => (
-        <Fragment key={`${id}:${i}`}>{renderChild(id, path, i)}</Fragment>
-      ))}
+      {{
+        summary: () =>
+          childRefs(props.summary).map(({ id, path }, i) => (
+            <span key={`${id}:${i}`}>{renderChild(id, path, i)}</span>
+          )),
+        default: () =>
+          childRefs(props.children).map(({ id, path }, i) => (
+            <Fragment key={`${id}:${i}`}>{renderChild(id, path, i)}</Fragment>
+          )),
+      }}
     </ElmToggle>
   )),
 
@@ -273,7 +277,7 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
       artist={props.artist ? resolve(props.artist) : undefined}
       seekStep={props.seekStep}
       loop={props.loop}
-      autoPlay={props.autoPlay}
+      autoplay={props.autoPlay}
     />
   )),
 
@@ -304,7 +308,7 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
       alt={props.alt ? resolve(props.alt) : undefined}
       width={props.width}
       height={props.height}
-      srcset={props.srcset ? resolve(props.srcset) : undefined}
+      srcSet={props.srcset ? resolve(props.srcset) : undefined}
       sizes={props.sizes ? resolve(props.sizes) : undefined}
       caption={props.caption ? resolve(props.caption) : undefined}
       enableModal={true}
@@ -312,11 +316,12 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
   )),
 
   defineRenderer(HtmlApi, ({ props, resolve }) => (
-    <ElmHtml
+    <ElmHtmlViewer
       html={props.html ? resolve(props.html) : undefined}
       src={props.src ? resolve(props.src) : undefined}
       autoHeight={props.autoHeight}
-      allowScripts={props.allowScripts}
+      allowScripts={props.allowScripts ?? true}
+      height={props.height ?? 400}
     />
   )),
 

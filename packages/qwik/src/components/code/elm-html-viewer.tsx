@@ -7,20 +7,58 @@ import { ElmHtml, type ElmHtmlProps } from "./elm-html";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 
 export interface ElmHtmlViewerProps
-  extends PropsOf<"figure">, Pick<ElmHtmlProps, "sandbox" | "autoHeight"> {
-  /** Raw HTML markup to render, and to open in a new tab or download. */
-  html: string;
+  extends
+    PropsOf<"figure">,
+    Pick<ElmHtmlProps, "sandbox" | "autoHeight" | "allowScripts" | "height"> {
+  /**
+   * Raw HTML markup to render, and to open in a new tab or download.
+   * Mutually exclusive with `src` — provide exactly one of the two.
+   */
+  html?: string;
 
   /**
-   * Filename used when downloading the HTML via the header's download button.
+   * URL of a remote document to render instead of inline `html`. Mutually
+   * exclusive with `html` — provide exactly one of the two. "Open in new
+   * tab" navigates straight to this URL (it's already reachable there, so
+   * no blob-wrapping is needed the way inline `html` requires); "download"
+   * points the download link at it directly, so whether the browser
+   * actually downloads it (vs. opens it) depends on the response's own
+   * headers, same as any cross-origin link.
+   */
+  src?: string;
+
+  /**
+   * Filename used when downloading `html`-mode content via the header's
+   * download button. Ignored in `src` mode (the browser/response decide).
    * @default "download.html"
    */
   filename?: string;
 }
 
 export const ElmHtmlViewer = component$<ElmHtmlViewerProps>(
-  ({ class: className, html, filename, sandbox, autoHeight, ...props }) => {
+  ({
+    class: className,
+    html,
+    src,
+    filename,
+    sandbox,
+    autoHeight,
+    allowScripts,
+    height,
+    ...props
+  }) => {
     const handleOpenInNewTab = $(() => {
+      // Recomputed here (rather than reading a shared outer `usingSrc`
+      // const) because Qwik's optimizer serializes each `$()` closure's
+      // captured scope independently; a derived boolean shared across two
+      // closures trips `qwik/valid-lexical-scope` (it gets misclassified as
+      // a non-serializable `Symbol`) even though the underlying value is a
+      // plain boolean. See the `handleDownload` closure below for the same
+      // pattern — [[feedback_qwik_lexical_scope_composite]].
+      if (src !== undefined) {
+        window.open(src, "_blank", "noreferrer");
+        return;
+      }
       let url: string | undefined;
       try {
         // The new tab must stay exactly as sandboxed as the inline preview:
@@ -30,7 +68,10 @@ export const ElmHtmlViewer = component$<ElmHtmlViewerProps>(
         // attribute to avoid manual attribute-escaping bugs; "</script" is
         // escaped separately because the HTML parser looks for that literal
         // byte sequence before the wrapper's own script is parsed as JS.
-        const serializedHtml = JSON.stringify(html).replace(/<\//g, "<\\/");
+        const serializedHtml = JSON.stringify(html ?? "").replace(
+          /<\//g,
+          "<\\/",
+        );
         // Matches the `title ?? "Embedded HTML content"` fallback ElmHtml's
         // own iframe always gets, so a screen-reader user landing on this
         // new tab hears a page title and, on entering the iframe (the only
@@ -75,9 +116,15 @@ export const ElmHtmlViewer = component$<ElmHtmlViewerProps>(
       let url: string | undefined;
       let link: HTMLAnchorElement | undefined;
       try {
-        url = URL.createObjectURL(new Blob([html], { type: "text/html" }));
         link = document.createElement("a");
-        link.href = url;
+        if (src !== undefined) {
+          link.href = src;
+        } else {
+          url = URL.createObjectURL(
+            new Blob([html ?? ""], { type: "text/html" }),
+          );
+          link.href = url;
+        }
         link.download = filename || "download.html";
         document.body.appendChild(link);
         link.click();
@@ -114,7 +161,14 @@ export const ElmHtmlViewer = component$<ElmHtmlViewerProps>(
         <hr class={styles.divider} />
 
         <div class={styles.content}>
-          <ElmHtml html={html} sandbox={sandbox} autoHeight={autoHeight} />
+          <ElmHtml
+            html={html}
+            src={src}
+            sandbox={sandbox}
+            autoHeight={autoHeight}
+            allowScripts={allowScripts}
+            height={height}
+          />
         </div>
       </figure>
     );

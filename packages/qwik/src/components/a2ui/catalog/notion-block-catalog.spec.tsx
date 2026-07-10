@@ -15,7 +15,7 @@ import {
 } from "@a2ui/web_core/v0_9/basic_catalog";
 
 import { type RenderArgs } from "./catalog";
-import { blockCatalog } from "./block-catalog";
+import { notionBlockCatalog } from "./notion-block-catalog";
 import {
   BlockQuoteApi,
   BookmarkApi,
@@ -186,7 +186,7 @@ function buildArgs(
 }
 
 async function renderArgs(args: RenderArgs, typeName: string) {
-  const render = blockCatalog.get(typeName);
+  const render = notionBlockCatalog.get(typeName);
   if (!render) throw new Error(`no renderer for ${typeName}`);
   const out = render(args);
   if (out === null) return ""; // ContentTab returns null intentionally
@@ -195,7 +195,7 @@ async function renderArgs(args: RenderArgs, typeName: string) {
   return dom.screen.outerHTML;
 }
 
-describe("blockCatalog: inline", () => {
+describe("notionBlockCatalog: inline", () => {
   test("RichText applies bold + italic decorations", async () => {
     const html = await renderArgs(
       buildArgs({
@@ -238,7 +238,7 @@ describe("blockCatalog: inline", () => {
   });
 });
 
-describe("blockCatalog: layout", () => {
+describe("notionBlockCatalog: layout", () => {
   test("Column applies widthRatio as flex", async () => {
     const html = await renderArgs(
       buildArgs({
@@ -268,7 +268,7 @@ describe("blockCatalog: layout", () => {
   });
 });
 
-describe("blockCatalog: block typography", () => {
+describe("notionBlockCatalog: block typography", () => {
   test("Heading uses the requested level", async () => {
     const html = await renderArgs(
       buildArgs({
@@ -325,7 +325,7 @@ describe("blockCatalog: block typography", () => {
   });
 });
 
-describe("blockCatalog: tabs", () => {
+describe("notionBlockCatalog: tabs", () => {
   test("ContentTab returns null (it's a data-only marker)", async () => {
     const args = buildArgs({
       component: "ContentTab",
@@ -333,7 +333,7 @@ describe("blockCatalog: tabs", () => {
       label: ["l1"],
       content: ["c1"],
     });
-    const render = blockCatalog.get("ContentTab");
+    const render = notionBlockCatalog.get("ContentTab");
     expect(render).toBeDefined();
     expect(render!(args)).toBeNull();
   });
@@ -363,7 +363,7 @@ describe("blockCatalog: tabs", () => {
   });
 });
 
-describe("blockCatalog: media and embed", () => {
+describe("notionBlockCatalog: media and embed", () => {
   test("Html renders a sandboxed iframe with the given markup", async () => {
     const html = await renderArgs(
       buildArgs({
@@ -374,7 +374,10 @@ describe("blockCatalog: media and embed", () => {
       "Html",
     );
     expect(html.toLowerCase()).toContain("<iframe");
-    expect(html).toContain('srcdoc="<p>hello</p>"');
+    // Contains, not an exact match: scripts are on by default here, so the
+    // srcdoc also carries the postMessage auto-height reporter (see
+    // elm-html.tsx) appended after the caller's own markup.
+    expect(html).toContain("<p>hello</p>");
   });
 
   test("Html renders a remote src iframe with no-referrer hardening", async () => {
@@ -405,7 +408,7 @@ describe("blockCatalog: media and embed", () => {
     expect(html).toMatch(/sandbox="[^"]*\ballow-scripts\b[^"]*"/);
   });
 
-  test("Html omits allow-scripts from the sandbox by default", async () => {
+  test("Html adds allow-scripts to the sandbox by default", async () => {
     const html = await renderArgs(
       buildArgs({
         component: "Html",
@@ -414,11 +417,55 @@ describe("blockCatalog: media and embed", () => {
       }),
       "Html",
     );
+    expect(html).toMatch(/sandbox="[^"]*\ballow-scripts\b[^"]*"/);
+  });
+
+  test("Html omits allow-scripts from the sandbox when allowScripts is explicitly false", async () => {
+    const html = await renderArgs(
+      buildArgs({
+        component: "Html",
+        id: "e",
+        html: "<p>hello</p>",
+        allowScripts: false,
+      }),
+      "Html",
+    );
     expect(html).not.toMatch(/sandbox="[^"]*\ballow-scripts\b[^"]*"/);
+  });
+
+  // A default fallback height matters here specifically: allowScripts
+  // defaults to true in this catalog, and content requiring scripts to
+  // render can never be measured by autoHeight (see elm-html.tsx) — without
+  // a default, an author who doesn't think to set one gets an unreadable
+  // ~150px sliver instead of a usable box.
+  test("Html falls back to a default height of 400 when none is given", async () => {
+    const html = await renderArgs(
+      buildArgs({
+        component: "Html",
+        id: "e",
+        html: "<p>hello</p>",
+      }),
+      "Html",
+    );
+    expect(html).toContain('height="400"');
+  });
+
+  test("Html uses a caller-supplied height instead of the default", async () => {
+    const html = await renderArgs(
+      buildArgs({
+        component: "Html",
+        id: "e",
+        html: "<p>hello</p>",
+        height: 800,
+      }),
+      "Html",
+    );
+    expect(html).toContain('height="800"');
+    expect(html).not.toContain('height="400"');
   });
 });
 
-describe("blockCatalog: code and math", () => {
+describe("notionBlockCatalog: code and math", () => {
   test("CodeBlock passes language through", async () => {
     const html = await renderArgs(
       buildArgs({
@@ -457,7 +504,7 @@ describe("blockCatalog: code and math", () => {
   });
 });
 
-describe("blockCatalog: table", () => {
+describe("notionBlockCatalog: table", () => {
   test("TableCell with isHeader renders a header cell", async () => {
     const html = await renderArgs(
       buildArgs({
@@ -484,7 +531,7 @@ describe("blockCatalog: table", () => {
   });
 });
 
-describe("blockCatalog: fallback", () => {
+describe("notionBlockCatalog: fallback", () => {
   test("Unsupported renders an unsupported-block with the details message", async () => {
     const html = await renderArgs(
       buildArgs({
@@ -499,15 +546,15 @@ describe("blockCatalog: fallback", () => {
   });
 });
 
-describe("blockCatalog: composition", () => {
-  test("blockCatalog inherits basicCatalog entries via extend", () => {
-    expect(blockCatalog.get("Text")).toBeDefined();
-    expect(blockCatalog.get("Button")).toBeDefined();
-    expect(blockCatalog.get("Image")).toBeDefined();
+describe("notionBlockCatalog: composition", () => {
+  test("notionBlockCatalog inherits basicCatalog entries via extend", () => {
+    expect(notionBlockCatalog.get("Text")).toBeDefined();
+    expect(notionBlockCatalog.get("Button")).toBeDefined();
+    expect(notionBlockCatalog.get("Image")).toBeDefined();
   });
 
-  test("blockCatalog overrides Column with its own widthRatio-aware renderer", () => {
-    // The block-catalog Column applies inline flex styles; the basic-catalog
+  test("notionBlockCatalog overrides Column with its own widthRatio-aware renderer", () => {
+    // The notion-block-catalog Column applies inline flex styles; the basic-catalog
     // Column uses a CSS class. We can sniff the renderer by checking the
     // emitted style for `flex:`.
     const args = buildArgs({
@@ -516,7 +563,7 @@ describe("blockCatalog: composition", () => {
       children: ["a"],
       widthRatio: 3,
     });
-    const html = blockCatalog.get("Column")!(args);
+    const html = notionBlockCatalog.get("Column")!(args);
     expect(html).toBeTruthy();
   });
 });
