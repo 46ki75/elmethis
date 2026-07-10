@@ -7,6 +7,7 @@ const config: StorybookConfig = {
     "../src/hooks/**/*.mdx",
     "../src/hooks/**/*.stories.@(js|jsx|mjs|ts|tsx)",
   ],
+  staticDirs: ["../public"],
   addons: ["@storybook/addon-docs"],
   framework: {
     name: "@storybook/react-vite",

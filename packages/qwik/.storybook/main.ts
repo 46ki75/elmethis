@@ -6,6 +6,7 @@ const config: StorybookConfig = {
   framework: {
     name: "storybook-framework-qwik",
   },
+  staticDirs: ["../public"],
   stories: [
     // ...rootMain.stories,
     "../src/components/**/*.stories.mdx",

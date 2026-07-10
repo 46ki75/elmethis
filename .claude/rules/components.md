@@ -7,8 +7,11 @@ paths:
 
 # Component libraries (qwik / react / vue)
 
-- **qwik is the reference.** react and vue mirror the same component surface (same names/props) in
-  each framework's idiom. When porting or fixing, check the qwik version first.
+- **All three mirror the same component surface** (same names/props) in each framework's idiom, but
+  no single framework is a fixed reference anymore. qwik led the original recreation-wave surface;
+  several newer components (`ElmButtonDropdown`, `ElmHtml`, `ElmSlider`) landed in react first and
+  were ported to qwik/vue afterward. Before porting or fixing, check `git log -- <component
+  files>` across all three packages to find which one actually originated it.
 - Components are grouped by category under `src/components/`: `typography`, `form`, `code`, `media`,
   `navigation`, `table`, `containments`, `icon`, `a2ui`, `others`, `fallback`.
 - **File naming**: kebab-case with an `elm-` prefix (`elm-callout.tsx`). Co-locate per component —

@@ -119,3 +119,18 @@ export const AllowScripts: Story = {
     allowScripts: true,
   },
 };
+
+/**
+ * `src` (remote URL) mode instead of inline `html` — served from this
+ * package's `public/fixtures/` via Storybook's `staticDirs`. `autoHeight`
+ * has no effect here (cross-origin `contentDocument` access is blocked), so
+ * the iframe keeps a fixed height. The fixture embeds its own `<script>`
+ * tags, so `allowScripts` is required for it to render correctly.
+ */
+export const AdvancedRagPipeline: Story = {
+  args: {
+    src: "/fixtures/advanced-rag-pipeline.html",
+    allowScripts: true,
+    style: { width: "100%", height: "600px" },
+  },
+};
