@@ -5,7 +5,6 @@
   border-radius: 0.25rem;
   box-shadow: 0 0 0.125rem rgb(0 0 0 / 10%);
   overflow: hidden;
-  margin-block-start: var(--elmethis-margin-block-start);
   transition:
     background-color 200ms,
     transform 200ms;

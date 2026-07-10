@@ -1,7 +1,6 @@
 .elm-unsupported-block {
   box-sizing: border-box;
   padding: 4rem;
-  margin-block-start: var(--elmethis-margin-block-start);
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -1,5 +1,4 @@
 .elm-toggle {
-  margin-block-start: var(--elmethis-margin-block-start);
   box-sizing: border-box;
   display: grid;
   grid-template: "summary summary" 2rem "border content" 0fr / 1px 1fr;
@@ -85,6 +84,9 @@
 .content {
   grid-area: content;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--elmethis-stack-gap);
   overflow: hidden;
   transition: padding 200ms;
   transition-timing-function: steps(1, jump-end);

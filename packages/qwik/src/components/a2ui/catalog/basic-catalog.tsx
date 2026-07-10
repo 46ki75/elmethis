@@ -96,7 +96,7 @@ export const basicCatalog: CatalogRenderer = new CatalogRenderer([
   )),
 
   defineRenderer(ColumnApi, ({ props, childRefs, renderChild }) => (
-    <div class={styles.column} style={{ "--margin-block": "2rem" }}>
+    <div class={styles.column}>
       {childRefs(props.children).map(({ id, path }, i) => (
         <span key={`${id}:${i}`} class={styles["child-wrap"]}>
           {renderChild(id, path, i)}

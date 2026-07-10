@@ -103,10 +103,7 @@ export const A2uiSurface = component$<A2uiSurfaceProps>((props) => {
   useContextProvider(A2uiAncestorContext, []);
 
   return (
-    <div
-      class={styles.surface}
-      style={{ "--elmethis-margin-block-start": "2rem" }}
-    >
+    <div class={styles.surface}>
       <ComponentHost id={ROOT_COMPONENT_ID} basePath="/" />
     </div>
   );
@@ -122,10 +119,7 @@ const SurfaceView = component$<{
   useContextProvider(A2uiAncestorContext, []);
 
   return (
-    <div
-      class={styles.surface}
-      style={{ "--elmethis-margin-block-start": "2rem" }}
-    >
+    <div class={styles.surface}>
       <ComponentHost id={ROOT_COMPONENT_ID} basePath="/" />
     </div>
   );

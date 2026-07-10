@@ -1,5 +1,4 @@
 .elm-block-image {
-  margin-block-start: var(--elmethis-margin-block-start);
   margin-inline: 0;
   display: flex;
   justify-content: center;

@@ -24,7 +24,7 @@ describe("tokenVars", () => {
 
   it("prefixes the flat semantic key with --elmethis-", () => {
     expect(tokenVars["--elmethis-color-accent-link-visited"]).toBeDefined();
-    expect(tokenVars["--elmethis-margin-block-start"]).toBe("2rem");
+    expect(tokenVars["--elmethis-stack-gap"]).toBe("2rem");
   });
 
   it("emits the font-family stacks (DM Sans / DM Mono primary)", () => {

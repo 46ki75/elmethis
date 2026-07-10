@@ -1,7 +1,6 @@
 .elm-audio-player {
   box-sizing: border-box;
   width: 100%;
-  margin-block-start: var(--elmethis-margin-block-start);
   padding: 0.875rem 1.5rem;
   display: flex;
   flex-direction: column;

@@ -2,8 +2,20 @@
   display: contents;
 }
 
-/* `display: contents` keeps the wrapper invisible to layout while still
-   letting `--elmethis-margin-block-start` inherit into the rendered surface. */
+/*
+ * Real flex container, not `display: contents` — `gap` needs a layout box
+ * to attach to. `gap` only ever applies between flex items, so the first
+ * block in the surface never floats an unexplained margin above it and
+ * nothing needs a first-child override (compare the old margin-based
+ * approach this replaced, which needed exactly that override here).
+ *
+ * The official `@a2ui/react` binder inserts no wrapper around a resolved
+ * child (see block-catalog.tsx's top comment), so each rendered block's
+ * real root element becomes a direct flex item of `.surface` — `gap`
+ * reaches it with no extra plumbing.
+ */
 .surface {
-  display: contents;
+  display: flex;
+  flex-direction: column;
+  gap: var(--elmethis-stack-gap);
 }
