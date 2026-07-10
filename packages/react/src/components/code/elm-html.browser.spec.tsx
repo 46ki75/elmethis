@@ -315,6 +315,41 @@ describe("[CSR] ElmHtml — remote src", () => {
     await new Promise((resolve) => setTimeout(resolve, 300));
     expect(iframe.getAttribute("height")).toBe("200");
   });
+
+  // BUG: a blanket `if (usingSrc) return;` at the top of the measurement
+  // effect bailed out for EVERY `src`, even one that's actually same-origin
+  // (or otherwise gets `allow-same-origin` treatment). A `blob:` URL created
+  // by this same window is exactly that case — its origin is this window's
+  // own origin — so `contentDocument` access works fine, same as `html`
+  // mode, and autoHeight should measure it instead of silently doing
+  // nothing.
+  test(
+    "measures content height for a same-origin (blob:) src",
+    { retry: 2 },
+    async () => {
+      const blobUrl = URL.createObjectURL(
+        new Blob(['<div style="height: 900px;">tall</div>'], {
+          type: "text/html",
+        }),
+      );
+
+      try {
+        const screen = await render(<ElmHtml src={blobUrl} />);
+        const iframe = screen.container.querySelector("iframe")!;
+
+        await vi.waitFor(
+          () => {
+            expect(parseInt(iframe.style.height || "0", 10)).toBeGreaterThan(
+              800,
+            );
+          },
+          { timeout: 2000 },
+        );
+      } finally {
+        URL.revokeObjectURL(blobUrl);
+      }
+    },
+  );
 });
 
 describe("[CSR] ElmHtml — layout defaults", () => {

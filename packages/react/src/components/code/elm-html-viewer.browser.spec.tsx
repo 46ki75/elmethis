@@ -66,6 +66,23 @@ describe("[CSR] ElmHtmlViewer — rendering", () => {
     expect(iframe.getAttribute("src")).toBe("https://example.com/doc.html");
     expect(iframe.hasAttribute("srcdoc")).toBe(false);
   });
+
+  // Regression coverage for the `RemoteSrc` story: `src` + `allowScripts`
+  // can never auto-size (see elm-html.tsx's autoHeight docs), so `height`
+  // must be forwarded to the inner ElmHtml for a caller to size it
+  // explicitly instead.
+  test("forwards height to the inner ElmHtml (RemoteSrc story args)", async () => {
+    const screen = await render(
+      <ElmHtmlViewer
+        src="/fixtures/advanced-rag-pipeline.html"
+        allowScripts
+        height={600}
+      />,
+    );
+    const iframe = screen.container.querySelector("iframe")!;
+
+    expect(iframe.getAttribute("height")).toBe("600");
+  });
 });
 
 const spyOnWindowOpen = () => vi.spyOn(window, "open");

@@ -278,9 +278,27 @@ describe("[CSR] ElmHtml — remote src", () => {
     expect(iframe.hasAttribute("referrerpolicy")).toBe(false);
   });
 
-  test("never adds allow-same-origin for src content, even with autoHeight on and no allow-scripts", () => {
+  // Corrected behavior: `src` mode is no longer special-cased out of
+  // `allow-same-origin`. A `src` URL can be same-origin (or otherwise get
+  // `allow-same-origin` treatment, e.g. a `blob:` URL created by this same
+  // window), in which case granting this is genuinely useful for
+  // `autoHeight`'s measurement; a truly cross-origin `src` just won't
+  // benefit, but doesn't lose anything either (see `ElmHtmlProps.src`'s doc
+  // comment).
+  test("adds allow-same-origin for src content when autoHeight is on and no allow-scripts", () => {
     const { container } = render(
       <ElmHtml src={REMOTE_SRC} autoHeight={true} />,
+    );
+    const iframe = container.querySelector("iframe")!;
+
+    expect(iframe.getAttribute("sandbox")?.split(/\s+/)).toContain(
+      "allow-same-origin",
+    );
+  });
+
+  test("still never adds allow-same-origin for src content when allowScripts is on", () => {
+    const { container } = render(
+      <ElmHtml src={REMOTE_SRC} autoHeight={true} allowScripts={true} />,
     );
     const iframe = container.querySelector("iframe")!;
 

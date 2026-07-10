@@ -1,4 +1,4 @@
-import { defineComponent, type HTMLAttributes } from "vue";
+import { defineComponent, type HTMLAttributes, type PropType } from "vue";
 import { clsx } from "clsx";
 import { mdiDownload, mdiOpenInNew } from "@mdi/js";
 
@@ -51,6 +51,15 @@ export interface ElmHtmlViewerProps extends HTMLAttributes {
    * @default true
    */
   autoHeight?: boolean;
+
+  /**
+   * Forwarded to the wrapped `ElmHtml`: native iframe `height`, in pixels.
+   * Sizes the inner iframe directly — the outer `<figure>`'s own
+   * `style`/`class` only target the wrapper, not this. Useful when
+   * `autoHeight` genuinely can't measure (e.g. `src` mode with
+   * `allowScripts` — see `ElmHtml`'s `src` doc comment).
+   */
+  height?: number | `${number}`;
 }
 
 export const ElmHtmlViewer = defineComponent({
@@ -62,6 +71,10 @@ export const ElmHtmlViewer = defineComponent({
     sandbox: { type: String, default: undefined },
     autoHeight: { type: Boolean, default: undefined },
     allowScripts: { type: Boolean, default: undefined },
+    height: {
+      type: [Number, String] as PropType<number | `${number}`>,
+      default: undefined,
+    },
   },
   setup(props) {
     const usingSrc = () => props.src !== undefined;
@@ -171,6 +184,7 @@ export const ElmHtmlViewer = defineComponent({
             sandbox={props.sandbox}
             autoHeight={props.autoHeight}
             allowScripts={props.allowScripts}
+            height={props.height}
           />
         </div>
       </figure>

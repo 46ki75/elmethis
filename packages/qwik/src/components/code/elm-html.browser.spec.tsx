@@ -212,6 +212,37 @@ describe("[CSR] ElmHtml — remote src", () => {
     await new Promise((resolve) => setTimeout(resolve, 300));
     expect(iframe.getAttribute("height")).toBe("200");
   });
+
+  // A `blob:` URL's origin is the creating window's own origin (per spec),
+  // unlike a `data:` URL above — so it's a network-free stand-in for a
+  // same-origin `src` (e.g. a static asset served by this same app), which
+  // should still be measurable.
+  test(
+    "measures height for a same-origin src, unlike a genuinely cross-origin one",
+    { retry: 2 },
+    async () => {
+      const blobUrl = URL.createObjectURL(
+        new Blob(['<div style="height: 900px;">tall</div>'], {
+          type: "text/html",
+        }),
+      );
+      try {
+        const screen = await render(<ElmHtml src={blobUrl} />);
+        const iframe = screen.container.querySelector("iframe")!;
+
+        await vi.waitFor(
+          () => {
+            expect(parseInt(iframe.style.height || "0", 10)).toBeGreaterThan(
+              800,
+            );
+          },
+          { timeout: 6000 },
+        );
+      } finally {
+        URL.revokeObjectURL(blobUrl);
+      }
+    },
+  );
 });
 
 describe("[CSR] ElmHtml — layout defaults", () => {

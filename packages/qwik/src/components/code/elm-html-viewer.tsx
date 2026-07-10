@@ -9,7 +9,7 @@ import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 export interface ElmHtmlViewerProps
   extends
     PropsOf<"figure">,
-    Pick<ElmHtmlProps, "sandbox" | "autoHeight" | "allowScripts"> {
+    Pick<ElmHtmlProps, "sandbox" | "autoHeight" | "allowScripts" | "height"> {
   /**
    * Raw HTML markup to render, and to open in a new tab or download.
    * Mutually exclusive with `src` — provide exactly one of the two.
@@ -44,6 +44,7 @@ export const ElmHtmlViewer = component$<ElmHtmlViewerProps>(
     sandbox,
     autoHeight,
     allowScripts,
+    height,
     ...props
   }) => {
     const handleOpenInNewTab = $(() => {
@@ -166,6 +167,7 @@ export const ElmHtmlViewer = component$<ElmHtmlViewerProps>(
             sandbox={sandbox}
             autoHeight={autoHeight}
             allowScripts={allowScripts}
+            height={height}
           />
         </div>
       </figure>

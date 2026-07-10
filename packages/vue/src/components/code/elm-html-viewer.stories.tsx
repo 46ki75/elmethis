@@ -65,10 +65,19 @@ export const NotionExport: Story = {
  * `src` (remote URL) mode instead of inline `html`. "Open in new tab"
  * navigates straight to the URL; "download" points the download link at it
  * directly (served from this package's `public/fixtures/`).
+ *
+ * This fixture needs `allowScripts` to render at all (it's a Claude Artifact
+ * "bundler" export whose entire visible DOM is built by an inline bootstrap
+ * script) — but `allowScripts` also makes `contentDocument` opaque, and in
+ * `src` mode there's no markup of ours to inject a height-reporting script
+ * into (unlike `html` mode), so `autoHeight` can never measure this
+ * particular combination. Sized explicitly here instead, same as
+ * `elm-html.stories.tsx`'s `AdvancedRagPipeline` story.
  */
 export const RemoteSrc: Story = {
   args: {
     src: "/fixtures/advanced-rag-pipeline.html",
     allowScripts: true,
+    height: 600,
   },
 };
