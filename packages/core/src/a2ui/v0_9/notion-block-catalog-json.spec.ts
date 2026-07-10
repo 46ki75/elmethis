@@ -1,13 +1,13 @@
 /**
- * Regression-pins for the assembled block catalog. The catalog is the
+ * Regression-pins for the assembled Notion block catalog. The catalog is the
  * artifact that gets shipped to GitHub Pages and consumed by LLM agents,
  * so any structural drift away from the A2UI v0.9 standard breaks
  * downstream consumers silently.
  *
  * What we pin here:
  *   - The whole document validates as JSON Schema draft 2020-12.
- *   - Every component declared in `block-catalog.ts` is registered in the
- *     catalog (no silent omissions when adding new components).
+ *   - Every component declared in `notion-block-catalog.ts` is registered in
+ *     the catalog (no silent omissions when adding new components).
  *   - Each component carries a `component` const discriminator inside its
  *     allOf, and lists it as required (this is what lets an LLM pick the
  *     right schema and what lets validators reject malformed payloads).
@@ -20,26 +20,29 @@
 import Ajv2020 from "ajv/dist/2020";
 import { describe, expect, test } from "vitest";
 
-import { blockCatalogJson, BLOCK_CATALOG_ID } from "./block-catalog-json";
-import * as schemas from "./block-catalog";
+import {
+  notionBlockCatalogJson,
+  NOTION_BLOCK_CATALOG_ID,
+} from "./notion-block-catalog-json";
+import * as schemas from "./notion-block-catalog";
 
 function newAjv() {
   return new Ajv2020({ strict: false, allErrors: true });
 }
 
-describe("blockCatalogJson", () => {
+describe("notionBlockCatalogJson", () => {
   test("declares the GitHub Pages catalogId", () => {
-    expect(blockCatalogJson.catalogId).toBe(BLOCK_CATALOG_ID);
-    expect(blockCatalogJson.$id).toBe(BLOCK_CATALOG_ID);
+    expect(notionBlockCatalogJson.catalogId).toBe(NOTION_BLOCK_CATALOG_ID);
+    expect(notionBlockCatalogJson.$id).toBe(NOTION_BLOCK_CATALOG_ID);
   });
 
   test("declares draft 2020-12", () => {
-    expect(blockCatalogJson.$schema).toBe(
+    expect(notionBlockCatalogJson.$schema).toBe(
       "https://json-schema.org/draft/2020-12/schema",
     );
   });
 
-  test("registers every *Api exported from block-catalog.ts", () => {
+  test("registers every *Api exported from notion-block-catalog.ts", () => {
     const hasNameField = (
       v: unknown,
     ): v is Record<string, unknown> & { name: string } =>
@@ -55,13 +58,17 @@ describe("blockCatalogJson", () => {
 
     // De-dupe in case re-exports overlap.
     const uniqueApiNames = Array.from(new Set(apiNames));
-    const componentNames = Object.keys(blockCatalogJson.components).sort();
+    const componentNames = Object.keys(
+      notionBlockCatalogJson.components,
+    ).sort();
 
     expect(componentNames).toEqual(uniqueApiNames);
   });
 
   test("every component has a `component` const discriminator and lists it as required", () => {
-    for (const [name, schema] of Object.entries(blockCatalogJson.components)) {
+    for (const [name, schema] of Object.entries(
+      notionBlockCatalogJson.components,
+    )) {
       const s = schema as {
         allOf?: ReadonlyArray<{
           properties?: { component?: { const?: string } };
@@ -78,7 +85,9 @@ describe("blockCatalogJson", () => {
   });
 
   test("every component uses unevaluatedProperties: false (sealed allOf)", () => {
-    for (const [name, schema] of Object.entries(blockCatalogJson.components)) {
+    for (const [name, schema] of Object.entries(
+      notionBlockCatalogJson.components,
+    )) {
       const s = schema as { unevaluatedProperties?: boolean };
       expect(s.unevaluatedProperties, `${name} sealed`).toBe(false);
     }
@@ -100,7 +109,7 @@ describe("blockCatalogJson", () => {
         }
       }
     };
-    walk(blockCatalogJson);
+    walk(notionBlockCatalogJson);
     expect(externalRefs).toEqual([]);
   });
 
@@ -108,18 +117,18 @@ describe("blockCatalogJson", () => {
     const ajv = newAjv();
     // Compile the catalog as a meta-schema-aware document. Add it once with
     // its $id and then compile a reference into one of its component slots.
-    ajv.addSchema(blockCatalogJson as object);
+    ajv.addSchema(notionBlockCatalogJson as object);
     const validate = ajv.compile({
-      $ref: `${BLOCK_CATALOG_ID}#/components/Heading`,
+      $ref: `${NOTION_BLOCK_CATALOG_ID}#/components/Heading`,
     });
     expect(validate).toBeTypeOf("function");
   });
 
   test("a valid Heading payload validates; an invalid one fails", () => {
     const ajv = newAjv();
-    ajv.addSchema(blockCatalogJson as object);
+    ajv.addSchema(notionBlockCatalogJson as object);
     const validate = ajv.compile({
-      $ref: `${BLOCK_CATALOG_ID}#/components/Heading`,
+      $ref: `${NOTION_BLOCK_CATALOG_ID}#/components/Heading`,
     });
 
     const ok = {
@@ -150,9 +159,9 @@ describe("blockCatalogJson", () => {
 
   test("a RichText payload validates with a path-bound text (DynamicString)", () => {
     const ajv = newAjv();
-    ajv.addSchema(blockCatalogJson as object);
+    ajv.addSchema(notionBlockCatalogJson as object);
     const validate = ajv.compile({
-      $ref: `${BLOCK_CATALOG_ID}#/components/RichText`,
+      $ref: `${NOTION_BLOCK_CATALOG_ID}#/components/RichText`,
     });
 
     // Path binding form of DynamicString.
@@ -174,9 +183,9 @@ describe("blockCatalogJson", () => {
 
   test("ChildList template form validates as `children` (Heading)", () => {
     const ajv = newAjv();
-    ajv.addSchema(blockCatalogJson as object);
+    ajv.addSchema(notionBlockCatalogJson as object);
     const validate = ajv.compile({
-      $ref: `${BLOCK_CATALOG_ID}#/components/Heading`,
+      $ref: `${NOTION_BLOCK_CATALOG_ID}#/components/Heading`,
     });
 
     const templated = {

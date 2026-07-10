@@ -1,16 +1,16 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 
 import { ElmA2ui } from "../elm-a2ui";
-import { blockCatalog } from "./block-catalog";
+import { notionBlockCatalog } from "./notion-block-catalog";
 
-// One story per block-catalog component type, mirroring the qwik reference
-// (`block-catalog.stories.tsx`) 1:1 so all three frameworks exercise the
-// same A2UI surfaces.
+// One story per notion-block-catalog component type, mirroring the qwik
+// reference (`notion-block-catalog.stories.tsx`) 1:1 so all three frameworks
+// exercise the same A2UI surfaces.
 const meta = {
-  title: "Components/A2UI/Catalog/block-catalog",
+  title: "Components/A2UI/Catalog/notion-block-catalog",
   component: ElmA2ui,
   tags: ["autodocs"],
-  args: { catalog: blockCatalog },
+  args: { catalog: notionBlockCatalog },
 } satisfies Meta<typeof ElmA2ui>;
 
 export default meta;

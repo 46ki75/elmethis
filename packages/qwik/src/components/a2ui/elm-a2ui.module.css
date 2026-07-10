@@ -8,7 +8,7 @@
  * block in the surface never floats an unexplained margin above it and
  * nothing needs a first-child override (the old margin-based approach this
  * replaced needed exactly that, via firstChildMargin() — see catalog-utils.ts
- * history / block-catalog.tsx).
+ * history / notion-block-catalog.tsx).
  *
  * ComponentHost wraps each rendered child in a `<span style="display:
  * contents">` (see component-host.tsx) — that wrapper is transparent to the

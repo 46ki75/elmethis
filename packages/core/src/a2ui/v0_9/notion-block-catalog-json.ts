@@ -1,14 +1,15 @@
 /**
  * Method A — runtime catalog constant.
  *
- * Assembles the block catalog from the `*Api` Zod definitions into a
+ * Assembles the Notion block catalog from the `*Api` Zod definitions into a
  * freestanding A2UI v0.9 catalog JSON Schema document. Consumers that want
  * the catalog at runtime (e.g. to feed into an LLM system prompt or to
- * validate an inbound A2UI message) import `blockCatalogJson` directly.
+ * validate an inbound A2UI message) import `notionBlockCatalogJson` directly.
  *
  * Consumers that want the document as a hostable artifact use Method B:
- * `dist/a2ui/block_catalog.json` is emitted at build time from this same
- * constant and is served at the URL identified by `BLOCK_CATALOG_ID`.
+ * `dist/a2ui/notion_block_catalog.json` is emitted at build time from this
+ * same constant and is served at the URL identified by
+ * `NOTION_BLOCK_CATALOG_ID`.
  */
 import { assembleCatalog, type AssembledCatalog } from "./catalog-assembler";
 import {
@@ -42,17 +43,17 @@ import {
   ToggleApi,
   UnsupportedApi,
   VideoApi,
-} from "./block-catalog";
+} from "./notion-block-catalog";
 
 /**
- * Stable URI identifying the block catalog. Lives under the `elmethis`
- * GitHub Pages site so the JSON Schema is fetchable by third-party agents
- * and validators that look up `catalogId`.
+ * Stable URI identifying the Notion block catalog. Lives under the
+ * `elmethis` GitHub Pages site so the JSON Schema is fetchable by
+ * third-party agents and validators that look up `catalogId`.
  */
-export const BLOCK_CATALOG_ID =
-  "https://46ki75.github.io/elmethis/a2ui/v0_9/block_catalog.json";
+export const NOTION_BLOCK_CATALOG_ID =
+  "https://46ki75.github.io/elmethis/a2ui/v0_9/notion_block_catalog.json";
 
-const BLOCK_CATALOG_COMPONENTS = [
+const NOTION_BLOCK_CATALOG_COMPONENTS = [
   RichTextApi,
   LinkTextApi,
   IconApi,
@@ -85,12 +86,12 @@ const BLOCK_CATALOG_COMPONENTS = [
   UnsupportedApi,
 ];
 
-export const blockCatalogJson: AssembledCatalog = assembleCatalog(
+export const notionBlockCatalogJson: AssembledCatalog = assembleCatalog(
   {
-    id: BLOCK_CATALOG_ID,
-    title: "Elmethis Block Catalog",
+    id: NOTION_BLOCK_CATALOG_ID,
+    title: "Elmethis Notion Block Catalog",
     description:
-      "Block-level A2UI components used by the @elmethis renderers (typography, media, code, math, table, tabs). Extends — does not replace — the A2UI Basic Catalog.",
+      "Notion block-level A2UI components used by the @elmethis renderers (typography, media, code, math, table, tabs). Extends — does not replace — the A2UI Basic Catalog.",
   },
-  BLOCK_CATALOG_COMPONENTS,
+  NOTION_BLOCK_CATALOG_COMPONENTS,
 );

@@ -14,7 +14,7 @@ export {
   type A2uiSurfaceProps,
 } from "./components/a2ui/elm-a2ui";
 export { basicCatalog } from "./components/a2ui/catalog/basic-catalog";
-export { blockCatalog } from "./components/a2ui/catalog/block-catalog";
+export { notionBlockCatalog } from "./components/a2ui/catalog/notion-block-catalog";
 export {
   CatalogRenderer,
   defineRenderer,

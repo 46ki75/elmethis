@@ -97,11 +97,11 @@ const columnListStyle: CSSProperties = {
 };
 
 /**
- * The block catalog stands on top of the basic catalog. Use it directly
- * (`blockCatalog`) when you want both the basic primitives and the typography
- * block components.
+ * The Notion block catalog stands on top of the basic catalog. Use it directly
+ * (`notionBlockCatalog`) when you want both the basic primitives and the
+ * typography block components.
  */
-export const blockCatalog: CatalogRenderer = basicCatalog.extend(
+export const notionBlockCatalog: CatalogRenderer = basicCatalog.extend(
   // -------------------------------------------------------------------------
   // Inline components
   // -------------------------------------------------------------------------

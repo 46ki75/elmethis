@@ -22,7 +22,7 @@ export {
   type ChildRef,
 } from "./components/a2ui/catalog/catalog";
 export { basicCatalog } from "./components/a2ui/catalog/basic-catalog";
-export { blockCatalog } from "./components/a2ui/catalog/block-catalog";
+export { notionBlockCatalog } from "./components/a2ui/catalog/notion-block-catalog";
 export {
   BlockImageApi,
   BlockQuoteApi,

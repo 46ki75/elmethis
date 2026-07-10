@@ -9,10 +9,10 @@ import "@elmethis/core/tokens.css";
 // A2UI
 export { ElmA2ui, type ElmA2uiProps } from "./components/a2ui/elm-a2ui";
 export {
-  blockCatalog,
-  blockComponents,
-  blockFunctions,
-} from "./components/a2ui/catalog/block-catalog";
+  notionBlockCatalog,
+  notionBlockComponents,
+  notionBlockFunctions,
+} from "./components/a2ui/catalog/notion-block-catalog";
 
 // Code
 export {

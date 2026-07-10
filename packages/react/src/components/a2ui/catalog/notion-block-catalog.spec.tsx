@@ -1,15 +1,19 @@
 import { describe, expect, test } from "vitest";
 
-import { blockCatalog, blockComponents, blockFunctions } from "./block-catalog";
+import {
+  notionBlockCatalog,
+  notionBlockComponents,
+  notionBlockFunctions,
+} from "./notion-block-catalog";
 
-// The block catalog merges the official A2UI basic catalog (standard
+// The Notion block catalog merges the official A2UI basic catalog (standard
 // primitives) with the Elm block renderers (the project's own component APIs).
 // These structural checks pin the merged surface without rendering.
 
-describe("blockCatalog — composition", () => {
+describe("notionBlockCatalog — composition", () => {
   test("includes the official basic primitives", () => {
     for (const name of ["Text", "Row", "Card", "Button", "TextField"]) {
-      expect(blockCatalog.components.has(name)).toBe(true);
+      expect(notionBlockCatalog.components.has(name)).toBe(true);
     }
   });
 
@@ -37,7 +41,7 @@ describe("blockCatalog — composition", () => {
       "ColumnList",
       "Unsupported",
     ]) {
-      expect(blockCatalog.components.has(name)).toBe(true);
+      expect(notionBlockCatalog.components.has(name)).toBe(true);
     }
   });
 
@@ -45,23 +49,23 @@ describe("blockCatalog — composition", () => {
     // Column / List / Divider / Icon exist in both layers; the block
     // implementations are appended last, so they override by name.
     for (const name of ["Column", "List", "Divider", "Icon"]) {
-      const impl = blockCatalog.components.get(name);
+      const impl = notionBlockCatalog.components.get(name);
       expect(impl).toBeDefined();
       expect(typeof impl?.render).toBe("function");
     }
   });
 
-  test("blockComponents backs the catalog and carries the basic functions", () => {
+  test("notionBlockComponents backs the catalog and carries the basic functions", () => {
     // Every entry is a renderable implementation. The merged list is at least
     // as large as the de-duplicated catalog (Column/List/Divider/Icon collide).
-    expect(blockComponents.length).toBeGreaterThanOrEqual(
-      blockCatalog.components.size,
+    expect(notionBlockComponents.length).toBeGreaterThanOrEqual(
+      notionBlockCatalog.components.size,
     );
-    expect(blockComponents.every((c) => typeof c.render === "function")).toBe(
-      true,
-    );
+    expect(
+      notionBlockComponents.every((c) => typeof c.render === "function"),
+    ).toBe(true);
     // Functions come from the official basic catalog (used by `{ call }`
     // expression bindings); the array is defined even if empty.
-    expect(Array.isArray(blockFunctions)).toBe(true);
+    expect(Array.isArray(notionBlockFunctions)).toBe(true);
   });
 });

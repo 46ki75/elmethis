@@ -49,8 +49,8 @@ runs eslint / stylelint / vitest-related per package.
 ## Architecture
 
 - **core is the single source of truth.** Design tokens (`src/style/token.ts` → emitted
-  `tokens.css`), A2UI block catalogs, JSON schemas, and language-icon registries live here and are
-  consumed by all three framework libs — defined once, mirrored everywhere.
+  `tokens.css`), A2UI Notion block catalogs, JSON schemas, and language-icon registries live here and
+  are consumed by all three framework libs — defined once, mirrored everywhere.
 - **qwik leads; react and vue follow.** qwik is the reference implementation; react and vue recreate
   the same component surface (same names, same props) per framework idiom. When changing a
   component, qwik is usually the source of truth.

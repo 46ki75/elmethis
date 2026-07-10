@@ -2,12 +2,13 @@ import { describe, it, expect, vi } from "vitest";
 import { mount } from "@vue/test-utils";
 
 import { ElmA2ui } from "../elm-a2ui";
-import { blockCatalog } from "./block-catalog";
+import { notionBlockCatalog } from "./notion-block-catalog";
 
-// The block catalog extends the basic catalog with the elmethis typography /
-// media / code / table renderers. Rather than re-implement the qwik lead's
-// isolated RenderArgs harness, we drive each renderer through the real pipeline
-// (ElmA2ui with `catalog={blockCatalog}`) and assert the produced DOM. Surface
+// The Notion block catalog extends the basic catalog with the elmethis
+// typography / media / code / table renderers. Rather than re-implement the
+// qwik lead's isolated RenderArgs harness, we drive each renderer through the
+// real pipeline (ElmA2ui with `catalog={notionBlockCatalog}`) and assert the
+// produced DOM. Surface
 // resolution is async (the SDK's microtask emitter), so each case waits.
 
 const CATALOG_ID = "https://a2ui.org/specification/v0_9/basic_catalog.json";
@@ -32,10 +33,10 @@ const mountSurface = (
     version: "v0.9",
     updateComponents: { surfaceId: "s", components },
   });
-  return mount(ElmA2ui, { props: { catalog: blockCatalog, messages } });
+  return mount(ElmA2ui, { props: { catalog: notionBlockCatalog, messages } });
 };
 
-describe("blockCatalog — typography", () => {
+describe("notionBlockCatalog — typography", () => {
   it("Heading renders an <h2> wrapping its inline child", async () => {
     const wrapper = mountSurface([
       { component: "Heading", id: "root", level: 2, children: ["t"] },
@@ -116,7 +117,7 @@ describe("blockCatalog — typography", () => {
   });
 });
 
-describe("blockCatalog — inline", () => {
+describe("notionBlockCatalog — inline", () => {
   it("RichText applies decorations and renders the text", async () => {
     const wrapper = mountSurface([
       {
@@ -142,7 +143,7 @@ describe("blockCatalog — inline", () => {
   });
 });
 
-describe("blockCatalog — media & embed", () => {
+describe("notionBlockCatalog — media & embed", () => {
   it("Html renders a sandboxed iframe with the given markup", async () => {
     const wrapper = mountSurface([
       { component: "Html", id: "root", html: "<p>hello</p>" },
@@ -209,7 +210,7 @@ describe("blockCatalog — media & embed", () => {
   });
 });
 
-describe("blockCatalog — code & table", () => {
+describe("notionBlockCatalog — code & table", () => {
   it("CodeBlock renders the <figure> shell with its language caption", async () => {
     const wrapper = mountSurface([
       {
@@ -244,7 +245,7 @@ describe("blockCatalog — code & table", () => {
   });
 });
 
-describe("blockCatalog — tabs & fallback", () => {
+describe("notionBlockCatalog — tabs & fallback", () => {
   it("ContentTabs renders each tab's label and content", async () => {
     const wrapper = mountSurface([
       { component: "ContentTabs", id: "root", children: ["tab0", "tab1"] },

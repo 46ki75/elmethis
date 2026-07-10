@@ -15,7 +15,7 @@ import {
 } from "@a2ui/web_core/v0_9/basic_catalog";
 
 import { type RenderArgs } from "./catalog";
-import { blockCatalog } from "./block-catalog";
+import { notionBlockCatalog } from "./notion-block-catalog";
 import {
   BlockQuoteApi,
   BookmarkApi,
@@ -186,7 +186,7 @@ function buildArgs(
 }
 
 async function renderArgs(args: RenderArgs, typeName: string) {
-  const render = blockCatalog.get(typeName);
+  const render = notionBlockCatalog.get(typeName);
   if (!render) throw new Error(`no renderer for ${typeName}`);
   const out = render(args);
   if (out === null) return ""; // ContentTab returns null intentionally
@@ -195,7 +195,7 @@ async function renderArgs(args: RenderArgs, typeName: string) {
   return dom.screen.outerHTML;
 }
 
-describe("blockCatalog: inline", () => {
+describe("notionBlockCatalog: inline", () => {
   test("RichText applies bold + italic decorations", async () => {
     const html = await renderArgs(
       buildArgs({
@@ -238,7 +238,7 @@ describe("blockCatalog: inline", () => {
   });
 });
 
-describe("blockCatalog: layout", () => {
+describe("notionBlockCatalog: layout", () => {
   test("Column applies widthRatio as flex", async () => {
     const html = await renderArgs(
       buildArgs({
@@ -268,7 +268,7 @@ describe("blockCatalog: layout", () => {
   });
 });
 
-describe("blockCatalog: block typography", () => {
+describe("notionBlockCatalog: block typography", () => {
   test("Heading uses the requested level", async () => {
     const html = await renderArgs(
       buildArgs({
@@ -325,7 +325,7 @@ describe("blockCatalog: block typography", () => {
   });
 });
 
-describe("blockCatalog: tabs", () => {
+describe("notionBlockCatalog: tabs", () => {
   test("ContentTab returns null (it's a data-only marker)", async () => {
     const args = buildArgs({
       component: "ContentTab",
@@ -333,7 +333,7 @@ describe("blockCatalog: tabs", () => {
       label: ["l1"],
       content: ["c1"],
     });
-    const render = blockCatalog.get("ContentTab");
+    const render = notionBlockCatalog.get("ContentTab");
     expect(render).toBeDefined();
     expect(render!(args)).toBeNull();
   });
@@ -363,7 +363,7 @@ describe("blockCatalog: tabs", () => {
   });
 });
 
-describe("blockCatalog: media and embed", () => {
+describe("notionBlockCatalog: media and embed", () => {
   test("Html renders a sandboxed iframe with the given markup", async () => {
     const html = await renderArgs(
       buildArgs({
@@ -418,7 +418,7 @@ describe("blockCatalog: media and embed", () => {
   });
 });
 
-describe("blockCatalog: code and math", () => {
+describe("notionBlockCatalog: code and math", () => {
   test("CodeBlock passes language through", async () => {
     const html = await renderArgs(
       buildArgs({
@@ -457,7 +457,7 @@ describe("blockCatalog: code and math", () => {
   });
 });
 
-describe("blockCatalog: table", () => {
+describe("notionBlockCatalog: table", () => {
   test("TableCell with isHeader renders a header cell", async () => {
     const html = await renderArgs(
       buildArgs({
@@ -484,7 +484,7 @@ describe("blockCatalog: table", () => {
   });
 });
 
-describe("blockCatalog: fallback", () => {
+describe("notionBlockCatalog: fallback", () => {
   test("Unsupported renders an unsupported-block with the details message", async () => {
     const html = await renderArgs(
       buildArgs({
@@ -499,15 +499,15 @@ describe("blockCatalog: fallback", () => {
   });
 });
 
-describe("blockCatalog: composition", () => {
-  test("blockCatalog inherits basicCatalog entries via extend", () => {
-    expect(blockCatalog.get("Text")).toBeDefined();
-    expect(blockCatalog.get("Button")).toBeDefined();
-    expect(blockCatalog.get("Image")).toBeDefined();
+describe("notionBlockCatalog: composition", () => {
+  test("notionBlockCatalog inherits basicCatalog entries via extend", () => {
+    expect(notionBlockCatalog.get("Text")).toBeDefined();
+    expect(notionBlockCatalog.get("Button")).toBeDefined();
+    expect(notionBlockCatalog.get("Image")).toBeDefined();
   });
 
-  test("blockCatalog overrides Column with its own widthRatio-aware renderer", () => {
-    // The block-catalog Column applies inline flex styles; the basic-catalog
+  test("notionBlockCatalog overrides Column with its own widthRatio-aware renderer", () => {
+    // The notion-block-catalog Column applies inline flex styles; the basic-catalog
     // Column uses a CSS class. We can sniff the renderer by checking the
     // emitted style for `flex:`.
     const args = buildArgs({
@@ -516,7 +516,7 @@ describe("blockCatalog: composition", () => {
       children: ["a"],
       widthRatio: 3,
     });
-    const html = blockCatalog.get("Column")!(args);
+    const html = notionBlockCatalog.get("Column")!(args);
     expect(html).toBeTruthy();
   });
 });

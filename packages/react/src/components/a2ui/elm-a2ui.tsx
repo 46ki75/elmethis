@@ -10,8 +10,8 @@
  *
  * The component drives a `@a2ui/web_core` `MessageProcessor`, tracks the
  * surfaces it creates, and renders each through `A2uiSurface`. The active
- * catalog is the Elm {@link blockComponents} (official basic catalog + the
- * Elm block renderers); pass `components` to override it.
+ * catalog is the Elm {@link notionBlockComponents} (official basic catalog +
+ * the Elm block renderers); pass `components` to override it.
  */
 import {
   useEffect,
@@ -34,7 +34,10 @@ import {
   type SurfaceModel,
 } from "@a2ui/web_core/v0_9";
 
-import { blockComponents, blockFunctions } from "./catalog/block-catalog";
+import {
+  notionBlockComponents,
+  notionBlockFunctions,
+} from "./catalog/notion-block-catalog";
 import { streamJsonLines } from "./stream-json-lines";
 import styles from "./elm-a2ui.module.css";
 
@@ -71,7 +74,7 @@ export interface ElmA2uiProps extends Omit<
   catalogId?: string;
   /**
    * Component implementations registered under every referenced catalog id.
-   * Defaults to {@link blockComponents}. Pass a stable (memoized) array.
+   * Defaults to {@link notionBlockComponents}. Pass a stable (memoized) array.
    */
   components?: ReactComponentImplementation[];
 }
@@ -91,7 +94,7 @@ export const ElmA2ui = ({
   headers,
   messages,
   catalogId,
-  components = blockComponents,
+  components = notionBlockComponents,
   ...rest
 }: ElmA2uiProps) => {
   // Messages produced by the URL-driven JSONL reader, kept in state so each
@@ -188,7 +191,7 @@ export const ElmA2ui = ({
       }
     }
     const catalogs = Array.from(ids).map(
-      (id) => new Catalog(id, components, blockFunctions),
+      (id) => new Catalog(id, components, notionBlockFunctions),
     );
     const processor = new MessageProcessor<ReactComponentImplementation>(
       catalogs,
