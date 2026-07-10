@@ -85,7 +85,7 @@
     "@storybook/addon-docs": "^10.4.6",
     "@storybook/vue3-vite": "^10.4.6",
     "@types/katex": "^0.16.8",
-    "@types/node": "^26.1.0",
+    "@types/node": "^26.1.1",
     "@vitejs/plugin-vue": "^6.0.7",
     "@vitejs/plugin-vue-jsx": "^5.1.6",
     "@vitest/browser-playwright": "^4.1.9",
