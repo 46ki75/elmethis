@@ -118,6 +118,18 @@ export const Video: Story = {
   },
 };
 
+export const Html: Story = {
+  args: {
+    messages: surface([
+      {
+        component: "Html",
+        id: "root",
+        html: '<!doctype html><html><body style="font-family: sans-serif; margin: 0; padding: 1rem;"><h1>Hello from an iframe</h1><p>This markup is rendered inside a sandboxed <code>&lt;iframe&gt;</code>.</p></body></html>',
+      },
+    ]),
+  },
+};
+
 export const Table: Story = {
   args: {
     messages: surface([
