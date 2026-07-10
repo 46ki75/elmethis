@@ -306,6 +306,21 @@ describe("blockCatalog: block typography", () => {
     expect(html).toContain('data-child-id="t1"');
     expect(html).toContain('data-child-id="t2"');
   });
+
+  test("NotionCallout renders its icon and children", async () => {
+    const html = await renderArgs(
+      buildArgs({
+        component: "NotionCallout",
+        id: "nc",
+        icon: { kind: "emoji", emoji: "💡" },
+        color: "blue",
+        children: ["t1"],
+      }),
+      "NotionCallout",
+    );
+    expect(html).toContain("💡");
+    expect(html).toContain('data-child-id="t1"');
+  });
 });
 
 describe("blockCatalog: tabs", () => {

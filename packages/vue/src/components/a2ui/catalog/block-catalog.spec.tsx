@@ -97,6 +97,23 @@ describe("blockCatalog — typography", () => {
       expect(wrapper.text()).toContain("heads up");
     });
   });
+
+  it("NotionCallout renders its icon and inner content", async () => {
+    const wrapper = mountSurface([
+      {
+        component: "NotionCallout",
+        id: "root",
+        icon: { kind: "emoji", emoji: "💡" },
+        color: "blue",
+        children: ["t"],
+      },
+      { component: "RichText", id: "t", text: "heads up" },
+    ]);
+    await vi.waitFor(() => {
+      expect(wrapper.text()).toContain("💡");
+      expect(wrapper.text()).toContain("heads up");
+    });
+  });
 });
 
 describe("blockCatalog — inline", () => {
