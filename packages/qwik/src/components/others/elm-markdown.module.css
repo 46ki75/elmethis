@@ -1,3 +1,14 @@
 .elm-markdown {
   all: inherit;
+
+  /* Rendered markdown is a real stack of blocks (ElmHeading, ElmParagraph,
+     ElmList, ...). It renders through its own renderByToken recursion, not
+     the A2UI catalog renderer, but it's still just a stack — same flex+gap
+     treatment as elm-a2ui.module.css's .surface, and for the same reason:
+     gap only ever applies between items, so there's no first block to
+     special-case. `all: inherit` still applies to every other property;
+     `display` is overridden explicitly below. */
+  display: flex;
+  flex-direction: column;
+  gap: var(--elmethis-stack-gap);
 }

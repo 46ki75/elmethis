@@ -127,7 +127,16 @@ const { color, font } = primitive;
  * primitive layer are symbolic (`PrimitiveToken.ref`), never resolved values.
  */
 export const semanticTokens = {
-  "margin-block-start": common("2rem"),
+  /**
+   * Vertical rhythm between stacked blocks. Applied as `gap` on an explicit
+   * flex-column "stack" container (e.g. each framework's `ElmA2ui` surface,
+   * `ElmMarkdown`, and container child slots like Callout/BlockQuote/Toggle/
+   * TabPanel) — never as a leading margin on individual leaf components.
+   * `gap` only ever applies between items, so there's no first-child case to
+   * special-case and no risk of a standalone/nested component floating an
+   * unexplained gap above it.
+   */
+  "stack-gap": common("2rem"),
 
   "font-family-sans": common(font.family.sans),
   "font-family-monospace": common(font.family.monospace),

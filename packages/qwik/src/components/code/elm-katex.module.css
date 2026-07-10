@@ -1,3 +1,6 @@
+/* Block-mode marker class — no rules of its own today; kept as a stable CSS
+   Modules hook so `block ? styles["elm-katex"] : undefined` in elm-katex.tsx
+   still distinguishes block vs. inline mode for consumers/future styling. */
+/* stylelint-disable-next-line block-no-empty */
 .elm-katex {
-  margin-block-start: var(--elmethis-margin-block-start);
 }

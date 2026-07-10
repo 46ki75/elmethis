@@ -1,7 +1,6 @@
 .elm-callout {
   position: relative;
   padding: 1rem;
-  margin-block-start: var(--elmethis-margin-block-start);
 
   &::after {
     position: absolute;
@@ -34,6 +33,9 @@
   }
 
   .content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--elmethis-stack-gap);
     padding-block: 1rem 0.25rem;
   }
 

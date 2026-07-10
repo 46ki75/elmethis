@@ -35,7 +35,13 @@ export interface ChildRef {
 export interface RenderArgs<TProps = Record<string, unknown>> {
   /** Unique component id within the surface. */
   componentId: string;
-  /** Zero-based index among siblings (used for first-child margin overrides). */
+  /**
+   * Zero-based index among siblings. Vertical spacing between stacked
+   * blocks is handled by `gap` on the parent flex container (see
+   * elm-a2ui.module.css's `.surface`), not by this index — the one
+   * remaining consumer is `TableCellApi`, which forwards it as
+   * `columnIndex` for row-header promotion.
+   */
   index: number;
   /** Typed properties as declared on the component's schema. */
   props: TProps;

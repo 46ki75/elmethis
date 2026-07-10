@@ -3,7 +3,6 @@
 .elm-table-frame {
   position: relative;
   width: 100%;
-  margin-block-start: var(--elmethis-margin-block-start);
 }
 
 .elm-table-frame::before,

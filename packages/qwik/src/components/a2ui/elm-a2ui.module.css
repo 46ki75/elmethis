@@ -2,8 +2,23 @@
   display: contents;
 }
 
+/*
+ * Real flex container, not `display: contents` — `gap` needs a layout box
+ * to attach to. `gap` only ever applies between flex items, so the first
+ * block in the surface never floats an unexplained margin above it and
+ * nothing needs a first-child override (the old margin-based approach this
+ * replaced needed exactly that, via firstChildMargin() — see catalog-utils.ts
+ * history / block-catalog.tsx).
+ *
+ * ComponentHost wraps each rendered child in a `<span style="display:
+ * contents">` (see component-host.tsx) — that wrapper is transparent to the
+ * flex layout algorithm, so `gap` reaches each real block's root element
+ * with no extra plumbing.
+ */
 .surface {
-  display: contents;
+  display: flex;
+  flex-direction: column;
+  gap: var(--elmethis-stack-gap);
 }
 
 /* ---- text ---- */

@@ -4,7 +4,6 @@
   color: var(--elmethis-scoped-color, var(--elmethis-color-neutral));
   background-color: var(--elmethis-scoped-background-color, inherit);
   margin: 0;
-  margin-block-start: var(--elmethis-margin-block-start);
 
   &::selection {
     color: var(--elmethis-color-surface-raised);
