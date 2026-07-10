@@ -530,6 +530,12 @@ export const HtmlApi = {
           "Stretch the iframe to fit its content height. Defaults to true. Only takes effect for `html`-rendered content.",
         )
         .optional(),
+      allowScripts: z
+        .boolean()
+        .describe(
+          "Allow the embedded content to run JavaScript (adds the iframe sandbox's `allow-scripts` token). Defaults to false — script execution is disabled by default. `allow-same-origin` is never granted together with this, in `html` or `src` mode, so the embedded document can never escape the sandbox even with scripts enabled.",
+        )
+        .optional(),
     })
     .strict(),
 } satisfies ComponentApi;

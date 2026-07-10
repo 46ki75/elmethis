@@ -170,6 +170,37 @@ describe("[CSR] ElmHtml — sandboxing correctness", () => {
       "allow-same-origin",
     );
   });
+
+  test("allowScripts adds allow-scripts to the sandbox", () => {
+    const wrapper = mount(ElmHtml, {
+      props: { html: "<p>x</p>", allowScripts: true },
+    });
+    const iframe = wrapper.find("iframe");
+
+    expect(iframe.attributes("sandbox")?.split(/\s+/)).toContain(
+      "allow-scripts",
+    );
+  });
+
+  test("does not add allow-scripts when allowScripts is unset", () => {
+    const wrapper = mount(ElmHtml, { props: { html: "<p>x</p>" } });
+    const iframe = wrapper.find("iframe");
+
+    expect(iframe.attributes("sandbox")?.split(/\s+/)).not.toContain(
+      "allow-scripts",
+    );
+  });
+
+  test("allowScripts still strips allow-same-origin even with autoHeight on", () => {
+    const wrapper = mount(ElmHtml, {
+      props: { html: "<p>x</p>", allowScripts: true, autoHeight: true },
+    });
+    const iframe = wrapper.find("iframe");
+    const tokens = iframe.attributes("sandbox")?.split(/\s+/);
+
+    expect(tokens).toContain("allow-scripts");
+    expect(tokens).not.toContain("allow-same-origin");
+  });
 });
 
 // happy-dom (this file's unit-layer environment, via @vue/test-utils) also

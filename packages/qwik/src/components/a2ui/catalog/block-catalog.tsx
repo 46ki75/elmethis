@@ -316,6 +316,7 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
       html={props.html ? resolve(props.html) : undefined}
       src={props.src ? resolve(props.src) : undefined}
       autoHeight={props.autoHeight}
+      allowScripts={props.allowScripts}
     />
   )),
 

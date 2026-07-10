@@ -124,6 +124,16 @@ export interface ElmHtmlProps extends HTMLAttributes {
    */
   sandbox?: string;
 
+  /**
+   * Allow the embedded content to run JavaScript by adding `allow-scripts`
+   * to the iframe's `sandbox` attribute. Defaults to false. `allow-same-origin`
+   * is never granted together with this — see the sandbox-token logic below
+   * for why combining the two would let the embedded document escape the
+   * sandbox entirely.
+   * @default false
+   */
+  allowScripts?: boolean;
+
   /** Native iframe `height` attribute, in pixels. */
   height?: number | `${number}`;
 
@@ -141,6 +151,7 @@ export const ElmHtml = defineComponent({
     src: { type: String, default: undefined },
     autoHeight: { type: Boolean, default: true },
     sandbox: { type: String, default: undefined },
+    allowScripts: { type: Boolean, default: false },
     height: {
       type: [Number, String] as PropType<number | `${number}`>,
       default: undefined,
@@ -287,6 +298,7 @@ export const ElmHtml = defineComponent({
       const sandboxTokens = new Set(
         props.sandbox?.split(/\s+/).filter(Boolean) ?? [],
       );
+      if (props.allowScripts) sandboxTokens.add("allow-scripts");
       const hasAllowScripts = [...sandboxTokens].some(
         (token) => token.toLowerCase() === "allow-scripts",
       );
