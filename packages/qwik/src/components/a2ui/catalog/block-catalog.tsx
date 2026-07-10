@@ -22,6 +22,7 @@ import {
 import { ElmToggle } from "../../containments/elm-toggle";
 import { ElmBlockQuote } from "../../typography/elm-block-quote";
 import { ElmCallout } from "../../typography/elm-callout";
+import { ElmNotionCallout } from "../../notion/elm-notion-callout";
 import { ElmDivider } from "../../typography/elm-divider";
 import { ElmHeading } from "../../typography/elm-heading";
 import { ElmInlineText } from "../../typography/elm-inline-text";
@@ -59,6 +60,7 @@ import {
   ListApi,
   ListItemApi,
   MermaidApi,
+  NotionCalloutApi,
   ParagraphApi,
   RichTextApi,
   TableApi,
@@ -213,6 +215,18 @@ export const blockCatalog: CatalogRenderer = basicCatalog.extend(
         <Fragment key={`${id}:${i}`}>{renderChild(id, path, i)}</Fragment>
       ))}
     </ElmCallout>
+  )),
+
+  defineRenderer(NotionCalloutApi, ({ props, childRefs, renderChild }) => (
+    <ElmNotionCallout
+      icon={props.icon}
+      color={props.color}
+      variant={props.variant}
+    >
+      {childRefs(props.children).map(({ id, path }, i) => (
+        <Fragment key={`${id}:${i}`}>{renderChild(id, path, i)}</Fragment>
+      ))}
+    </ElmNotionCallout>
   )),
 
   defineRenderer(DividerApi, () => <ElmDivider />),
