@@ -19,3 +19,7 @@ Full guide: `TESTING.md`. Essentials:
 - The two configs are kept separate on purpose — `vitest-browser-qwik`'s SSR patching corrupts the
   unit layer's globals if merged.
 - Specs co-locate next to source; same base name, `.browser` infix for the browser variant.
+- CSS Modules class styles (`class={styles.x}`) don't render their CSS as literal text in SSR/
+  createDOM HTML — only the (often hashed) class name does. Assert on the class name
+  (`class="${styles.x}"`), not on CSS property text; literal `style={{...}}` props are the
+  exception since those do render as text.
