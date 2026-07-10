@@ -1,0 +1,92 @@
+.elm-notion-callout {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  margin-block-start: var(--elmethis-margin-block-start);
+  border: 1px solid transparent;
+
+  .icon {
+    flex: none;
+    line-height: 1.4;
+    font-size: 1.25rem;
+  }
+
+  .content {
+    min-width: 0;
+  }
+}
+
+.filled {
+  background-color: var(--elmethis-scoped-callout-surface);
+}
+
+.outlined {
+  background-color: transparent;
+  border-color: var(--elmethis-scoped-callout-color);
+}
+
+.default {
+  --elmethis-scoped-callout-color: var(--elmethis-color-neutral);
+  --elmethis-scoped-callout-surface: transparent;
+
+  /* Colorless by definition — always a plain neutral outline, regardless of
+     the filled/outlined variant. */
+  border-color: var(--elmethis-color-neutral);
+}
+
+.gray {
+  --elmethis-scoped-callout-color: var(--elmethis-color-neutral-strong);
+  --elmethis-scoped-callout-surface: var(--elmethis-color-surface-sunken);
+}
+
+.red {
+  --elmethis-scoped-callout-color: var(--elmethis-color-display-red);
+  --elmethis-scoped-callout-surface: var(--elmethis-color-display-red-surface);
+}
+
+.orange {
+  --elmethis-scoped-callout-color: var(--elmethis-color-display-orange);
+  --elmethis-scoped-callout-surface: var(
+    --elmethis-color-display-orange-surface
+  );
+}
+
+.yellow {
+  --elmethis-scoped-callout-color: var(--elmethis-color-display-yellow);
+  --elmethis-scoped-callout-surface: var(
+    --elmethis-color-display-yellow-surface
+  );
+}
+
+.green {
+  --elmethis-scoped-callout-color: var(--elmethis-color-display-green);
+  --elmethis-scoped-callout-surface: var(
+    --elmethis-color-display-green-surface
+  );
+}
+
+.cyan {
+  --elmethis-scoped-callout-color: var(--elmethis-color-display-cyan);
+  --elmethis-scoped-callout-surface: var(--elmethis-color-display-cyan-surface);
+}
+
+.blue {
+  --elmethis-scoped-callout-color: var(--elmethis-color-display-blue);
+  --elmethis-scoped-callout-surface: var(--elmethis-color-display-blue-surface);
+}
+
+.purple {
+  --elmethis-scoped-callout-color: var(--elmethis-color-display-purple);
+  --elmethis-scoped-callout-surface: var(
+    --elmethis-color-display-purple-surface
+  );
+}
+
+.magenta {
+  --elmethis-scoped-callout-color: var(--elmethis-color-display-magenta);
+  --elmethis-scoped-callout-surface: var(
+    --elmethis-color-display-magenta-surface
+  );
+}

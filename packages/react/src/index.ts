@@ -166,6 +166,15 @@ export {
   type ElmPageTopProps,
 } from "./components/navigation/elm-page-top";
 
+// Notion
+export {
+  ElmNotionCallout,
+  type ElmNotionCalloutProps,
+  type NotionCalloutColor,
+  type NotionCalloutVariant,
+  type NotionCalloutIcon,
+} from "./components/notion/elm-notion-callout";
+
 // Others
 export {
   ElmColorPrimitiveSample,

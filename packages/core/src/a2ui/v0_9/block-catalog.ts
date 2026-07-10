@@ -249,6 +249,65 @@ export const CalloutApi = {
     .strict(),
 } satisfies ComponentApi;
 
+/**
+ * Notion-style callout: an icon (emoji or image) plus a colored, filled or
+ * outlined block. Unlike {@link CalloutApi}, it carries no severity/flavor
+ * text — the color and icon alone convey meaning.
+ */
+export const NotionCalloutApi = {
+  name: "NotionCallout",
+  schema: z
+    .object({
+      ...CommonProps,
+      icon: z
+        .discriminatedUnion("kind", [
+          z
+            .object({
+              kind: z.literal("emoji"),
+              emoji: z.string().describe("A single emoji character."),
+            })
+            .strict(),
+          z
+            .object({
+              kind: z.literal("image"),
+              src: z.string().describe("The source URL of the icon image."),
+              alt: z
+                .string()
+                .describe("Accessible alt text for the icon.")
+                .optional(),
+            })
+            .strict(),
+        ])
+        .describe("Icon shown before the content: an emoji or an image.")
+        .optional(),
+      color: z
+        .enum([
+          "default",
+          "gray",
+          "red",
+          "orange",
+          "yellow",
+          "green",
+          "cyan",
+          "blue",
+          "purple",
+          "magenta",
+        ])
+        .describe("Accent hue for the callout.")
+        .optional(),
+      variant: z
+        .enum(["filled", "outlined"])
+        .describe(
+          "Tinted background ('filled') or transparent with a colored border ('outlined').",
+        )
+        .optional(),
+      children: childrenSchema.describe(
+        "Ordered list of child component IDs that make up the callout body.",
+      ),
+    })
+    .strict(),
+} satisfies ComponentApi;
+
 /** Horizontal rule / section separator. Has no configurable properties. */
 export const DividerApi = {
   name: "Divider",

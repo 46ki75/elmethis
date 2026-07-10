@@ -19,6 +19,7 @@ describe("blockCatalog — composition", () => {
       "Paragraph",
       "BlockQuote",
       "Callout",
+      "NotionCallout",
       "CodeBlock",
       "Katex",
       "Bookmark",

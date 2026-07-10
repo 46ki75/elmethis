@@ -43,6 +43,7 @@ import {
   ListApi,
   ListItemApi,
   MermaidApi,
+  NotionCalloutApi,
   ParagraphApi,
   RichTextApi,
   TableApi,
@@ -69,6 +70,7 @@ import {
 import { ElmToggle } from "../../containments/elm-toggle";
 import { ElmBlockQuote } from "../../typography/elm-block-quote";
 import { ElmCallout } from "../../typography/elm-callout";
+import { ElmNotionCallout } from "../../notion/elm-notion-callout";
 import { ElmDivider } from "../../typography/elm-divider";
 import { ElmHeading } from "../../typography/elm-heading";
 import { ElmInlineText } from "../../typography/elm-inline-text";
@@ -204,6 +206,19 @@ const blockImplementations: ReactComponentImplementation[] = [
       {renderChildList(props.children, buildChild)}
     </ElmCallout>
   )),
+
+  createComponentImplementation(
+    NotionCalloutApi,
+    ({ props, buildChild }: any) => (
+      <ElmNotionCallout
+        icon={props.icon}
+        color={props.color}
+        variant={props.variant}
+      >
+        {renderChildList(props.children, buildChild)}
+      </ElmNotionCallout>
+    ),
+  ),
 
   createComponentImplementation(DividerApi, () => <ElmDivider />),
 
