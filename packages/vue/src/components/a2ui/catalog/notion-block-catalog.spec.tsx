@@ -196,9 +196,27 @@ describe("notionBlockCatalog — media & embed", () => {
     });
   });
 
-  it("Html omits allow-scripts from the sandbox by default", async () => {
+  it("Html adds allow-scripts to the sandbox by default", async () => {
     const wrapper = mountSurface([
       { component: "Html", id: "root", html: "<p>hello</p>" },
+    ]);
+    await vi.waitFor(() => {
+      const iframe = wrapper.find("iframe");
+      expect(iframe.exists()).toBe(true);
+      expect(iframe.attributes("sandbox")?.split(/\s+/)).toContain(
+        "allow-scripts",
+      );
+    });
+  });
+
+  it("Html omits allow-scripts from the sandbox when allowScripts is explicitly false", async () => {
+    const wrapper = mountSurface([
+      {
+        component: "Html",
+        id: "root",
+        html: "<p>hello</p>",
+        allowScripts: false,
+      },
     ]);
     await vi.waitFor(() => {
       const iframe = wrapper.find("iframe");

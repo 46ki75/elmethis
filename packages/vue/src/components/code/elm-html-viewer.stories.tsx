@@ -60,3 +60,15 @@ export const NotionExport: Story = {
     html: NOTION_EXPORT_HTML,
   },
 };
+
+/**
+ * `src` (remote URL) mode instead of inline `html`. "Open in new tab"
+ * navigates straight to the URL; "download" points the download link at it
+ * directly (served from this package's `public/fixtures/`).
+ */
+export const RemoteSrc: Story = {
+  args: {
+    src: "/fixtures/advanced-rag-pipeline.html",
+    allowScripts: true,
+  },
+};

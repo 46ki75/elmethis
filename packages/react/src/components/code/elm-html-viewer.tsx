@@ -10,12 +10,27 @@ import { ElmMdiIcon } from "../icon/elm-mdi-icon";
 export interface ElmHtmlViewerProps
   extends
     ComponentPropsWithoutRef<"figure">,
-    Pick<ElmHtmlProps, "sandbox" | "autoHeight"> {
-  /** Raw HTML markup to render, and to open in a new tab or download. */
-  html: string;
+    Pick<ElmHtmlProps, "sandbox" | "autoHeight" | "allowScripts"> {
+  /**
+   * Raw HTML markup to render, and to open in a new tab or download.
+   * Mutually exclusive with `src` — provide exactly one of the two.
+   */
+  html?: string;
 
   /**
-   * Filename used when downloading the HTML via the header's download button.
+   * URL of a remote document to render instead of inline `html`. Mutually
+   * exclusive with `html` — provide exactly one of the two. "Open in new
+   * tab" navigates straight to this URL (it's already reachable there, so
+   * no blob-wrapping is needed the way inline `html` requires); "download"
+   * points the download link at it directly, so whether the browser
+   * actually downloads it (vs. opens it) depends on the response's own
+   * headers, same as any cross-origin link.
+   */
+  src?: string;
+
+  /**
+   * Filename used when downloading `html`-mode content via the header's
+   * download button. Ignored in `src` mode (the browser/response decide).
    * @default "download.html"
    */
   filename?: string;
@@ -24,12 +39,20 @@ export interface ElmHtmlViewerProps
 export const ElmHtmlViewer = ({
   className,
   html,
+  src,
   filename,
   sandbox,
   autoHeight,
+  allowScripts,
   ...rest
 }: ElmHtmlViewerProps) => {
+  const usingSrc = src !== undefined;
+
   const handleOpenInNewTab = useCallback(() => {
+    if (usingSrc) {
+      window.open(src, "_blank", "noreferrer");
+      return;
+    }
     let url: string | undefined;
     try {
       // The new tab must stay exactly as sandboxed as the inline preview:
@@ -39,7 +62,7 @@ export const ElmHtmlViewer = ({
       // attribute to avoid manual attribute-escaping bugs; "</script" is
       // escaped separately because the HTML parser looks for that literal
       // byte sequence before the wrapper's own script is parsed as JS.
-      const serializedHtml = JSON.stringify(html).replace(/<\//g, "<\\/");
+      const serializedHtml = JSON.stringify(html ?? "").replace(/<\//g, "<\\/");
       // Matches ElmHtml's own default iframe title, so the popup stays
       // exactly as accessible as the inline preview: a <title> and `lang`
       // on the wrapper document give AT users something to announce when
@@ -74,15 +97,21 @@ export const ElmHtmlViewer = ({
       console.error("Failed to open HTML in a new tab", error);
       if (url) URL.revokeObjectURL(url);
     }
-  }, [html]);
+  }, [usingSrc, src, html]);
 
   const handleDownload = useCallback(() => {
     let url: string | undefined;
     let link: HTMLAnchorElement | undefined;
     try {
-      url = URL.createObjectURL(new Blob([html], { type: "text/html" }));
       link = document.createElement("a");
-      link.href = url;
+      if (usingSrc) {
+        link.href = src!;
+      } else {
+        url = URL.createObjectURL(
+          new Blob([html ?? ""], { type: "text/html" }),
+        );
+        link.href = url;
+      }
       link.download = filename || "download.html";
       document.body.appendChild(link);
       link.click();
@@ -92,7 +121,7 @@ export const ElmHtmlViewer = ({
       link?.remove();
       if (url) URL.revokeObjectURL(url);
     }
-  }, [html, filename]);
+  }, [usingSrc, src, html, filename]);
 
   return (
     <figure className={clsx(styles["elm-html-viewer"], className)} {...rest}>
@@ -119,7 +148,13 @@ export const ElmHtmlViewer = ({
       <hr className={styles.divider} />
 
       <div className={styles.content}>
-        <ElmHtml html={html} sandbox={sandbox} autoHeight={autoHeight} />
+        <ElmHtml
+          html={html}
+          src={src}
+          sandbox={sandbox}
+          autoHeight={autoHeight}
+          allowScripts={allowScripts}
+        />
       </div>
     </figure>
   );

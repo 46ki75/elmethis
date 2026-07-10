@@ -405,12 +405,25 @@ describe("notionBlockCatalog: media and embed", () => {
     expect(html).toMatch(/sandbox="[^"]*\ballow-scripts\b[^"]*"/);
   });
 
-  test("Html omits allow-scripts from the sandbox by default", async () => {
+  test("Html adds allow-scripts to the sandbox by default", async () => {
     const html = await renderArgs(
       buildArgs({
         component: "Html",
         id: "e",
         html: "<p>hello</p>",
+      }),
+      "Html",
+    );
+    expect(html).toMatch(/sandbox="[^"]*\ballow-scripts\b[^"]*"/);
+  });
+
+  test("Html omits allow-scripts from the sandbox when allowScripts is explicitly false", async () => {
+    const html = await renderArgs(
+      buildArgs({
+        component: "Html",
+        id: "e",
+        html: "<p>hello</p>",
+        allowScripts: false,
       }),
       "Html",
     );

@@ -8,7 +8,7 @@ import { Fragment, type CSSProperties } from "vue";
 
 import { ElmKatex } from "../../code/elm-katex";
 import { ElmCodeBlock } from "../../code/elm-code-block";
-import { ElmHtml } from "../../code/elm-html";
+import { ElmHtmlViewer } from "../../code/elm-html-viewer";
 import { ElmInlineIcon } from "../../icon/elm-inline-icon";
 import { ElmAudioPlayer } from "../../media/elm-audio-player";
 import { ElmBlockImage } from "../../media/elm-block-image";
@@ -316,11 +316,11 @@ export const notionBlockCatalog: CatalogRenderer = basicCatalog.extend(
   )),
 
   defineRenderer(HtmlApi, ({ props, resolve }) => (
-    <ElmHtml
+    <ElmHtmlViewer
       html={props.html ? resolve(props.html) : undefined}
       src={props.src ? resolve(props.src) : undefined}
       autoHeight={props.autoHeight}
-      allowScripts={props.allowScripts}
+      allowScripts={props.allowScripts ?? true}
     />
   )),
 

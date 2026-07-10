@@ -533,7 +533,7 @@ export const HtmlApi = {
       allowScripts: z
         .boolean()
         .describe(
-          "Allow the embedded content to run JavaScript (adds the iframe sandbox's `allow-scripts` token). Defaults to false — script execution is disabled by default. `allow-same-origin` is never granted together with this, in `html` or `src` mode, so the embedded document can never escape the sandbox even with scripts enabled.",
+          "Allow the embedded content to run JavaScript (adds the iframe sandbox's `allow-scripts` token). Defaults to true when rendered through the Notion block catalog — pass `false` explicitly to disable script execution. (The underlying `ElmHtml` component still defaults to `false` when used directly, outside the A2UI catalog.) `allow-same-origin` is never granted together with this, in `html` or `src` mode, so the embedded document can never escape the sandbox even with scripts enabled.",
         )
         .optional(),
     })
