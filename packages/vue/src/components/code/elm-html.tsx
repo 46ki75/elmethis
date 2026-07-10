@@ -84,6 +84,51 @@ const toStyleObject = (
   return normalizeStyle(style) as CSSProperties;
 };
 
+// Shared by both the render body (to decide the sandbox) and
+// `attachLifecycle` below (to decide the measurement strategy) — kept as a
+// module-level pure function so it's reused rather than duplicated. The
+// check is case-insensitive: the HTML `sandbox` attribute matches its
+// keywords case-insensitively, so a case-sensitive check here could be
+// defeated by a differently-cased caller-supplied token.
+const sandboxHasAllowScripts = (
+  sandbox: string | undefined,
+  allowScripts: boolean,
+): boolean => {
+  if (allowScripts) return true;
+  const tokens = sandbox?.split(/\s+/).filter(Boolean) ?? [];
+  return tokens.some((token) => token.toLowerCase() === "allow-scripts");
+};
+
+// Namespaced so a stray same-shaped message from unrelated page content isn't
+// mistaken for a height report; the `event.source` check in the listener
+// below is what actually makes this safe against spoofing (it can't be
+// forged from message data), this is just collision-avoidance.
+const AUTO_HEIGHT_MESSAGE_KIND = "elmethis:elm-html:auto-height";
+
+// Appended (not wrapped) so it always runs after any of the caller's own
+// inline scripts, regardless of the document's structure — the HTML parser
+// accepts a trailing <script> even with no explicit <body>/</body> in the
+// source. Only used when scripts are allowed AND `contentDocument` is opaque
+// to the parent (see the sandbox-token guard in the render function), as the
+// sole way left to learn the rendered height: `postMessage` crosses the
+// sandbox boundary by design, unlike `contentDocument`, so it works under
+// allow-scripts alone, without ever needing allow-same-origin.
+const withAutoHeightReporter = (html: string): string => {
+  return `${html}
+<script>(function () {
+  var send = function () {
+    try {
+      parent.postMessage(
+        { kind: ${JSON.stringify(AUTO_HEIGHT_MESSAGE_KIND)}, height: document.documentElement.scrollHeight },
+        "*",
+      );
+    } catch (e) {}
+  };
+  new ResizeObserver(send).observe(document.documentElement);
+  send();
+})();</script>`;
+};
+
 export interface ElmHtmlProps extends HTMLAttributes {
   /**
    * Raw HTML markup to render, e.g. a Claude-authored artifact or a Notion
@@ -204,7 +249,11 @@ export const ElmHtml = defineComponent({
     // `flush: "post"` correctly.
     let disposeLifecycle: (() => void) | undefined;
 
-    const attachLifecycle = (autoHeight: boolean) => {
+    const attachLifecycle = (
+      autoHeight: boolean,
+      sandbox: string | undefined,
+      allowScripts: boolean,
+    ) => {
       // Cross-origin `src` content can never be measured (see the `src` doc
       // comment) — don't attempt it, and don't attach a load listener that
       // could never do anything useful.
@@ -212,6 +261,38 @@ export const ElmHtml = defineComponent({
 
       const iframe = iframeRef.value;
       if (!iframe) return;
+      if (!autoHeight) return;
+
+      // `contentDocument` is opaque whenever scripts are allowed
+      // (allow-same-origin is never granted alongside allow-scripts — see
+      // the sandbox-token guard in the render function below), so the
+      // embedded reporter script appended to `srcdoc` (only present in this
+      // same case) posts its own measured height instead. `postMessage`
+      // crosses the sandbox boundary by design, so this works under
+      // allow-scripts alone.
+      if (sandboxHasAllowScripts(sandbox, allowScripts)) {
+        const onMessage = (event: MessageEvent) => {
+          // `event.source` is set by the browser to the actual sender
+          // window and can't be forged via message content, so this alone
+          // is sufficient to reject reports from any other frame/page.
+          if (event.source !== iframe.contentWindow) return;
+          const data = event.data as
+            { kind?: unknown; height?: unknown } | null | undefined;
+          if (
+            !data ||
+            data.kind !== AUTO_HEIGHT_MESSAGE_KIND ||
+            typeof data.height !== "number"
+          ) {
+            return;
+          }
+          contentHeight.value = data.height;
+        };
+        window.addEventListener("message", onMessage);
+        disposeLifecycle = () => {
+          window.removeEventListener("message", onMessage);
+        };
+        return;
+      }
 
       let observer: ResizeObserver | undefined;
 
@@ -229,10 +310,8 @@ export const ElmHtml = defineComponent({
       };
 
       const onLoad = () => {
-        if (autoHeight) {
-          measure();
-          attachObserver();
-        }
+        measure();
+        attachObserver();
       };
 
       iframe.addEventListener("load", onLoad);
@@ -242,13 +321,22 @@ export const ElmHtml = defineComponent({
       };
     };
 
-    onMounted(() => attachLifecycle(props.autoHeight));
+    onMounted(() =>
+      attachLifecycle(props.autoHeight, props.sandbox, props.allowScripts),
+    );
 
     watch(
-      () => [props.html, props.src, props.autoHeight] as const,
-      ([, , autoHeight]) => {
+      () =>
+        [
+          props.html,
+          props.src,
+          props.autoHeight,
+          props.sandbox,
+          props.allowScripts,
+        ] as const,
+      ([, , autoHeight, sandbox, allowScripts]) => {
         disposeLifecycle?.();
-        attachLifecycle(autoHeight);
+        attachLifecycle(autoHeight, sandbox, allowScripts);
       },
       { flush: "post" },
     );
@@ -372,7 +460,13 @@ export const ElmHtml = defineComponent({
           // cosmetic: a literal `src=""` would self-navigate the iframe to
           // the host page.
           src={usingSrcValue ? props.src : undefined}
-          srcdoc={usingSrcValue ? undefined : (props.html ?? "")}
+          srcdoc={
+            usingSrcValue
+              ? undefined
+              : props.autoHeight && hasAllowScripts
+                ? withAutoHeightReporter(props.html ?? "")
+                : (props.html ?? "")
+          }
           sandbox={effectiveSandbox}
           // Only forced for `src` — a presigned URL's query-string token
           // must never reach a third party via `Referer`. `html`/`srcdoc`

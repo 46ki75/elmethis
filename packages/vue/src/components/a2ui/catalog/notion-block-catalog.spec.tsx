@@ -151,7 +151,10 @@ describe("notionBlockCatalog — media & embed", () => {
     await vi.waitFor(() => {
       const iframe = wrapper.find("iframe");
       expect(iframe.exists()).toBe(true);
-      expect(iframe.attributes("srcdoc")).toBe("<p>hello</p>");
+      // Contains, not an exact match: scripts are on by default here, so the
+      // srcdoc also carries the postMessage auto-height reporter (see
+      // elm-html.tsx) appended after the caller's own markup.
+      expect(iframe.attributes("srcdoc")).toContain("<p>hello</p>");
     });
   });
 

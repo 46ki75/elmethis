@@ -93,6 +93,45 @@ describe("[CSR] ElmHtml — autoHeight measurement", () => {
   });
 });
 
+// Content whose visible DOM only exists once its own inline script runs —
+// e.g. a Claude Artifact "bundler" export, which bootstraps its entire body
+// from JS. `contentDocument` measurement requires `allow-same-origin`, which
+// is intentionally never granted alongside `allow-scripts` (see the
+// sandbox-token guard in elm-html.tsx) — so today, this content can only ever
+// be sized correctly with `allowScripts` off, at the cost of it never
+// actually rendering (its bootstrap script never runs).
+const SCRIPT_BUILT_HTML = `<div id="root"></div>
+<script>
+  var el = document.createElement("div");
+  el.style.height = "900px";
+  el.textContent = "built by script";
+  document.getElementById("root").appendChild(el);
+</script>`;
+
+describe("[CSR] ElmHtml — autoHeight measurement with allowScripts", () => {
+  // Reproduces the bug: with scripts allowed, `contentDocument` is opaque (no
+  // allow-same-origin), so the existing measurement path can never see the
+  // script-built content — the iframe is stuck at the browser's ~150px
+  // default no matter how tall the rendered content actually is.
+  test(
+    "measures content that only exists after its own script runs",
+    { retry: 2 },
+    async () => {
+      const screen = await render(
+        <ElmHtml html={SCRIPT_BUILT_HTML} allowScripts />,
+      );
+      const iframe = screen.container.querySelector("iframe")!;
+
+      await vi.waitFor(
+        () => {
+          expect(parseInt(iframe.style.height || "0", 10)).toBeGreaterThan(800);
+        },
+        { timeout: 6000 },
+      );
+    },
+  );
+});
+
 describe("[CSR] ElmHtml — ResizeObserver keeps tracking real content", () => {
   // While `autoHeight` is off, the iframe's `srcDoc` (bound unconditionally)
   // may still be navigating. Flipping `autoHeight` back on across an `html`

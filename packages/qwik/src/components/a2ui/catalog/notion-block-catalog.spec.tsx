@@ -374,7 +374,10 @@ describe("notionBlockCatalog: media and embed", () => {
       "Html",
     );
     expect(html.toLowerCase()).toContain("<iframe");
-    expect(html).toContain('srcdoc="<p>hello</p>"');
+    // Contains, not an exact match: scripts are on by default here, so the
+    // srcdoc also carries the postMessage auto-height reporter (see
+    // elm-html.tsx) appended after the caller's own markup.
+    expect(html).toContain("<p>hello</p>");
   });
 
   test("Html renders a remote src iframe with no-referrer hardening", async () => {
