@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "skills": {
+    "a2ui-knowledge": {
+      "source": "46ki75/yaarr",
+      "sourceType": "github",
+      "skillPath": "skills/a2ui-knowledge/SKILL.md",
+      "computedHash": "c420f05d0de840a474ca0a16db3d1a64dee2b1ae00a6339cb8a7e62485725330"
+    },
+    "ag-ui-knowledge": {
+      "source": "46ki75/yaarr",
+      "sourceType": "github",
+      "skillPath": "skills/ag-ui-knowledge/SKILL.md",
+      "computedHash": "b436e348766b76c8854b23d9618ed0b62368d3e0714d862519d8cd8417878bbe"
+    },
+    "mcp-knowledge": {
+      "source": "46ki75/yaarr",
+      "sourceType": "github",
+      "skillPath": "skills/mcp-knowledge/SKILL.md",
+      "computedHash": "9a0fe387c5ea89506c857a6e8aae10907f4f77a263527dc28fda6f77a2d094d3"
+    }
+  }
+}

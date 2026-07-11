@@ -1,0 +1,15 @@
+{
+  "skill": "mcp-knowledge",
+  "sources": [
+    {
+      "repo": "submodules/modelcontextprotocol",
+      "synced": "dc105208d6c5737c010ed3b6ff50ca19746317c1",
+      "paths": ["docs", "schema"]
+    },
+    {
+      "repo": "submodules/mcp-rust-sdk",
+      "synced": "4fd4986b6204e7bf580b23592a99bc338e2899e5",
+      "paths": ["crates/rmcp", "crates/rmcp-macros", "docs"]
+    }
+  ]
+}

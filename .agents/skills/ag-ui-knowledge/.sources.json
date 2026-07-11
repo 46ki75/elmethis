@@ -1,0 +1,10 @@
+{
+  "skill": "ag-ui-knowledge",
+  "sources": [
+    {
+      "repo": "submodules/ag-ui",
+      "synced": "4202bf237179b68e74cec8454bdf884e83db7e41",
+      "paths": ["docs"]
+    }
+  ]
+}

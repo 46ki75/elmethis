@@ -1,7 +1,4 @@
 {
-  "enabledPlugins": {
-    "web-view-transition@46ki75-plugins": true
-  },
   "hooks": {
     "PostToolUse": [
       {
@@ -26,5 +23,10 @@
         ]
       }
     ]
+  },
+  "enabledPlugins": {
+    "web-view-transition@46ki75-plugins": true,
+    "frontend-design@claude-plugins-official": true,
+    "playwright@claude-plugins-official": true
   }
 }
