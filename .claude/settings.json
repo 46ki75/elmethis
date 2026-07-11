@@ -1,7 +1,4 @@
 {
-  "enabledPlugins": {
-    "web-view-transition@46ki75-plugins": true
-  },
   "hooks": {
     "PostToolUse": [
       {

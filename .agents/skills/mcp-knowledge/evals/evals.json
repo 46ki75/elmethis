@@ -1,0 +1,26 @@
+{
+  "skill_name": "mcp-knowledge",
+  "evals": [
+    {
+      "id": 0,
+      "name": "spec-migration-2025-11-25",
+      "prompt": "We're upgrading our MCP server from spec version 2025-03-26 to 2025-11-25. What changes do we need to handle around tools (annotations, structured output, icons, input validation)? How does the new Tasks feature work — what's the lifecycle, and when would I use it instead of regular tool calls? Should we migrate now or wait for the spec to stabilize further?",
+      "expected_output": "A migration-oriented answer that cites the per-version changelog files, walks through the tools-related deltas from 2025-03-26 → 2025-06-18 → 2025-11-25 (structured output, resource links, title, icons, input-validation-as-execution-error), explains the Tasks state machine (working/input-required/completed/failed/cancelled, polling via tasks/get, deferred results), gives a recommendation with caveats.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "name": "rust-sdk-tool-with-elicitation",
+      "prompt": "I'm writing a server in Rust using rmcp 1.7. I want a tool called `transfer` that takes parameters `{amount: f64, recipient: String}` and asks the user for confirmation via elicitation before executing the transfer. Walk me through: (1) the Cargo features I need to enable, (2) the macro setup for the tool router and tool handler, (3) the Parameters<T> wrapper and how to derive JsonSchema, (4) how to call elicitation from inside the tool method (with `ctx.peer.elicit::<T>()`), and (5) which ElicitationError variants I must handle and what to return for each. Code-complete example please.",
+      "expected_output": "A code-complete Rust answer with: Cargo.toml feature list (server, macros, elicitation, transport-io at minimum), a struct with `tool_router` field, `#[tool_router]` impl block, `Parameters<TransferArgs>` with `#[derive(JsonSchema, Deserialize)]`, a `#[tool]` async method that calls `ctx.peer.elicit::<ConfirmArgs>()`, pattern-matching on ElicitationError (UserDeclined, UserCancelled, CapabilityNotSupported, others), and the `#[tool_handler] impl ServerHandler` block. Should cite `crates/mcp-server/` and `references/rust-sdk/server/elicitation.md`.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "typescript-sdk-pkce-challenge",
+      "prompt": "My Qwik app uses `@modelcontextprotocol/sdk` transitively through `@elmethis/qwik`'s ag-ui-client. The Vite build is failing with `Failed to resolve entry for package pkce-challenge` even though my app never calls any OAuth code path. Why is this happening, and how do I fix it without forking the SDK or removing my dependency on @elmethis/qwik? Also, would lazy-importing the SDK help?",
+      "expected_output": "An answer that: (1) explains why dynamic import doesn't help (Vite walks the full static graph behind every chunk), (2) explains the root cause (`pkce-challenge` package.json missing a `default` exports condition, MCP SDK statically imports `auth.js` which imports `pkce-challenge`), (3) gives the vite.config.ts alias + stub file workaround with the `throw new Error(...)` (not fake values) pattern, (4) mentions the upstream fix path. Should not recommend forking the SDK or removing the @elmethis/qwik dep.",
+      "files": []
+    }
+  ]
+}

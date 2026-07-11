@@ -1,0 +1,10 @@
+{
+  "skill": "a2ui-knowledge",
+  "sources": [
+    {
+      "repo": "submodules/A2UI",
+      "synced": "6895e1df52c9441d4b754fd63951bbfdc3dcb32d",
+      "paths": ["docs", "specification"]
+    }
+  ]
+}
