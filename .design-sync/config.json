@@ -10,7 +10,8 @@
   "storyImports": {
     "loaders": {
       ".mp3": "dataurl",
-      ".webp": "dataurl"
+      ".webp": "dataurl",
+      ".html": "text"
     }
   },
   "cssEntry": ".ds-style-entry.css",
@@ -24,6 +25,12 @@
   },
   "titleMap": {
     "elm-a2ui": "ElmA2ui",
+    "notion-block-catalog": null,
+    "elm-html": "ElmHtml",
+    "elm-html-viewer": "ElmHtmlViewer",
+    "elm-button-dropdown": "ElmButtonDropdown",
+    "elm-slider": "ElmSlider",
+    "elm-notion-callout": "ElmNotionCallout",
     "elm-code-block": "ElmCodeBlock",
     "elm-katex": "ElmKatex",
     "elm-shiki-highlighter": "ElmShikiHighlighter",

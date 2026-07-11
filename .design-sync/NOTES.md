@@ -87,6 +87,31 @@ Shape: **storybook** (`@storybook/react-vite`, 170 stories). Build from repo roo
 - **ElmCodeBlock.tsx**, **ElmShikiHighlighter.tsx** — stories `import code from "./seed/main.rs?raw"`;
   esbuild can't resolve Vite's `?raw` query, so these owned previews inline the rust seed as a string.
   (ElmMarkdown's `.md?raw` imports compile fine — no action needed there.)
+- **ElmHtml.tsx**, **ElmHtmlViewer.tsx** — the AdvancedRagPipeline / RemoteSrc stories load
+  `/fixtures/advanced-rag-pipeline.html` from storybook's `staticDirs` — an origin-relative asset the
+  preview page can't serve → blank iframe. Owned previews import the same 4.2 MB fixture as text
+  (`cfg.storyImports.loaders` maps `".html": "text"`) and pass it via the `html` prop instead of `src`
+  (allowScripts carries over, so its `<script>` tags still run). Import stays live — fixture edits
+  re-derive, no drift. Cost: `_preview/ElmHtml{,Viewer}.js` are ~4.2 MB each (well under the 12 MB cap).
+
+## [GENERAL] compare-oracle artifacts (fold of 2026-07 grading learnings)
+
+- **Reference storybook loads NO webfonts — re-inject after EVERY sb-reference rebuild:**
+  `node .design-sync/inject-reference-fonts.mjs` (idempotent; copies the vendored woff2 into
+  `sb-reference/ds-fonts/` and injects the `@font-face` block into `iframe.html`). Without it every
+  compare pits DM Sans (preview) against system-sans fallback (storybook) — subtle at body sizes,
+  glaring on large text (cost an ElmTable false-`close` this sync).
+- **Storybook captures do not resolve forced-dark subtrees.** ElmColorSemanticSample's dark panel
+  resolves LIGHT on the storybook side (sb's css pipeline); the preview side resolves dark correctly.
+  When the reference is the artifact, judge the preview render on its own (graded match + note).
+- **Preview captures are viewport-clipped (~700px tall).** Tall components (ElmParagraph Many,
+  ElmColorPrimitiveSample, ElmMarkdown Primary) show fewer rows on the preview side — compare the
+  overlapping region; the tail is capture framing.
+- **Storybook element-box crops clip below-box pseudo-elements** (ElmHeading h1 underline at
+  bottom:-4/-6px) — looks like a missing underline on the left; crop artifact.
+- **Grade-file keys are story DISPLAY names** ("Scrollable With Row Header", "Form Fields"), not
+  export names — a wrong key silently never clears pendingGrade (compare prints "grade key(s)
+  matching no story" only on a scoped run of that component).
 
 ## Accepted `close` grades (not fixable; not a defect)
 
@@ -94,23 +119,39 @@ Shape: **storybook** (`@storybook/react-vite`, 170 stories). Build from repo roo
   prop exposes the scroll-visible state and a static capture can't scroll, so the button sits off the captured
   region. `cardMode:"single"` applied. Renders fine in a real scrolling app.
 - **ElmMarkdown / Stream** — streaming demo (useEffect + setTimeout token feed). Non-deterministic single
-  frame; sb and ds catch different moments. Props/wiring correct. ([GENERAL]: any streaming/animated story
-  can't pixel-match — grade `close`.)
-- **ElmBlockImage / Svg** — the nuxt.com `cdn-cgi` image host is unreachable in this sandbox; blank on both
-  panels. Component structure matches. Also a remote-host dependency that could fail for end users.
+  frame; sb and ds may catch different moments (2026-07 capture happened to catch identical frames — graded
+  match; a future `close` here is the same known cause). ([GENERAL]: any streaming/animated story
+  can't reliably pixel-match.)
+- **ElmBlockImage / Svg** — the story's fixture URL
+  `https://nuxt.com/cdn-cgi/image/w=1024,h=878/assets/landing/deploy.svg` now returns **404 upstream**
+  (verified via curl 2026-07-11) — blank on both panels for everyone, end users included. Component structure
+  matches. Upstream story bug; fix is a new fixture URL in `elm-block-image.stories.tsx`.
+- **ElmAudioPlayer** (5 of 7 stories) — deliberate tts.mp3 substitution, duration 0:38 vs 6:12 (see Owned
+  previews); chrome/controls match.
+- **ElmParallax / Primary** — storybook's beige canvas shows through the translucent watercolor layer vs
+  white on the preview page; same frozen frame, environment-only delta.
 
 ## Re-sync risks (watch-list for the next sync)
 
+- **After EVERY `sb-reference` rebuild, run `node .design-sync/inject-reference-fonts.mjs`** — the repo's
+  storybook loads no webfonts, so a fresh reference build compares system-sans against the previews' DM Sans
+  (forgotten on 2026-07-11; cost a false `close` on ElmTable before being caught).
 - **Owned previews tied to upstream code/content:**
   - `ElmCodeBlock.tsx` / `ElmShikiHighlighter.tsx` inline a copy of `packages/react/src/components/code/seed/main.rs`.
     If that seed changes, the inlined rust drifts — re-copy it. (They exist only because esbuild can't resolve `?raw`.)
   - `ElmAudioPlayer.tsx` substitutes the local `tts.mp3` for the story's remote mp3 and hardcodes
     `title="SoundHelix-Song-1.mp3"` for the filename-fallback cells (the data-URL src breaks `fileNameFromSrc`).
     Total-time reads 0:38 vs the remote's 6:12 — expected. If the story's filenames/args change, update.
-- **Partial verification:** `ElmA2ui` hit `[STORY_CAP]` — only 6 of 11 stories were captured/graded (all match).
-  The tail 5 are similar A2UI catalog variants; raise `--max-stories 11` on a re-sync to verify them.
-- **shiki version pin:** `.design-sync/shiki-slim/` deps are pinned to `4.2.0` to match the package's shiki.
-  A shiki bump needs those bumped + the curated lang list reviewed (build fails loud if the store moves).
+  - `ElmHtml.tsx` / `ElmHtmlViewer.tsx` re-route the staticDirs fixture through the `html` prop (live text
+    import — no drift), but if those stories gain new args or move the fixture path, update the overrides.
+- **`notion-block-catalog` stories excluded** (`titleMap: null`): the file's component is ElmA2ui and both
+  files export a story named `Html`, which would collide in the merged wrapper namespace; ElmA2ui's own
+  `NotionBlockCatalog` story already showcases the catalog. Revisit if the catalog gets its own component.
+- **`--max-stories 12`** was used this sync to cover all 12 ElmA2ui stories (all graded match). The driver
+  defaults back to 6 — pass the flag again if ElmA2ui gains stories you want individually verified.
+- **shiki version pin:** `.design-sync/shiki-slim/` deps are pinned to **4.3.1** (bumped from 4.2.0 on
+  2026-07-11 to match the package; token colors verified pixel-identical post-bump). A future shiki bump
+  needs those bumped + the curated lang list reviewed (build fails loud if the store moves).
 - **Vendored fonts:** `.design-sync/fonts/` holds DM Sans / DM Mono / Source Code Pro / Zen Kaku Gothic New
   woff2 (OFL, @fontsource), regenerated by `node .design-sync/fonts/fetch.mjs` — the single source of truth
   (edit the `FONTS` list there, never `fonts.css` by hand). The font-family **stacks** live in `@elmethis/core`
