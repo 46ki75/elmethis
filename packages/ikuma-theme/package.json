@@ -1,0 +1,55 @@
+{
+  "name": "ikuma-theme",
+  "displayName": "ikuma-theme",
+  "description": "VS Code theme for personal use.",
+  "publisher": "46ki75",
+  "version": "0.0.10",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/46ki75/elmethis.git"
+  },
+  "homepage": "https://github.com/46ki75/elmethis/tree/main/packages/ikuma-theme#readme",
+  "bugs": {
+    "url": "https://github.com/46ki75/elmethis/issues"
+  },
+  "type": "module",
+  "engines": {
+    "vscode": "^1.120.0"
+  },
+  "categories": ["Themes"],
+  "scripts": {
+    "prebuild": "rimraf dist && mkdir -p dist",
+    "build": "pnpm build:theme && pnpm build:npm && pnpm build:vsix",
+    "build:theme": "node scripts/index.ts",
+    "build:npm": "node scripts/build-npm.ts",
+    "build:vsix": "vsce package --out dist/",
+    "build.types": "tsc --noEmit",
+    "fmt": "prettier --write ./scripts",
+    "fmt.check": "prettier --check ./scripts",
+    "check": "pnpm run fmt.check && pnpm run build.types && pnpm run build",
+    "prepublish:npm": "pnpm run build:npm",
+    "publish:npm": "pnpm publish dist/npm",
+    "dev": "node --watch --watch-path=scripts scripts/index.ts"
+  },
+  "contributes": {
+    "themes": [
+      {
+        "label": "Ikuma Theme Dark",
+        "uiTheme": "vs-dark",
+        "path": "./dist/vscode-theme/ikuma-theme-dark-color-theme.json"
+      },
+      {
+        "label": "Ikuma Theme Light",
+        "uiTheme": "vs",
+        "path": "./dist/vscode-theme/ikuma-theme-light-color-theme.json"
+      }
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "@vscode/vsce": "^3.9.1",
+    "prettier": "3.9.4",
+    "rimraf": "^6.1.3",
+    "typescript": "5.9.3"
+  }
+}
