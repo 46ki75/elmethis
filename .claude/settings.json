@@ -9,7 +9,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/lefthook-fmt.sh",
+            "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/lefthook-fmt.mts",
             "timeout": 60
           }
         ]
@@ -20,7 +20,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/lefthook-check.sh",
+            "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/lefthook-check.mts",
             "timeout": 600
           }
         ]

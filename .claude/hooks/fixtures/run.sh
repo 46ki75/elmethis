@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Test harness for the Claude Code hooks one level up (lefthook-fmt.sh,
-# lefthook-check.sh). Pipes each stub payload in this directory into the
+# Test harness for the Claude Code hooks one level up (lefthook-fmt.mts,
+# lefthook-check.mts). Pipes each stub payload in this directory into the
 # matching hook and prints the hook's exit code plus any stdout — for the Stop
 # hook, stdout is the JSON `{decision: "block", ...}` it would feed back to
 # Claude; the fmt hook is silent on success.
@@ -23,8 +23,8 @@ run_one() {
   local stub="$1" name hook out status
   name="$(basename "$stub")"
   case "$name" in
-    fmt-*) hook="$hooks_dir/lefthook-fmt.sh" ;;
-    stop-*) hook="$hooks_dir/lefthook-check.sh" ;;
+    fmt-*) hook="$hooks_dir/lefthook-fmt.mts" ;;
+    stop-*) hook="$hooks_dir/lefthook-check.mts" ;;
     *)
       printf '\n=== %s -> (no hook mapping, skipped) ===\n' "$name"
       return
@@ -32,7 +32,7 @@ run_one() {
   esac
 
   printf '\n=== %s -> %s ===\n' "$name" "$(basename "$hook")"
-  out="$(sed "s#__PROJECT_DIR__#$proj#g" "$stub" | "$hook")"
+  out="$(sed "s#__PROJECT_DIR__#$proj#g" "$stub" | node "$hook")"
   status=$?
   printf 'exit: %d\n' "$status"
   [ -n "$out" ] && printf 'stdout:\n%s\n' "$out"

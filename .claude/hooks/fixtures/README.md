@@ -15,12 +15,12 @@ would send; `run.sh` substitutes the real repo root before piping.
 
 | Stub                    | Hook                | Exercises                                            |
 | ----------------------- | ------------------- | --------------------------------------------------- |
-| `fmt-formattable.json`  | `lefthook-fmt.sh`   | matching glob → `prettier` formats it               |
-| `fmt-non-matching.json` | `lefthook-fmt.sh`   | in-repo but glob miss (`.md`) → fmt job skipped      |
-| `fmt-outside-repo.json` | `lefthook-fmt.sh`   | path outside the repo → guard skips, exit 0          |
-| `fmt-no-path.json`      | `lefthook-fmt.sh`   | no `tool_input.file_path` → early exit 0             |
-| `stop-inactive.json`    | `lefthook-check.sh` | `stop_hook_active: false` → runs `lefthook run check` over changed files |
-| `stop-active.json`      | `lefthook-check.sh` | `stop_hook_active: true` → loop guard, immediate exit 0 |
+| `fmt-formattable.json`  | `lefthook-fmt.mts`   | matching glob → `prettier` formats it               |
+| `fmt-non-matching.json` | `lefthook-fmt.mts`   | in-repo but glob miss (`.md`) → fmt job skipped      |
+| `fmt-outside-repo.json` | `lefthook-fmt.mts`   | path outside the repo → guard skips, exit 0          |
+| `fmt-no-path.json`      | `lefthook-fmt.mts`   | no `tool_input.file_path` → early exit 0             |
+| `stop-inactive.json`    | `lefthook-check.mts` | `stop_hook_active: false` → runs `lefthook run check` over changed files |
+| `stop-active.json`      | `lefthook-check.mts` | `stop_hook_active: true` → loop guard, immediate exit 0 |
 
 ## Notes
 
