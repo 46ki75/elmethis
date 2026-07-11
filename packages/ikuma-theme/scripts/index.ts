@@ -2,6 +2,7 @@ import { writeFile, mkdir } from "node:fs/promises";
 import { dirname } from "node:path";
 import { format, resolveConfig } from "prettier";
 import { buildWindowsTerminal, createTheme } from "./helper.ts";
+import { getOpenCodeTheme } from "./opencode.ts";
 import { getTheme, type GetThemeOptions } from "./theme.ts";
 
 async function writeJson(file: string, data: unknown) {
@@ -37,4 +38,7 @@ await Promise.all([
 
   // Windows Terminal: both schemes in one fragment for settings.json
   writeJson("dist/windows-terminal/ikuma.json", windowsTerminal),
+
+  // OpenCode TUI theme
+  writeJson("dist/opencode-theme/ikuma.json", getOpenCodeTheme()),
 ]);

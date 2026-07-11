@@ -1,6 +1,7 @@
 import { mkdir, copyFile, writeFile, rm, readFile } from "node:fs/promises";
 import { dirname } from "node:path";
 import { format, resolveConfig } from "prettier";
+import { getOpenCodeTheme } from "./opencode.ts";
 import { getShikiTheme, type GetThemeOptions } from "./theme.ts";
 
 const OUT = "dist/npm";
@@ -26,20 +27,35 @@ const targets: GetThemeOptions[] = [
 const pkg = {
   name: "@46ki75/ikuma-theme",
   version: root.version,
-  description: "Shiki syntax-highlighting themes from ikuma-theme.",
+  description:
+    "Shiki syntax-highlighting and OpenCode TUI themes from ikuma-theme.",
   license: "Apache-2.0",
   author: root.publisher,
   repository: root.repository,
   homepage: root.homepage,
   bugs: root.bugs,
-  keywords: ["shiki", "theme", "syntax-highlighting", "ikuma-theme"],
+  keywords: [
+    "shiki",
+    "opencode",
+    "theme",
+    "syntax-highlighting",
+    "ikuma-theme",
+  ],
   type: "module",
   exports: {
     "./dark": "./ikuma-dark.json",
     "./light": "./ikuma-light.json",
+    "./opencode": "./opencode/ikuma.json",
     "./package.json": "./package.json",
   },
-  files: ["ikuma-dark.json", "ikuma-light.json", "README.md", "LICENSE"],
+  "oc-themes": ["./opencode/ikuma.json"],
+  files: [
+    "ikuma-dark.json",
+    "ikuma-light.json",
+    "opencode/ikuma.json",
+    "README.md",
+    "LICENSE",
+  ],
   publishConfig: {
     access: "public",
   },
@@ -53,6 +69,7 @@ await Promise.all([
   ...targets.map((target) =>
     writeJson(`${OUT}/ikuma-${target.color}.json`, getShikiTheme(target)),
   ),
+  writeJson(`${OUT}/opencode/ikuma.json`, getOpenCodeTheme()),
   copyFile("README.md", `${OUT}/README.md`),
   copyFile("LICENSE", `${OUT}/LICENSE`),
 ]);
