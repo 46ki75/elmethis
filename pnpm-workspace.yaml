@@ -2,6 +2,7 @@ packages:
   - "packages/ag-ui-stub"
   - "packages/copilotkit"
   - "packages/core"
+  - "packages/ikuma-theme"
   - "packages/qwik"
   - "packages/react"
   - "packages/vue"

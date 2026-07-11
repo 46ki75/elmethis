@@ -1,0 +1,17 @@
+.claude/**
+.vscode/**
+.vscode-test/**
+.gitignore
+.gitattributes
+.markdownlint-cli2.yaml
+.prettierrc
+CLAUDE.md
+scripts/**
+pnpm-lock.yaml
+tsconfig.json
+vsc-extension-quickstart.md
+
+# Only ship the VS Code theme JSON inside the vsix -- exclude the other dist
+# subdirs (npm pkg, Windows Terminal scheme, the vsix output itself).
+dist/**
+!dist/vscode-theme/**
