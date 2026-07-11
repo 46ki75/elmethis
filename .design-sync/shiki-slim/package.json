@@ -2,10 +2,10 @@
   "name": "elmethis-design-sync-shiki-slim",
   "private": true,
   "type": "module",
-  "description": "design-sync only: curated-language shiki build aliased in for the bare `shiki` specifier to keep the design bundle under claude.ai/design's 5 MB cap. Versions pinned to match @elmethis/react's shiki@4.2.0.",
+  "description": "design-sync only: curated-language shiki build aliased in for the bare `shiki` specifier to keep the design bundle under claude.ai/design's 5 MB cap. Versions pinned to match @elmethis/react's shiki@4.3.1.",
   "dependencies": {
-    "@shikijs/core": "4.2.0",
-    "@shikijs/engine-oniguruma": "4.2.0",
-    "@shikijs/langs": "4.2.0"
+    "@shikijs/core": "4.3.1",
+    "@shikijs/engine-oniguruma": "4.3.1",
+    "@shikijs/langs": "4.3.1"
   }
 }
