@@ -3,7 +3,7 @@
   "displayName": "ikuma-theme",
   "description": "VS Code theme for personal use.",
   "publisher": "46ki75",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "repository": {
     "type": "git",
     "url": "https://github.com/46ki75/elmethis.git"
@@ -16,7 +16,9 @@
   "engines": {
     "vscode": "^1.120.0"
   },
-  "categories": ["Themes"],
+  "categories": [
+    "Themes"
+  ],
   "scripts": {
     "prebuild": "rimraf dist && mkdir -p dist",
     "build": "pnpm build:theme && pnpm build:npm && pnpm build:vsix",
