@@ -17,7 +17,7 @@
         "@ag-ui/client": "0.0.57",
         "@ag-ui/core": "0.0.57",
         "@anthropic-ai/claude-agent-sdk": "^0.3.202",
-        "@anthropic-ai/sdk": "^0.110.0",
+        "@anthropic-ai/sdk": "^0.111.0",
         "@copilotkit/runtime": "^1.62.3",
         "@copilotkit/shared": "^1.62.1",
         "@hono/node-server": "^2.0.8",
