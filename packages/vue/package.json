@@ -67,7 +67,7 @@
   },
   "dependencies": {
     "@46ki75/ikuma-theme": "^0.0.10",
-    "@a2ui/web_core": "^0.10.0",
+    "@a2ui/web_core": "^0.10.4",
     "@elmethis/core": "workspace:^",
     "@formkit/auto-animate": "^0.10.0",
     "@mdi/js": "^7.4.47",

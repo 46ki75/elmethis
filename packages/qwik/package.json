@@ -94,7 +94,7 @@
   },
   "dependencies": {
     "@46ki75/ikuma-theme": "^0.0.10",
-    "@a2ui/web_core": "^0.10.0",
+    "@a2ui/web_core": "^0.10.4",
     "@ag-ui/client": "^0.0.57",
     "@ag-ui/core": "^0.0.57",
     "@elmethis/core": "workspace:^",
