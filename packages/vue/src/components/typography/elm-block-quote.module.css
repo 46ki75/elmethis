@@ -18,10 +18,11 @@
 
 .body {
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: var(--elmethis-stack-gap);
   padding: 2rem 1.5rem;
+
+  > * + * {
+    margin-block-start: var(--elmethis-stack-gap);
+  }
 }
 
 .icon {

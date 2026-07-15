@@ -311,6 +311,62 @@ export const BlockQuote: Story = {
   },
 };
 
+export const BlockQuoteInlineRichText: Story = {
+  args: {
+    messages: [
+      {
+        version: "v0.9",
+        createSurface: {
+          surfaceId: "blockquote-inline-rich-text",
+          catalogId: CATALOG_ID,
+        },
+      },
+      {
+        version: "v0.9",
+        updateComponents: {
+          surfaceId: "blockquote-inline-rich-text",
+          components: [
+            {
+              component: "BlockQuote",
+              id: "root",
+              children: ["t1", "t2", "t3", "t4", "t5", "t6", "t7"],
+            },
+            { component: "RichText", id: "t1", text: "Could you " },
+            {
+              component: "RichText",
+              id: "t2",
+              text: "look",
+              color: "#b8a36e",
+              decoration: ["bold", "underline"],
+            },
+            { component: "RichText", id: "t3", text: " " },
+            {
+              component: "RichText",
+              id: "t4",
+              text: "into",
+              color: "#b8a36e",
+              decoration: ["bold", "underline"],
+            },
+            {
+              component: "RichText",
+              id: "t5",
+              text: " whether there's any way to make this ",
+            },
+            {
+              component: "RichText",
+              id: "t6",
+              text: "happen",
+              color: "#b8a36e",
+              decoration: ["bold", "underline"],
+            },
+            { component: "RichText", id: "t7", text: "?" },
+          ],
+        },
+      },
+    ],
+  },
+};
+
 // ---------------------------------------------------------------------------
 // Callout
 // ---------------------------------------------------------------------------
