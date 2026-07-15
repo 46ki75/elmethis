@@ -66,7 +66,7 @@
     "@a2ui/react": "^0.9.1",
     "@a2ui/web_core": "^0.9.2",
     "@elmethis/core": "workspace:^",
-    "@formkit/auto-animate": "^0.9.0",
+    "@formkit/auto-animate": "^0.10.0",
     "@mdi/js": "^7.4.47",
     "@radix-ui/react-use-controllable-state": "^1.2.3",
     "clsx": "^2.1.1",
