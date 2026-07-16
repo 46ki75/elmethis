@@ -66,6 +66,10 @@ export const ElmBlockImage = component$<ElmBlockImageProps>((props) => {
     isLoading.value = false;
   });
 
+  const handleImageError = $(() => {
+    isLoading.value = false;
+  });
+
   const handleOpenModal = $(() => {
     if ((props.enableModal ?? true) && !isLoading.value) {
       showModal();
@@ -81,29 +85,34 @@ export const ElmBlockImage = component$<ElmBlockImageProps>((props) => {
   const imgRef = useSignal<HTMLImageElement>();
 
   /**
-   * @see {@link https://qwik.dev/docs/cookbook/detect-img-tag-onload/}
+   * `onLoad$`/`onError$` alone can miss a cache-served image: Qwik has no
+   * per-element listener, just one global capture-phase listener that
+   * `qwikloader` attaches once it boots, and a disk-cache hit can fire the
+   * (non-bubbling) `load`/`error` event before that bootstrap has run at
+   * all — the event is gone by the time any listener exists.
    *
-   * `complete` is checked up front because cache-served images can already
-   * be done by the time this task runs. `decode()` is also given a
-   * rejection handler: some browsers hang or reject that promise for
-   * cached images, which would otherwise leave `isLoading` stuck forever.
+   * `img.complete` sidesteps that: it's a synchronous property, not an
+   * event, so checking it here — once our own code is finally running —
+   * catches an already-settled image regardless of how early it settled.
+   * `strategy: "document-ready"` (not the default `intersection-observer`)
+   * matters too: this image loads eagerly regardless of viewport (no
+   * `loading="lazy"`), and the default strategy was confirmed in
+   * production to sometimes never fire at all even for an element on-screen
+   * from first paint, permanently stuck at `isLoading: true`.
+   *
+   * If `complete` is still `false` here, `qwikloader` is now definitely
+   * active (this task only ran because it is), so the native `onLoad$`/
+   * `onError$` below are race-free for whatever happens next.
    */
   // eslint-disable-next-line qwik/no-use-visible-task
-  useVisibleTask$(() => {
-    const img = imgRef.value!;
-    if (img.complete) {
-      isLoading.value = false;
-      return;
-    }
-    img.decode().then(
-      () => {
+  useVisibleTask$(
+    () => {
+      if (imgRef.value!.complete) {
         isLoading.value = false;
-      },
-      () => {
-        isLoading.value = false;
-      },
-    );
-  });
+      }
+    },
+    { strategy: "document-ready" },
+  );
 
   const ImageComponent = (isModal: boolean) => (
     <img
@@ -120,6 +129,7 @@ export const ElmBlockImage = component$<ElmBlockImageProps>((props) => {
       loading={isModal ? "lazy" : undefined}
       fetchPriority={isModal ? "low" : "auto"}
       onLoad$={handleImageLoad}
+      onError$={handleImageError}
       onClick$={isModal ? handleCloseModal : undefined}
       style={{
         "--elmethis-scoped-opacity": isLoading.value ? 0.01 : 1,

@@ -71,17 +71,15 @@ describe("[CSR] ElmBlockImage lightbox lifecycle", () => {
   });
 });
 
-describe("[CSR] ElmBlockImage — decode failure recovery", () => {
-  // A broken image never fires `load` (only `error`), so the `onLoad$`
-  // backup never kicks in — this isolates the `useVisibleTask$` path.
-  // `decode()` rejects for real on a corrupt image. Regression for a bug
-  // where an unhandled `decode()` rejection left `isLoading` (and the
-  // `0.01` opacity applied while loading) stuck forever in SSR output.
+describe("[CSR] ElmBlockImage — broken image recovery", () => {
+  // A broken image never fires `load`, only `error` — regression for a bug
+  // where nothing cleared `isLoading` (and the `0.01` opacity applied while
+  // loading) on a failed image, leaving it stuck forever.
   const BrokenHarness = component$(() => (
     <ElmBlockImage src="data:image/png;base64,AAAA" alt="broken" />
   ));
 
-  test("clears the loading state instead of hanging when the image fails to decode", async () => {
+  test("clears the loading state instead of hanging when the image fails to load", async () => {
     const screen = await render(<BrokenHarness />);
     const img = innerImg(screen);
 
