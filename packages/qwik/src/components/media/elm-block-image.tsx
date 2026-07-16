@@ -83,27 +83,39 @@ export const ElmBlockImage = component$<ElmBlockImageProps>((props) => {
   /**
    * @see {@link https://qwik.dev/docs/cookbook/detect-img-tag-onload/}
    *
+   * `strategy: "document-ready"` is required here, not the default
+   * `intersection-observer`: this image is loaded eagerly regardless of
+   * viewport position (no `loading="lazy"`), so gating the loading-state
+   * check on the image scrolling into view is both unnecessary and, in
+   * practice, unreliable — confirmed in production that the default
+   * strategy can leave this task never firing at all even though the
+   * element is on-screen from first paint, permanently stuck at
+   * `isLoading: true` (`opacity: 0.01`).
+   *
    * `complete` is checked up front because cache-served images can already
    * be done by the time this task runs. `decode()` is also given a
    * rejection handler: some browsers hang or reject that promise for
    * cached images, which would otherwise leave `isLoading` stuck forever.
    */
   // eslint-disable-next-line qwik/no-use-visible-task
-  useVisibleTask$(() => {
-    const img = imgRef.value!;
-    if (img.complete) {
-      isLoading.value = false;
-      return;
-    }
-    img.decode().then(
-      () => {
+  useVisibleTask$(
+    () => {
+      const img = imgRef.value!;
+      if (img.complete) {
         isLoading.value = false;
-      },
-      () => {
-        isLoading.value = false;
-      },
-    );
-  });
+        return;
+      }
+      img.decode().then(
+        () => {
+          isLoading.value = false;
+        },
+        () => {
+          isLoading.value = false;
+        },
+      );
+    },
+    { strategy: "document-ready" },
+  );
 
   const ImageComponent = (isModal: boolean) => (
     <img
