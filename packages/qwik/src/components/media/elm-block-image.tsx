@@ -82,12 +82,27 @@ export const ElmBlockImage = component$<ElmBlockImageProps>((props) => {
 
   /**
    * @see {@link https://qwik.dev/docs/cookbook/detect-img-tag-onload/}
+   *
+   * `complete` is checked up front because cache-served images can already
+   * be done by the time this task runs. `decode()` is also given a
+   * rejection handler: some browsers hang or reject that promise for
+   * cached images, which would otherwise leave `isLoading` stuck forever.
    */
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(() => {
-    imgRef.value!.decode().then(() => {
+    const img = imgRef.value!;
+    if (img.complete) {
       isLoading.value = false;
-    });
+      return;
+    }
+    img.decode().then(
+      () => {
+        isLoading.value = false;
+      },
+      () => {
+        isLoading.value = false;
+      },
+    );
   });
 
   const ImageComponent = (isModal: boolean) => (
