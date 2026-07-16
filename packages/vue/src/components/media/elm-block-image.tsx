@@ -1,9 +1,6 @@
 import {
   defineComponent,
   h,
-  onMounted,
-  ref,
-  watch,
   type CSSProperties,
   type HTMLAttributes,
   type PropType,
@@ -14,7 +11,6 @@ import { mdiMessageImageOutline } from "@mdi/js";
 import styles from "./elm-block-image.module.css";
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { ElmMdiIcon } from "../icon/elm-mdi-icon";
-import { ElmRectangleWave } from "../fallback/elm-rectangle-wave";
 import { useModal } from "../../hooks/use-modal";
 
 export interface ElmBlockImageProps extends HTMLAttributes {
@@ -60,8 +56,6 @@ export const ElmBlockImage = defineComponent({
     },
   },
   setup(props) {
-    const isLoading = ref(true);
-
     // The lightbox is a `useModal` instance: `isOpen` drives the zoom cursor,
     // `show`/`hide` open and close it, and `Modal` renders the native <dialog>.
     const {
@@ -71,21 +65,8 @@ export const ElmBlockImage = defineComponent({
       hide: hideModal,
     } = useModal();
 
-    const imgRef = ref<HTMLImageElement | null>(null);
-
-    // If the image is already cached when this mounts, `load` may never fire,
-    // so settle the loading state via `decode()` too.
-    const settle = (): void => {
-      imgRef.value?.decode().then(
-        () => (isLoading.value = false),
-        () => {},
-      );
-    };
-    onMounted(settle);
-    watch(() => props.src, settle);
-
     const handleOpenModal = (): void => {
-      if ((props.enableModal ?? true) && !isLoading.value) {
+      if (props.enableModal ?? true) {
         showModal();
       }
     };
@@ -94,9 +75,6 @@ export const ElmBlockImage = defineComponent({
 
     const renderImage = (isModal: boolean) => (
       <img
-        // Only the inline image owns imgRef; the modal image must not steal it
-        // (ElmModal keeps its slot mounted, so both can coexist in the DOM).
-        ref={isModal ? undefined : imgRef}
         class={styles.image}
         src={props.src}
         alt={props.alt ?? props.caption ?? "Image"}
@@ -105,11 +83,9 @@ export const ElmBlockImage = defineComponent({
         width={props.width}
         height={props.height}
         loading={isModal ? "lazy" : undefined}
-        onLoad={() => (isLoading.value = false)}
         onClick={isModal ? () => hideModal() : undefined}
         style={
           {
-            "--elmethis-scoped-opacity": isLoading.value ? 0.01 : 1,
             "--elmethis-scoped-cursor": modalEnabled()
               ? isModalOpen.value
                 ? "zoom-out"
@@ -128,31 +104,12 @@ export const ElmBlockImage = defineComponent({
     // inheritAttrs default: passthrough class/style merge onto the root figure.
     return () => (
       <figure class={clsx(styles["elm-block-image"])}>
-        <div
-          class={styles["image-container"]}
-          style={
-            {
-              "--elmethis-scoped-opacity": isLoading.value ? 1 : 0.01,
-            } as CSSProperties
-          }
-          onClick={handleOpenModal}
-        >
+        <div class={styles["image-container"]} onClick={handleOpenModal}>
           {renderImage(false)}
-
-          <div class={styles.fallback}>
-            <ElmRectangleWave />
-          </div>
         </div>
 
         {props.caption && (
-          <figcaption
-            class={styles["caption-box"]}
-            style={
-              {
-                "--elmethis-scoped-opacity": isLoading.value ? 0.01 : 1,
-              } as CSSProperties
-            }
-          >
+          <figcaption class={styles["caption-box"]}>
             <span class={styles["caption-icon"]}>
               <ElmMdiIcon d={mdiMessageImageOutline} size="1.25rem" />
             </span>

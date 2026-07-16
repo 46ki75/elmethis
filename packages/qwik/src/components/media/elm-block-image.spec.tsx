@@ -3,16 +3,9 @@ import { renderToString } from "@qwik.dev/core/server";
 
 import { ElmBlockImage } from "./elm-block-image";
 
-// ElmBlockImage renders a `<figure>` with the inline image, a rectangle-wave
-// loading fallback, an optional caption, and a `useModal` lightbox.
-//
-// This component is SSR-only at the unit layer: its mount `useVisibleTask$`
-// calls `imgRef.value.decode()` (Qwik img-onload cookbook) which `createDOM`
-// cannot service — the same family of native-`<dialog>`/visible-task limits
-// noted in `use-modal.spec.tsx` (see [[feedback_qwik_showmodal_createdom]]).
-// SSR renders the initial (loading) markup, which is exactly what we assert
-// here; the loaded image + click-to-zoom OPEN lifecycle lives in
-// `elm-block-image.browser.spec.tsx`.
+// ElmBlockImage renders a `<figure>` with the inline image, an optional
+// caption, and a `useModal` lightbox. The native `<dialog>` lifecycle is
+// covered by `elm-block-image.browser.spec.tsx`.
 
 const ssr = async (node: Parameters<typeof renderToString>[0]) =>
   (await renderToString(node, { containerTagName: "div" })).html;
@@ -29,10 +22,10 @@ describe("[SSR] ElmBlockImage — structure", () => {
     expect(html).toContain('alt="A"');
   });
 
-  test("renders the rectangle-wave loading fallback", async () => {
+  test("renders without a loading fallback", async () => {
     const html = await ssr(<ElmBlockImage src="https://example.com/a.png" />);
-    expect(html).toContain("fallback");
-    expect(html).toContain("elm-rectangle-wave");
+    expect(html).not.toContain("fallback");
+    expect(html).not.toContain("elm-rectangle-wave");
   });
 
   test("the lightbox <dialog> shell is present and closed (no enlarged image)", async () => {
