@@ -1,6 +1,6 @@
 {
   "name": "@elmethis/qwik",
-  "version": "1.0.0-alpha.45",
+  "version": "1.0.0-alpha.46",
   "publishConfig": {
     "access": "public"
   },
@@ -62,7 +62,7 @@
   },
   "devDependencies": {
     "@eslint/js": "latest",
-    "@qwik.dev/core": "2.0.0-beta.36",
+    "@qwik.dev/core": "2.0.0-beta.38",
     "@storybook/addon-docs": "^10.5.2",
     "@types/lodash-es": "^4.17.12",
     "@types/node": "26.1.1",
