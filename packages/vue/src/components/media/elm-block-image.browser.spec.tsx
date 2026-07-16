@@ -6,12 +6,8 @@ import { ElmBlockImage } from "./elm-block-image";
 
 // The lightbox OPEN lifecycle (click image -> useModal.show() ->
 // <dialog>.showModal() -> top layer) needs a real browser — happy-dom does not
-// implement showModal() nor a real network load/decode(). This drives the
-// actual open/close path. Mirrors use-modal / elm-modal browser specs.
-
-// A 1x1 transparent PNG data URI loads (and decode()s) immediately, so
-// `isLoading` settles to false in-browser — `handleOpenModal` only opens once
-// the image has loaded.
+// implement showModal(). This drives the actual open/close path. Mirrors
+// use-modal / elm-modal browser specs.
 const Harness = defineComponent({
   setup() {
     return () =>
@@ -27,9 +23,6 @@ const root = (screen: Screen) => screen.container as HTMLElement;
 const dialogEl = (screen: Screen) => root(screen).querySelector("dialog")!;
 const containerEl = (screen: Screen) =>
   root(screen).querySelector('[class*="image-container"]') as HTMLElement;
-const innerImg = (screen: Screen) =>
-  containerEl(screen).querySelector("img") as HTMLImageElement;
-
 describe("[browser] ElmBlockImage lightbox lifecycle", () => {
   test("dialog mounts closed and out of the top layer", async () => {
     const screen = render(Harness);
@@ -45,15 +38,9 @@ describe("[browser] ElmBlockImage lightbox lifecycle", () => {
     const screen = render(Harness);
     const dialog = dialogEl(screen);
 
-    await vi.waitFor(() => expect(innerImg(screen).complete).toBe(true));
+    containerEl(screen).click();
 
-    // `handleOpenModal` only opens once `isLoading` has settled to false (via
-    // onLoad/decode). That can lag the image's `complete` flag, so retry the
-    // click until the dialog actually opens.
-    await vi.waitFor(() => {
-      containerEl(screen).click();
-      expect(dialog.open).toBe(true);
-    });
+    await vi.waitFor(() => expect(dialog.open).toBe(true));
     await vi.waitFor(() => expect(dialog.className).toMatch(/shown/));
     await vi.waitFor(() => expect(dialog.querySelector("img")).toBeTruthy());
 

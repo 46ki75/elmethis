@@ -5,13 +5,9 @@ import { renderToString } from "vue/server-renderer";
 
 import { ElmBlockImage } from "./elm-block-image";
 
-// ElmBlockImage renders a `<figure>` with the inline image, a rectangle-wave
-// loading fallback, an optional caption, and a `useModal` lightbox.
-//
-// The unit layer covers structure and the CLOSED/loading markup: happy-dom
-// neither resolves `<img>.decode()` nor fires a real network `load`, so the
-// loaded image + click-to-zoom OPEN lifecycle lives in
-// `elm-block-image.browser.spec.tsx`.
+// ElmBlockImage renders a `<figure>` with the inline image, an optional
+// caption, and a `useModal` lightbox. The native `<dialog>` lifecycle is
+// covered by `elm-block-image.browser.spec.tsx`.
 
 describe("[CSR] ElmBlockImage — structure", () => {
   test("renders a figure with the inline image pointing at src", () => {
@@ -24,12 +20,12 @@ describe("[CSR] ElmBlockImage — structure", () => {
     expect(img.attributes("alt")).toBe("A");
   });
 
-  test("renders the rectangle-wave loading fallback", () => {
+  test("renders without a loading fallback", () => {
     const wrapper = mount(ElmBlockImage, {
       props: { src: "https://example.com/a.png" },
     });
-    expect(wrapper.find('[class*="fallback"]').exists()).toBe(true);
-    expect(wrapper.find('[class*="elm-rectangle-wave"]').exists()).toBe(true);
+    expect(wrapper.find('[class*="fallback"]').exists()).toBe(false);
+    expect(wrapper.find('[class*="elm-rectangle-wave"]').exists()).toBe(false);
   });
 
   test("the lightbox <dialog> shell is present and closed (only the inline image)", () => {

@@ -11,10 +11,8 @@ import { ElmBlockImage } from "./elm-block-image";
 // actual open/close path. See [[project_qwik_browser_testing]] and the sibling
 // `use-modal.browser.spec.tsx` it mirrors.
 
-// A 1x1 transparent PNG data URI loads (and `decode()`s) immediately, so
-// `isLoading` settles to false in-browser — `handleOpenModal` only opens once
-// the image has loaded. The src is inlined in the harness (not a captured
-// module const) so the lazy segment never re-imports this spec module mid-test.
+// The src is inlined in the harness (not a captured module const) so the lazy
+// segment never re-imports this spec module mid-test.
 const Harness = component$(() => {
   return (
     <ElmBlockImage
@@ -32,8 +30,6 @@ const root = (screen: Screen) => screen.container as HTMLElement;
 const dialogEl = (screen: Screen) => root(screen).querySelector("dialog")!;
 const container = (screen: Screen) =>
   root(screen).querySelector('[class*="image-container"]') as HTMLElement;
-const innerImg = (screen: Screen) =>
-  container(screen).querySelector("img") as HTMLImageElement;
 
 describe("[CSR] ElmBlockImage lightbox lifecycle", () => {
   test("dialog mounts closed and out of the top layer", async () => {
@@ -51,9 +47,6 @@ describe("[CSR] ElmBlockImage lightbox lifecycle", () => {
     const screen = await render(<Harness />);
     const dialog = dialogEl(screen);
 
-    // Wait for the image to finish loading so handleOpenModal is unblocked.
-    await vi.waitFor(() => expect(innerImg(screen).complete).toBe(true));
-
     container(screen).click();
 
     await vi.waitFor(() => expect(dialog.open).toBe(true));
@@ -68,23 +61,5 @@ describe("[CSR] ElmBlockImage lightbox lifecycle", () => {
     enlarged.click();
 
     await vi.waitFor(() => expect(dialog.open).toBe(false));
-  });
-});
-
-describe("[CSR] ElmBlockImage — broken image recovery", () => {
-  // A broken image never fires `load`, only `error` — regression for a bug
-  // where nothing cleared `isLoading` (and the `0.01` opacity applied while
-  // loading) on a failed image, leaving it stuck forever.
-  const BrokenHarness = component$(() => (
-    <ElmBlockImage src="data:image/png;base64,AAAA" alt="broken" />
-  ));
-
-  test("clears the loading state instead of hanging when the image fails to load", async () => {
-    const screen = await render(<BrokenHarness />);
-    const img = innerImg(screen);
-
-    await vi.waitFor(() =>
-      expect(img.style.getPropertyValue("--elmethis-scoped-opacity")).toBe("1"),
-    );
   });
 });

@@ -77,12 +77,6 @@ describe("[CSR] ElmMarkdown — inline decorations", () => {
 });
 
 describe("[CSR] ElmMarkdown — media & code", () => {
-  // NOTE: the image case (`![alt](src)` → ElmBlockImage) is intentionally NOT
-  // unit-tested. ElmBlockImage's mount calls `imgRef.value.decode()`, which
-  // happy-dom's HTMLImageElement doesn't implement — it throws an unhandled
-  // rejection that fails the run. That mapping needs the browser layer (real
-  // `<img>.decode()`); see TESTING.md's visible-task gotchas.
-
   it("a fenced code block renders the block shell with its language caption", () => {
     // Shiki highlighting is async; assert the synchronous block scaffolding
     // (the <figure> code block + the language caption) rather than the
