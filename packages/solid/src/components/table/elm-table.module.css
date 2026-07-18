@@ -1,0 +1,107 @@
+/* Non-scrolling frame pins the edge shadows while the table scrolls below. */
+.elm-table-frame {
+  position: relative;
+  width: 100%;
+}
+
+.elm-table-frame::before,
+.elm-table-frame::after {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  width: 1.5rem;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms;
+}
+
+.elm-table-frame::before {
+  inset-inline-start: 0;
+  background: linear-gradient(
+    to right,
+    oklch(from var(--elmethis-color-surface-sunken) l c h / 50%),
+    transparent
+  );
+}
+
+.elm-table-frame::after {
+  inset-inline-end: 0;
+  background: linear-gradient(
+    to left,
+    oklch(from var(--elmethis-color-surface-sunken) l c h / 50%),
+    transparent
+  );
+}
+
+.elm-table-frame[data-overflow-start]::before {
+  opacity: 1;
+}
+
+.elm-table-frame[data-overflow-end]::after {
+  opacity: 1;
+}
+
+.elm-table-scroll {
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--elmethis-color-primary-weak)
+    var(--elmethis-color-surface-base);
+}
+
+.elm-table-scroll:focus-visible {
+  outline: 2px solid var(--elmethis-color-primary);
+  outline-offset: 2px;
+}
+
+.elm-table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  box-shadow: 0 0 0.125rem rgb(0 0 0 / 20%);
+}
+
+.caption {
+  position: relative;
+  width: 100%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-block-end: 1rem;
+}
+
+.caption-inner {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.spacing {
+  flex-grow: 1;
+  height: 1px;
+  background-color: rgb(128 128 128 / 20%);
+}
+
+.sticky-row-header :where(thead, tbody) tr > :first-child {
+  position: sticky;
+  inset-inline-start: 0;
+  z-index: 1;
+  box-shadow: 1px 0 0 oklch(from var(--elmethis-color-primary-weak) l c h / 50%);
+}
+
+.sticky-row-header thead tr > :first-child {
+  background-color: var(--elmethis-color-surface-sunken);
+}
+
+.sticky-row-header tbody tr:nth-child(odd) > :first-child {
+  background-color: var(--elmethis-color-surface-raised);
+}
+
+.sticky-row-header tbody tr:nth-child(even) > :first-child {
+  background-color: var(--elmethis-color-surface-base);
+}
+
+.sticky-row-header tbody tr:hover > :first-child {
+  background-color: var(--elmethis-color-surface-sunken);
+}

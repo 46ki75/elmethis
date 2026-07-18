@@ -16,7 +16,7 @@ fine-grained reactivity and Solid-native component patterns.
 ## Current State
 
 - `@elmethis/react` exports 57 components across 12 component groups.
-- `@elmethis/solid` currently exports 32 components, leaving 25 components to port.
+- `@elmethis/solid` currently exports 47 components, leaving 10 components to port.
 - React also exports hooks and utilities required by several components. Required dependencies must
   be ported alongside the component work even if full hook parity is handled separately.
 - Solid has CSR, SSR, and real-browser Vitest layers in place. `ElmDivider` is the reference for
@@ -147,32 +147,32 @@ Port each dependency cluster as one behavioral unit.
 
 Tabs and toggles:
 
-- [ ] `ElmTabs`
-- [ ] `ElmTabList`
-- [ ] `ElmTab`
-- [ ] `ElmTabPanel`
-- [ ] `ElmToggle`
+- [x] `ElmTabs`
+- [x] `ElmTabList`
+- [x] `ElmTab`
+- [x] `ElmTabPanel`
+- [x] `ElmToggle`
 
 Overlay and disclosure behavior:
 
-- [ ] `ElmModal`
-- [ ] Solid modal helper/API
-- [ ] `ElmTooltip`
-- [ ] `ElmBlockImage`
+- [x] `ElmModal`
+- [x] Solid modal helper/API
+- [x] `ElmTooltip`
+- [x] `ElmBlockImage`
 
 Tables:
 
-- [ ] `ElmTable`
-- [ ] `ElmTableBody`
-- [ ] `ElmTableCell`
-- [ ] `ElmTableHeader`
-- [ ] `ElmTableRow`
-- [ ] Solid table contexts and public context types where compatibility requires them
+- [x] `ElmTable`
+- [x] `ElmTableBody`
+- [x] `ElmTableCell`
+- [x] `ElmTableHeader`
+- [x] `ElmTableRow`
+- [x] Solid table contexts and public context types where compatibility requires them
 
 Selection controls:
 
-- [ ] `ElmSelect`
-- [ ] `ElmButtonDropdown`
+- [x] `ElmSelect`
+- [x] `ElmButtonDropdown`
 
 ## Phase 5: Code and Rich Content
 
