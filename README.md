@@ -9,4 +9,5 @@ Learn more about the recommended Project Setup and IDE Support in the [Vue Docs 
 - `packages/copilotkit/`: `19101` (also serves the stub Weather MCP server at `/mcp`)
 - `packages/qwik/`: `19211`
 - `packages/react/`: `19221`
+- `packages/solid/`: `19241`
 - `packages/vue/`: `19231`

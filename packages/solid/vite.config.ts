@@ -9,6 +9,7 @@ export default defineConfig({
     lib: {
       entry: "./src/index.ts",
       formats: ["es", "cjs"],
+      cssFileName: "style",
       fileName: (format) => `index.solid.${format === "es" ? "mjs" : "cjs"}`,
     },
     rollupOptions: {
@@ -16,6 +17,7 @@ export default defineConfig({
         /^node:.*/,
         /^solid-js(?:\/.*)?$/,
         /^@elmethis\/core(?:\/.*)?$/,
+        /^clsx(?:\/.*)?$/,
       ],
     },
   },

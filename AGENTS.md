@@ -15,7 +15,7 @@ Qwik, React, and Vue libraries are each shipped as a Storybook to GitHub Pages.
 | `@elmethis/core`       | `packages/core`        | yes           | Framework-agnostic hub: shared Zod schemas/types, design tokens, A2UI catalogs, language icons. Every framework lib depends on it (`workspace:^`). |
 | `@elmethis/qwik`       | `packages/qwik`        | yes           | Qwik 2 implementation. Components + hooks. Storybook :19211                                                                                        |
 | `@elmethis/react`      | `packages/react`       | yes           | React 19 implementation; same component surface as qwik/vue. Storybook :19221                                                                      |
-| `@elmethis/solid`      | `packages/solid`       | yes           | SolidJS implementation. Initial package scaffold; components are added as they are ported.                                                         |
+| `@elmethis/solid`      | `packages/solid`       | yes           | SolidJS implementation. Components are added as they are ported. Storybook :19241                                                                  |
 | `@elmethis/vue`        | `packages/vue`         | yes           | Vue 3 implementation (authored in TSX); same component surface as qwik/react. Storybook :19231                                                     |
 | `ikuma-theme`          | `packages/ikuma-theme` | VS Code / npm | VS Code dark/light extension; generates the published `@46ki75/ikuma-theme` Shiki package and Windows Terminal scheme                              |
 | `@elmethis/ag-ui-stub` | `packages/ag-ui-stub`  | no (private)  | Deterministic, LLM-free AG-UI test-double server (Hono :19103)                                                                                     |
@@ -30,17 +30,17 @@ Package manager is **pnpm** (`pnpm@9.12.3`); Node 22. Run scripts per-package wi
 `cd` into the package. **Build `@elmethis/core` before qwik/react/solid/vue** — they import its built
 output and emitted `tokens.css`.
 
-| Command                                          | Description                                                     |
-| ------------------------------------------------ | --------------------------------------------------------------- |
-| `pnpm install`                                   | Install all workspace deps                                      |
-| `pnpm --filter @elmethis/core run build`         | Build core (tsdown + tokens.css + catalog JSON) — do this first |
-| `pnpm --filter ikuma-theme run build`            | Build VS Code, Shiki, Windows Terminal, and VSIX artifacts      |
-| `pnpm --filter ikuma-theme run check`            | Format-check, type-check, and build all theme artifacts         |
-| `pnpm --filter @elmethis/qwik run dev`           | Storybook dev server (qwik :19211, react :19221, vue :19231)    |
-| `pnpm --filter @elmethis/<pkg> run check`        | fmt.check + lint + (css lint) + build.types                     |
-| `pnpm --filter @elmethis/<pkg> run test.unit`    | Unit + SSR layer (node / createDOM)                             |
-| `pnpm --filter @elmethis/<pkg> run test.browser` | Browser layer (real Chromium via Playwright)                    |
-| `pnpm run --recursive check`                     | Lefthook pre-commit check across all packages                   |
+| Command                                          | Description                                                                |
+| ------------------------------------------------ | -------------------------------------------------------------------------- |
+| `pnpm install`                                   | Install all workspace deps                                                 |
+| `pnpm --filter @elmethis/core run build`         | Build core (tsdown + tokens.css + catalog JSON) — do this first            |
+| `pnpm --filter ikuma-theme run build`            | Build VS Code, Shiki, Windows Terminal, and VSIX artifacts                 |
+| `pnpm --filter ikuma-theme run check`            | Format-check, type-check, and build all theme artifacts                    |
+| `pnpm --filter @elmethis/qwik run dev`           | Storybook dev server (qwik :19211, react :19221, solid :19241, vue :19231) |
+| `pnpm --filter @elmethis/<pkg> run check`        | fmt.check + lint + (css lint) + build.types                                |
+| `pnpm --filter @elmethis/<pkg> run test.unit`    | Unit + SSR layer (node / createDOM)                                        |
+| `pnpm --filter @elmethis/<pkg> run test.browser` | Browser layer (real Chromium via Playwright)                               |
+| `pnpm run --recursive check`                     | Lefthook pre-commit check across all packages                              |
 
 Run a single test (from inside the package, or via `--filter @elmethis/<pkg> exec`):
 
