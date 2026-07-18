@@ -1,0 +1,74 @@
+.elm-color-primitive-sample {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  .toolbar {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .mode-toggle {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border: solid 1px oklch(from gray l c h / 25%);
+    border-radius: 0.25rem;
+    padding: 0.35rem 0.75rem;
+    background-color: transparent;
+    color: gray;
+    font-family: monospace;
+    font-size: 0.75rem;
+
+    .mode-toggle-icon {
+      color: var(--elmethis-color-primary);
+    }
+
+    &:hover {
+      background-color: oklch(from gray l c h / 10%);
+    }
+  }
+
+  .section-title {
+    font-size: 0.75rem;
+    color: gray;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .scale {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 0.5rem;
+  }
+
+  .swatch {
+    cursor: pointer;
+
+    &:hover .swatch-name {
+      text-decoration: underline;
+    }
+  }
+
+  .swatch-bg {
+    box-sizing: border-box;
+    border: solid 1px oklch(from gray l c h / 25%);
+    border-radius: 0.25rem;
+    height: 2rem;
+  }
+
+  .swatch-name {
+    margin-block-start: 0.25rem;
+    display: block;
+    font-size: 0.7rem;
+    color: gray;
+    text-align: center;
+  }
+}

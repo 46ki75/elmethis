@@ -12,6 +12,7 @@
 :root {
   --elmethis-scoped-background-color: initial;
   --elmethis-scoped-callout-color: initial;
+  --elmethis-scoped-callout-surface: initial;
   --elmethis-scoped-color: initial;
   --elmethis-scoped-cursor: initial;
   --elmethis-scoped-dimensions: initial;

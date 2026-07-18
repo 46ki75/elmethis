@@ -16,8 +16,7 @@ fine-grained reactivity and Solid-native component patterns.
 ## Current State
 
 - `@elmethis/react` exports 57 components across 12 component groups.
-- `@elmethis/solid` currently exports `ElmDivider`, `ElmInlineIcon`, and `ElmInlineText`, leaving 54
-  components to port.
+- `@elmethis/solid` currently exports 20 components, leaving 37 components to port.
 - React also exports hooks and utilities required by several components. Required dependencies must
   be ported alongside the component work even if full hook parity is handled separately.
 - Solid has CSR, SSR, and real-browser Vitest layers in place. `ElmDivider` is the reference for
@@ -78,32 +77,32 @@ Port low-state, highly reused components first.
 
 Typography:
 
-- [ ] `ElmBlockQuote`
-- [ ] `ElmCallout`
+- [x] `ElmBlockQuote`
+- [x] `ElmCallout`
 - [x] `ElmDivider`
-- [ ] `ElmFragmentIdentifier`
-- [ ] `ElmHeading`
+- [x] `ElmFragmentIdentifier`
+- [x] `ElmHeading`
 - [x] `ElmInlineText`
-- [ ] `ElmList`
-- [ ] `ElmParagraph`
+- [x] `ElmList`
+- [x] `ElmParagraph`
 
 Fallback and Notion:
 
-- [ ] `ElmBlockFallback`
-- [ ] `ElmRectangleWave`
-- [ ] `ElmUnsupportedBlock`
-- [ ] `ElmNotionCallout`
+- [x] `ElmBlockFallback`
+- [x] `ElmRectangleWave`
+- [x] `ElmUnsupportedBlock`
+- [x] `ElmNotionCallout`
 
 Icons and visual samples:
 
-- [ ] `ElmDotLoadingIcon`
-- [ ] `ElmSquareLoadingIcon`
+- [x] `ElmDotLoadingIcon`
+- [x] `ElmSquareLoadingIcon`
 - [x] `ElmInlineIcon`
-- [ ] `ElmMdiIcon`
-- [ ] `ElmLanguageIcon`
-- [ ] `ElmColorPrimitiveSample`
-- [ ] `ElmColorSemanticSample`
-- [ ] `ElmValidation`
+- [x] `ElmMdiIcon`
+- [x] `ElmLanguageIcon`
+- [x] `ElmColorPrimitiveSample`
+- [x] `ElmColorSemanticSample`
+- [x] `ElmValidation`
 
 ## Phase 2: Solid Utilities
 
@@ -203,7 +202,8 @@ synchronization, ResizeObserver cleanup, keyboard interaction, and native value/
 Port A2UI last because its catalog depends on most of the component library and the current renderer
 uses React-specific bindings.
 
-- [ ] Decide the target A2UI protocol and package version before implementation.
+- [x] Preserve the existing v0.9 wire protocol and use `@a2ui/web_core@^0.10.0` through its
+      framework-neutral `/v0_9` APIs. Do not combine the Solid port with a v1.0 protocol migration.
 - [ ] Resolve the current `@a2ui/web_core` version mismatch across packages.
 - [ ] Reuse the framework-neutral `MessageProcessor`, surface model, data model, and catalog schemas.
 - [ ] Implement a Solid renderer/binder rather than depending on `@a2ui/react`.
