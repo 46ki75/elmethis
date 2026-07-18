@@ -1,0 +1,59 @@
+{
+  "skill_name": "solidjs",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Fix this Solid component. The displayed full name becomes stale when the parent replaces the user prop, and every mount leaks another keydown listener. Return a corrected UserCard.tsx and a focused UserCard.test.tsx. Do not change the public props type.\n\n```tsx\nimport { createEffect, createSignal, onMount } from \"solid-js\";\n\ntype User = { first: string; last: string };\n\nexport function UserCard({ user }: { user: User }) {\n  const [fullName, setFullName] = createSignal(\"\");\n\n  createEffect(() => setFullName(`${user.first} ${user.last}`));\n\n  onMount(() => {\n    window.addEventListener(\"keydown\", event => {\n      if (event.key === \"Escape\") console.log(`close ${fullName()}`);\n    });\n  });\n\n  return <h2>{fullName()}</h2>;\n}\n```",
+      "expected_output": "Idiomatic Solid code that preserves prop reactivity, derives the full name without effect-driven copied state, removes the exact event listener on cleanup, and tests both prop replacement and unmount cleanup.",
+      "files": [],
+      "expectations": [
+        "The component accepts a props object and derives the displayed name from live props with createMemo or a direct reactive expression, without createEffect-driven copied state.",
+        "The keydown listener is removed in onCleanup using the same function reference that was passed to addEventListener.",
+        "The tests replace the parent user signal and verify that the existing rendered heading updates to the new full name.",
+        "The tests unmount the component and verify that the keydown listener is removed or no longer produces its effect.",
+        "The implementation uses Solid APIs and contains no React hooks or React rerender assumptions."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Create the essential TypeScript/TSX files for a plain SolidJS catalog app using @solidjs/router. It needs a shared layout, `/products`, and `/products/:id`; links should preload product details; the detail page must use a stable `query` plus `createAsync`, react when the route id changes, and expose accessible loading, not-found, and failure states. Include one focused router test and a short NOTES.md describing file placement.",
+      "expected_output": "A coherent declarative Solid Router implementation using dynamic params, route preload, matching query parameters, reactive async reads, router links, Suspense/error handling, and a behavior-focused test.",
+      "files": [],
+      "expectations": [
+        "The output defines a Router with a shared root layout and declarative routes for /products and /products/:id, and uses router A links for catalog navigation.",
+        "A stable module-scoped query loads one product and createAsync calls that same query from a reactive dynamic id.",
+        "The detail route preload calls the same product query with params.id, and link or router preloading is enabled.",
+        "The product detail UI provides distinguishable accessible loading, not-found, and request-failure states.",
+        "A focused router test changes the dynamic route id in one mounted router and verifies that the newly requested product replaces the previous product."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Implement `src/routes/projects/[id].tsx` for a current SolidStart app. Load a project with a server-only `query`, preload it from the route, and render it through `createAsync`. Add a progressively enhanced form action that renames the project. The action must validate FormData, derive the user from server request context, authorize access to the project, and integrate with query revalidation. Show pending and validation feedback. Return the route file plus any small server helper/types file needed, and NOTES.md for assumptions.",
+      "expected_output": "A current SolidStart route with a server-isolated query and action, route preload, reactive async rendering, progressive form enhancement, server-side validation and authorization, and coherent pending/error behavior.",
+      "files": [],
+      "expectations": [
+        "The project query executes on the server, derives the authenticated user from request context, and reads only a project that user is authorized to access.",
+        "The exported route preload and createAsync consumer call the same project query with the current dynamic id.",
+        "The rename action executes on the server, validates FormData, does not trust a submitted user identity, and authorizes the project before or atomically during the write.",
+        "The form is a native POST wired to the Router action, remains progressively enhanced, and exposes pending plus server validation feedback through submission state.",
+        "A successful rename triggers automatic or targeted revalidation of the project query while validation failures avoid unnecessary revalidation.",
+        "Server-only persistence and request-context code is isolated from the client-facing route boundary."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Add SSR-safe metadata to a SolidStart product site using @solidjs/meta. Return `src/app.tsx` with Router, FileRoutes, Suspense, MetaProvider, and site defaults, plus `src/routes/products/[slug].tsx` that loads a product with `query`/`createAsync` and emits a reactive product title, description, Open Graph title, and one absolute canonical URL. Route metadata must be present during SSR and update during client navigation. Do not manipulate `document` directly. Include a focused metadata test or SSR verification example and NOTES.md.",
+      "expected_output": "Correct SolidStart app-shell composition and route-level Solid Meta components driven by async route data, with SSR-aware defaults, overrides, canonical handling, no imperative head mutation, and meaningful verification.",
+      "files": [],
+      "expectations": [
+        "The app shell composes Router, FileRoutes, MetaProvider, and Suspense so site defaults and routed metadata participate in SSR.",
+        "The product route preloads a stable query and consumes the same query with createAsync using the reactive slug.",
+        "Route metadata includes a product Title, description Meta, Open Graph title Meta, and exactly one route-owned absolute canonical Link derived from product data.",
+        "Metadata is rendered through @solidjs/meta under MetaProvider with no direct document or imperative head mutation.",
+        "The verification example renders or requests SSR output and checks the effective product title, description, Open Graph title, and exactly one absolute canonical tag.",
+        "The implementation explains or demonstrates that metadata updates when client navigation changes the product slug."
+      ]
+    }
+  ]
+}

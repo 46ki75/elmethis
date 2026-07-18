@@ -17,7 +17,13 @@
       "source": "46ki75/yaarr",
       "sourceType": "github",
       "skillPath": "skills/mcp-knowledge/SKILL.md",
-      "computedHash": "9a0fe387c5ea89506c857a6e8aae10907f4f77a263527dc28fda6f77a2d094d3"
+      "computedHash": "c2be4315c59c62768e495bc8fd87eb8a9c6f6d4bdc49ae558449f69cd4ec6ad6"
+    },
+    "solidjs": {
+      "source": "46ki75/yaarr",
+      "sourceType": "github",
+      "skillPath": "skills/solidjs/SKILL.md",
+      "computedHash": "e5b7e01a43a2c5ea5416c0844db4f6a3e2085d87a14da595ae238e8bf3ee830f"
     }
   }
 }

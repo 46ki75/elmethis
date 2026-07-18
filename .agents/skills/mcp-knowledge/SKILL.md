@@ -6,7 +6,7 @@ description: >
   versions 2024-11-05 through 2025-11-25 (architecture, transports,
   Resources, Prompts, Tools, Sampling, Roots, Elicitation, Tasks,
   lifecycle, OAuth 2.1, utilities) plus the official language SDKs: the
-  Rust SDK `rmcp` (full guide — `ServerHandler`/`ClientHandler`,
+  Rust SDK `rmcp` 2.2 (guide — `ServerHandler`/`ClientHandler`,
   `#[tool_router]`/`#[tool_handler]`/`#[task_handler]` macros,
   `StreamableHttpService`, Cargo features, SEP-1686 tasks, `tokio::io::duplex`
   test harness) and the TypeScript SDK `@modelcontextprotocol/sdk` (incl.
@@ -19,7 +19,7 @@ description: >
 license: MIT
 metadata:
   author: "Ikuma Yamashita"
-  version: "1.1.1"
+  version: "1.2.0"
 ---
 
 # MCP Skill
@@ -188,6 +188,7 @@ the official MDX source at `submodules/modelcontextprotocol/docs/specification/`
 | Tasks (durable async)                      | `references/2025-11-25/tasks.md`                        |
 | Migrating between versions                 | `references/{target-version}/changelog.md`              |
 | Rust SDK (`rmcp`) — anything Rust-specific | `references/rust-sdk/overview.md` (indexes the rest)    |
+| Upgrading `rmcp` 2.0 through 2.2           | `references/rust-sdk/migration-2.2.md`                  |
 | TypeScript SDK build/bundler errors        | `references/typescript-sdk/pkce-challenge.md`           |
 
 ## Language SDK Guides

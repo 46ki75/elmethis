@@ -1,7 +1,7 @@
 # Cargo feature flags
 
-Source of truth: `submodules/mcp-rust-sdk/crates/rmcp/Cargo.toml`
-(`[features]` section starting at line 115).
+Source of truth: the resolved `rmcp` 2.2.0 `Cargo.toml` and the
+[official Rust SDK repository](https://github.com/modelcontextprotocol/rust-sdk).
 
 The `rmcp` crate is heavily feature-gated because it covers two roles
 (client and server), several transports, and optional integrations
@@ -99,8 +99,7 @@ Picking more than one is a compile error. Picking none gives you
   didn't enable `transport-streamable-http-server`.
 - **`cannot find macro elicit_safe! in scope`** — you didn't enable
   `elicitation`. The macro and the `ElicitationError` enum are both
-  gated behind that feature flag (see
-  `submodules/mcp-rust-sdk/crates/rmcp/src/service/server.rs:451`).
+  gated behind that feature flag in `rmcp::service::server`.
 - **`expected struct rmcp::model::ClientCapabilities, found ...`** when
   building a `ClientInfo` from `ClientCapabilities::builder().build()`
   — the builder state encodes which `enable_*` methods were called via

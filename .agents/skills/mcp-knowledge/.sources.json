@@ -7,8 +7,8 @@
       "paths": ["docs", "schema"]
     },
     {
-      "repo": "submodules/mcp-rust-sdk",
-      "synced": "4fd4986b6204e7bf580b23592a99bc338e2899e5",
+      "repo": "https://github.com/modelcontextprotocol/rust-sdk",
+      "synced": "519577601db3823616dbd7c4eb84ed569d8e17d4",
       "paths": ["crates/rmcp", "crates/rmcp-macros", "docs"]
     }
   ]
