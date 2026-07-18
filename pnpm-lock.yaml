@@ -551,6 +551,9 @@ importers:
       eslint:
         specifier: ^10.7.0
         version: 10.7.0(jiti@2.4.2)
+      eslint-plugin-solid:
+        specifier: ~0.14.5
+        version: 0.14.5(eslint@10.7.0(jiti@2.4.2))(typescript@6.0.3)
       globals:
         specifier: ^17.7.0
         version: 17.7.0
@@ -5146,6 +5149,13 @@ packages:
     peerDependencies:
       eslint: ^9 || ^10
 
+  eslint-plugin-solid@0.14.5:
+    resolution: {integrity: sha512-nfuYK09ah5aJG/oEN6P1qziy1zLgW4PDWe75VNPi4CEFYk1x2AEqwFeQfEPR7gNn0F2jOeqKhx2E+5oNCOBYWQ==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      eslint: ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0
+      typescript: '>=4.8.4'
+
   eslint-scope@9.1.2:
     resolution: {integrity: sha512-xS90H51cKw0jltxmvmHy2Iai1LIqrfbw57b79w/J7MfvDfkIkFZ+kj6zC3BjtUwh150HsSSdxXZcsuv72miDFQ==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
@@ -5748,6 +5758,10 @@ packages:
   html-escaper@2.0.2:
     resolution: {integrity: sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==}
 
+  html-tags@3.3.1:
+    resolution: {integrity: sha512-ztqyC3kLto0e9WbNp0aeP+M3kTt+nbaIveGmUxAtZa+8iFgKLUOD4YKM5j+f3QD89bra7UeumolZHKuOXnTmeQ==}
+    engines: {node: '>=8'}
+
   html-tags@5.1.0:
     resolution: {integrity: sha512-n6l5uca7/y5joxZ3LUePhzmBFUJ+U2YWzhMa8XUTecSeSlQiZdF5XAd/Q3/WUl0VsXgUwWi8I7CNIwdI5WN1SQ==}
     engines: {node: '>=20.10'}
@@ -5979,6 +5993,10 @@ packages:
 
   is-hexadecimal@2.0.1:
     resolution: {integrity: sha512-DgZQp241c8oO6cA1SbTEWiXeoxV42vlcJxgH+B3hi1AiqqKruZR3ZGF8In3fj4+/y/7rHvlOZLZtgJ/4ttYGZg==}
+
+  is-html@2.0.0:
+    resolution: {integrity: sha512-S+OpgB5i7wzIue/YSE5hg0e5ZYfG3hhpNh9KGl6ayJ38p7ED6wxQLd1TV91xHpcTvw90KMJ9EwN3F/iNflHBVg==}
+    engines: {node: '>=8'}
 
   is-in-ci@1.0.0:
     resolution: {integrity: sha512-eUuAjybVTHMYWm/U+vBO1sY/JOCgoPCXRxzdju0K+K0BiGW0SChEL1MLC0PoCIR1OlPo5YAp8HuQoUlsWEICwg==}
@@ -6263,6 +6281,9 @@ packages:
     resolution: {integrity: sha512-Vdw0ATsQ9V+LuegM/BTwQqV/6cTl5lbGcIrU+BCgLxyf6bo38ybOr372tuSIxir3CN720flu1meYR6XzNMwQnw==}
     hasBin: true
 
+  kebab-case@1.0.2:
+    resolution: {integrity: sha512-7n6wXq4gNgBELfDCpzKc+mRrZFs7D+wgfF5WRFLNAr4DA/qtr9Js8uOAVAfHhuLMfAcQ0pRKqbpjx+TcJVdE1Q==}
+
   keytar@7.9.0:
     resolution: {integrity: sha512-VPD8mtVtm5JNtA2AErl6Chp06JBfy7diFQ7TQQhdpWOl6MrCRB+eRbvAZUsbGQS9kiMq0coJsy0W0vHpDCkWsQ==}
 
@@ -6279,6 +6300,9 @@ packages:
   kleur@4.1.5:
     resolution: {integrity: sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==}
     engines: {node: '>=6'}
+
+  known-css-properties@0.30.0:
+    resolution: {integrity: sha512-VSWXYUnsPu9+WYKkfmJyLKtIvaRJi1kXUqVmBACORXZQxT5oZDsoZ2vQP+bQFDnWtpI/4eq3MLoRMjI2fnLzTQ==}
 
   known-css-properties@0.37.0:
     resolution: {integrity: sha512-JCDrsP4Z1Sb9JwG0aJ8Eo2r7k4Ou5MwmThS/6lcIe1ICyb7UBJKGRIUUdqc2ASdE/42lgz6zFUnzAIhtXnBVrQ==}
@@ -14049,6 +14073,19 @@ snapshots:
     dependencies:
       eslint: 10.7.0(jiti@2.4.2)
 
+  eslint-plugin-solid@0.14.5(eslint@10.7.0(jiti@2.4.2))(typescript@6.0.3):
+    dependencies:
+      '@typescript-eslint/utils': 8.64.0(eslint@10.7.0(jiti@2.4.2))(typescript@6.0.3)
+      eslint: 10.7.0(jiti@2.4.2)
+      estraverse: 5.3.0
+      is-html: 2.0.0
+      kebab-case: 1.0.2
+      known-css-properties: 0.30.0
+      style-to-object: 1.0.14
+      typescript: 6.0.3
+    transitivePeerDependencies:
+      - supports-color
+
   eslint-scope@9.1.2:
     dependencies:
       '@types/esrecurse': 4.3.1
@@ -14862,6 +14899,8 @@ snapshots:
 
   html-escaper@2.0.2: {}
 
+  html-tags@3.3.1: {}
+
   html-tags@5.1.0: {}
 
   html-void-elements@3.0.0: {}
@@ -14959,8 +14998,7 @@ snapshots:
 
   ini@4.1.1: {}
 
-  inline-style-parser@0.2.7:
-    optional: true
+  inline-style-parser@0.2.7: {}
 
   inquirer-autosubmit-prompt@0.2.0:
     dependencies:
@@ -15115,6 +15153,10 @@ snapshots:
 
   is-hexadecimal@2.0.1:
     optional: true
+
+  is-html@2.0.0:
+    dependencies:
+      html-tags: 3.3.1
 
   is-in-ci@1.0.0: {}
 
@@ -15369,6 +15411,8 @@ snapshots:
     dependencies:
       commander: 8.3.0
 
+  kebab-case@1.0.2: {}
+
   keytar@7.9.0:
     dependencies:
       node-addon-api: 4.3.0
@@ -15387,6 +15431,8 @@ snapshots:
 
   kleur@4.1.5:
     optional: true
+
+  known-css-properties@0.30.0: {}
 
   known-css-properties@0.37.0:
     optional: true
@@ -18007,7 +18053,6 @@ snapshots:
   style-to-object@1.0.14:
     dependencies:
       inline-style-parser: 0.2.7
-    optional: true
 
   stylelint-config-css-modules@4.6.0(stylelint@17.14.0(typescript@5.9.3)):
     dependencies:

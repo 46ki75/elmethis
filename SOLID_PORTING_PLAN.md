@@ -63,8 +63,9 @@ Complete these before scaling the number of components:
 - [x] Port the component-private CSS variable registry from
       `packages/react/src/styles/_component-vars.css` and register it with Solid Stylelint.
 - [x] Externalize declared production and peer dependencies consistently in the Solid build.
-- [ ] Add Solid-specific ESLint rules. The latest `eslint-plugin-solid` (`0.14.5`) supports ESLint 9
-      but not the repository's ESLint 10; revisit when a compatible release is available.
+- [x] Add Solid-specific ESLint rules. `eslint-plugin-solid@0.14.5` runs with a narrowly scoped pnpm
+      peer allowance for ESLint 10; upstream PR #207 verifies its rule suite on ESLint 10 and only
+      widens package metadata.
 - [x] Add package-consumer smoke tests for the `solid`, ESM, CJS, SSR, types, and CSS exports.
 - [x] Add a Solid CI workflow that builds core first and runs checks, tests, coverage, the package
       build, and the Storybook build.

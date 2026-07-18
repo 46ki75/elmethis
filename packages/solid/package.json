@@ -84,6 +84,7 @@
     "@vitest/coverage-v8": "4.1.10",
     "concurrently": "^10.0.3",
     "eslint": "^10.7.0",
+    "eslint-plugin-solid": "~0.14.5",
     "globals": "^17.7.0",
     "happy-dom": "^20.10.6",
     "playwright": "^1.61.1",

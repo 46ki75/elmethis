@@ -1,4 +1,5 @@
 import js from "@eslint/js";
+import solid from "eslint-plugin-solid/configs/typescript";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 import { defineConfig, globalIgnores } from "eslint/config";
@@ -16,7 +17,11 @@ export default defineConfig([
   ]),
   {
     files: ["**/*.{ts,tsx}"],
-    extends: [js.configs.recommended, tseslint.configs.recommended],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.recommended,
+      solid,
+    ],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
