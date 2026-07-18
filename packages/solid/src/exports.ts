@@ -10,3 +10,7 @@ export {
   ElmInlineText,
   type ElmInlineTextProps,
 } from "./components/typography/elm-inline-text.jsx";
+export {
+  createControllableSignal,
+  type CreateControllableSignalOptions,
+} from "./primitives/create-controllable-signal.js";

@@ -109,7 +109,7 @@ Icons and visual samples:
 
 Implement the reusable Solid foundations needed by interactive components:
 
-- [ ] Controlled/uncontrolled signal helper with updater callback support.
+- [x] Controlled/uncontrolled signal helper with updater callback support.
 - [ ] Controlled/uncontrolled store helper where structural state requires it.
 - [ ] Clipboard integration.
 - [ ] Theme parsing, observation, and `THEME_CHANGE_EVENT` support.

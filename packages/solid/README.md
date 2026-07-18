@@ -12,6 +12,24 @@ import "@elmethis/solid/style.css";
 <ElmDivider />;
 ```
 
+## Controllable State
+
+`createControllableSignal` provides Solid-native controlled and uncontrolled
+state with value and updater setters:
+
+```tsx
+import { createControllableSignal } from "@elmethis/solid";
+
+const [value, setValue] = createControllableSignal({
+  value: () => props.value,
+  defaultValue: () => props.defaultValue ?? false,
+  onChange: (next) => props.onValueChange?.(next),
+});
+```
+
+Only `undefined` selects uncontrolled mode. Controlled writes notify
+`onChange`; uncontrolled writes update internal state and notify `onChange`.
+
 ## Scripts
 
 | Script              | Purpose                                       |
