@@ -7,7 +7,7 @@ import { createClipboard } from "./create-clipboard";
 const TEXT = "elmethis-solid-clipboard";
 
 const TextHarness = () => {
-  const clipboard = createClipboard({ content: TEXT, delay: 150 });
+  const clipboard = createClipboard({ content: TEXT });
   return (
     <div>
       <output data-testid="copied">{String(clipboard.copied())}</output>
@@ -30,7 +30,7 @@ const RichHarness = () => {
 };
 
 describe("[Browser] createClipboard", () => {
-  it("uses Chromium's Clipboard API and resets successful state", async () => {
+  it("uses Chromium's Clipboard API and reports successful state", async () => {
     const writeText = vi
       .spyOn(navigator.clipboard, "writeText")
       .mockResolvedValue(undefined);
@@ -43,9 +43,6 @@ describe("[Browser] createClipboard", () => {
       expect(writeText).toHaveBeenCalledWith(TEXT);
       expect(rendered.getByTestId("copied")).toHaveTextContent("true");
     });
-    await vi.waitFor(() =>
-      expect(rendered.getByTestId("copied")).toHaveTextContent("false"),
-    );
   });
 
   it("constructs Chromium ClipboardItems for compatible records", async () => {

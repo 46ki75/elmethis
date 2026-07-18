@@ -89,7 +89,13 @@ describe("[Browser] ElmAudioPlayer media integration", () => {
     const seek = rendered.getByRole("slider", { name: "Seek" });
     await vi.waitFor(() => expect(audio.duration).toBeGreaterThan(7));
 
+    await vi.waitFor(() =>
+      expect(seek.getBoundingClientRect().width).toBeGreaterThan(0),
+    );
     const rect = seek.getBoundingClientRect();
+    const setPointerCapture = vi
+      .spyOn(seek, "setPointerCapture")
+      .mockImplementation(() => undefined);
     seek.dispatchEvent(
       new PointerEvent("pointerdown", {
         bubbles: true,
@@ -97,6 +103,7 @@ describe("[Browser] ElmAudioPlayer media integration", () => {
         pointerId: 1,
       }),
     );
+    expect(setPointerCapture).toHaveBeenCalledWith(1);
     await vi.waitFor(() =>
       expect(audio.currentTime).toBeGreaterThan(audio.duration * 0.15),
     );
