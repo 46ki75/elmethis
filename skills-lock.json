@@ -18,6 +18,12 @@
       "sourceType": "github",
       "skillPath": "skills/mcp-knowledge/SKILL.md",
       "computedHash": "9a0fe387c5ea89506c857a6e8aae10907f4f77a263527dc28fda6f77a2d094d3"
+    },
+    "solidjs": {
+      "source": "46ki75/yaarr",
+      "sourceType": "github",
+      "skillPath": "skills/solidjs/SKILL.md",
+      "computedHash": "512e4e89fe1c3b801ae8ee7fdccf099faddc02c77fbabdd16e34aa4d0b1f3b78"
     }
   }
 }
