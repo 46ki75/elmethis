@@ -21,6 +21,13 @@
       "prompt": "My Qwik app uses `@modelcontextprotocol/sdk` transitively through `@elmethis/qwik`'s ag-ui-client. The Vite build is failing with `Failed to resolve entry for package pkce-challenge` even though my app never calls any OAuth code path. Why is this happening, and how do I fix it without forking the SDK or removing my dependency on @elmethis/qwik? Also, would lazy-importing the SDK help?",
       "expected_output": "An answer that: (1) explains why dynamic import doesn't help (Vite walks the full static graph behind every chunk), (2) explains the root cause (`pkce-challenge` package.json missing a `default` exports condition, MCP SDK statically imports `auth.js` which imports `pkce-challenge`), (3) gives the vite.config.ts alias + stub file workaround with the `throw new Error(...)` (not fake values) pattern, (4) mentions the upstream fix path. Should not recommend forking the SDK or removing the @elmethis/qwik dep.",
       "files": []
+    },
+    {
+      "id": 3,
+      "name": "rust-sdk-upgrade-2-2",
+      "prompt": "Our Rust MCP server has a workspace dependency `rmcp = { version = \"2.0\", features = [\"server\", \"macros\", \"transport-io\", \"transport-streamable-http-server\"] }` and is currently locked to 2.0. We want to upgrade to rmcp 2.2.0. Explain which manifest change to make, what 2.0 model API migration to check for, and what changed in 2.1 and 2.2 around protocol-version negotiation, cancellation, and Streamable HTTP session reinitialization. We use the default `ServerHandler::initialize`; should we add our own? Give a short validation plan.",
+      "expected_output": "A migration answer that updates the minimum dependency to 2.2.0, calls out the 2.0 constructor and builder migration for non-exhaustive model types, explains that the default handler negotiates known client protocol versions with get_info as fallback, and identifies the 2.1 cancel-safe AsyncRw/protocol-negotiation fixes plus the 2.2 cancelled-request and orphaned-HTTP-response fixes. It should recommend retaining the default initialize implementation unless custom policy is needed, and include cargo check/test plus stdio and Streamable HTTP integration coverage.",
+      "files": []
     }
   ]
 }

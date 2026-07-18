@@ -124,6 +124,19 @@ Anatomy:
    into axum's `with_graceful_shutdown`. On `Ctrl+C`, cancel the token
    so in-flight requests can drain.
 
+### `rmcp` 2.1 and 2.2 behavior
+
+The default `ServerHandler::initialize` now negotiates a known client
+protocol version and uses the server's configured version only as a fallback.
+Keep a sensible fallback such as `ProtocolVersion::LATEST` in `get_info()`;
+do not duplicate the negotiation in a custom `initialize` implementation
+unless you need custom compatibility policy.
+
+`rmcp` 2.2 also fails orphaned Streamable HTTP responses when a session is
+reinitialized and avoids responding to a cancelled request. Treat a client
+reinitialize or cancellation as terminal for the old request: do not retain
+response senders or attempt a second response in application code.
+
 ## When to use which
 
 | Transport                | Use when                                                           |
@@ -194,5 +207,6 @@ implement a custom `SessionManager` with TTL.
 - `references/rust-sdk/feature-flags.md` — the transport-* feature matrix
 - `references/rust-sdk/client/transports.md` — corresponding client-side wiring
 - `references/rust-sdk/client/testing.md` — duplex-transport test pattern
+- `references/rust-sdk/migration-2.2.md` — 2.0 to 2.2 upgrade checklist
 - `crates/mcp-server/src/bin/stdio.rs` — stdio binary
 - `crates/mcp-server/src/bin/http.rs` — Streamable HTTP binary

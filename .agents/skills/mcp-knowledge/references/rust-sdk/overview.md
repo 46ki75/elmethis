@@ -6,11 +6,12 @@ help users write correct, idiomatic `rmcp` code — servers, clients, tools,
 prompts, resources, tasks, transports, and test harnesses — without
 re-discovering the same macro contracts and trait shapes every time.
 
-`rmcp` is **fast-moving and lightly documented**. The repository at
-`submodules/mcp-rust-sdk/` is the source of truth: when a signature in
-these reference files conflicts with what's in the pinned submodule, trust
-the submodule and update the files. The reference set intentionally cites
-specific source paths so they stay grepable as the crate evolves.
+`rmcp` is **fast-moving and lightly documented**. This reference set targets
+the released `rmcp` 2.2.0 source at commit
+`519577601db3823616dbd7c4eb84ed569d8e17d4`. When a signature here conflicts
+with the version resolved by your project, trust your resolved crate source
+or the current docs.rs documentation and update the files. Do not assume a
+vendored SDK checkout exists in every workspace.
 
 For protocol-level questions (the JSON-RPC wire format, spec versions,
 what a `tools/call` request looks like across implementations), use the
@@ -24,11 +25,10 @@ The `rmcp` workspace ships two crates plus a large set of examples:
 
 | Crate / directory                               | What it is                                                                                                                                                                                          |
 | ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `submodules/mcp-rust-sdk/crates/rmcp/`          | The main `rmcp` crate. Re-exports everything the user sees: `ServerHandler`, `ClientHandler`, `ServiceExt`, `model::*`, `transport::*`, `task_manager::*`                                           |
-| `submodules/mcp-rust-sdk/crates/rmcp-macros/`   | The procedural-macros crate behind `#[tool_router]`, `#[tool_handler]`, `#[prompt_router]`, `#[prompt_handler]`, `#[task_handler]`. Re-exported by `rmcp` when the `macros` feature is on           |
-| `submodules/mcp-rust-sdk/examples/servers/src/` | One example server per primitive (calculator, counter, prompt, task, sampling, elicitation, completion, memory, structured output, OAuth)                                                           |
-| `submodules/mcp-rust-sdk/examples/clients/src/` | Example clients (stdio subprocess, streamable HTTP, sampling, task polling, progress, OAuth flows)                                                                                                  |
-| `crates/mcp-server/`                            | **Local** working server example built against `rmcp` 2.0. Covers every server-side primitive and ships an integration test per feature. This is the canonical reference cited throughout this set  |
+| `https://github.com/modelcontextprotocol/rust-sdk/tree/main/crates/rmcp/`        | The main `rmcp` crate. Re-exports everything the user sees: `ServerHandler`, `ClientHandler`, `ServiceExt`, `model::*`, `transport::*`, `task_manager::*`                                           |
+| `https://github.com/modelcontextprotocol/rust-sdk/tree/main/crates/rmcp-macros/` | The procedural macros behind `#[tool_router]`, `#[tool_handler]`, `#[prompt_router]`, `#[prompt_handler]`, `#[task_handler]`. Re-exported by `rmcp` when the `macros` feature is on                    |
+| `https://github.com/modelcontextprotocol/rust-sdk/tree/main/examples/`           | Server and client examples for primitives, transports, OAuth, tasks, sampling, elicitation, completion, and structured output                                                                         |
+| `crates/mcp-server/`                            | **Local** working server example built against `rmcp` 2.2. Covers every server-side primitive and ships an integration test per feature. This is the canonical reference cited throughout this set  |
 
 Application code depends on `rmcp` (plus whichever transport feature it
 needs). `rmcp-macros` is pulled in transitively by the `macros` feature
@@ -36,7 +36,7 @@ needs). `rmcp-macros` is pulled in transitively by the `macros` feature
 
 ## Version and stability note
 
-This material targets **`rmcp` 2.x** (the workspace pins 2.0 at
+This material targets **`rmcp` 2.2.0** (the workspace requires it at
 `Cargo.toml:50`). Version 2.0.0 was a breaking release
 (`feat!: align model types with MCP 2025-11-25 spec`, upstream PR #927):
 most model types moved from public-field struct literals to
@@ -73,13 +73,18 @@ are still in motion. Specific known limitations:
   `CallToolResult::success` for the user-action variants. See
   `references/rust-sdk/server/elicitation.md`.
 
-When you hit something that looks broken, check the submodule first —
-`grep` for the symbol in `submodules/mcp-rust-sdk/crates/rmcp/src/`
-before guessing.
+The 2.1 and 2.2 releases add no source-breaking server API changes, but they
+fix protocol-version negotiation, cancel-safe async reads, cancelled-request
+responses, and orphaned Streamable HTTP responses after reinitialization.
+Review `references/rust-sdk/migration-2.2.md` before upgrading from 2.0.
+
+When you hit something that looks broken, inspect the exact resolved source
+for your version (for example, with `cargo metadata` and the Cargo registry
+source) before guessing.
 
 ## Feature flags at a glance
 
-Defaults (from `submodules/mcp-rust-sdk/crates/rmcp/Cargo.toml:116`):
+Defaults in `rmcp` 2.2.0:
 `default = ["base64", "macros", "server"]`. So `cargo add rmcp` gives
 you a server crate with macros and base64 image support. You still need
 to **opt in** to the transports and to client-side support.
@@ -102,7 +107,7 @@ A common starter set for a server with stdio + HTTP + tasks +
 elicitation is what `crates/mcp-server/` uses:
 
 ```toml
-rmcp = { version = "2.0", features = [
+rmcp = { version = "2.2.0", features = [
     "server", "client", "macros",
     "transport-io",
     "transport-streamable-http-server",
@@ -245,6 +250,7 @@ for a one-line summary of every file. Quick map below:
 | File                                   | Read when                                                                                                  |
 | -------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | `references/rust-sdk/feature-flags.md` | Picking Cargo features, debugging missing-feature compile errors, choosing the right `reqwest` TLS variant |
+| `references/rust-sdk/migration-2.2.md` | Upgrading from `rmcp` 2.0 or reviewing the protocol and transport fixes in 2.1 and 2.2                    |
 
 ### Server features
 
@@ -277,7 +283,7 @@ for a one-line summary of every file. Quick map below:
 
 For end-to-end runnable examples beyond what `crates/mcp-server/` covers
 (OAuth servers, completion, structured output, progress notifications,
-subprocess-launching clients, OAuth client-credentials flows), browse
-`submodules/mcp-rust-sdk/examples/`. Each subcrate's `Cargo.toml`
-declares exactly the feature set it needs, which is itself a useful
-reference when you're not sure what to enable.
+subprocess-launching clients, OAuth client-credentials flows), browse the
+[official rust-sdk examples](https://github.com/modelcontextprotocol/rust-sdk/tree/main/examples).
+Each example's `Cargo.toml` declares exactly the feature set it needs, which
+is itself a useful reference when you're not sure what to enable.

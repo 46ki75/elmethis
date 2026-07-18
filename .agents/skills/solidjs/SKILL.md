@@ -102,6 +102,10 @@ and file references. Mention version assumptions or unrun checks plainly.
 These references capture durable patterns, not a substitute for versioned API
 documentation. For version-sensitive work, consult the official sites:
 
+- <https://docs.solidjs.com/llms.txt> is the machine-readable documentation
+  index spanning Solid core, Router, SolidStart, Meta, testing, and versioned
+  documentation. Use it to discover the relevant page, then read that linked
+  page and match stable or `/v2/` guidance to the project's installed versions.
 - <https://docs.solidjs.com/>
 - <https://docs.solidjs.com/solid-router>
 - <https://docs.solidjs.com/solid-start>

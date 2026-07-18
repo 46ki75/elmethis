@@ -3,14 +3,15 @@
 One-line summary of every reference file shipped under the Rust SDK section
 of the `mcp-knowledge` skill. Paths in the tables below are relative to
 `skills/mcp-knowledge/references/rust-sdk/`. Code citations target either
-the local example crate (`crates/mcp-server/`) or the pinned upstream
-submodule (`submodules/mcp-rust-sdk/`).
+the local example crate (`crates/mcp-server/`) or the released upstream
+source identified in `references/rust-sdk/overview.md`.
 
 ## Shared
 
 | Path               | Topic                                                                                                                              |
 | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
 | `feature-flags.md` | Every Cargo feature on the `rmcp` crate, what it enables, common starter sets, the `reqwest` TLS choice, and common compile errors |
+| `migration-2.2.md` | Upgrade checklist for 2.0 through 2.2: model migration, negotiated protocol versions, cancellation, and Streamable HTTP behavior  |
 
 ## Server features (`server/`)
 
@@ -87,12 +88,13 @@ submodule (`submodules/mcp-rust-sdk/`).
 
 - **Local working example** — `crates/mcp-server/` (server only). Every
   server reference file cites specific files and lines.
-- **Upstream rmcp source** — `submodules/mcp-rust-sdk/crates/rmcp/src/`
+- **Upstream rmcp source** — the official
+  [rust-sdk repository](https://github.com/modelcontextprotocol/rust-sdk)
   is the source of truth when these reference files conflict with reality.
-- **Upstream examples** — `submodules/mcp-rust-sdk/examples/servers/`
-  and `submodules/mcp-rust-sdk/examples/clients/` cover scenarios these
-  files mention but the local example doesn't ship (OAuth flows,
-  completion, structured output, sampling-tools, URL elicitation).
+- **Upstream examples** — the official
+  [examples directory](https://github.com/modelcontextprotocol/rust-sdk/tree/main/examples)
+  covers scenarios these files mention but the local example doesn't ship
+  (OAuth flows, completion, structured output, sampling-tools, URL elicitation).
 - **MCP spec / protocol questions** — see the per-spec-version reference
   files in sibling directories (`references/2024-11-05/`,
   `references/2025-03-26/`, `references/2025-06-18/`,
