@@ -1,0 +1,38 @@
+.elm-inline-icon {
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  vertical-align: top;
+  width: 0.95lh;
+  height: 0.95lh;
+
+  /* Light inherits the surrounding text color; dark lightens the glyph. */
+  color: light-dark(
+    currentcolor,
+    var(--elmethis-scoped-color, rgb(255 255 255 / 70%))
+  );
+
+  &::selection {
+    color: light-dark(currentcolor, rgb(0 0 0 / 70%));
+    background-color: light-dark(
+      var(--elmethis-scoped-color, rgb(0 0 0 / 25%)),
+      var(--elmethis-scoped-color, rgb(255 255 255 / 25%))
+    );
+
+    /* `filter` is not a <color>, so it can't use light-dark(): the OS default
+       is the media query; an explicit pin overrides it below. */
+    filter: brightness(1000%);
+
+    @media (prefers-color-scheme: dark) {
+      filter: none;
+    }
+  }
+
+  [data-theme="light"] &::selection {
+    filter: brightness(1000%);
+  }
+
+  [data-theme="dark"] &::selection {
+    filter: none;
+  }
+}

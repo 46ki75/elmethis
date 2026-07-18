@@ -81,7 +81,7 @@ Typography:
 - [x] `ElmDivider`
 - [ ] `ElmFragmentIdentifier`
 - [ ] `ElmHeading`
-- [ ] `ElmInlineText`
+- [x] `ElmInlineText`
 - [ ] `ElmList`
 - [ ] `ElmParagraph`
 
@@ -96,7 +96,7 @@ Icons and visual samples:
 
 - [ ] `ElmDotLoadingIcon`
 - [ ] `ElmSquareLoadingIcon`
-- [ ] `ElmInlineIcon`
+- [x] `ElmInlineIcon`
 - [ ] `ElmMdiIcon`
 - [ ] `ElmLanguageIcon`
 - [ ] `ElmColorPrimitiveSample`

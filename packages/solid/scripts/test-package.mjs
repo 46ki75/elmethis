@@ -123,10 +123,12 @@ console.log(import.meta.resolve("@elmethis/solid/style.css"));
 
   await write(
     "src/esm.js",
-    `import { ElmDivider } from "@elmethis/solid";
+    `import { ElmDivider, ElmInlineIcon, ElmInlineText } from "@elmethis/solid";
 import "@elmethis/solid/style.css";
 if (typeof ElmDivider !== "function") throw new Error("Missing ElmDivider ESM export");
-export { ElmDivider };
+if (typeof ElmInlineIcon !== "function") throw new Error("Missing ElmInlineIcon ESM export");
+if (typeof ElmInlineText !== "function") throw new Error("Missing ElmInlineText ESM export");
+export { ElmDivider, ElmInlineIcon, ElmInlineText };
 `,
   );
   await write(
@@ -155,11 +157,11 @@ export default defineConfig({
   await write(
     "src/client.tsx",
     `import { render } from "solid-js/web";
-import { ElmDivider } from "@elmethis/solid";
+import { ElmDivider, ElmInlineText } from "@elmethis/solid";
 import "@elmethis/solid/style.css";
 const root = document.querySelector<HTMLDivElement>("#app");
 if (!root) throw new Error("Missing app root");
-render(() => <ElmDivider data-package-smoke="client" />, root);
+render(() => <><ElmInlineText>client</ElmInlineText><ElmDivider data-package-smoke="client" /></>, root);
 `,
   );
   await write(
@@ -183,8 +185,8 @@ export default defineConfig({
   await write(
     "src/server.tsx",
     `import { renderToString } from "solid-js/web";
-import { ElmDivider } from "@elmethis/solid";
-const html = renderToString(() => <ElmDivider data-package-smoke="ssr" />);
+import { ElmDivider, ElmInlineText } from "@elmethis/solid";
+const html = renderToString(() => <><ElmInlineText bold>ssr</ElmInlineText><ElmDivider data-package-smoke="ssr" /></>);
 if (!html.includes("<hr") || !html.includes("data-package-smoke") || !html.includes("ssr")) {
   throw new Error(\`Unexpected SSR output: \${html}\`);
 }
@@ -234,15 +236,26 @@ if (!entry.replaceAll("\\\\", "/").endsWith("/lib/index.solid.cjs")) {
 }
 const library = require("@elmethis/solid");
 if (typeof library.ElmDivider !== "function") throw new Error("Missing ElmDivider CJS export");
+if (typeof library.ElmInlineIcon !== "function") throw new Error("Missing ElmInlineIcon CJS export");
+if (typeof library.ElmInlineText !== "function") throw new Error("Missing ElmInlineText CJS export");
 `,
   );
   await run(process.execPath, ["--conditions=browser", "cjs-smoke.mjs"]);
 
   await write(
     "src/types.tsx",
-    `import { ElmDivider, type ElmDividerProps } from "@elmethis/solid";
+    `import {
+  ElmDivider,
+  ElmInlineIcon,
+  ElmInlineText,
+  type ElmDividerProps,
+  type ElmInlineIconProps,
+  type ElmInlineTextProps,
+} from "@elmethis/solid";
 const props: ElmDividerProps = { class: "consumer", "aria-label": "Divider" };
-export const divider = <ElmDivider {...props} />;
+const iconProps: ElmInlineIconProps = { src: "icon.svg", alt: "Icon" };
+const textProps: ElmInlineTextProps = { bold: true, color: "red" };
+export const components = <><ElmInlineText {...textProps}>Text</ElmInlineText><ElmInlineIcon {...iconProps} /><ElmDivider {...props} /></>;
 `,
   );
   await write(
@@ -275,6 +288,8 @@ export const divider = <ElmDivider {...props} />;
   );
   if (
     !packedStyle.includes("elm-divider") ||
+    !packedStyle.includes("elm-inline-icon") ||
+    !packedStyle.includes("elm-inline-text") ||
     !packedStyle.includes("--elmethis-color-primary")
   ) {
     throw new Error("Packed style.css does not contain ElmDivider styles");
