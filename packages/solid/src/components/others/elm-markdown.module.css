@@ -1,0 +1,6 @@
+.elm-markdown {
+  all: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: var(--elmethis-stack-gap);
+}

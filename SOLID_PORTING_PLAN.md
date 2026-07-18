@@ -16,7 +16,7 @@ fine-grained reactivity and Solid-native component patterns.
 ## Current State
 
 - `@elmethis/react` exports 57 components across 12 component groups.
-- `@elmethis/solid` currently exports 47 components, leaving 10 components to port.
+- `@elmethis/solid` currently exports 50 components, leaving 7 components to port.
 - React also exports hooks and utilities required by several components. Required dependencies must
   be ported alongside the component work even if full hook parity is handled separately.
 - Solid has CSR, SSR, and real-browser Vitest layers in place. `ElmDivider` is the reference for
@@ -178,9 +178,9 @@ Selection controls:
 
 Follow dependency order so higher-level renderers use completed leaf components:
 
-- [ ] `ElmShikiHighlighter`
-- [ ] `ElmCodeBlock`
-- [ ] `ElmMarkdown`
+- [x] `ElmShikiHighlighter`
+- [x] `ElmCodeBlock`
+- [x] `ElmMarkdown`
 
 `ElmMarkdown` comes after tables, modal/image behavior, code rendering, typography, and navigation
 are available. Replace React memoization and recursive rendering assumptions with Solid memos,

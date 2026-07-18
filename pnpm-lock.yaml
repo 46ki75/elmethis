@@ -517,6 +517,9 @@ importers:
 
   packages/solid:
     dependencies:
+      '@46ki75/ikuma-theme':
+        specifier: ^0.0.10
+        version: 0.0.10
       '@elmethis/core':
         specifier: workspace:^
         version: link:../core
@@ -532,6 +535,12 @@ importers:
       katex:
         specifier: ^0.17.0
         version: 0.17.0
+      marked:
+        specifier: ^18.0.6
+        version: 18.0.6
+      shiki:
+        specifier: ^4.3.1
+        version: 4.3.1
     devDependencies:
       '@eslint/js':
         specifier: latest
@@ -12631,7 +12640,7 @@ snapshots:
       sirv: 3.0.2
       tinyglobby: 0.2.17
       tinyrainbow: 3.1.0
-      vitest: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@26.1.1)(@vitest/browser-playwright@4.1.10)(@vitest/coverage-istanbul@4.1.8)(@vitest/coverage-v8@4.1.10)(@vitest/ui@4.1.10)(happy-dom@20.10.6)(vite@8.0.7(@types/node@26.1.1)(esbuild@0.28.1)(jiti@2.4.2)(sass@1.101.0)(terser@5.39.0)(tsx@4.23.1)(yaml@2.8.3))
+      vitest: 4.1.8(@opentelemetry/api@1.9.1)(@types/node@26.1.1)(@vitest/browser-playwright@4.1.10)(@vitest/coverage-istanbul@4.1.10)(@vitest/coverage-v8@4.1.10)(@vitest/ui@4.1.10)(happy-dom@20.10.6)(vite@7.3.5(@types/node@26.1.1)(jiti@2.4.2)(lightningcss@1.32.0)(sass@1.101.0)(terser@5.39.0)(tsx@4.23.1)(yaml@2.8.3))
 
   '@vitest/ui@4.1.8(vitest@4.1.8)':
     dependencies:

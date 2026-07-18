@@ -1,0 +1,25 @@
+.elm-shiki-highlighter {
+  font-size: 1rem;
+  line-height: 1.5rem;
+
+  :global(.shiki),
+  :global(.shiki span) {
+    font-family: var(
+      --elmethis-scoped-font-family,
+      var(--elmethis-font-family-monospace)
+    ) !important;
+
+    /* Shiki emits these properties because defaultColor is disabled. */
+    /* stylelint-disable csstools/value-no-unknown-custom-properties */
+    color: light-dark(var(--shiki-light), var(--shiki-dark)) !important;
+    background-color: light-dark(
+      var(--shiki-light-bg),
+      var(--shiki-dark-bg)
+    ) !important;
+    /* stylelint-enable csstools/value-no-unknown-custom-properties */
+
+    &::selection {
+      background-color: oklch(from #cdb57b l c h / 25%);
+    }
+  }
+}

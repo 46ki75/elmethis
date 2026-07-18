@@ -216,3 +216,15 @@ export {
   type CreateModalOptions,
   type CreateModalReturn,
 } from "./primitives/create-modal.jsx";
+export {
+  ElmCodeBlock,
+  type ElmCodeBlockProps,
+} from "./components/code/elm-code-block.jsx";
+export {
+  ElmShikiHighlighter,
+  type ElmShikiHighlighterProps,
+} from "./components/code/elm-shiki-highlighter.jsx";
+export {
+  ElmMarkdown,
+  type ElmMarkdownProps,
+} from "./components/others/elm-markdown.jsx";
