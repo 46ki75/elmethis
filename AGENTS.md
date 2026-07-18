@@ -2,16 +2,11 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-> **Temporary SolidJS porting note:** While component parity work is in progress, follow
-> [`SOLID_PORTING_PLAN.md`](./SOLID_PORTING_PLAN.md) for port order, compatibility requirements,
-> testing expectations, and completion tracking. Remove this note when the plan is completed or
-> replaced by permanent documentation.
-
 # elmethis
 
 A multi-framework component library / design system ("Elmethis Theme"), published to npm as
-`@elmethis/*`. One framework-agnostic core feeds Qwik, React, Solid, and Vue implementations. The
-Qwik, React, and Vue libraries are each shipped as a Storybook to GitHub Pages.
+`@elmethis/*`. One framework-agnostic core feeds Qwik, React, Solid, and Vue implementations. All
+four framework libraries are shipped as Storybooks to GitHub Pages.
 
 ## Packages
 
@@ -20,7 +15,7 @@ Qwik, React, and Vue libraries are each shipped as a Storybook to GitHub Pages.
 | `@elmethis/core`       | `packages/core`        | yes           | Framework-agnostic hub: shared Zod schemas/types, design tokens, A2UI catalogs, language icons. Every framework lib depends on it (`workspace:^`). |
 | `@elmethis/qwik`       | `packages/qwik`        | yes           | Qwik 2 implementation. Components + hooks. Storybook :19211                                                                                        |
 | `@elmethis/react`      | `packages/react`       | yes           | React 19 implementation; same component surface as qwik/vue. Storybook :19221                                                                      |
-| `@elmethis/solid`      | `packages/solid`       | yes           | SolidJS implementation. Components are added as they are ported. Storybook :19241                                                                  |
+| `@elmethis/solid`      | `packages/solid`       | yes           | SolidJS implementation with component parity and Solid-native primitives. Storybook :19241                                                         |
 | `@elmethis/vue`        | `packages/vue`         | yes           | Vue 3 implementation (authored in TSX); same component surface as qwik/react. Storybook :19231                                                     |
 | `ikuma-theme`          | `packages/ikuma-theme` | VS Code / npm | VS Code dark/light extension; generates the published `@46ki75/ikuma-theme` Shiki package and Windows Terminal scheme                              |
 | `@elmethis/ag-ui-stub` | `packages/ag-ui-stub`  | no (private)  | Deterministic, LLM-free AG-UI test-double server (Hono :19103)                                                                                     |
@@ -66,9 +61,9 @@ runs eslint / stylelint / vitest-related per package.
   recent components (`ElmButtonDropdown`, `ElmHtml`, `ElmSlider`) landed in react first and were
   ported to qwik/vue afterward. Check `git log` for a component before assuming which framework is
   its source of truth.
-- **Three Storybooks → one GitHub Pages site.** `pages-deploy.yml` builds core, then each Storybook,
-  and assembles them under `/qwik`, `/react`, `/vue` (plus the A2UI catalog JSON). Deploys on push
-  to `main`.
+- **Four Storybooks to one GitHub Pages site.** `pages-deploy.yml` builds core, then each Storybook,
+  and assembles them under `/qwik`, `/react`, `/solid`, and `/vue` (plus the A2UI catalog JSON).
+  Deploys on push to `main`.
 - **Ikuma Theme has two distribution targets.** Its unscoped package manifest is the VS Code
   extension (`46ki75.ikuma-theme`); `scripts/build-npm.ts` emits the separately published scoped
   Shiki package (`@46ki75/ikuma-theme`) under `dist/npm`. The framework libraries currently consume

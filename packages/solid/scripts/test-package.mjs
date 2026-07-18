@@ -123,14 +123,18 @@ console.log(import.meta.resolve("@elmethis/solid/style.css"));
 
   await write(
     "src/esm.js",
-    `import { createClipboard, createControllableSignal, ElmDivider, ElmInlineIcon, ElmInlineText } from "@elmethis/solid";
+    `import { A2uiSurface, basicCatalog, CatalogRenderer, createClipboard, createControllableSignal, ElmA2ui, ElmDivider, ElmInlineIcon, ElmInlineText, notionBlockCatalog } from "@elmethis/solid";
 import "@elmethis/solid/style.css";
+if (typeof A2uiSurface !== "function") throw new Error("Missing A2uiSurface ESM export");
+if (!(basicCatalog instanceof CatalogRenderer)) throw new Error("Invalid basicCatalog ESM export");
 if (typeof createClipboard !== "function") throw new Error("Missing createClipboard ESM export");
 if (typeof createControllableSignal !== "function") throw new Error("Missing createControllableSignal ESM export");
+if (typeof ElmA2ui !== "function") throw new Error("Missing ElmA2ui ESM export");
 if (typeof ElmDivider !== "function") throw new Error("Missing ElmDivider ESM export");
 if (typeof ElmInlineIcon !== "function") throw new Error("Missing ElmInlineIcon ESM export");
 if (typeof ElmInlineText !== "function") throw new Error("Missing ElmInlineText ESM export");
-export { createClipboard, createControllableSignal, ElmDivider, ElmInlineIcon, ElmInlineText };
+if (!(notionBlockCatalog instanceof CatalogRenderer)) throw new Error("Invalid notionBlockCatalog ESM export");
+export { A2uiSurface, basicCatalog, CatalogRenderer, createClipboard, createControllableSignal, ElmA2ui, ElmDivider, ElmInlineIcon, ElmInlineText, notionBlockCatalog };
 `,
   );
   await write(
@@ -187,9 +191,9 @@ export default defineConfig({
   await write(
     "src/server.tsx",
     `import { renderToString } from "solid-js/web";
-import { ElmDivider, ElmInlineText } from "@elmethis/solid";
-const html = renderToString(() => <><ElmInlineText bold>ssr</ElmInlineText><ElmDivider data-package-smoke="ssr" /></>);
-if (!html.includes("<hr") || !html.includes("data-package-smoke") || !html.includes("ssr")) {
+import { ElmA2ui, ElmDivider, ElmInlineText } from "@elmethis/solid";
+const html = renderToString(() => <><ElmInlineText bold>ssr</ElmInlineText><ElmDivider data-package-smoke="ssr" /><ElmA2ui messages={[]} /></>);
+if (!html.includes("<hr") || !html.includes("data-package-smoke") || !html.includes("elm-a2ui") || !html.includes("ssr")) {
   throw new Error(\`Unexpected SSR output: \${html}\`);
 }
 console.log(html);
@@ -237,11 +241,15 @@ if (!entry.replaceAll("\\\\", "/").endsWith("/lib/index.solid.cjs")) {
   throw new Error(\`CommonJS resolved to \${entry}\`);
 }
 const library = require("@elmethis/solid");
+if (typeof library.A2uiSurface !== "function") throw new Error("Missing A2uiSurface CJS export");
+if (!(library.basicCatalog instanceof library.CatalogRenderer)) throw new Error("Invalid basicCatalog CJS export");
 if (typeof library.createClipboard !== "function") throw new Error("Missing createClipboard CJS export");
 if (typeof library.createControllableSignal !== "function") throw new Error("Missing createControllableSignal CJS export");
+if (typeof library.ElmA2ui !== "function") throw new Error("Missing ElmA2ui CJS export");
 if (typeof library.ElmDivider !== "function") throw new Error("Missing ElmDivider CJS export");
 if (typeof library.ElmInlineIcon !== "function") throw new Error("Missing ElmInlineIcon CJS export");
 if (typeof library.ElmInlineText !== "function") throw new Error("Missing ElmInlineText CJS export");
+if (!(library.notionBlockCatalog instanceof library.CatalogRenderer)) throw new Error("Invalid notionBlockCatalog CJS export");
 `,
   );
   await run(process.execPath, ["--conditions=browser", "cjs-smoke.mjs"]);
@@ -249,17 +257,31 @@ if (typeof library.ElmInlineText !== "function") throw new Error("Missing ElmInl
   await write(
     "src/types.tsx",
     `import {
+  A2uiSurface,
+  basicCatalog,
+  CatalogRenderer,
   createControllableSignal,
   createClipboard,
+  ElmA2ui,
   ElmDivider,
   ElmInlineIcon,
   ElmInlineText,
+  notionBlockCatalog,
+  type ElmA2uiProps,
+  type RendererEntry,
   type CreateControllableSignalOptions,
   type CreateClipboardOptions,
   type ElmDividerProps,
   type ElmInlineIconProps,
   type ElmInlineTextProps,
 } from "@elmethis/solid";
+const a2uiProps: ElmA2uiProps = { messages: [], catalog: notionBlockCatalog };
+const renderer: RendererEntry | undefined = basicCatalog.get("Text");
+void A2uiSurface;
+void CatalogRenderer;
+void ElmA2ui;
+void a2uiProps;
+void renderer;
 const clipboardOptions: CreateClipboardOptions = { content: "copy" };
 void createClipboard;
 void clipboardOptions;

@@ -19,6 +19,7 @@
       "allowedVersions": {
         "@qwik.dev/core>vitest": "4",
         "@qwik.dev/router>vitest": "4",
+        "@a2ui/markdown-it>@a2ui/web_core": "0.10",
         "eslint-plugin-solid>eslint": "10"
       }
     }

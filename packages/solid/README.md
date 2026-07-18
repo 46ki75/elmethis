@@ -1,9 +1,11 @@
 # @elmethis/solid
 
-SolidJS component library for elmethis.
+SolidJS component library for Elmethis. It implements the complete 57-component
+surface shared with `@elmethis/react` using Solid-native reactivity, ownership,
+and DOM conventions.
 
-Components are ported into `src` and exported from `src/index.ts`. Design tokens
-come from `@elmethis/core`.
+Components live under `src/components` and the public inventory is maintained in
+`src/exports.ts`. Design tokens and shared schemas come from `@elmethis/core`.
 
 ```tsx
 import { ElmDivider } from "@elmethis/solid";
@@ -11,6 +13,43 @@ import "@elmethis/solid/style.css";
 
 <ElmDivider />;
 ```
+
+## Framework Differences
+
+- Solid reactive utilities use `create*` names and return accessors rather than
+  reproducing React hook shapes.
+- Public table context values are accessors. Call the context value to read the
+  current section or row-header state.
+- `ElmCopyIcon` forwards native button attributes in addition to its shared
+  semantic props.
+- `ElmA2ui` accepts a paired `catalog` rather than React's `components` array.
+
+## A2UI
+
+`ElmA2ui` preserves the existing A2UI v0.9 wire protocol and uses the
+framework-neutral `@a2ui/web_core/v0_9` processor. It does not depend on the
+React adapter. Pre-collected messages take precedence over a JSONL `url`.
+
+```tsx
+import { ElmA2ui, defineRenderer, notionBlockCatalog } from "@elmethis/solid";
+import { RichTextApi } from "@elmethis/core";
+
+const catalog = notionBlockCatalog.extend(
+  defineRenderer(RichTextApi, ({ props }) => <mark>{props.text}</mark>),
+);
+
+<ElmA2ui messages={messages} catalog={catalog} />;
+```
+
+`notionBlockCatalog` is the default and includes the Elmethis Notion block
+renderers. `basicCatalog` provides only the official basic component set.
+`CatalogRenderer.extend()` is immutable; component and function definitions
+from later catalogs replace definitions with the same name while preserving
+the rest of the base catalog.
+
+The low-level `A2uiSurface`, `ComponentHost`, contexts, `CatalogRenderer`,
+`defineRenderer`, and renderer argument types are public for custom hosts and
+catalogs. Most consumers only need `ElmA2ui` and one of the provided catalogs.
 
 ## Controllable State
 
@@ -42,6 +81,10 @@ copying React hook return shapes:
 - `ThrottledQueue` and `createThrottledQueue`
 - `createAsyncState`
 - `createAutoAnimate`
+- `createModal`
+
+Supporting option, controller, and return types are exported with each public
+primitive.
 
 Browser integrations initialize under a Solid owner and clean up timers,
 listeners, observers, channels, and controllers when that owner is disposed.

@@ -1,10 +1,11 @@
-# React to Solid Component Porting Plan
+# Solid Component Parity and Maintenance
 
 ## Status
 
-This is the working plan for bringing `@elmethis/solid` to component parity with
-`@elmethis/react`. Remove this file and the temporary reference in `AGENTS.md` when the port is
-complete or replace them with permanent maintenance documentation.
+The initial React-to-Solid port was completed on July 19, 2026. This document
+now records the compatibility contract, implementation sequence, and checks to
+use when maintaining parity. The temporary porting note has been removed from
+`AGENTS.md`.
 
 ## Objective
 
@@ -16,16 +17,16 @@ fine-grained reactivity and Solid-native component patterns.
 ## Current State
 
 - `@elmethis/react` exports 57 components across 12 component groups.
-- `@elmethis/solid` currently exports 56 components, leaving `ElmA2ui` to port.
-- React also exports hooks and utilities required by several components. Required dependencies must
-  be ported alongside the component work even if full hook parity is handled separately.
+- `@elmethis/solid` exports all 57 components in the React component surface.
+- React also exports hooks and utilities required by several components. Solid exposes the required
+  behavior through framework-native `create*` primitives rather than React-compatible `use*` APIs.
 - Solid has CSR, SSR, and real-browser Vitest layers in place. `ElmDivider` is the reference for
   source layout, native prop forwarding, reactive class updates, stories, and tests.
 
 The authoritative public API inventories are:
 
 - `packages/react/src/index.ts`
-- `packages/solid/src/index.ts`
+- `packages/solid/src/exports.ts`
 
 ## Compatibility Contract
 
@@ -207,22 +208,25 @@ synchronization, ResizeObserver cleanup, keyboard interaction, and native value/
 Port A2UI last because its catalog depends on most of the component library and the current renderer
 uses React-specific bindings.
 
-- [x] Preserve the existing v0.9 wire protocol and use `@a2ui/web_core@^0.10.0` through its
+- [x] Preserve the existing v0.9 wire protocol and use `@a2ui/web_core@^0.10.5` through its
       framework-neutral `/v0_9` APIs. Do not combine the Solid port with a v1.0 protocol migration.
-- [ ] Resolve the current `@a2ui/web_core` version mismatch across packages.
-- [ ] Reuse the framework-neutral `MessageProcessor`, surface model, data model, and catalog schemas.
-- [ ] Implement a Solid renderer/binder rather than depending on `@a2ui/react`.
-- [ ] Port the Notion block component registrations and functions.
-- [ ] Port JSONL streaming, incremental message handling, cancellation, subscriptions, surface
+- [x] Align direct `@a2ui/web_core` dependencies on `^0.10.5` and update the official React adapter
+      to `@a2ui/react@^0.10.2`; all framework implementations continue using `/v0_9` APIs. A
+      scoped pnpm allowance covers the adapter's stale `@a2ui/markdown-it@0.0.3` peer declaration,
+      and React peers are aligned to the adapter's `^19.2.7` requirement.
+- [x] Reuse the framework-neutral `MessageProcessor`, surface model, data model, and catalog schemas.
+- [x] Implement a Solid renderer/binder rather than depending on `@a2ui/react`.
+- [x] Port the Notion block component registrations and functions.
+- [x] Port JSONL streaming, incremental message handling, cancellation, subscriptions, surface
       creation, and surface cleanup.
-- [ ] Port `ElmA2ui` and its public catalog exports.
-- [ ] Verify catalog negotiation, unsupported-component degradation, action dispatch, data binding,
+- [x] Port `ElmA2ui` and its public catalog exports.
+- [x] Verify catalog negotiation, unsupported-component degradation, action dispatch, data binding,
       and lifecycle cleanup in unit and browser tests.
 
 Do not combine an A2UI protocol migration with the framework port unless explicitly planned. First
 preserve the existing wire behavior or establish a separate migration plan.
 
-## Component Workflow
+## Parity Workflow
 
 Use this workflow for every component or tightly coupled component cluster:
 
@@ -231,7 +235,7 @@ Use this workflow for every component or tightly coupled component cluster:
 3. Write down the public behavior and framework-specific differences before editing.
 4. Port or reuse CSS without changing visual behavior unintentionally.
 5. Implement the smallest idiomatic Solid component that satisfies the contract.
-6. Add the public component and types to `packages/solid/src/index.ts`.
+6. Add the public component and types to `packages/solid/src/exports.ts`.
 7. Port the Storybook story and applicable CSR, SSR, and browser tests.
 8. Run the package checks before committing the vertical slice.
 
@@ -278,12 +282,14 @@ pnpm --filter @elmethis/solid run build-storybook
 
 The port is complete when:
 
-- [ ] Every intended React component export has a Solid counterpart or a documented exclusion.
-- [ ] Required public types, contexts, catalog values, and component-supporting utilities are
+- [x] Every intended React component export has a Solid counterpart or a documented exclusion.
+- [x] Required public types, contexts, catalog values, and component-supporting utilities are
       exported.
-- [ ] Intentional framework API differences are documented.
-- [ ] CSR, SSR, browser, coverage, typecheck, package build, and Storybook build pass in CI.
+- [x] Intentional framework API differences are documented in `packages/solid/README.md`.
+- [x] CSR, SSR, browser, coverage, typecheck, package build, and Storybook build pass in the final
+      local CI-equivalent matrix.
 - [x] Package-condition smoke tests pass for client and server consumers.
-- [ ] The Solid Storybook is deployed with the other framework Storybooks.
-- [ ] The temporary note in `AGENTS.md` and this working plan are removed or converted into
-      permanent maintenance documentation.
+- [x] The Solid Storybook is included with the other framework Storybooks in the GitHub Pages
+      deployment workflow and site index.
+- [x] The temporary note in `AGENTS.md` is removed and this plan is retained as permanent parity
+      maintenance documentation.

@@ -257,3 +257,31 @@ export {
   type LetterStatus,
   type UseWordleOptions,
 } from "./components/others/use-wordle.jsx";
+export {
+  A2uiSurface,
+  ElmA2ui,
+  type A2uiSurfaceProps,
+  type ElmA2uiProps,
+} from "./components/a2ui/elm-a2ui.jsx";
+export {
+  A2uiCatalogContext,
+  A2uiSurfaceContext,
+  ComponentHost,
+  ROOT_COMPONENT_ID,
+  type ComponentHostProps,
+} from "./components/a2ui/component-host.jsx";
+export {
+  CatalogRenderer,
+  defineRenderer,
+  type ChildRef,
+  type RenderArgs,
+  type RenderFn,
+  type RendererEntry,
+  type SolidRendererEntry,
+} from "./components/a2ui/catalog/catalog.js";
+export { basicCatalog } from "./components/a2ui/catalog/basic-catalog.jsx";
+export {
+  notionBlockCatalog,
+  notionBlockComponents,
+  notionBlockFunctions,
+} from "./components/a2ui/catalog/notion-block-catalog.jsx";
