@@ -16,7 +16,8 @@ fine-grained reactivity and Solid-native component patterns.
 ## Current State
 
 - `@elmethis/react` exports 57 components across 12 component groups.
-- `@elmethis/solid` currently exports `ElmDivider`, leaving 56 components to port.
+- `@elmethis/solid` currently exports `ElmDivider`, `ElmInlineIcon`, and `ElmInlineText`, leaving 54
+  components to port.
 - React also exports hooks and utilities required by several components. Required dependencies must
   be ported alongside the component work even if full hook parity is handled separately.
 - Solid has CSR, SSR, and real-browser Vitest layers in place. `ElmDivider` is the reference for
