@@ -74,13 +74,15 @@
     "@mdi/js": "^7.4.47",
     "@elmethis/core": "workspace:^",
     "@formkit/auto-animate": "^0.10.0",
-    "clsx": "^2.1.1"
+    "clsx": "^2.1.1",
+    "katex": "^0.17.0"
   },
   "devDependencies": {
     "@eslint/js": "latest",
     "@solidjs/testing-library": "^0.8.10",
     "@storybook/addon-docs": "^10.5.2",
     "@testing-library/jest-dom": "^6.9.1",
+    "@types/katex": "^0.16.8",
     "@types/node": "^26.1.1",
     "@vitest/browser-playwright": "4.1.10",
     "@vitest/coverage-v8": "4.1.10",

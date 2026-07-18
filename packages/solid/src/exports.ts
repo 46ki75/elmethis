@@ -11,9 +11,25 @@ export {
   type ElmUnsupportedBlockProps,
 } from "./components/fallback/elm-unsupported-block.jsx";
 export {
+  ElmButton,
+  type ElmButtonProps,
+} from "./components/form/elm-button.jsx";
+export {
+  ElmCheckbox,
+  type ElmCheckboxProps,
+} from "./components/form/elm-checkbox.jsx";
+export {
+  ElmSwitch,
+  type ElmSwitchProps,
+} from "./components/form/elm-switch.jsx";
+export {
   ElmValidation,
   type ElmValidationProps,
 } from "./components/form/elm-validation.jsx";
+export {
+  ElmCopyIcon,
+  type ElmCopyIconProps,
+} from "./components/icon/elm-copy-icon.jsx";
 export {
   ElmDotLoadingIcon,
   type ElmDotLoadingIconProps,
@@ -34,6 +50,23 @@ export {
   ElmSquareLoadingIcon,
   type ElmSquareLoadingIconProps,
 } from "./components/icon/elm-square-loading-icon.jsx";
+export {
+  ElmToggleTheme,
+  type ElmToggleThemeProps,
+} from "./components/icon/elm-toggle-theme.jsx";
+export { ElmFile, type ElmFileProps } from "./components/media/elm-file.jsx";
+export {
+  ElmBookmark,
+  type ElmBookmarkProps,
+} from "./components/navigation/elm-bookmark.jsx";
+export {
+  ElmBreadcrumb,
+  type ElmBreadcrumbProps,
+} from "./components/navigation/elm-breadcrumb.jsx";
+export {
+  ElmPageTop,
+  type ElmPageTopProps,
+} from "./components/navigation/elm-page-top.jsx";
 export {
   ElmNotionCallout,
   type ElmNotionCalloutProps,
@@ -132,3 +165,12 @@ export {
   createThrottledQueue,
   ThrottledQueue,
 } from "./primitives/create-throttled-queue.js";
+export { ElmKatex, type ElmKatexProps } from "./components/code/elm-katex.jsx";
+export {
+  ElmCollapse,
+  type ElmCollapseProps,
+} from "./components/containments/elm-collapse.jsx";
+export {
+  ElmParallax,
+  type ElmParallaxProps,
+} from "./components/containments/elm-parallax.jsx";
