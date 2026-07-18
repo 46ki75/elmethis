@@ -6,6 +6,7 @@ import {
   splitProps,
   type JSX,
 } from "solid-js";
+import { clsx } from "clsx";
 
 import styles from "./elm-parallax.module.css";
 
@@ -25,7 +26,7 @@ export const ElmParallax = (props: ElmParallaxProps) => {
   });
 
   return (
-    <div class={local.class} {...rest}>
+    <div class={clsx(styles["elm-parallax"], local.class)} {...rest}>
       <div class={styles["parallax-watcher"]} />
       <For each={local.images}>
         {(image, index) => (
@@ -33,7 +34,7 @@ export const ElmParallax = (props: ElmParallaxProps) => {
             aria-hidden="true"
             class={styles.parallax}
             style={{
-              "background-image": `url(${image})`,
+              "background-image": `url(${JSON.stringify(image)})`,
               transform: `scale(1.2) translateY(${scrollY() / (1000 * (index() + 1))}%)`,
               "transform-origin": "bottom",
             }}
