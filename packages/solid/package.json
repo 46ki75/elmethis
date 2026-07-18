@@ -73,6 +73,7 @@
   "dependencies": {
     "@mdi/js": "^7.4.47",
     "@elmethis/core": "workspace:^",
+    "@formkit/auto-animate": "^0.10.0",
     "clsx": "^2.1.1"
   },
   "devDependencies": {

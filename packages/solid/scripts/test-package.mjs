@@ -123,13 +123,14 @@ console.log(import.meta.resolve("@elmethis/solid/style.css"));
 
   await write(
     "src/esm.js",
-    `import { createControllableSignal, ElmDivider, ElmInlineIcon, ElmInlineText } from "@elmethis/solid";
+    `import { createClipboard, createControllableSignal, ElmDivider, ElmInlineIcon, ElmInlineText } from "@elmethis/solid";
 import "@elmethis/solid/style.css";
+if (typeof createClipboard !== "function") throw new Error("Missing createClipboard ESM export");
 if (typeof createControllableSignal !== "function") throw new Error("Missing createControllableSignal ESM export");
 if (typeof ElmDivider !== "function") throw new Error("Missing ElmDivider ESM export");
 if (typeof ElmInlineIcon !== "function") throw new Error("Missing ElmInlineIcon ESM export");
 if (typeof ElmInlineText !== "function") throw new Error("Missing ElmInlineText ESM export");
-export { createControllableSignal, ElmDivider, ElmInlineIcon, ElmInlineText };
+export { createClipboard, createControllableSignal, ElmDivider, ElmInlineIcon, ElmInlineText };
 `,
   );
   await write(
@@ -236,6 +237,7 @@ if (!entry.replaceAll("\\\\", "/").endsWith("/lib/index.solid.cjs")) {
   throw new Error(\`CommonJS resolved to \${entry}\`);
 }
 const library = require("@elmethis/solid");
+if (typeof library.createClipboard !== "function") throw new Error("Missing createClipboard CJS export");
 if (typeof library.createControllableSignal !== "function") throw new Error("Missing createControllableSignal CJS export");
 if (typeof library.ElmDivider !== "function") throw new Error("Missing ElmDivider CJS export");
 if (typeof library.ElmInlineIcon !== "function") throw new Error("Missing ElmInlineIcon CJS export");
@@ -248,14 +250,19 @@ if (typeof library.ElmInlineText !== "function") throw new Error("Missing ElmInl
     "src/types.tsx",
     `import {
   createControllableSignal,
+  createClipboard,
   ElmDivider,
   ElmInlineIcon,
   ElmInlineText,
   type CreateControllableSignalOptions,
+  type CreateClipboardOptions,
   type ElmDividerProps,
   type ElmInlineIconProps,
   type ElmInlineTextProps,
 } from "@elmethis/solid";
+const clipboardOptions: CreateClipboardOptions = { content: "copy" };
+void createClipboard;
+void clipboardOptions;
 const props: ElmDividerProps = { class: "consumer", "aria-label": "Divider" };
 const iconProps: ElmInlineIconProps = { src: "icon.svg", alt: "Icon" };
 const textProps: ElmInlineTextProps = { bold: true, color: "red" };

@@ -109,15 +109,20 @@ Icons and visual samples:
 Implement the reusable Solid foundations needed by interactive components:
 
 - [x] Controlled/uncontrolled signal helper with updater callback support.
-- [ ] Controlled/uncontrolled store helper where structural state requires it.
-- [ ] Clipboard integration.
-- [ ] Theme parsing, observation, and `THEME_CHANGE_EVENT` support.
-- [ ] Local and session storage synchronization with SSR-safe initialization.
-- [ ] Delay, debounce, throttle, queue, and async-state primitives.
-- [ ] Framework-neutral Auto Animate integration.
+- [x] No generic controlled/uncontrolled store helper is required. Controlled structural snapshots
+      use `createControllableSignal<T>`; internal fine-grained structures use Solid stores. Revisit
+      only when a concrete parent-owned path-update contract exists.
+- [x] Clipboard integration.
+- [x] Theme parsing, observation, and `THEME_CHANGE_EVENT` support.
+- [x] Local and session storage synchronization with SSR-safe initialization.
+- [x] Delay, debounce, throttle, queue, and async-state primitives.
+- [x] Framework-neutral Auto Animate integration.
 
 Preserve public hook names only when public cross-framework parity requires them. Internal helpers
 should use Solid-appropriate APIs and naming rather than reproducing React hook mechanics.
+
+Solid exposes these primitives with `create*` names and accessor-based return values. It does not
+provide React-style `use*` aliases or duplicate scalar utilities with store-specific variants.
 
 ## Phase 3: Simple Interaction
 

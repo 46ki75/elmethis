@@ -82,6 +82,53 @@ export {
   type ElmParagraphProps,
 } from "./components/typography/elm-paragraph.jsx";
 export {
+  createAsyncState,
+  type CreateAsyncStateOptions,
+  type CreateAsyncStateReturn,
+} from "./primitives/create-async-state.js";
+export {
+  createAutoAnimate,
+  type CreateAutoAnimateOptions,
+  type CreateAutoAnimateResult,
+} from "./primitives/create-auto-animate.js";
+export {
+  createClipboard,
+  type ClipboardContent,
+  type ClipboardController,
+  type ClipboardItemContent,
+  type CreateClipboardOptions,
+} from "./primitives/create-clipboard.js";
+export {
   createControllableSignal,
   type CreateControllableSignalOptions,
 } from "./primitives/create-controllable-signal.js";
+export {
+  createDebounced,
+  type CreateDebouncedReturn,
+} from "./primitives/create-debounced.js";
+export {
+  createDelayedSignal,
+  type CreateDelayedSignalReturn,
+} from "./primitives/create-delayed-signal.js";
+export {
+  createElmethisTheme,
+  THEME_CHANGE_EVENT,
+  type ElmethisTheme,
+  type ElmethisThemeController,
+} from "./primitives/create-elmethis-theme.js";
+export {
+  createLocalStorage,
+  createSessionStorage,
+  type CreateLocalStorageOptions,
+  type CreateSessionStorageOptions,
+  type CreateStorageOptions,
+  type StorageController,
+} from "./primitives/create-storage.js";
+export {
+  createThrottled,
+  type CreateThrottledReturn,
+} from "./primitives/create-throttled.js";
+export {
+  createThrottledQueue,
+  ThrottledQueue,
+} from "./primitives/create-throttled-queue.js";

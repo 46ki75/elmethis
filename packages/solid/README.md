@@ -30,6 +30,22 @@ const [value, setValue] = createControllableSignal({
 Only `undefined` selects uncontrolled mode. Controlled writes notify
 `onChange`; uncontrolled writes update internal state and notify `onChange`.
 
+## Reactive Primitives
+
+Solid-native utilities use `create*` names and expose accessors instead of
+copying React hook return shapes:
+
+- `createClipboard`
+- `createElmethisTheme` and `THEME_CHANGE_EVENT`
+- `createLocalStorage` and `createSessionStorage`
+- `createDelayedSignal`, `createDebounced`, and `createThrottled`
+- `ThrottledQueue` and `createThrottledQueue`
+- `createAsyncState`
+- `createAutoAnimate`
+
+Browser integrations initialize under a Solid owner and clean up timers,
+listeners, observers, channels, and controllers when that owner is disposed.
+
 ## Scripts
 
 | Script              | Purpose                                       |
