@@ -1,0 +1,75 @@
+{
+  "name": "@elmethis/solid",
+  "version": "0.1.0",
+  "description": "SolidJS component library for elmethis.",
+  "publishConfig": {
+    "access": "public"
+  },
+  "private": false,
+  "type": "module",
+  "author": "Ikuma Yamashita",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:46ki75/elmethis.git"
+  },
+  "homepage": "https://46ki75.github.io/elmethis",
+  "main": "./lib/index.solid.cjs",
+  "module": "./lib/index.solid.mjs",
+  "types": "./lib-types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib-types/index.d.ts",
+      "solid": "./lib-solid/index.js",
+      "import": {
+        "types": "./lib-types/index.d.ts",
+        "default": "./lib/index.solid.mjs"
+      },
+      "require": {
+        "types": "./lib-types/index.d.ts",
+        "default": "./lib/index.solid.cjs"
+      }
+    }
+  },
+  "files": [
+    "lib",
+    "lib-solid",
+    "lib-types"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "engines": {
+    "node": "^18.17.0 || ^20.3.0 || >=21.0.0"
+  },
+  "scripts": {
+    "build": "pnpm run build.lib && pnpm run build.solid && pnpm run build.types",
+    "build.lib": "vite build",
+    "build.solid": "tsc --project tsconfig.solid.json",
+    "build.types": "tsc --project tsconfig.lib.json",
+    "dev": "vite build --watch",
+    "fmt": "prettier --write ./src",
+    "fmt.check": "prettier --check ./src",
+    "lint": "eslint \"src/**/*.ts*\"",
+    "check": "concurrently -g \"pnpm:fmt.check\" \"pnpm:lint\" \"pnpm:build.types\"",
+    "prepublishOnly": "pnpm run build"
+  },
+  "peerDependencies": {
+    "solid-js": "^1.9.0"
+  },
+  "dependencies": {
+    "@elmethis/core": "workspace:^"
+  },
+  "devDependencies": {
+    "@eslint/js": "latest",
+    "@types/node": "^26.1.1",
+    "concurrently": "^10.0.3",
+    "eslint": "^10.7.0",
+    "globals": "^17.7.0",
+    "prettier": "3.9.5",
+    "solid-js": "^1.9.14",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.64.0",
+    "vite": "^8.0.4",
+    "vite-plugin-solid": "^2.11.12"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "declaration": false,
+    "outDir": "lib-solid",
+    "rootDir": "src",
+    "sourceMap": true
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "src/**/*.spec.ts",
+    "src/**/*.spec.tsx",
+    "src/**/*.browser.spec.tsx",
+    "src/**/*.stories.tsx"
+  ]
+}

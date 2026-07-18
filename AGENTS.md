@@ -5,8 +5,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 # elmethis
 
 A multi-framework component library / design system ("Elmethis Theme"), published to npm as
-`@elmethis/*`. One framework-agnostic core feeds three parallel component libraries (Qwik, React,
-Vue), each shipped as a Storybook to GitHub Pages.
+`@elmethis/*`. One framework-agnostic core feeds Qwik, React, Solid, and Vue implementations. The
+Qwik, React, and Vue libraries are each shipped as a Storybook to GitHub Pages.
 
 ## Packages
 
@@ -15,6 +15,7 @@ Vue), each shipped as a Storybook to GitHub Pages.
 | `@elmethis/core`       | `packages/core`        | yes           | Framework-agnostic hub: shared Zod schemas/types, design tokens, A2UI catalogs, language icons. Every framework lib depends on it (`workspace:^`). |
 | `@elmethis/qwik`       | `packages/qwik`        | yes           | Qwik 2 implementation. Components + hooks. Storybook :19211                                                                                        |
 | `@elmethis/react`      | `packages/react`       | yes           | React 19 implementation; same component surface as qwik/vue. Storybook :19221                                                                      |
+| `@elmethis/solid`      | `packages/solid`       | yes           | SolidJS implementation. Initial package scaffold; components are added as they are ported.                                                         |
 | `@elmethis/vue`        | `packages/vue`         | yes           | Vue 3 implementation (authored in TSX); same component surface as qwik/react. Storybook :19231                                                     |
 | `ikuma-theme`          | `packages/ikuma-theme` | VS Code / npm | VS Code dark/light extension; generates the published `@46ki75/ikuma-theme` Shiki package and Windows Terminal scheme                              |
 | `@elmethis/ag-ui-stub` | `packages/ag-ui-stub`  | no (private)  | Deterministic, LLM-free AG-UI test-double server (Hono :19103)                                                                                     |
@@ -26,7 +27,7 @@ Rust MCP server — no code yet.
 ## Commands
 
 Package manager is **pnpm** (`pnpm@9.12.3`); Node 22. Run scripts per-package with `--filter`, or
-`cd` into the package. **Build `@elmethis/core` before qwik/react/vue** — they import its built
+`cd` into the package. **Build `@elmethis/core` before qwik/react/solid/vue** — they import its built
 output and emitted `tokens.css`.
 
 | Command                                          | Description                                                     |
@@ -53,13 +54,13 @@ runs eslint / stylelint / vitest-related per package.
 
 - **core is the single source of truth.** Design tokens (`src/style/token.ts` → emitted
   `tokens.css`), A2UI Notion block catalogs, JSON schemas, and language-icon registries live here and
-  are consumed by all three framework libs — defined once, mirrored everywhere.
-- **Component leadership is per-feature, not fixed to one framework.** All three keep the same
-  component surface (same names, same props) per framework idiom, but which framework originates a
-  given component varies — qwik led the original recreation-wave surface, while several recent
-  components (`ElmButtonDropdown`, `ElmHtml`, `ElmSlider`) landed in react first and were ported to
-  qwik/vue afterward. Check `git log` for a component before assuming which framework is its source
-  of truth.
+  are consumed by all four framework libs — defined once, mirrored everywhere.
+- **Component leadership is per-feature, not fixed to one framework.** The mature implementations
+  keep the same component surface (same names, same props) per framework idiom, but which framework
+  originates a given component varies — qwik led the original recreation-wave surface, while several
+  recent components (`ElmButtonDropdown`, `ElmHtml`, `ElmSlider`) landed in react first and were
+  ported to qwik/vue afterward. Check `git log` for a component before assuming which framework is
+  its source of truth.
 - **Three Storybooks → one GitHub Pages site.** `pages-deploy.yml` builds core, then each Storybook,
   and assembles them under `/qwik`, `/react`, `/vue` (plus the A2UI catalog JSON). Deploys on push
   to `main`.
@@ -67,13 +68,13 @@ runs eslint / stylelint / vitest-related per package.
   extension (`46ki75.ikuma-theme`); `scripts/build-npm.ts` emits the separately published scoped
   Shiki package (`@46ki75/ikuma-theme`) under `dist/npm`. The framework libraries currently consume
   the published Shiki package.
-- **Per-package CI.** Component library workflows (`.github/workflows/<pkg>.yml`) run lint,
-  format-check, build, Storybook, and test jobs after building core. `ikuma-theme.yml` runs its
+- **Per-package CI.** Established component library workflows (`.github/workflows/<pkg>.yml`) run
+  lint, format-check, build, Storybook, and test jobs after building core. `ikuma-theme.yml` runs its
   package `check`, including generation and VSIX packaging.
 
 ## Gotchas
 
-- Build `@elmethis/core` before working on qwik/react/vue, or their imports and `tokens.css` resolve
+- Build `@elmethis/core` before working on qwik/react/solid/vue, or their imports and `tokens.css` resolve
   to stale/missing output.
 - Theme outputs are generated under `packages/ikuma-theme/dist` and ignored by Git. Build the theme
   before publishing its VS Code extension or `@46ki75/ikuma-theme` package.

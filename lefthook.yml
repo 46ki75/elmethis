@@ -45,6 +45,11 @@ check:
       glob: "packages/react/**/*.{ts,tsx}"
       run: pnpm exec eslint {files}
 
+    - name: eslint-solid
+      root: "packages/solid/"
+      glob: "packages/solid/**/*.{ts,tsx}"
+      run: pnpm exec eslint {files}
+
     - name: eslint-vue
       root: "packages/vue/"
       glob: "packages/vue/**/*.{ts,tsx}"
