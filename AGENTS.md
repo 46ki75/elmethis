@@ -2,6 +2,11 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+> **Temporary SolidJS porting note:** While component parity work is in progress, follow
+> [`SOLID_PORTING_PLAN.md`](./SOLID_PORTING_PLAN.md) for port order, compatibility requirements,
+> testing expectations, and completion tracking. Remove this note when the plan is completed or
+> replaced by permanent documentation.
+
 # elmethis
 
 A multi-framework component library / design system ("Elmethis Theme"), published to npm as
