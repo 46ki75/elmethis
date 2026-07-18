@@ -4,6 +4,18 @@ import { describe, expect, it, vi } from "vitest";
 import { ElmParallax } from "./elm-parallax";
 
 describe("[Browser] ElmParallax", () => {
+  it("renders data URLs above the document canvas", () => {
+    const image =
+      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3C/svg%3E";
+    const rendered = render(() => <ElmParallax images={[image]} />);
+    const root = rendered.container.firstElementChild as HTMLElement;
+    const layer = root.querySelector<HTMLElement>("[aria-hidden='true']");
+
+    expect(getComputedStyle(root).isolation).toBe("isolate");
+    expect(getComputedStyle(root).pointerEvents).toBe("none");
+    expect(layer?.style.backgroundImage).toContain(image);
+  });
+
   it("tracks real window scrolling and cleans up the listener", async () => {
     const removeEventListener = vi.spyOn(window, "removeEventListener");
     const rendered = render(() => (
