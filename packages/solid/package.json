@@ -1,6 +1,6 @@
 {
   "name": "@elmethis/solid",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "SolidJS component library for elmethis.",
   "publishConfig": {
     "access": "public"
@@ -21,11 +21,11 @@
       "types": "./lib-types/exports.d.ts",
       "solid": "./lib-solid/index.js",
       "import": {
-          "types": "./lib-types/exports.d.ts",
+        "types": "./lib-types/exports.d.ts",
         "default": "./lib/index.solid.mjs"
       },
       "require": {
-          "types": "./lib-types/exports.d.ts",
+        "types": "./lib-types/exports.d.ts",
         "default": "./lib/index.solid.cjs"
       }
     },
