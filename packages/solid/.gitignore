@@ -3,3 +3,6 @@ lib-solid
 lib-types
 node_modules
 storybook-static
+coverage
+.vitest-attachments
+**/__screenshots__

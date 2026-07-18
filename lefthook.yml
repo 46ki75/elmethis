@@ -97,6 +97,16 @@ check:
       glob: "packages/react/**/*.{ts,tsx}"
       run: pnpm exec vitest related --run --passWithNoTests {files}
 
+    - name: vitest-solid
+      root: "packages/solid/"
+      glob: "packages/solid/**/*.{ts,tsx}"
+      run: pnpm exec vitest related --run --passWithNoTests {files}
+
+    - name: vitest-solid-ssr
+      root: "packages/solid/"
+      glob: "packages/solid/**/*.{ts,tsx}"
+      run: pnpm exec vitest --run --config vitest.ssr.config.ts --passWithNoTests
+
     - name: vitest-vue
       root: "packages/vue/"
       glob: "packages/vue/**/*.{ts,tsx}"

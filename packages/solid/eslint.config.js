@@ -4,7 +4,16 @@ import tseslint from "typescript-eslint";
 import { defineConfig, globalIgnores } from "eslint/config";
 
 export default defineConfig([
-  globalIgnores(["lib", "lib-solid", "lib-types", "node_modules", "vite.config.ts"]),
+  globalIgnores([
+    "lib",
+    "lib-solid",
+    "lib-types",
+    "storybook-static",
+    "node_modules",
+    "vite.config.ts",
+    "vitest.ssr.config.ts",
+    "vitest.browser.config.ts",
+  ]),
   {
     files: ["**/*.{ts,tsx}"],
     extends: [js.configs.recommended, tseslint.configs.recommended],
