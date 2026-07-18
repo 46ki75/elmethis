@@ -228,3 +228,32 @@ export {
   ElmMarkdown,
   type ElmMarkdownProps,
 } from "./components/others/elm-markdown.jsx";
+export { ElmHtml, type ElmHtmlProps } from "./components/code/elm-html.jsx";
+export {
+  ElmHtmlViewer,
+  type ElmHtmlViewerProps,
+} from "./components/code/elm-html-viewer.jsx";
+export {
+  ElmSlider,
+  type ElmSliderOrientation,
+  type ElmSliderProps,
+} from "./components/form/elm-slider.jsx";
+export {
+  ElmTextArea,
+  type ElmTextAreaProps,
+} from "./components/form/elm-text-area.jsx";
+export {
+  ElmTextField,
+  type ElmTextFieldProps,
+} from "./components/form/elm-text-field.jsx";
+export {
+  ElmAudioPlayer,
+  type ElmAudioPlayerProps,
+} from "./components/media/elm-audio-player.jsx";
+export {
+  useWordle,
+  type GameStatus,
+  type LetterResult,
+  type LetterStatus,
+  type UseWordleOptions,
+} from "./components/others/use-wordle.jsx";

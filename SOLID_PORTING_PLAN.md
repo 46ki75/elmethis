@@ -16,7 +16,7 @@ fine-grained reactivity and Solid-native component patterns.
 ## Current State
 
 - `@elmethis/react` exports 57 components across 12 component groups.
-- `@elmethis/solid` currently exports 50 components, leaving 7 components to port.
+- `@elmethis/solid` currently exports 56 components, leaving `ElmA2ui` to port.
 - React also exports hooks and utilities required by several components. Required dependencies must
   be ported alongside the component work even if full hook parity is handled separately.
 - Solid has CSR, SSR, and real-browser Vitest layers in place. `ElmDivider` is the reference for
@@ -190,13 +190,13 @@ reactive accessors, and identity-aware list rendering.
 
 These require focused Chromium tests and explicit lifecycle cleanup:
 
-- [ ] `ElmTextField`
-- [ ] `ElmTextArea`
-- [ ] `ElmSlider`
-- [ ] `ElmAudioPlayer`
-- [ ] `ElmHtml`
-- [ ] `ElmHtmlViewer`
-- [ ] `useWordle` and its rendered component
+- [x] `ElmTextField`
+- [x] `ElmTextArea`
+- [x] `ElmSlider`
+- [x] `ElmAudioPlayer`
+- [x] `ElmHtml`
+- [x] `ElmHtmlViewer`
+- [x] `useWordle` and its rendered component
 
 Preserve the existing security and platform contracts, especially iframe sandbox normalization,
 protected attribute ordering, Blob URL revocation, popup behavior, pointer capture, media event

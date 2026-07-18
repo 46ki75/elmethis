@@ -30,6 +30,17 @@
   --elmethis-scoped-delay: initial;
   --elmethis-scoped-duration: initial;
   --elmethis-scoped-modal-delay: initial;
+  --elmethis-scoped-progress: initial;
+  --elmethis-scoped-hover: initial;
+  --elmethis-scoped-volume: initial;
+  --elmethis-scoped-value-ratio: initial;
+  --elmethis-scoped-inner-min-ratio: initial;
+  --elmethis-scoped-inner-max-ratio: initial;
+  --elmethis-scoped-fill-start-ratio: initial;
+  --elmethis-scoped-fill-size-ratio: initial;
+  --elmethis-scoped-marker-ratio: initial;
+  --elmethis-scoped-max-marker-label-chars: initial;
+  --elmethis-scoped-max-marker-label-width: initial;
   --elmethis-scoped-transition-timing-function: initial;
   --elmethis-scoped-font-family: initial;
   --shiki-dark: initial;
