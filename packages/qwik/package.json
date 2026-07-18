@@ -103,7 +103,7 @@
     "@modelcontextprotocol/sdk": "^1.29.0",
     "es-toolkit": "^1.49.0",
     "katex": "^0.17.0",
-    "marked": "^18.0.5",
+    "marked": "^18.0.6",
     "polished": "^4.3.1",
     "shiki": "^4.3.1",
     "uuid": "^14.0.1",
