@@ -3,7 +3,8 @@
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
     "target": "es2023",
     "lib": [
-      "ES2023"
+      "ES2023",
+      "DOM"
     ],
     "module": "esnext",
     "types": [
@@ -28,6 +29,7 @@
     "vitest.browser.config.ts",
     "vitest.setup.ts",
     "vitest.browser.setup.ts",
-    ".storybook/main.ts"
+    ".storybook/main.ts",
+    ".storybook/preview.ts"
   ]
 }

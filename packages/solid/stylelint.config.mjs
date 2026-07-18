@@ -13,6 +13,7 @@ export default {
       {
         importFrom: [
           path.join(dir, "node_modules/@elmethis/core/dist/tokens.css"),
+          path.join(dir, "src/styles/_component-vars.css"),
         ],
       },
     ],

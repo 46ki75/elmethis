@@ -15,17 +15,17 @@
   "homepage": "https://46ki75.github.io/elmethis",
   "main": "./lib/index.solid.cjs",
   "module": "./lib/index.solid.mjs",
-  "types": "./lib-types/index.d.ts",
+  "types": "./lib-types/exports.d.ts",
   "exports": {
     ".": {
-      "types": "./lib-types/index.d.ts",
+      "types": "./lib-types/exports.d.ts",
       "solid": "./lib-solid/index.js",
       "import": {
-        "types": "./lib-types/index.d.ts",
+          "types": "./lib-types/exports.d.ts",
         "default": "./lib/index.solid.mjs"
       },
       "require": {
-        "types": "./lib-types/index.d.ts",
+          "types": "./lib-types/exports.d.ts",
         "default": "./lib/index.solid.cjs"
       }
     },
@@ -61,6 +61,7 @@
     "test.coverage": "vitest --run --coverage && vitest --run --config vitest.ssr.config.ts",
     "test.browser": "vitest --run --config vitest.browser.config.ts",
     "test.coverage.browser": "vitest --run --coverage --config vitest.browser.config.ts",
+    "test.package": "node scripts/test-package.mjs",
     "test.build": "pnpm run build && pnpm run build-storybook",
     "check": "concurrently -g \"pnpm:fmt.check\" \"pnpm:lint\" \"pnpm:lint.css\" \"pnpm:build.types\"",
     "check.ci": "concurrently -g \"pnpm:check\" \"pnpm:test.build\" \"pnpm:test.unit\" \"pnpm:test.browser\"",

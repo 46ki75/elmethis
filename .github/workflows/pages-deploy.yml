@@ -57,6 +57,10 @@ jobs:
         run: pnpm run build-storybook
         working-directory: packages/react
 
+      - name: Run Build (Solid Storybook)
+        run: pnpm run build-storybook
+        working-directory: packages/solid
+
       - name: Run Build (Vue Storybook)
         run: pnpm run build-storybook
         working-directory: packages/vue
@@ -68,6 +72,7 @@ jobs:
           cp ./index.html ./pages-site/index.html
           cp -r ./packages/qwik/storybook-static ./pages-site/qwik
           cp -r ./packages/react/storybook-static ./pages-site/react
+          cp -r ./packages/solid/storybook-static ./pages-site/solid
           cp -r ./packages/vue/storybook-static ./pages-site/vue
           mkdir -p ./pages-site/a2ui/v0_9
           cp ./packages/core/dist/a2ui/v0_9/notion_block_catalog.json ./pages-site/a2ui/v0_9/notion_block_catalog.json

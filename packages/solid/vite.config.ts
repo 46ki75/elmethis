@@ -2,6 +2,18 @@
 import { defineConfig } from "vite";
 import solid from "vite-plugin-solid";
 
+import pkg from "./package.json";
+
+const { dependencies = {}, peerDependencies = {} } = pkg as {
+  dependencies?: Record<string, string>;
+  peerDependencies?: Record<string, string>;
+};
+const makeRegex = (dependency: string) =>
+  new RegExp(`^${dependency.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?:/.*)?$`);
+const externalDependencies = [dependencies, peerDependencies].flatMap(
+  (dependencyGroup) => Object.keys(dependencyGroup).map(makeRegex),
+);
+
 export default defineConfig({
   plugins: [solid()],
   build: {
@@ -14,12 +26,7 @@ export default defineConfig({
       fileName: (format) => `index.solid.${format === "es" ? "mjs" : "cjs"}`,
     },
     rollupOptions: {
-      external: [
-        /^node:.*/,
-        /^solid-js(?:\/.*)?$/,
-        /^@elmethis\/core(?:\/.*)?$/,
-        /^clsx(?:\/.*)?$/,
-      ],
+      external: [/^node:.*/, ...externalDependencies],
     },
   },
   test: {

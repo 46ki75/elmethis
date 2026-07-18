@@ -57,16 +57,17 @@ Use framework-native behavior where React and Solid differ:
 
 Complete these before scaling the number of components:
 
-- [ ] Create and maintain a parity checklist from `packages/react/src/index.ts`.
-- [ ] Port the shared text styles from `packages/react/src/styles/text.module.css`.
-- [ ] Port the component-private CSS variable registry from
+- [x] Create and maintain a parity checklist from `packages/react/src/index.ts`.
+- [x] Port the shared text styles from `packages/react/src/styles/text.module.css`.
+- [x] Port the component-private CSS variable registry from
       `packages/react/src/styles/_component-vars.css` and register it with Solid Stylelint.
-- [ ] Externalize declared production and peer dependencies consistently in the Solid build.
-- [ ] Add Solid-specific ESLint rules.
-- [ ] Add package-consumer smoke tests for the `solid`, ESM, CJS, SSR, types, and CSS exports.
-- [ ] Add a Solid CI workflow that builds core first and runs checks, tests, coverage, the package
+- [x] Externalize declared production and peer dependencies consistently in the Solid build.
+- [ ] Add Solid-specific ESLint rules. The latest `eslint-plugin-solid` (`0.14.5`) supports ESLint 9
+      but not the repository's ESLint 10; revisit when a compatible release is available.
+- [x] Add package-consumer smoke tests for the `solid`, ESM, CJS, SSR, types, and CSS exports.
+- [x] Add a Solid CI workflow that builds core first and runs checks, tests, coverage, the package
       build, and the Storybook build.
-- [ ] Bring the Solid Storybook theme controls and shared presentation in line with the established
+- [x] Bring the Solid Storybook theme controls and shared presentation in line with the established
       framework Storybooks where useful.
 
 ## Phase 1: Presentational Foundations
@@ -275,7 +276,7 @@ The port is complete when:
       exported.
 - [ ] Intentional framework API differences are documented.
 - [ ] CSR, SSR, browser, coverage, typecheck, package build, and Storybook build pass in CI.
-- [ ] Package-condition smoke tests pass for client and server consumers.
+- [x] Package-condition smoke tests pass for client and server consumers.
 - [ ] The Solid Storybook is deployed with the other framework Storybooks.
 - [ ] The temporary note in `AGENTS.md` and this working plan are removed or converted into
       permanent maintenance documentation.
