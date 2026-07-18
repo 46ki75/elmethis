@@ -4,6 +4,7 @@ import {
   type ComponentPropsWithoutRef,
   type CSSProperties,
 } from "react";
+import { clsx } from "clsx";
 
 import styles from "./elm-parallax.module.css";
 
@@ -30,7 +31,7 @@ export const ElmParallax = ({
   }, []);
 
   return (
-    <div className={className} {...props}>
+    <div className={clsx(styles["elm-parallax"], className)} {...props}>
       <div className={styles["parallax-watcher"]}></div>
 
       {images.map((image, index) => (
