@@ -58,13 +58,13 @@
     "prepublishOnly": "pnpm run build"
   },
   "peerDependencies": {
-    "react": ">=19",
-    "react-dom": ">=19"
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
   },
   "dependencies": {
     "@46ki75/ikuma-theme": "^0.0.10",
-    "@a2ui/react": "^0.9.1",
-    "@a2ui/web_core": "^0.9.2",
+    "@a2ui/react": "^0.10.2",
+    "@a2ui/web_core": "^0.10.5",
     "@elmethis/core": "workspace:^",
     "@formkit/auto-animate": "^0.10.0",
     "@mdi/js": "^7.4.47",

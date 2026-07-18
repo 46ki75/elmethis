@@ -1,0 +1,193 @@
+.elm-a2ui {
+  display: contents;
+}
+
+.surface {
+  display: flex;
+  flex-direction: column;
+  gap: var(--elmethis-stack-gap);
+}
+
+:global(.a2ui-loading) {
+  color: gray;
+  font-size: 0.875em;
+  font-style: italic;
+}
+
+:global(.a2ui-unknown) {
+  color: tomato;
+  font-weight: 600;
+}
+
+.row {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 8px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--elmethis-stack-gap);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  gap: 4px;
+}
+
+.list-horizontal {
+  flex-direction: row;
+}
+
+.list-item {
+  flex-shrink: 0;
+}
+
+.card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 8%);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background 0.15s;
+}
+
+.button:hover {
+  background: rgb(0 0 0 / 5%);
+}
+
+.button-primary {
+  background: var(--a2ui-primary, #1976d2);
+  border-color: transparent;
+  color: #fff;
+}
+
+.button-primary:hover {
+  background: var(--a2ui-primary-hover, #1565c0);
+}
+
+.button-disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.button-disabled:hover {
+  background: transparent;
+}
+
+.image {
+  max-width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.icon {
+  display: inline-block;
+  width: 1.25em;
+  height: 1.25em;
+  vertical-align: middle;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 8px 0;
+}
+
+.divider-vertical {
+  border-top: none;
+  border-left: 1px solid #e0e0e0;
+  margin: 0 8px;
+  align-self: stretch;
+  width: 0;
+}
+
+.text-field,
+.choice-picker,
+.datetime-input,
+.action-control,
+.checkable-control {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label,
+.choice-picker-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #555;
+}
+
+.input {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.input:focus {
+  border-color: var(--a2ui-primary, #1976d2);
+}
+
+.checkbox,
+.choice-picker-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.checkbox-label,
+.choice-picker-option {
+  user-select: none;
+}
+
+.slider {
+  width: 100%;
+  cursor: pointer;
+}
+
+.modal-trigger {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.video,
+.audio {
+  max-width: 100%;
+  display: block;
+}
+
+.choice-picker-options {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.validation-errors {
+  margin: 0;
+  padding-inline-start: 1.25rem;
+  color: #b42318;
+  font-size: 0.75rem;
+}

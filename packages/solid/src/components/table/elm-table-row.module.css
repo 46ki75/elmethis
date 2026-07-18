@@ -1,0 +1,15 @@
+.elm-table-row {
+  transition: background-color 200ms;
+
+  &:nth-child(odd) {
+    background-color: var(--elmethis-color-surface-raised);
+  }
+
+  &:nth-child(even) {
+    background-color: var(--elmethis-color-surface-base);
+  }
+
+  &:hover {
+    background-color: var(--elmethis-color-surface-sunken);
+  }
+}

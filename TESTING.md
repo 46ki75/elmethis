@@ -1,17 +1,18 @@
 # Testing Conventions
 
-Authored against `packages/qwik` (the lead implementation). `react` and `vue`
-follow the same two-layer shape with their framework's sibling adapters.
+Authored against `packages/qwik` (the lead implementation). `react`, `solid`,
+and `vue` follow the same two-layer shape with framework-specific renderers.
 
 ## The two layers
 
 Tests split by **file suffix**, and each suffix maps to its own Vitest config so
 the two never share global state.
 
-| Suffix                     | Layer       | Environment                                             | Runs                |
-| -------------------------- | ----------- | ------------------------------------------------------- | ------------------- |
-| `*.spec.ts` / `*.spec.tsx` | **unit**    | node + test-util (`createDOM`) / SSR (`renderToString`) | `pnpm test.unit`    |
-| `*.browser.spec.tsx`       | **browser** | real Chromium via Playwright                            | `pnpm test.browser` |
+| Suffix                     | Layer       | Environment                                    | Runs                |
+| -------------------------- | ----------- | ---------------------------------------------- | ------------------- |
+| `*.spec.ts` / `*.spec.tsx` | **unit**    | node + test-util (`createDOM`) / simulated DOM | `pnpm test.unit`    |
+| `*.ssr.spec.tsx` (Solid)   | **unit**    | node + Solid server JSX transform              | `pnpm test.unit`    |
+| `*.browser.spec.tsx`       | **browser** | real Chromium via Playwright                   | `pnpm test.browser` |
 
 `pnpm test` runs `test.unit` then `test.browser`.
 
@@ -23,7 +24,9 @@ The fast, default layer. Covers anything that does **not** need a real browser:
 - **CSR via the framework test util** — Qwik `createDOM()` (`@qwik.dev/core/testing`);
   React Testing Library; Vue Test Utils. Drive interactions, assert rendered DOM.
 - **SSR** — Qwik `renderToString()` (`@qwik.dev/core/server`); equivalent
-  server renderers in react/vue. Assert the server HTML shell.
+  server renderers in react/vue. Solid uses co-located `*.ssr.spec.tsx` files
+  because its server JSX requires a separate compiler pass. Assert the server
+  HTML shell.
 
 Each file picks its environment with a docblock when needed, e.g.
 `// @vitest-environment happy-dom`.
@@ -45,14 +48,16 @@ belongs here when it needs any of:
   `MutationObserver`).
 
 Use the framework's Vitest-Browser adapter: **`vitest-browser-qwik`** (`render()`
-= CSR, `renderSSR()` = SSR), `vitest-browser-react`, `vitest-browser-vue`. All
-share Vitest Browser Mode + the `@vitest/browser-playwright` provider.
+= CSR, `renderSSR()` = SSR), `vitest-browser-react`, `vitest-browser-vue`. Solid
+uses `@solidjs/testing-library` with Vitest's `page.elementLocator()` bridge
+because Vitest does not provide an official Solid renderer package. All share
+Vitest Browser Mode + the `@vitest/browser-playwright` provider.
 
 **Default to the unit layer.** Only reach for `*.browser.spec.tsx` when the thing
 under test is genuinely one of the above — the browser layer costs startup time
 and a Playwright dependency, and adds no coverage for pure logic.
 
-## Why two configs (not one with `test.projects`)
+## Why separate configs (not one with `test.projects`)
 
 `vitest-browser-qwik`'s `testSSR()` patches global SSR state the instant it is
 invoked, and a single config factory builds the whole `projects` array
@@ -66,12 +71,21 @@ the unit run never loads is the only clean fix.
   (`qwikVite({ devTools: { clickToSource: false } })`) — it intercepts pointer
   events and breaks Playwright's actionability checks.
 
+Solid has one additional physical config inside the unit layer:
+
+- `vite.config.ts` compiles `*.spec.tsx` with Solid's DOM transform and runs
+  them in `happy-dom` through `@solidjs/testing-library`;
+- `vitest.ssr.config.ts` compiles `*.ssr.spec.tsx` with `solid({ ssr: true })`
+  and runs them in node;
+- `pnpm test.unit` runs both passes, so the public two-layer contract stays the
+  same.
+
 ## Co-location
 
 Specs sit **next to the source** (`use-modal.tsx` → `use-modal.spec.tsx` +
 `use-modal.browser.spec.tsx`), not in a separate `__tests__` tree. The same unit
-that lives in both layers shares a base name and differs only by the
-`.browser` infix.
+that lives in multiple targets shares a base name and differs only by the
+`.browser` or Solid-specific `.ssr` infix.
 
 ## Browser-layer gotchas (learned)
 

@@ -2,6 +2,7 @@
 paths:
   - "packages/qwik/src/components/a2ui/**"
   - "packages/react/src/components/a2ui/**"
+  - "packages/solid/src/components/a2ui/**"
   - "packages/vue/src/components/a2ui/**"
 ---
 
@@ -16,3 +17,7 @@ paths:
 - **react has a single combined catalog** (`catalog/notion-block-catalog.tsx` only, no separate
   basic-catalog) since it binds through the official `@a2ui/react` package — the dual-catalog
   gotcha above does not apply to react.
+- **solid keeps paired basic and Notion catalogs but defaults to `notionBlockCatalog`.** Its
+  Solid-native binder uses `CatalogRenderer` entries that combine each schema with its render
+  function. Customize `ElmA2ui` through `catalog={basicCatalog.extend(defineRenderer(...))}` or by
+  extending `notionBlockCatalog`; unlike React, Solid does not accept a `components` array.

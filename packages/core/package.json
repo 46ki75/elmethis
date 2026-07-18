@@ -56,7 +56,7 @@
     "zod-to-json-schema": "^3.25.2"
   },
   "devDependencies": {
-    "@a2ui/web_core": "^0.10.0",
+    "@a2ui/web_core": "^0.10.5",
     "@eslint/js": "latest",
     "@types/node": "26.1.1",
     "@vanilla-extract/css": "^1.21.1",

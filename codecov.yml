@@ -1,9 +1,10 @@
 # Codecov configuration — lenient coverage gating.
 #
 # Coverage is uploaded per package/layer under flags (core, qwik-unit,
-# qwik-browser, react-unit, react-browser, vue-unit, vue-browser) and Codecov
-# merges them into the project total. These status checks post on PRs; they are
-# intentionally lenient while we calibrate a baseline.
+# qwik-browser, react-unit, react-browser, solid-unit, solid-browser, vue-unit,
+# vue-browser) and Codecov merges them into the project total. These status
+# checks post on PRs; they are intentionally lenient while we calibrate a
+# baseline.
 
 coverage:
   # Round/precision for the reported numbers.

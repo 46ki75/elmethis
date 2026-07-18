@@ -45,6 +45,11 @@ check:
       glob: "packages/react/**/*.{ts,tsx}"
       run: pnpm exec eslint {files}
 
+    - name: eslint-solid
+      root: "packages/solid/"
+      glob: "packages/solid/**/*.{ts,tsx}"
+      run: pnpm exec eslint {files}
+
     - name: eslint-vue
       root: "packages/vue/"
       glob: "packages/vue/**/*.{ts,tsx}"
@@ -63,6 +68,11 @@ check:
     - name: stylelint-react
       root: "packages/react/"
       glob: "packages/react/**/*.{css,scss,sass,less}"
+      run: pnpm exec stylelint {files}
+
+    - name: stylelint-solid
+      root: "packages/solid/"
+      glob: "packages/solid/**/*.{css,scss,sass,less}"
       run: pnpm exec stylelint {files}
 
     - name: stylelint-vue
@@ -86,6 +96,16 @@ check:
       root: "packages/react/"
       glob: "packages/react/**/*.{ts,tsx}"
       run: pnpm exec vitest related --run --passWithNoTests {files}
+
+    - name: vitest-solid
+      root: "packages/solid/"
+      glob: "packages/solid/**/*.{ts,tsx}"
+      run: pnpm exec vitest related --run --passWithNoTests {files}
+
+    - name: vitest-solid-ssr
+      root: "packages/solid/"
+      glob: "packages/solid/**/*.{ts,tsx}"
+      run: pnpm exec vitest --run --config vitest.ssr.config.ts --passWithNoTests
 
     - name: vitest-vue
       root: "packages/vue/"

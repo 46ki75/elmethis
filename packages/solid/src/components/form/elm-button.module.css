@@ -1,0 +1,96 @@
+.elm-button {
+  all: unset;
+  position: relative;
+  overflow: hidden;
+  min-height: 2.75rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.25rem;
+  box-sizing: border-box;
+  padding: 0.5rem 1.5rem;
+  line-height: 1.5rem;
+  user-select: none;
+  cursor: pointer;
+  transition:
+    opacity 200ms,
+    transform 200ms;
+  opacity: var(--elmethis-scoped-opacity);
+  box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
+}
+
+.normal {
+  color: oklch(
+    from contrast-color(var(--elmethis-color-neutral-strong)) l c h / 65%
+  );
+  background-color: var(--elmethis-color-neutral-strong);
+}
+
+.primary {
+  color: oklch(
+    from contrast-color(var(--elmethis-color-primary-weak)) l c h / 65%
+  );
+  background-color: var(--elmethis-color-primary-weak);
+}
+
+.colored {
+  background-color: var(--elmethis-scoped-color);
+}
+
+.enable {
+  transition:
+    opacity 200ms,
+    transform 100ms,
+    box-shadow 200ms;
+
+  &:hover {
+    transform: translateX(-1px) translateY(-1px);
+    opacity: var(--elmethis-scoped-opacity, 0.7);
+    box-shadow: 0.125rem 0.125rem 0.125rem rgb(128 128 128 / 25%);
+  }
+
+  &:active {
+    transform: translateX(1px) translateY(1px);
+    opacity: var(--elmethis-scoped-opacity, 0.5);
+    box-shadow: -1px -1px 0.125rem rgb(128 128 128 / 25%);
+  }
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@keyframes button-ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+.ripple {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+  background-color: rgb(205 181 123 / 15%);
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  transition: none;
+  opacity: 0;
+  animation-name: button-ripple;
+  animation-duration: 300ms;
+  animation-fill-mode: both;
+  animation-timing-function: ease-out;
+}
