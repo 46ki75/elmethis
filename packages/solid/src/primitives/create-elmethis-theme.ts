@@ -93,7 +93,7 @@ export function createElmethisTheme(): ElmethisThemeController {
     setIsDarkTheme(
       storedTheme === null ? resolveAutoTheme() : storedTheme === "dark",
     );
-    applyTheme(storedTheme, false);
+    if (storedTheme !== null) applyTheme(storedTheme, false);
 
     onCleanup(() => {
       window.removeEventListener(THEME_CHANGE_EVENT, onThemeChange);

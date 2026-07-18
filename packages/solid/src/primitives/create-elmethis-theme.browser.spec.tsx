@@ -39,6 +39,18 @@ describe("[Browser] createElmethisTheme", () => {
     expect(document.documentElement).toHaveAttribute("data-theme", "dark");
   });
 
+  it("preserves a host-provided theme when no choice is stored", async () => {
+    document.documentElement.style.colorScheme = "dark";
+    document.documentElement.setAttribute("data-theme", "dark");
+
+    render(() => <ThemeHarness />);
+
+    await vi.waitFor(() =>
+      expect(document.documentElement).toHaveAttribute("data-theme", "dark"),
+    );
+    expect(document.documentElement.style.colorScheme).toBe("dark");
+  });
+
   it("toggles and observes a native cross-tab storage event", async () => {
     localStorage.setItem(KEY, "light");
     const rendered = render(() => <ThemeHarness />);
