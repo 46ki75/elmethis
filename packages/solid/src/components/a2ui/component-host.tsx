@@ -19,8 +19,8 @@ import {
 
 import {
   type CatalogRenderer,
-  type ChildRef,
   type SolidRendererEntry,
+  createChildRefs,
 } from "./catalog/catalog";
 
 export const ROOT_COMPONENT_ID = "root";
@@ -32,7 +32,7 @@ export const A2uiCatalogContext = createContext<Accessor<CatalogRenderer>>();
 export interface ComponentHostProps {
   id: string;
   basePath: string;
-  index?: number;
+  index?: number | Accessor<number>;
   ancestors?: readonly string[];
 }
 
@@ -119,30 +119,12 @@ export const ComponentHost = (props: ComponentHostProps) => {
     });
   });
 
-  const normalizeChildren = (value: unknown): ChildRef[] => {
-    if (!Array.isArray(value)) return [];
-    return value.flatMap((child) => {
-      if (typeof child === "string") {
-        return [{ id: child, basePath: props.basePath }];
-      }
-      if (
-        child != null &&
-        typeof child === "object" &&
-        "id" in child &&
-        "basePath" in child &&
-        typeof child.id === "string" &&
-        typeof child.basePath === "string"
-      ) {
-        return [{ id: child.id, basePath: child.basePath }];
-      }
-      return [];
-    });
-  };
+  const normalizeChildren = createChildRefs(() => props.basePath);
 
   const renderChild = (
     id: string,
     basePath = props.basePath,
-    index = 0,
+    index: number | Accessor<number> = 0,
   ): JSX.Element => (
     <ComponentHost
       id={id}
@@ -205,7 +187,11 @@ export const ComponentHost = (props: ComponentHostProps) => {
                       <Renderer
                         componentId={props.id}
                         instanceId={instanceId()}
-                        index={props.index ?? 0}
+                        index={
+                          typeof props.index === "function"
+                            ? props.index()
+                            : (props.index ?? 0)
+                        }
                         props={resolvedProps}
                         surface={surface!()}
                         context={resolved.context}

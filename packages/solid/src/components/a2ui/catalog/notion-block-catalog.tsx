@@ -4,6 +4,7 @@ import {
   For,
   onCleanup,
   Show,
+  type Accessor,
   type JSX,
 } from "solid-js";
 
@@ -79,8 +80,8 @@ import { ElmParagraph } from "../../typography/elm-paragraph";
 import { basicCatalog } from "./basic-catalog";
 import {
   CatalogRenderer,
+  createChildRefs,
   defineRenderer,
-  type ChildRef,
   type SolidRendererEntry,
 } from "./catalog";
 import { alignItemsMap, justifyContentMap } from "./catalog-utils";
@@ -101,32 +102,19 @@ interface BoundContentTabProps {
   id: string;
   basePath: string;
   surface: SurfaceModel<SolidRendererEntry>;
-  renderChild: (id: string, basePath?: string, index?: number) => JSX.Element;
+  renderChild: (
+    id: string,
+    basePath?: string,
+    index?: number | Accessor<number>,
+  ) => JSX.Element;
   slot: "label" | "content";
 }
-
-const childRefs = (value: unknown, basePath: string): ChildRef[] => {
-  if (!Array.isArray(value)) return [];
-  return value.flatMap((child) => {
-    if (typeof child === "string") return [{ id: child, basePath }];
-    if (
-      child != null &&
-      typeof child === "object" &&
-      "id" in child &&
-      "basePath" in child &&
-      typeof child.id === "string" &&
-      typeof child.basePath === "string"
-    ) {
-      return [{ id: child.id, basePath: child.basePath }];
-    }
-    return [];
-  });
-};
 
 /** Binds data-only ContentTab models so template label/content lists stay live. */
 const BoundContentTab = (props: BoundContentTabProps) => {
   const [model, setModel] = createSignal<ComponentModel>();
   const [bound, setBound] = createSignal<Record<string, unknown>>({});
+  const normalizeChildren = createChildRefs(() => props.basePath);
 
   createEffect(() => {
     const surface = props.surface;
@@ -169,7 +157,7 @@ const BoundContentTab = (props: BoundContentTabProps) => {
   });
 
   return (
-    <For each={childRefs(bound()[props.slot], props.basePath)}>
+    <For each={normalizeChildren(bound()[props.slot])}>
       {(child, index) => (
         <RenderIndexedChild
           child={child}

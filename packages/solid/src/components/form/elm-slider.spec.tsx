@@ -270,6 +270,36 @@ describe("[CSR] ElmSlider markers", () => {
       ),
     ).toBe("9");
   });
+
+  it("updates marker labels without replacing marks on formatter changes", () => {
+    const [formatter, setFormatter] = createSignal<(value: number) => string>(
+      (value) => `${value}%`,
+    );
+    const rendered = render(() => (
+      <ElmSlider
+        min={0}
+        max={10}
+        step={5}
+        markers
+        markerLabels
+        formatMarkerLabel={formatter()}
+      />
+    ));
+    const marks = Array.from(
+      rendered.container.querySelectorAll(`.${styles.mark}`),
+    );
+
+    setFormatter(() => (value: number) => `${value} units`);
+
+    expect(getLabels(rendered.container)).toEqual([
+      "0 units",
+      "5 units",
+      "10 units",
+    ]);
+    Array.from(rendered.container.querySelectorAll(`.${styles.mark}`)).forEach(
+      (mark, index) => expect(mark).toBe(marks[index]),
+    );
+  });
 });
 
 describe("[CSR] ElmSlider keyboard and callbacks", () => {

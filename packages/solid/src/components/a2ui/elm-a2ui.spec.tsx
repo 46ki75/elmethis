@@ -310,6 +310,57 @@ describe("[CSR] ElmA2ui", () => {
     expect(disposeSpy).toHaveBeenCalledTimes(2);
   });
 
+  it("preserves existing child state when a template child list grows", () => {
+    const initial = withData(
+      "/items",
+      [
+        { trigger: "Open one", content: "Secret one" },
+        { trigger: "Open two", content: "Secret two" },
+      ],
+      {
+        component: "Row",
+        id: "root",
+        children: { componentId: "item", path: "/items" },
+      },
+      {
+        component: "Modal",
+        id: "item",
+        trigger: "trigger",
+        content: "content",
+      },
+      { component: "Text", id: "trigger", text: { path: "trigger" } },
+      { component: "Text", id: "content", text: { path: "content" } },
+    );
+    const [messages, setMessages] = createSignal(initial);
+    const rendered = render(() => <ElmA2ui messages={messages()} />);
+    const firstTrigger = rendered.getByRole("button", { name: "Open one" });
+
+    fireEvent.click(firstTrigger);
+    expect(rendered.getByText("Secret one")).toBeInTheDocument();
+
+    setMessages([
+      ...initial,
+      {
+        version: "v0.9",
+        updateDataModel: {
+          surfaceId: "s",
+          path: "/items",
+          value: [
+            { trigger: "Open one", content: "Secret one" },
+            { trigger: "Open two", content: "Secret two" },
+            { trigger: "Open three", content: "Secret three" },
+          ],
+        },
+      },
+    ]);
+
+    expect(rendered.getByText("Secret one")).toBeInTheDocument();
+    expect(rendered.getByRole("button", { name: "Open one" })).toBe(
+      firstTrigger,
+    );
+    expect(rendered.getByRole("button", { name: "Open three" })).toBeTruthy();
+  });
+
   it("releases GenericBinder ownership when a child leaves the tree", () => {
     const disposeSpy = vi.spyOn(GenericBinder.prototype, "dispose");
     const initial = createMessages(
@@ -551,8 +602,8 @@ describe("[CSR] ElmA2ui", () => {
     expect(new Set(ids).size).toBe(2);
   });
 
-  it("binds ContentTabs label and content templates", () => {
-    const messages = [
+  it("binds ContentTabs templates without replacing unchanged child hosts", () => {
+    const initial: object[] = [
       {
         version: "v0.9",
         createSurface: {
@@ -587,9 +638,32 @@ describe("[CSR] ElmA2ui", () => {
         },
       },
     ];
-    const rendered = render(() => <ElmA2ui messages={messages} />);
+    const [messages, setMessages] = createSignal(initial);
+    const rendered = render(() => <ElmA2ui messages={messages()} />);
     expect(rendered.container).toHaveTextContent("Overview");
     expect(rendered.container).toHaveTextContent("Template content");
+
+    const labelHost = rendered.container.querySelector(
+      '[data-a2ui-component-key="label@/tabs/0"]',
+    );
+    setMessages([
+      ...initial,
+      {
+        version: "v0.9",
+        updateDataModel: {
+          surfaceId: "tabs",
+          path: "/tabs/0/label",
+          value: "Updated",
+        },
+      },
+    ]);
+
+    expect(rendered.container).toHaveTextContent("Updated");
+    expect(
+      rendered.container.querySelector(
+        '[data-a2ui-component-key="label@/tabs/0"]',
+      ),
+    ).toBe(labelHost);
   });
 
   it("continues after invalid messages and rebuilds when catalogId changes", () => {

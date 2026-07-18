@@ -295,6 +295,8 @@ export const ElmAudioPlayer = (props: ElmAudioPlayerProps) => {
           setIsMuted(event.currentTarget.muted);
         }}
         onError={() => {
+          stopRaf();
+          setIsPlaying(false);
           setHasError(true);
           setIsLoading(false);
         }}

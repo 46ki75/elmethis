@@ -7,6 +7,7 @@ import {
   onMount,
   Show,
   splitProps,
+  type Accessor,
   type JSX,
 } from "solid-js";
 import { clsx } from "clsx";
@@ -56,7 +57,7 @@ interface Mark {
 }
 
 interface ResolvedMark extends Mark {
-  label?: JSX.Element;
+  label: Accessor<JSX.Element | undefined>;
 }
 
 const MAX_MARKERS = 500;
@@ -195,25 +196,24 @@ export const ElmSlider = (props: ElmSliderProps) => {
     Math.abs(valueRatio() - numericInnerMinRatio()),
   );
 
+  const marksEnabled = createMemo(() =>
+    Boolean(local.markers || local.markerLabels),
+  );
   const marks = createMemo(() =>
-    buildMarks(
-      Boolean(local.markers || local.markerLabels),
-      min(),
-      max(),
-      step(),
-    ),
+    buildMarks(marksEnabled(), min(), max(), step()),
   );
   const resolvedMarks = createMemo<ResolvedMark[]>(() => {
-    const formatter = local.formatMarkerLabel;
-    const showLabels = Boolean(local.markerLabels);
-    return marks().map((mark) => ({
-      ...mark,
-      label: showLabels ? (formatter?.(mark.value) ?? mark.value) : undefined,
-    }));
+    return marks().map((mark) => {
+      const label = createMemo(() => {
+        if (!local.markerLabels) return undefined;
+        return local.formatMarkerLabel?.(mark.value) ?? mark.value;
+      });
+      return { ...mark, label };
+    });
   });
   const maxMarkerLabelChars = createMemo(() =>
     resolvedMarks().reduce(
-      (longest, mark) => Math.max(longest, primitiveTextLength(mark.label)),
+      (longest, mark) => Math.max(longest, primitiveTextLength(mark.label())),
       0,
     ),
   );
@@ -447,7 +447,7 @@ export const ElmSlider = (props: ElmSliderProps) => {
                       ref={registerMarkerLabel}
                       class={styles["mark-label"]}
                     >
-                      {mark.label}
+                      {mark.label()}
                     </span>
                   </Show>
                 </span>

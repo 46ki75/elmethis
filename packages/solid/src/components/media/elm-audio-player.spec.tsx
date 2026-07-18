@@ -1,10 +1,14 @@
 import { fireEvent, render } from "@solidjs/testing-library";
 import { createSignal } from "solid-js";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { ElmAudioPlayer } from "./elm-audio-player";
 
 const SRC = "https://example.com/audio/midnight-reverie.mp3";
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 describe("[CSR] ElmAudioPlayer", () => {
   it("renders the hidden native audio and accessible controls", () => {
@@ -78,6 +82,28 @@ describe("[CSR] ElmAudioPlayer", () => {
     );
     expect(rendered.queryByRole("slider", { name: "Seek" })).toBeNull();
     expect(rendered.container.firstElementChild!.className).toMatch(/errored/);
+  });
+
+  it("stops frame sampling and clears playing state on playback errors", () => {
+    const request = vi
+      .spyOn(window, "requestAnimationFrame")
+      .mockReturnValue(73);
+    const cancel = vi.spyOn(window, "cancelAnimationFrame");
+    const rendered = render(() => (
+      <ElmAudioPlayer src={SRC} data-testid="player" />
+    ));
+    const root = rendered.getByTestId("player");
+    const audio = root.querySelector("audio")!;
+
+    fireEvent.play(audio);
+    expect(root.className).toMatch(/playing/);
+    fireEvent.error(audio);
+
+    expect(cancel).toHaveBeenCalledWith(73);
+    expect(root.className).not.toMatch(/playing/);
+
+    request.mockRestore();
+    cancel.mockRestore();
   });
 
   it("resets stale track state when src changes", () => {

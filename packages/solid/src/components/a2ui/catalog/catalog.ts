@@ -1,4 +1,4 @@
-import type { JSX } from "solid-js";
+import type { Accessor, JSX } from "solid-js";
 
 import {
   Catalog,
@@ -15,6 +15,45 @@ export interface ChildRef {
   basePath: string;
 }
 
+export const createChildRefs = (
+  defaultBasePath: Accessor<string>,
+): ((value: unknown) => ChildRef[]) => {
+  const refs = new Map<string, Map<string, ChildRef>>();
+  const getRef = (id: string, basePath: string) => {
+    let paths = refs.get(id);
+    if (paths == null) {
+      paths = new Map();
+      refs.set(id, paths);
+    }
+    let ref = paths.get(basePath);
+    if (ref == null) {
+      ref = { id, basePath };
+      paths.set(basePath, ref);
+    }
+    return ref;
+  };
+
+  return (value) => {
+    if (!Array.isArray(value)) return [];
+    return value.flatMap((child) => {
+      if (typeof child === "string") {
+        return [getRef(child, defaultBasePath())];
+      }
+      if (
+        child != null &&
+        typeof child === "object" &&
+        "id" in child &&
+        "basePath" in child &&
+        typeof child.id === "string" &&
+        typeof child.basePath === "string"
+      ) {
+        return [getRef(child.id, child.basePath)];
+      }
+      return [];
+    });
+  };
+};
+
 export interface RenderArgs<TProps = Record<string, unknown>> {
   componentId: string;
   /** Stable DOM-safe identity scoped by surface, component, and data path. */
@@ -27,7 +66,7 @@ export interface RenderArgs<TProps = Record<string, unknown>> {
   renderChild: (
     componentId: string,
     basePath?: string,
-    index?: number,
+    index?: number | Accessor<number>,
   ) => JSX.Element;
 }
 
