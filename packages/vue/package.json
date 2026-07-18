@@ -73,7 +73,7 @@
     "@mdi/js": "^7.4.47",
     "@vueuse/core": "^14.3.0",
     "clsx": "^2.1.1",
-    "dompurify": "^3.4.2",
+    "dompurify": "^3.4.11",
     "es-toolkit": "^1.49.0",
     "katex": "^0.17.0",
     "marked": "^18.0.6",
