@@ -35,7 +35,14 @@ describe("[CSR] ElmParallax", () => {
     expect(rendered.container.innerHTML).toContain("/third.png");
   });
 
-  it("updates transforms on scroll and removes its listener on cleanup", () => {
+  it("initializes transforms and removes its listener on cleanup", () => {
+    let frame: FrameRequestCallback | undefined;
+    const requestAnimationFrame = vi
+      .spyOn(window, "requestAnimationFrame")
+      .mockImplementation((callback) => {
+        frame = callback;
+        return 1;
+      });
     const scrollY = vi.spyOn(window, "scrollY", "get").mockReturnValue(500);
     const removeEventListener = vi.spyOn(window, "removeEventListener");
     const rendered = render(() => <ElmParallax images={["/layer.png"]} />);
@@ -43,7 +50,8 @@ describe("[CSR] ElmParallax", () => {
       "[aria-hidden='true']",
     ) as HTMLElement;
 
-    window.dispatchEvent(new Event("scroll"));
+    expect(frame).toBeDefined();
+    frame?.(0);
     expect(layer.style.transform).toBe("scale(1.2) translateY(0.5%)");
 
     rendered.unmount();
@@ -51,6 +59,45 @@ describe("[CSR] ElmParallax", () => {
       "scroll",
       expect.any(Function),
     );
+    requestAnimationFrame.mockRestore();
+    scrollY.mockRestore();
+  });
+
+  it("cancels a pending animation frame on cleanup", () => {
+    const requestAnimationFrame = vi
+      .spyOn(window, "requestAnimationFrame")
+      .mockReturnValue(42);
+    const cancelAnimationFrame = vi.spyOn(window, "cancelAnimationFrame");
+    const rendered = render(() => <ElmParallax images={["/layer.png"]} />);
+
+    rendered.unmount();
+
+    expect(cancelAnimationFrame).toHaveBeenCalledWith(42);
+    requestAnimationFrame.mockRestore();
+    cancelAnimationFrame.mockRestore();
+  });
+
+  it("applies the current offset to newly added layers", () => {
+    let frame: FrameRequestCallback | undefined;
+    const requestAnimationFrame = vi
+      .spyOn(window, "requestAnimationFrame")
+      .mockImplementation((callback) => {
+        frame = callback;
+        return 1;
+      });
+    const scrollY = vi.spyOn(window, "scrollY", "get").mockReturnValue(500);
+    const [images, setImages] = createSignal(["/first.png"]);
+    const rendered = render(() => <ElmParallax images={images()} />);
+
+    frame?.(0);
+    setImages(["/first.png", "/second.png"]);
+
+    const layers = rendered.container.querySelectorAll<HTMLElement>(
+      "[aria-hidden='true']",
+    );
+    expect(layers[1]?.style.transform).toBe("scale(1.2) translateY(0.25%)");
+    rendered.unmount();
+    requestAnimationFrame.mockRestore();
     scrollY.mockRestore();
   });
 });

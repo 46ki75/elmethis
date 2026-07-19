@@ -1,7 +1,6 @@
-.parallax-watcher {
-  display: none;
-  z-index: -1;
-  position: fixed;
+.elm-parallax {
+  isolation: isolate;
+  pointer-events: none;
 }
 
 .parallax {

@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 import { ElmParallax } from "./elm-parallax";
 
 describe("[Browser] ElmParallax", () => {
-  it("renders data URLs above the document canvas", () => {
+  it("contains negative layers above the document canvas", () => {
     const image =
       "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3C/svg%3E";
     const rendered = render(() => <ElmParallax images={[image]} />);
