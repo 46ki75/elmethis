@@ -285,3 +285,4 @@ export {
   notionBlockComponents,
   notionBlockFunctions,
 } from "./components/a2ui/catalog/notion-block-catalog.jsx";
+export * from "./components/ag-ui-client/index.js";

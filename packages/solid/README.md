@@ -1,8 +1,8 @@
 # @elmethis/solid
 
-SolidJS component library for Elmethis. It implements the complete 57-component
-surface shared with `@elmethis/react` using Solid-native reactivity, ownership,
-and DOM conventions.
+SolidJS component library for Elmethis. It implements the 57-component surface
+shared with `@elmethis/react` plus seven AG-UI components, using Solid-native
+reactivity, ownership, and DOM conventions.
 
 Components live under `src/components` and the public inventory is maintained in
 `src/exports.ts`. Design tokens and shared schemas come from `@elmethis/core`.
@@ -50,6 +50,35 @@ the rest of the base catalog.
 The low-level `A2uiSurface`, `ComponentHost`, contexts, `CatalogRenderer`,
 `defineRenderer`, and renderer argument types are public for custom hosts and
 catalogs. Most consumers only need `ElmA2ui` and one of the provided catalogs.
+
+## AG-UI
+
+`useAgent` owns an AG-UI HTTP agent, streamed message state, frontend tools,
+interrupts, retries, and queued user messages. Its callbacks are Solid-native
+functions rather than Qwik QRLs:
+
+```tsx
+import { ElmAgUiAgent, useAgent } from "@elmethis/solid";
+
+const agent = useAgent({ url: "/api/agent" });
+
+<ElmAgUiAgent
+  state={agent.state}
+  send={agent.send}
+  retry={agent.retry}
+  abort={agent.abort}
+  dequeue={agent.dequeue}
+/>;
+```
+
+`useMcpTools` and `useMcpPrompts` open browser-side Streamable HTTP sessions
+under the current Solid owner and close them on disposal. Their `tools` and
+`prompts` values are accessors.
+
+The MCP SDK currently pulls in `pkce-challenge`, whose package exports can fail
+resolution in some Vite consumer builds. If that occurs and the application
+does not use MCP OAuth, alias `pkce-challenge` to a local throwing stub. Do not
+stub it when OAuth is required.
 
 ## Controllable State
 

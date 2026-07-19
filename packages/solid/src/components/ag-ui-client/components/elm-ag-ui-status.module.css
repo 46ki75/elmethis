@@ -1,0 +1,48 @@
+.elm-ag-ui-status {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  user-select: none;
+}
+
+.reel {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  animation: elm-ag-ui-status-reel 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes elm-ag-ui-status-reel {
+  from {
+    transform: translateY(110%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes elm-ag-ui-status-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.pulse {
+  animation: elm-ag-ui-status-pulse 1.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reel,
+  .pulse {
+    animation: none;
+  }
+}
