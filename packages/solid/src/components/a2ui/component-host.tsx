@@ -1,6 +1,6 @@
 import {
   createContext,
-  createEffect,
+  createRenderEffect,
   createSignal,
   onCleanup,
   Show,
@@ -56,7 +56,7 @@ export const ComponentHost = (props: ComponentHostProps) => {
     Record<string, unknown>
   >({});
 
-  createEffect(() => {
+  createRenderEffect(() => {
     const id = props.id;
     const currentSurface = surface?.();
     if (isCycle() || currentSurface == null) {
@@ -84,7 +84,7 @@ export const ComponentHost = (props: ComponentHostProps) => {
     });
   });
 
-  createEffect(() => {
+  createRenderEffect(() => {
     const current = model();
     const currentSurface = surface?.();
     const entry = current == null ? undefined : catalog?.().get(current.type);

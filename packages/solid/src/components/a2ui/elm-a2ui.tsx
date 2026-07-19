@@ -1,6 +1,7 @@
 import {
   createEffect,
   createMemo,
+  createRenderEffect,
   createSignal,
   For,
   onCleanup,
@@ -136,7 +137,7 @@ export const ElmA2ui = (props: ElmA2uiProps) => {
     onCleanup(() => controller.abort());
   });
 
-  createEffect(() => {
+  createRenderEffect(() => {
     const effective = local.messages ?? streamMessages();
     const catalogId = local.catalogId;
     const catalog = local.catalog ?? notionBlockCatalog;
