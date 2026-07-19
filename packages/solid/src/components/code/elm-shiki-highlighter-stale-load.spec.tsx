@@ -41,6 +41,8 @@ describe("[CSR] ElmShikiHighlighter runtime loading", () => {
     await vi.waitFor(() =>
       expect(rendered.container.textContent).toContain("new code"),
     );
-    expect(shiki.createHighlighter).toHaveBeenCalledOnce();
+    await vi.waitFor(() =>
+      expect(shiki.createHighlighter).toHaveBeenCalledOnce(),
+    );
   });
 });

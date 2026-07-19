@@ -1,12 +1,10 @@
 import {
-  createEffect,
-  createSignal,
+  createResource,
   mergeProps,
   onCleanup,
-  onMount,
   splitProps,
+  Suspense,
   type JSX,
-  untrack,
 } from "solid-js";
 import { clsx } from "clsx";
 import type { BundledLanguage, ThemeRegistrationRaw } from "shiki";
@@ -44,83 +42,84 @@ const resolveLanguage = (
 const escapeHtml = (value: string): string =>
   value.replaceAll("&", "&amp;").replaceAll("<", "&lt;");
 
+const highlightCode = async (
+  code: string,
+  language: string,
+  isStale: () => boolean,
+): Promise<string> => {
+  let highlighter:
+    | Awaited<ReturnType<(typeof import("shiki"))["createHighlighter"]>>
+    | undefined;
+
+  try {
+    const { bundledLanguages, createHighlighter } = await loadShiki();
+    if (isStale()) return escapeHtml(code);
+
+    const resolvedLanguage = resolveLanguage(language, bundledLanguages);
+    highlighter = await createHighlighter({
+      themes: [
+        ikumaDark as unknown as ThemeRegistrationRaw,
+        ikumaLight as unknown as ThemeRegistrationRaw,
+      ],
+      langs: resolvedLanguage === "text" ? [] : [resolvedLanguage],
+    });
+
+    if (isStale()) return escapeHtml(code);
+
+    return highlighter.codeToHtml(code, {
+      lang: resolvedLanguage,
+      themes: {
+        dark: ikumaDark as unknown as ThemeRegistrationRaw,
+        light: ikumaLight as unknown as ThemeRegistrationRaw,
+      },
+      defaultColor: false,
+      colorReplacements: {
+        "#ffffff": "transparent",
+        "#121212": "transparent",
+      },
+    });
+  } catch {
+    return `<pre>${escapeHtml(code)}</pre>`;
+  } finally {
+    highlighter?.dispose();
+  }
+};
+
 export const ElmShikiHighlighter = (props: ElmShikiHighlighterProps) => {
   const merged = mergeProps({ language: "txt" }, props);
   const [local, rest] = splitProps(merged, ["class", "code", "language"]);
-  const [rawHtml, setRawHtml] = createSignal(
-    escapeHtml(untrack(() => local.code)),
-  );
   let generation = 0;
-  let disposed = false;
-
-  onMount(() => {
-    createEffect(() => {
+  const [rawHtml] = createResource(
+    () => {
       const code = local.code;
       const language = local.language;
       const currentGeneration = ++generation;
-      const isStale = () => disposed || currentGeneration !== generation;
 
-      if (!code) {
-        setRawHtml("");
-        return;
-      }
-
-      // Each generation owns its highlighter, including stale or unmounted work.
-      void (async () => {
-        let highlighter:
-          | Awaited<ReturnType<(typeof import("shiki"))["createHighlighter"]>>
-          | undefined;
-
-        try {
-          const { bundledLanguages, createHighlighter } = await loadShiki();
-          if (isStale()) return;
-
-          const resolvedLanguage = resolveLanguage(language, bundledLanguages);
-          highlighter = await createHighlighter({
-            themes: [
-              ikumaDark as unknown as ThemeRegistrationRaw,
-              ikumaLight as unknown as ThemeRegistrationRaw,
-            ],
-            langs: resolvedLanguage === "text" ? [] : [resolvedLanguage],
-          });
-
-          if (isStale()) return;
-
-          const html = highlighter.codeToHtml(code, {
-            lang: resolvedLanguage,
-            themes: {
-              dark: ikumaDark as unknown as ThemeRegistrationRaw,
-              light: ikumaLight as unknown as ThemeRegistrationRaw,
-            },
-            defaultColor: false,
-            colorReplacements: {
-              "#ffffff": "transparent",
-              "#121212": "transparent",
-            },
-          });
-
-          if (!isStale()) setRawHtml(html);
-        } catch {
-          if (!isStale()) {
-            setRawHtml(`<pre>${escapeHtml(code)}</pre>`);
-          }
-        } finally {
-          highlighter?.dispose();
-        }
-      })();
-    });
-  });
+      return code ? { code, language, generation: currentGeneration } : false;
+    },
+    ({ code, language, generation: requestGeneration }) =>
+      highlightCode(code, language, () => requestGeneration !== generation),
+  );
 
   onCleanup(() => {
-    disposed = true;
     generation += 1;
   });
 
   return (
-    <pre
-      {...rest}
-      class={clsx(styles["elm-shiki-highlighter"], local.class)}
-      innerHTML={rawHtml()}
-    />
+    <Suspense
+      fallback={
+        <pre
+          {...rest}
+          class={clsx(styles["elm-shiki-highlighter"], local.class)}
+          innerHTML={escapeHtml(local.code)}
+        />
+      }
+    >
+      <pre
+        {...rest}
+        class={clsx(styles["elm-shiki-highlighter"], local.class)}
+        innerHTML={rawHtml() ?? ""}
+      />
+    </Suspense>
   );
 };
