@@ -1,6 +1,6 @@
 {
   "name": "@elmethis/qwik",
-  "version": "1.0.0-alpha.46",
+  "version": "1.0.0-alpha.47",
   "publishConfig": {
     "access": "public"
   },
@@ -55,6 +55,7 @@
     "test.coverage": "vitest --run --coverage",
     "test.browser": "vitest --run --config vitest.browser.config.ts",
     "test.coverage.browser": "vitest --run --coverage --config vitest.browser.config.ts",
+    "test.style": "node ../../scripts/verify-framework-style.mjs .",
     "test.build": "pnpm run build && pnpm run build-storybook",
     "check": "concurrently -g \"pnpm:fmt.check\" \"pnpm:lint\" \"pnpm:lint.css\" \"pnpm:build.types\"",
     "check.ci": "concurrently -g \"pnpm:check\" \"pnpm:test.build\" \"pnpm:test.unit\" \"pnpm:test.browser\"",

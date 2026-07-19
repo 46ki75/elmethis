@@ -4,7 +4,10 @@ import { qwikVite } from "@qwik.dev/core/optimizer";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 const { dependencies = {}, peerDependencies = {} } = pkg as any;
-const makeRegex = (dep: string) => new RegExp(`^${dep}(/.*)?$`);
+const makeRegex = (dep: string) =>
+  dep === "@elmethis/core"
+    ? /^@elmethis\/core(?:\/(?!tokens\.css$).*)?$/
+    : new RegExp(`^${dep}(/.*)?$`);
 const excludeAll = (obj: Record<string, any>) =>
   Object.keys(obj).map(makeRegex);
 

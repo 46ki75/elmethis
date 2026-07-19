@@ -321,13 +321,26 @@ export const components = <><ElmInlineText {...textProps}>Text</ElmInlineText><E
     path.join(consumerDirectory, "node_modules/@elmethis/solid/lib/style.css"),
     "utf8",
   );
+  const tokenDeclarationIndex = packedStyle.search(
+    /--elmethis-color-primary\s*:/,
+  );
+  const componentStyleIndex = packedStyle.indexOf("elm-divider");
   if (
-    !packedStyle.includes("elm-divider") ||
+    componentStyleIndex < 0 ||
     !packedStyle.includes("elm-inline-icon") ||
-    !packedStyle.includes("elm-inline-text") ||
-    !packedStyle.includes("--elmethis-color-primary")
+    !packedStyle.includes("elm-inline-text")
   ) {
     throw new Error("Packed style.css does not contain ElmDivider styles");
+  }
+  if (tokenDeclarationIndex < 0) {
+    throw new Error(
+      "Packed style.css does not contain core token declarations",
+    );
+  }
+  if (tokenDeclarationIndex > componentStyleIndex) {
+    throw new Error(
+      "Packed style.css does not place core tokens before component styles",
+    );
   }
 
   console.log("Solid package consumer smoke tests passed.");
