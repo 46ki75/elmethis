@@ -9,12 +9,7 @@ import {
   untrack,
 } from "solid-js";
 import { clsx } from "clsx";
-import {
-  bundledLanguages,
-  createHighlighter,
-  type BundledLanguage,
-  type ThemeRegistrationRaw,
-} from "shiki";
+import type { BundledLanguage, ThemeRegistrationRaw } from "shiki";
 import ikumaDark from "@46ki75/ikuma-theme/dark";
 import ikumaLight from "@46ki75/ikuma-theme/light";
 
@@ -30,7 +25,17 @@ export interface ElmShikiHighlighterProps extends JSX.HTMLAttributes<HTMLPreElem
   language?: string;
 }
 
-const resolveLanguage = (language: string): BundledLanguage | "text" => {
+let shikiPromise: Promise<typeof import("shiki")> | undefined;
+const loadShiki = () =>
+  (shikiPromise ??= import("shiki").catch((error: unknown) => {
+    shikiPromise = undefined;
+    throw error;
+  }));
+
+const resolveLanguage = (
+  language: string,
+  bundledLanguages: Record<string, unknown>,
+): BundledLanguage | "text" => {
   const normalized = language.trim().toLowerCase();
   if (normalized in bundledLanguages) return normalized as BundledLanguage;
   return "text";
@@ -51,8 +56,9 @@ export const ElmShikiHighlighter = (props: ElmShikiHighlighterProps) => {
   onMount(() => {
     createEffect(() => {
       const code = local.code;
-      const language = resolveLanguage(local.language);
+      const language = local.language;
       const currentGeneration = ++generation;
+      const isStale = () => disposed || currentGeneration !== generation;
 
       if (!code) {
         setRawHtml("");
@@ -62,21 +68,26 @@ export const ElmShikiHighlighter = (props: ElmShikiHighlighterProps) => {
       // Each generation owns its highlighter, including stale or unmounted work.
       void (async () => {
         let highlighter:
-          Awaited<ReturnType<typeof createHighlighter>> | undefined;
+          | Awaited<ReturnType<(typeof import("shiki"))["createHighlighter"]>>
+          | undefined;
 
         try {
+          const { bundledLanguages, createHighlighter } = await loadShiki();
+          if (isStale()) return;
+
+          const resolvedLanguage = resolveLanguage(language, bundledLanguages);
           highlighter = await createHighlighter({
             themes: [
               ikumaDark as unknown as ThemeRegistrationRaw,
               ikumaLight as unknown as ThemeRegistrationRaw,
             ],
-            langs: language === "text" ? [] : [language],
+            langs: resolvedLanguage === "text" ? [] : [resolvedLanguage],
           });
 
-          if (disposed || currentGeneration !== generation) return;
+          if (isStale()) return;
 
           const html = highlighter.codeToHtml(code, {
-            lang: language,
+            lang: resolvedLanguage,
             themes: {
               dark: ikumaDark as unknown as ThemeRegistrationRaw,
               light: ikumaLight as unknown as ThemeRegistrationRaw,
@@ -88,9 +99,9 @@ export const ElmShikiHighlighter = (props: ElmShikiHighlighterProps) => {
             },
           });
 
-          if (!disposed && currentGeneration === generation) setRawHtml(html);
+          if (!isStale()) setRawHtml(html);
         } catch {
-          if (!disposed && currentGeneration === generation) {
+          if (!isStale()) {
             setRawHtml(`<pre>${escapeHtml(code)}</pre>`);
           }
         } finally {

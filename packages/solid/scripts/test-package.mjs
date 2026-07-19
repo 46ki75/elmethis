@@ -191,9 +191,9 @@ export default defineConfig({
   await write(
     "src/server.tsx",
     `import { renderToString } from "solid-js/web";
-import { ElmA2ui, ElmDivider, ElmInlineText } from "@elmethis/solid";
-const html = renderToString(() => <><ElmInlineText bold>ssr</ElmInlineText><ElmDivider data-package-smoke="ssr" /><ElmA2ui messages={[]} /></>);
-if (!html.includes("<hr") || !html.includes("data-package-smoke") || !html.includes("elm-a2ui") || !html.includes("ssr")) {
+import { ElmA2ui, ElmDivider, ElmInlineText, ElmShikiHighlighter } from "@elmethis/solid";
+const html = renderToString(() => <><ElmInlineText bold>ssr</ElmInlineText><ElmDivider data-package-smoke="ssr" /><ElmA2ui messages={[]} /><ElmShikiHighlighter code={'const value = "<safe>";'} language="typescript" /></>);
+if (!html.includes("<hr") || !html.includes("data-package-smoke") || !html.includes("elm-a2ui") || !html.includes("ssr") || !html.includes("&lt;safe>")) {
   throw new Error(\`Unexpected SSR output: \${html}\`);
 }
 console.log(html);
