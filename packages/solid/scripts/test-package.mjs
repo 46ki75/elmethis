@@ -123,18 +123,21 @@ console.log(import.meta.resolve("@elmethis/solid/style.css"));
 
   await write(
     "src/esm.js",
-    `import { A2uiSurface, basicCatalog, CatalogRenderer, createClipboard, createControllableSignal, ElmA2ui, ElmDivider, ElmInlineIcon, ElmInlineText, notionBlockCatalog } from "@elmethis/solid";
+    `import { A2uiSurface, basicCatalog, CatalogRenderer, createClipboard, createControllableSignal, defineJsonSchemaTool, defineTool, ElmA2ui, ElmAgUiAgent, ElmAgUiInput, ElmAgUiInputContent, ElmAgUiMessageRenderer, ElmAgUiPromptPicker, ElmAgUiStatus, ElmAgUiToolExecution, ElmDivider, ElmInlineIcon, ElmInlineText, notionBlockCatalog, useAgent, useMcpPrompts, useMcpTools } from "@elmethis/solid";
 import "@elmethis/solid/style.css";
 if (typeof A2uiSurface !== "function") throw new Error("Missing A2uiSurface ESM export");
 if (!(basicCatalog instanceof CatalogRenderer)) throw new Error("Invalid basicCatalog ESM export");
 if (typeof createClipboard !== "function") throw new Error("Missing createClipboard ESM export");
 if (typeof createControllableSignal !== "function") throw new Error("Missing createControllableSignal ESM export");
+for (const [name, value] of Object.entries({ defineJsonSchemaTool, defineTool, ElmAgUiAgent, ElmAgUiInput, ElmAgUiInputContent, ElmAgUiMessageRenderer, ElmAgUiPromptPicker, ElmAgUiStatus, ElmAgUiToolExecution, useAgent, useMcpPrompts, useMcpTools })) {
+  if (typeof value !== "function") throw new Error(\`Missing \${name} ESM export\`);
+}
 if (typeof ElmA2ui !== "function") throw new Error("Missing ElmA2ui ESM export");
 if (typeof ElmDivider !== "function") throw new Error("Missing ElmDivider ESM export");
 if (typeof ElmInlineIcon !== "function") throw new Error("Missing ElmInlineIcon ESM export");
 if (typeof ElmInlineText !== "function") throw new Error("Missing ElmInlineText ESM export");
 if (!(notionBlockCatalog instanceof CatalogRenderer)) throw new Error("Invalid notionBlockCatalog ESM export");
-export { A2uiSurface, basicCatalog, CatalogRenderer, createClipboard, createControllableSignal, ElmA2ui, ElmDivider, ElmInlineIcon, ElmInlineText, notionBlockCatalog };
+export { A2uiSurface, basicCatalog, CatalogRenderer, createClipboard, createControllableSignal, defineJsonSchemaTool, defineTool, ElmA2ui, ElmAgUiAgent, ElmAgUiInput, ElmAgUiInputContent, ElmAgUiMessageRenderer, ElmAgUiPromptPicker, ElmAgUiStatus, ElmAgUiToolExecution, ElmDivider, ElmInlineIcon, ElmInlineText, notionBlockCatalog, useAgent, useMcpPrompts, useMcpTools };
 `,
   );
   await write(
@@ -245,6 +248,9 @@ if (typeof library.A2uiSurface !== "function") throw new Error("Missing A2uiSurf
 if (!(library.basicCatalog instanceof library.CatalogRenderer)) throw new Error("Invalid basicCatalog CJS export");
 if (typeof library.createClipboard !== "function") throw new Error("Missing createClipboard CJS export");
 if (typeof library.createControllableSignal !== "function") throw new Error("Missing createControllableSignal CJS export");
+for (const name of ["defineJsonSchemaTool", "defineTool", "ElmAgUiAgent", "ElmAgUiInput", "ElmAgUiInputContent", "ElmAgUiMessageRenderer", "ElmAgUiPromptPicker", "ElmAgUiStatus", "ElmAgUiToolExecution", "useAgent", "useMcpPrompts", "useMcpTools"]) {
+  if (typeof library[name] !== "function") throw new Error(\`Missing \${name} CJS export\`);
+}
 if (typeof library.ElmA2ui !== "function") throw new Error("Missing ElmA2ui CJS export");
 if (typeof library.ElmDivider !== "function") throw new Error("Missing ElmDivider CJS export");
 if (typeof library.ElmInlineIcon !== "function") throw new Error("Missing ElmInlineIcon CJS export");
