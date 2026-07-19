@@ -50,12 +50,28 @@ export const ElmAgUiToolExecution = (props: ElmAgUiToolExecutionProps) => {
   const [isResultShown, setIsResultShown] = createSignal(false);
   const [isResultOpen, setIsResultOpen] = createSignal(false);
   const queue = createThrottledQueue(200);
+  let latestPhase = -1;
   const enqueue = (task: () => void) => {
     void queue.push(async () => task()).catch(() => undefined);
   };
 
   createEffect(() => {
-    switch (local.toolEventType) {
+    const eventType = local.toolEventType;
+    const phase =
+      eventType === EventType.TOOL_CALL_START
+        ? 0
+        : eventType === EventType.TOOL_CALL_ARGS
+          ? 1
+          : eventType === EventType.TOOL_CALL_END ||
+              eventType === EventType.TOOL_CALL_CHUNK
+            ? 2
+            : eventType === EventType.TOOL_CALL_RESULT
+              ? 3
+              : -1;
+    if (phase <= latestPhase) return;
+    latestPhase = phase;
+
+    switch (eventType) {
       case EventType.TOOL_CALL_START:
         enqueue(() => {
           setIsOpen(true);
