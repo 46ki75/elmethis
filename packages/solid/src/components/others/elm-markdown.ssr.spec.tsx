@@ -13,7 +13,7 @@ vi.mock("@46ki75/ikuma-theme/light", () => ({ default: {} }));
 import { ElmMarkdown } from "./elm-markdown";
 
 describe("[SSR] ElmMarkdown", () => {
-  it("synchronously renders GFM content while keeping code highlighting client-only", () => {
+  it("synchronously renders GFM content with client-only code highlighting", () => {
     const html = renderToString(() => (
       <ElmMarkdown
         markdown={`# Server heading
@@ -37,7 +37,7 @@ const clientOnly = true;
     expect(html).toContain("<p");
     expect(html).toContain("<figure");
     expect(html).toContain("<pre");
-    expect(html).not.toContain("const clientOnly");
+    expect(html).toContain("const clientOnly");
     expect(html).toContain("<table");
     expect(html).toContain("<th");
     expect(html).toContain("server-markdown");
