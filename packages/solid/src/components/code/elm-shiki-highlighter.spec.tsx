@@ -3,11 +3,13 @@ import { createSignal } from "solid-js";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const shiki = vi.hoisted(() => ({
+  codeToHtml: vi.fn(),
   createHighlighter: vi.fn(),
 }));
 
 vi.mock("shiki", () => ({
   bundledLanguages: { rs: {}, rust: {}, ts: {}, typescript: {} },
+  codeToHtml: shiki.codeToHtml,
   createHighlighter: shiki.createHighlighter,
 }));
 vi.mock("@46ki75/ikuma-theme/dark", () => ({
@@ -19,22 +21,19 @@ vi.mock("@46ki75/ikuma-theme/light", () => ({
 
 import { ElmShikiHighlighter } from "./elm-shiki-highlighter";
 
-const highlighter = () => ({
-  codeToHtml: vi.fn(
-    (code: string) =>
-      `<pre class="shiki"><code><span class="line" style="--shiki-light:#111;--shiki-dark:#eee">${code}</span></code></pre>`,
-  ),
-  dispose: vi.fn(),
-});
+const highlighted = (code: string) =>
+  `<pre class="shiki"><code><span class="line" style="--shiki-light:#111;--shiki-dark:#eee">${code}</span></code></pre>`;
 
 describe("[CSR] ElmShikiHighlighter", () => {
   beforeEach(() => {
+    shiki.codeToHtml.mockReset();
     shiki.createHighlighter.mockReset();
   });
 
-  it("highlights after mount with dual themes and disposes the highlighter", async () => {
-    const instance = highlighter();
-    shiki.createHighlighter.mockResolvedValue(instance);
+  it("highlights after mount with dual themes through Shiki's cached shorthand", async () => {
+    shiki.codeToHtml.mockImplementation(async (code: string) =>
+      highlighted(code),
+    );
     const rendered = render(() => (
       <ElmShikiHighlighter
         code="let value = 1;"
@@ -49,36 +48,38 @@ describe("[CSR] ElmShikiHighlighter", () => {
       expect(rendered.container.innerHTML).toContain("--shiki-light"),
     );
 
-    expect(shiki.createHighlighter).toHaveBeenCalledWith(
-      expect.objectContaining({ langs: ["rust"] }),
-    );
-    expect(instance.codeToHtml).toHaveBeenCalledWith(
+    expect(shiki.codeToHtml).toHaveBeenCalledWith(
       "let value = 1;",
       expect.objectContaining({
         defaultColor: false,
+        lang: "rust",
         themes: expect.objectContaining({ dark: expect.anything() }),
       }),
     );
-    expect(instance.dispose).toHaveBeenCalledOnce();
+    expect(shiki.createHighlighter).not.toHaveBeenCalled();
   });
 
   it("accepts bundled aliases and falls back to Shiki plaintext for unknown languages", async () => {
     const [language, setLanguage] = createSignal("rs");
-    shiki.createHighlighter.mockImplementation(async () => highlighter());
+    shiki.codeToHtml.mockImplementation(async (code: string) =>
+      highlighted(code),
+    );
     const rendered = render(() => (
       <ElmShikiHighlighter code="plain text" language={language()} />
     ));
 
     await vi.waitFor(() =>
-      expect(shiki.createHighlighter).toHaveBeenCalledWith(
-        expect.objectContaining({ langs: ["rs"] }),
+      expect(shiki.codeToHtml).toHaveBeenCalledWith(
+        "plain text",
+        expect.objectContaining({ lang: "rs" }),
       ),
     );
 
     setLanguage("not-a-language");
     await vi.waitFor(() =>
-      expect(shiki.createHighlighter).toHaveBeenLastCalledWith(
-        expect.objectContaining({ langs: [] }),
+      expect(shiki.codeToHtml).toHaveBeenLastCalledWith(
+        "plain text",
+        expect.objectContaining({ lang: "text" }),
       ),
     );
     await vi.waitFor(() =>
@@ -87,8 +88,8 @@ describe("[CSR] ElmShikiHighlighter", () => {
   });
 
   it("does not let an older generation overwrite a newer highlight", async () => {
-    const pending: Array<(value: ReturnType<typeof highlighter>) => void> = [];
-    shiki.createHighlighter.mockImplementation(
+    const pending: Array<(value: string) => void> = [];
+    shiki.codeToHtml.mockImplementation(
       () =>
         new Promise((resolve) => {
           pending.push(resolve);
@@ -103,22 +104,20 @@ describe("[CSR] ElmShikiHighlighter", () => {
     setCode("new code");
     await vi.waitFor(() => expect(pending).toHaveLength(2));
 
-    const newer = highlighter();
-    pending[1](newer);
+    pending[1](highlighted("new code"));
     await vi.waitFor(() =>
       expect(rendered.container.textContent).toContain("new code"),
     );
 
-    const older = highlighter();
-    pending[0](older);
-    await vi.waitFor(() => expect(older.dispose).toHaveBeenCalledOnce());
+    pending[0](highlighted("old code"));
+    await Promise.resolve();
     expect(rendered.container.textContent).toContain("new code");
     expect(rendered.container.textContent).not.toContain("old code");
   });
 
-  it("disposes a highlighter that resolves after unmount without updating DOM", async () => {
-    let resolve: ((value: ReturnType<typeof highlighter>) => void) | undefined;
-    shiki.createHighlighter.mockImplementation(
+  it("ignores highlighting that resolves after unmount", async () => {
+    let resolve: ((value: string) => void) | undefined;
+    shiki.codeToHtml.mockImplementation(
       () =>
         new Promise((next) => {
           resolve = next;
@@ -130,19 +129,48 @@ describe("[CSR] ElmShikiHighlighter", () => {
 
     await vi.waitFor(() => expect(resolve).toBeTypeOf("function"));
     rendered.unmount();
-    const late = highlighter();
-    resolve!(late);
+    resolve!(highlighted("late code"));
 
-    await vi.waitFor(() => expect(late.dispose).toHaveBeenCalledOnce());
+    await Promise.resolve();
     expect(rendered.container.innerHTML).toBe("");
   });
 
-  it("short-circuits empty code without creating a highlighter", async () => {
+  it("short-circuits empty code without invoking Shiki", async () => {
     const rendered = render(() => <ElmShikiHighlighter code="" />);
 
     await Promise.resolve();
     expect(rendered.container.querySelector("pre")).not.toBeNull();
     expect(rendered.container.querySelector("pre")).toBeEmptyDOMElement();
+    expect(shiki.codeToHtml).not.toHaveBeenCalled();
+    expect(shiki.createHighlighter).not.toHaveBeenCalled();
+  });
+
+  it("renders escaped source without nesting pre elements when highlighting fails", async () => {
+    shiki.codeToHtml.mockRejectedValue(new Error("highlight failed"));
+    const rendered = render(() => (
+      <ElmShikiHighlighter code={'const value = "<safe> & readable";'} />
+    ));
+
+    await vi.waitFor(() =>
+      expect(rendered.container.textContent).toContain("<safe> & readable"),
+    );
+    await vi.waitFor(() => expect(shiki.codeToHtml).toHaveBeenCalledOnce());
+    expect(rendered.container.querySelectorAll("pre")).toHaveLength(1);
+    expect(rendered.container.innerHTML).not.toContain("<safe>");
+  });
+
+  it("does not create a highlighter per code block", async () => {
+    shiki.codeToHtml.mockImplementation(async (code: string) =>
+      highlighted(code),
+    );
+    render(() => (
+      <>
+        <ElmShikiHighlighter code="first" language="rust" />
+        <ElmShikiHighlighter code="second" language="typescript" />
+      </>
+    ));
+
+    await vi.waitFor(() => expect(shiki.codeToHtml).toHaveBeenCalledTimes(2));
     expect(shiki.createHighlighter).not.toHaveBeenCalled();
   });
 });
