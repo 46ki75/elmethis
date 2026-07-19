@@ -2,10 +2,12 @@ import { renderToStringAsync } from "solid-js/web";
 import { describe, expect, it, vi } from "vitest";
 
 const shiki = vi.hoisted(() => ({
+  codeToHtml: vi.fn(),
   createHighlighter: vi.fn(),
 }));
 vi.mock("shiki", () => ({
   bundledLanguages: { rust: {} },
+  codeToHtml: shiki.codeToHtml,
   createHighlighter: shiki.createHighlighter,
 }));
 vi.mock("@46ki75/ikuma-theme/dark", () => ({
@@ -18,15 +20,10 @@ vi.mock("@46ki75/ikuma-theme/light", () => ({
 import { ElmShikiHighlighter } from "./elm-shiki-highlighter";
 
 describe("[SSR] ElmShikiHighlighter", () => {
-  it("renders highlighted code server-side", async () => {
-    const highlighter = {
-      codeToHtml: vi.fn(
-        () =>
-          '<pre class="shiki"><code><span style="--shiki-light:#111;--shiki-dark:#eee">server</span></code></pre>',
-      ),
-      dispose: vi.fn(),
-    };
-    shiki.createHighlighter.mockResolvedValue(highlighter);
+  it("renders highlighted code server-side through Shiki's cached shorthand", async () => {
+    shiki.codeToHtml.mockResolvedValue(
+      '<pre class="shiki"><code><span style="--shiki-light:#111;--shiki-dark:#eee">server</span></code></pre>',
+    );
 
     const html = await renderToStringAsync(() => (
       <ElmShikiHighlighter
@@ -43,16 +40,14 @@ describe("[SSR] ElmShikiHighlighter", () => {
     expect(html).toContain('class="shiki"');
     expect(html).toContain("--shiki-light");
     expect(html).toContain("--shiki-dark");
-    expect(shiki.createHighlighter).toHaveBeenCalledWith(
-      expect.objectContaining({ langs: ["rust"] }),
-    );
-    expect(highlighter.codeToHtml).toHaveBeenCalledWith(
+    expect(shiki.codeToHtml).toHaveBeenCalledWith(
       'let server = "<safe> & readable";',
       expect.objectContaining({
         defaultColor: false,
+        lang: "rust",
         themes: expect.objectContaining({ dark: expect.anything() }),
       }),
     );
-    expect(highlighter.dispose).toHaveBeenCalledOnce();
+    expect(shiki.createHighlighter).not.toHaveBeenCalled();
   });
 });

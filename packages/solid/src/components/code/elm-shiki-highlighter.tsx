@@ -8,8 +8,6 @@ import {
 } from "solid-js";
 import { clsx } from "clsx";
 import type { BundledLanguage, ThemeRegistrationRaw } from "shiki";
-import ikumaDark from "@46ki75/ikuma-theme/dark";
-import ikumaLight from "@46ki75/ikuma-theme/light";
 
 import styles from "./elm-shiki-highlighter.module.css";
 
@@ -23,12 +21,28 @@ export interface ElmShikiHighlighterProps extends JSX.HTMLAttributes<HTMLPreElem
   language?: string;
 }
 
-let shikiPromise: Promise<typeof import("shiki")> | undefined;
-const loadShiki = () =>
-  (shikiPromise ??= import("shiki").catch((error: unknown) => {
-    shikiPromise = undefined;
-    throw error;
-  }));
+let runtimePromise:
+  | Promise<{
+      shiki: typeof import("shiki");
+      dark: ThemeRegistrationRaw;
+      light: ThemeRegistrationRaw;
+    }>
+  | undefined;
+const loadRuntime = () =>
+  (runtimePromise ??= Promise.all([
+    import("shiki"),
+    import("@46ki75/ikuma-theme/dark"),
+    import("@46ki75/ikuma-theme/light"),
+  ])
+    .then(([shiki, dark, light]) => ({
+      shiki,
+      dark: dark.default as unknown as ThemeRegistrationRaw,
+      light: light.default as unknown as ThemeRegistrationRaw,
+    }))
+    .catch((error: unknown) => {
+      runtimePromise = undefined;
+      throw error;
+    }));
 
 const resolveLanguage = (
   language: string,
@@ -47,30 +61,16 @@ const highlightCode = async (
   language: string,
   isStale: () => boolean,
 ): Promise<string> => {
-  let highlighter:
-    | Awaited<ReturnType<(typeof import("shiki"))["createHighlighter"]>>
-    | undefined;
-
   try {
-    const { bundledLanguages, createHighlighter } = await loadShiki();
+    const { shiki, dark, light } = await loadRuntime();
     if (isStale()) return escapeHtml(code);
 
-    const resolvedLanguage = resolveLanguage(language, bundledLanguages);
-    highlighter = await createHighlighter({
-      themes: [
-        ikumaDark as unknown as ThemeRegistrationRaw,
-        ikumaLight as unknown as ThemeRegistrationRaw,
-      ],
-      langs: resolvedLanguage === "text" ? [] : [resolvedLanguage],
-    });
-
-    if (isStale()) return escapeHtml(code);
-
-    return highlighter.codeToHtml(code, {
+    const resolvedLanguage = resolveLanguage(language, shiki.bundledLanguages);
+    const html = await shiki.codeToHtml(code, {
       lang: resolvedLanguage,
       themes: {
-        dark: ikumaDark as unknown as ThemeRegistrationRaw,
-        light: ikumaLight as unknown as ThemeRegistrationRaw,
+        dark,
+        light,
       },
       defaultColor: false,
       colorReplacements: {
@@ -78,10 +78,10 @@ const highlightCode = async (
         "#121212": "transparent",
       },
     });
+
+    return isStale() ? escapeHtml(code) : html;
   } catch {
-    return `<pre>${escapeHtml(code)}</pre>`;
-  } finally {
-    highlighter?.dispose();
+    return escapeHtml(code);
   }
 };
 
@@ -99,6 +99,7 @@ export const ElmShikiHighlighter = (props: ElmShikiHighlighterProps) => {
     },
     ({ code, language, generation: requestGeneration }) =>
       highlightCode(code, language, () => requestGeneration !== generation),
+    { ssrLoadFrom: "server" },
   );
 
   onCleanup(() => {

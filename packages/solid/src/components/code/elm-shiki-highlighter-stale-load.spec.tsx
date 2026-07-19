@@ -3,7 +3,7 @@ import { createSignal } from "solid-js";
 import { describe, expect, it, vi } from "vitest";
 
 const shiki = vi.hoisted(() => ({
-  createHighlighter: vi.fn(),
+  codeToHtml: vi.fn(),
   releaseRuntime: undefined as (() => void) | undefined,
 }));
 
@@ -14,7 +14,7 @@ vi.mock("shiki", async () => {
 
   return {
     bundledLanguages: { rust: {} },
-    createHighlighter: shiki.createHighlighter,
+    codeToHtml: shiki.codeToHtml,
   };
 });
 vi.mock("@46ki75/ikuma-theme/dark", () => ({ default: {} }));
@@ -24,10 +24,9 @@ import { ElmShikiHighlighter } from "./elm-shiki-highlighter";
 
 describe("[CSR] ElmShikiHighlighter runtime loading", () => {
   it("does not initialize a highlighter for work that became stale while loading Shiki", async () => {
-    shiki.createHighlighter.mockImplementation(async () => ({
-      codeToHtml: (code: string) => `<pre>${code}</pre>`,
-      dispose: vi.fn(),
-    }));
+    shiki.codeToHtml.mockImplementation(
+      async (code: string) => `<pre>${code}</pre>`,
+    );
     const [code, setCode] = createSignal("old code");
     const rendered = render(() => (
       <ElmShikiHighlighter code={code()} language="rust" />
@@ -41,8 +40,6 @@ describe("[CSR] ElmShikiHighlighter runtime loading", () => {
     await vi.waitFor(() =>
       expect(rendered.container.textContent).toContain("new code"),
     );
-    await vi.waitFor(() =>
-      expect(shiki.createHighlighter).toHaveBeenCalledOnce(),
-    );
+    await vi.waitFor(() => expect(shiki.codeToHtml).toHaveBeenCalledOnce());
   });
 });
