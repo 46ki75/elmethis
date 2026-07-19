@@ -523,6 +523,12 @@ importers:
       '@a2ui/web_core':
         specifier: ^0.10.5
         version: 0.10.5
+      '@ag-ui/client':
+        specifier: ^0.0.57
+        version: 0.0.57
+      '@ag-ui/core':
+        specifier: ^0.0.57
+        version: 0.0.57
       '@elmethis/core':
         specifier: workspace:^
         version: link:../core
@@ -532,6 +538,9 @@ importers:
       '@mdi/js':
         specifier: ^7.4.47
         version: 7.4.47
+      '@modelcontextprotocol/sdk':
+        specifier: ^1.29.0
+        version: 1.29.0(@cfworker/json-schema@4.1.1)(zod@3.25.76)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -544,6 +553,15 @@ importers:
       shiki:
         specifier: ^4.3.1
         version: 4.3.1
+      uuid:
+        specifier: ^14.0.1
+        version: 14.0.1
+      zod:
+        specifier: ^3
+        version: 3.25.76
+      zod-to-json-schema:
+        specifier: ^3.25.2
+        version: 3.25.2(zod@3.25.76)
     devDependencies:
       '@eslint/js':
         specifier: latest

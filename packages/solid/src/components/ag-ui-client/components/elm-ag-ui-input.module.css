@@ -1,0 +1,90 @@
+.elm-ag-ui-input {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.picker-container {
+  width: 100%;
+  margin-block-end: 0.5rem;
+}
+
+.card {
+  box-sizing: border-box;
+  padding: 0.5rem;
+  width: 100%;
+  border-radius: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: light-dark(#f7f7f9, var(--elmethis-color-surface-raised));
+  box-shadow: 0 0 2px oklch(from black l c h / 25%);
+
+  .input {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 3rem;
+    max-height: 12rem;
+    overflow-y: auto;
+    resize: none;
+    padding: 0;
+    margin: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+  }
+
+  .button-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    grid-template-areas: "plus spacer stop send";
+    column-gap: 0.5rem;
+    align-items: center;
+  }
+
+  .status {
+    grid-area: spacer;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .plus-button,
+  .submit-button,
+  .stop-button {
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    border: 0;
+    border-radius: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 200ms;
+
+    &:hover {
+      opacity: 0.75;
+    }
+  }
+
+  .plus-button {
+    grid-area: plus;
+    background-color: oklch(from black l c h / 60%);
+  }
+
+  .submit-button {
+    grid-area: send;
+    background-color: oklch(from black l c h / 75%);
+  }
+
+  .stop-button {
+    grid-area: stop;
+    background-color: var(--elmethis-color-accent-error);
+  }
+}
