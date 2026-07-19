@@ -1,14 +1,10 @@
-import {
-  createSignal,
-  For,
-  onCleanup,
-  onMount,
-  splitProps,
-  type JSX,
-} from "solid-js";
+import { For, onCleanup, onMount, splitProps, type JSX } from "solid-js";
 import { clsx } from "clsx";
 
 import styles from "./elm-parallax.module.css";
+
+const getTransform = (y: number, index: number) =>
+  `scale(1.2) translateY(${y / (1000 * (index + 1))}%)`;
 
 export interface ElmParallaxProps extends JSX.HTMLAttributes<HTMLDivElement> {
   images: string[];
@@ -16,18 +12,49 @@ export interface ElmParallaxProps extends JSX.HTMLAttributes<HTMLDivElement> {
 
 export const ElmParallax = (props: ElmParallaxProps) => {
   const [local, rest] = splitProps(props, ["class", "images"]);
-  const [scrollY, setScrollY] = createSignal(0);
+  let root: HTMLDivElement | undefined;
+  let appliedY = 0;
 
   onMount(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let frame: number | undefined;
+    let scrollY = window.scrollY;
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    onCleanup(() => window.removeEventListener("scroll", handleScroll));
+    const updateLayers = () => {
+      frame = undefined;
+      const y = reducedMotion.matches ? 0 : scrollY;
+      appliedY = y;
+
+      root
+        ?.querySelectorAll<HTMLElement>(`.${styles.parallax}`)
+        .forEach((layer, index) => {
+          layer.style.transform = getTransform(y, index);
+        });
+    };
+    const scheduleUpdate = () => {
+      scrollY = window.scrollY;
+      frame ??= window.requestAnimationFrame(updateLayers);
+    };
+
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    reducedMotion.addEventListener("change", scheduleUpdate);
+    scheduleUpdate();
+
+    onCleanup(() => {
+      window.removeEventListener("scroll", scheduleUpdate);
+      reducedMotion.removeEventListener("change", scheduleUpdate);
+      if (frame !== undefined) window.cancelAnimationFrame(frame);
+    });
   });
 
   return (
-    <div class={clsx(styles["elm-parallax"], local.class)} {...rest}>
-      <div class={styles["parallax-watcher"]} />
+    <div
+      ref={(element) => {
+        root = element;
+      }}
+      class={clsx(styles["elm-parallax"], local.class)}
+      {...rest}
+    >
       <For each={local.images}>
         {(image, index) => (
           <div
@@ -35,7 +62,7 @@ export const ElmParallax = (props: ElmParallaxProps) => {
             class={styles.parallax}
             style={{
               "background-image": `url(${JSON.stringify(image)})`,
-              transform: `scale(1.2) translateY(${scrollY() / (1000 * (index() + 1))}%)`,
+              transform: getTransform(appliedY, index()),
               "transform-origin": "bottom",
             }}
           />
