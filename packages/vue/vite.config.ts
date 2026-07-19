@@ -9,7 +9,10 @@ const { dependencies = {}, peerDependencies = {} } = pkg as {
   dependencies?: Record<string, string>;
   peerDependencies?: Record<string, string>;
 };
-const makeRegex = (dep: string) => new RegExp(`^${dep}(/.*)?$`);
+const makeRegex = (dep: string) =>
+  dep === "@elmethis/core"
+    ? /^@elmethis\/core(?:\/(?!tokens\.css$).*)?$/
+    : new RegExp(`^${dep}(/.*)?$`);
 const excludeAll = (obj: Record<string, string>) =>
   Object.keys(obj).map(makeRegex);
 

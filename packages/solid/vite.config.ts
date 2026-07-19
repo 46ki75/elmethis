@@ -9,7 +9,11 @@ const { dependencies = {}, peerDependencies = {} } = pkg as {
   peerDependencies?: Record<string, string>;
 };
 const makeRegex = (dependency: string) =>
-  new RegExp(`^${dependency.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?:/.*)?$`);
+  dependency === "@elmethis/core"
+    ? /^@elmethis\/core(?:\/(?!tokens\.css$).*)?$/
+    : new RegExp(
+        `^${dependency.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?:/.*)?$`,
+      );
 const externalDependencies = [dependencies, peerDependencies].flatMap(
   (dependencyGroup) => Object.keys(dependencyGroup).map(makeRegex),
 );
