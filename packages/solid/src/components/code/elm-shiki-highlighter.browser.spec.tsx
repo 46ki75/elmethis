@@ -33,12 +33,11 @@ describe("[Browser] ElmShikiHighlighter", () => {
     ));
 
     await vi.waitFor(
-      () =>
-        expect(rendered.container.textContent).toContain(
-          "unknown language remains visible",
-        ),
+      () => expect(rendered.container.querySelector(".shiki")).not.toBeNull(),
       { timeout: 15_000 },
     );
-    expect(rendered.container.querySelector(".shiki")).not.toBeNull();
+    expect(rendered.container.textContent).toContain(
+      "unknown language remains visible",
+    );
   }, 20_000);
 });

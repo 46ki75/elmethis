@@ -46,6 +46,8 @@ Run a single test (from inside the package, or via `--filter @elmethis/<pkg> exe
 
 - unit: `pnpm exec vitest run src/path/foo.spec.tsx` (add `-t "name"` to filter by title)
 - browser: `pnpm exec vitest run --config vitest.browser.config.ts src/path/foo.browser.spec.tsx`
+- When fixing a bug, first write a test that reproduces it and confirm the test fails before changing
+  the implementation.
 
 Git hooks run via **lefthook** (`lefthook.yml`): `fmt` runs prettier once at the repo root; `check`
 runs eslint / stylelint / vitest-related per package.

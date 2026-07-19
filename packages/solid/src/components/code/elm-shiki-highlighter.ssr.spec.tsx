@@ -13,10 +13,10 @@ vi.mock("@46ki75/ikuma-theme/light", () => ({ default: {} }));
 import { ElmShikiHighlighter } from "./elm-shiki-highlighter";
 
 describe("[SSR] ElmShikiHighlighter", () => {
-  it("renders an empty host and never starts Shiki server-side", () => {
+  it("renders escaped source without starting Shiki server-side", () => {
     const html = renderToString(() => (
       <ElmShikiHighlighter
-        code="let server = false;"
+        code={'let server = "<safe> & readable";'}
         language="rust"
         class="server-highlighter"
         data-source="ssr"
@@ -26,7 +26,8 @@ describe("[SSR] ElmShikiHighlighter", () => {
     expect(html).toContain("<pre");
     expect(html).toContain("server-highlighter");
     expect(html).toContain('data-source="ssr"');
-    expect(html).not.toContain("let server");
+    expect(html).toContain('let server = "&lt;safe> &amp; readable";');
+    expect(html).not.toContain("<safe>");
     expect(html).not.toContain('class="shiki"');
     expect(createHighlighter).not.toHaveBeenCalled();
   });
