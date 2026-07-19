@@ -6,6 +6,7 @@ import {
   onMount,
   splitProps,
   type JSX,
+  untrack,
 } from "solid-js";
 import { clsx } from "clsx";
 import {
@@ -41,7 +42,9 @@ const escapeHtml = (value: string): string =>
 export const ElmShikiHighlighter = (props: ElmShikiHighlighterProps) => {
   const merged = mergeProps({ language: "txt" }, props);
   const [local, rest] = splitProps(merged, ["class", "code", "language"]);
-  const [rawHtml, setRawHtml] = createSignal("");
+  const [rawHtml, setRawHtml] = createSignal(
+    escapeHtml(untrack(() => local.code)),
+  );
   let generation = 0;
   let disposed = false;
 
