@@ -154,7 +154,6 @@ export const ElmAgUiInput = (props: ElmAgUiInputProps) => {
   return (
     <div {...rest} class={clsx(styles["elm-ag-ui-input"], local.class)}>
       <ElmCollapse
-        direction="column"
         isOpen={hasPicker() && (isPickerOpen() || slashRange() !== null)}
         class={styles["picker-container"]}
       >
