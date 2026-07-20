@@ -326,6 +326,39 @@ export const Primary: Story = {
   ),
 };
 
+export const InProcessStub: Story = {
+  args: {
+    scenario: "full",
+  },
+  argTypes: {
+    scenario: {
+      description: "The deterministic in-process stub scenario to run.",
+      control: "select",
+      options: scenarioNames,
+    },
+    url: { table: { disable: true } },
+    mcpUrl: { table: { disable: true } },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: "Runs `StubAgent` in-process without an HTTP backend.",
+      },
+    },
+  },
+  render: (args) => (
+    <div
+      style={{
+        width: "100%",
+        height: "calc(100vh - 34px)",
+        border: "1px solid #ccc",
+      }}
+    >
+      <UseAgent {...args} />
+    </div>
+  ),
+};
+
 export const Small: Story = {
   render: (args) => (
     <div style={{ width: "400px", height: "600px", border: "1px solid #ccc" }}>
