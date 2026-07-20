@@ -37,7 +37,7 @@
         "The exported route preload and createAsync consumer call the same project query with the current dynamic id.",
         "The rename action executes on the server, validates FormData, does not trust a submitted user identity, and authorizes the project before or atomically during the write.",
         "The form is a native POST wired to the Router action, remains progressively enhanced, and exposes pending plus server validation feedback through submission state.",
-        "A successful rename triggers automatic or targeted revalidation of the project query while validation failures avoid unnecessary revalidation.",
+        "A successful rename triggers targeted revalidation of the project query, while validation failures return a typed non-null Router json result with revalidation disabled.",
         "Server-only persistence and request-context code is isolated from the client-facing route boundary."
       ]
     },
@@ -48,11 +48,67 @@
       "files": [],
       "expectations": [
         "The app shell composes Router, FileRoutes, MetaProvider, and Suspense so site defaults and routed metadata participate in SSR.",
-        "The product route preloads a stable query and consumes the same query with createAsync using the reactive slug.",
+        "The product route preloads a stable query and consumes the same query with createAsync using the reactive slug and deferStream so SEO metadata is present in initial HTML.",
         "Route metadata includes a product Title, description Meta, Open Graph title Meta, and exactly one route-owned absolute canonical Link derived from product data.",
         "Metadata is rendered through @solidjs/meta under MetaProvider with no direct document or imperative head mutation.",
         "The verification example renders or requests SSR output and checks the effective product title, description, Open Graph title, and exactly one absolute canonical tag.",
         "The implementation explains or demonstrates that metadata updates when client navigation changes the product slug."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Implement a stable Solid v1 `PolymorphicAction` component whose reactive `as` prop can select `button`, `a`, or a custom component. It must forward valid props, combine base and conditional classes, and always invoke the latest `onActivate` callback if the parent replaces that prop. Also implement an SSR-safe `Dialog` using Portal with stable label/description IDs, and lazy-load its default-exported body with an accessible fallback and hover preloading. Return focused TSX files and tests for changing `as`, replacing the callback, and cleanup. Explain any Portal SSR limitation in NOTES.md.",
+      "expected_output": "Stable Solid v1 code using Dynamic, createUniqueId, Portal, lazy, Suspense, correct class forwarding and non-reactive event-binding handling, with SSR-aware notes and focused tests.",
+      "files": [],
+      "expectations": [
+        "PolymorphicAction imports Dynamic from solid-js/web and uses its reactive component prop instead of manually invoking or duplicating runtime-selected components.",
+        "The component constructs a class string rather than forwarding classList through Dynamic, and a stable event wrapper reads the latest onActivate prop.",
+        "Dialog uses createUniqueId for matching accessible IDs and does not derive hydration-sensitive IDs from randomness or a module counter.",
+        "The lazy default-exported body renders under Suspense, supports intent-based preload, and the implementation accounts for load failure or an enclosing error boundary.",
+        "Portal usage is guarded for the browser and NOTES.md states that Solid v1 Portal emits no server output and delegated events follow the component tree.",
+        "Tests update the reactive as value and callback in one mounted tree and verify behavior without React hooks or rerender assumptions."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Migrate the supplied SolidStart v1 setup to SolidStart 2.0 alpha. The old app uses app.config.ts, vinxi/http sessions, and createMiddleware({ onRequest }). Return the replacement vite.config.ts, middleware, one session-backed query, and tsconfig changes. The query wrapper must remain callable by client route code, redirect unauthenticated users before streaming, and avoid leaking database or session internals. Include MIGRATION.md listing intentionally version-specific choices.",
+      "expected_output": "A version-correct SolidStart v2 migration using solidStart in Vite, @solidjs/start/http, H3 middleware arrays, proper use-server placement, v2 environment types, and deferStream at the consuming async boundary.",
+      "files": [],
+      "expectations": [
+        "The migration replaces app.config.ts with vite.config.ts using solidStart from @solidjs/start/config and removes direct Vinxi assumptions.",
+        "HTTP helpers come from @solidjs/start/http, TypeScript includes @solidjs/start/env, and middleware uses the v2 H3 array form rather than the deprecated object form.",
+        "The use server directive is inside the query fetcher rather than at file scope around the client-used query wrapper.",
+        "The session-backed query authenticates and authorizes on the server and returns an intentional serializable DTO without secrets.",
+        "The route consumes the query with createAsync deferStream so its redirect or session headers complete before streaming flushes.",
+        "MIGRATION.md identifies SolidStart v2 as pre-release and does not claim unsupported v1 deployment or middleware configuration is unchanged."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Build a cookie-authenticated SolidStart project rename action and its tests. The native POST form must remain progressively enhanced. Reject cross-origin unsafe requests, validate FormData, derive identity from typed request locals, authorize the project in the action, return typed validation errors without revalidating, and revalidate only the matching project query after success. Every action path must leave useSubmission with a current non-null result. Include a direct SSR test proving a redirect and Set-Cookie can be produced before streaming starts.",
+      "expected_output": "A secure action flow with CSRF checks, request-scoped identity, authorization, precise query-key revalidation, non-null typed results, and deferStream where headers or redirects require it.",
+      "files": [],
+      "expectations": [
+        "Cookie-authenticated unsafe requests enforce trusted Origin and strict Referer handling or an equivalently robust CSRF token mechanism.",
+        "The action reads identity from request-scoped server context, validates FormData, and authorizes the specific project independently of middleware-provided assumptions.",
+        "Validation failures return a typed non-null json result with revalidate set to an empty list, while success targets the matching query keyFor arguments.",
+        "Every action path returns or throws an intentional non-null result so useSubmission cannot expose an older stale validation result.",
+        "Cookie attributes are deliberate and secure, and no user or session state is stored in mutable module globals.",
+        "The consuming createAsync boundary uses deferStream where redirect or Set-Cookie headers must complete, and an SSR-level test verifies that behavior."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Create a plain Solid Router app using a RouteDefinition array with a lazy nested product route, a named catch-all, and a manual product-card preload button. The button must preload both route code and product data. Add tests using MemoryRouter and createMemoryHistory that navigate product A to product B and then back in one mounted tree. Also add one test using @solidjs/testing-library's location option. Return router files, tests, and the necessary Vitest configuration.",
+      "expected_output": "Config-based routing preserved with correct lazy/data preload distinctions, catch-all handling, controlled memory history tests, asynchronous testing-library router setup, and Solid-aware Vitest configuration.",
+      "files": [],
+      "expectations": [
+        "The Router receives a RouteDefinition array with nested lazy route components and a named catch-all without rewriting configuration routes as JSX unnecessarily.",
+        "Manual route preloading requests preloadData true and separately preloads nested lazy code when it is outside automatic matched-route preloading.",
+        "Preload and createAsync use the same stable specifically named query with serializable product-id arguments.",
+        "The navigation test passes createMemoryHistory to MemoryRouter and verifies A, B, and back navigation in one mounted tree.",
+        "The testing-library location test uses an asynchronous first query to account for lazy Router setup.",
+        "Vitest uses vite-plugin-solid, browser/development resolve conditions where required, and the project matcher types without React testing helpers."
       ]
     }
   ]

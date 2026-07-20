@@ -16,6 +16,13 @@ Current Solid guidance commonly uses:
 Match versions to the project's Solid and Vite setup. Do not install a second
 test stack when one already exists.
 
+SolidStart commonly needs a separate `vitest.config.ts` using
+`vite-plugin-solid` and resolve conditions including `development` and
+`browser`, rather than importing the full application config. Include
+`@testing-library/jest-dom` in TypeScript matcher types when used. Current
+Testing Library performs automatic cleanup; do not add redundant global
+cleanup unless the installed setup requires it.
+
 ## Component Tests
 
 Render a function that returns the component:
@@ -55,6 +62,11 @@ Use the Router's supported test or memory-routing setup for the installed
 version. Test initial locations, link navigation, dynamic params, search params,
 preload behavior, pending states, errors, and redirects. Mock the network or
 query boundary, not Solid's reactive primitives.
+
+`render(() => <Page />, { location: "/path" })` can supply a Router in current
+Testing Library. Its Router loads asynchronously, so make the first query a
+`findBy...`. For multiple controlled navigations, use `MemoryRouter` with an
+explicit `createMemoryHistory()` and assert updates in one mounted tree.
 
 ## SolidStart Tests
 

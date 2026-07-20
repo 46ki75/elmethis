@@ -21,6 +21,9 @@ reactive sources.
    - Read `package.json`, lockfiles, TypeScript and Vite/Vinxi configuration.
    - Identify installed versions of `solid-js`, `@solidjs/router`,
      `@solidjs/start`, and `@solidjs/meta`.
+   - Classify Solid core and SolidStart separately as v1 or v2 before using an
+     example. Solid v2 documentation is beta and SolidStart v2 conventions
+     differ materially from v1; do not infer compatibility from similar names.
    - Follow the project's package manager, file layout, linting, and tests.
 2. Classify the task by ecosystem layer and read the matching reference:
    - Core state, components, JSX, lifecycle: `references/core.md`
@@ -51,8 +54,13 @@ reactive sources.
 - Put browser subscriptions, timers, and imperative widgets under an owner and
   pair them with `onCleanup`.
 - Use `<For>` for lists keyed by item identity and `<Index>` when positions are
-  stable while values change. Use `<Show>`, `<Switch>`, and `<Match>` to make
-  conditional ownership explicit where they improve correctness.
+  stable while values change in Solid v1. Use `<Show>`, `<Switch>`, and
+  `<Match>` to make conditional ownership explicit where they improve
+  correctness. Check the v2 control-flow APIs rather than carrying v1 names
+  forward.
+- Use `<Dynamic>` when runtime state selects the element or component type,
+  `<Portal>` for intentionally out-of-tree DOM, and `lazy` for code splitting.
+  Their imports and async boundaries differ between v1 and v2.
 - Model asynchronous route data with the APIs already chosen by the project.
   In current Router and SolidStart code, prefer `query` plus `createAsync`
   when the installed version supports them.
@@ -68,6 +76,9 @@ reactive sources.
   during SSR without a client-only boundary or lifecycle guard.
 - Do not invent imports. Check installed declarations or current official docs
   when an API is version-sensitive.
+- Do not mix stable v1 examples with `/v2/` APIs. Important differences include
+  web-package imports, effects, store setters, list primitives, loading/error
+  boundaries, SolidStart configuration, middleware, and HTTP helpers.
 - Preserve progressive enhancement for router actions and forms when the
   application already uses that model.
 - Include pending, empty, error, and success states for asynchronous UI when
@@ -81,6 +92,10 @@ When reviewing or debugging, check these failure modes explicitly:
 - A derived value is synchronized through an effect instead of computed.
 - An effect creates subscriptions repeatedly or lacks cleanup.
 - A signal accessor is rendered or compared without being called.
+- A dynamic element or component is selected without the version-appropriate
+  `Dynamic` API, or a portal is assumed to render during SSR.
+- Delegated and native event handlers are treated as interchangeable, or a
+  changing handler is expected to rebind reactively.
 - A list uses array mapping in a way that recreates avoidable DOM or loses the
   intended identity semantics.
 - Route preload and component reads use different query keys or parameters.
@@ -89,6 +104,9 @@ When reviewing or debugging, check these failure modes explicitly:
 - Metadata is rendered outside `MetaProvider` or mutated through `document`.
 - Browser globals execute during server rendering.
 - Shared server state can cross requests.
+- Streaming starts before a redirect, cookie/session update, status, header, or
+  SEO-critical value is resolved.
+- A cookie-authenticated mutation lacks CSRF protection.
 
 ## Output
 
@@ -100,7 +118,9 @@ and file references. Mention version assumptions or unrun checks plainly.
 ## Documentation
 
 These references capture durable patterns, not a substitute for versioned API
-documentation. For version-sensitive work, consult the official sites:
+documentation. `references/core.md` documents stable Solid v1 unless a section
+explicitly says otherwise. For Solid v2 and version-sensitive ecosystem work,
+consult the matching versioned pages and installed declarations:
 
 - <https://docs.solidjs.com/llms.txt> is the machine-readable documentation
   index spanning Solid core, Router, SolidStart, Meta, testing, and versioned

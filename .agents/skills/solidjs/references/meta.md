@@ -44,10 +44,11 @@ working in an older project.
 ## Defaults and Route Overrides
 
 Define site-wide defaults in the root and more specific metadata in route
-components. Meta entries with matching identifying attributes, such as the
-same `name`, can override an earlier entry under provider ownership. Verify the
-actual result for canonical and Open Graph tags rather than assuming all tag
-types deduplicate identically.
+components. Only `<Title>` has straightforward latest-active cascading. Do not
+assume same-name `<Meta>` or same-rel `<Link>` instances deduplicate; `<Link>` is
+non-cascading and every active instance can add an element. Give canonical
+links one clear owner and inspect the rendered head when layering defaults and
+route metadata.
 
 Derive route metadata from the same reactive data as the visible page:
 
@@ -84,10 +85,16 @@ Check these SSR concerns:
 
 - The provider exists during server rendering, not only after mount.
 - Async data required for metadata resolves under the intended Suspense flow.
+- Async data driving SEO-critical tags uses `createAsync` with
+  `{ deferStream: true }` when those tags must be present in the initial HTML.
 - Server and client compute the same initial title, canonical URL, and tags.
 - Canonical URLs are absolute and based on trusted configuration or request
   origin, not an unchecked host header.
 - User-controlled strings become component props rather than raw head HTML.
+
+`useHead` requires a stable identity and supports low-level SSR settings such
+as closing and escaping behavior. Use it only when a typed component does not
+fit. Never disable escaping for untrusted script or structured-data content.
 
 ## SEO Quality
 
