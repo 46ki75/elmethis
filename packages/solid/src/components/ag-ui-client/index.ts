@@ -33,6 +33,7 @@ export {
   type AgentContext,
   type AgentState,
   type UseAgentOptions,
+  type UseAgentReturn,
 } from "./hooks/use-agent.js";
 export {
   useMcpPrompts,

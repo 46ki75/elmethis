@@ -2,7 +2,7 @@
   "name": "@elmethis/ag-ui-stub",
   "version": "0.0.1",
   "private": true,
-  "description": "Deterministic, LLM-free AG-UI test-double server: a Web-standard Response/SSE generator plus a Hono harness used to exercise the @elmethis ag-ui-client components.",
+  "description": "Deterministic, in-process AG-UI test agent for frontend tests.",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -35,8 +35,6 @@
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch",
-    "serve": "PORT=19103 tsx watch src/server.ts",
-    "start": "PORT=19103 tsx src/server.ts",
     "fmt": "prettier --write ./src",
     "fmt.check": "prettier --check ./src",
     "lint": "eslint \"src/**/*.ts*\"",
@@ -47,11 +45,9 @@
     "check.ci": "concurrently -g \"pnpm:check\" \"pnpm:build\" \"pnpm:test.unit\""
   },
   "dependencies": {
+    "@ag-ui/client": "0.0.57",
     "@ag-ui/core": "0.0.57",
-    "@ag-ui/encoder": "0.0.57",
-    "@hono/node-server": "^2.0.8",
-    "consola": "^3.4.2",
-    "hono": "^4.12.30"
+    "rxjs": "7.8.1"
   },
   "devDependencies": {
     "@eslint/js": "latest",
@@ -62,7 +58,6 @@
     "globals": "^17.7.0",
     "prettier": "3.9.5",
     "tsdown": "^0.22.7",
-    "tsx": "^4.23.1",
     "typescript": "5.9.3",
     "typescript-eslint": "^8.64.0",
     "vitest": "^4.1.8"

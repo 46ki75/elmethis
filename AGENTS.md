@@ -18,7 +18,7 @@ four framework libraries are shipped as Storybooks to GitHub Pages.
 | `@elmethis/solid`      | `packages/solid`       | yes           | SolidJS implementation with component parity and Solid-native primitives. Storybook :19241                                                         |
 | `@elmethis/vue`        | `packages/vue`         | yes           | Vue 3 implementation (authored in TSX); same component surface as qwik/react. Storybook :19231                                                     |
 | `ikuma-theme`          | `packages/ikuma-theme` | VS Code / npm | VS Code dark/light extension; generates the published `@46ki75/ikuma-theme` Shiki package and Windows Terminal scheme                              |
-| `@elmethis/ag-ui-stub` | `packages/ag-ui-stub`  | no (private)  | Deterministic, LLM-free AG-UI test-double server (Hono :19103)                                                                                     |
+| `@elmethis/ag-ui-stub` | `packages/ag-ui-stub`  | no (private)  | Deterministic, LLM-free in-process `AbstractAgent` for frontend tests                                                                              |
 | `backend` (copilotkit) | `packages/copilotkit`  | no            | CopilotKit backend on the Claude Agent SDK (Hono :19101; also serves a stub Weather MCP at `/mcp`)                                                 |
 
 `packages/mcp-server` and the root Cargo workspace (`crates/*`) are empty placeholders for a planned
@@ -34,6 +34,7 @@ output and emitted `tokens.css`.
 | ------------------------------------------------ | -------------------------------------------------------------------------- |
 | `pnpm install`                                   | Install all workspace deps                                                 |
 | `pnpm --filter @elmethis/core run build`         | Build core (tsdown + tokens.css + catalog JSON) — do this first            |
+| `pnpm --filter @elmethis/ag-ui-stub run build`   | Build the in-process AG-UI test agent used by Solid tests and Storybook    |
 | `pnpm --filter ikuma-theme run build`            | Build VS Code, Shiki, Windows Terminal, and VSIX artifacts                 |
 | `pnpm --filter ikuma-theme run check`            | Format-check, type-check, and build all theme artifacts                    |
 | `pnpm --filter @elmethis/qwik run dev`           | Storybook dev server (qwik :19211, react :19221, solid :19241, vue :19231) |
@@ -78,6 +79,8 @@ runs eslint / stylelint / vitest-related per package.
 
 - Build `@elmethis/core` before working on qwik/react/solid/vue, or their imports and `tokens.css` resolve
   to stale/missing output.
+- Build `@elmethis/ag-ui-stub` before Solid AG-UI tests or Storybook; its workspace package exports built
+  output from `dist`.
 - Theme outputs are generated under `packages/ikuma-theme/dist` and ignored by Git. Build the theme
   before publishing its VS Code extension or `@46ki75/ikuma-theme` package.
 - Tests split into two layers by file suffix (`*.spec.tsx` unit vs `*.browser.spec.tsx` Chromium)

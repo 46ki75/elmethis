@@ -7,6 +7,8 @@ import type { Scenario } from "./types";
 export interface RunFrameOptions {
   /** Delay between scenario chunks, in milliseconds. Defaults to `0`. */
   chunkDelayMs?: number;
+  /** Stops an active scenario delay when the consumer cancels the stream. */
+  signal?: AbortSignal;
 }
 
 const isTerminal = (event: BaseEvent): boolean =>
@@ -20,7 +22,8 @@ const isTerminal = (event: BaseEvent): boolean =>
  * - appends a success `RUN_FINISHED` only if the scenario didn't already emit
  *   its own terminal event (interrupt outcome or `RUN_ERROR`);
  * - converts an unexpected scenario throw into a `RUN_ERROR` so the stream
- *   always ends on a valid terminal event.
+ *   always ends on a valid terminal event;
+ * - stops without synthesizing a terminal event after consumer cancellation.
  */
 export async function* runFrame(
   scenario: Scenario,
@@ -28,19 +31,23 @@ export async function* runFrame(
   options: RunFrameOptions = {},
 ): AsyncIterable<BaseEvent> {
   yield runStarted(input.threadId, input.runId);
+  if (options.signal?.aborted) return;
 
-  const delay = makeDelay(options.chunkDelayMs ?? 0);
+  const delay = makeDelay(options.chunkDelayMs ?? 0, options.signal);
   let terminated = false;
 
   try {
     for await (const event of scenario({ input, delay })) {
+      if (options.signal?.aborted) return;
       if (isTerminal(event)) terminated = true;
       yield event;
     }
   } catch (error) {
+    if (options.signal?.aborted) return;
     yield runError(error instanceof Error ? error.message : String(error));
     return;
   }
 
+  if (options.signal?.aborted) return;
   if (!terminated) yield runFinished(input.threadId, input.runId);
 }

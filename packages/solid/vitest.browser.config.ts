@@ -7,6 +7,9 @@ import solid from "vite-plugin-solid";
 // layout, and Web APIs that happy-dom cannot model accurately.
 export default defineConfig({
   plugins: [solid()],
+  optimizeDeps: {
+    include: ["@elmethis/ag-ui-stub"],
+  },
   test: {
     name: "browser",
     // Browser Mode replaces this environment at runtime; declaring it keeps

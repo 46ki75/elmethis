@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
 
-import { agUiResponse } from "../response";
+import { runFrame } from "../run-frame";
 import { collectEvents, makeInput, typesOf } from "../test-support";
 import { scenarioNames, scenarios } from "./index";
 
 const run = (name: keyof typeof scenarios, input = makeInput()) =>
-  collectEvents(agUiResponse(scenarios[name], input));
+  collectEvents(runFrame(scenarios[name], input));
 
 describe("scenario catalog", () => {
   it("every scenario produces a valid RUN_STARTED…terminal stream", async () => {

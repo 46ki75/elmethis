@@ -1,18 +1,10 @@
 /**
- * @elmethis/ag-ui-stub — a deterministic, LLM-free AG-UI test double.
- *
- * Two layers:
- * - {@link agUiResponse}: a Web-standard `Response` (SSE) generator usable in
- *   any runtime and directly in tests via {@link createStubFetch}.
- * - a Hono server (`src/server.ts`) that mounts the scenarios over HTTP for
- *   Storybook and manual development.
+ * @elmethis/ag-ui-stub — a deterministic, in-process AG-UI test agent.
  */
 
-export { agUiResponse, type AgUiResponseOptions } from "./response";
-export { createStubFetch, type StubFetchOptions } from "./stub-fetch";
 export { runFrame, type RunFrameOptions } from "./run-frame";
-export { eventsToSseStream, SSE_CONTENT_TYPE } from "./encode";
 export { scenarios, scenarioNames, type ScenarioName } from "./scenarios";
+export { StubAgent, type StubAgentConfig } from "./stub-agent";
 export type { Scenario, ScenarioContext } from "./types";
 
 export * as events from "./events";

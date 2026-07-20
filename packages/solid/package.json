@@ -88,6 +88,7 @@
     "zod-to-json-schema": "^3.25.2"
   },
   "devDependencies": {
+    "@elmethis/ag-ui-stub": "workspace:^",
     "@eslint/js": "latest",
     "@solidjs/testing-library": "^0.8.10",
     "@storybook/addon-docs": "^10.5.2",
