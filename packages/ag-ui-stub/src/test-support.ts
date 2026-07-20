@@ -15,17 +15,13 @@ export function makeInput(
   };
 }
 
-/** Drain an AG-UI SSE `Response` into its decoded events. */
-export async function collectEvents(response: Response): Promise<BaseEvent[]> {
-  const text = await response.text();
-  return text
-    .split("\n\n")
-    .map((block) => block.trim())
-    .filter((block) => block.startsWith("data:"))
-    .map(
-      (block) =>
-        JSON.parse(block.slice(block.indexOf("data:") + 5).trim()) as BaseEvent,
-    );
+/** Drain an AG-UI event stream. */
+export async function collectEvents(
+  iterable: AsyncIterable<BaseEvent>,
+): Promise<BaseEvent[]> {
+  const events: BaseEvent[] = [];
+  for await (const event of iterable) events.push(event);
+  return events;
 }
 
 /** The `type` discriminator of each event, in order. */

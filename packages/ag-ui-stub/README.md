@@ -1,48 +1,45 @@
 # @elmethis/ag-ui-stub
 
-A deterministic, **LLM-free** AG-UI test double. It speaks the same wire
-contract as a real agent backend (POST `RunAgentInput` → SSE stream of
-`BaseEvent`s) but replays canned, scripted scenarios — so Storybook, unit tests,
-and `*.browser.spec.tsx` can exercise every branch of the `@elmethis`
-ag-ui-client components without an API key, network, cost, or flakiness.
+A deterministic, **LLM-free** AG-UI test agent. It extends `AbstractAgent` and
+replays scripted scenarios in process, so Storybook, unit tests, and
+`*.browser.spec.tsx` can exercise the `@elmethis` AG-UI clients without an HTTP
+server, API key, network, cost, or flakiness.
 
 > `@ag-ui/*` is pinned to **0.0.57** to match `@ag-ui/client` in
-> `@elmethis/qwik`, so encoded event shapes line up with what the components
-> expect. (The `copilotkit` backend tracks the separate `@ag-ui/mastra` 1.x
-> line.)
+> `@elmethis/qwik` and `@elmethis/solid`, so event shapes line up with what the
+> components expect. (The `copilotkit` backend tracks the separate
+> `@ag-ui/mastra` 1.x line.)
 
-## Two layers
+## Usage
 
-### 1. `agUiResponse` — the framework-agnostic primitive
-
-```ts
-import { agUiResponse, scenarios } from "@elmethis/ag-ui-stub";
-
-const response = agUiResponse(scenarios["tool-call"], runAgentInput);
-// → Web-standard Response, body is the AG-UI SSE stream
-```
-
-Runs anywhere (Hono, Node, workerd) — and with **no server at all** in tests.
-`HttpAgent` accepts an injected `fetch`, so:
+Pass a `StubAgent` through the frontend client's agent factory:
 
 ```ts
-import { HttpAgent } from "@ag-ui/client";
-import { createStubFetch } from "@elmethis/ag-ui-stub";
+import { StubAgent } from "@elmethis/ag-ui-stub";
 
-const agent = new HttpAgent({
-  url: "http://stub/agent/tool-call/run",
-  fetch: createStubFetch(), // scenario picked from the URL path
+const agent = useAgent({
+  agentFactory: () =>
+    new StubAgent({ scenario: "tool-call", chunkDelayMs: 20 }),
 });
 ```
 
-### 2. The Hono server — for Storybook & manual dev
+`StubAgent` accepts either a built-in scenario name or a custom `Scenario`:
 
-```sh
-pnpm --filter @elmethis/ag-ui-stub serve   # PORT=19103
-# POST http://localhost:19103/stub/agent/<scenario>/run  (optional ?delay=<ms>)
+```ts
+import { StubAgent, events, type Scenario } from "@elmethis/ag-ui-stub";
+
+const custom: Scenario = async function* () {
+  yield events.textStart("message-1");
+  yield events.textContent("message-1", "Hello from a custom scenario.");
+  yield events.textEnd("message-1");
+};
+
+const agent = new StubAgent({ scenario: custom });
 ```
 
-Point a Storybook story's `url` at it instead of the live backend.
+The agent emits `BaseEvent`s directly. HTTP request serialization, SSE parsing,
+and server routing belong to transport adapters such as `HttpAgent` and are not
+part of this package.
 
 ## Scenarios
 
@@ -52,5 +49,6 @@ delimiters), `text-stream`, `tool-call`, `state`, `reasoning`, `interrupt`
 single-feature ones each map to a renderer branch a real LLM rarely triggers on
 demand; `full` drives them all at once in one realistic stream.
 
-`chunkDelayMs` (or the server's `?delay=`) paces chunks for streaming UI; it
-defaults to `0` so tests run at full speed.
+`chunkDelayMs` paces chunks for streaming UI and defaults to `0` so tests run at
+full speed. Calling `abortRun()` cancels an active delay and stops scenario
+iteration.

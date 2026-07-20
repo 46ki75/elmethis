@@ -1,5 +1,10 @@
 import { createMemo, createSignal, Show, untrack, type JSX } from "solid-js";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
+import {
+  scenarioNames,
+  StubAgent,
+  type ScenarioName,
+} from "@elmethis/ag-ui-stub";
 import { v4, v7 } from "uuid";
 import { z } from "zod";
 
@@ -13,13 +18,20 @@ import { useAgent, type UseAgentReturn } from "./use-agent";
 export interface UseAgentProps {
   class?: string;
   style?: JSX.CSSProperties;
+  scenario: "http" | ScenarioName;
   url: string;
   mcpUrl: string;
 }
 
-interface UseAgentInstanceProps extends UseAgentProps {
+interface HttpUseAgentInstanceProps extends UseAgentProps {
   url: string;
   mcpUrl: string;
+}
+
+interface StubUseAgentInstanceProps {
+  class?: string;
+  style?: JSX.CSSProperties;
+  scenario: ScenarioName;
 }
 
 interface AgentFrameProps {
@@ -32,6 +44,8 @@ interface AgentFrameProps {
     args: Record<string, string>,
   ) => Promise<import("@ag-ui/client").InputContent[] | null>;
 }
+
+const resolveNoPrompt = async () => null;
 
 const AgentFrame = (props: AgentFrameProps) => {
   const [enableToolCalls, setEnableToolCalls] = createSignal(true);
@@ -107,7 +121,7 @@ const AgentFrame = (props: AgentFrameProps) => {
   );
 };
 
-const UseAgentInstance = (props: UseAgentInstanceProps) => {
+const HttpUseAgentInstance = (props: HttpUseAgentInstanceProps) => {
   const url = untrack(() => props.url);
   const mcpUrl = untrack(() => props.mcpUrl);
   const localTools: ToolRegistry = {
@@ -212,16 +226,49 @@ const UseAgentInstance = (props: UseAgentInstanceProps) => {
   );
 };
 
+const StubUseAgentInstance = (props: StubUseAgentInstanceProps) => {
+  const scenario = untrack(() => props.scenario);
+  const agent = useAgent({
+    agentFactory: () => new StubAgent({ scenario, chunkDelayMs: 100 }),
+  });
+
+  return (
+    <AgentFrame
+      agent={agent}
+      class={props.class}
+      style={props.style}
+      prompts={[]}
+      resolvePrompt={resolveNoPrompt}
+    />
+  );
+};
+
 const UseAgent = (props: UseAgentProps) => (
-  <Show when={{ url: props.url, mcpUrl: props.mcpUrl }} keyed>
-    {(endpoints) => (
-      <UseAgentInstance
-        class={props.class}
-        style={props.style}
-        url={endpoints.url}
-        mcpUrl={endpoints.mcpUrl}
-      />
-    )}
+  <Show
+    when={props.scenario === "http"}
+    fallback={
+      <Show when={props.scenario as ScenarioName} keyed>
+        {(scenario) => (
+          <StubUseAgentInstance
+            class={props.class}
+            style={props.style}
+            scenario={scenario}
+          />
+        )}
+      </Show>
+    }
+  >
+    <Show when={{ url: props.url, mcpUrl: props.mcpUrl }} keyed>
+      {(endpoints) => (
+        <HttpUseAgentInstance
+          class={props.class}
+          style={props.style}
+          scenario="http"
+          url={endpoints.url}
+          mcpUrl={endpoints.mcpUrl}
+        />
+      )}
+    </Show>
   </Show>
 );
 
@@ -230,26 +277,24 @@ const meta = {
   component: UseAgent,
   tags: ["autodocs"],
   args: {
+    scenario: "text-stream",
     url: "http://localhost:19101/copilotkit/claude/agent/haiku/run",
     mcpUrl: "http://localhost:19101/mcp",
   },
   argTypes: {
+    scenario: {
+      description:
+        "Run an in-process stub scenario, or select `http` for the live agent endpoint.",
+      control: "radio",
+      options: ["http", ...scenarioNames],
+    },
     url: {
-      description: "The URL of the agent endpoint to connect to.",
+      description: "The live agent endpoint used when scenario is `http`.",
       control: "radio",
       options: [
         "http://localhost:19101/copilotkit/claude/agent/opus/run",
         "http://localhost:19101/copilotkit/claude/agent/sonnet/run",
         "http://localhost:19101/copilotkit/claude/agent/haiku/run",
-        "http://localhost:19103/stub/agent/full/run",
-        "http://localhost:19103/stub/agent/text-stream/run",
-        "http://localhost:19103/stub/agent/tool-call/run",
-        "http://localhost:19103/stub/agent/state/run",
-        "http://localhost:19103/stub/agent/reasoning/run",
-        "http://localhost:19103/stub/agent/interrupt/run",
-        "http://localhost:19103/stub/agent/messages-snapshot/run",
-        "http://localhost:19103/stub/agent/error/run",
-        "http://localhost:19103/stub/agent/long-stream/run",
       ],
     },
     mcpUrl: {
@@ -274,6 +319,39 @@ export const Primary: Story = {
         border: "1px solid #ccc",
         padding: 0,
         margin: 0,
+      }}
+    >
+      <UseAgent {...args} />
+    </div>
+  ),
+};
+
+export const InProcessStub: Story = {
+  args: {
+    scenario: "full",
+  },
+  argTypes: {
+    scenario: {
+      description: "The deterministic in-process stub scenario to run.",
+      control: "select",
+      options: scenarioNames,
+    },
+    url: { table: { disable: true } },
+    mcpUrl: { table: { disable: true } },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: "Runs `StubAgent` in-process without an HTTP backend.",
+      },
+    },
+  },
+  render: (args) => (
+    <div
+      style={{
+        width: "100%",
+        height: "calc(100vh - 34px)",
+        border: "1px solid #ccc",
       }}
     >
       <UseAgent {...args} />

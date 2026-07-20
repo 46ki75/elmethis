@@ -23,21 +23,15 @@ importers:
 
   packages/ag-ui-stub:
     dependencies:
+      '@ag-ui/client':
+        specifier: 0.0.57
+        version: 0.0.57
       '@ag-ui/core':
         specifier: 0.0.57
         version: 0.0.57
-      '@ag-ui/encoder':
-        specifier: 0.0.57
-        version: 0.0.57
-      '@hono/node-server':
-        specifier: ^2.0.8
-        version: 2.0.8(hono@4.12.30)
-      consola:
-        specifier: ^3.4.2
-        version: 3.4.2
-      hono:
-        specifier: ^4.12.30
-        version: 4.12.30
+      rxjs:
+        specifier: 7.8.1
+        version: 7.8.1
     devDependencies:
       '@eslint/js':
         specifier: latest
@@ -63,9 +57,6 @@ importers:
       tsdown:
         specifier: ^0.22.7
         version: 0.22.7(oxc-resolver@11.24.2)(tsx@4.23.1)(typescript@5.9.3)(vue-tsc@3.3.7(typescript@5.9.3))
-      tsx:
-        specifier: ^4.23.1
-        version: 4.23.1
       typescript:
         specifier: 5.9.3
         version: 5.9.3
@@ -563,6 +554,9 @@ importers:
         specifier: ^3.25.2
         version: 3.25.2(zod@3.25.76)
     devDependencies:
+      '@elmethis/ag-ui-stub':
+        specifier: workspace:^
+        version: link:../ag-ui-stub
       '@eslint/js':
         specifier: latest
         version: 10.0.1(eslint@10.7.0(jiti@2.4.2))
@@ -1189,9 +1183,6 @@ packages:
 
   '@blazediff/core@1.9.1':
     resolution: {integrity: sha512-ehg3jIkYKulZh+8om/O25vkvSsXXwC+skXmyA87FFx6A/45eqOkZsBltMw/TVteb0mloiGT8oGRTcjRAz66zaA==}
-
-  '@bufbuild/protobuf@2.12.0':
-    resolution: {integrity: sha512-B/XlCaFIP8LOwzo+bz5uFzATYokcwCKQcghqnlfwSmM5eX/qTkvDBnDPs+gXtX/RyjxJ4DRikECcPJbyALA8FA==}
 
   '@bufbuild/protobuf@2.12.1':
     resolution: {integrity: sha512-BvAMfS6LrgZiryOAZ4pBYucu4wG/Ei/9o9DZ9akbREnMLbPJiom2i8b9C8IsKErQoiKqVhrerzt3kOT/RrzLHg==}
@@ -9361,7 +9352,7 @@ snapshots:
   '@ag-ui/proto@0.0.57':
     dependencies:
       '@ag-ui/core': 0.0.57
-      '@bufbuild/protobuf': 2.12.0
+      '@bufbuild/protobuf': 2.12.1
       '@protobuf-ts/protoc': 2.11.1
 
   '@ai-sdk/anthropic@2.0.87(zod@3.25.76)':
@@ -9778,8 +9769,6 @@ snapshots:
   '@bcoe/v8-coverage@1.0.2': {}
 
   '@blazediff/core@1.9.1': {}
-
-  '@bufbuild/protobuf@2.12.0': {}
 
   '@bufbuild/protobuf@2.12.1': {}
 

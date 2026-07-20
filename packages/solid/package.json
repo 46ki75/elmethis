@@ -1,6 +1,6 @@
 {
   "name": "@elmethis/solid",
-  "version": "0.3.5",
+  "version": "0.4.0",
   "description": "SolidJS component library for elmethis.",
   "publishConfig": {
     "access": "public"
@@ -88,6 +88,7 @@
     "zod-to-json-schema": "^3.25.2"
   },
   "devDependencies": {
+    "@elmethis/ag-ui-stub": "workspace:^",
     "@eslint/js": "latest",
     "@solidjs/testing-library": "^0.8.10",
     "@storybook/addon-docs": "^10.5.2",

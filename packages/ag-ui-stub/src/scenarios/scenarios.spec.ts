@@ -1,11 +1,16 @@
 import { describe, expect, it } from "vitest";
+import {
+  EventType,
+  type TextMessageContentEvent,
+  type ToolCallStartEvent,
+} from "@ag-ui/core";
 
-import { agUiResponse } from "../response";
+import { runFrame } from "../run-frame";
 import { collectEvents, makeInput, typesOf } from "../test-support";
 import { scenarioNames, scenarios } from "./index";
 
 const run = (name: keyof typeof scenarios, input = makeInput()) =>
-  collectEvents(agUiResponse(scenarios[name], input));
+  collectEvents(runFrame(scenarios[name], input));
 
 describe("scenario catalog", () => {
   it("every scenario produces a valid RUN_STARTED…terminal stream", async () => {
@@ -83,8 +88,9 @@ describe("scenario catalog", () => {
     expect(events.at(-1)).toMatchObject({ type: "RUN_ERROR" });
   });
 
-  it("full chains reason → act → state → answer with step delimiters", async () => {
-    const types = typesOf(await run("full"));
+  it("full alternates reasoning and tools before answering", async () => {
+    const events = await run("full");
+    const types = typesOf(events);
 
     // Every phase is represented...
     expect(types).toEqual(
@@ -97,18 +103,59 @@ describe("scenario catalog", () => {
         "STEP_FINISHED",
       ]),
     );
-    // ...and they happen in order: reason, then act (tool), then answer.
-    expect(types.indexOf("REASONING_START")).toBeLessThan(
-      types.indexOf("TOOL_CALL_START"),
-    );
-    expect(types.indexOf("TOOL_CALL_RESULT")).toBeLessThan(
+    const reasoningStarts = types
+      .map((type, index) => ({ type, index }))
+      .filter(({ type }) => type === "REASONING_START")
+      .map(({ index }) => index);
+    const toolStarts = types
+      .map((type, index) => ({ type, index }))
+      .filter(({ type }) => type === "TOOL_CALL_START")
+      .map(({ index }) => index);
+    expect(reasoningStarts).toHaveLength(4);
+    expect(toolStarts).toHaveLength(3);
+    expect(types.filter((type) => type === "TOOL_CALL_RESULT")).toHaveLength(3);
+    expect(types.filter((type) => type === "REASONING_END")).toHaveLength(4);
+
+    // The run repeatedly thinks, acts, and evaluates before composing its answer.
+    expect(reasoningStarts[0]).toBeLessThan(toolStarts[0]);
+    expect(toolStarts[0]).toBeLessThan(reasoningStarts[1]);
+    expect(reasoningStarts[1]).toBeLessThan(toolStarts[1]);
+    expect(toolStarts[1]).toBeLessThan(reasoningStarts[2]);
+    expect(reasoningStarts[2]).toBeLessThan(toolStarts[2]);
+    expect(toolStarts[2]).toBeLessThan(reasoningStarts[3]);
+    expect(reasoningStarts[3]).toBeLessThan(
       types.indexOf("TEXT_MESSAGE_START"),
     );
+
+    const toolNames = events
+      .filter(
+        (event): event is ToolCallStartEvent =>
+          event.type === EventType.TOOL_CALL_START,
+      )
+      .map((event) => event.toolCallName);
+    expect(toolNames).toEqual([
+      "resolve_location",
+      "get_weather",
+      "get_forecast",
+    ]);
+
     // Each step is opened and closed.
     const opened = types.filter((t) => t === "STEP_STARTED").length;
     const closed = types.filter((t) => t === "STEP_FINISHED").length;
     expect(opened).toBe(closed);
     expect(opened).toBeGreaterThan(0);
+
+    const answer = events
+      .filter(
+        (event): event is TextMessageContentEvent =>
+          event.type === EventType.TEXT_MESSAGE_CONTENT,
+      )
+      .map((event) => event.delta)
+      .join("");
+    expect(answer).toContain("## Tokyo weather");
+    expect(answer).toContain("### Three-day outlook");
+    expect(answer).toContain("bring one on Wednesday");
+    expect(answer.length).toBeGreaterThan(600);
   });
 
   it("long-stream emits many content chunks", async () => {

@@ -28,17 +28,28 @@ export interface AgentContext {
   description: string;
 }
 
-export interface UseAgentOptions {
-  url: string;
+interface SharedUseAgentOptions {
   tools?: ToolRegistry | Accessor<ToolRegistry | undefined>;
   context?: AgentContext[];
-  headers?: Record<string, string>;
   initialMessages?: Message[];
-  agentFactory?: (options: {
-    url: string;
-    headers?: Record<string, string>;
-  }) => AbstractAgent;
 }
+
+export type UseAgentOptions = SharedUseAgentOptions &
+  (
+    | {
+        url: string;
+        headers?: Record<string, string>;
+        agentFactory?: (options: {
+          url: string;
+          headers?: Record<string, string>;
+        }) => AbstractAgent;
+      }
+    | {
+        url?: never;
+        headers?: never;
+        agentFactory: () => AbstractAgent;
+      }
+  );
 
 export interface QueuedMessage {
   id: string;
@@ -115,10 +126,16 @@ export function useAgent(options: UseAgentOptions): UseAgentReturn {
   };
 
   onMount(() => {
-    const factory = options.agentFactory ?? ((value) => new HttpAgent(value));
-    agent = factory({ url: options.url, headers: options.headers });
+    agent =
+      options.url === undefined
+        ? options.agentFactory()
+        : (options.agentFactory ?? ((value) => new HttpAgent(value)))({
+            url: options.url,
+            headers: options.headers,
+          });
     agent.messages = [...(options.initialMessages ?? [])];
-    const subscription = agent.subscribe(
+    const mountedAgent = agent;
+    const subscription = mountedAgent.subscribe(
       createAgentSubscriber({
         state,
         getTools,
@@ -143,8 +160,9 @@ export function useAgent(options: UseAgentOptions): UseAgentReturn {
       }),
     );
     onCleanup(() => {
+      mountedAgent.abortRun();
       subscription.unsubscribe();
-      agent = undefined;
+      if (agent === mountedAgent) agent = undefined;
     });
   });
 
