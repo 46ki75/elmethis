@@ -23,6 +23,14 @@ const TOOL_CALL_ID = "stub-full-tool-1";
 const TOOL_PARENT_ID = "stub-full-tool-msg-1";
 const TOOL_RESULT_ID = "stub-full-tool-result-1";
 const ANSWER_ID = "stub-full-answer-1";
+const WEATHER = {
+  tempC: 21,
+  feelsLikeC: 20,
+  sky: "clear",
+  humidityPercent: 54,
+  windKph: 11,
+  precipitationChancePercent: 10,
+};
 
 /**
  * A complete, realistic agent run that chains the building blocks into one
@@ -36,7 +44,12 @@ export const full: Scenario = async function* ({ delay }) {
   yield stepStarted("reason");
   yield reasoningStart(REASONING_ID);
   yield reasoningMessageStart(REASONING_ID);
-  for (const chunk of ["I should ", "check the ", "weather first", "…"]) {
+  for (const chunk of [
+    "The user needs a useful weather summary. ",
+    "I'll fetch the current conditions for Tokyo, ",
+    "check the temperature, humidity, wind, and chance of rain, ",
+    "then present the result in a concise, readable format.",
+  ]) {
     yield reasoningMessageContent(REASONING_ID, chunk);
     await delay();
   }
@@ -54,7 +67,7 @@ export const full: Scenario = async function* ({ delay }) {
   yield toolCallEnd(TOOL_CALL_ID);
   yield toolCallResult(
     TOOL_CALL_ID,
-    JSON.stringify({ tempC: 21, sky: "clear" }),
+    JSON.stringify({ location: "Tokyo", ...WEATHER }),
     TOOL_RESULT_ID,
   );
   yield stepFinished("act");
@@ -63,14 +76,23 @@ export const full: Scenario = async function* ({ delay }) {
   yield stateSnapshot({ location: "Tokyo", weather: null, status: "fetching" });
   await delay();
   yield stateDelta([
-    { op: "replace", path: "/weather", value: { tempC: 21, sky: "clear" } },
+    { op: "replace", path: "/weather", value: WEATHER },
     { op: "replace", path: "/status", value: "ready" },
   ]);
   await delay();
 
   // 4. Answer
   yield textStart(ANSWER_ID);
-  for (const chunk of ["It's ", "21°C ", "and ", "clear ", "in Tokyo", "."]) {
+  for (const chunk of [
+    "## Tokyo weather\n\n",
+    "Conditions are **clear** with a temperature of **21°C**, feeling like **20°C**. ",
+    "Humidity is **54%**, with a light breeze at **11 km/h**.\n\n",
+    "### At a glance\n\n",
+    "- Rain chance: **10%**\n",
+    "- Outdoor conditions: **Comfortable**\n",
+    "- Data source: `get_weather`\n\n",
+    "It should be a pleasant day for walking around Tokyo. A light layer may be useful later in the evening, but you probably will not need an umbrella.",
+  ]) {
     yield textContent(ANSWER_ID, chunk);
     await delay();
   }

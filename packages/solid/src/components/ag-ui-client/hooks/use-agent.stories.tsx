@@ -229,7 +229,7 @@ const HttpUseAgentInstance = (props: HttpUseAgentInstanceProps) => {
 const StubUseAgentInstance = (props: StubUseAgentInstanceProps) => {
   const scenario = untrack(() => props.scenario);
   const agent = useAgent({
-    agentFactory: () => new StubAgent({ scenario, chunkDelayMs: 20 }),
+    agentFactory: () => new StubAgent({ scenario, chunkDelayMs: 100 }),
   });
 
   return (

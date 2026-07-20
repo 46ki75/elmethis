@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { EventType, type TextMessageContentEvent } from "@ag-ui/core";
 
 import { runFrame } from "../run-frame";
 import { collectEvents, makeInput, typesOf } from "../test-support";
@@ -84,7 +85,8 @@ describe("scenario catalog", () => {
   });
 
   it("full chains reason → act → state → answer with step delimiters", async () => {
-    const types = typesOf(await run("full"));
+    const events = await run("full");
+    const types = typesOf(events);
 
     // Every phase is represented...
     expect(types).toEqual(
@@ -109,6 +111,16 @@ describe("scenario catalog", () => {
     const closed = types.filter((t) => t === "STEP_FINISHED").length;
     expect(opened).toBe(closed);
     expect(opened).toBeGreaterThan(0);
+
+    const answer = events
+      .filter(
+        (event): event is TextMessageContentEvent =>
+          event.type === EventType.TEXT_MESSAGE_CONTENT,
+      )
+      .map((event) => event.delta)
+      .join("");
+    expect(answer).toContain("## Tokyo weather");
+    expect(answer.length).toBeGreaterThan(300);
   });
 
   it("long-stream emits many content chunks", async () => {
