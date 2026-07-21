@@ -103,7 +103,7 @@
     "@mdi/js": "^7.4.47",
     "@modelcontextprotocol/sdk": "^1.29.0",
     "es-toolkit": "^1.49.0",
-    "katex": "^0.17.0",
+    "katex": "^0.18.1",
     "marked": "^18.0.6",
     "polished": "^4.3.1",
     "shiki": "^4.3.1",
