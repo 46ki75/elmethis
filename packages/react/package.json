@@ -73,7 +73,7 @@
     "clsx": "^2.1.1",
     "dompurify": "^3.4.2",
     "es-toolkit": "^1.49.0",
-    "katex": "^0.17.0",
+    "katex": "^0.18.1",
     "marked": "^18.0.6",
     "shiki": "^4.3.1",
     "usehooks-ts": "^3.1.1",

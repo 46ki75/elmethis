@@ -80,7 +80,7 @@
     "@formkit/auto-animate": "^0.10.0",
     "@modelcontextprotocol/sdk": "^1.29.0",
     "clsx": "^2.1.1",
-    "katex": "^0.17.0",
+    "katex": "^0.18.1",
     "marked": "^18.0.6",
     "shiki": "^4.3.1",
     "uuid": "^14.0.1",
