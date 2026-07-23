@@ -14,7 +14,13 @@ import {
 } from "solid-js";
 
 export interface CreateAutoAnimateOptions {
-  /** Configuration or plugin passed to Auto Animate. */
+  /**
+   * Configuration or plugin passed to Auto Animate.
+   *
+   * When the parent is a grid or wrapping flex container, use a non-stretching
+   * `align-content` value if children should keep their height while the parent
+   * animates between sizes.
+   */
   config?: Partial<AutoAnimateOptions> | AutoAnimationPlugin;
 
   /** Whether animations are initially enabled. Defaults to `true`. */
