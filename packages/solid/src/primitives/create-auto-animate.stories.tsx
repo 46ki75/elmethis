@@ -62,6 +62,7 @@ const ListStory = (props: CreateAutoAnimateOptions) => {
         ref={ref}
         style={{
           display: "grid",
+          "align-content": "start",
           gap: "0.5rem",
           margin: "0",
           padding: "0",
