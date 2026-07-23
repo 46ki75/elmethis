@@ -5,6 +5,7 @@ import type {
 } from "@formkit/auto-animate";
 import {
   createSignal,
+  getOwner,
   onCleanup,
   onMount,
   untrack,
@@ -63,7 +64,12 @@ export function createAutoAnimate<T extends HTMLElement = HTMLElement>(
     destroyController();
     if (nextElement === undefined) return;
 
-    const { default: autoAnimate } = await import("@formkit/auto-animate");
+    let autoAnimate: (typeof import("@formkit/auto-animate"))["default"];
+    try {
+      ({ default: autoAnimate } = await import("@formkit/auto-animate"));
+    } catch {
+      return;
+    }
     if (!mounted || generation !== initialization || element !== nextElement) {
       return;
     }
@@ -80,6 +86,11 @@ export function createAutoAnimate<T extends HTMLElement = HTMLElement>(
     if (normalizedElement === element) return;
 
     element = normalizedElement;
+    if (normalizedElement !== undefined && getOwner()) {
+      onCleanup(() => {
+        if (element === normalizedElement) ref(null);
+      });
+    }
     if (mounted) void initialize(element);
   };
 
