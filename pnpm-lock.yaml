@@ -523,9 +523,6 @@ importers:
       '@elmethis/core':
         specifier: workspace:^
         version: link:../core
-      '@formkit/auto-animate':
-        specifier: ^0.10.0
-        version: 0.10.0
       '@mdi/js':
         specifier: ^7.4.47
         version: 7.4.47

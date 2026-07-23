@@ -120,11 +120,6 @@ export {
   type CreateAsyncStateReturn,
 } from "./primitives/create-async-state.js";
 export {
-  createAutoAnimate,
-  type CreateAutoAnimateOptions,
-  type CreateAutoAnimateResult,
-} from "./primitives/create-auto-animate.js";
-export {
   createClipboard,
   type ClipboardContent,
   type ClipboardController,

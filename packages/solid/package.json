@@ -77,7 +77,6 @@
     "@ag-ui/core": "^0.0.57",
     "@mdi/js": "^7.4.47",
     "@elmethis/core": "workspace:^",
-    "@formkit/auto-animate": "^0.10.0",
     "@modelcontextprotocol/sdk": "^1.29.0",
     "clsx": "^2.1.1",
     "katex": "^0.18.1",
