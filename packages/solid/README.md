@@ -115,7 +115,6 @@ copying React hook return shapes:
 - `createDelayedSignal`, `createDebounced`, and `createThrottled`
 - `ThrottledQueue` and `createThrottledQueue`
 - `createAsyncState`
-- `createAutoAnimate`
 - `createModal`
 
 Supporting option, controller, and return types are exported with each public
