@@ -78,7 +78,7 @@
     "happy-dom": "^20.10.6",
     "np": "^11.2.2",
     "playwright": "^1.61.1",
-    "prettier": "3.9.5",
+    "prettier": "3.9.6",
     "storybook": "^10.5.3",
     "storybook-framework-qwik": "0.6.2--canary.95.25602496384.0",
     "stylelint": "^17.14.1",

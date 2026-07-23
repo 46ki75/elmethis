@@ -104,7 +104,7 @@
     "globals": "^17.7.0",
     "happy-dom": "^20.10.6",
     "playwright": "^1.61.1",
-    "prettier": "3.9.5",
+    "prettier": "3.9.6",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "storybook": "^10.5.3",
