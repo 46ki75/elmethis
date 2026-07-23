@@ -91,8 +91,8 @@ importers:
         specifier: ^1.63.1
         version: 1.63.1(@ag-ui/core@0.0.57)
       '@hono/node-server':
-        specifier: ^2.0.8
-        version: 2.0.8(hono@4.12.31)
+        specifier: ^2.0.10
+        version: 2.0.10(hono@4.12.31)
       '@modelcontextprotocol/sdk':
         specifier: ^1.29.0
         version: 1.29.0(@cfworker/json-schema@4.1.1)(zod@4.4.3)
@@ -370,8 +370,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       dompurify:
-        specifier: ^3.4.2
-        version: 3.4.2
+        specifier: ^3.4.12
+        version: 3.4.12
       es-toolkit:
         specifier: ^1.49.0
         version: 1.49.0
@@ -660,8 +660,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       dompurify:
-        specifier: ^3.4.2
-        version: 3.4.2
+        specifier: ^3.4.12
+        version: 3.4.12
       es-toolkit:
         specifier: ^1.49.0
         version: 1.49.0
@@ -1767,8 +1767,8 @@ packages:
     peerDependencies:
       hono: ^4
 
-  '@hono/node-server@2.0.8':
-    resolution: {integrity: sha512-GuCWzLxwg218fy1JaHculFsdcuY12hxit83V+algozTPnwhNjLrRL/Alg9OYjLZLoUZ1rw/S4CdTMsnkSKCmFA==}
+  '@hono/node-server@2.0.10':
+    resolution: {integrity: sha512-ZcnNVhKTmyDJeg0UlnZjvM73JBsTAuhrH/J4fjwGOw59PwOW51r4J+p6CsKZWXdKSme4MFqU62CZMOsdDrU4CA==}
     engines: {node: '>=20'}
     peerDependencies:
       hono: ^4
@@ -4975,8 +4975,8 @@ packages:
     resolution: {integrity: sha512-cgwlv/1iFQiFnU96XXgROh8xTeetsnJiDsTc7TYCLFd9+/WNkIqPTxiM/8pSd8VIrhXGTf1Ny1q1hquVqDJB5w==}
     engines: {node: '>= 4'}
 
-  dompurify@3.4.2:
-    resolution: {integrity: sha512-lHeS9SA/IKeIFFyYciHBr2n0v1VMPlSj843HdLOwjb2OxNwdq9Xykxqhk+FE42MzAdHvInbAolSE4mhahPpjXA==}
+  dompurify@3.4.12:
+    resolution: {integrity: sha512-zQvGet8Z2sWbQhCmfFz/T5QWH2oBmjnqK3qvOjaqaNLrLEF912WamU+ohnTp0TCep/MFVHpdJuCZEdFOdTnEFg==}
 
   domutils@3.2.2:
     resolution: {integrity: sha512-6kZKyUajlDuqlHKVX1w7gyslj9MPIXzIFiz/rGu35uC1wMi+kMhQwGhl4lt9unC9Vb9INnY9Z3/ZA3+FhASLaw==}
@@ -9176,7 +9176,7 @@ snapshots:
   '@a2ui/markdown-it@0.0.3(@a2ui/web_core@0.10.5)':
     dependencies:
       '@a2ui/web_core': 0.10.5
-      dompurify: 3.4.2
+      dompurify: 3.4.12
       markdown-it: 14.2.0
 
   '@a2ui/react@0.10.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(zod@3.25.76)':
@@ -10253,7 +10253,7 @@ snapshots:
     dependencies:
       hono: 4.12.31
 
-  '@hono/node-server@2.0.8(hono@4.12.31)':
+  '@hono/node-server@2.0.10(hono@4.12.31)':
     dependencies:
       hono: 4.12.31
 
@@ -13673,7 +13673,7 @@ snapshots:
     dependencies:
       domelementtype: 2.3.0
 
-  dompurify@3.4.2:
+  dompurify@3.4.12:
     optionalDependencies:
       '@types/trusted-types': 2.0.7
 
