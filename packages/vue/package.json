@@ -110,6 +110,6 @@
     "vitest": "^4.1.10",
     "vitest-browser-vue": "^2.1.0",
     "vue": "^3.5.40",
-    "vue-tsc": "^3.3.7"
+    "vue-tsc": "^3.3.8"
   }
 }

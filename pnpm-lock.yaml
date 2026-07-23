@@ -56,7 +56,7 @@ importers:
         version: 3.9.6
       tsdown:
         specifier: ^0.22.7
-        version: 0.22.7(oxc-resolver@11.24.2)(tsx@4.23.1)(typescript@5.9.3)(vue-tsc@3.3.7(typescript@5.9.3))
+        version: 0.22.7(oxc-resolver@11.24.2)(tsx@4.23.1)(typescript@5.9.3)(vue-tsc@3.3.8(typescript@5.9.3))
       typescript:
         specifier: 5.9.3
         version: 5.9.3
@@ -166,7 +166,7 @@ importers:
         version: 3.9.6
       tsdown:
         specifier: ^0.22.7
-        version: 0.22.7(oxc-resolver@11.24.2)(tsx@4.23.1)(typescript@5.9.3)(vue-tsc@3.3.7(typescript@5.9.3))
+        version: 0.22.7(oxc-resolver@11.24.2)(tsx@4.23.1)(typescript@5.9.3)(vue-tsc@3.3.8(typescript@5.9.3))
       tsx:
         specifier: ^4.23.1
         version: 4.23.1
@@ -763,8 +763,8 @@ importers:
         specifier: ^3.5.40
         version: 3.5.40(typescript@6.0.3)
       vue-tsc:
-        specifier: ^3.3.7
-        version: 3.3.7(typescript@6.0.3)
+        specifier: ^3.3.8
+        version: 3.3.8(typescript@6.0.3)
 
 packages:
 
@@ -4007,6 +4007,9 @@ packages:
 
   '@vue/language-core@3.3.7':
     resolution: {integrity: sha512-LzmkKinXAMMoh8Jfi/jMUSDUjuPdv8mynH5WJGKfXyZtDw3hQ6GBaoI6Bcnl/Xqlu32q/0Z6i/trp4VXykzyLw==}
+
+  '@vue/language-core@3.3.8':
+    resolution: {integrity: sha512-ieGT8jJdhhy0mGzStZhsg/qPw5bQZJg5yF+3+XU6saf4sM7yo9ZXy3h+nCwrm2+b4qS/SypkNdR2jAF3uei9tA==}
 
   '@vue/reactivity@3.5.40':
     resolution: {integrity: sha512-B7ot9UlUZOi1zbq61/LvE88ZLTV8IlajTdiZTAEiDQgrnIMIZoPr9kGw0Zw46ObW62O9+H/Be3kMbfb7kYPQZA==}
@@ -8943,8 +8946,8 @@ packages:
     peerDependencies:
       vue: '>=2'
 
-  vue-tsc@3.3.7:
-    resolution: {integrity: sha512-+C+rgD49wAQ5bUTl2sp5a8Bzg4YoldMNXM+g7CFe604MYcQ8PrZPMQhIjJSzKXtPBCa+C5ayMipqjbA7splekQ==}
+  vue-tsc@3.3.8:
+    resolution: {integrity: sha512-xXmYlVQpcwJDWyGlqbHrGVOl1h3UOsASymRibrHc+iy9j/UNnOrOn4u+fntHz4D6Cs74RtapeqVV6CzJeg+UlA==}
     hasBin: true
     peerDependencies:
       typescript: '>=5.0.0'
@@ -12710,6 +12713,16 @@ snapshots:
       '@vue/shared': 3.5.40
 
   '@vue/language-core@3.3.7':
+    dependencies:
+      '@volar/language-core': 2.4.28
+      '@vue/compiler-dom': 3.5.40
+      '@vue/shared': 3.5.40
+      alien-signals: 3.2.1
+      muggle-string: 0.4.1
+      path-browserify: 1.0.1
+      picomatch: 4.0.5
+
+  '@vue/language-core@3.3.8':
     dependencies:
       '@volar/language-core': 2.4.28
       '@vue/compiler-dom': 3.5.40
@@ -17285,7 +17298,7 @@ snapshots:
       glob: 13.0.6
       package-json-from-dist: 1.0.1
 
-  rolldown-plugin-dts@0.27.9(oxc-resolver@11.24.2)(rolldown@1.1.5)(typescript@5.9.3)(vue-tsc@3.3.7(typescript@5.9.3)):
+  rolldown-plugin-dts@0.27.9(oxc-resolver@11.24.2)(rolldown@1.1.5)(typescript@5.9.3)(vue-tsc@3.3.8(typescript@5.9.3)):
     dependencies:
       dts-resolver: 3.0.0(oxc-resolver@11.24.2)
       get-tsconfig: 5.0.0-beta.5
@@ -17296,7 +17309,7 @@ snapshots:
       yuku-parser: 0.6.1
     optionalDependencies:
       typescript: 5.9.3
-      vue-tsc: 3.3.7(typescript@5.9.3)
+      vue-tsc: 3.3.8(typescript@5.9.3)
     transitivePeerDependencies:
       - oxc-resolver
 
@@ -18282,7 +18295,7 @@ snapshots:
       minimist: 1.2.8
       strip-bom: 3.0.0
 
-  tsdown@0.22.7(oxc-resolver@11.24.2)(tsx@4.23.1)(typescript@5.9.3)(vue-tsc@3.3.7(typescript@5.9.3)):
+  tsdown@0.22.7(oxc-resolver@11.24.2)(tsx@4.23.1)(typescript@5.9.3)(vue-tsc@3.3.8(typescript@5.9.3)):
     dependencies:
       ansis: 4.3.1
       cac: 7.0.0
@@ -18293,7 +18306,7 @@ snapshots:
       obug: 2.1.3
       picomatch: 4.0.5
       rolldown: 1.1.5
-      rolldown-plugin-dts: 0.27.9(oxc-resolver@11.24.2)(rolldown@1.1.5)(typescript@5.9.3)(vue-tsc@3.3.7(typescript@5.9.3))
+      rolldown-plugin-dts: 0.27.9(oxc-resolver@11.24.2)(rolldown@1.1.5)(typescript@5.9.3)(vue-tsc@3.3.8(typescript@5.9.3))
       semver: 7.8.5
       tinyexec: 1.2.4
       tinyglobby: 0.2.17
@@ -18805,17 +18818,17 @@ snapshots:
     dependencies:
       vue: 3.5.40(typescript@6.0.3)
 
-  vue-tsc@3.3.7(typescript@5.9.3):
+  vue-tsc@3.3.8(typescript@5.9.3):
     dependencies:
       '@volar/typescript': 2.4.28
-      '@vue/language-core': 3.3.7
+      '@vue/language-core': 3.3.8
       typescript: 5.9.3
     optional: true
 
-  vue-tsc@3.3.7(typescript@6.0.3):
+  vue-tsc@3.3.8(typescript@6.0.3):
     dependencies:
       '@volar/typescript': 2.4.28
-      '@vue/language-core': 3.3.7
+      '@vue/language-core': 3.3.8
       typescript: 6.0.3
 
   vue@3.5.40(typescript@5.9.3):
