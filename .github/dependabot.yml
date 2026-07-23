@@ -7,6 +7,31 @@ updates:
       interval: "daily"
     target-branch: "main"
     groups:
+      react-updates:
+        patterns:
+          - "react"
+          - "react-dom"
+      react-types-updates:
+        patterns:
+          - "@types/react"
+          - "@types/react-dom"
+      vitest-updates:
+        patterns:
+          - "vitest"
+          - "@vitest/*"
+          - "vitest-browser-*"
+      ag-ui-updates:
+        patterns:
+          - "@ag-ui/client"
+          - "@ag-ui/core"
+      copilotkit-updates:
+        patterns:
+          - "@copilotkit/runtime"
+          - "@copilotkit/shared"
+      qwik-updates:
+        patterns:
+          - "@qwik.dev/core"
+          - "eslint-plugin-qwik"
       eslint-updates:
         patterns:
           - "*eslint*"
@@ -14,6 +39,14 @@ updates:
         patterns:
           - "@storybook/*"
           - "storybook"
+          - "storybook-*"
+      stylelint-updates:
+        patterns:
+          - "stylelint"
+          - "stylelint-*"
+      a2ui-updates:
+        patterns:
+          - "@a2ui/*"
       postcss-updates:
         patterns:
           - "*postcss*"
