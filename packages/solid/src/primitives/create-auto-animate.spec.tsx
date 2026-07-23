@@ -124,4 +124,33 @@ describe("[CSR] createAutoAnimate", () => {
     rendered.unmount();
     expect(secondController.destroy).toHaveBeenCalledOnce();
   });
+
+  it("destroys the controller when its element is conditionally removed", async () => {
+    const controller = createController(document.createElement("div"));
+    mocks.autoAnimate.mockReturnValue(controller);
+
+    let api!: ReturnType<typeof createAutoAnimate<HTMLUListElement>>;
+    const rendered = render(() => {
+      api = createAutoAnimate<HTMLUListElement>();
+      const [visible, setVisible] = createSignal(true);
+
+      return (
+        <>
+          <button onClick={() => setVisible(false)}>Hide</button>
+          <Show when={visible()}>
+            <ul ref={api.ref} data-testid="parent" />
+          </Show>
+        </>
+      );
+    });
+
+    await waitFor(() => expect(mocks.autoAnimate).toHaveBeenCalledOnce());
+    expect(api.controller()).toBe(controller);
+
+    await fireEvent.click(rendered.getByRole("button", { name: "Hide" }));
+
+    expect(rendered.queryByTestId("parent")).not.toBeInTheDocument();
+    expect(controller.destroy).toHaveBeenCalledOnce();
+    expect(api.controller()).toBeUndefined();
+  });
 });
