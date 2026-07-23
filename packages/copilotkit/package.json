@@ -20,7 +20,7 @@
         "@anthropic-ai/sdk": "^0.113.0",
         "@copilotkit/runtime": "^1.63.1",
         "@copilotkit/shared": "^1.63.1",
-        "@hono/node-server": "^2.0.8",
+        "@hono/node-server": "^2.0.11",
         "@modelcontextprotocol/sdk": "^1.29.0",
         "consola": "^3.4.2",
         "dotenv": "^17.4.2",
