@@ -34,5 +34,5 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Check
-        run: pnpm run check
+        run: pnpm run check.ci
         working-directory: packages/ikuma-theme
