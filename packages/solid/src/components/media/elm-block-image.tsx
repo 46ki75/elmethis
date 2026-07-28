@@ -76,7 +76,7 @@ export const ElmBlockImage = (props: ElmBlockImageProps) => {
         {(caption) => (
           <figcaption class={styles["caption-box"]}>
             <span class={styles["caption-icon"]}>
-              <ElmMdiIcon d={mdiMessageImageOutline} size="1.25rem" />
+              <ElmMdiIcon path={mdiMessageImageOutline} size="1.25rem" />
             </span>
             <ElmInlineText size="1rem">{caption()}</ElmInlineText>
           </figcaption>

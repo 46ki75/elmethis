@@ -109,7 +109,7 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
                     <div class={styles["message-content-type"]}>
                       <ElmMdiIcon
                         class={styles["message-content-icon"]}
-                        d={mdiCreation}
+                        path={mdiCreation}
                       />
                       <ElmInlineText>Assistant</ElmInlineText>
                       <div
@@ -131,7 +131,7 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
                           class={styles["clickable-icon"]}
                           onClick$={handleRetry$}
                         >
-                          <ElmMdiIcon d={mdiRefresh} size="1.25rem" />
+                          <ElmMdiIcon path={mdiRefresh} size="1.25rem" />
                         </span>
                       </div>
                     )}
@@ -201,7 +201,7 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
                 <div q:slot="summary" class={styles["message-content-type"]}>
                   <ElmMdiIcon
                     class={styles["message-content-icon"]}
-                    d={mdiLightbulbOn}
+                    path={mdiLightbulbOn}
                   />
                   <ElmInlineText>Reasoning</ElmInlineText>
                   <div
@@ -267,7 +267,7 @@ export const ElmAgUiMessageRenderer = component$<ElmAgUiMessageRendererProps>(
                 <div class={styles["message-content-type"]}>
                   <ElmMdiIcon
                     class={styles["message-content-icon"]}
-                    d={mdiAccount}
+                    path={mdiAccount}
                   />
                   <ElmInlineText>User</ElmInlineText>
                   <div

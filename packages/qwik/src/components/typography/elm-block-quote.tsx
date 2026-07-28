@@ -15,7 +15,7 @@ export const ElmBlockQuote = component$<PropsOf<"blockquote">>(
         {...props}
       >
         <div class={[styles.icon, styles["icon-top-left"]]}>
-          <ElmMdiIcon d={mdiFormatQuoteOpen} />
+          <ElmMdiIcon path={mdiFormatQuoteOpen} />
         </div>
 
         <div class={styles.body}>
@@ -23,7 +23,7 @@ export const ElmBlockQuote = component$<PropsOf<"blockquote">>(
         </div>
 
         <div class={[styles.icon, styles["icon-bottom-right"]]}>
-          <ElmMdiIcon d={mdiFormatQuoteClose} />
+          <ElmMdiIcon path={mdiFormatQuoteClose} />
         </div>
       </blockquote>
     );

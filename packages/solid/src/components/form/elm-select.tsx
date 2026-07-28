@@ -132,7 +132,7 @@ export const ElmSelect = (props: ElmSelectProps) => {
     >
       <span class={clsx(styles.label, isOpen() && styles["label-active"])}>
         {local.icon ?? (
-          <ElmMdiIcon d={mdiArrowDownDropCircleOutline} size="0.75rem" />
+          <ElmMdiIcon path={mdiArrowDownDropCircleOutline} size="0.75rem" />
         )}
         {local.label}
       </span>
@@ -159,7 +159,7 @@ export const ElmSelect = (props: ElmSelectProps) => {
           </Show>
         </div>
 
-        <ElmMdiIcon d={mdiMenuDown} size="1.5rem" />
+        <ElmMdiIcon path={mdiMenuDown} size="1.5rem" />
 
         <ElmCollapse isOpen={isOpen()} class={styles.pulldown}>
           <For each={local.options}>
@@ -173,7 +173,7 @@ export const ElmSelect = (props: ElmSelectProps) => {
                 }}
               >
                 <ElmMdiIcon
-                  d={mdiChevronRight}
+                  path={mdiChevronRight}
                   color="var(--elmethis-color-primary-weak)"
                   size="0.75em"
                 />

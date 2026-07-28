@@ -50,7 +50,7 @@ const WithIconTextField = component$(() => {
   return (
     <div>
       <ElmTextField label="Email" placeholder="Enter your email" value={text}>
-        <ElmMdiIcon q:slot="icon" d={mdiEmail} size=".75rem" color="gray" />
+        <ElmMdiIcon q:slot="icon" path={mdiEmail} size=".75rem" color="gray" />
       </ElmTextField>
       <ElmInlineText>{text.value}</ElmInlineText>
     </div>

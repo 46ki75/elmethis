@@ -98,7 +98,7 @@ export const ElmTextField = defineComponent({
               isFocused.value && styles["label-active"],
             )}
           >
-            {slots.icon?.() ?? <ElmMdiIcon d={mdiText} size="0.75rem" />}
+            {slots.icon?.() ?? <ElmMdiIcon path={mdiText} size="0.75rem" />}
             <span>
               {props.label}
               {props.required && <span class={styles.requierd}>*</span>}
@@ -169,7 +169,7 @@ export const ElmTextField = defineComponent({
                 }}
               >
                 <ElmMdiIcon
-                  d={
+                  path={
                     inputType.value === "text"
                       ? mdiEyeOutline
                       : mdiEyeOffOutline
@@ -188,7 +188,7 @@ export const ElmTextField = defineComponent({
                 }}
               >
                 <ElmMdiIcon
-                  d={mdiTrashCanOutline}
+                  path={mdiTrashCanOutline}
                   size="1.25rem"
                   color="gray"
                 />

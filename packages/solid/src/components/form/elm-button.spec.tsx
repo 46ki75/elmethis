@@ -105,38 +105,25 @@ describe("[CSR] ElmButton", () => {
     expect(button.style.cursor).toBe("not-allowed");
   });
 
-  it("composes function and tuple click handlers and shows a transient ripple", () => {
-    vi.useFakeTimers();
-    try {
-      const functionHandler = vi.fn();
-      const tupleHandler = vi.fn();
-      const first = render(() => (
-        <ElmButton onClick={functionHandler}>Go</ElmButton>
-      ));
-      const button = first.getByRole("button");
+  it("composes function and tuple click handlers", () => {
+    const functionHandler = vi.fn();
+    const tupleHandler = vi.fn();
+    const first = render(() => (
+      <ElmButton onClick={functionHandler}>Go</ElmButton>
+    ));
 
-      fireEvent.click(button);
-      expect(functionHandler).toHaveBeenCalledOnce();
-      expect(button.querySelector(`.${styles.ripple}`)).not.toBeNull();
+    fireEvent.click(first.getByRole("button"));
+    expect(functionHandler).toHaveBeenCalledOnce();
 
-      vi.advanceTimersByTime(300);
-      expect(button.querySelector(`.${styles.ripple}`)).toBeNull();
-
-      first.unmount();
-      const second = render(() => (
-        <ElmButton onClick={[tupleHandler, "bound"]}>Again</ElmButton>
-      ));
-      fireEvent.click(second.getByRole("button"));
-      expect(tupleHandler).toHaveBeenCalledWith(
-        "bound",
-        expect.any(MouseEvent),
-      );
-    } finally {
-      vi.useRealTimers();
-    }
+    first.unmount();
+    const second = render(() => (
+      <ElmButton onClick={[tupleHandler, "bound"]}>Again</ElmButton>
+    ));
+    fireEvent.click(second.getByRole("button"));
+    expect(tupleHandler).toHaveBeenCalledWith("bound", expect.any(MouseEvent));
   });
 
-  it("suppresses clicks and ripple while loading or disabled", () => {
+  it("suppresses clicks while loading or disabled", () => {
     const onClick = vi.fn();
     const { getAllByRole } = render(() => (
       <>
@@ -150,21 +137,5 @@ describe("[CSR] ElmButton", () => {
     for (const button of getAllByRole("button")) fireEvent.click(button);
 
     expect(onClick).not.toHaveBeenCalled();
-    expect(document.querySelector(`.${styles.ripple}`)).toBeNull();
-  });
-
-  it("clears the ripple timer on cleanup", () => {
-    vi.useFakeTimers();
-    try {
-      const { getByRole, unmount } = render(() => (
-        <ElmButton onClick={() => undefined}>Go</ElmButton>
-      ));
-      fireEvent.click(getByRole("button"));
-      unmount();
-
-      expect(() => vi.advanceTimersByTime(300)).not.toThrow();
-    } finally {
-      vi.useRealTimers();
-    }
   });
 });

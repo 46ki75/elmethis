@@ -192,7 +192,7 @@ export const ElmAgUiInput = (props: ElmAgUiInputProps) => {
               aria-label={isPickerOpen() ? "Close prompts" : "Open prompts"}
             >
               <ElmMdiIcon
-                d={isPickerOpen() ? mdiClose : mdiPlus}
+                path={isPickerOpen() ? mdiClose : mdiPlus}
                 size="1rem"
                 color="white"
               />
@@ -216,7 +216,7 @@ export const ElmAgUiInput = (props: ElmAgUiInputProps) => {
               onClick={() => local.onAbort()}
               aria-label="Stop"
             >
-              <ElmMdiIcon d={mdiStop} size="1rem" color="white" />
+              <ElmMdiIcon path={mdiStop} size="1rem" color="white" />
             </button>
           </Show>
           <button
@@ -225,7 +225,7 @@ export const ElmAgUiInput = (props: ElmAgUiInputProps) => {
             onClick={submit}
             aria-label="Send"
           >
-            <ElmMdiIcon d={mdiSend} size="1rem" color="white" />
+            <ElmMdiIcon path={mdiSend} size="1rem" color="white" />
           </button>
         </div>
       </div>

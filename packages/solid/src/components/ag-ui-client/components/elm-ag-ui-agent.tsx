@@ -113,7 +113,7 @@ export const ElmAgUiAgent = (props: ElmAgUiAgentProps) => {
               <>
                 <div class={styles.error}>
                   <ElmMdiIcon
-                    d={mdiAlert}
+                    path={mdiAlert}
                     color="var(--elmethis-color-accent-error)"
                     style={{ "flex-shrink": 0 }}
                   />
@@ -127,7 +127,7 @@ export const ElmAgUiAgent = (props: ElmAgUiAgentProps) => {
                   onClick={() => void local.retry()}
                   aria-label="Retry"
                 >
-                  <ElmMdiIcon d={mdiRefresh} size="1.25rem" />
+                  <ElmMdiIcon path={mdiRefresh} size="1.25rem" />
                 </button>
               </>
             )}
@@ -144,7 +144,7 @@ export const ElmAgUiAgent = (props: ElmAgUiAgentProps) => {
                   <div class={styles["queue-item"]}>
                     <ElmMdiIcon
                       class={styles["queue-item-icon"]}
-                      d={mdiClockOutline}
+                      path={mdiClockOutline}
                       size="1rem"
                     />
                     <span class={styles["queue-item-text"]}>
@@ -158,7 +158,7 @@ export const ElmAgUiAgent = (props: ElmAgUiAgentProps) => {
                       onClick={() => local.dequeue(queued.id)}
                       aria-label="Remove from queue"
                     >
-                      <ElmMdiIcon d={mdiClose} size="0.875rem" />
+                      <ElmMdiIcon path={mdiClose} size="0.875rem" />
                     </button>
                   </div>
                 )}
@@ -183,7 +183,7 @@ export const ElmAgUiAgent = (props: ElmAgUiAgentProps) => {
                   >
                     <ElmMdiIcon
                       class={styles["prompt-template-tip-icon"]}
-                      d={mdiForumOutline}
+                      path={mdiForumOutline}
                     />
                     <ElmInlineText>{template.description}</ElmInlineText>
                   </button>

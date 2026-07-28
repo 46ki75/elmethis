@@ -42,7 +42,11 @@ export const ElmCallout = ({
       {...props}
     >
       <div className={styles.header}>
-        <ElmMdiIcon className={styles.icon} d={ICON_MAP[type]} size="1.25rem" />
+        <ElmMdiIcon
+          className={styles.icon}
+          path={ICON_MAP[type]}
+          size="1.25rem"
+        />
         <span>{type}</span>
       </div>
 

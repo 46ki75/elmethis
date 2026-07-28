@@ -31,7 +31,7 @@ export const ElmBreadcrumb = (props: ElmBreadcrumbProps) => {
             <span class={styles["link-container"]} onClick={link.onClick}>
               <ElmMdiIcon
                 class={styles.icon}
-                d={
+                path={
                   index() === 0
                     ? mdiHome
                     : index() === local.links.length - 1
@@ -47,7 +47,7 @@ export const ElmBreadcrumb = (props: ElmBreadcrumbProps) => {
             {local.links.length !== index() + 1 && (
               <ElmMdiIcon
                 class={styles.chevron}
-                d={mdiChevronRight}
+                path={mdiChevronRight}
                 size="1rem"
               />
             )}

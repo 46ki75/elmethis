@@ -226,7 +226,7 @@ export const ElmButtonDropdown = (props: ElmButtonDropdownProps) => {
         aria-label="Toggle dropdown"
         aria-expanded={isOpen()}
       >
-        <ElmMdiIcon d={local.dropdownIcon} size="1.25rem" />
+        <ElmMdiIcon path={local.dropdownIcon} size="1.25rem" />
       </ElmButton>
 
       <ElmCollapse isOpen={isOpen()} class={styles.menu}>
@@ -246,7 +246,7 @@ export const ElmButtonDropdown = (props: ElmButtonDropdownProps) => {
               }}
             >
               <ElmMdiIcon
-                d={mdiChevronRight}
+                path={mdiChevronRight}
                 color="var(--elmethis-color-primary-weak)"
                 size="0.75em"
               />

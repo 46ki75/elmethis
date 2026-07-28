@@ -131,7 +131,7 @@ export const ElmAgUiStatus = component$<ElmAgUiStatusProps>(
           class={styles["reel"]}
         >
           <ElmMdiIcon
-            d={view.d}
+            path={view.d}
             size="1rem"
             color={view.color}
             class={view.pulse ? styles.pulse : undefined}

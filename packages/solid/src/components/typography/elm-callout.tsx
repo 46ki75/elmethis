@@ -33,7 +33,7 @@ export const ElmCallout = (props: ElmCalloutProps) => {
       <div class={styles.header}>
         <ElmMdiIcon
           class={styles.icon}
-          d={ICON_MAP[local.type]}
+          path={ICON_MAP[local.type]}
           size="1.25rem"
         />
         <span>{local.type}</span>

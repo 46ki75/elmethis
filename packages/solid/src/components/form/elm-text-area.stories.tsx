@@ -46,7 +46,9 @@ export const Primary: Story = {
 export const WithIcon: Story = {
   args: {
     label: "Comment",
-    icon: <ElmMdiIcon d={mdiCommentTextOutline} size="0.75rem" color="gray" />,
+    icon: (
+      <ElmMdiIcon path={mdiCommentTextOutline} size="0.75rem" color="gray" />
+    ),
   },
 };
 

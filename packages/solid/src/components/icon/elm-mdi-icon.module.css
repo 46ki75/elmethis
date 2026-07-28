@@ -1,7 +1,3 @@
 .elm-mdi-icon {
-  fill: light-dark(
-    var(--elmethis-scoped-color-light, var(--elmethis-color-neutral)),
-    var(--elmethis-scoped-color-dark, var(--elmethis-color-neutral))
-  );
   transition: fill 200ms;
 }

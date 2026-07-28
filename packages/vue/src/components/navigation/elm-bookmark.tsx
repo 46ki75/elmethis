@@ -90,7 +90,7 @@ export const ElmBookmark = defineComponent({
                 <ElmInlineIcon src={props.favicon} />
               ) : (
                 <ElmMdiIcon
-                  d={mdiLinkVariant}
+                  path={mdiLinkVariant}
                   color="var(--elmethis-color-accent-info)"
                 />
               )}

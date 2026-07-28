@@ -10,8 +10,10 @@ const meta = {
   args: {},
   argTypes: {
     color: { control: "color" },
-    lightColor: { control: "color" },
-    darkColor: { control: "color" },
+    label: {
+      control: "text",
+      description: "Accessible label. Omit for decorative icons.",
+    },
   },
 } satisfies Meta<typeof ElmMdiIcon>;
 
@@ -21,6 +23,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: {
     size: "1.25rem",
-    d: mdiTag,
+    path: mdiTag,
+    label: "Tag",
   },
 };

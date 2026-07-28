@@ -28,7 +28,10 @@ describe("[CSR] ElmValidation", () => {
     expect(validation).toHaveAttribute("aria-label", "Password requirement");
     expect(validation).not.toHaveAttribute("isValid");
     expect(validation).not.toHaveAttribute("validColor");
-    expect(validation.querySelector("svg")).toHaveAttribute("role", "img");
+    expect(validation.querySelector("svg")).toHaveAttribute(
+      "aria-hidden",
+      "true",
+    );
 
     fireEvent.click(validation);
     expect(onClick).toHaveBeenCalledOnce();
@@ -99,9 +102,8 @@ describe("[CSR] ElmValidation", () => {
     expect(validation.style.getPropertyValue("--elmethis-scoped-opacity")).toBe(
       "1",
     );
-    expect(icon.style.getPropertyValue("--elmethis-scoped-color")).toBe(
-      "rgb(10, 20, 30)",
-    );
+    expect(icon).toHaveAttribute("color", "rgb(10, 20, 30)");
+    expect(icon).toHaveAttribute("fill", "currentColor");
     expect(icon.querySelector("path")!.getAttribute("d")).not.toBe(initialPath);
   });
 });

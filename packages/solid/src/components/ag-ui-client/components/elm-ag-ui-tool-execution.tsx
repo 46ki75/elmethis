@@ -122,7 +122,7 @@ export const ElmAgUiToolExecution = (props: ElmAgUiToolExecutionProps) => {
     color?: string,
   ): JSX.Element => (
     <div class={styles.summary}>
-      <ElmMdiIcon d={icon} size="1rem" color={color} />
+      <ElmMdiIcon path={icon} size="1rem" color={color} />
       <ElmInlineText>{label}</ElmInlineText>
     </div>
   );

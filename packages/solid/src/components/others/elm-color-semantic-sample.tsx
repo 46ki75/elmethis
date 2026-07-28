@@ -218,7 +218,7 @@ export const ElmColorSemanticSample = (props: ElmColorSemanticSampleProps) => {
         >
           <ElmMdiIcon
             class={styles["mode-toggle-icon"]}
-            d={
+            path={
               copy.copyMode() === "hex"
                 ? HEXADECIMAL_PATH
                 : FORMAT_COLOR_FILL_PATH

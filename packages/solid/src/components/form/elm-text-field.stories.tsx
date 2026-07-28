@@ -49,7 +49,7 @@ export const Primary: Story = {
 
 export const WithIcon: Story = {
   args: {
-    icon: <ElmMdiIcon d={mdiEmail} size="0.75rem" color="gray" />,
+    icon: <ElmMdiIcon path={mdiEmail} size="0.75rem" color="gray" />,
   },
 };
 

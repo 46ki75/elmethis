@@ -116,7 +116,7 @@ export const ElmAgUiStatus = (props: ElmAgUiStatusProps) => {
         >
           <div class={styles.reel}>
             <ElmMdiIcon
-              d={current.d}
+              path={current.d}
               size="1rem"
               color={current.color}
               class={current.pulse ? styles.pulse : undefined}

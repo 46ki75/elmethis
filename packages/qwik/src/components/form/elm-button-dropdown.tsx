@@ -214,7 +214,7 @@ export const ElmButtonDropdown = component$<ElmButtonDropdownProps>((props) => {
           void setOpen$(!isOpen.value);
         })}
       >
-        <ElmMdiIcon d={dropdownIcon} size="1.25rem" />
+        <ElmMdiIcon path={dropdownIcon} size="1.25rem" />
       </ElmButton>
 
       <ElmCollapse isOpen={isOpen.value} class={styles.menu}>
@@ -240,7 +240,7 @@ export const ElmButtonDropdown = component$<ElmButtonDropdownProps>((props) => {
             }}
           >
             <ElmMdiIcon
-              d={mdiChevronRight}
+              path={mdiChevronRight}
               color="var(--elmethis-color-primary-weak)"
               size="0.75em"
             />

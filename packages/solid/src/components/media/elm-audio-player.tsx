@@ -308,7 +308,7 @@ export const ElmAudioPlayer = (props: ElmAudioPlayerProps) => {
           aria-hidden="true"
         >
           <ElmMdiIcon
-            d={hasError() ? mdiAlertCircleOutline : mdiMusicNote}
+            path={hasError() ? mdiAlertCircleOutline : mdiMusicNote}
             size="1.25rem"
           />
         </span>
@@ -330,7 +330,7 @@ export const ElmAudioPlayer = (props: ElmAudioPlayerProps) => {
 
       {hasError() ? (
         <div class={styles["error-notice"]} role="alert">
-          <ElmMdiIcon d={mdiAlertCircleOutline} size="1.25rem" />
+          <ElmMdiIcon path={mdiAlertCircleOutline} size="1.25rem" />
           <span class={styles["error-message"]}>{local.errorMessage}</span>
         </div>
       ) : (
@@ -371,7 +371,7 @@ export const ElmAudioPlayer = (props: ElmAudioPlayerProps) => {
                 onClick={() => seekTo(currentTime() - local.seekStep)}
                 aria-label={`Back ${local.seekStep} seconds`}
               >
-                <ElmMdiIcon d={mdiRewind10} size="1.25rem" />
+                <ElmMdiIcon path={mdiRewind10} size="1.25rem" />
               </button>
 
               <button
@@ -382,7 +382,7 @@ export const ElmAudioPlayer = (props: ElmAudioPlayerProps) => {
                 aria-pressed={isPlaying()}
               >
                 <ElmMdiIcon
-                  d={isPlaying() ? mdiPause : mdiPlay}
+                  path={isPlaying() ? mdiPause : mdiPlay}
                   size="1.5rem"
                 />
               </button>
@@ -393,7 +393,7 @@ export const ElmAudioPlayer = (props: ElmAudioPlayerProps) => {
                 onClick={() => seekTo(currentTime() + local.seekStep)}
                 aria-label={`Forward ${local.seekStep} seconds`}
               >
-                <ElmMdiIcon d={mdiFastForward10} size="1.25rem" />
+                <ElmMdiIcon path={mdiFastForward10} size="1.25rem" />
               </button>
             </div>
 
@@ -405,7 +405,7 @@ export const ElmAudioPlayer = (props: ElmAudioPlayerProps) => {
                 aria-label={isMuted() ? "Unmute" : "Mute"}
                 aria-pressed={isMuted()}
               >
-                <ElmMdiIcon d={volumeIcon()} size="1.25rem" />
+                <ElmMdiIcon path={volumeIcon()} size="1.25rem" />
               </button>
               <input
                 class={styles["volume-slider"]}

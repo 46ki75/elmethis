@@ -211,7 +211,7 @@ export const ElmButtonDropdown = ({
     [setSelected, autoClose, onItemClick, setOpen],
   );
 
-  const caret = <ElmMdiIcon d={dropdownIcon} size="1.25rem" />;
+  const caret = <ElmMdiIcon path={dropdownIcon} size="1.25rem" />;
 
   return (
     <div
@@ -276,7 +276,7 @@ export const ElmButtonDropdown = ({
             }}
           >
             <ElmMdiIcon
-              d={mdiChevronRight}
+              path={mdiChevronRight}
               color="var(--elmethis-color-primary-weak)"
               size="0.75em"
             />

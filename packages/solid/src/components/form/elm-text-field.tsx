@@ -113,7 +113,7 @@ export const ElmTextField = (props: ElmTextFieldProps) => {
       style={local.style}
     >
       <span class={clsx(styles.header, isFocused() && styles["label-active"])}>
-        {local.icon ?? <ElmMdiIcon d={mdiText} size="0.75rem" />}
+        {local.icon ?? <ElmMdiIcon path={mdiText} size="0.75rem" />}
         <span>
           {local.label}
           <Show when={local.required}>
@@ -192,7 +192,7 @@ export const ElmTextField = (props: ElmTextFieldProps) => {
             }
           >
             <ElmMdiIcon
-              d={inputType() === "text" ? mdiEyeOutline : mdiEyeOffOutline}
+              path={inputType() === "text" ? mdiEyeOutline : mdiEyeOffOutline}
               size="1.25rem"
               color="gray"
             />
@@ -205,7 +205,7 @@ export const ElmTextField = (props: ElmTextFieldProps) => {
             disabled={local.disabled || local.isLoading}
             onClick={() => setNativeValue("")}
           >
-            <ElmMdiIcon d={mdiTrashCanOutline} size="1.25rem" color="gray" />
+            <ElmMdiIcon path={mdiTrashCanOutline} size="1.25rem" color="gray" />
           </button>
         </div>
       </div>

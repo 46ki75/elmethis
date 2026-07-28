@@ -36,7 +36,7 @@ export const ElmLanguageIcon = (props: ElmLanguageIconProps) => {
       keyed
       fallback={
         <ElmMdiIcon
-          d={MDI_CODE_TAGS}
+          path={MDI_CODE_TAGS}
           size={String(merged.size)}
           class={merged.class}
           style={merged.style}

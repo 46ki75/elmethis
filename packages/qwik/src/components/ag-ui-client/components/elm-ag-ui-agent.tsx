@@ -175,7 +175,7 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
             <>
               <div class={styles["error"]}>
                 <ElmMdiIcon
-                  d={mdiAlert}
+                  path={mdiAlert}
                   color="var(--elmethis-color-accent-error)"
                   style={{ flexShrink: 0 }}
                 />
@@ -185,7 +185,7 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
               </div>
 
               <span class={styles["clickable-icon"]} onClick$={retry$}>
-                <ElmMdiIcon d={mdiRefresh} size="1.25rem" />
+                <ElmMdiIcon path={mdiRefresh} size="1.25rem" />
               </span>
             </>
           )}
@@ -200,7 +200,7 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
                 <div key={queued.id} class={styles["queue-item"]}>
                   <ElmMdiIcon
                     class={styles["queue-item-icon"]}
-                    d={mdiClockOutline}
+                    path={mdiClockOutline}
                     size="1rem"
                   />
                   <span class={styles["queue-item-text"]}>
@@ -214,7 +214,7 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
                     onClick$={onDequeueClick$}
                     aria-label="Remove from queue"
                   >
-                    <ElmMdiIcon d={mdiClose} size="0.875rem" />
+                    <ElmMdiIcon path={mdiClose} size="0.875rem" />
                   </span>
                 </div>
               ))}
@@ -232,7 +232,7 @@ export const ElmAgUiAgent = component$<ElmAgUiAgentProps>((props) => {
                 >
                   <ElmMdiIcon
                     class={styles["prompt-template-tip-icon"]}
-                    d={mdiForumOutline}
+                    path={mdiForumOutline}
                   />
                   <ElmInlineText>{template.description}</ElmInlineText>
                 </span>

@@ -65,7 +65,7 @@ export const ElmFile = defineComponent({
     return () => (
       <div class={clsx(styles["elm-file"])}>
         <div>
-          <ElmMdiIcon d={mdiFile} size="1.25rem" />
+          <ElmMdiIcon path={mdiFile} size="1.25rem" />
         </div>
 
         <div>
@@ -79,7 +79,7 @@ export const ElmFile = defineComponent({
         </div>
 
         <div class={styles["download-icon"]} onClick={downloadFile}>
-          <ElmMdiIcon d={mdiDownload} size="1.25rem" />
+          <ElmMdiIcon path={mdiDownload} size="1.25rem" />
         </div>
       </div>
     );

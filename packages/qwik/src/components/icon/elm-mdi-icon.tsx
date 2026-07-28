@@ -1,46 +1,37 @@
-import { component$, PropsOf, type CSSProperties } from "@qwik.dev/core";
+import { component$, PropsOf } from "@qwik.dev/core";
 
 import styles from "./elm-mdi-icon.module.css";
 
-export interface ElmMdiIconProps extends PropsOf<"svg"> {
-  d: string;
-  size?: string;
+export interface ElmMdiIconProps extends Omit<PropsOf<"svg">, "children"> {
+  path: string;
+  size?: string | number;
   color?: string;
-  lightColor?: string;
-  darkColor?: string;
+  label?: string;
 }
 
 export const ElmMdiIcon = component$<ElmMdiIconProps>(
-  ({
-    class: className,
-    style,
-    d,
-    size = "1em",
-    color,
-    lightColor,
-    darkColor,
-    ...props
-  }) => {
+  ({ class: className, style, path, size = "1em", color, label, ...props }) => {
+    const hasAccessibleName = Boolean(
+      label || props["aria-label"] || props["aria-labelledby"],
+    );
+
     return (
       <svg
         class={[styles["elm-mdi-icon"], className]}
-        style={
-          {
-            "--elmethis-scoped-color-light": lightColor ?? color,
-            "--elmethis-scoped-color-dark": darkColor ?? color,
-            ...(style as CSSProperties),
-          } as CSSProperties
-        }
+        style={style}
         width={size}
         height={size}
         viewBox="0 0 24 24"
-        fill={color}
+        color={color}
+        fill="currentColor"
         xmlns="http://www.w3.org/2000/svg"
         focusable="false"
-        role="img"
+        aria-hidden={hasAccessibleName ? undefined : "true"}
+        role={hasAccessibleName ? "img" : undefined}
         {...props}
       >
-        <path d={d} />
+        {label && <title>{label}</title>}
+        <path d={path} />
       </svg>
     );
   },

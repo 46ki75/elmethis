@@ -63,7 +63,11 @@ const WithIconStory = () => {
         onInput={(e) => setText(e.currentTarget.value)}
         rows={5}
         icon={
-          <ElmMdiIcon d={mdiCommentTextOutline} size="0.75rem" color="gray" />
+          <ElmMdiIcon
+            path={mdiCommentTextOutline}
+            size="0.75rem"
+            color="gray"
+          />
         }
       />
       <ElmInlineText>{text}</ElmInlineText>

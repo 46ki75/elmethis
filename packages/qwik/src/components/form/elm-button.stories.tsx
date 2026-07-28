@@ -44,11 +44,11 @@ export const Flex: Story = {
     return (
       <div style="display: flex; gap: 1rem;">
         <ElmButton {...this.args}>
-          <ElmMdiIcon d={mdiSquareEditOutline} size="1.25rem" />
+          <ElmMdiIcon path={mdiSquareEditOutline} size="1.25rem" />
           elm-button
         </ElmButton>
         <ElmButton {...this.args}>
-          <ElmMdiIcon d={mdiSquareEditOutline} size="1.25rem" />
+          <ElmMdiIcon path={mdiSquareEditOutline} size="1.25rem" />
           elm-button
         </ElmButton>
       </div>
@@ -69,11 +69,11 @@ export const WithPrimary: Story = {
     return (
       <div style="display: flex; gap: 1rem;">
         <ElmButton {...this.args} primary>
-          <ElmMdiIcon d={mdiSquareEditOutline} size="1.25rem" />
+          <ElmMdiIcon path={mdiSquareEditOutline} size="1.25rem" />
           elm-button
         </ElmButton>
         <ElmButton {...this.args}>
-          <ElmMdiIcon d={mdiSquareEditOutline} size="1.25rem" />
+          <ElmMdiIcon path={mdiSquareEditOutline} size="1.25rem" />
           elm-button
         </ElmButton>
       </div>

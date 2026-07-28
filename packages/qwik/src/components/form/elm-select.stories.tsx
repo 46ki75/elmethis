@@ -80,7 +80,7 @@ const WithIconSelect = component$(() => {
       options={OPTIONS}
       selectedOptionId={selectedOptionId}
     >
-      <ElmMdiIcon q:slot="icon" d={mdiAccountOutline} />
+      <ElmMdiIcon q:slot="icon" path={mdiAccountOutline} />
     </ElmSelect>
   );
 });

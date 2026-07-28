@@ -124,7 +124,7 @@ export const ElmColorPrimitiveSample = ({
         >
           <ElmMdiIcon
             className={styles["mode-toggle-icon"]}
-            d={copyMode === "hex" ? mdiHexadecimal : mdiFormatColorFill}
+            path={copyMode === "hex" ? mdiHexadecimal : mdiFormatColorFill}
             size={"1.25rem"}
           />
           Copy: {copyMode === "hex" ? "hex value" : "variable name"}

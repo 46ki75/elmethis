@@ -55,7 +55,7 @@ export const ElmFile = component$<ElmFileProps>(
     return (
       <div class={[styles["elm-file"], className]} {...props}>
         <div>
-          <ElmMdiIcon d={mdiFile} size="1.25rem" />
+          <ElmMdiIcon path={mdiFile} size="1.25rem" />
         </div>
 
         <div>
@@ -69,7 +69,7 @@ export const ElmFile = component$<ElmFileProps>(
         </div>
 
         <div class={styles["download-icon"]} onClick$={downloadFile}>
-          <ElmMdiIcon d={mdiDownload} size="1.25rem" />
+          <ElmMdiIcon path={mdiDownload} size="1.25rem" />
         </div>
       </div>
     );

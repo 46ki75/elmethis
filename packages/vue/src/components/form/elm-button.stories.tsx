@@ -49,11 +49,11 @@ export const Flex: Story = {
     template: `
       <div style="display: flex; gap: 1rem">
         <ElmButton v-bind="args">
-          <ElmMdiIcon :d="mdiSquareEditOutline" size="1.25rem" />
+          <ElmMdiIcon :path="mdiSquareEditOutline" size="1.25rem" />
           elm-button
         </ElmButton>
         <ElmButton v-bind="args">
-          <ElmMdiIcon :d="mdiSquareEditOutline" size="1.25rem" />
+          <ElmMdiIcon :path="mdiSquareEditOutline" size="1.25rem" />
           elm-button
         </ElmButton>
       </div>
@@ -75,11 +75,11 @@ export const WithPrimary: Story = {
     template: `
       <div style="display: flex; gap: 1rem">
         <ElmButton v-bind="args" primary>
-          <ElmMdiIcon :d="mdiSquareEditOutline" size="1.25rem" />
+          <ElmMdiIcon :path="mdiSquareEditOutline" size="1.25rem" />
           elm-button
         </ElmButton>
         <ElmButton v-bind="args">
-          <ElmMdiIcon :d="mdiSquareEditOutline" size="1.25rem" />
+          <ElmMdiIcon :path="mdiSquareEditOutline" size="1.25rem" />
           elm-button
         </ElmButton>
       </div>

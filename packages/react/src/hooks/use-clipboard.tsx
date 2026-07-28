@@ -87,7 +87,7 @@ export const useClipboard = (options: UseClipboardOptions) => {
       >
         <ElmMdiIcon
           className={clsx(copied && styles["use-clipboard-icon-copied"])}
-          d={copied ? mdiClipboardCheckOutline : mdiClipboardOutline}
+          path={copied ? mdiClipboardCheckOutline : mdiClipboardOutline}
           size="1.25rem"
         />
       </span>
