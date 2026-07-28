@@ -53,10 +53,6 @@ jobs:
         run: pnpm run build
         working-directory: packages/ag-ui-stub
 
-      - name: Run Build (Qwik Storybook)
-        run: pnpm run build-storybook
-        working-directory: packages/qwik
-
       - name: Run Build (React Storybook)
         run: pnpm run build-storybook
         working-directory: packages/react
@@ -74,7 +70,6 @@ jobs:
           rm -rf ./pages-site
           mkdir -p ./pages-site
           cp ./index.html ./pages-site/index.html
-          cp -r ./packages/qwik/storybook-static ./pages-site/qwik
           cp -r ./packages/react/storybook-static ./pages-site/react
           cp -r ./packages/solid/storybook-static ./pages-site/solid
           cp -r ./packages/vue/storybook-static ./pages-site/vue

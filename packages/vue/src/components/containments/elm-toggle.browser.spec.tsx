@@ -5,8 +5,8 @@ import { describe, expect, test, vi } from "vitest";
 
 import { ElmToggle } from "./elm-toggle";
 
-// Click-driven toggling is verified in a real browser to mirror the qwik twin's
-// split. Uncontrolled flips internal state; controlled writes straight back to
+// Click-driven toggling is verified in a real browser. Uncontrolled state flips
+// internally; controlled writes go straight back to
 // the parent-owned value.
 
 describe("[browser] uncontrolled toggle", () => {

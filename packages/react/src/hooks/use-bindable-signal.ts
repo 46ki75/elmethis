@@ -4,10 +4,8 @@ import type { Dispatch, SetStateAction } from "react";
 /**
  * Optionally-controllable single-value state.
  *
- * React port of qwik's `useBindableSignal`. Qwik's signal/store model does not
- * exist in React, so where qwik returned a `Signal<T>` (read/write via
- * `.value`), the React idiom returns a `[value, setValue]` tuple. The
- * underlying controllable-vs-internal behavior is preserved:
+ * The React API returns a `[value, setValue]` tuple and supports controlled and
+ * uncontrolled state:
  *
  * - **Controlled:** parent passes their own `value`. The hook returns that
  *   value — calling `setValue` invokes the parent's `onChange` so the parent

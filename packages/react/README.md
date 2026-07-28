@@ -2,8 +2,7 @@
 
 React 19 component library for elmethis.
 
-Components and hooks are being recreated to match the `@elmethis/qwik`
-lead/base-reference implementation:
+Components and hooks follow the shared Elmethis component surface:
 
 - design tokens come from `@elmethis/core` (`import "@elmethis/core/tokens.css"`);
 - theming is native via CSS `light-dark()` + `color-scheme`;
@@ -12,15 +11,15 @@ lead/base-reference implementation:
 
 ## Scripts
 
-| Script                | Purpose                                            |
-| --------------------- | -------------------------------------------------- |
-| `pnpm dev`            | Storybook dev server (port 19221)                  |
-| `pnpm build`         | Build the library (`vite build`) + types (`tsc`)    |
-| `pnpm test.unit`     | Unit specs (happy-dom + React Testing Library, SSR) |
-| `pnpm test.browser`  | Browser specs (real Chromium via Playwright)        |
-| `pnpm lint`          | ESLint                                              |
-| `pnpm lint.css`      | Stylelint                                           |
-| `pnpm fmt`           | Prettier                                            |
+| Script              | Purpose                                             |
+| ------------------- | --------------------------------------------------- |
+| `pnpm dev`          | Storybook dev server (port 19221)                   |
+| `pnpm build`        | Build the library (`vite build`) + types (`tsc`)    |
+| `pnpm test.unit`    | Unit specs (happy-dom + React Testing Library, SSR) |
+| `pnpm test.browser` | Browser specs (real Chromium via Playwright)        |
+| `pnpm lint`         | ESLint                                              |
+| `pnpm lint.css`     | Stylelint                                           |
+| `pnpm fmt`          | Prettier                                            |
 
 ## Testing layers
 

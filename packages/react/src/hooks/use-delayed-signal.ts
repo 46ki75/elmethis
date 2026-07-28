@@ -30,8 +30,7 @@ export interface UseDelayedSignalReturn<T> {
  *
  * `isValueChanging` is `true` while a timer is pending.
  *
- * Unlike the qwik twin (which returns a `{ signal, delayedSignal, dispatch }`
- * trio of signals), this React port returns plain reactive values via
+ * Returns plain reactive values via
  * `{ value, delayedValue, isValueChanging, dispatch }`.
  *
  * @param initialValue - Seed value for both `value` and `delayedValue`.

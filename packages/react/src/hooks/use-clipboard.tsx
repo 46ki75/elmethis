@@ -21,8 +21,8 @@ export interface UseClipboardOptions {
 }
 
 /**
- * React port of qwik's `useClipboard`. Returns a `copy` callback and a
- * `CopyButton` component whose icon swaps to the check variant for `delay`
+ * Returns a `copy` callback and a `CopyButton` component whose icon swaps to
+ * the check variant for `delay`
  * ms after a successful copy.
  *
  * Text content is written via usehooks-ts `useCopyToClipboard`; rich

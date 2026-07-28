@@ -2,14 +2,13 @@
  * Recursive A2UI component host.
  *
  * Mirrors the official React (`DeferredChild`/`ResolvedChild`) and Angular
- * (`ComponentHostComponent`) patterns, and the qwik lead's `ComponentHost`:
+ * (`ComponentHostComponent`) patterns:
  * one component instance per A2UI component, each subscribing only to events
  * for its own id. The surface and catalog are read from `provide`/`inject` so
  * the recursive render doesn't have to drill props through every level.
  *
- * Vue vs. the qwik reference: there is no QRL serialization boundary, so the
- * surface/catalog are injected as live values (no `NoSerialize`), `setBinding`
- * / `dispatchAction` are plain closures (no `$()`), and subscriptions live in
+ * The surface/catalog are injected as live values, `setBinding` /
+ * `dispatchAction` are plain closures, and subscriptions live in
  * `onMounted` / `onUnmounted` (so they're naturally client-only — SSR renders
  * the initial tree synchronously and attaches no listeners).
  *

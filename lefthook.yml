@@ -35,11 +35,6 @@ check:
       glob: "packages/core/**/*.{ts,tsx}"
       run: pnpm exec eslint {files}
 
-    - name: eslint-qwik
-      root: "packages/qwik/"
-      glob: "packages/qwik/**/*.{ts,tsx}"
-      run: pnpm exec eslint {files}
-
     - name: eslint-react
       root: "packages/react/"
       glob: "packages/react/**/*.{ts,tsx}"
@@ -59,11 +54,6 @@ check:
       root: "packages/ag-ui-stub/"
       glob: "packages/ag-ui-stub/**/*.{ts,tsx}"
       run: pnpm exec eslint {files}
-
-    - name: stylelint-qwik
-      root: "packages/qwik/"
-      glob: "packages/qwik/**/*.{css,scss,sass,less}"
-      run: pnpm exec stylelint {files}
 
     - name: stylelint-react
       root: "packages/react/"
@@ -85,11 +75,6 @@ check:
     - name: vitest-core
       root: "packages/core/"
       glob: "packages/core/**/*.{ts,tsx}"
-      run: pnpm exec vitest related --run --passWithNoTests {files}
-
-    - name: vitest-qwik
-      root: "packages/qwik/"
-      glob: "packages/qwik/**/*.{ts,tsx}"
       run: pnpm exec vitest related --run --passWithNoTests {files}
 
     - name: vitest-react

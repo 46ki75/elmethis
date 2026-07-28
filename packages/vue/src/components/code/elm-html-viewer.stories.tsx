@@ -44,7 +44,7 @@ const NOTION_EXPORT_HTML = `
   </figure>
   <ul class="to-do-list">
     <li><span class="checkbox checkbox-on"></span> Ship the pilot</li>
-    <li><span class="checkbox checkbox-off"></span> Wire up qwik/vue</li>
+    <li><span class="checkbox checkbox-off"></span> Wire up integrations</li>
   </ul>
 </div>
 `;

@@ -62,8 +62,8 @@ export const ElmTextField = ({
   const [isFocused, setIsFocused] = useState(false);
   const [inputType, setInputType] = useState(isPassword ? "password" : "text");
 
-  // Mirrors the qwik twin's clear/toggle imperative writes: dispatch a native
-  // input event so a parent listening on `onChange`/`onInput` is notified.
+  // Dispatch a native input event after clear/toggle imperative writes so a
+  // parent listening on `onChange`/`onInput` is notified.
   const setNativeValue = (next: string) => {
     const el = inputRef.current;
     if (!el) return;

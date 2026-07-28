@@ -4,16 +4,13 @@ import { useDebounceValue } from "usehooks-ts";
 /**
  * React shape returned by {@link useDebouncedSignal}.
  *
- * Qwik returns three `Signal<T>` objects (`signal`, `debouncedSignal`,
- * `isPending`). React has no signal/store split, so the equivalent is exposed
- * as a `useState`-style tuple object: `value` + `setValue` replace the
- * read/write `signal`, `debouncedValue` replaces the read-only
- * `debouncedSignal`, and `isPending` is a plain boolean.
+ * Exposed as a `useState`-style object: `value` + `setValue` hold the immediate
+ * value, `debouncedValue` is read-only, and `isPending` is a plain boolean.
  */
 export interface UseDebouncedSignalReturn<T> {
   /** The current value. Reflects every write to `setValue` immediately. */
   value: T;
-  /** Writes a new value (or applies an updater). Mirrors qwik's `signal.value =`. */
+  /** Writes a new value or applies an updater. */
   setValue: React.Dispatch<React.SetStateAction<T>>;
   /**
    * The debounced value. Reflects `value` only after `delay` ms have elapsed

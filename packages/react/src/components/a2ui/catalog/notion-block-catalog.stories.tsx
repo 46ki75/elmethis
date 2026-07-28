@@ -2,8 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { ElmA2ui } from "../elm-a2ui";
 
-// One story per notion-block-catalog component type, mirroring the qwik
-// reference (`notion-block-catalog.stories.tsx`) 1:1 so all three frameworks
+// One story per notion-block-catalog component type so all three frameworks
 // exercise the same A2UI surfaces. `ElmA2ui`'s default `components` is
 // already the Elm Notion block catalog, so no catalog override is needed
 // here.

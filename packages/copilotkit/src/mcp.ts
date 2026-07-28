@@ -6,7 +6,7 @@ import { z } from "zod";
 import { randomUUID } from "node:crypto";
 
 // Stub Weather MCP server, merged in from the former `@elmethis/mcp-server`
-// package. It exercises the qwik package's `useMcpTools` / `useAgent` hooks
+// package. It exercises frontend MCP tools and agent integrations
 // against a real Streamable HTTP MCP endpoint. CORS is applied globally in
 // `server.ts`; the stateless transport sets no `Mcp-Session-Id`, so the
 // default permissive CORS there is sufficient.

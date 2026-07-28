@@ -1,8 +1,7 @@
 /**
  * Design tokens for `@elmethis/core` — the single source of truth that the
  * vanilla-extract build (`scripts/build-tokens.ts`) emits to `dist/tokens.css`
- * as `--elmethis-*` custom properties. Mirrors the qwik reference
- * `packages/qwik/src/styles/global.css`: a primitive layer of concrete values
+ * as `--elmethis-*` custom properties: a primitive layer of concrete values
  * and a semantic layer that references it, themed natively via `light-dark()`.
  */
 

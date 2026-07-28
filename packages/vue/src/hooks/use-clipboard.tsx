@@ -28,8 +28,8 @@ export interface UseClipboardOptions {
 }
 
 /**
- * Vue port of qwik's `useClipboard`. Returns a `copy` callback and a
- * `CopyButton` component whose icon swaps to the check variant for `delay` ms
+ * Returns a `copy` callback and a `CopyButton` component whose icon swaps to
+ * the check variant for `delay` ms
  * after a successful copy.
  *
  * Official-first: the copy + auto-resetting `copied` state come from `@vueuse`

@@ -255,7 +255,7 @@ export const ElmMarkdown = defineComponent({
     const stableTokens = shallowRef<Token[]>([]);
     const tailTokens = shallowRef<Token[]>([]);
 
-    // Mirrors the qwik lead's useTask$: re-lex on every markdown change, and
+    // Re-lex on every markdown change, and
     // while streaming only swap `stableTokens` when a new complete block lands
     // (its length grows) so the memoized stable subtree skips re-renders between
     // block boundaries. `immediate: true` runs synchronously in setup, so SSR

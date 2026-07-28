@@ -5,8 +5,7 @@
  *   - `url` — fetch a JSONL stream and process each line as a v0.9 message.
  *   - `messages` — render a pre-collected message list (useful for tests).
  *
- * Ported from the qwik lead. Vue has no QRL serialization boundary, so surface
- * state lives in plain (non-reactive) closures and a `tick` ref drives
+ * Surface state lives in plain (non-reactive) closures and a `tick` ref drives
  * re-render: the SDK's `SurfaceModel`s carry runtime-only references
  * (subscriptions, Maps) that never need to be reactive themselves. Per-component
  * write-back and action dispatch are wired by `ComponentHost`.
@@ -174,8 +173,8 @@ export const ElmA2ui = defineComponent({
     let surfaceMap = new Map<string, SurfaceModel<ComponentApi>>();
     let internal: ProcessorInternal | null = null;
 
-    // Mirrors the qwik lead's unified setup+sync task: diff the effective
-    // message list against the last-built state — extension (same prefix, more
+    // Diff the effective message list against the last-built state — extension
+    // (same prefix, more
     // items, same catalogId) processes only the tail; swap (different prefix or
     // catalogId) tears down and rebuilds, pre-registering every catalogId seen
     // in the new messages so the SDK's constructor-only catalog list stays in

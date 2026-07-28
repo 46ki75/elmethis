@@ -18,7 +18,7 @@ export const ElmFragmentIdentifier = defineComponent({
   },
   setup(props, { attrs }) {
     // `id` drives the click-to-hash behavior; it is captured in the handler
-    // rather than reflected as a DOM attribute (matching qwik/react).
+    // rather than reflected as a DOM attribute.
     const handleHashClick = (id: string): void => {
       const url = new URL(window.location.href);
       url.hash = id;

@@ -2,8 +2,7 @@
 
 Vue 3 component library for elmethis.
 
-Components and hooks are being recreated to match the `@elmethis/qwik`
-lead/base-reference implementation:
+Components and hooks follow the shared Elmethis component surface:
 
 - design tokens come from `@elmethis/core` (`import "@elmethis/core/tokens.css"`);
 - theming is native via CSS `light-dark()` + `color-scheme`;
@@ -13,8 +12,8 @@ lead/base-reference implementation:
 ## Authoring style
 
 Components are authored in **TSX**, not single-file `.vue` components, to keep
-the surface aligned with the `qwik`/`react` siblings and make porting from the
-qwik reference mechanical. Each component is a `defineComponent` whose `setup`
+the surface aligned with the React and Solid siblings. Each component is a
+`defineComponent` whose `setup`
 returns a render function:
 
 ```tsx

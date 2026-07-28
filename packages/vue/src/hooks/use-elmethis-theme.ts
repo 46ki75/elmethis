@@ -84,9 +84,7 @@ const initialIsDark = (): boolean => {
  * Pin or release the Elmethis theme natively via `color-scheme` + `data-theme`
  * on `<html>`, with cross-tab (`storage`) and same-tab (`CustomEvent`) sync.
  *
- * Vue port of qwik's `useElmethisTheme`: where qwik returns a `Signal<boolean>`
- * plus a `QRL`, this returns a `Ref<boolean>` (read via `.value`) plus a plain
- * `() => void`.
+ * Returns a `Ref<boolean>` (read via `.value`) plus a plain `() => void`.
  *
  * Listeners are wired by hand in `onMounted` / `onBeforeUnmount` (mirroring the
  * react port's `useEffect`): the custom `THEME_CHANGE_EVENT` and the

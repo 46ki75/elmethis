@@ -32,8 +32,7 @@ export interface ChildRef {
  * `dispatchAction`) are pre-bound to the current component so renderers stay
  * declarative.
  *
- * Unlike the Qwik reference, `setBinding` / `dispatchAction` are plain
- * functions: Vue has no QRL serialization boundary, so `ComponentHost` can
+ * `setBinding` / `dispatchAction` are plain functions, so `ComponentHost` can
  * close over the live surface and component id directly.
  */
 export interface RenderArgs<TProps = Record<string, unknown>> {

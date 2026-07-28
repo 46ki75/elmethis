@@ -77,12 +77,8 @@ export class ThrottledQueue {
 /**
  * Client-side throttled task queue.
  *
- * React port of qwik's `useThrottledQueue`. Qwik returned a
- * `Signal<NoSerialize<ThrottledQueue>>` instantiated in a mount-time
- * `useVisibleTask$`. React has no signal/serialization model, so the queue is
- * held in a ref and created on mount via `useEffect` (which, like
- * `useVisibleTask$`, only runs on the client). The hook returns the
- * `ThrottledQueue` instance directly.
+ * The queue is held in a ref and created on mount via `useEffect`, which only
+ * runs on the client. The hook returns the `ThrottledQueue` instance directly.
  *
  * The queue is created lazily on first client render and destroyed on unmount,
  * rejecting any still-pending tasks.
@@ -109,7 +105,7 @@ export function useThrottledQueue(minInterval = 200): ThrottledQueue | null {
       queue?.destroy("component unmounted");
       queueRef.current = null;
     };
-    // Mirror the qwik mount-time visible-task: set up once on the client.
+    // Set up once on the client after mount.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

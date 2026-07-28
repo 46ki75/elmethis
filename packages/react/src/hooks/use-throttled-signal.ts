@@ -21,11 +21,9 @@ export interface UseThrottledSignalReturn<T> {
  * Returns reactive state where writing to `value` drives a leading + trailing
  * edge throttled update to `throttledValue`.
  *
- * React port of qwik's `useThrottledSignal`. Qwik's signal model does not exist
- * in React, so where qwik returned a `{ signal, throttledSignal, isCooling }`
- * trio of `Signal<T>`, the React idiom returns
- * `{ value, setValue, throttledValue, isCooling }` — `value`/`setValue` is the
- * usual `useState` pair, `throttledValue` and `isCooling` are read-only.
+ * The React API returns `{ value, setValue, throttledValue, isCooling }`:
+ * `value`/`setValue` is the usual `useState` pair, while `throttledValue` and
+ * `isCooling` are read-only.
  *
  * `value` reflects every write immediately.
  * `throttledValue` updates on the *leading edge* of each throttle window: the
@@ -89,7 +87,7 @@ export const useThrottledSignal = <T>(
     if (interval <= 0) {
       // No throttling: mirror `value` synchronously. Set-state-in-effect is
       // intentional here — it is the passthrough path of a sync-external-state
-      // hook, matching the qwik twin's `delay <= 0` branch.
+      // hook's unthrottled `interval <= 0` branch.
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setThrottledValue(value);
       return;

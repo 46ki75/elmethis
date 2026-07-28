@@ -1,9 +1,0 @@
-html {
-  font-family: sans-serif;
-}
-
-body,
-.docs-story {
-  transition: background-color 200ms;
-  background-color: var(--elmethis-color-surface-base);
-}

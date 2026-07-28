@@ -11,10 +11,10 @@ import { clsx } from "clsx";
 import styles from "./elm-tooltip.module.css";
 
 export interface ElmTooltipProps extends ComponentPropsWithoutRef<"span"> {
-  /** The always-visible trigger content (qwik `q:slot="original"`). */
+  /** The always-visible trigger content. */
   original?: ReactNode;
 
-  /** The content revealed on hover (qwik `q:slot="tooltip"`). */
+  /** The content revealed on hover. */
   tooltip?: ReactNode;
 }
 

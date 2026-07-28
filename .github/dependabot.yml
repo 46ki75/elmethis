@@ -28,10 +28,6 @@ updates:
         patterns:
           - "@copilotkit/runtime"
           - "@copilotkit/shared"
-      qwik-updates:
-        patterns:
-          - "@qwik.dev/core"
-          - "eslint-plugin-qwik"
       eslint-updates:
         patterns:
           - "*eslint*"

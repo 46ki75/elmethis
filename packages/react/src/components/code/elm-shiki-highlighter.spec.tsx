@@ -5,8 +5,8 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { ElmShikiHighlighter } from "./elm-shiki-highlighter";
 
 // Shiki highlights asynchronously inside a `useEffect` (`codeToHtml`), injecting
-// the markup via `dangerouslySetInnerHTML`. RTL doesn't await effects the way
-// Qwik's createDOM does, so we `waitFor` the highlighted markup to settle. The
+// the markup via `dangerouslySetInnerHTML`. RTL does not await effects, so we
+// `waitFor` the highlighted markup to settle. The
 // component requests `defaultColor: false`, so each token carries
 // `--shiki-light*` / `--shiki-dark*` custom properties (resolved natively with
 // light-dark() in CSS); asserting those proves the real highlight pipeline ran.

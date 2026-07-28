@@ -13,8 +13,7 @@ export interface ElmToggleProps extends Omit<
 > {
   /**
    * The summary content of the toggle. A `string` is wrapped in
-   * `ElmInlineText`; any other node (qwik's `q:slot="summary"`) is rendered
-   * as-is.
+   * `ElmInlineText`; any other node is rendered as-is.
    */
   summary?: ReactNode;
 

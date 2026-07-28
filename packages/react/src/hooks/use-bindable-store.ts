@@ -13,9 +13,7 @@ import { useControllableState } from "@radix-ui/react-use-controllable-state";
  * Use this when the controllable state is a struct (form values, multi-field
  * UI state). For a single primitive value, prefer `useBindableSignal`.
  *
- * React-idiom note: Qwik's twin returns the mutable `Proxy<T>` from `useStore`,
- * so callers mutate nested properties in place (`form.name = "Alice"`). React
- * has no such reactive proxy, so this port returns the
+ * React state is immutable, so this hook returns the
  * `[value, setValue]` tuple from `@radix-ui/react-use-controllable-state`
  * instead. To update a field, set a fresh object:
  * `setValue((prev) => ({ ...prev, name: "Alice" }))`.

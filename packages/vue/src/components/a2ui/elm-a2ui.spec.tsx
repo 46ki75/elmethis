@@ -38,8 +38,8 @@ describe("[CSR] ElmA2ui", () => {
   });
 
   it("maps a Text `variant` to a real heading element (h2, not raw text)", async () => {
-    // The basic Text renderer maps `variant` directly to ElmHeading (qwik
-    // behavior — no markdown layer), so an h2 variant resolves to an <h2>.
+    // The basic Text renderer maps `variant` directly to ElmHeading without a
+    // markdown layer, so an h2 variant resolves to an <h2>.
     const wrapper = mount(ElmA2ui, { props: { messages: basicSurface } });
     await vi.waitFor(() => {
       const heading = wrapper.find("h2");
