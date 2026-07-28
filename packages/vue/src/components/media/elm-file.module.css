@@ -4,7 +4,7 @@
   grid-template-columns: 1.5rem 1fr 1fr 1.5rem;
   gap: 1rem;
   align-items: center;
-  box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
+  box-shadow: 0 0 0.125rem var(--elmethis-color-box-shadow);
   border-radius: 0.25rem;
   background-color: var(--elmethis-color-surface-raised);
 }

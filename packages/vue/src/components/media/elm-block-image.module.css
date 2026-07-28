@@ -24,7 +24,7 @@
   height: auto;
   object-fit: contain;
   border-radius: 0.25rem;
-  box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
+  box-shadow: 0 0 0.125rem var(--elmethis-color-box-shadow);
   user-select: none;
   aspect-ratio: var(--aspect-ratio, auto);
   cursor: var(--elmethis-scoped-cursor);

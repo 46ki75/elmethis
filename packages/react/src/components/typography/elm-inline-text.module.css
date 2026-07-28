@@ -97,7 +97,7 @@
   gap: 0.25rem;
   overflow: hidden;
   border-radius: 0.25rem;
-  box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
+  box-shadow: 0 0 0.125rem var(--elmethis-color-box-shadow);
   background-color: var(--elmethis-color-surface-raised);
 }
 

@@ -140,7 +140,7 @@ export const semanticTokens = {
   "font-family-sans": common(font.family.sans),
   "font-family-monospace": common(font.family.monospace),
 
-  "box-shadow-color": theme(
+  "color-box-shadow": theme(
     "oklch(from #3e434b l c h / 0.25)",
     color.slate[900],
   ),

@@ -51,7 +51,7 @@
   border-radius: 8px;
   padding: 16px;
   background: var(--elmethis-color-surface-raised);
-  box-shadow: 0 1px 3px var(--elmethis-box-shadow-color);
+  box-shadow: 0 1px 3px var(--elmethis-color-box-shadow);
 }
 
 .button {
