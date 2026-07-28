@@ -17,7 +17,7 @@
     border-color 200ms,
     background-color 200ms;
   background-color: var(--elmethis-color-surface-raised);
-  box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
+  box-shadow: 0 0 0.125rem var(--elmethis-color-box-shadow);
   cursor: pointer;
 
   &.disabled {
@@ -81,7 +81,7 @@
       padding: 0;
       border-radius: 0.25rem;
       background-color: var(--elmethis-color-surface-raised);
-      box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
+      box-shadow: 0 0 0.125rem var(--elmethis-color-box-shadow);
 
       .option {
         overflow: hidden;

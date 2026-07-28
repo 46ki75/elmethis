@@ -20,7 +20,7 @@
   flex-direction: column;
   gap: 0.5rem;
   background-color: var(--elmethis-color-surface-raised);
-  box-shadow: 0 0 2px var(--elmethis-box-shadow-color);
+  box-shadow: 0 0 2px var(--elmethis-color-box-shadow);
 
   .input {
     display: block;

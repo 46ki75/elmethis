@@ -12,7 +12,7 @@
   );
   position: relative;
   cursor: pointer;
-  box-shadow: 0 0 2px var(--elmethis-box-shadow-color);
+  box-shadow: 0 0 2px var(--elmethis-color-box-shadow);
   transition:
     opacity 300ms,
     background-color 300ms;
