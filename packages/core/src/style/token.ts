@@ -183,6 +183,9 @@ export const semanticTokens = {
   "color-primary-hover": common(
     "oklch(from var(--elmethis-color-primary) l c h / 15%)",
   ),
+  "color-selection": common(
+    "oklch(from var(--elmethis-color-primary) l c h / 25%)",
+  ),
 
   // Display
   "color-display-red": common(color.red[500]),

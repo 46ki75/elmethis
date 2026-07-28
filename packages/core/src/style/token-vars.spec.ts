@@ -51,5 +51,8 @@ describe("tokenVars", () => {
     expect(tokenVars["--elmethis-color-primary-hover"]).toBe(
       "oklch(from var(--elmethis-color-primary) l c h / 15%)",
     );
+    expect(tokenVars["--elmethis-color-selection"]).toBe(
+      "oklch(from var(--elmethis-color-primary) l c h / 25%)",
+    );
   });
 });
