@@ -27,6 +27,6 @@
     opacity: 0;
     transition: opacity var(--elmethis-scoped-modal-delay, 200ms);
     background-color: transparent;
-    background-color: oklch(from black l c h / 50%);
+    background-color: var(--elmethis-color-modal-backdrop);
   }
 }

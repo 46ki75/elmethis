@@ -5,7 +5,8 @@
   width: 100%;
   height: 100%;
   overflow-y: auto;
-  scrollbar-color: gray transparent;
+  scrollbar-color: var(--elmethis-color-primary-weak)
+    var(--elmethis-color-surface-base);
   scrollbar-gutter: stable;
   scrollbar-width: thin;
   display: flex;
@@ -32,7 +33,7 @@
         align-items: flex-start;
         justify-content: flex-start;
         gap: 0.5rem;
-        background-color: oklch(from #c56565 l c h / 10%);
+        background-color: var(--elmethis-color-accent-error-surface);
       }
     }
   }
@@ -65,7 +66,7 @@
           padding: 0.25rem 0.5rem;
           border-radius: 0.25rem;
           background-color: var(--elmethis-color-surface-raised);
-          box-shadow: 0 0 0.25rem rgb(0 0 0 / 10%);
+          box-shadow: 0 0 0.25rem var(--elmethis-box-shadow-color);
           opacity: 0.85;
 
           .queue-item-icon {
@@ -94,7 +95,7 @@
             transition: background-color 200ms;
 
             &:hover {
-              background-color: oklch(from gray l c h / 25%);
+              background-color: var(--elmethis-color-accent-error-surface);
             }
           }
         }
@@ -114,7 +115,7 @@
           padding: 0.5rem;
           cursor: pointer;
           gap: 0.5rem;
-          box-shadow: 0 0 0.25rem rgb(0 0 0 / 10%);
+          box-shadow: 0 0 0.25rem var(--elmethis-box-shadow-color);
           background-color: var(--elmethis-color-surface-raised);
           border-radius: 1rem;
           transition: opacity 200ms;
@@ -142,6 +143,6 @@
   cursor: pointer;
 
   &:hover {
-    background-color: oklch(from gray l c h / 25%);
+    background-color: var(--elmethis-color-surface-sunken);
   }
 }

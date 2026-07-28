@@ -9,15 +9,11 @@
   /* Light inherits the surrounding text color; dark lightens the glyph. */
   color: light-dark(
     currentcolor,
-    var(--elmethis-scoped-color, rgb(255 255 255 / 70%))
+    var(--elmethis-scoped-color, var(--elmethis-color-neutral))
   );
 
   &::selection {
-    color: light-dark(currentcolor, rgb(0 0 0 / 70%));
-    background-color: light-dark(
-      var(--elmethis-scoped-color, rgb(0 0 0 / 25%)),
-      var(--elmethis-scoped-color, rgb(255 255 255 / 25%))
-    );
+    background-color: var(--elmethis-color-selection);
 
     /* `filter` is not a <color>, so it can't use light-dark(): the OS default
        is the media query; an explicit pin overrides it below. */

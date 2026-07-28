@@ -1,10 +1,7 @@
-import {
-  useEffect,
-  useRef,
-  useState,
-  type ComponentPropsWithoutRef,
-  type CSSProperties,
-  type MouseEvent,
+import type {
+  ComponentPropsWithoutRef,
+  CSSProperties,
+  MouseEvent,
 } from "react";
 import { clsx } from "clsx";
 
@@ -42,17 +39,9 @@ export const ElmButton = ({
   children,
   ...props
 }: ElmButtonProps) => {
-  const [clicked, setClicked] = useState(false);
-  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
-
-  useEffect(() => () => clearTimeout(timer.current), []);
-
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     if (!isLoading && !disabled) {
       if (onClick) {
-        setClicked(true);
-        clearTimeout(timer.current);
-        timer.current = setTimeout(() => setClicked(false), 300);
         onClick(event);
       }
     }
@@ -82,8 +71,6 @@ export const ElmButton = ({
       }
       {...props}
     >
-      {clicked && <span className={styles.ripple}></span>}
-
       {isLoading ? (
         <ElmDotLoadingIcon size="1.5rem" />
       ) : (

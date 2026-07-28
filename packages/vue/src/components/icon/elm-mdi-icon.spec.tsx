@@ -31,11 +31,13 @@ describe("[CSR] ElmMdiIcon", () => {
     });
     const svg = wrapper.find("svg").element as SVGElement;
     expect(svg.getAttribute("fill")).toBe("#ff0000");
-    // Both --elmethis-scoped-color and --dark-color fall back to `color`.
-    expect(svg.style.getPropertyValue("--elmethis-scoped-color")).toBe(
+    // Both scoped color variables fall back to `color`.
+    expect(svg.style.getPropertyValue("--elmethis-scoped-color-light")).toBe(
       "#ff0000",
     );
-    expect(svg.style.getPropertyValue("--dark-color")).toBe("#ff0000");
+    expect(svg.style.getPropertyValue("--elmethis-scoped-color-dark")).toBe(
+      "#ff0000",
+    );
   });
 
   it("lightColor / darkColor override the scoped color vars independently", () => {
@@ -43,8 +45,12 @@ describe("[CSR] ElmMdiIcon", () => {
       props: { d: mdiCodeTags, lightColor: "#111", darkColor: "#eee" },
     });
     const svg = wrapper.find("svg").element as SVGElement;
-    expect(svg.style.getPropertyValue("--elmethis-scoped-color")).toBe("#111");
-    expect(svg.style.getPropertyValue("--dark-color")).toBe("#eee");
+    expect(svg.style.getPropertyValue("--elmethis-scoped-color-light")).toBe(
+      "#111",
+    );
+    expect(svg.style.getPropertyValue("--elmethis-scoped-color-dark")).toBe(
+      "#eee",
+    );
   });
 
   it("merges a passthrough class onto the root", () => {

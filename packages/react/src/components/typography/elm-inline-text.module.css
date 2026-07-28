@@ -72,7 +72,7 @@
     opacity 200ms;
 
   &:hover {
-    background-color: oklch(from #6987b8 l c h / 20%);
+    background-color: var(--elmethis-color-accent-link-surface);
   }
 
   &:active {

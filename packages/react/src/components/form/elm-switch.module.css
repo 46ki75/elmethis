@@ -12,11 +12,11 @@
   );
   position: relative;
   cursor: pointer;
-  box-shadow: 0 0 2px rgb(0 0 0 / 10%);
+  box-shadow: 0 0 2px var(--elmethis-box-shadow-color);
   transition:
     opacity 300ms,
     background-color 300ms;
-  background-color: rgb(128 128 128 / 25%);
+  background-color: var(--elmethis-color-surface-sunken);
 
   &.checked {
     background-color: var(--elmethis-scoped-color);
@@ -40,7 +40,7 @@
     transform 300ms,
     opacity 300ms,
     background-color 300ms;
-  background-color: rgb(255 255 255 / 90%);
+  background-color: var(--elmethis-color-surface-raised);
 
   &.checked {
     transform: translateX(
@@ -50,7 +50,7 @@
 
   &.disabled {
     opacity: 0.5;
-    background-color: rgb(128 128 128 / 100%);
+    background-color: var(--elmethis-color-neutral-weak);
   }
 
   &:hover {

@@ -29,9 +29,9 @@ describe("[CSR]", () => {
     await render(<ElmMdiIcon d={mdiCodeTags} color="#ff0000" />);
     const html = screen.outerHTML;
     expect(html).toContain('fill="#ff0000"');
-    // Both --elmethis-scoped-color and --dark-color fall back to `color`.
-    expect(html).toContain("--elmethis-scoped-color:#ff0000");
-    expect(html).toContain("--dark-color:#ff0000");
+    // Both theme-specific scoped colors fall back to `color`.
+    expect(html).toContain("--elmethis-scoped-color-light:#ff0000");
+    expect(html).toContain("--elmethis-scoped-color-dark:#ff0000");
   });
 
   test("lightColor / darkColor override the scoped color vars independently", async () => {
@@ -40,8 +40,8 @@ describe("[CSR]", () => {
       <ElmMdiIcon d={mdiCodeTags} lightColor="#111" darkColor="#eee" />,
     );
     const html = screen.outerHTML;
-    expect(html).toContain("--elmethis-scoped-color:#111");
-    expect(html).toContain("--dark-color:#eee");
+    expect(html).toContain("--elmethis-scoped-color-light:#111");
+    expect(html).toContain("--elmethis-scoped-color-dark:#eee");
   });
 });
 

@@ -16,7 +16,7 @@ export const ElmMdiIcon = component$<ElmMdiIconProps>(
     style,
     d,
     size = "1em",
-    color = "currentColor",
+    color,
     lightColor,
     darkColor,
     ...props
@@ -26,8 +26,8 @@ export const ElmMdiIcon = component$<ElmMdiIconProps>(
         class={[styles["elm-mdi-icon"], className]}
         style={
           {
-            "--elmethis-scoped-color": lightColor ?? color,
-            "--dark-color": darkColor ?? color,
+            "--elmethis-scoped-color-light": lightColor ?? color,
+            "--elmethis-scoped-color-dark": darkColor ?? color,
             ...(style as CSSProperties),
           } as CSSProperties
         }

@@ -20,8 +20,8 @@ export interface ElmMdiIconProps extends SVGAttributes {
   size?: string;
 
   /**
-   * The fill color. Defaults to `currentColor`. Seeds both the light and dark
-   * scoped color vars unless `lightColor` / `darkColor` override them.
+   * The fill color. Seeds both the light and dark scoped color vars unless
+   * `lightColor` / `darkColor` override them.
    */
   color?: string;
 
@@ -42,7 +42,7 @@ export const ElmMdiIcon = defineComponent({
   props: {
     d: { type: String, required: true },
     size: { type: String, default: "1em" },
-    color: { type: String, default: "currentColor" },
+    color: { type: String, default: undefined },
     lightColor: { type: String, default: undefined },
     darkColor: { type: String, default: undefined },
   },
@@ -60,8 +60,9 @@ export const ElmMdiIcon = defineComponent({
           style={
             [
               {
-                "--elmethis-scoped-color": props.lightColor ?? props.color,
-                "--dark-color": props.darkColor ?? props.color,
+                "--elmethis-scoped-color-light":
+                  props.lightColor ?? props.color,
+                "--elmethis-scoped-color-dark": props.darkColor ?? props.color,
               } as CSSProperties,
               // Incoming style wins over the scoped vars, matching the qwik/
               // react spread order.

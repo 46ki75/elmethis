@@ -3,19 +3,19 @@
   display: block;
   container-type: inline-size;
   border-radius: 0.25rem;
-  box-shadow: 0 0 0.125rem rgb(0 0 0 / 10%);
+  box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
   overflow: hidden;
+  background-color: var(--elmethis-color-surface-raised);
   transition:
     background-color 200ms,
     transform 200ms;
 
   &:hover {
-    background-color: rgb(105 135 184 / 10%);
-    transform: translateX(-0.125rem) translateY(-0.125rem);
+    background-color: var(--elmethis-color-surface-sunken);
+    transform: translateX(-2px) translateY(-2px);
   }
 
   &:active {
-    background-color: rgb(89 181 124 / 10%);
     transform: translateX(0) translateY(0);
   }
 }
@@ -61,8 +61,6 @@
   flex-direction: column;
   gap: 0.5rem;
   justify-content: space-between;
-  transition: background-color 200ms;
-  background-color: light-dark(rgb(255 255 255 / 40%), rgb(0 0 0 / 20%));
 
   @container (max-width: 700px) {
     width: 100%;

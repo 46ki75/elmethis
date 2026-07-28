@@ -1,7 +1,5 @@
 import {
   defineComponent,
-  onUnmounted,
-  ref,
   type CSSProperties,
   type HTMLAttributes,
   type StyleValue,
@@ -37,7 +35,7 @@ export interface ElmButtonProps extends HTMLAttributes {
 
 export const ElmButton = defineComponent({
   name: "ElmButton",
-  // The consumer's `onClick` is intercepted (ripple + loading/disabled guard),
+  // The consumer's `onClick` is intercepted for the loading/disabled guard,
   // so attrs are split manually instead of falling through.
   inheritAttrs: false,
   props: {
@@ -48,12 +46,6 @@ export const ElmButton = defineComponent({
     disabled: { type: Boolean, default: undefined },
   },
   setup(props, { attrs, slots }) {
-    const clicked = ref(false);
-    let timer: ReturnType<typeof setTimeout> | undefined;
-
-    // Clear the ripple timer on unmount so it can't write to a destroyed ref.
-    onUnmounted(() => clearTimeout(timer));
-
     return () => {
       const {
         class: className,
@@ -65,9 +57,6 @@ export const ElmButton = defineComponent({
       const handleClick = (event: MouseEvent): void => {
         if (!props.isLoading && !props.disabled) {
           if (typeof onClick === "function") {
-            clicked.value = true;
-            clearTimeout(timer);
-            timer = setTimeout(() => (clicked.value = false), 300);
             (onClick as (event: MouseEvent) => void)(event);
           }
         }
@@ -104,8 +93,6 @@ export const ElmButton = defineComponent({
           }
           {...rest}
         >
-          {clicked.value && <span class={styles.ripple}></span>}
-
           {props.isLoading ? (
             <ElmDotLoadingIcon size="1.5rem" />
           ) : (

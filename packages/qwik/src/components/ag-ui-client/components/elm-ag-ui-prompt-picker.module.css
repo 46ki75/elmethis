@@ -3,20 +3,22 @@
   width: 100%;
   max-height: min(420px, 60vh);
   overflow-y: auto;
-  background-color: white;
+  color: var(--elmethis-color-neutral);
+  background-color: var(--elmethis-color-surface-raised);
   border-radius: 0.5rem;
   padding: 0.25rem;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  scrollbar-color: gray transparent;
+  scrollbar-color: var(--elmethis-color-primary-weak)
+    var(--elmethis-color-surface-base);
   scrollbar-width: thin;
 }
 
 .empty {
   padding: 1rem;
   text-align: center;
-  color: gray;
+  color: var(--elmethis-color-neutral-weak);
   font-size: 0.875rem;
 }
 
@@ -30,9 +32,12 @@
   gap: 0.25rem;
 }
 
-.prompt-row:hover,
+.prompt-row:hover {
+  background-color: var(--elmethis-color-surface-sunken);
+}
+
 .prompt-row-active {
-  background-color: oklch(from gray l c h / 8%);
+  background-color: var(--elmethis-color-surface-base);
 }
 
 .prompt-head {
@@ -48,7 +53,7 @@
 
 .prompt-description {
   font-size: 0.8rem;
-  color: gray;
+  color: var(--elmethis-color-neutral-weak);
   line-height: 1.3;
 }
 
@@ -57,9 +62,10 @@
   width: min(440px, calc(100vw - 2rem));
   max-height: calc(100vh - 4rem);
   overflow-y: auto;
-  background-color: white;
+  color: var(--elmethis-color-neutral);
+  background-color: var(--elmethis-color-surface-raised);
   border-radius: 0.5rem;
-  box-shadow: 0 8px 24px rgb(0 0 0 / 18%);
+  box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
   padding: 1rem;
   display: flex;
   flex-direction: column;
@@ -79,7 +85,7 @@
 
 .modal-description {
   font-size: 0.85rem;
-  color: gray;
+  color: var(--elmethis-color-neutral-weak);
   line-height: 1.4;
 }
 
@@ -98,8 +104,8 @@
 .use-button {
   appearance: none;
   border: none;
-  background-color: oklch(from black l c h / 85%);
-  color: white;
+  background-color: var(--elmethis-color-neutral);
+  color: var(--elmethis-color-surface-raised);
   padding: 0.4rem 0.9rem;
   border-radius: 0.25rem;
   cursor: pointer;
@@ -118,23 +124,26 @@
 
 .cancel-button {
   appearance: none;
-  border: 1px solid oklch(from gray l c h / 30%);
+  border: 1px solid var(--elmethis-color-divider);
   background-color: transparent;
   color: inherit;
   padding: 0.4rem 0.9rem;
   border-radius: 0.25rem;
   cursor: pointer;
   font-size: 0.875rem;
-  transition: background-color 150ms;
+  transition:
+    color 100ms,
+    background-color 100ms;
 }
 
 .cancel-button:hover {
-  background-color: oklch(from gray l c h / 8%);
+  color: contrast-color(var(--elmethis-color-neutral));
+  background-color: var(--elmethis-color-neutral-weak);
 }
 
 .error {
   font-size: 0.8rem;
-  color: #c56565;
+  color: var(--elmethis-color-accent-error);
 }
 
 .field-label {
@@ -145,12 +154,12 @@
 }
 
 .field-name {
-  color: gray;
+  color: var(--elmethis-color-neutral-weak);
   font-size: 0.75rem;
 }
 
 .field-required {
-  color: #c56565;
+  color: var(--elmethis-color-accent-error);
   margin-inline-start: 0.2rem;
 }
 
@@ -158,16 +167,17 @@
   box-sizing: border-box;
   width: 100%;
   padding: 0.4rem 0.5rem;
-  border: 1px solid oklch(from gray l c h / 30%);
+  border: 1px solid var(--elmethis-color-divider);
   border-radius: 0.25rem;
-  background-color: white;
+  color: inherit;
+  background-color: var(--elmethis-color-surface-raised);
   font: inherit;
   outline: none;
   transition: border-color 150ms;
 }
 
 .field-input:focus {
-  border-color: oklch(from black l c h / 50%);
+  border-color: var(--elmethis-color-primary);
 }
 
 /*
@@ -176,7 +186,7 @@
   it visible after a choice is made.
 */
 .field-hint {
-  color: gray;
+  color: var(--elmethis-color-neutral-weak);
   font-size: 0.72rem;
   line-height: 1.3;
 }

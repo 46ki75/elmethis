@@ -4,9 +4,9 @@
   grid-template-columns: 1.5rem 1fr 1fr 1.5rem;
   gap: 1rem;
   align-items: center;
-  box-shadow: 0 0 0.125rem rgb(0 0 0 / 20%);
+  box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
   border-radius: 0.25rem;
-  background-color: light-dark(rgb(255 255 255 / 20%), rgb(0 0 0 / 20%));
+  background-color: var(--elmethis-color-surface-raised);
 }
 
 .file-size {
@@ -28,6 +28,6 @@
     background-color 200ms;
 
   &:hover {
-    background-color: light-dark(rgb(0 0 0 / 10%), rgb(255 255 255 / 10%));
+    background-color: var(--elmethis-color-surface-sunken);
   }
 }
