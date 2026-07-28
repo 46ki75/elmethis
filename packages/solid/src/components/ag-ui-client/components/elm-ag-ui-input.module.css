@@ -19,8 +19,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  background-color: light-dark(#f7f7f9, var(--elmethis-color-surface-raised));
-  box-shadow: 0 0 2px oklch(from black l c h / 25%);
+  background-color: var(--elmethis-color-surface-raised);
+  box-shadow: 0 0 2px var(--elmethis-box-shadow-color);
 
   .input {
     display: block;
@@ -75,12 +75,12 @@
 
   .plus-button {
     grid-area: plus;
-    background-color: oklch(from black l c h / 60%);
+    background-color: var(--elmethis-color-neutral);
   }
 
   .submit-button {
     grid-area: send;
-    background-color: oklch(from black l c h / 75%);
+    background-color: var(--elmethis-color-neutral);
   }
 
   .stop-button {

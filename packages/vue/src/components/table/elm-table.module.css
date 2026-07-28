@@ -61,7 +61,7 @@
 .elm-table {
   border-collapse: collapse;
   border-spacing: 0;
-  box-shadow: 0 0 0.125rem rgb(0 0 0 / 20%);
+  box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
 }
 
 .caption {
@@ -84,7 +84,7 @@
 .spacing {
   flex-grow: 1;
   height: 1px;
-  background-color: rgb(128 128 128 / 20%);
+  background-color: var(--elmethis-color-divider);
 }
 
 /* Sticky label column. When the first column holds row headers, pin it so the

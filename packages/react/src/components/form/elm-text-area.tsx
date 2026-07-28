@@ -91,7 +91,7 @@ export const ElmTextArea = ({
       <span
         className={clsx(styles.header, isFocused && styles["label-active"])}
       >
-        {icon ?? <ElmMdiIcon d={mdiTextLong} size="0.75rem" />}
+        {icon ?? <ElmMdiIcon path={mdiTextLong} size="0.75rem" />}
         <span>
           {label}
           {required && <span className={styles.requierd}>*</span>}

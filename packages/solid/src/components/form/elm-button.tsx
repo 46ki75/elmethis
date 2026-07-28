@@ -1,4 +1,4 @@
-import { createSignal, onCleanup, Show, splitProps, type JSX } from "solid-js";
+import { Show, splitProps, type JSX } from "solid-js";
 import { clsx } from "clsx";
 
 import { callEventHandler } from "../../primitives/call-event-handler";
@@ -31,19 +31,12 @@ export const ElmButton = (props: ElmButtonProps) => {
     "disabled",
     "children",
   ]);
-  const [clicked, setClicked] = createSignal(false);
-  let timer: ReturnType<typeof setTimeout> | undefined;
-
-  onCleanup(() => clearTimeout(timer));
 
   const handleClick: JSX.EventHandler<HTMLButtonElement, MouseEvent> = (
     event,
   ) => {
     if (local.isLoading || local.disabled || !local.onClick) return;
 
-    setClicked(true);
-    clearTimeout(timer);
-    timer = setTimeout(() => setClicked(false), 300);
     callEventHandler(local.onClick, event);
   };
 
@@ -73,9 +66,6 @@ export const ElmButton = (props: ElmButtonProps) => {
         "--elmethis-scoped-color": local.color,
       })}
     >
-      <Show when={clicked()}>
-        <span class={styles.ripple} />
-      </Show>
       <Show
         when={!local.isLoading}
         fallback={<ElmDotLoadingIcon size="1.5rem" />}

@@ -21,13 +21,13 @@ export const ElmBlockQuote = (props: ElmBlockQuoteProps) => {
       class={clsx(styles["elm-block-quote"], textStyles.text, local.class)}
     >
       <div class={clsx(styles.icon, styles["icon-top-left"])}>
-        <ElmMdiIcon d={FORMAT_QUOTE_OPEN} />
+        <ElmMdiIcon path={FORMAT_QUOTE_OPEN} />
       </div>
 
       <div class={styles.body}>{local.children}</div>
 
       <div class={clsx(styles.icon, styles["icon-bottom-right"])}>
-        <ElmMdiIcon d={FORMAT_QUOTE_CLOSE} />
+        <ElmMdiIcon path={FORMAT_QUOTE_CLOSE} />
       </div>
     </blockquote>
   );

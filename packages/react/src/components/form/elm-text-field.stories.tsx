@@ -61,7 +61,7 @@ const WithIconStory = () => {
         placeholder="Enter your email"
         value={text}
         onChange={(e) => setText(e.target.value)}
-        icon={<ElmMdiIcon d={mdiEmail} size=".75rem" color="gray" />}
+        icon={<ElmMdiIcon path={mdiEmail} size=".75rem" color="gray" />}
       />
       <ElmInlineText>{text}</ElmInlineText>
     </div>

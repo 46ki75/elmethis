@@ -63,7 +63,7 @@ export const Primary: Story = {};
 export const WithIcon: Story = {
   args: {
     label: "Select with icon",
-    icon: <ElmMdiIcon d={mdiAccountOutline} />,
+    icon: <ElmMdiIcon path={mdiAccountOutline} />,
   },
 };
 

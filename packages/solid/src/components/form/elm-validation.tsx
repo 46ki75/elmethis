@@ -38,7 +38,7 @@ export const ElmValidation = (props: ElmValidationProps) => {
       })}
     >
       <ElmMdiIcon
-        d={local.isValid ? CHECK_CIRCLE_PATH : CHECK_CIRCLE_OUTLINE_PATH}
+        path={local.isValid ? CHECK_CIRCLE_PATH : CHECK_CIRCLE_OUTLINE_PATH}
         color={local.isValid ? local.validColor : undefined}
       />
       <ElmInlineText color={local.isValid ? local.validColor : undefined}>

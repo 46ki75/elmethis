@@ -94,7 +94,7 @@ export const ElmTextArea = (props: ElmTextAreaProps) => {
       style={local.style}
     >
       <span class={clsx(styles.header, isFocused() && styles["label-active"])}>
-        {local.icon ?? <ElmMdiIcon d={mdiTextLong} size="0.75rem" />}
+        {local.icon ?? <ElmMdiIcon path={mdiTextLong} size="0.75rem" />}
         <span>
           {local.label}
           <Show when={local.required}>

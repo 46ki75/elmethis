@@ -15,13 +15,13 @@ export const ElmBlockQuote = defineComponent({
     return () => (
       <blockquote class={clsx(styles["elm-block-quote"], textStyles.text)}>
         <div class={clsx(styles.icon, styles["icon-top-left"])}>
-          <ElmMdiIcon d={mdiFormatQuoteOpen} />
+          <ElmMdiIcon path={mdiFormatQuoteOpen} />
         </div>
 
         <div class={styles.body}>{slots.default?.()}</div>
 
         <div class={clsx(styles.icon, styles["icon-bottom-right"])}>
-          <ElmMdiIcon d={mdiFormatQuoteClose} />
+          <ElmMdiIcon path={mdiFormatQuoteClose} />
         </div>
       </blockquote>
     );

@@ -63,7 +63,7 @@ export const ElmFile = (props: ElmFileProps) => {
   return (
     <div class={clsx(styles["elm-file"], local.class)} {...rest}>
       <div>
-        <ElmMdiIcon d={mdiFile} size="1.25rem" />
+        <ElmMdiIcon path={mdiFile} size="1.25rem" />
       </div>
 
       <div>
@@ -77,7 +77,7 @@ export const ElmFile = (props: ElmFileProps) => {
       </div>
 
       <div class={styles["download-icon"]} onClick={() => void downloadFile()}>
-        <ElmMdiIcon d={mdiDownload} size="1.25rem" />
+        <ElmMdiIcon path={mdiDownload} size="1.25rem" />
       </div>
     </div>
   );

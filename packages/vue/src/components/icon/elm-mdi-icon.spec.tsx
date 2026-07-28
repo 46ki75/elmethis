@@ -7,49 +7,60 @@ import { mdiCodeTags } from "@mdi/js";
 import { ElmMdiIcon } from "./elm-mdi-icon";
 
 describe("[CSR] ElmMdiIcon", () => {
-  it("renders an <svg role='img'> with the given path", () => {
-    const wrapper = mount(ElmMdiIcon, { props: { d: mdiCodeTags } });
+  it("renders a decorative currentColor SVG with the given path", () => {
+    const wrapper = mount(ElmMdiIcon, { props: { path: mdiCodeTags } });
     const svg = wrapper.find("svg");
-    expect(svg.exists()).toBe(true);
-    expect(svg.attributes("role")).toBe("img");
-    // The `d` prop must reach the inner <path>.
+    expect(svg.attributes("aria-hidden")).toBe("true");
+    expect(svg.attributes("role")).toBeUndefined();
+    expect(svg.attributes("focusable")).toBe("false");
+    expect(svg.attributes("fill")).toBe("currentColor");
     expect(wrapper.find("path").attributes("d")).toBe(mdiCodeTags);
+  });
+
+  it("exposes a labeled icon as an image", () => {
+    const wrapper = mount(ElmMdiIcon, {
+      props: { path: mdiCodeTags, label: "Code" },
+    });
+    const svg = wrapper.find("svg");
+    expect(svg.attributes("role")).toBe("img");
+    expect(svg.attributes("aria-hidden")).toBeUndefined();
+    expect(wrapper.find("title").text()).toBe("Code");
   });
 
   it("size prop drives both width and height", () => {
     const wrapper = mount(ElmMdiIcon, {
-      props: { d: mdiCodeTags, size: "32px" },
+      props: { path: mdiCodeTags, size: 32 },
     });
     const svg = wrapper.find("svg");
-    expect(svg.attributes("width")).toBe("32px");
-    expect(svg.attributes("height")).toBe("32px");
+    expect(svg.attributes("width")).toBe("32");
+    expect(svg.attributes("height")).toBe("32");
   });
 
-  it("color prop feeds the svg fill and the scoped light color var", () => {
+  it("color prop sets the currentColor source", () => {
     const wrapper = mount(ElmMdiIcon, {
-      props: { d: mdiCodeTags, color: "#ff0000" },
+      props: {
+        path: mdiCodeTags,
+        color: "var(--elmethis-color-primary)",
+      },
     });
-    const svg = wrapper.find("svg").element as SVGElement;
-    expect(svg.getAttribute("fill")).toBe("#ff0000");
-    // Both --elmethis-scoped-color and --dark-color fall back to `color`.
-    expect(svg.style.getPropertyValue("--elmethis-scoped-color")).toBe(
-      "#ff0000",
-    );
-    expect(svg.style.getPropertyValue("--dark-color")).toBe("#ff0000");
+    const svg = wrapper.find("svg");
+    expect(svg.attributes("color")).toBe("var(--elmethis-color-primary)");
+    expect(svg.attributes("fill")).toBe("currentColor");
   });
 
-  it("lightColor / darkColor override the scoped color vars independently", () => {
+  it("uses native ARIA naming when provided", () => {
     const wrapper = mount(ElmMdiIcon, {
-      props: { d: mdiCodeTags, lightColor: "#111", darkColor: "#eee" },
+      props: { path: mdiCodeTags },
+      attrs: { "aria-label": "Code" },
     });
-    const svg = wrapper.find("svg").element as SVGElement;
-    expect(svg.style.getPropertyValue("--elmethis-scoped-color")).toBe("#111");
-    expect(svg.style.getPropertyValue("--dark-color")).toBe("#eee");
+    const svg = wrapper.find("svg");
+    expect(svg.attributes("role")).toBe("img");
+    expect(svg.attributes("aria-hidden")).toBeUndefined();
   });
 
   it("merges a passthrough class onto the root", () => {
     const wrapper = mount(ElmMdiIcon, {
-      props: { d: mdiCodeTags },
+      props: { path: mdiCodeTags },
       attrs: { class: "custom-class" },
     });
     expect(wrapper.find("svg").classes()).toContain("custom-class");
@@ -57,14 +68,17 @@ describe("[CSR] ElmMdiIcon", () => {
 });
 
 describe("[SSR] ElmMdiIcon", () => {
-  it("renders the svg shell with the path", async () => {
+  it("renders the labeled svg shell with the path", async () => {
     const html = (
       await renderToString(
-        createSSRApp({ render: () => h(ElmMdiIcon, { d: mdiCodeTags }) }),
+        createSSRApp({
+          render: () => h(ElmMdiIcon, { path: mdiCodeTags, label: "Code" }),
+        }),
       )
     ).toLowerCase();
     expect(html).toContain("<svg");
     expect(html).toContain('role="img"');
+    expect(html).toContain("<title>code</title>");
     expect(html).toContain(`d="${mdiCodeTags.toLowerCase()}"`);
   });
 });

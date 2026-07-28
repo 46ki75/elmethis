@@ -17,6 +17,9 @@ describe("tokenVars", () => {
   });
 
   it("emits themed tokens as light-dark() over primitive references", () => {
+    expect(tokenVars["--elmethis-color-divider"]).toBe(
+      "light-dark(var(--elmethis-primitive-color-gold-300), var(--elmethis-primitive-color-slate-800))",
+    );
     expect(tokenVars["--elmethis-color-surface-base"]).toBe(
       "light-dark(var(--elmethis-primitive-color-gold-200), var(--elmethis-primitive-color-slate-700))",
     );
@@ -45,8 +48,14 @@ describe("tokenVars", () => {
   });
 
   it("keeps non-primitive literals (computed oklch) verbatim", () => {
+    expect(tokenVars["--elmethis-color-modal-backdrop"]).toBe(
+      "oklch(from black l c h / 50%)",
+    );
     expect(tokenVars["--elmethis-color-primary-hover"]).toBe(
       "oklch(from var(--elmethis-color-primary) l c h / 15%)",
+    );
+    expect(tokenVars["--elmethis-color-selection"]).toBe(
+      "oklch(from var(--elmethis-color-primary) l c h / 25%)",
     );
   });
 });

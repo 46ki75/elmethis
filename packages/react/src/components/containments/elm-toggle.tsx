@@ -63,7 +63,7 @@ export const ElmToggle = ({
         <div className={styles["summary-left"]}>
           <span className={clsx(styles.chevron, isOpen && styles.open)}>
             <ElmMdiIcon
-              d={mdiChevronRight}
+              path={mdiChevronRight}
               color={
                 monochrome
                   ? "var(--elmethis-color-neutral-weak)"
@@ -85,7 +85,7 @@ export const ElmToggle = ({
 
         <span className={clsx(styles.cross, isOpen && styles.open)}>
           <ElmMdiIcon
-            d={mdiPlus}
+            path={mdiPlus}
             size="1rem"
             color={
               monochrome

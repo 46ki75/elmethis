@@ -147,8 +147,13 @@ export const semanticTokens = {
   ),
 
   // Accents
+  "color-accent-link-surface": theme(color.blue[100], color.blue[900]),
   "color-accent-link": common(color.blue[500]),
   "color-accent-link-visited": common(color.purple[500]),
+  "color-accent-link-surface-visited": theme(
+    color.purple[100],
+    color.purple[900],
+  ),
 
   "color-accent-info": common(color.blue[500]),
   "color-accent-info-surface": theme(color.blue[100], color.blue[900]),
@@ -166,6 +171,8 @@ export const semanticTokens = {
   "color-accent-error-surface": theme(color.red[100], color.red[900]),
 
   // Surfaces
+  "color-divider": theme(color.gold[300], color.slate[800]),
+  "color-modal-backdrop": common("oklch(from black l c h / 50%)"),
   "color-surface-sunken": theme(color.gold[300], color.slate[800]),
   "color-surface-base": theme(color.gold[200], color.slate[700]),
   "color-surface-raised": theme(color.gold[100], color.slate[600]),
@@ -181,6 +188,9 @@ export const semanticTokens = {
   "color-primary-strong": theme(color.gold[800], color.gold[400]),
   "color-primary-hover": common(
     "oklch(from var(--elmethis-color-primary) l c h / 15%)",
+  ),
+  "color-selection": common(
+    "oklch(from var(--elmethis-color-primary) l c h / 25%)",
   ),
 
   // Display

@@ -20,7 +20,7 @@
 }
 
 .checkbox {
-  stroke: light-dark(rgb(0 0 0 / 80%), rgb(255 255 255 / 80%));
+  stroke: var(--elmethis-color-neutral-strong);
   fill: transparent;
 }
 
@@ -32,13 +32,13 @@
   }
 
   &.checked {
-    fill: light-dark(rgb(0 0 0 / 80%), rgb(255 255 255 / 80%));
+    fill: var(--elmethis-color-neutral-strong);
   }
 }
 
 .loading-dot {
   transition: opacity 200ms;
-  fill: light-dark(rgb(0 0 0 / 70%), rgb(255 255 255 / 70%));
+  fill: var(--elmethis-color-neutral-strong);
 }
 
 @keyframes elmethis-checkbox-check-line {
@@ -59,5 +59,5 @@
   animation-delay: 0.1s;
   animation-fill-mode: both;
   transform-origin: center;
-  stroke: light-dark(rgb(255 255 255 / 90%), rgb(0 0 0 / 90%));
+  stroke: contrast-color(var(--elmethis-color-neutral-strong));
 }

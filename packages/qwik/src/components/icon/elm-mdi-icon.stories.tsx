@@ -8,8 +8,10 @@ const meta: Meta<ElmMdiIconProps> = {
   tags: ["autodocs"],
   argTypes: {
     color: { control: "color" },
-    lightColor: { control: "color" },
-    darkColor: { control: "color" },
+    label: {
+      control: "text",
+      description: "Accessible label rendered as the SVG title.",
+    },
   },
   args: {},
 };
@@ -20,6 +22,7 @@ type Story = StoryObj<ElmMdiIconProps>;
 export const Primary: Story = {
   args: {
     size: "1.25rem",
-    d: mdiTag,
+    path: mdiTag,
+    label: "Tag",
   },
 };

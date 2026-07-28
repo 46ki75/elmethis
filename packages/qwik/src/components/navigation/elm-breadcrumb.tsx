@@ -32,7 +32,7 @@ export const ElmBreadcrumb = component$<ElmBreadcrumbProps>(
             <span class={styles["link-container"]} onClick$={link.onClick$}>
               <ElmMdiIcon
                 class={styles.icon}
-                d={
+                path={
                   index === 0
                     ? mdiHome
                     : index === links.length - 1
@@ -48,7 +48,7 @@ export const ElmBreadcrumb = component$<ElmBreadcrumbProps>(
             {links.length !== index + 1 && (
               <ElmMdiIcon
                 class={styles.chevron}
-                d={mdiChevronRight}
+                path={mdiChevronRight}
                 size="1rem"
               />
             )}

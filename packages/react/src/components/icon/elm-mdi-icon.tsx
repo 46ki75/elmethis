@@ -1,46 +1,48 @@
-import type { ComponentPropsWithoutRef, CSSProperties } from "react";
+import type { ComponentPropsWithoutRef } from "react";
 import { clsx } from "clsx";
 
 import styles from "./elm-mdi-icon.module.css";
 
-export interface ElmMdiIconProps extends ComponentPropsWithoutRef<"svg"> {
-  d: string;
-  size?: string;
+export interface ElmMdiIconProps extends Omit<
+  ComponentPropsWithoutRef<"svg">,
+  "children"
+> {
+  path: string;
+  size?: string | number;
   color?: string;
-  lightColor?: string;
-  darkColor?: string;
+  label?: string;
 }
 
 export const ElmMdiIcon = ({
   className,
   style,
-  d,
+  path,
   size = "1em",
-  color = "currentColor",
-  lightColor,
-  darkColor,
+  color,
+  label,
   ...props
 }: ElmMdiIconProps) => {
+  const hasAccessibleName = Boolean(
+    label || props["aria-label"] || props["aria-labelledby"],
+  );
+
   return (
     <svg
       className={clsx(styles["elm-mdi-icon"], className)}
-      style={
-        {
-          "--elmethis-scoped-color": lightColor ?? color,
-          "--dark-color": darkColor ?? color,
-          ...style,
-        } as CSSProperties
-      }
+      style={style}
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      fill={color}
+      color={color}
+      fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
       focusable="false"
-      role="img"
+      aria-hidden={hasAccessibleName ? undefined : "true"}
+      role={hasAccessibleName ? "img" : undefined}
       {...props}
     >
-      <path d={d} />
+      {label && <title>{label}</title>}
+      <path d={path} />
     </svg>
   );
 };

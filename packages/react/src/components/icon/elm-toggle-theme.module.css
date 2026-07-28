@@ -2,9 +2,14 @@
   display: block; /* Ensure it behaves like a block/inline-block */
   box-sizing: border-box;
   padding: 0.25rem;
-  color: light-dark(#555b67, #b0b5be);
+  color: var(--elmethis-color-neutral);
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: 0 0 0.125rem light-dark(rgb(0 0 0 / 30%), rgb(0 0 0 / 60%));
-  background-color: light-dark(rgb(255 255 255 / 20%), rgb(0 0 0 / 20%));
+  box-shadow: 0 0 0.125rem var(--elmethis-box-shadow-color);
+  background-color: var(--elmethis-color-surface-raised);
+  transition: background-color 100ms;
+
+  &:hover {
+    background-color: var(--elmethis-color-surface-sunken);
+  }
 }

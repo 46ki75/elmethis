@@ -62,7 +62,7 @@ export const ElmToggle = component$<ElmToggleProps>((props) => {
         <div class={styles["summary-left"]}>
           <span class={[styles.chevron, { [styles.open]: isOpen.value }]}>
             <ElmMdiIcon
-              d={mdiChevronRight}
+              path={mdiChevronRight}
               color={
                 monochrome
                   ? "var(--elmethis-color-neutral-weak)"
@@ -84,7 +84,7 @@ export const ElmToggle = component$<ElmToggleProps>((props) => {
 
         <span class={[styles.cross, { [styles.open]: isOpen.value }]}>
           <ElmMdiIcon
-            d={mdiPlus}
+            path={mdiPlus}
             size="1rem"
             color={
               monochrome

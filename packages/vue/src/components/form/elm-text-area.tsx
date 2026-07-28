@@ -99,7 +99,7 @@ export const ElmTextArea = defineComponent({
               isFocused.value && styles["label-active"],
             )}
           >
-            {slots.icon?.() ?? <ElmMdiIcon d={mdiTextLong} size="0.75rem" />}
+            {slots.icon?.() ?? <ElmMdiIcon path={mdiTextLong} size="0.75rem" />}
             <span>
               {props.label}
               {props.required && <span class={styles.requierd}>*</span>}

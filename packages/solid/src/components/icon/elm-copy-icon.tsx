@@ -57,7 +57,9 @@ export const ElmCopyIcon = (props: ElmCopyIconProps) => {
         aria-hidden="true"
         role="presentation"
         class={clsx(clipboard.copied() && styles["elm-copy-icon-copied"])}
-        d={clipboard.copied() ? mdiClipboardCheckOutline : mdiClipboardOutline}
+        path={
+          clipboard.copied() ? mdiClipboardCheckOutline : mdiClipboardOutline
+        }
         size="1.25rem"
       />
     </button>

@@ -10,6 +10,31 @@ export default {
   extends: ["stylelint-config-standard", "stylelint-config-css-modules"],
   plugins: ["stylelint-value-no-unknown-custom-properties"],
   rules: {
+    "color-no-hex": [
+      true,
+      {
+        message: "Use an Elmethis color token instead of a hex color",
+        severity: "warning",
+      },
+    ],
+    "color-named": [
+      "never",
+      {
+        message: "Use an Elmethis color token instead of a named color",
+        severity: "warning",
+      },
+    ],
+    "declaration-property-value-disallowed-list": [
+      {
+        "/.*/": [
+          "/(?<![-\\w])(?:rgb|rgba|hsl|hsla|hwb|lab|lch|oklab|oklch|color)\\((?!\\s*from\\b)/i",
+        ],
+      },
+      {
+        message: "Use an Elmethis color token instead of a color function",
+        severity: "warning",
+      },
+    ],
     "csstools/value-no-unknown-custom-properties": [
       true,
       {
@@ -33,5 +58,7 @@ export default {
     "lib-types/**",
     "storybook-static/**",
     "node_modules/**",
+    "./src/components/others/elm-color-primitive-sample.module.css",
+    "./src/components/others/elm-color-semantic-sample.module.css",
   ],
 };

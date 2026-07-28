@@ -37,7 +37,7 @@ export const ElmLanguageIcon = defineComponent({
       const normalized = normalizeLanguage(props.language);
 
       if (normalized === "file") {
-        return <ElmMdiIcon d={mdiCodeTags} size={String(props.size)} />;
+        return <ElmMdiIcon path={mdiCodeTags} size={String(props.size)} />;
       }
 
       return h(LanguageGlyph, {

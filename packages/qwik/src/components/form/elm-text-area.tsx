@@ -72,7 +72,7 @@ export const ElmTextArea = component$<ElmTextAreaProps>((props) => {
         class={[styles.header, { [styles["label-active"]]: isFocused.value }]}
       >
         <Slot name="icon">
-          <ElmMdiIcon d={mdiTextLong} size="0.75rem" />
+          <ElmMdiIcon path={mdiTextLong} size="0.75rem" />
         </Slot>
         <span>
           {label}

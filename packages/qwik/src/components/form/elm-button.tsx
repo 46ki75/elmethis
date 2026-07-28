@@ -3,8 +3,6 @@ import {
   component$,
   PropsOf,
   Slot,
-  useSignal,
-  useTask$,
   type CSSProperties,
   type QRL,
 } from "@qwik.dev/core";
@@ -37,8 +35,6 @@ export interface ElmButtonProps extends PropsOf<"button"> {
 }
 
 export const ElmButton = component$<ElmButtonProps>((props) => {
-  const clicked = useSignal(false);
-  const timer = useSignal<ReturnType<typeof setTimeout>>();
   const {
     class: className,
     onClick$,
@@ -50,17 +46,9 @@ export const ElmButton = component$<ElmButtonProps>((props) => {
     ...rest
   } = props;
 
-  // Clear the ripple timer on unmount so it can't write to a destroyed signal.
-  useTask$(({ cleanup }) => {
-    cleanup(() => clearTimeout(timer.value));
-  });
-
   const handleClick = $(async () => {
     if (!props.isLoading && !props.disabled) {
       if (onClick$) {
-        clicked.value = true;
-        clearTimeout(timer.value);
-        timer.value = setTimeout(() => (clicked.value = false), 300);
         await onClick$();
       }
     }
@@ -94,8 +82,6 @@ export const ElmButton = component$<ElmButtonProps>((props) => {
       }
       {...rest}
     >
-      {clicked.value && <span class={styles.ripple}></span>}
-
       {isLoading ? (
         <ElmDotLoadingIcon size="1.5rem" />
       ) : (

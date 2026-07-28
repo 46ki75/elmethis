@@ -94,11 +94,11 @@
 /* ---- card ---- */
 
 .card {
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--elmethis-color-divider);
   border-radius: 8px;
   padding: 16px;
-  background: #fff;
-  box-shadow: 0 1px 3px rgb(0 0 0 / 8%);
+  background: var(--elmethis-color-surface-raised);
+  box-shadow: 0 1px 3px var(--elmethis-box-shadow-color);
 }
 
 /* ---- button ---- */
@@ -109,7 +109,7 @@
   justify-content: center;
   gap: 4px;
   padding: 8px 16px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--elmethis-color-divider);
   border-radius: 4px;
   background: transparent;
   cursor: pointer;
@@ -119,17 +119,20 @@
 }
 
 .button:hover {
-  background: rgb(0 0 0 / 5%);
+  background: var(--elmethis-color-primary-hover);
 }
 
 .button-primary {
-  background: var(--a2ui-primary, #1976d2);
+  background: var(--a2ui-primary, var(--elmethis-color-primary));
   border-color: transparent;
-  color: #fff;
+  color: oklch(
+    from contrast-color(var(--a2ui-primary, var(--elmethis-color-primary))) l c
+      h / 65%
+  );
 }
 
 .button-primary:hover {
-  background: var(--a2ui-primary-hover, #1565c0);
+  background: var(--a2ui-primary-hover, var(--elmethis-color-primary-strong));
 }
 
 /* ---- image ---- */
@@ -153,13 +156,13 @@
 
 .divider {
   border: none;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid var(--elmethis-color-divider);
   margin: 8px 0;
 }
 
 .divider-vertical {
   border-top: none;
-  border-left: 1px solid #e0e0e0;
+  border-left: 1px solid var(--elmethis-color-divider);
   margin: 0 8px;
   align-self: stretch;
   width: 0;
@@ -176,12 +179,12 @@
 .label {
   font-size: 0.75rem;
   font-weight: 500;
-  color: #555;
+  color: var(--elmethis-color-neutral-strong);
 }
 
 .input {
   padding: 8px 10px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--elmethis-color-divider);
   border-radius: 4px;
   font-size: 0.875rem;
   outline: none;
@@ -189,7 +192,7 @@
 }
 
 .input:focus {
-  border-color: var(--a2ui-primary, #1976d2);
+  border-color: var(--a2ui-primary, var(--elmethis-color-primary));
 }
 
 .checkbox {
@@ -238,7 +241,7 @@
 .choice-picker-label {
   font-size: 0.75rem;
   font-weight: 500;
-  color: #555;
+  color: var(--elmethis-color-neutral-strong);
 }
 
 .choice-picker-options {

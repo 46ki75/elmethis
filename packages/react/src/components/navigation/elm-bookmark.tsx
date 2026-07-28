@@ -77,7 +77,7 @@ export const ElmBookmark = ({
               <ElmInlineIcon src={favicon} />
             ) : (
               <ElmMdiIcon
-                d={mdiLinkVariant}
+                path={mdiLinkVariant}
                 color="var(--elmethis-color-accent-info)"
               />
             )}

@@ -34,7 +34,7 @@ describe("[Browser] useWordle", () => {
       expect(
         getComputedStyle(rendered.getByRole("button", { name: "C" }))
           .backgroundColor,
-      ).toBe("rgb(83, 141, 78)"),
+      ).toBe("rgb(101, 152, 120)"),
     );
   });
 

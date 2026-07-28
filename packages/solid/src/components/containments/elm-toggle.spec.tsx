@@ -128,8 +128,9 @@ describe("[CSR] ElmToggle", () => {
     expect(toggle).not.toHaveClass("closed-toggle");
     expect(toggle).toHaveTextContent("Open summary");
     for (const icon of toggle.querySelectorAll("svg")) {
+      expect(icon).toHaveAttribute("fill", "currentColor");
       expect(icon).toHaveAttribute(
-        "fill",
+        "color",
         "var(--elmethis-color-neutral-weak)",
       );
     }

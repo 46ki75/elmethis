@@ -314,7 +314,7 @@ export const ElmAgUiInput = component$<ElmAgUiInputProps>(
                 }
               >
                 <ElmMdiIcon
-                  d={isPickerOpen.value ? mdiClose : mdiPlus}
+                  path={isPickerOpen.value ? mdiClose : mdiPlus}
                   size="1rem"
                   color="white"
                 />
@@ -342,7 +342,7 @@ export const ElmAgUiInput = component$<ElmAgUiInputProps>(
                 onClick$={onAbort$}
                 aria-label="Stop"
               >
-                <ElmMdiIcon d={mdiStop} size="1rem" color="white" />
+                <ElmMdiIcon path={mdiStop} size="1rem" color="white" />
               </div>
             )}
 
@@ -351,7 +351,7 @@ export const ElmAgUiInput = component$<ElmAgUiInputProps>(
               onClick$={onSubmit}
               aria-label="Send"
             >
-              <ElmMdiIcon d={mdiSend} size="1rem" color="white" />
+              <ElmMdiIcon path={mdiSend} size="1rem" color="white" />
             </div>
           </div>
         </div>

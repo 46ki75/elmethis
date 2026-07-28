@@ -35,7 +35,7 @@ export const ElmValidation = defineComponent({
         }
       >
         <ElmMdiIcon
-          d={props.isValid ? mdiCheckCircle : mdiCheckCircleOutline}
+          path={props.isValid ? mdiCheckCircle : mdiCheckCircleOutline}
           color={props.isValid ? props.validColor : undefined}
         />
         <ElmInlineText color={props.isValid ? props.validColor : undefined}>

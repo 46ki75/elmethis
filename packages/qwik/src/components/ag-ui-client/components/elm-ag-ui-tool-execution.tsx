@@ -115,7 +115,7 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
       >
         <ElmToggle isOpen={isOpen} monochrome>
           <div q:slot="summary" class={styles.summary}>
-            <ElmMdiIcon d={mdiHammerScrewdriver} size="1rem" />
+            <ElmMdiIcon path={mdiHammerScrewdriver} size="1rem" />
             <ElmInlineText>{toolName}</ElmInlineText>
           </div>
 
@@ -124,7 +124,7 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
               past TOOL_CALL_START (i.e. arguments have been prepared). */}
           <div class={styles.summary}>
             <ElmMdiIcon
-              d={mdiFunctionVariant}
+              path={mdiFunctionVariant}
               size="1rem"
               color={
                 toolEventType === EventType.TOOL_CALL_START
@@ -138,7 +138,7 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
           {isArgsShown.value && (
             <ElmToggle isOpen={isArgsOpen} monochrome>
               <div q:slot="summary" class={styles.summary}>
-                <ElmMdiIcon d={mdiCodeJson} size="1rem" />
+                <ElmMdiIcon path={mdiCodeJson} size="1rem" />
                 <ElmInlineText>Args</ElmInlineText>
               </div>
 
@@ -153,7 +153,7 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
           {toolEventType === EventType.TOOL_CALL_START ? null : (
             <div class={styles.summary}>
               <ElmMdiIcon
-                d={mdiWrenchClock}
+                path={mdiWrenchClock}
                 size="1rem"
                 color={
                   toolEventType === EventType.TOOL_CALL_ARGS ||
@@ -174,7 +174,7 @@ export const ElmAgUiToolExecution = component$<ElmAgUiToolExecutionProps>(
           {isResultShown.value && (
             <ElmToggle isOpen={isResultOpen} monochrome>
               <div q:slot="summary" class={styles.summary}>
-                <ElmMdiIcon d={mdiCodeJson} size="1rem" />
+                <ElmMdiIcon path={mdiCodeJson} size="1rem" />
                 <ElmInlineText>Result</ElmInlineText>
               </div>
 

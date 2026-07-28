@@ -65,7 +65,7 @@ const Reasoning = (props: ReasoningProps) => {
         <div class={styles["message-content-type"]}>
           <ElmMdiIcon
             class={styles["message-content-icon"]}
-            d={mdiLightbulbOn}
+            path={mdiLightbulbOn}
           />
           <ElmInlineText>Reasoning</ElmInlineText>
           <div aria-hidden="true" class={styles["message-content-spacer"]} />
@@ -159,7 +159,7 @@ export const ElmAgUiMessageRenderer = (props: ElmAgUiMessageRendererProps) => {
                   <div class={styles["message-content-type"]}>
                     <ElmMdiIcon
                       class={styles["message-content-icon"]}
-                      d={mdiCreation}
+                      path={mdiCreation}
                     />
                     <ElmInlineText>Assistant</ElmInlineText>
                     <div
@@ -177,7 +177,7 @@ export const ElmAgUiMessageRenderer = (props: ElmAgUiMessageRendererProps) => {
                         onClick={local.handleRetry}
                         aria-label="Retry"
                       >
-                        <ElmMdiIcon d={mdiRefresh} size="1.25rem" />
+                        <ElmMdiIcon path={mdiRefresh} size="1.25rem" />
                       </button>
                     </div>
                   </Show>
@@ -202,7 +202,7 @@ export const ElmAgUiMessageRenderer = (props: ElmAgUiMessageRendererProps) => {
               <div class={styles["message-content-type"]}>
                 <ElmMdiIcon
                   class={styles["message-content-icon"]}
-                  d={mdiAccount}
+                  path={mdiAccount}
                 />
                 <ElmInlineText>User</ElmInlineText>
                 <div

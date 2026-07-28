@@ -51,7 +51,7 @@
   width: calc(100% - 1rem);
   margin-inline: auto;
   border: none;
-  border-bottom: solid 1px rgb(128 128 128 / 50%);
+  border-bottom: solid 1px var(--elmethis-color-divider);
 }
 
 .content {

@@ -128,7 +128,7 @@ export const ElmHtmlViewer = (props: ElmHtmlViewerProps) => {
           onClick={handleDownload}
           aria-label="Download"
         >
-          <ElmMdiIcon d={mdiDownload} size="1.25rem" />
+          <ElmMdiIcon path={mdiDownload} size="1.25rem" />
         </button>
 
         <button
@@ -137,7 +137,7 @@ export const ElmHtmlViewer = (props: ElmHtmlViewerProps) => {
           onClick={handleOpenInNewTab}
           aria-label="Open in new tab"
         >
-          <ElmMdiIcon d={mdiOpenInNew} size="1.25rem" />
+          <ElmMdiIcon path={mdiOpenInNew} size="1.25rem" />
         </button>
       </div>
 

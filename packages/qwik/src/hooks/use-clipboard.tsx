@@ -76,7 +76,7 @@ export const useClipboard = (options: UseClipboardOptions) => {
               [styles["use-clipboard-icon-copied"]]: copied.value,
             },
           ]}
-          d={copied.value ? mdiClipboardCheckOutline : mdiClipboardOutline}
+          path={copied.value ? mdiClipboardCheckOutline : mdiClipboardOutline}
           size="1.25rem"
         />
       </span>

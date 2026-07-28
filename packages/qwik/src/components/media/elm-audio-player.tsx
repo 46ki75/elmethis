@@ -254,7 +254,7 @@ export const ElmAudioPlayer = component$<ElmAudioPlayerProps>((props) => {
           aria-hidden="true"
         >
           <ElmMdiIcon
-            d={hasError.value ? mdiAlertCircleOutline : mdiMusicNote}
+            path={hasError.value ? mdiAlertCircleOutline : mdiMusicNote}
             size="1.25rem"
           />
         </span>
@@ -277,7 +277,7 @@ export const ElmAudioPlayer = component$<ElmAudioPlayerProps>((props) => {
 
       {hasError.value ? (
         <div class={styles["error-notice"]} role="alert">
-          <ElmMdiIcon d={mdiAlertCircleOutline} size="1.25rem" />
+          <ElmMdiIcon path={mdiAlertCircleOutline} size="1.25rem" />
           <span class={styles["error-message"]}>{errorMessage}</span>
         </div>
       ) : (
@@ -358,7 +358,7 @@ export const ElmAudioPlayer = component$<ElmAudioPlayerProps>((props) => {
                 onClick$={() => seekTo(currentTime.value - seekStep)}
                 aria-label={`Back ${seekStep} seconds`}
               >
-                <ElmMdiIcon d={mdiRewind10} size="1.25rem" />
+                <ElmMdiIcon path={mdiRewind10} size="1.25rem" />
               </button>
 
               <button
@@ -369,7 +369,7 @@ export const ElmAudioPlayer = component$<ElmAudioPlayerProps>((props) => {
                 aria-pressed={isPlaying.value}
               >
                 <ElmMdiIcon
-                  d={isPlaying.value ? mdiPause : mdiPlay}
+                  path={isPlaying.value ? mdiPause : mdiPlay}
                   size="1.5rem"
                 />
               </button>
@@ -380,7 +380,7 @@ export const ElmAudioPlayer = component$<ElmAudioPlayerProps>((props) => {
                 onClick$={() => seekTo(currentTime.value + seekStep)}
                 aria-label={`Forward ${seekStep} seconds`}
               >
-                <ElmMdiIcon d={mdiFastForward10} size="1.25rem" />
+                <ElmMdiIcon path={mdiFastForward10} size="1.25rem" />
               </button>
             </div>
 
@@ -392,7 +392,7 @@ export const ElmAudioPlayer = component$<ElmAudioPlayerProps>((props) => {
                 aria-label={isMuted.value ? "Unmute" : "Mute"}
                 aria-pressed={isMuted.value}
               >
-                <ElmMdiIcon d={volumeIcon.value} size="1.25rem" />
+                <ElmMdiIcon path={volumeIcon.value} size="1.25rem" />
               </button>
               <input
                 class={styles["volume-slider"]}

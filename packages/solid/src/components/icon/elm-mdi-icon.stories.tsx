@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 
 import { ElmMdiIcon } from "./elm-mdi-icon";
+import { mdiArrowAll } from "@mdi/js";
 
 const meta = {
   title: "Components/Icon/elm-mdi-icon",
@@ -9,8 +10,10 @@ const meta = {
   args: {},
   argTypes: {
     color: { control: "color" },
-    lightColor: { control: "color" },
-    darkColor: { control: "color" },
+    label: {
+      control: "text",
+      description: "Accessible name rendered in the SVG title element",
+    },
   },
 } satisfies Meta<typeof ElmMdiIcon>;
 
@@ -20,6 +23,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: {
     size: "1.25rem",
-    d: "M14.6,16.6L19.2,12L14.6,7.4L16,6L22,12L16,18L14.6,16.6M9.4,16.6L4.8,12L9.4,7.4L8,6L2,12L8,18L9.4,16.6Z",
+    path: mdiArrowAll,
+    label: "Move",
   },
 };

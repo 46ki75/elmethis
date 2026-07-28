@@ -55,7 +55,7 @@ export const WithIcon: Story = {
     },
     template: `
       <ElmSelect v-bind="args">
-        <template #icon><ElmMdiIcon :d="mdiAccountOutline" /></template>
+        <template #icon><ElmMdiIcon :path="mdiAccountOutline" /></template>
       </ElmSelect>
     `,
   }),

@@ -38,7 +38,7 @@ export const ElmLanguageIcon = ({
   const normalized = normalizeLanguage(language);
 
   if (normalized === "file") {
-    return <ElmMdiIcon d={mdiCodeTags} size={String(size)} />;
+    return <ElmMdiIcon path={mdiCodeTags} size={String(size)} />;
   }
 
   return (

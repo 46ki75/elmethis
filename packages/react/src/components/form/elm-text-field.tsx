@@ -90,7 +90,7 @@ export const ElmTextField = ({
       <span
         className={clsx(styles.header, isFocused && styles["label-active"])}
       >
-        {icon ?? <ElmMdiIcon d={mdiText} size="0.75rem" />}
+        {icon ?? <ElmMdiIcon path={mdiText} size="0.75rem" />}
         <span>
           {label}
           {required && <span className={styles.requierd}>*</span>}
@@ -149,7 +149,7 @@ export const ElmTextField = ({
             }}
           >
             <ElmMdiIcon
-              d={inputType === "text" ? mdiEyeOutline : mdiEyeOffOutline}
+              path={inputType === "text" ? mdiEyeOutline : mdiEyeOffOutline}
               size="1.25rem"
               color="gray"
             />
@@ -163,7 +163,7 @@ export const ElmTextField = ({
               }
             }}
           >
-            <ElmMdiIcon d={mdiTrashCanOutline} size="1.25rem" color="gray" />
+            <ElmMdiIcon path={mdiTrashCanOutline} size="1.25rem" color="gray" />
           </div>
         </div>
       </div>

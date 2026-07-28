@@ -54,7 +54,7 @@ export const WithIcon: Story = {
     template: `
       <div>
         <ElmTextArea label="Comment" placeholder="Leave a comment" v-model:value="text" :rows="5">
-          <template #icon><ElmMdiIcon :d="mdiCommentTextOutline" size="0.75rem" color="gray" /></template>
+          <template #icon><ElmMdiIcon :path="mdiCommentTextOutline" size="0.75rem" color="gray" /></template>
         </ElmTextArea>
         <ElmInlineText>{{ text }}</ElmInlineText>
       </div>

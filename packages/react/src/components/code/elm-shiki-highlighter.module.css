@@ -22,7 +22,7 @@
     /* stylelint-enable csstools/value-no-unknown-custom-properties */
 
     &::selection {
-      background-color: oklch(from #cdb57b l c h / 25%);
+      background-color: var(--elmethis-color-selection);
     }
   }
 }

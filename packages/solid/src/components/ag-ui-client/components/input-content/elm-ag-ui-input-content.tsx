@@ -33,7 +33,7 @@ export const ElmAgUiInputContent = (props: ElmAgUiInputContentImageProps) => {
         case "document":
           return (
             <div class={styles["media-component"]}>
-              <ElmMdiIcon class={styles["type-icon"]} d={mdiTextBox} />
+              <ElmMdiIcon class={styles["type-icon"]} path={mdiTextBox} />
               <pre class={styles.text}>{content.source.value}</pre>
               <div class={styles["mime-type-label"]}>
                 {content.source.mimeType}
@@ -48,7 +48,7 @@ export const ElmAgUiInputContent = (props: ElmAgUiInputContentImageProps) => {
               : source.value;
           media.push(
             <div class={styles["media-component"]}>
-              <ElmMdiIcon class={styles["type-icon"]} d={mdiImage} />
+              <ElmMdiIcon class={styles["type-icon"]} path={mdiImage} />
               <img
                 class={styles.image}
                 width={96}

@@ -40,7 +40,7 @@
     flex-grow: 1;
     height: 1px;
     width: 100%;
-    background-color: oklch(from gray l c h / 12.5%);
+    background-color: var(--elmethis-color-divider);
   }
 }
 
@@ -65,7 +65,7 @@
   cursor: pointer;
 
   &:hover {
-    background-color: oklch(from gray l c h / 25%);
+    background-color: var(--elmethis-color-surface-sunken);
   }
 }
 
