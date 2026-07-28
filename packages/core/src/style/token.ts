@@ -147,8 +147,13 @@ export const semanticTokens = {
   ),
 
   // Accents
+  "color-accent-link-surface": theme(color.blue[100], color.blue[900]),
   "color-accent-link": common(color.blue[500]),
   "color-accent-link-visited": common(color.purple[500]),
+  "color-accent-link-surface-visited": theme(
+    color.purple[100],
+    color.purple[900],
+  ),
 
   "color-accent-info": common(color.blue[500]),
   "color-accent-info-surface": theme(color.blue[100], color.blue[900]),
