@@ -167,6 +167,7 @@ export const semanticTokens = {
 
   // Surfaces
   "color-divider": theme(color.gold[300], color.slate[800]),
+  "color-modal-backdrop": common("oklch(from black l c h / 50%)"),
   "color-surface-sunken": theme(color.gold[300], color.slate[800]),
   "color-surface-base": theme(color.gold[200], color.slate[700]),
   "color-surface-raised": theme(color.gold[100], color.slate[600]),

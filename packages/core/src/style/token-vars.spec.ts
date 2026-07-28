@@ -48,6 +48,9 @@ describe("tokenVars", () => {
   });
 
   it("keeps non-primitive literals (computed oklch) verbatim", () => {
+    expect(tokenVars["--elmethis-color-modal-backdrop"]).toBe(
+      "oklch(from black l c h / 50%)",
+    );
     expect(tokenVars["--elmethis-color-primary-hover"]).toBe(
       "oklch(from var(--elmethis-color-primary) l c h / 15%)",
     );
