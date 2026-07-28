@@ -21,7 +21,7 @@
         "@copilotkit/runtime": "^1.63.2",
         "@copilotkit/shared": "^1.63.2",
         "@hono/node-server": "^2.0.12",
-        "@modelcontextprotocol/sdk": "^1.29.0",
+        "@modelcontextprotocol/sdk": "^1.30.0",
         "consola": "^3.4.2",
         "dotenv": "^17.4.2",
         "hono": "^4.12.31",
