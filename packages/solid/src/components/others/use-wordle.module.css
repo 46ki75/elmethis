@@ -23,14 +23,14 @@
     color 0.15s ease;
 
   &.error {
-    background-color: #1a1a1b;
-    color: #fff;
+    background-color: var(--elmethis-color-accent-error);
+    color: contrast-color(var(--elmethis-color-accent-error));
     animation: fade-in 0.15s ease;
   }
 
   &.status {
-    background-color: #538d4e;
-    color: #fff;
+    background-color: var(--elmethis-color-accent-success);
+    color: contrast-color(var(--elmethis-color-accent-success));
     font-size: 1rem;
     animation: fade-in 0.15s ease;
   }
@@ -64,33 +64,33 @@
     border-color 0.2s ease;
 
   &.empty {
-    border-color: gray;
+    border-color: var(--elmethis-color-neutral-weak);
     background-color: transparent;
     color: transparent;
   }
 
   &.tbd {
-    border-color: #565758;
+    border-color: var(--elmethis-color-neutral);
     background-color: transparent;
-    color: #6c7483;
+    color: var(--elmethis-color-neutral);
   }
 
   &.correct {
-    background-color: #538d4e;
-    border-color: #538d4e;
-    color: #fff;
+    background-color: var(--elmethis-color-accent-success);
+    border-color: var(--elmethis-color-accent-success);
+    color: contrast-color(var(--elmethis-color-accent-success));
   }
 
   &.present {
-    background-color: #b59f3b;
-    border-color: #b59f3b;
-    color: #fff;
+    background-color: var(--elmethis-color-accent-warning);
+    border-color: var(--elmethis-color-accent-warning);
+    color: contrast-color(var(--elmethis-color-accent-warning));
   }
 
   &.absent {
-    background-color: #3a3a3c;
-    border-color: #3a3a3c;
-    color: #fff;
+    background-color: var(--elmethis-color-surface-sunken);
+    border-color: var(--elmethis-color-surface-sunken);
+    color: contrast-color(var(--elmethis-color-surface-sunken));
   }
 }
 
@@ -114,8 +114,8 @@
   padding: 0 0.25rem;
   border: none;
   border-radius: 0.25rem;
-  background-color: #818384;
-  color: #fff;
+  background-color: var(--elmethis-color-neutral);
+  color: contrast-color(var(--elmethis-color-neutral));
   font-size: 0.8125rem;
   font-weight: bold;
   cursor: pointer;
@@ -137,15 +137,18 @@
   }
 
   &.correct {
-    background-color: #538d4e;
+    background-color: var(--elmethis-color-accent-success);
+    color: contrast-color(var(--elmethis-color-accent-success));
   }
 
   &.present {
-    background-color: #b59f3b;
+    background-color: var(--elmethis-color-accent-warning);
+    color: contrast-color(var(--elmethis-color-accent-warning));
   }
 
   &.absent {
-    background-color: #3a3a3c;
+    background-color: var(--elmethis-color-surface-sunken);
+    color: contrast-color(var(--elmethis-color-surface-sunken));
   }
 }
 
@@ -161,8 +164,8 @@
   padding: 0.625rem 1.5rem;
   border: none;
   border-radius: 0.25rem;
-  background-color: #538d4e;
-  color: #fff;
+  background-color: var(--elmethis-color-accent-success);
+  color: contrast-color(var(--elmethis-color-accent-success));
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
@@ -171,7 +174,9 @@
     transform 0.05s ease;
 
   &:hover {
-    background-color: #6aaa64;
+    background-color: oklch(
+      from var(--elmethis-color-accent-success) calc(l + 0.08) c h
+    );
   }
 
   &:active {

@@ -135,7 +135,7 @@
     cursor: pointer;
 
     &:not(:disabled):hover {
-      background-color: rgb(128 128 128 / 20%);
+      background-color: var(--elmethis-color-surface-sunken);
     }
 
     &:focus-visible {
@@ -154,5 +154,5 @@
   font-size: 0.85em;
   user-select: none;
   transition: color 200ms;
-  color: light-dark(rgb(0 0 0 / 65%), rgb(255 255 255 / 65%));
+  color: var(--elmethis-color-neutral-weak);
 }

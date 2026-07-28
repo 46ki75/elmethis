@@ -17,7 +17,7 @@ export interface ElmMdiIconProps extends JSX.SvgSVGAttributes<SVGSVGElement> {
 }
 
 export const ElmMdiIcon = (props: ElmMdiIconProps) => {
-  const merged = mergeProps({ size: "1em", color: "currentColor" }, props);
+  const merged = mergeProps({ size: "1em" }, props);
   const [local, rest] = splitProps(merged, [
     "class",
     "style",
@@ -33,8 +33,8 @@ export const ElmMdiIcon = (props: ElmMdiIconProps) => {
     <svg
       class={clsx(styles["elm-mdi-icon"], local.class)}
       style={mergeStyle(local.style, {
-        "--elmethis-scoped-color": local.lightColor ?? local.color,
-        "--dark-color": local.darkColor ?? local.color,
+        "--elmethis-scoped-color-light": local.lightColor ?? local.color,
+        "--elmethis-scoped-color-dark": local.darkColor ?? local.color,
       })}
       width={local.size}
       height={local.size}

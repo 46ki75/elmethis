@@ -62,7 +62,7 @@
       top: 0;
       height: 100%;
       width: 50%;
-      background-color: light-dark(#494f59, #bec2ca);
+      background-color: var(--elmethis-color-neutral);
     }
 
     &::before {
@@ -87,18 +87,7 @@
     font-size: 12px;
     white-space: nowrap;
     user-select: none;
-    color: light-dark(
-      var(--elmethis-scoped-color, #606875),
-      var(--elmethis-scoped-color, #b0b5be)
-    );
-
-    &::selection {
-      color: light-dark(#cccfd5, #3e434b);
-      background-color: light-dark(
-        var(--elmethis-scoped-color, #3e434b),
-        var(--elmethis-scoped-color, #cccfd5)
-      );
-    }
+    color: var(--elmethis-color-neutral);
   }
 }
 
