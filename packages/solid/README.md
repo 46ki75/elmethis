@@ -56,8 +56,7 @@ catalogs. Most consumers only need `ElmA2ui` and one of the provided catalogs.
 `useAgent` owns an AG-UI `AbstractAgent`, streamed message state, frontend
 tools, interrupts, retries, and queued user messages. Pass `url` to use the
 default `HttpAgent`, or provide an `agentFactory` for another adapter or an
-in-process agent. Its callbacks are Solid-native functions rather than Qwik
-QRLs:
+in-process agent. Its callbacks are Solid-native functions:
 
 ```tsx
 import { ElmAgUiAgent, useAgent } from "@elmethis/solid";

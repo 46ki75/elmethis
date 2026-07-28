@@ -94,8 +94,8 @@ export const ElmSelect = ({
   defaultSelectedOptionId = null,
   onSelectedOptionIdChange,
   icon,
-  // Destructured out so it is not spread onto the root: like the qwik twin,
-  // ElmSelect consumes only the icon slot, not a default slot.
+  // Destructured out so it is not spread onto the root: ElmSelect consumes only
+  // the icon slot, not default children.
   children: _children,
   ...rest
 }: ElmSelectProps) => {

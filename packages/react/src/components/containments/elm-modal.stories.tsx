@@ -2,9 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState, type ReactNode } from "react";
 import { ElmModal, type ElmModalProps } from "./elm-modal";
 
-// NOTE: the qwik twin imports `ElmTextField` here; that component has not yet
-// been ported to react (Wave 2), so this story uses native inputs to keep the
-// same "clicking a field inside the modal must NOT close it" reproduction.
+// Native inputs reproduce the requirement that interacting with a field inside
+// the modal must not close it.
 
 const meta = {
   title: "Components/Containments/elm-modal",

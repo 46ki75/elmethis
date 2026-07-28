@@ -13,8 +13,7 @@ export type UseAutoAnimateOptions = {
  *
  * @see {@link https://auto-animate.formkit.com/|Auto Animate} for more information.
  *
- * Unlike the qwik twin (which returns a `{ ref, animationController }` pair of
- * signals), this React port returns the `[ref, setEnabled]` shape exposed by
+ * This hook returns the `[ref, setEnabled]` shape exposed by
  * `@formkit/auto-animate/react`, mapped onto a `{ ref, setEnabled }` object:
  * spread `ref` onto the container element, and call `setEnabled(boolean)` to
  * toggle the animation controller on or off.

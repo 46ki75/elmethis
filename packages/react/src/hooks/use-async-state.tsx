@@ -156,7 +156,7 @@ export const useAsyncState = <Data,>(
     if (immediate) {
       void execute(delay);
     }
-    // Mirror the qwik mount-time visible-task: run once on the client.
+    // Run once on the client after mount.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

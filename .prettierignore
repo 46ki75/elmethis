@@ -1,6 +1,6 @@
 # Prettier ignore (repo root). Honored when prettier runs from the workspace
 # root — e.g. the lefthook fmt/check hooks (`pnpm exec prettier ... {files}`).
-# Per-package .prettierignore files (e.g. packages/qwik) still apply when
+# Per-package .prettierignore files still apply when
 # prettier runs inside that package (its own `fmt` script).
 
 # Dependencies & build output

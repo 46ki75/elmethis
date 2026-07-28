@@ -5,11 +5,10 @@ import { ElmA2ui } from "../elm-a2ui";
 import { notionBlockCatalog } from "./notion-block-catalog";
 
 // The Notion block catalog extends the basic catalog with the elmethis
-// typography / media / code / table renderers. Rather than re-implement the
-// qwik lead's isolated RenderArgs harness, we drive each renderer through the
-// real pipeline (ElmA2ui with `catalog={notionBlockCatalog}`) and assert the
-// produced DOM. Surface
-// resolution is async (the SDK's microtask emitter), so each case waits.
+// typography / media / code / table renderers. We drive each renderer through
+// the real pipeline (ElmA2ui with `catalog={notionBlockCatalog}`) and assert the
+// produced DOM. Surface resolution is async (the SDK's microtask emitter), so
+// each case waits.
 
 const CATALOG_ID = "https://a2ui.org/specification/v0_9/basic_catalog.json";
 

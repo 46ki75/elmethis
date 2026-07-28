@@ -19,7 +19,7 @@ describe("[CSR] ElmToggle", () => {
     expect(wrapper.text()).toContain("Body content");
   });
 
-  // A non-string summary maps to the `summary` slot (qwik's named slot).
+  // A non-string summary maps to the `summary` slot.
   it("renders a custom summary node via the summary slot", () => {
     const wrapper = mount(ElmToggle, {
       slots: {

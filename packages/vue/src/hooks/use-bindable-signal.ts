@@ -2,8 +2,7 @@ import { useVModel } from "@vueuse/core";
 import type { Ref, UnwrapRef } from "vue";
 
 /**
- * Optionally-bindable single-value state — the Vue port of qwik's
- * `useBindableSignal` / react's `useControllableState` wrapper.
+ * Optionally-bindable single-value state built on Vue's `v-model` contract.
  *
  * Built on Vue's `v-model` contract: a model prop (`key`) plus its
  * `update:<key>` event. `defineModel` would generate the same contract, but it
@@ -18,8 +17,8 @@ import type { Ref, UnwrapRef } from "vue";
  *   "unbound" is distinguishable from a real `false`/`""`/`0`). The hook owns
  *   internal state seeded with `defaultValue`.
  *
- * Returns a writable `Ref<T>`; read/write via `.value`, mirroring qwik's
- * `Signal<T>`. For multi-field / nested-struct state, prefer a store-shaped
+ * Returns a writable `Ref<T>`; read/write via `.value`. For multi-field /
+ * nested-struct state, prefer a store-shaped
  * equivalent rather than this single-value hook.
  *
  * @example

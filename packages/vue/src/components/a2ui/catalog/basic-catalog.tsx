@@ -6,8 +6,7 @@
  * back to the data model via the `setBinding` callback provided by
  * `ComponentHost`, and fire actions via `dispatchAction`. Both are baked with
  * the host's surface + component id, so renderers stay free of surface-level
- * coupling. (Vue has no QRL boundary, so these are plain functions — unlike the
- * qwik lead's `setBinding$` / `dispatchAction$` QRLs.)
+ * coupling.
  */
 import { clsx } from "clsx";
 
@@ -301,7 +300,7 @@ export const basicCatalog: CatalogRenderer = new CatalogRenderer([
         (props.variant ?? "mutuallyExclusive") === "multipleSelection";
 
       // Single wrapper-level change handler (delegation) instead of per-input
-      // handlers — mirrors the qwik lead. We probe `multi` from the DOM (input
+      // handlers. We probe `multi` from the DOM (input
       // type) so the radio/checkbox shape is read from the rendered tree.
       return (
         <div

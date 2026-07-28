@@ -5,18 +5,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 # elmethis
 
 A multi-framework component library / design system ("Elmethis Theme"), published to npm as
-`@elmethis/*`. One framework-agnostic core feeds Qwik, React, Solid, and Vue implementations. All
-four framework libraries are shipped as Storybooks to GitHub Pages.
+`@elmethis/*`. One framework-agnostic core feeds React, Solid, and Vue implementations. All three
+framework libraries are shipped as Storybooks to GitHub Pages.
 
 ## Packages
 
 | Package                | Path                   | Published     | Purpose                                                                                                                                            |
 | ---------------------- | ---------------------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `@elmethis/core`       | `packages/core`        | yes           | Framework-agnostic hub: shared Zod schemas/types, design tokens, A2UI catalogs, language icons. Every framework lib depends on it (`workspace:^`). |
-| `@elmethis/qwik`       | `packages/qwik`        | yes           | Qwik 2 implementation. Components + hooks. Storybook :19211                                                                                        |
-| `@elmethis/react`      | `packages/react`       | yes           | React 19 implementation; same component surface as qwik/vue. Storybook :19221                                                                      |
+| `@elmethis/react`      | `packages/react`       | yes           | React 19 implementation with components and hooks. Storybook :19221                                                                                |
 | `@elmethis/solid`      | `packages/solid`       | yes           | SolidJS implementation with component parity and Solid-native primitives. Storybook :19241                                                         |
-| `@elmethis/vue`        | `packages/vue`         | yes           | Vue 3 implementation (authored in TSX); same component surface as qwik/react. Storybook :19231                                                     |
+| `@elmethis/vue`        | `packages/vue`         | yes           | Vue 3 implementation (authored in TSX); same component surface as React. Storybook :19231                                                          |
 | `ikuma-theme`          | `packages/ikuma-theme` | VS Code / npm | VS Code dark/light extension; generates the published `@46ki75/ikuma-theme` Shiki package and Windows Terminal scheme                              |
 | `@elmethis/ag-ui-stub` | `packages/ag-ui-stub`  | no (private)  | Deterministic, LLM-free in-process `AbstractAgent` for frontend tests                                                                              |
 | `backend` (copilotkit) | `packages/copilotkit`  | no            | CopilotKit backend on the Claude Agent SDK (Hono :19101; also serves a stub Weather MCP at `/mcp`)                                                 |
@@ -27,21 +26,21 @@ Rust MCP server — no code yet.
 ## Commands
 
 Package manager is **pnpm** (`pnpm@9.12.3`); Node 22. Run scripts per-package with `--filter`, or
-`cd` into the package. **Build `@elmethis/core` before qwik/react/solid/vue** — they import its built
+`cd` into the package. **Build `@elmethis/core` before react/solid/vue** — they import its built
 output and emitted `tokens.css`.
 
-| Command                                          | Description                                                                |
-| ------------------------------------------------ | -------------------------------------------------------------------------- |
-| `pnpm install`                                   | Install all workspace deps                                                 |
-| `pnpm --filter @elmethis/core run build`         | Build core (tsdown + tokens.css + catalog JSON) — do this first            |
-| `pnpm --filter @elmethis/ag-ui-stub run build`   | Build the in-process AG-UI test agent used by Solid tests and Storybook    |
-| `pnpm --filter ikuma-theme run build`            | Build VS Code, Shiki, Windows Terminal, and VSIX artifacts                 |
-| `pnpm --filter ikuma-theme run check`            | Format-check, type-check, and build all theme artifacts                    |
-| `pnpm --filter @elmethis/qwik run dev`           | Storybook dev server (qwik :19211, react :19221, solid :19241, vue :19231) |
-| `pnpm --filter @elmethis/<pkg> run check`        | fmt.check + lint + (css lint) + build.types                                |
-| `pnpm --filter @elmethis/<pkg> run test.unit`    | Unit + SSR layer (node / createDOM)                                        |
-| `pnpm --filter @elmethis/<pkg> run test.browser` | Browser layer (real Chromium via Playwright)                               |
-| `pnpm run --recursive check`                     | Lefthook pre-commit check across all packages                              |
+| Command                                          | Description                                                             |
+| ------------------------------------------------ | ----------------------------------------------------------------------- |
+| `pnpm install`                                   | Install all workspace deps                                              |
+| `pnpm --filter @elmethis/core run build`         | Build core (tsdown + tokens.css + catalog JSON) — do this first         |
+| `pnpm --filter @elmethis/ag-ui-stub run build`   | Build the in-process AG-UI test agent used by Solid tests and Storybook |
+| `pnpm --filter ikuma-theme run build`            | Build VS Code, Shiki, Windows Terminal, and VSIX artifacts              |
+| `pnpm --filter ikuma-theme run check`            | Format-check, type-check, and build all theme artifacts                 |
+| `pnpm --filter @elmethis/<pkg> run dev`          | Storybook dev server (react :19221, solid :19241, vue :19231)           |
+| `pnpm --filter @elmethis/<pkg> run check`        | fmt.check + lint + (css lint) + build.types                             |
+| `pnpm --filter @elmethis/<pkg> run test.unit`    | Unit + SSR layer                                                        |
+| `pnpm --filter @elmethis/<pkg> run test.browser` | Browser layer (real Chromium via Playwright)                            |
+| `pnpm run --recursive check`                     | Lefthook pre-commit check across all packages                           |
 
 Run a single test (from inside the package, or via `--filter @elmethis/<pkg> exec`):
 
@@ -57,15 +56,13 @@ runs eslint / stylelint / vitest-related per package.
 
 - **core is the single source of truth.** Design tokens (`src/style/token.ts` → emitted
   `tokens.css`), A2UI Notion block catalogs, JSON schemas, and language-icon registries live here and
-  are consumed by all four framework libs — defined once, mirrored everywhere.
+  are consumed by all three framework libs — defined once, mirrored everywhere.
 - **Component leadership is per-feature, not fixed to one framework.** The mature implementations
   keep the same component surface (same names, same props) per framework idiom, but which framework
-  originates a given component varies — qwik led the original recreation-wave surface, while several
-  recent components (`ElmButtonDropdown`, `ElmHtml`, `ElmSlider`) landed in react first and were
-  ported to qwik/vue afterward. Check `git log` for a component before assuming which framework is
-  its source of truth.
-- **Four Storybooks to one GitHub Pages site.** `pages-deploy.yml` builds core, then each Storybook,
-  and assembles them under `/qwik`, `/react`, `/solid`, and `/vue` (plus the A2UI catalog JSON).
+  originates a given component varies. Check `git log` for a component before assuming which
+  framework is its source of truth.
+- **Three Storybooks to one GitHub Pages site.** `pages-deploy.yml` builds core, then each Storybook,
+  and assembles them under `/react`, `/solid`, and `/vue` (plus the A2UI catalog JSON).
   Deploys on push to `main`.
 - **Ikuma Theme has two distribution targets.** Its unscoped package manifest is the VS Code
   extension (`46ki75.ikuma-theme`); `scripts/build-npm.ts` emits the separately published scoped
@@ -77,7 +74,7 @@ runs eslint / stylelint / vitest-related per package.
 
 ## Gotchas
 
-- Build `@elmethis/core` before working on qwik/react/solid/vue, or their imports and `tokens.css` resolve
+- Build `@elmethis/core` before working on react/solid/vue, or their imports and `tokens.css` resolve
   to stale/missing output.
 - Build `@elmethis/ag-ui-stub` before Solid AG-UI tests or Storybook; its workspace package exports built
   output from `dist`.

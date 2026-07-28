@@ -14,7 +14,7 @@ app.use("*", cors());
 
 // `/mcp` — stub Weather MCP server (Streamable HTTP), merged in from the
 // former `@elmethis/mcp-server` package so a single backend serves both the
-// CopilotKit agents and the MCP endpoint the qwik hooks exercise.
+// CopilotKit agents and the MCP endpoint used by frontend integrations.
 app.route("/", weatherMcpApp);
 
 // `/copilotkit/claude/agent/opus/run`

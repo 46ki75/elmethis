@@ -46,8 +46,7 @@ export const ElmModal = ({
   // Synchronizes the native <dialog> with the controlled `isOpen` prop. The
   // setState calls here are intentional and must run inside the effect: the
   // `shown` fade class can only flip *after* the imperative `showModal()` /
-  // close-timer runs against a real DOM ref. Mirrors the qwik twin's
-  // `useVisibleTask$`.
+  // close-timer runs against a real DOM ref.
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     const dialog = dialogRef.current;

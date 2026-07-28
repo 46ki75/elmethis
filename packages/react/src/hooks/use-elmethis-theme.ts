@@ -71,8 +71,7 @@ const applyTheme = (theme: Theme | null, persist: boolean): void => {
  * Pin or release the Elmethis theme natively via `color-scheme` + `data-theme`
  * on `<html>`, with cross-tab (`storage`) and same-tab (`CustomEvent`) sync.
  *
- * Unlike the qwik twin (which returns a `Signal<boolean>` plus a `QRL`), this
- * React port returns the plain idiom: `isDarkTheme` is a `boolean` and
+ * The React API returns the plain idiom: `isDarkTheme` is a `boolean` and
  * `toggleTheme` is a `() => void`.
  *
  * @example

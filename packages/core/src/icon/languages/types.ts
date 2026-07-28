@@ -4,7 +4,7 @@
  * Each {@link LanguageIcon} is authored once here and rendered by a thin,
  * per-framework component that walks the node tree into that framework's JSX.
  * The geometry (path data, gradients, brand colors) lives in exactly one place
- * so the `qwik`/`react`/`vue` libraries no longer duplicate it.
+ * so the React, Solid, and Vue libraries no longer duplicate it.
  */
 
 /** A single SVG element node: a tag, its literal attributes, and children. */

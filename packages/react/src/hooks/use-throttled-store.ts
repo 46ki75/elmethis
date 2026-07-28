@@ -22,17 +22,13 @@ export interface UseThrottledStoreReturn<T extends object> {
  * Returns reactive struct state where writing to `value` drives a leading +
  * trailing edge throttled update to `throttledValue`.
  *
- * React port of qwik's `useThrottledStore`. Qwik's store model — a mutable,
- * deep-reactive `Proxy<T>` you mutate in place (`store.x = 1`) — does not exist
- * in React. Where qwik returned a `{ store, throttledStore, isCooling }` trio of
- * proxies, this port returns `{ value, setValue, throttledValue, isCooling }`:
+ * The React API returns `{ value, setValue, throttledValue, isCooling }`:
  * `value`/`setValue` is the usual `useState` pair, `throttledValue` and
  * `isCooling` are read-only. To update a field, set a fresh object:
  * `setValue((prev) => ({ ...prev, name: "Alice" }))`.
  *
- * Because React state is immutable, the deep-clone / key-stripping machinery the
- * qwik twin needs to isolate the two proxies and delete stale keys is not
- * required here — callers hand the hook fresh objects. Equality between the two
+ * Because React state is immutable, callers hand the hook fresh objects.
+ * Equality between the two
  * stores is compared **structurally** (`es-toolkit` `isEqual`), so setting a
  * fresh object that is deeply equal to the current `throttledValue` does not
  * arm a throttle window.
@@ -104,7 +100,7 @@ export const useThrottledStore = <T extends object>(
     if (interval <= 0) {
       // No throttling: mirror `value` synchronously. Set-state-in-effect is
       // intentional here — it is the passthrough path of a sync-external-state
-      // hook, matching the qwik twin's `delay <= 0` branch.
+      // hook's unthrottled `interval <= 0` branch.
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setThrottledValue(value);
       return;

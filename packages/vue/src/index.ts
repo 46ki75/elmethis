@@ -3,8 +3,7 @@
 // custom properties; theming is native via `light-dark()` + `color-scheme`.
 import "@elmethis/core/tokens.css";
 
-// Components and hooks are re-exported here as they are ported from the
-// `@elmethis/qwik` reference implementation.
+// Public components and hooks are re-exported from this entry point.
 
 // A2UI
 export {

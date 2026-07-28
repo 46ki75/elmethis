@@ -6,7 +6,7 @@ replays scripted scenarios in process, so Storybook, unit tests, and
 server, API key, network, cost, or flakiness.
 
 > `@ag-ui/*` is pinned to **0.0.57** to match `@ag-ui/client` in
-> `@elmethis/qwik` and `@elmethis/solid`, so event shapes line up with what the
+> `@elmethis/solid`, so event shapes line up with what the
 > components expect. (The `copilotkit` backend tracks the separate
 > `@ag-ui/mastra` 1.x line.)
 

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
-// cloneDeep + isEqual mirror the qwik twin: every value is deep-cloned so the
+// Every value is deep-cloned so the
 // immediate and debounced copies never share nested references, and isEqual is
 // used to skip the debounce timer when a write produces a new object reference
 // with identical contents.
@@ -9,14 +9,12 @@ import { cloneDeep, isEqual } from "es-toolkit";
 /**
  * Returns a store pair with debounced reactivity.
  *
- * React port of qwik's `useDebouncedStore`. Qwik's signal/store model does not
- * exist in React, so where qwik returned a deep-reactive proxy pair plus an
- * `isPending` signal, this hook returns plain React state:
+ * This hook returns plain React state:
  *
  * - `store` — the current value, reflecting every write immediately.
  * - `setStore` — the setter for `store` (accepts a value or an updater fn,
- *   exactly like a `useState` setter). Use it where qwik mutated the proxy
- *   in place (e.g. `setStore((s) => ({ ...s, query: next }))`).
+ *   exactly like a `useState` setter), e.g.
+ *   `setStore((s) => ({ ...s, query: next }))`.
  * - `debouncedStore` — receives the same state only after `delay` ms have
  *   elapsed since the last write to `store`. Rapid successive writes reset the
  *   timer so only the final state propagates.
@@ -49,7 +47,7 @@ export function useDebouncedStore<T extends object>(
 } {
   // Deep-clone the caller's object for both copies so neither the immediate nor
   // the debounced store shares a (mutable) reference with `initialValue`. Seeded
-  // once at construction (qwik reads `initialValue` only inside `useStore`), so
+  // once at construction, so
   // later `initialValue` identity changes are deliberately ignored.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const seed = useMemo(() => cloneDeep(initialValue), []);

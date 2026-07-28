@@ -19,7 +19,7 @@ describe("[CSR] ElmToggle", () => {
     expect(container.textContent).toContain("Body content");
   });
 
-  // A non-string `summary` (qwik's named `summary` slot) renders as-is.
+  // A non-string `summary` renders as-is.
   it("renders a custom summary node when summary is not a string", () => {
     const { container } = render(
       <ElmToggle summary={<span>Slotted summary</span>}>

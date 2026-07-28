@@ -51,8 +51,7 @@ export const ElmModal = defineComponent({
 
     // Synchronizes the native <dialog> with the controlled `isOpen` prop. The
     // `shown` fade class can only flip *after* the imperative `showModal()` /
-    // close-timer runs against the real DOM ref. Mirrors the qwik twin's
-    // `useVisibleTask$` / react's mount effect.
+    // close-timer runs against the real DOM ref, as in React's mount effect.
     const sync = (open: boolean | undefined, delay: number): void => {
       const dialog = dialogRef.value;
       if (!dialog) return;

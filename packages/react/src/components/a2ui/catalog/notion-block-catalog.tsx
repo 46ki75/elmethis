@@ -7,15 +7,15 @@
  * (A2UI v0.9 Basic Catalog) is merged underneath so a single catalog serves
  * both the standard primitives and the richer block elements.
  *
- * Differences from the qwik reference (`defineRenderer`):
- *   - The binder pre-resolves bindings, so `props.text` is already a value —
+ * Binder behavior:
+ *   - Bindings are pre-resolved, so `props.text` is already a value —
  *     there is no per-renderer `resolve()`.
  *   - Children render through the host's `buildChild(id, basePath)`; the
  *     `renderChildList` / `childEntries` helpers mirror the package's internal
  *     `ChildList`.
  *   - The binder's render signature is `{ props, buildChild, context }` with no
- *     sibling `index`, so the qwik first-child-margin override and the
- *     `TableCell` `columnIndex` row-header promotion are not wired here.
+ *     sibling `index`, so first-child-margin overrides and `TableCell`
+ *     `columnIndex` row-header promotion are not wired here.
  */
 import { Fragment, type CSSProperties } from "react";
 import {

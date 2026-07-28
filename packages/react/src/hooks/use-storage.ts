@@ -23,13 +23,10 @@ const resolveStorage = (area: "local" | "session"): Storage =>
 /**
  * Persisted, cross-tab-synced state backed by `localStorage` / `sessionStorage`.
  *
- * React port of qwik's `useStorage`. Qwik's signal model does not exist in
- * React, so where qwik returned `{ state, remove }` with `state` as a
- * read/write `Signal<T>`, this returns `{ state, setState, remove }` — read
+ * Returns `{ state, setState, remove }`: read
  * `state`, write with `setState(next)`, clear with `remove()`.
  *
- * Reads happen only on the client (after mount), matching qwik's
- * `useVisibleTask$({ strategy: "document-ready" })`. Cross-tab sync uses the
+ * Reads happen only on the client after mount. Cross-tab sync uses the
  * native `storage` event for `localStorage`; `sessionStorage` (which does not
  * emit `storage` across tabs) syncs via a `BroadcastChannel`. The channel is
  * allocated once per mount and reused for every write/remove.
@@ -115,7 +112,7 @@ export const useStorage = <T>({
   }, [storageArea, key, channel]);
 
   // Persist whenever `state` changes. Runs after mount (once the storage ref
-  // is set), mirroring qwik's writer visible-task — including the initial run
+  // is set), including the initial run
   // that persists `initialValue` when storage was empty at mount.
   useEffect(() => {
     const storage = storageRef.current;
