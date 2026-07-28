@@ -14,14 +14,14 @@ export default {
       true,
       {
         message: "Use an Elmethis color token instead of a hex color",
-        severity: "warning",
+        severity: "error",
       },
     ],
     "color-named": [
       "never",
       {
         message: "Use an Elmethis color token instead of a named color",
-        severity: "warning",
+        severity: "error",
       },
     ],
     "declaration-property-value-disallowed-list": [
@@ -32,7 +32,7 @@ export default {
       },
       {
         message: "Use an Elmethis color token instead of a color function",
-        severity: "warning",
+        severity: "error",
       },
     ],
     "csstools/value-no-unknown-custom-properties": [
