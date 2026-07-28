@@ -17,6 +17,9 @@ describe("tokenVars", () => {
   });
 
   it("emits themed tokens as light-dark() over primitive references", () => {
+    expect(tokenVars["--elmethis-color-divider"]).toBe(
+      "light-dark(var(--elmethis-primitive-color-gold-300), var(--elmethis-primitive-color-slate-800))",
+    );
     expect(tokenVars["--elmethis-color-surface-base"]).toBe(
       "light-dark(var(--elmethis-primitive-color-gold-200), var(--elmethis-primitive-color-slate-700))",
     );

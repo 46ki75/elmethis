@@ -166,6 +166,7 @@ export const semanticTokens = {
   "color-accent-error-surface": theme(color.red[100], color.red[900]),
 
   // Surfaces
+  "color-divider": theme(color.gold[300], color.slate[800]),
   "color-surface-sunken": theme(color.gold[300], color.slate[800]),
   "color-surface-base": theme(color.gold[200], color.slate[700]),
   "color-surface-raised": theme(color.gold[100], color.slate[600]),
