@@ -29,6 +29,7 @@
     "fmt": "prettier --write ./scripts",
     "fmt.check": "prettier --check ./scripts",
     "check": "pnpm run fmt.check && pnpm run build.types && pnpm run build",
+    "check.ci": "pnpm run check",
     "prepublish:npm": "pnpm run build:npm",
     "publish:npm": "pnpm publish dist/npm",
     "dev": "node --watch --watch-path=scripts scripts/index.ts"

@@ -42,7 +42,7 @@
     "test.unit": "vitest --run",
     "test.coverage": "vitest --run --coverage",
     "check": "concurrently -g \"pnpm:fmt.check\" \"pnpm:lint\" \"pnpm:build.types\"",
-    "check.ci": "concurrently -g \"pnpm:check\" \"pnpm:build\" \"pnpm:test.unit\""
+    "check.ci": "pnpm run check && pnpm run build && pnpm run test.coverage"
   },
   "dependencies": {
     "@ag-ui/client": "0.0.57",

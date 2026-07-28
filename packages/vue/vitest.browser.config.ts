@@ -36,7 +36,7 @@ export default defineConfig({
         "src/index.ts",
       ],
       reporter: ["text", "html", "lcov"],
-      reportsDirectory: "coverage",
+      reportsDirectory: "coverage/browser",
     },
     browser: {
       enabled: true,
