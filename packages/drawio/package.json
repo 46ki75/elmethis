@@ -1,0 +1,51 @@
+{
+  "name": "@elmethis/draw.io",
+  "version": "0.1.0",
+  "author": {
+    "name": "Ikuma Yamashita",
+    "url": "https://www.ikuma.cloud/"
+  },
+  "description": "diagrams.net configuration generated from the Elmethis design tokens.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/46ki75/elmethis.git",
+    "directory": "packages/drawio"
+  },
+  "homepage": "https://github.com/46ki75/elmethis/tree/main/packages/drawio#readme",
+  "bugs": {
+    "url": "https://github.com/46ki75/elmethis/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "main": "./dist/draw.io-config.json",
+  "exports": {
+    ".": "./dist/draw.io-config.json",
+    "./draw.io-config.json": "./dist/draw.io-config.json"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": "^18.17.0 || ^20.3.0 || >=21.0.0"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsx scripts/build-drawio-config.ts",
+    "build.types": "tsc --noEmit",
+    "fmt": "prettier --write ./scripts ./README.md",
+    "fmt.check": "prettier --check ./scripts ./README.md",
+    "check": "pnpm run fmt.check && pnpm run build.types && pnpm run build",
+    "check.ci": "pnpm run check",
+    "prepublishOnly": "pnpm run check"
+  },
+  "devDependencies": {
+    "@elmethis/core": "workspace:^",
+    "@types/node": "26.1.1",
+    "prettier": "3.9.6",
+    "tsx": "^4.23.1",
+    "typescript": "5.9.3"
+  }
+}

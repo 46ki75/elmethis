@@ -13,6 +13,7 @@ framework libraries are shipped as Storybooks to GitHub Pages.
 | Package                | Path                   | Published     | Purpose                                                                                                                                            |
 | ---------------------- | ---------------------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `@elmethis/core`       | `packages/core`        | yes           | Framework-agnostic hub: shared Zod schemas/types, design tokens, A2UI catalogs, language icons. Every framework lib depends on it (`workspace:^`). |
+| `@elmethis/draw.io`    | `packages/drawio`      | yes           | diagrams.net editor configuration generated from the public `@elmethis/core/tokens` entry point.                                                   |
 | `@elmethis/react`      | `packages/react`       | yes           | React 19 implementation with components and hooks. Storybook :19221                                                                                |
 | `@elmethis/solid`      | `packages/solid`       | yes           | SolidJS implementation with component parity and Solid-native primitives. Storybook :19241                                                         |
 | `@elmethis/vue`        | `packages/vue`         | yes           | Vue 3 implementation (authored in TSX); same component surface as React. Storybook :19231                                                          |
@@ -26,13 +27,14 @@ Rust MCP server — no code yet.
 ## Commands
 
 Package manager is **pnpm** (`pnpm@9.12.3`); Node 22. Run scripts per-package with `--filter`, or
-`cd` into the package. **Build `@elmethis/core` before react/solid/vue** — they import its built
-output and emitted `tokens.css`.
+`cd` into the package. **Build `@elmethis/core` before draw.io/react/solid/vue** — they import its
+built output and emitted `tokens.css`.
 
 | Command                                          | Description                                                             |
 | ------------------------------------------------ | ----------------------------------------------------------------------- |
 | `pnpm install`                                   | Install all workspace deps                                              |
 | `pnpm --filter @elmethis/core run build`         | Build core (tsdown + tokens.css + catalog JSON) — do this first         |
+| `pnpm --filter @elmethis/draw.io run build`      | Generate the diagrams.net configuration from core tokens                |
 | `pnpm --filter @elmethis/ag-ui-stub run build`   | Build the in-process AG-UI test agent used by Solid tests and Storybook |
 | `pnpm --filter ikuma-theme run build`            | Build VS Code, Shiki, Windows Terminal, and VSIX artifacts              |
 | `pnpm --filter ikuma-theme run check`            | Format-check, type-check, and build all theme artifacts                 |
@@ -57,6 +59,8 @@ runs eslint / stylelint / vitest-related per package.
 - **core is the single source of truth.** Design tokens (`src/style/token.ts` → emitted
   `tokens.css`), A2UI Notion block catalogs, JSON schemas, and language-icon registries live here and
   are consumed by all three framework libs — defined once, mirrored everywhere.
+- **draw.io is a generated artifact package.** `@elmethis/draw.io` consumes the public
+  `@elmethis/core/tokens` entry point and emits `dist/draw.io-config.json`; build core first.
 - **Component leadership is per-feature, not fixed to one framework.** The mature implementations
   keep the same component surface (same names, same props) per framework idiom, but which framework
   originates a given component varies. Check `git log` for a component before assuming which
@@ -74,7 +78,7 @@ runs eslint / stylelint / vitest-related per package.
 
 ## Gotchas
 
-- Build `@elmethis/core` before working on react/solid/vue, or their imports and `tokens.css` resolve
+- Build `@elmethis/core` before working on draw.io/react/solid/vue, or their imports and `tokens.css` resolve
   to stale/missing output.
 - Build `@elmethis/ag-ui-stub` before Solid AG-UI tests or Storybook; its workspace package exports built
   output from `dist`.
