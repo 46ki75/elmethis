@@ -29,6 +29,7 @@ The generated JSON is available from the package root or the explicit
 import config from "@elmethis/draw.io" with { type: "json" };
 ```
 
-The package intentionally does not set `override`, editor layout, libraries, or
+The package includes matching Elmethis document and selected-element style
+presets. It intentionally does not set `override`, editor layout, libraries, or
 keyboard behavior. Those are user and deployment preferences rather than
 Elmethis design tokens.
