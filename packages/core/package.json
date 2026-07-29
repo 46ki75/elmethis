@@ -24,6 +24,16 @@
         "default": "./dist/index.cjs"
       }
     },
+    "./tokens": {
+      "import": {
+        "types": "./dist/tokens.d.mts",
+        "default": "./dist/tokens.mjs"
+      },
+      "require": {
+        "types": "./dist/tokens.d.cts",
+        "default": "./dist/tokens.cjs"
+      }
+    },
     "./tokens.css": "./dist/tokens.css"
   },
   "files": [
