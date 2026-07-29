@@ -16,7 +16,7 @@
     opacity 200ms,
     transform 200ms;
   opacity: var(--elmethis-scoped-opacity);
-  box-shadow: 0 0 0.125rem var(--elmethis-color-box-shadow);
+  box-shadow: var(--elmethis-box-shadow-medium);
 }
 
 .normal {
@@ -46,13 +46,13 @@
   &:hover {
     transform: translateX(-1px) translateY(-1px);
     opacity: var(--elmethis-scoped-opacity, 0.7);
-    box-shadow: 0.125rem 0.125rem 0.125rem var(--elmethis-color-box-shadow);
+    box-shadow: var(--elmethis-box-shadow-medium);
   }
 
   &:active {
     transform: translateX(1px) translateY(1px);
     opacity: var(--elmethis-scoped-opacity, 0.5);
-    box-shadow: -1px -1px 0.125rem var(--elmethis-color-box-shadow);
+    box-shadow: var(--elmethis-box-shadow-medium);
   }
 }
 

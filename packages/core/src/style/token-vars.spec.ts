@@ -28,6 +28,15 @@ describe("tokenVars", () => {
   it("prefixes the flat semantic key with --elmethis-", () => {
     expect(tokenVars["--elmethis-color-accent-link-visited"]).toBeDefined();
     expect(tokenVars["--elmethis-stack-gap"]).toBe("2rem");
+    expect(tokenVars["--elmethis-box-shadow-small"]).toBe(
+      "0 0 1px var(--elmethis-color-box-shadow)",
+    );
+    expect(tokenVars["--elmethis-box-shadow-medium"]).toBe(
+      "0 0 2px var(--elmethis-color-box-shadow)",
+    );
+    expect(tokenVars["--elmethis-box-shadow-large"]).toBe(
+      "0 0 4px var(--elmethis-color-box-shadow)",
+    );
   });
 
   it("emits the font-family stacks (DM Sans / DM Mono primary)", () => {

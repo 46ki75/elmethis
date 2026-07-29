@@ -5,7 +5,7 @@
   color: var(--elmethis-color-neutral);
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: 0 0 0.125rem var(--elmethis-color-box-shadow);
+  box-shadow: var(--elmethis-box-shadow-medium);
   background-color: var(--elmethis-color-surface-raised);
   transition: background-color 100ms;
 

@@ -33,6 +33,20 @@ export default {
         severity: "error",
       },
     ],
+    "declaration-property-value-allowed-list": [
+      {
+        "box-shadow": [
+          "var(--elmethis-box-shadow-small)",
+          "var(--elmethis-box-shadow-medium)",
+          "var(--elmethis-box-shadow-large)",
+          "none",
+        ],
+      },
+      {
+        message: "Use an Elmethis box-shadow token",
+        severity: "error",
+      },
+    ],
     "csstools/value-no-unknown-custom-properties": [
       true,
       {

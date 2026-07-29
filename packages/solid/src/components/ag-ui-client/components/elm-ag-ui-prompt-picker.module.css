@@ -70,7 +70,7 @@
   color: var(--elmethis-color-neutral);
   background-color: var(--elmethis-color-surface-raised);
   border-radius: 0.5rem;
-  box-shadow: 0 0 0.125rem var(--elmethis-color-box-shadow);
+  box-shadow: var(--elmethis-box-shadow-medium);
   padding: 1rem;
   display: flex;
   flex-direction: column;
