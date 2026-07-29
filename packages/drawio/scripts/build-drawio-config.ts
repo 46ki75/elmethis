@@ -121,6 +121,8 @@ const fontDefinitions = webFontFamilies.map((fontFamily) => ({
 }));
 const defaultFontSource = encodeURIComponent(fontDefinitions[0].fontUrl);
 const neutralColor = semanticColor("color-neutral");
+const primaryColor = semanticColor("color-primary");
+const raisedSurfaceColor = semanticColor("color-surface-raised");
 const defaultTextStyle = [
   "text",
   "html=1",
@@ -145,6 +147,15 @@ const config = {
   version: "elmethis-1",
   defaultAdaptiveColors: "simple",
   embedSvgFonts: true,
+  styles: [
+    {
+      commonStyle: {
+        fontColor: neutralColor,
+        strokeColor: primaryColor,
+        fillColor: raisedSurfaceColor,
+      },
+    },
+  ],
   customColorSchemes: [
     [
       ...displayColors.map(([name, label]) => {
@@ -165,6 +176,12 @@ const config = {
           font: base,
         };
       }),
+      {
+        title: "Elmethis",
+        fill: raisedSurfaceColor,
+        stroke: primaryColor,
+        font: neutralColor,
+      },
     ],
   ],
   presetColors: [
