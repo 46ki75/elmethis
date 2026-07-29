@@ -103,7 +103,7 @@
     "eslint-plugin-react-refresh": "^0.5.3",
     "globals": "^17.8.0",
     "happy-dom": "^20.10.6",
-    "playwright": "^1.61.1",
+    "playwright": "^1.62.0",
     "prettier": "3.9.6",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
