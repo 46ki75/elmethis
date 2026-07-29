@@ -56,7 +56,7 @@
     var(--elmethis-color-primary-strong),
     var(--elmethis-color-primary)
   );
-  box-shadow: 0 0.25rem 0.5rem -0.25rem var(--elmethis-color-box-shadow);
+  box-shadow: var(--elmethis-box-shadow-medium);
 }
 
 .artwork-error {
@@ -177,7 +177,7 @@
 }
 
 .playing .fill {
-  box-shadow: 0 0 0.375rem 0 var(--elmethis-color-primary);
+  box-shadow: var(--elmethis-box-shadow-medium);
 }
 
 .thumb {
@@ -188,7 +188,7 @@
   height: 0.75rem;
   border-radius: 50%;
   background-color: var(--elmethis-color-primary-strong);
-  box-shadow: 0 0.125rem 0.375rem -0.0625rem var(--elmethis-color-box-shadow);
+  box-shadow: var(--elmethis-box-shadow-medium);
   transform: translate(-50%, -50%);
   transition: transform 140ms cubic-bezier(0.34, 1.56, 0.64, 1);
   pointer-events: none;
@@ -315,9 +315,7 @@
     var(--elmethis-color-primary)
   );
   cursor: pointer;
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--elmethis-color-primary) 40%, transparent),
-    0 0.375rem 0.875rem -0.375rem var(--elmethis-color-primary);
+  box-shadow: var(--elmethis-box-shadow-medium);
   transition:
     transform 140ms cubic-bezier(0.34, 1.56, 0.64, 1),
     box-shadow 160ms ease;
@@ -325,9 +323,7 @@
 
 .play-button:hover {
   transform: scale(1.06);
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--elmethis-color-primary) 60%, transparent),
-    0 0.5rem 1.25rem -0.375rem var(--elmethis-color-primary);
+  box-shadow: var(--elmethis-box-shadow-medium);
 }
 
 .play-button:active {
@@ -340,9 +336,7 @@
 }
 
 .playing .play-button {
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--elmethis-color-primary) 50%, transparent),
-    0 0 0 6px var(--elmethis-color-primary-hover);
+  box-shadow: var(--elmethis-box-shadow-medium);
 }
 
 .volume {
@@ -385,7 +379,7 @@
   border: none;
   border-radius: 50%;
   background-color: var(--elmethis-color-primary-strong);
-  box-shadow: 0 0.125rem 0.25rem -0.0625rem var(--elmethis-color-box-shadow);
+  box-shadow: var(--elmethis-box-shadow-medium);
 }
 
 .volume-slider::-moz-range-thumb {

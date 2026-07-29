@@ -54,7 +54,7 @@
   border-width: 1px;
   border-color: transparent;
   background-color: var(--elmethis-color-surface-raised);
-  box-shadow: 0 0 0.125rem var(--elmethis-color-box-shadow);
+  box-shadow: var(--elmethis-box-shadow-medium);
 
   &.disabled {
     background-color: var(--elmethis-color-surface-sunken);

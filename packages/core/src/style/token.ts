@@ -137,6 +137,10 @@ export const semanticTokens = {
    */
   "stack-gap": common("2rem"),
 
+  "box-shadow-small": common("0 0 1px var(--elmethis-color-box-shadow)"),
+  "box-shadow-medium": common("0 0 2px var(--elmethis-color-box-shadow)"),
+  "box-shadow-large": common("0 0 4px var(--elmethis-color-box-shadow)"),
+
   "font-family-sans": common(font.family.sans),
   "font-family-monospace": common(font.family.monospace),
 

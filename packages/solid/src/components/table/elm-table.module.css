@@ -57,7 +57,7 @@
 .elm-table {
   border-collapse: collapse;
   border-spacing: 0;
-  box-shadow: 0 0 0.125rem var(--elmethis-color-box-shadow);
+  box-shadow: var(--elmethis-box-shadow-medium);
 }
 
 .caption {
@@ -87,7 +87,7 @@
   position: sticky;
   inset-inline-start: 0;
   z-index: 1;
-  box-shadow: 1px 0 0 oklch(from var(--elmethis-color-primary-weak) l c h / 50%);
+  box-shadow: var(--elmethis-box-shadow-medium);
 }
 
 .sticky-row-header thead tr > :first-child {
