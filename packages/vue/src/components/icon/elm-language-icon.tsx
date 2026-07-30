@@ -21,7 +21,7 @@ export interface ElmLanguageIconProps {
   /**
    * The language of the icon.
    */
-  language: Language | string;
+  language: string;
 }
 
 export const ElmLanguageIcon = defineComponent({

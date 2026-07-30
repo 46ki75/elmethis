@@ -44,7 +44,7 @@ const renderByToken = (tokens: Token[]): VNodeChild[] => {
         if (token.tokens && token.tokens.length !== 0) {
           results.push(
             <ElmBlockQuote key={i}>
-              {renderByToken(token.tokens as Token[])}
+              {renderByToken(token.tokens)}
             </ElmBlockQuote>,
           );
         }
@@ -75,7 +75,7 @@ const renderByToken = (tokens: Token[]): VNodeChild[] => {
         results.push(
           token.tokens && token.tokens.length !== 0 ? (
             <ElmInlineText key={i} strikethrough={true}>
-              {renderByToken(token.tokens as Token[])}
+              {renderByToken(token.tokens)}
             </ElmInlineText>
           ) : (
             <ElmInlineText key={i} strikethrough={true}>
@@ -88,7 +88,7 @@ const renderByToken = (tokens: Token[]): VNodeChild[] => {
         results.push(
           token.tokens && token.tokens.length !== 0 ? (
             <ElmInlineText key={i} italic={true}>
-              {renderByToken(token.tokens as Token[])}
+              {renderByToken(token.tokens)}
             </ElmInlineText>
           ) : (
             <ElmInlineText key={i} italic={true}>
@@ -105,7 +105,7 @@ const renderByToken = (tokens: Token[]): VNodeChild[] => {
         if (token.tokens && token.tokens.length !== 0) {
           results.push(
             <ElmHeading key={i} level={level}>
-              {renderByToken(token.tokens as Token[])}
+              {renderByToken(token.tokens)}
             </ElmHeading>,
           );
         } else {
@@ -133,7 +133,7 @@ const renderByToken = (tokens: Token[]): VNodeChild[] => {
         results.push(
           token.tokens && token.tokens.length !== 0 ? (
             <ElmInlineText key={i} href={token.href}>
-              {renderByToken(token.tokens as Token[])}
+              {renderByToken(token.tokens)}
             </ElmInlineText>
           ) : (
             <ElmInlineText key={i} href={token.href}>
@@ -159,7 +159,7 @@ const renderByToken = (tokens: Token[]): VNodeChild[] => {
         results.push(
           <li key={i}>
             {token.tokens && token.tokens.length !== 0
-              ? renderByToken(token.tokens as Token[])
+              ? renderByToken(token.tokens)
               : token.text}
           </li>,
         );
@@ -168,7 +168,7 @@ const renderByToken = (tokens: Token[]): VNodeChild[] => {
         results.push(
           <ElmParagraph key={i}>
             {token.tokens && token.tokens.length !== 0
-              ? renderByToken(token.tokens as Token[])
+              ? renderByToken(token.tokens)
               : token.text}
           </ElmParagraph>,
         );
@@ -179,7 +179,7 @@ const renderByToken = (tokens: Token[]): VNodeChild[] => {
         results.push(
           token.tokens && token.tokens.length !== 0 ? (
             <ElmInlineText key={i} bold={true}>
-              {renderByToken(token.tokens as Token[])}
+              {renderByToken(token.tokens)}
             </ElmInlineText>
           ) : (
             <ElmInlineText key={i} bold={true}>
@@ -216,7 +216,7 @@ const renderByToken = (tokens: Token[]): VNodeChild[] => {
       }
       case "text":
         if (token.tokens && token.tokens.length !== 0) {
-          results.push(...renderByToken(token.tokens as Token[]));
+          results.push(...renderByToken(token.tokens));
         } else {
           results.push(token.text);
         }

@@ -17,7 +17,7 @@ export interface ElmLanguageIconProps {
   /** The size of the icon. */
   size?: number;
   /** The language of the icon. */
-  language: Language | string;
+  language: string;
 }
 
 const MDI_CODE_TAGS =

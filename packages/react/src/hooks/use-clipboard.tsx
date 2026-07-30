@@ -83,7 +83,9 @@ export const useClipboard = (options: UseClipboardOptions) => {
       <span
         className={clsx(styles["use-clipboard"], options.className)}
         style={options.style}
-        onClick={copy}
+        onClick={() => {
+          void copy();
+        }}
       >
         <ElmMdiIcon
           className={clsx(copied && styles["use-clipboard-icon-copied"])}

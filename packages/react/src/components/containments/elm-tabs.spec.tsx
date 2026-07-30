@@ -28,7 +28,9 @@ const activeTab = (container: HTMLElement, label: string) => {
   const el = Array.from(container.querySelectorAll<HTMLElement>("div")).find(
     (node) => node.textContent === label && /tab/.test(node.className),
   );
-  if (!el) throw new Error(`Tab not found: ${label}`);
+  if (!el) {
+    throw new Error(`Tab not found: ${label}`);
+  }
   return el;
 };
 

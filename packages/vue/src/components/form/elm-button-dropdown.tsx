@@ -152,14 +152,20 @@ export const ElmButtonDropdown = defineComponent({
     // Single source for open/close so the open-change event fires from every
     // path (caret, item select, outside click).
     const setOpen = (next: boolean): void => {
-      if (isOpen.value === next) return;
+      if (isOpen.value === next) {
+        return;
+      }
       isOpen.value = next;
       emit("openChange", next);
     };
 
     const handleOutsideClick = (event: MouseEvent): void => {
-      if (!isOpen.value || !containerRef.value) return;
-      if (!containerRef.value.contains(event.target as Node)) setOpen(false);
+      if (!isOpen.value || !containerRef.value) {
+        return;
+      }
+      if (!containerRef.value.contains(event.target as Node)) {
+        setOpen(false);
+      }
     };
     onMounted(() => document.addEventListener("click", handleOutsideClick));
     onBeforeUnmount(() =>
@@ -235,11 +241,15 @@ export const ElmButtonDropdown = defineComponent({
                 aria-selected={item.id === selected.value}
                 onClick={(event: MouseEvent) => {
                   event.stopPropagation();
-                  if (item.disabled) return;
+                  if (item.disabled) {
+                    return;
+                  }
                   selected.value = item.id;
                   item.onClick?.();
                   emit("itemClick", item);
-                  if (props.autoClose) setOpen(false);
+                  if (props.autoClose) {
+                    setOpen(false);
+                  }
                 }}
               >
                 <ElmMdiIcon

@@ -21,7 +21,7 @@ export const ElmBlockFallback = defineComponent({
     return () => (
       <div
         class={clsx(styles["elm-block-fallback"])}
-        style={{ "--elmethis-scoped-height": props.height } as CSSProperties}
+        style={{ "--elmethis-scoped-height": props.height }}
       >
         <ElmDotLoadingIcon />
         <ElmRectangleWave />

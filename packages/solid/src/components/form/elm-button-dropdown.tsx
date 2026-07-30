@@ -138,7 +138,9 @@ export const ElmButtonDropdown = (props: ElmButtonDropdownProps) => {
   let root!: HTMLDivElement;
 
   const setOpen = (next: boolean) => {
-    if (isOpen() === next) return;
+    if (isOpen() === next) {
+      return;
+    }
     setIsOpen(next);
     local.onOpenChange?.(next);
   };
@@ -163,11 +165,15 @@ export const ElmButtonDropdown = (props: ElmButtonDropdownProps) => {
   const mainDisabled = () => local.disabled || local.disableMainButton;
 
   const handleItemClick = (item: ElmButtonDropdownItem) => {
-    if (item.disabled) return;
+    if (item.disabled) {
+      return;
+    }
     setSelected(item.id);
     item.onClick?.();
     local.onItemClick?.(item);
-    if (local.autoClose) setOpen(false);
+    if (local.autoClose) {
+      setOpen(false);
+    }
   };
 
   return (
@@ -175,7 +181,9 @@ export const ElmButtonDropdown = (props: ElmButtonDropdownProps) => {
       {...rest}
       ref={(element) => {
         root = element;
-        if (typeof local.ref === "function") local.ref(element);
+        if (typeof local.ref === "function") {
+          local.ref(element);
+        }
       }}
       class={clsx(
         styles["elm-button-dropdown"],
@@ -221,7 +229,9 @@ export const ElmButtonDropdown = (props: ElmButtonDropdownProps) => {
         color={local.color}
         disabled={dropdownDisabled()}
         onClick={() => {
-          if (!dropdownDisabled()) setOpen(!isOpen());
+          if (!dropdownDisabled()) {
+            setOpen(!isOpen());
+          }
         }}
         aria-label="Toggle dropdown"
         aria-expanded={isOpen()}

@@ -35,7 +35,9 @@ export const ElmButton = (props: ElmButtonProps) => {
   const handleClick: JSX.EventHandler<HTMLButtonElement, MouseEvent> = (
     event,
   ) => {
-    if (local.isLoading || local.disabled || !local.onClick) return;
+    if (local.isLoading || local.disabled || !local.onClick) {
+      return;
+    }
 
     callEventHandler(local.onClick, event);
   };

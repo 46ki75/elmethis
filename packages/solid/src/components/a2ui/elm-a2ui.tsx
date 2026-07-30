@@ -97,7 +97,9 @@ export const ElmA2ui = (props: ElmA2uiProps) => {
   let current: ProcessorState | undefined;
 
   const disposeCurrent = () => {
-    if (current == null) return;
+    if (current == null) {
+      return;
+    }
     for (const subscription of current.subscriptions) {
       subscription.unsubscribe();
     }
@@ -110,18 +112,22 @@ export const ElmA2ui = (props: ElmA2uiProps) => {
     const controlledMessages = local.messages;
     const url = local.url;
     const headers = local.headers;
-    if (controlledMessages !== undefined || !url) return;
+    if (controlledMessages !== undefined || !url) {
+      return;
+    }
 
     const controller = new AbortController();
     setStreamMessages([]);
     fetch(url, { headers, signal: controller.signal })
       .then(async (response) => {
-        if (response.body == null) return;
+        if (response.body == null) {
+          return;
+        }
         await streamJsonLines(response.body, {
           signal: controller.signal,
           onMessage: (message) => {
             if (message != null && typeof message === "object") {
-              setStreamMessages((previous) => [...previous, message as object]);
+              setStreamMessages((previous) => [...previous, message]);
             }
           },
           onError: (error, line) => {
@@ -167,7 +173,9 @@ export const ElmA2ui = (props: ElmA2uiProps) => {
 
     disposeCurrent();
     const ids = new Set([BASIC_CATALOG_ID, NOTION_BLOCK_CATALOG_ID]);
-    if (catalogId) ids.add(catalogId);
+    if (catalogId) {
+      ids.add(catalogId);
+    }
     for (const message of effective) {
       if (
         message != null &&
@@ -176,7 +184,9 @@ export const ElmA2ui = (props: ElmA2uiProps) => {
       ) {
         const id = (message as { createSurface?: { catalogId?: string } })
           .createSurface?.catalogId;
-        if (id) ids.add(id);
+        if (id) {
+          ids.add(id);
+        }
       }
     }
 

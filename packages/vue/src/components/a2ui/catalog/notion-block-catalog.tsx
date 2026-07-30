@@ -80,7 +80,9 @@ import {
  * wired up. Returns the validated string ids.
  */
 function extractChildIds(value: unknown): string[] {
-  if (!Array.isArray(value)) return [];
+  if (!Array.isArray(value)) {
+    return [];
+  }
   return value.filter((id): id is string => typeof id === "string");
 }
 
@@ -109,8 +111,9 @@ export const notionBlockCatalog: CatalogRenderer = basicCatalog.extend(
   defineRenderer(RichTextApi, ({ props, resolve }) => {
     const text = resolve(props.text);
     const decoration = props.decoration ?? [];
-    if (decoration.includes("katex"))
+    if (decoration.includes("katex")) {
       return <ElmKatex expression={text} block={false} />;
+    }
     return (
       <ElmInlineText
         bold={decoration.includes("bold")}

@@ -124,7 +124,9 @@ export const ElmHtmlViewer = defineComponent({
         }
       } catch (error) {
         console.error("Failed to open HTML in a new tab", error);
-        if (url) URL.revokeObjectURL(url);
+        if (url) {
+          URL.revokeObjectURL(url);
+        }
       }
     };
 
@@ -148,7 +150,9 @@ export const ElmHtmlViewer = defineComponent({
         console.error("Failed to download HTML", error);
       } finally {
         link?.remove();
-        if (url) URL.revokeObjectURL(url);
+        if (url) {
+          URL.revokeObjectURL(url);
+        }
       }
     };
 

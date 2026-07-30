@@ -117,10 +117,18 @@ const nodeToText = (node: unknown): string => {
   if (node === null || node === undefined || typeof node === "boolean") {
     return "";
   }
-  if (typeof node === "string") return node;
-  if (typeof node === "number") return String(node);
-  if (Array.isArray(node)) return node.map(nodeToText).join("");
-  if (isVNode(node)) return nodeToText(node.children);
+  if (typeof node === "string") {
+    return node;
+  }
+  if (typeof node === "number") {
+    return String(node);
+  }
+  if (Array.isArray(node)) {
+    return node.map(nodeToText).join("");
+  }
+  if (isVNode(node)) {
+    return nodeToText(node.children);
+  }
   // Fragments/slots/anything else we can't statically measure — better to
   // under-report nothing extra than to throw.
   return "";
@@ -243,7 +251,9 @@ export const ElmSlider = defineComponent({
 
     const valueFromPointer = (clientX: number, clientY: number): number => {
       const el = trackRef.value;
-      if (!el) return currentValue.value;
+      if (!el) {
+        return currentValue.value;
+      }
       const rect = el.getBoundingClientRect();
       const ratio = isVertical.value
         ? rect.height === 0
@@ -256,13 +266,17 @@ export const ElmSlider = defineComponent({
     };
 
     const handlePointerDown = (event: PointerEvent): void => {
-      if (props.disabled) return;
+      if (props.disabled) {
+        return;
+      }
       (event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
       currentValue.value = valueFromPointer(event.clientX, event.clientY);
     };
 
     const handlePointerMove = (event: PointerEvent): void => {
-      if (props.disabled) return;
+      if (props.disabled) {
+        return;
+      }
       if (
         !(event.currentTarget as HTMLElement).hasPointerCapture(event.pointerId)
       ) {
@@ -284,7 +298,9 @@ export const ElmSlider = defineComponent({
     );
 
     const handleKeyDown = (event: KeyboardEvent): void => {
-      if (props.disabled) return;
+      if (props.disabled) {
+        return;
+      }
       // `step` is a granularity, not a direction — a caller-supplied
       // negative step must not reverse which arrow key increases the value.
       const delta = Math.abs(props.step);
@@ -324,12 +340,16 @@ export const ElmSlider = defineComponent({
     };
 
     const marks = computed(() => {
-      if (!props.markers && !props.markerLabels) return [];
+      if (!props.markers && !props.markerLabels) {
+        return [];
+      }
       // `step` is a granularity, not a direction — mirror `snap()` and the
       // keyboard handler's `Math.abs(step)` so a negative step still renders
       // ticks (only `step === 0` or an empty range means "no ticks").
       const magnitude = Math.abs(props.step);
-      if (magnitude <= 0 || props.max <= props.min) return [];
+      if (magnitude <= 0 || props.max <= props.min) {
+        return [];
+      }
       // `preciseRound` absorbs float dust in (max-min)/step (e.g.
       // 0.3/0.1 -> 2.9999999999999996, which must count as 3) without
       // rounding a genuine fraction up to the next integer (e.g.
@@ -381,12 +401,16 @@ export const ElmSlider = defineComponent({
     // `.mark-label`'s monospace font) instead of a fixed constant that only
     // fits short labels.
     const maxMarkerLabelChars = computed(() => {
-      if (!props.markerLabels) return 0;
+      if (!props.markerLabels) {
+        return 0;
+      }
       let maxChars = 0;
       for (const mark of marks.value) {
         const rendered = props.formatMarkerLabel?.(mark.value) ?? mark.value;
         const text = nodeToText(rendered);
-        if (text.length > maxChars) maxChars = text.length;
+        if (text.length > maxChars) {
+          maxChars = text.length;
+        }
       }
       return maxChars;
     });
@@ -427,16 +451,14 @@ export const ElmSlider = defineComponent({
             props.markerLabels && styles["has-marker-labels"],
             attrClass as string | undefined,
           )}
-          style={
-            {
-              "--elmethis-scoped-value-ratio": valueRatio,
-              "--elmethis-scoped-inner-min-ratio": innerMinRatio,
-              "--elmethis-scoped-inner-max-ratio": innerMaxRatio,
-              "--elmethis-scoped-max-marker-label-chars":
-                maxMarkerLabelChars.value,
-              ...(attrStyle as CSSProperties | undefined),
-            } as CSSProperties
-          }
+          style={{
+            "--elmethis-scoped-value-ratio": valueRatio,
+            "--elmethis-scoped-inner-min-ratio": innerMinRatio,
+            "--elmethis-scoped-inner-max-ratio": innerMaxRatio,
+            "--elmethis-scoped-max-marker-label-chars":
+              maxMarkerLabelChars.value,
+            ...(attrStyle as CSSProperties | undefined),
+          }}
         >
           <div
             ref={trackRef}
@@ -446,7 +468,9 @@ export const ElmSlider = defineComponent({
             onPointermove={handlePointerMove}
             onKeydown={(event: KeyboardEvent) => {
               handleKeyDown(event);
-              if (props.disabled) return;
+              if (props.disabled) {
+                return;
+              }
               (
                 attrsOnKeydown as ((event: KeyboardEvent) => void) | undefined
               )?.(event);
@@ -492,11 +516,9 @@ export const ElmSlider = defineComponent({
                         mark.value > effectiveInnerMax.value) &&
                         styles["mark-restricted"],
                     )}
-                    style={
-                      {
-                        "--elmethis-scoped-marker-ratio": mark.ratio,
-                      } as CSSProperties
-                    }
+                    style={{
+                      "--elmethis-scoped-marker-ratio": mark.ratio,
+                    }}
                   >
                     {props.markers && <i class={styles.tick} />}
                     {props.markerLabels && (

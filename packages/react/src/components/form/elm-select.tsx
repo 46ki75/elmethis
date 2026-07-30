@@ -4,7 +4,6 @@ import {
   useRef,
   useState,
   type ComponentPropsWithoutRef,
-  type CSSProperties,
   type ReactNode,
 } from "react";
 import { clsx } from "clsx";
@@ -113,7 +112,9 @@ export const ElmSelect = ({
 
   useEffect(() => {
     const handler = (event: MouseEvent) => {
-      if (!isOpen || !containerRef.current) return;
+      if (!isOpen || !containerRef.current) {
+        return;
+      }
       const target = event.target as Node;
       if (!containerRef.current.contains(target)) {
         setIsOpen(false);
@@ -138,7 +139,7 @@ export const ElmSelect = ({
         (disabled || isLoading) && styles["disabled"],
         className,
       )}
-      style={style as CSSProperties}
+      style={style}
       onClick={handleToggle}
       {...rest}
     >

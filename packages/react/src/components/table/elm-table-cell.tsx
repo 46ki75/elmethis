@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef, CSSProperties } from "react";
+import type { ComponentPropsWithoutRef } from "react";
 import { useContext } from "react";
 import { clsx } from "clsx";
 
@@ -52,7 +52,7 @@ export const ElmTableCell = ({
   return renderAsTh ? (
     <th
       className={clsx(styles["elm-table-cell"], styles.th, className)}
-      style={style as CSSProperties}
+      style={style}
       scope={scope}
       {...rest}
     >
@@ -61,7 +61,7 @@ export const ElmTableCell = ({
   ) : (
     <td
       className={clsx(styles["elm-table-cell"], styles.td, className)}
-      style={style as CSSProperties}
+      style={style}
       {...rest}
     >
       {content}

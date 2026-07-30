@@ -52,9 +52,9 @@ describe("[CSR] ElmBreadcrumb", () => {
       container.querySelectorAll<HTMLElement>('[class*="link-container"]'),
     );
 
-    initialItems[1]!.click();
+    initialItems[1].click();
     expect(onDocsClick).toHaveBeenCalledOnce();
-    expect(onDocsClick.mock.calls[0]![0]).toBeInstanceOf(MouseEvent);
+    expect(onDocsClick.mock.calls[0][0]).toBeInstanceOf(MouseEvent);
     expect(docsCurrentTarget).toBe(initialItems[1]);
 
     setLinks([docs, home]);
@@ -64,7 +64,7 @@ describe("[CSR] ElmBreadcrumb", () => {
     );
     expect(reorderedItems[0]).toBe(initialItems[1]);
     expect(reorderedItems[1]).toBe(initialItems[0]);
-    reorderedItems[1]!.click();
+    reorderedItems[1].click();
     expect(onHomeClick).toHaveBeenCalledOnce();
   });
 

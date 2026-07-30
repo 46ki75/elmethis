@@ -60,12 +60,12 @@ describe("[Browser] ElmHtmlViewer open in new tab", () => {
     rendered.getByRole("button", { name: "Open in new tab" }).click();
 
     expect(open).toHaveBeenCalledTimes(1);
-    const [url, target, features] = open.mock.calls[0]!;
+    const [url, target, features] = open.mock.calls[0];
     expect(String(url)).toMatch(/^blob:/);
     expect(target).toBe("_blank");
     expect(features).toBe("noreferrer");
 
-    const blob = createObjectUrl.mock.calls[0]![0] as Blob;
+    const blob = createObjectUrl.mock.calls[0][0] as Blob;
     const wrapper = await blob.text();
     const document = new DOMParser().parseFromString(wrapper, "text/html");
     const iframe = document.querySelector("iframe");
@@ -89,7 +89,7 @@ describe("[Browser] ElmHtmlViewer open in new tab", () => {
 
     rendered.getByRole("button", { name: "Open in new tab" }).click();
 
-    const blob = createObjectUrl.mock.calls[0]![0] as Blob;
+    const blob = createObjectUrl.mock.calls[0][0] as Blob;
     const wrapper = await blob.text();
     const document = new DOMParser().parseFromString(wrapper, "text/html");
 
@@ -171,7 +171,7 @@ describe("[Browser] ElmHtmlViewer open in new tab", () => {
     setHtml("<p>current</p>");
     rendered.getByRole("button", { name: "Open in new tab" }).click();
 
-    const blob = createObjectUrl.mock.calls[0]![0] as Blob;
+    const blob = createObjectUrl.mock.calls[0][0] as Blob;
     expect(await blob.text()).toContain("<p>current<\\/p>");
     expect(await blob.text()).not.toContain("<p>old<\\/p>");
   });
@@ -205,9 +205,9 @@ describe("[Browser] ElmHtmlViewer download", () => {
     rendered.getByRole("button", { name: "Download" }).click();
 
     expect(clicks).toHaveLength(1);
-    expect(clicks[0]!.href).toMatch(/^blob:/);
-    expect(clicks[0]!.download).toBe(expected);
-    expect(clicks[0]!.connected).toBe(true);
+    expect(clicks[0].href).toMatch(/^blob:/);
+    expect(clicks[0].download).toBe(expected);
+    expect(clicks[0].connected).toBe(true);
   });
 
   it("removes the anchor and revokes the inline Blob after clicking", () => {
@@ -251,7 +251,7 @@ describe("[Browser] ElmHtmlViewer download", () => {
     setHtml("<p>current</p>");
     rendered.getByRole("button", { name: "Download" }).click();
 
-    const blob = createObjectUrl.mock.calls[0]![0] as Blob;
+    const blob = createObjectUrl.mock.calls[0][0] as Blob;
     expect(await blob.text()).toBe("<p>current</p>");
   });
 });

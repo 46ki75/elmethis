@@ -113,7 +113,9 @@ export const ElmA2ui = ({
 
   // ---- JSONL streaming (only when `url` is provided) ----
   useEffect(() => {
-    if (!url) return;
+    if (!url) {
+      return undefined;
+    }
     const ctrl = new AbortController();
     // Clear the previous source's buffered lines when the stream url changes —
     // synchronizing the local buffer with the external stream it mirrors.
@@ -121,12 +123,14 @@ export const ElmA2ui = ({
     setStreamMessages([]);
     fetch(url, { headers, signal: ctrl.signal })
       .then(async (res) => {
-        if (!res.body) return;
+        if (!res.body) {
+          return;
+        }
         await streamJsonLines(res.body, {
           signal: ctrl.signal,
           onMessage: (m) => {
             if (m && typeof m === "object") {
-              setStreamMessages((prev) => [...prev, m as object]);
+              setStreamMessages((prev) => [...prev, m]);
             }
           },
           onError: (err, line) => {
@@ -162,7 +166,9 @@ export const ElmA2ui = ({
 
     if (isExtension && existing) {
       const fresh = effective.slice(existing.processed);
-      if (!fresh.length) return;
+      if (!fresh.length) {
+        return;
+      }
       for (const msg of fresh) {
         try {
           existing.processor.processMessages([msg] as never);
@@ -177,17 +183,23 @@ export const ElmA2ui = ({
 
     // Rebuild path: stream swap or catalogId change.
     if (existing) {
-      for (const s of existing.subs) s.unsubscribe();
+      for (const s of existing.subs) {
+        s.unsubscribe();
+      }
       existing.processor.model.dispose();
     }
 
     const ids = new Set<string>([BASIC_CATALOG_ID]);
-    if (catalogId) ids.add(catalogId);
+    if (catalogId) {
+      ids.add(catalogId);
+    }
     for (const m of effective) {
       if (m && typeof m === "object" && "createSurface" in m) {
         const id = (m as { createSurface?: { catalogId?: string } })
           .createSurface?.catalogId;
-        if (typeof id === "string") ids.add(id);
+        if (typeof id === "string") {
+          ids.add(id);
+        }
       }
     }
     const catalogs = Array.from(ids).map(
@@ -234,8 +246,12 @@ export const ElmA2ui = ({
   useEffect(() => {
     return () => {
       const internal = processorRef.current;
-      if (!internal) return;
-      for (const s of internal.subs) s.unsubscribe();
+      if (!internal) {
+        return;
+      }
+      for (const s of internal.subs) {
+        s.unsubscribe();
+      }
       internal.processor.model.dispose();
       processorRef.current = null;
     };

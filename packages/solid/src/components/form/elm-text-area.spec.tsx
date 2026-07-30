@@ -22,7 +22,7 @@ describe("[CSR] ElmTextArea", () => {
         placeholder="Type here"
       />
     ));
-    const textarea = rendered.getByTestId("area") as HTMLTextAreaElement;
+    const textarea = rendered.getByTestId("area");
     const root = textarea.closest("label")!;
 
     expect(textarea).toBe(textareaRef);

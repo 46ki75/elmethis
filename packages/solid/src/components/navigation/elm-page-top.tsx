@@ -45,8 +45,11 @@ export const ElmPageTop = (props: ElmPageTopProps) => {
     toTop();
 
     const handler = local.onClick;
-    if (typeof handler === "function") handler(event);
-    else handler?.[0](handler[1], event);
+    if (typeof handler === "function") {
+      handler(event);
+    } else {
+      handler?.[0](handler[1], event);
+    }
   };
 
   const handleKeyDown: JSX.EventHandler<HTMLElement, KeyboardEvent> = (
@@ -58,8 +61,11 @@ export const ElmPageTop = (props: ElmPageTopProps) => {
     }
 
     const handler = local.onKeyDown;
-    if (typeof handler === "function") handler(event);
-    else handler?.[0](handler[1], event);
+    if (typeof handler === "function") {
+      handler(event);
+    } else {
+      handler?.[0](handler[1], event);
+    }
   };
 
   return (

@@ -22,8 +22,8 @@ export interface AgentSubscriberState {
 export interface CreateAgentSubscriberOptions {
   state: AgentSubscriberState;
   getTools: () => ToolRegistry;
-  onNeedsReRun: (pendingToolMessages: Message[]) => unknown | Promise<unknown>;
-  onIdle?: () => unknown | Promise<unknown>;
+  onNeedsReRun: (pendingToolMessages: Message[]) => unknown;
+  onIdle?: () => unknown;
 }
 
 const isAbortError = (error: Error): boolean => error.name === "AbortError";
@@ -49,7 +49,9 @@ export function createAgentSubscriber({
     },
     async onToolCallEndEvent({ event, toolCallName, toolCallArgs }) {
       const tool = getTools()[toolCallName];
-      if (!tool) return;
+      if (!tool) {
+        return;
+      }
       const toolMessage: ToolMessage = {
         id: v7(),
         role: "tool",

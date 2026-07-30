@@ -1,9 +1,4 @@
-import {
-  defineComponent,
-  type CSSProperties,
-  type HTMLAttributes,
-  type StyleValue,
-} from "vue";
+import { defineComponent, type HTMLAttributes, type StyleValue } from "vue";
 import { clsx } from "clsx";
 
 import { ElmDotLoadingIcon } from "../icon/elm-dot-loading-icon";
@@ -87,7 +82,7 @@ export const ElmButton = defineComponent({
                 "--elmethis-scoped-opacity":
                   props.disabled || props.isLoading ? 0.6 : undefined,
                 "--elmethis-scoped-color": props.color,
-              } as CSSProperties,
+              },
               style as StyleValue,
             ] as StyleValue
           }

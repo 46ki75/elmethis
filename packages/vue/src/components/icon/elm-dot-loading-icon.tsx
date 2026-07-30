@@ -37,7 +37,7 @@ export const ElmDotLoadingIcon = defineComponent({
           )}
           style={
             [
-              { "--elmethis-scoped-size": props.size } as CSSProperties,
+              { "--elmethis-scoped-size": props.size },
               style as StyleValue,
             ] as StyleValue
           }

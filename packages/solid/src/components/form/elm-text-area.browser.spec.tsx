@@ -49,7 +49,7 @@ describe("[Browser] ElmTextArea", () => {
         style={{ width: "280px" }}
       />
     ));
-    const textarea = rendered.getByTestId("area") as HTMLTextAreaElement;
+    const textarea = rendered.getByTestId("area");
     const root = textarea.closest("label")!;
     const loading = root.querySelector(`.${styles.loading}`)!;
 

@@ -26,7 +26,7 @@ const ClipboardDemo = (props: { content: string; delay: number }) => {
   return (
     <div style={{ display: "grid", gap: "0.75rem", "max-width": "28rem" }}>
       <code>{props.content}</code>
-      <button type="button" onClick={copy}>
+      <button type="button" onClick={() => void copy()}>
         {clipboard.copied() ? "Copied" : "Copy to clipboard"}
       </button>
       {error() && <output style={{ color: "crimson" }}>{error()}</output>}
@@ -75,7 +75,7 @@ export const RichText: Story = {
 
       return (
         <div style={{ display: "grid", gap: "0.75rem", "max-width": "28rem" }}>
-          <button type="button" onClick={copy}>
+          <button type="button" onClick={() => void copy()}>
             {clipboard.copied() ? "Copied rich text" : "Copy rich text"}
           </button>
           {error() && <output style={{ color: "crimson" }}>{error()}</output>}

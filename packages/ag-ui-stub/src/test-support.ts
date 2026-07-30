@@ -20,7 +20,9 @@ export async function collectEvents(
   iterable: AsyncIterable<BaseEvent>,
 ): Promise<BaseEvent[]> {
   const events: BaseEvent[] = [];
-  for await (const event of iterable) events.push(event);
+  for await (const event of iterable) {
+    events.push(event);
+  }
   return events;
 }
 

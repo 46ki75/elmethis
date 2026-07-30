@@ -34,7 +34,9 @@ export const createChildRefs = (
   };
 
   return (value) => {
-    if (!Array.isArray(value)) return [];
+    if (!Array.isArray(value)) {
+      return [];
+    }
     return value.flatMap((child) => {
       if (typeof child === "string") {
         return [getRef(child, defaultBasePath())];
@@ -103,7 +105,9 @@ export class CatalogRenderer {
     functions: readonly FunctionImplementation[] = [],
   ) {
     const entries = new Map<string, SolidRendererEntry>();
-    for (const component of components) entries.set(component.name, component);
+    for (const component of components) {
+      entries.set(component.name, component);
+    }
     this.components = entries;
     this.functions = [...functions];
   }

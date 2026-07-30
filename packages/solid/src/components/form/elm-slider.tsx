@@ -87,10 +87,14 @@ const buildMarks = (
   max: number,
   step: number,
 ): Mark[] => {
-  if (!enabled || max === min) return [];
+  if (!enabled || max === min) {
+    return [];
+  }
 
   const magnitude = Math.abs(step);
-  if (magnitude === 0) return [];
+  if (magnitude === 0) {
+    return [];
+  }
 
   const signedStep = max > min ? magnitude : -magnitude;
   const realCount = Math.floor(preciseRound(Math.abs(max - min) / magnitude));
@@ -205,7 +209,9 @@ export const ElmSlider = (props: ElmSliderProps) => {
   const resolvedMarks = createMemo<ResolvedMark[]>(() => {
     return marks().map((mark) => {
       const label = createMemo(() => {
-        if (!local.markerLabels) return undefined;
+        if (!local.markerLabels) {
+          return undefined;
+        }
         return local.formatMarkerLabel?.(mark.value) ?? mark.value;
       });
       return { ...mark, label };
@@ -243,10 +249,15 @@ export const ElmSlider = (props: ElmSliderProps) => {
   };
 
   const releasePointer = (pointerId = capturedPointerId) => {
-    if (pointerId === undefined || pointerId !== capturedPointerId) return;
-    if (track?.hasPointerCapture(pointerId))
+    if (pointerId === undefined || pointerId !== capturedPointerId) {
+      return;
+    }
+    if (track?.hasPointerCapture(pointerId)) {
       track.releasePointerCapture(pointerId);
-    if (capturedPointerId === pointerId) capturedPointerId = undefined;
+    }
+    if (capturedPointerId === pointerId) {
+      capturedPointerId = undefined;
+    }
   };
 
   onMount(() => {
@@ -254,7 +265,9 @@ export const ElmSlider = (props: ElmSliderProps) => {
       typeof ResizeObserver === "undefined"
         ? undefined
         : new ResizeObserver(measureMarkerLabels);
-    for (const element of markerLabelElements) labelObserver?.observe(element);
+    for (const element of markerLabelElements) {
+      labelObserver?.observe(element);
+    }
     measureMarkerLabels();
 
     onCleanup(() => {
@@ -266,11 +279,15 @@ export const ElmSlider = (props: ElmSliderProps) => {
   });
 
   createEffect(() => {
-    if (local.disabled) releasePointer();
+    if (local.disabled) {
+      releasePointer();
+    }
   });
 
   const valueFromPointer = (clientX: number, clientY: number) => {
-    if (track == null) return displayValue();
+    if (track == null) {
+      return displayValue();
+    }
     const rect = track.getBoundingClientRect();
     const ratio =
       orientation() === "vertical"
@@ -286,7 +303,9 @@ export const ElmSlider = (props: ElmSliderProps) => {
   const handlePointerDown: JSX.EventHandler<HTMLDivElement, PointerEvent> = (
     event,
   ) => {
-    if (local.disabled) return;
+    if (local.disabled) {
+      return;
+    }
     if (
       capturedPointerId !== undefined &&
       capturedPointerId !== event.pointerId
@@ -302,7 +321,9 @@ export const ElmSlider = (props: ElmSliderProps) => {
   const handlePointerMove: JSX.EventHandler<HTMLDivElement, PointerEvent> = (
     event,
   ) => {
-    if (local.disabled) return;
+    if (local.disabled) {
+      return;
+    }
     if (
       capturedPointerId !== event.pointerId ||
       !event.currentTarget.hasPointerCapture(event.pointerId)
@@ -317,7 +338,9 @@ export const ElmSlider = (props: ElmSliderProps) => {
   const handlePointerUp: JSX.EventHandler<HTMLDivElement, PointerEvent> = (
     event,
   ) => {
-    if (local.disabled) return;
+    if (local.disabled) {
+      return;
+    }
     releasePointer(event.pointerId);
     callEventHandler(local.onPointerUp, event);
   };
@@ -325,7 +348,9 @@ export const ElmSlider = (props: ElmSliderProps) => {
   const handlePointerCancel: JSX.EventHandler<HTMLDivElement, PointerEvent> = (
     event,
   ) => {
-    if (local.disabled) return;
+    if (local.disabled) {
+      return;
+    }
     releasePointer(event.pointerId);
     callEventHandler(local.onPointerCancel, event);
   };
@@ -334,14 +359,20 @@ export const ElmSlider = (props: ElmSliderProps) => {
     HTMLDivElement,
     PointerEvent
   > = (event) => {
-    if (capturedPointerId === event.pointerId) capturedPointerId = undefined;
-    if (!local.disabled) callEventHandler(local.onLostPointerCapture, event);
+    if (capturedPointerId === event.pointerId) {
+      capturedPointerId = undefined;
+    }
+    if (!local.disabled) {
+      callEventHandler(local.onLostPointerCapture, event);
+    }
   };
 
   const handleKeyDown: JSX.EventHandler<HTMLDivElement, KeyboardEvent> = (
     event,
   ) => {
-    if (local.disabled) return;
+    if (local.disabled) {
+      return;
+    }
     const delta = Math.abs(step());
 
     switch (event.key) {
@@ -401,7 +432,9 @@ export const ElmSlider = (props: ElmSliderProps) => {
         {...rest}
         ref={(element) => {
           track = element;
-          if (typeof local.ref === "function") local.ref(element);
+          if (typeof local.ref === "function") {
+            local.ref(element);
+          }
         }}
         class={styles.track}
         role="slider"

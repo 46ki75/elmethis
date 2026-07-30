@@ -125,9 +125,15 @@ const reactNodeToText = (node: ReactNode): string => {
   if (node === null || node === undefined || typeof node === "boolean") {
     return "";
   }
-  if (typeof node === "string") return node;
-  if (typeof node === "number") return String(node);
-  if (Array.isArray(node)) return node.map(reactNodeToText).join("");
+  if (typeof node === "string") {
+    return node;
+  }
+  if (typeof node === "number") {
+    return String(node);
+  }
+  if (Array.isArray(node)) {
+    return node.map(reactNodeToText).join("");
+  }
   if (isValidElement(node)) {
     return reactNodeToText((node.props as { children?: ReactNode }).children);
   }
@@ -231,7 +237,9 @@ export const ElmSlider = ({
   const valueFromPointer = useCallback(
     (clientX: number, clientY: number): number => {
       const el = trackRef.current;
-      if (!el) return currentValue;
+      if (!el) {
+        return currentValue;
+      }
       const rect = el.getBoundingClientRect();
       const ratio = isVertical
         ? rect.height === 0
@@ -247,7 +255,9 @@ export const ElmSlider = ({
 
   const handlePointerDown = useCallback(
     (event: ReactPointerEvent<HTMLDivElement>) => {
-      if (disabled) return;
+      if (disabled) {
+        return;
+      }
       event.currentTarget.setPointerCapture(event.pointerId);
       setCurrentValue(valueFromPointer(event.clientX, event.clientY));
     },
@@ -256,8 +266,12 @@ export const ElmSlider = ({
 
   const handlePointerMove = useCallback(
     (event: ReactPointerEvent<HTMLDivElement>) => {
-      if (disabled) return;
-      if (!event.currentTarget.hasPointerCapture(event.pointerId)) return;
+      if (disabled) {
+        return;
+      }
+      if (!event.currentTarget.hasPointerCapture(event.pointerId)) {
+        return;
+      }
       setCurrentValue(valueFromPointer(event.clientX, event.clientY));
     },
     [disabled, setCurrentValue, valueFromPointer],
@@ -275,7 +289,9 @@ export const ElmSlider = ({
 
   const handleKeyDown = useCallback(
     (event: ReactKeyboardEvent<HTMLDivElement>) => {
-      if (disabled) return;
+      if (disabled) {
+        return;
+      }
       // `step` is a granularity, not a direction — a caller-supplied negative
       // step must not reverse which arrow key increases the value.
       const delta = Math.abs(step);
@@ -325,7 +341,9 @@ export const ElmSlider = ({
   );
 
   const marks = useMemo(() => {
-    if (!markers && !markerLabels) return [];
+    if (!markers && !markerLabels) {
+      return [];
+    }
     // `step` is a granularity, not a direction — mirror `snap()` and the
     // keyboard handler's `Math.abs(step)` so a negative step still renders
     // ticks (only `step === 0` or an empty range means "no ticks").
@@ -334,7 +352,9 @@ export const ElmSlider = ({
     // own `max === min` check) — `max < min` is a legitimate reversed/
     // declining track (see the `rangeLow`/`rangeHigh` handling above) and
     // must still produce ticks, just walking down from `min` to `max`.
-    if (magnitude <= 0 || max === min) return [];
+    if (magnitude <= 0 || max === min) {
+      return [];
+    }
     // The real step grid walks from `min` toward `max`, so the per-tick
     // increment must carry `max - min`'s sign, not just its magnitude.
     const signedStep = max > min ? magnitude : -magnitude;
@@ -380,12 +400,16 @@ export const ElmSlider = ({
   // reservation to it via `ch` (exact for `.mark-label`'s monospace font)
   // instead of a fixed constant that only fits short labels.
   const maxMarkerLabelChars = useMemo(() => {
-    if (!markerLabels) return 0;
+    if (!markerLabels) {
+      return 0;
+    }
     let max = 0;
     for (const mark of marks) {
       const rendered = formatMarkerLabel?.(mark.value) ?? mark.value;
       const text = reactNodeToText(rendered);
-      if (text.length > max) max = text.length;
+      if (text.length > max) {
+        max = text.length;
+      }
     }
     return max;
   }, [markerLabels, marks, formatMarkerLabel]);
@@ -437,17 +461,23 @@ export const ElmSlider = ({
         aria-disabled={disabled || undefined}
         onPointerDown={(event) => {
           handlePointerDown(event);
-          if (disabled) return;
+          if (disabled) {
+            return;
+          }
           onPointerDown?.(event);
         }}
         onPointerMove={(event) => {
           handlePointerMove(event);
-          if (disabled) return;
+          if (disabled) {
+            return;
+          }
           onPointerMove?.(event);
         }}
         onKeyDown={(event) => {
           handleKeyDown(event);
-          if (disabled) return;
+          if (disabled) {
+            return;
+          }
           onKeyDown?.(event);
         }}
       >

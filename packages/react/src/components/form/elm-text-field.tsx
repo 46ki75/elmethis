@@ -2,7 +2,6 @@ import {
   useRef,
   useState,
   type ComponentPropsWithoutRef,
-  type CSSProperties,
   type ReactNode,
 } from "react";
 import { clsx } from "clsx";
@@ -66,7 +65,9 @@ export const ElmTextField = ({
   // parent listening on `onChange`/`onInput` is notified.
   const setNativeValue = (next: string) => {
     const el = inputRef.current;
-    if (!el) return;
+    if (!el) {
+      return;
+    }
     const setter = Object.getOwnPropertyDescriptor(
       window.HTMLInputElement.prototype,
       "value",
@@ -170,7 +171,7 @@ export const ElmTextField = ({
 
       <div
         className={styles.loading}
-        style={{ opacity: isLoading ? 1 : 0 } as CSSProperties}
+        style={{ opacity: isLoading ? 1 : 0 }}
       ></div>
     </label>
   );

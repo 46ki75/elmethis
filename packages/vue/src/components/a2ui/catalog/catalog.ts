@@ -115,7 +115,7 @@ export function defineRenderer<Api extends ComponentApi>(
 ): RendererEntry<z.infer<Api["schema"]>> {
   return {
     name: api.name,
-    render: render as RenderFn,
+    render: render,
   };
 }
 
@@ -136,7 +136,9 @@ export class CatalogRenderer {
 
   constructor(entries: Iterable<AnyRendererEntry> = []) {
     const map = new Map<string, AnyRendererEntry>();
-    for (const entry of entries) map.set(entry.name, entry);
+    for (const entry of entries) {
+      map.set(entry.name, entry);
+    }
     this.entries = map;
   }
 
@@ -162,7 +164,9 @@ export class CatalogRenderer {
     const merged = new Map(this.entries);
     for (const o of overrides) {
       if (o instanceof CatalogRenderer) {
-        for (const [k, v] of o.entries) merged.set(k, v);
+        for (const [k, v] of o.entries) {
+          merged.set(k, v);
+        }
       } else {
         merged.set(o.name, o);
       }

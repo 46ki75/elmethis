@@ -37,12 +37,14 @@ const collectPrimitiveValues = (node: Record<string, unknown>): void => {
     }
   }
 };
-collectPrimitiveValues(primitive as unknown as Record<string, unknown>);
+collectPrimitiveValues(primitive);
 
 const resolvePrimitiveRefs = (cssValue: string): string =>
   cssValue.replace(/var\((--elmethis-primitive-[^)]+)\)/g, (ref, property) => {
     const resolved = primitiveValues.get(property);
-    if (!resolved) throw new Error(`Unknown primitive token reference: ${ref}`);
+    if (!resolved) {
+      throw new Error(`Unknown primitive token reference: ${ref}`);
+    }
     return resolved;
   });
 

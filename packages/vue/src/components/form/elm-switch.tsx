@@ -1,4 +1,4 @@
-import { defineComponent, type CSSProperties, type HTMLAttributes } from "vue";
+import { defineComponent, type HTMLAttributes } from "vue";
 import { clsx } from "clsx";
 
 import styles from "./elm-switch.module.css";
@@ -53,15 +53,13 @@ export const ElmSwitch = defineComponent({
               emit("update:checked", !props.checked);
             }
           }}
-          style={
-            {
-              "--elmethis-scoped-color": resolvedColor,
-              "--elmethis-scoped-padding": "2px",
-              "--elmethis-scoped-size": resolvedSize,
-              "--elmethis-scoped-width":
-                "calc(var(--elmethis-scoped-size) * 2 + var(--elmethis-scoped-padding) * 2)",
-            } as CSSProperties
-          }
+          style={{
+            "--elmethis-scoped-color": resolvedColor,
+            "--elmethis-scoped-padding": "2px",
+            "--elmethis-scoped-size": resolvedSize,
+            "--elmethis-scoped-width":
+              "calc(var(--elmethis-scoped-size) * 2 + var(--elmethis-scoped-padding) * 2)",
+          }}
         >
           <input
             class={styles.switch}

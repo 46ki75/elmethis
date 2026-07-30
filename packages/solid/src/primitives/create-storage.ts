@@ -47,7 +47,9 @@ const serialize = <T>(value: T): string => {
 };
 
 const isStorageSyncMessage = (value: unknown): value is StorageSyncMessage => {
-  if (typeof value !== "object" || value === null) return false;
+  if (typeof value !== "object" || value === null) {
+    return false;
+  }
   const message = value as Record<string, unknown>;
   return (
     message.protocol === "elmethis-storage-v1" &&
@@ -88,12 +90,17 @@ function createStorage<T>(
   };
 
   const persist = (operation: StorageOperation): void => {
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
 
     if (storage) {
       try {
-        if (operation.type === "remove") storage.removeItem(options.key);
-        else storage.setItem(options.key, operation.value);
+        if (operation.type === "remove") {
+          storage.removeItem(options.key);
+        } else {
+          storage.setItem(options.key, operation.value);
+        }
       } catch (error) {
         warn(
           operation.type === "remove" ? "remove" : "write",
@@ -203,8 +210,11 @@ function createStorage<T>(
           applyIncoming(event.data);
           if (storage) {
             try {
-              if (event.data.type === "remove") storage.removeItem(options.key);
-              else storage.setItem(options.key, event.data.value);
+              if (event.data.type === "remove") {
+                storage.removeItem(options.key);
+              } else {
+                storage.setItem(options.key, event.data.value);
+              }
             } catch (error) {
               warn("mirror", options.key, error);
             }

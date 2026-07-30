@@ -49,7 +49,9 @@ export const useDelayedSignal = <T>(
   // cancellation logic in `dispatch`).
   useEffect(() => {
     return () => {
-      if (timerId.current !== undefined) clearTimeout(timerId.current);
+      if (timerId.current !== undefined) {
+        clearTimeout(timerId.current);
+      }
     };
   }, []);
 

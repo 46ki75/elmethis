@@ -133,12 +133,24 @@ export const ElmInlineText = defineComponent({
         );
       }
 
-      if (props.kbd) vnode = <kbd class={styles.kbd}>{vnode}</kbd>;
-      if (props.strikethrough) vnode = <del>{vnode}</del>;
-      if (props.italic) vnode = <em>{vnode}</em>;
-      if (props.underline) vnode = <ins>{vnode}</ins>;
-      if (props.bold) vnode = <strong>{vnode}</strong>;
-      if (props.code) vnode = <code class={styles.code}>{vnode}</code>;
+      if (props.kbd) {
+        vnode = <kbd class={styles.kbd}>{vnode}</kbd>;
+      }
+      if (props.strikethrough) {
+        vnode = <del>{vnode}</del>;
+      }
+      if (props.italic) {
+        vnode = <em>{vnode}</em>;
+      }
+      if (props.underline) {
+        vnode = <ins>{vnode}</ins>;
+      }
+      if (props.bold) {
+        vnode = <strong>{vnode}</strong>;
+      }
+      if (props.code) {
+        vnode = <code class={styles.code}>{vnode}</code>;
+      }
 
       if (props.ruby) {
         vnode = (

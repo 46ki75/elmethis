@@ -15,7 +15,9 @@ export async function streamJsonLines(
   body: ReadableStream<Uint8Array>,
   { signal, onMessage, onError }: StreamJsonLinesOptions,
 ): Promise<void> {
-  if (signal?.aborted) return;
+  if (signal?.aborted) {
+    return;
+  }
 
   const reader = body.getReader();
   const decoder = new TextDecoder();
@@ -28,7 +30,9 @@ export async function streamJsonLines(
 
   const flushLine = (raw: string) => {
     const trimmed = raw.trim();
-    if (!trimmed) return;
+    if (!trimmed) {
+      return;
+    }
     try {
       onMessage(JSON.parse(trimmed));
     } catch (err) {
@@ -39,13 +43,19 @@ export async function streamJsonLines(
   try {
     for (;;) {
       const { done, value } = await reader.read();
-      if (done) break;
+      if (done) {
+        break;
+      }
       buffer += decoder.decode(value, { stream: true });
       const lines = buffer.split("\n");
       buffer = lines.pop() ?? "";
-      for (const line of lines) flushLine(line);
+      for (const line of lines) {
+        flushLine(line);
+      }
     }
-    if (!signal?.aborted) flushLine(buffer);
+    if (!signal?.aborted) {
+      flushLine(buffer);
+    }
   } finally {
     signal?.removeEventListener("abort", onAbort);
     try {

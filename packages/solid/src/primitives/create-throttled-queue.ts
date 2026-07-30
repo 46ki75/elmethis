@@ -29,7 +29,7 @@ export class ThrottledQueue {
           try {
             resolve(await task());
           } catch (error) {
-            reject(error);
+            reject(error instanceof Error ? error : new Error(String(error)));
           }
         },
         reject,
@@ -39,7 +39,9 @@ export class ThrottledQueue {
   }
 
   destroy(reason = "ThrottledQueue destroyed"): void {
-    if (this.destroyed) return;
+    if (this.destroyed) {
+      return;
+    }
     this.destroyed = true;
 
     if (this.timer !== undefined) {
@@ -48,12 +50,16 @@ export class ThrottledQueue {
     }
 
     const error = new Error(reason);
-    for (const entry of this.queue.splice(0)) entry.reject(error);
+    for (const entry of this.queue.splice(0)) {
+      entry.reject(error);
+    }
     this.running = false;
   }
 
   private drain(): void {
-    if (this.running || this.destroyed) return;
+    if (this.running || this.destroyed) {
+      return;
+    }
     this.running = true;
     this.scheduleNext();
   }
@@ -66,15 +72,21 @@ export class ThrottledQueue {
 
     const elapsed = Date.now() - this.lastFinishedAt;
     const delay = Math.max(0, this.minInterval - elapsed);
-    this.timer = setTimeout(async () => {
-      this.timer = undefined;
-      if (this.destroyed) return;
+    this.timer = setTimeout(() => {
+      void (async () => {
+        this.timer = undefined;
+        if (this.destroyed) {
+          return;
+        }
 
-      const entry = this.queue.shift();
-      if (!entry) return;
-      await entry.run();
-      this.lastFinishedAt = Date.now();
-      this.scheduleNext();
+        const entry = this.queue.shift();
+        if (!entry) {
+          return;
+        }
+        await entry.run();
+        this.lastFinishedAt = Date.now();
+        this.scheduleNext();
+      })();
     }, delay);
   }
 }

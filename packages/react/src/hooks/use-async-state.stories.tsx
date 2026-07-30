@@ -49,7 +49,7 @@ const UseAsyncStateBasic = () => {
       <pre style={{ background: "#f4f4f4", padding: "0.5rem" }}>
         {JSON.stringify(state, null, 2)}
       </pre>
-      <button onClick={() => execute()}>Refresh</button>
+      <button onClick={() => void execute()}>Refresh</button>
     </div>
   );
 };
@@ -72,7 +72,7 @@ const UseAsyncStateManual = () => {
       <pre style={{ background: "#f4f4f4", padding: "0.5rem" }}>
         {JSON.stringify(state, null, 2)}
       </pre>
-      <button onClick={() => execute()}>Load data</button>
+      <button onClick={() => void execute()}>Load data</button>
     </div>
   );
 };
@@ -99,7 +99,7 @@ const UseAsyncStateWithError = () => {
       <pre style={{ background: "#f4f4f4", padding: "0.5rem" }}>
         {JSON.stringify(state, null, 2)}
       </pre>
-      <button onClick={() => execute()}>Retry</button>
+      <button onClick={() => void execute()}>Retry</button>
     </div>
   );
 };
@@ -123,7 +123,7 @@ const UseAsyncStateWithDelay = () => {
       <pre style={{ background: "#f4f4f4", padding: "0.5rem" }}>
         {JSON.stringify(state, null, 2)}
       </pre>
-      <button onClick={() => execute()}>Refresh (no delay)</button>
+      <button onClick={() => void execute()}>Refresh (no delay)</button>
     </div>
   );
 };

@@ -27,7 +27,9 @@ export function createDebounced<T>(
   let timer: ReturnType<typeof setTimeout> | undefined;
 
   const clearTimer = () => {
-    if (timer === undefined) return;
+    if (timer === undefined) {
+      return;
+    }
     clearTimeout(timer);
     timer = undefined;
   };
@@ -40,7 +42,9 @@ export function createDebounced<T>(
           ? (nextValue as (previous: T) => T)(currentValue)
           : (nextValue as T);
 
-      if (Object.is(resolvedValue, currentValue)) return resolvedValue;
+      if (Object.is(resolvedValue, currentValue)) {
+        return resolvedValue;
+      }
 
       setImmediateValue(() => resolvedValue);
       clearTimer();

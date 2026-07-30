@@ -53,7 +53,9 @@ export const ElmParallax = defineComponent({
     onBeforeUnmount(() => {
       window.removeEventListener("scroll", scheduleUpdate);
       reducedMotion?.removeEventListener("change", scheduleUpdate);
-      if (frame !== undefined) window.cancelAnimationFrame(frame);
+      if (frame !== undefined) {
+        window.cancelAnimationFrame(frame);
+      }
     });
 
     // inheritAttrs default: passthrough class/style merge onto the root.

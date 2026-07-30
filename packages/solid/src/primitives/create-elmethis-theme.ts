@@ -38,8 +38,11 @@ const applyTheme = (theme: ElmethisTheme | null, persist: boolean): void => {
 
   if (persist) {
     try {
-      if (theme === null) window.localStorage.removeItem(LOCAL_STORAGE_KEY);
-      else window.localStorage.setItem(LOCAL_STORAGE_KEY, theme);
+      if (theme === null) {
+        window.localStorage.removeItem(LOCAL_STORAGE_KEY);
+      } else {
+        window.localStorage.setItem(LOCAL_STORAGE_KEY, theme);
+      }
     } catch {
       // Theme switching still works when storage is unavailable or denied.
     }
@@ -75,14 +78,18 @@ export function createElmethisTheme(): ElmethisThemeController {
       setIsDarkTheme(theme === null ? resolveAutoTheme() : theme === "dark");
     };
     const onStorage = (event: StorageEvent): void => {
-      if (event.key !== null && event.key !== LOCAL_STORAGE_KEY) return;
+      if (event.key !== null && event.key !== LOCAL_STORAGE_KEY) {
+        return;
+      }
 
       const theme = parseTheme(event.newValue);
       setIsDarkTheme(theme === null ? resolveAutoTheme() : theme === "dark");
       applyTheme(theme, false);
     };
     const onPreferenceChange = (event: MediaQueryListEvent): void => {
-      if (readStoredTheme() === null) setIsDarkTheme(event.matches);
+      if (readStoredTheme() === null) {
+        setIsDarkTheme(event.matches);
+      }
     };
 
     window.addEventListener(THEME_CHANGE_EVENT, onThemeChange);
@@ -93,7 +100,9 @@ export function createElmethisTheme(): ElmethisThemeController {
     setIsDarkTheme(
       storedTheme === null ? resolveAutoTheme() : storedTheme === "dark",
     );
-    if (storedTheme !== null) applyTheme(storedTheme, false);
+    if (storedTheme !== null) {
+      applyTheme(storedTheme, false);
+    }
 
     onCleanup(() => {
       window.removeEventListener(THEME_CHANGE_EVENT, onThemeChange);

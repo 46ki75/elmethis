@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef, CSSProperties, ReactNode } from "react";
+import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import { clsx } from "clsx";
 import { mdiChevronRight, mdiPlus } from "@mdi/js";
 
@@ -49,7 +49,7 @@ export const ElmToggle = ({
   return (
     <div
       className={clsx(styles["elm-toggle"], isOpen && styles.open, className)}
-      style={style as CSSProperties}
+      style={style}
       {...rest}
     >
       <div

@@ -68,10 +68,14 @@ export const ElmAgUiToolExecution = (props: ElmAgUiToolExecutionProps) => {
             : eventType === EventType.TOOL_CALL_RESULT
               ? 3
               : -1;
-    if (phase <= latestPhase) return;
+    if (phase <= latestPhase) {
+      return;
+    }
     latestPhase = phase;
 
     switch (eventType) {
+      case undefined:
+        break;
       case EventType.TOOL_CALL_START:
         enqueue(() => {
           setIsOpen(true);

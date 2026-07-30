@@ -28,7 +28,9 @@ export const ElmTooltip = (props: ElmTooltipProps) => {
   let hideTimer: ReturnType<typeof setTimeout> | undefined;
 
   const clearHideTimer = () => {
-    if (hideTimer === undefined) return;
+    if (hideTimer === undefined) {
+      return;
+    }
     clearTimeout(hideTimer);
     hideTimer = undefined;
   };
@@ -76,7 +78,9 @@ export const ElmTooltip = (props: ElmTooltipProps) => {
       {...rest}
       ref={(element) => {
         host = element;
-        if (typeof local.ref === "function") local.ref(element);
+        if (typeof local.ref === "function") {
+          local.ref(element);
+        }
       }}
       class={clsx(styles["elm-tooltip"], local.class)}
       onMouseOver={handleMouseOver}

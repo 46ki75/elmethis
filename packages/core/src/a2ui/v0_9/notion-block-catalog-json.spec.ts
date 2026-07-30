@@ -49,7 +49,7 @@ describe("notionBlockCatalogJson", () => {
       typeof v === "object" &&
       v !== null &&
       "name" in v &&
-      typeof (v as { name: unknown }).name === "string";
+      typeof v.name === "string";
 
     const apiNames = Object.values(schemas)
       .filter(hasNameField)
@@ -117,7 +117,7 @@ describe("notionBlockCatalogJson", () => {
     const ajv = newAjv();
     // Compile the catalog as a meta-schema-aware document. Add it once with
     // its $id and then compile a reference into one of its component slots.
-    ajv.addSchema(notionBlockCatalogJson as object);
+    ajv.addSchema(notionBlockCatalogJson);
     const validate = ajv.compile({
       $ref: `${NOTION_BLOCK_CATALOG_ID}#/components/Heading`,
     });
@@ -126,7 +126,7 @@ describe("notionBlockCatalogJson", () => {
 
   test("a valid Heading payload validates; an invalid one fails", () => {
     const ajv = newAjv();
-    ajv.addSchema(notionBlockCatalogJson as object);
+    ajv.addSchema(notionBlockCatalogJson);
     const validate = ajv.compile({
       $ref: `${NOTION_BLOCK_CATALOG_ID}#/components/Heading`,
     });
@@ -137,7 +137,8 @@ describe("notionBlockCatalogJson", () => {
       level: 2,
       children: ["text-1", "text-2"],
     };
-    expect(validate(ok), JSON.stringify(validate.errors)).toBe(true);
+    expect(validate(ok)).toBe(true);
+    expect(validate.errors).toBeNull();
 
     // Missing required `level` → must fail.
     const missingLevel = {
@@ -159,7 +160,7 @@ describe("notionBlockCatalogJson", () => {
 
   test("a RichText payload validates with a path-bound text (DynamicString)", () => {
     const ajv = newAjv();
-    ajv.addSchema(notionBlockCatalogJson as object);
+    ajv.addSchema(notionBlockCatalogJson);
     const validate = ajv.compile({
       $ref: `${NOTION_BLOCK_CATALOG_ID}#/components/RichText`,
     });
@@ -170,7 +171,8 @@ describe("notionBlockCatalogJson", () => {
       component: "RichText",
       text: { path: "/user/name" },
     };
-    expect(validate(bound), JSON.stringify(validate.errors)).toBe(true);
+    expect(validate(bound)).toBe(true);
+    expect(validate.errors).toBeNull();
 
     // Literal form.
     const literal = {
@@ -178,12 +180,13 @@ describe("notionBlockCatalogJson", () => {
       component: "RichText",
       text: "Hello, world",
     };
-    expect(validate(literal), JSON.stringify(validate.errors)).toBe(true);
+    expect(validate(literal)).toBe(true);
+    expect(validate.errors).toBeNull();
   });
 
   test("ChildList template form validates as `children` (Heading)", () => {
     const ajv = newAjv();
-    ajv.addSchema(notionBlockCatalogJson as object);
+    ajv.addSchema(notionBlockCatalogJson);
     const validate = ajv.compile({
       $ref: `${NOTION_BLOCK_CATALOG_ID}#/components/Heading`,
     });
@@ -194,6 +197,7 @@ describe("notionBlockCatalogJson", () => {
       level: 1,
       children: { componentId: "tpl-row", path: "/items" },
     };
-    expect(validate(templated), JSON.stringify(validate.errors)).toBe(true);
+    expect(validate(templated)).toBe(true);
+    expect(validate.errors).toBeNull();
   });
 });

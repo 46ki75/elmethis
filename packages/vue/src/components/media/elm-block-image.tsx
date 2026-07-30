@@ -1,10 +1,4 @@
-import {
-  defineComponent,
-  h,
-  type CSSProperties,
-  type HTMLAttributes,
-  type PropType,
-} from "vue";
+import { defineComponent, h, type HTMLAttributes, type PropType } from "vue";
 import { clsx } from "clsx";
 import { mdiMessageImageOutline } from "@mdi/js";
 
@@ -84,19 +78,17 @@ export const ElmBlockImage = defineComponent({
         height={props.height}
         loading={isModal ? "lazy" : undefined}
         onClick={isModal ? () => hideModal() : undefined}
-        style={
-          {
-            "--elmethis-scoped-cursor": modalEnabled()
-              ? isModalOpen.value
-                ? "zoom-out"
-                : "zoom-in"
-              : "default",
-            "--elmethis-scoped-aspect-ratio":
-              props.width && props.height
-                ? `${props.width} / ${props.height}`
-                : "auto",
-          } as CSSProperties
-        }
+        style={{
+          "--elmethis-scoped-cursor": modalEnabled()
+            ? isModalOpen.value
+              ? "zoom-out"
+              : "zoom-in"
+            : "default",
+          "--elmethis-scoped-aspect-ratio":
+            props.width && props.height
+              ? `${props.width} / ${props.height}`
+              : "auto",
+        }}
         {...{ fetchpriority: isModal ? "low" : "auto" }}
       />
     );

@@ -34,12 +34,10 @@ export const ElmCollapse = defineComponent({
           props.direction === "column" && styles["column"],
           props.direction === "both" && styles["both"],
         )}
-        style={
-          {
-            "--elmethis-scoped-transition-timing-function":
-              props.transitionTimingFunction,
-          } as CSSProperties
-        }
+        style={{
+          "--elmethis-scoped-transition-timing-function":
+            props.transitionTimingFunction,
+        }}
       >
         <div class={styles["inner"]}>{slots.default?.()}</div>
       </div>

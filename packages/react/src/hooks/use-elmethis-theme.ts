@@ -86,7 +86,9 @@ const applyTheme = (theme: Theme | null, persist: boolean): void => {
  * exists.
  */
 const initialIsDark = (): boolean => {
-  if (typeof window === "undefined") return false;
+  if (typeof window === "undefined") {
+    return false;
+  }
   const stored = parseTheme(localStorage.getItem(LOCAL_STORAGE_KEY));
   // An explicit choice wins; otherwise mirror the OS so the toggle icon
   // reflects what `color-scheme: light dark` actually renders.
@@ -118,7 +120,9 @@ export function useElmethisTheme() {
     // The `storage` event fires on `window`, not `document`. Listening on
     // `document` was a silent miss — every cross-tab update was dropped.
     const onStorage = (event: StorageEvent) => {
-      if (event.key !== LOCAL_STORAGE_KEY) return;
+      if (event.key !== LOCAL_STORAGE_KEY) {
+        return;
+      }
       const next = parseTheme(event.newValue);
       // A cleared key (next == null) reverts to the OS preference rather than
       // locking in a theme; mirror that in both the state and the DOM.

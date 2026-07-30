@@ -19,9 +19,9 @@ describe("CatalogRenderer", () => {
   });
 
   it("merges inherited functions by name with later catalogs winning", () => {
-    const replaced = BASIC_FUNCTIONS[0]!;
-    const retained = BASIC_FUNCTIONS[1]!;
-    const added = BASIC_FUNCTIONS[2]!;
+    const replaced = BASIC_FUNCTIONS[0];
+    const retained = BASIC_FUNCTIONS[1];
+    const added = BASIC_FUNCTIONS[2];
     const replacement = { ...replaced, execute: () => "replacement" };
     const base = new CatalogRenderer([], [replaced, retained]);
     const override = new CatalogRenderer([], [replacement, added]);

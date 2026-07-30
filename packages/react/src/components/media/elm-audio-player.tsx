@@ -70,7 +70,9 @@ export interface ElmAudioPlayerProps extends Omit<
 }
 
 const formatTime = (seconds: number): string => {
-  if (!Number.isFinite(seconds) || seconds < 0) seconds = 0;
+  if (!Number.isFinite(seconds) || seconds < 0) {
+    seconds = 0;
+  }
   const total = Math.floor(seconds);
   const h = Math.floor(total / 3600);
   const m = Math.floor((total % 3600) / 60);
@@ -121,10 +123,14 @@ export const ElmAudioPlayer = ({
   // While playing, sample `currentTime` every frame so the playhead glides
   // instead of stepping with the ~4Hz `timeupdate` event.
   const startRaf = useCallback(() => {
-    if (rafRef.current != null) return;
+    if (rafRef.current != null) {
+      return;
+    }
     const tick = () => {
       const audio = audioRef.current;
-      if (audio) setCurrentTime(audio.currentTime);
+      if (audio) {
+        setCurrentTime(audio.currentTime);
+      }
       rafRef.current = requestAnimationFrame(tick);
     };
     rafRef.current = requestAnimationFrame(tick);
@@ -141,7 +147,9 @@ export const ElmAudioPlayer = ({
 
   const togglePlay = useCallback(() => {
     const audio = audioRef.current;
-    if (!audio) return;
+    if (!audio) {
+      return;
+    }
     if (audio.paused) {
       void audio.play().catch(() => setIsPlaying(false));
     } else {
@@ -152,7 +160,9 @@ export const ElmAudioPlayer = ({
   const seekTo = useCallback(
     (seconds: number) => {
       const audio = audioRef.current;
-      if (!audio || !Number.isFinite(duration) || duration <= 0) return;
+      if (!audio || !Number.isFinite(duration) || duration <= 0) {
+        return;
+      }
       const clamped = Math.max(0, Math.min(duration, seconds));
       audio.currentTime = clamped;
       setCurrentTime(clamped);
@@ -162,9 +172,13 @@ export const ElmAudioPlayer = ({
 
   const ratioFromPointer = useCallback((clientX: number): number => {
     const el = trackRef.current;
-    if (!el) return 0;
+    if (!el) {
+      return 0;
+    }
     const rect = el.getBoundingClientRect();
-    if (rect.width === 0) return 0;
+    if (rect.width === 0) {
+      return 0;
+    }
     return Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
   }, []);
 
@@ -220,7 +234,9 @@ export const ElmAudioPlayer = ({
 
   const toggleMute = useCallback(() => {
     const audio = audioRef.current;
-    if (!audio) return;
+    if (!audio) {
+      return;
+    }
     const next = !audio.muted;
     audio.muted = next;
     setIsMuted(next);
@@ -272,8 +288,9 @@ export const ElmAudioPlayer = ({
         onWaiting={() => setIsLoading(true)}
         onPlaying={() => setIsLoading(false)}
         onTimeUpdate={(e) => {
-          if (rafRef.current == null)
+          if (rafRef.current == null) {
             setCurrentTime(e.currentTarget.currentTime);
+          }
         }}
         onPlay={() => {
           setIsPlaying(true);

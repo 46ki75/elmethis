@@ -71,9 +71,13 @@ export const ElmAgUiAgent = (props: ElmAgUiAgentProps) => {
   let lastScrollTime = 0;
 
   createEffect(() => {
-    if (local.state.messages.length === 0 || !local.enableAutoScroll) return;
+    if (local.state.messages.length === 0 || !local.enableAutoScroll) {
+      return;
+    }
     const now = Date.now();
-    if (now - lastScrollTime < 500) return;
+    if (now - lastScrollTime < 500) {
+      return;
+    }
     lastScrollTime = now;
     containerRef?.scrollTo({
       behavior: "smooth",
@@ -82,7 +86,9 @@ export const ElmAgUiAgent = (props: ElmAgUiAgentProps) => {
   });
 
   const submit = () => {
-    if (!input().trim()) return;
+    if (!input().trim()) {
+      return;
+    }
     void local.send([{ type: "text", text: input() }]);
     setInput("");
   };
@@ -97,7 +103,7 @@ export const ElmAgUiAgent = (props: ElmAgUiAgentProps) => {
       style={mergeStyle(local.style, {
         "--elmethis-scoped-agent-ui-width":
           local.width ?? "clamp(300px, 100%, 600px)",
-      } as JSX.CSSProperties)}
+      })}
     >
       <div class={styles["agent-container"]}>
         <div class={styles.messages}>
@@ -175,9 +181,7 @@ export const ElmAgUiAgent = (props: ElmAgUiAgentProps) => {
                     class={styles["prompt-template-tip"]}
                     onClick={() =>
                       void local.send(
-                        template.content.map(
-                          (item) => ({ ...item }) as InputContent,
-                        ),
+                        template.content.map((item) => ({ ...item })),
                       )
                     }
                   >

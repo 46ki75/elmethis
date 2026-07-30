@@ -37,7 +37,9 @@ export const ElmBlockImage = (props: ElmBlockImageProps) => {
   const { Modal: ImageModal, isOpen, show, hide } = createModal();
 
   const openModal = () => {
-    if (local.enableModal) show();
+    if (local.enableModal) {
+      show();
+    }
   };
 
   const image = (isModal: boolean) => (

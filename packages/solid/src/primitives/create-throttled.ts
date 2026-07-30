@@ -33,7 +33,9 @@ export function createThrottled<T>(
     timer = setTimeout(
       () => {
         timer = undefined;
-        if (disposed) return;
+        if (disposed) {
+          return;
+        }
 
         const latestValue = untrack(value);
         if (!Object.is(latestValue, untrack(throttledValue))) {
@@ -55,7 +57,9 @@ export function createThrottled<T>(
           ? (nextValue as (previous: T) => T)(currentValue)
           : (nextValue as T);
 
-      if (Object.is(resolvedValue, currentValue)) return resolvedValue;
+      if (Object.is(resolvedValue, currentValue)) {
+        return resolvedValue;
+      }
 
       setImmediateValue(() => resolvedValue);
 
@@ -76,7 +80,9 @@ export function createThrottled<T>(
 
   onCleanup(() => {
     disposed = true;
-    if (timer !== undefined) clearTimeout(timer);
+    if (timer !== undefined) {
+      clearTimeout(timer);
+    }
   });
 
   return { value, setValue, throttledValue, isCooling };

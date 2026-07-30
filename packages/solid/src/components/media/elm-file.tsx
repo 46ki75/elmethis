@@ -32,7 +32,9 @@ export const ElmFile = (props: ElmFileProps) => {
 
   onCleanup(() => {
     disposed = true;
-    if (objectUrl) URL.revokeObjectURL(objectUrl);
+    if (objectUrl) {
+      URL.revokeObjectURL(objectUrl);
+    }
   });
 
   const downloadFile = async () => {
@@ -41,13 +43,19 @@ export const ElmFile = (props: ElmFileProps) => {
 
     try {
       const response = await fetch(src);
-      if (!response.ok) throw new Error("Failed to download file");
+      if (!response.ok) {
+        throw new Error("Failed to download file");
+      }
 
       const blob = await response.blob();
-      if (disposed) return;
+      if (disposed) {
+        return;
+      }
 
       const nextObjectUrl = URL.createObjectURL(blob);
-      if (objectUrl) URL.revokeObjectURL(objectUrl);
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl);
+      }
       objectUrl = nextObjectUrl;
 
       const link = document.createElement("a");

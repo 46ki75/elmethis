@@ -155,7 +155,7 @@ export const ElmTextArea = defineComponent({
 
           <div
             class={styles.loading}
-            style={{ opacity: props.isLoading ? 1 : 0 } as CSSProperties}
+            style={{ opacity: props.isLoading ? 1 : 0 }}
           ></div>
         </label>
       );

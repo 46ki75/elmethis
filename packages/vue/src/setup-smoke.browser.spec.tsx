@@ -23,7 +23,12 @@ const ClipboardProbe = defineComponent({
       copied.value = true;
     };
     return () => (
-      <button type="button" onClick={copy}>
+      <button
+        type="button"
+        onClick={() => {
+          void copy();
+        }}
+      >
         {copied.value ? "Copied" : "Copy"}
       </button>
     );

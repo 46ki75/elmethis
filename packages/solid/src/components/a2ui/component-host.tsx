@@ -68,14 +68,18 @@ export const ComponentHost = (props: ComponentHostProps) => {
     setEverHadModel(initial != null);
     const created = currentSurface.componentsModel.onCreated.subscribe(
       (next: ComponentModel) => {
-        if (next.id !== id) return;
+        if (next.id !== id) {
+          return;
+        }
         setEverHadModel(true);
         setModel(next);
       },
     );
     const deleted = currentSurface.componentsModel.onDeleted.subscribe(
       (deletedId: string) => {
-        if (deletedId === id) setModel(undefined);
+        if (deletedId === id) {
+          setModel(undefined);
+        }
       },
     );
     onCleanup(() => {
@@ -136,7 +140,9 @@ export const ComponentHost = (props: ComponentHostProps) => {
 
   const instanceId = () => {
     const currentSurface = surface?.();
-    if (currentSurface == null) return "a2ui-unresolved";
+    if (currentSurface == null) {
+      return "a2ui-unresolved";
+    }
     return encodeInstanceId(currentSurface.id, props.id, props.basePath);
   };
 

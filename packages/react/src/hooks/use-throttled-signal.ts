@@ -79,7 +79,9 @@ export const useThrottledSignal = <T>(
   // Unmount-only cleanup: clears any pending cooldown timer.
   useEffect(() => {
     return () => {
-      if (cooldownId.current !== undefined) clearTimeout(cooldownId.current);
+      if (cooldownId.current !== undefined) {
+        clearTimeout(cooldownId.current);
+      }
     };
   }, []);
 
@@ -107,7 +109,9 @@ export const useThrottledSignal = <T>(
     };
 
     if (cooldownId.current === undefined) {
-      if (value === throttledRef.current) return;
+      if (value === throttledRef.current) {
+        return;
+      }
       throttledRef.current = value;
       setThrottledValue(value);
       arm();

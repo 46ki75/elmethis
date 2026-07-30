@@ -90,7 +90,7 @@ describe("[CSR] ElmHtmlViewer — open in new tab", () => {
     await screen.getByRole("button", { name: "Open in new tab" }).click();
 
     expect(openSpy).toHaveBeenCalledTimes(1);
-    const [url, target, features] = openSpy.mock.calls[0]!;
+    const [url, target, features] = openSpy.mock.calls[0];
     expect(String(url)).toMatch(/^blob:/);
     expect(target).toBe("_blank");
     // No "noopener": blob: URLs are only reachable from browsing contexts
@@ -109,7 +109,7 @@ describe("[CSR] ElmHtmlViewer — open in new tab", () => {
 
     await screen.getByRole("button", { name: "Open in new tab" }).click();
 
-    const wrapperBlob = createObjectURLSpy.mock.calls[0]![0] as Blob;
+    const wrapperBlob = createObjectURLSpy.mock.calls[0][0] as Blob;
     const wrapperHtml = await wrapperBlob.text();
     const wrapperDoc = new DOMParser().parseFromString(
       wrapperHtml,
@@ -139,7 +139,7 @@ describe("[CSR] ElmHtmlViewer — open in new tab", () => {
 
     await screen.getByRole("button", { name: "Open in new tab" }).click();
 
-    const wrapperBlob = createObjectURLSpy.mock.calls[0]![0] as Blob;
+    const wrapperBlob = createObjectURLSpy.mock.calls[0][0] as Blob;
     const wrapperHtml = await wrapperBlob.text();
     const wrapperDoc = new DOMParser().parseFromString(
       wrapperHtml,
@@ -162,7 +162,7 @@ describe("[CSR] ElmHtmlViewer — open in new tab", () => {
 
     await screen.getByRole("button", { name: "Open in new tab" }).click();
 
-    const wrapperBlob = createObjectURLSpy.mock.calls[0]![0] as Blob;
+    const wrapperBlob = createObjectURLSpy.mock.calls[0][0] as Blob;
     const wrapperHtml = await wrapperBlob.text();
     const wrapperDoc = new DOMParser().parseFromString(
       wrapperHtml,
@@ -245,11 +245,11 @@ describe("[CSR] ElmHtmlViewer — download", () => {
     await screen.getByRole("button", { name: "Download" }).click();
 
     expect(clicks).toHaveLength(1);
-    expect(clicks[0]!.href).toMatch(/^blob:/);
-    expect(clicks[0]!.download).toBe("download.html");
+    expect(clicks[0].href).toMatch(/^blob:/);
+    expect(clicks[0].download).toBe("download.html");
     // BUG this guards against regressing: a detached anchor's `.click()`
     // silently fails to trigger a save in Safari.
-    expect(clicks[0]!.connected).toBe(true);
+    expect(clicks[0].connected).toBe(true);
   });
 
   test("falls back to the default filename when filename is an empty string", async () => {
@@ -259,7 +259,7 @@ describe("[CSR] ElmHtmlViewer — download", () => {
 
     await screen.getByRole("button", { name: "Download" }).click();
 
-    expect(clicks[0]!.download).toBe("download.html");
+    expect(clicks[0].download).toBe("download.html");
   });
 
   test("uses a caller-supplied filename", async () => {
@@ -269,7 +269,7 @@ describe("[CSR] ElmHtmlViewer — download", () => {
 
     await screen.getByRole("button", { name: "Download" }).click();
 
-    expect(clicks[0]!.download).toBe("report.html");
+    expect(clicks[0].download).toBe("report.html");
   });
 
   test("removes the anchor from the document and revokes the object URL after clicking", async () => {
@@ -293,7 +293,7 @@ describe("[CSR] ElmHtmlViewer — download", () => {
     await vi.waitFor(() => {
       expect(clicks).toHaveLength(1);
     });
-    expect(clicks[0]!.href).toBe("https://example.com/doc.html");
+    expect(clicks[0].href).toBe("https://example.com/doc.html");
     expect(createObjectURLSpy).not.toHaveBeenCalled();
     createObjectURLSpy.mockRestore();
   });

@@ -63,7 +63,9 @@ export function useDebouncedStore<T extends object>(
 
   useEffect(() => {
     // delay <= 0 is handled by the derived value above — nothing to schedule.
-    if (delay <= 0) return;
+    if (delay <= 0) {
+      return undefined;
+    }
 
     const snapshot = cloneDeep(store);
     const id = setTimeout(() => {

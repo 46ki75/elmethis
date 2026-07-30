@@ -42,12 +42,16 @@ export const ElmHtmlViewer = (props: ElmHtmlViewerProps) => {
   const pendingPopupUrls = new Set<string>();
 
   const revokePopupUrl = (url: string) => {
-    if (!pendingPopupUrls.delete(url)) return;
+    if (!pendingPopupUrls.delete(url)) {
+      return;
+    }
     URL.revokeObjectURL(url);
   };
 
   onCleanup(() => {
-    for (const url of pendingPopupUrls) URL.revokeObjectURL(url);
+    for (const url of pendingPopupUrls) {
+      URL.revokeObjectURL(url);
+    }
     pendingPopupUrls.clear();
   });
 
@@ -86,11 +90,16 @@ export const ElmHtmlViewer = (props: ElmHtmlViewerProps) => {
       // its child iframe has an empty sandbox; `noreferrer` still suppresses
       // referrer data.
       const popup = window.open(url, "_blank", "noreferrer");
-      if (popup) popup.addEventListener("load", revoke, { once: true });
-      else revoke();
+      if (popup) {
+        popup.addEventListener("load", revoke, { once: true });
+      } else {
+        revoke();
+      }
     } catch (error) {
       console.error("Failed to open HTML in a new tab", error);
-      if (url) revokePopupUrl(url);
+      if (url) {
+        revokePopupUrl(url);
+      }
     }
   };
 
@@ -115,7 +124,9 @@ export const ElmHtmlViewer = (props: ElmHtmlViewerProps) => {
       console.error("Failed to download HTML", error);
     } finally {
       link?.remove();
-      if (url) URL.revokeObjectURL(url);
+      if (url) {
+        URL.revokeObjectURL(url);
+      }
     }
   };
 

@@ -48,7 +48,9 @@ export class StubAgent extends AbstractAgent {
 
   override abortRun(): void {
     super.abortRun();
-    for (const controller of this.activeRuns) controller.abort();
+    for (const controller of this.activeRuns) {
+      controller.abort();
+    }
     this.isRunning = false;
   }
 }

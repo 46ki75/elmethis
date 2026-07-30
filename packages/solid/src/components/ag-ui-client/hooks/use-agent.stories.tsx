@@ -177,7 +177,9 @@ const HttpUseAgentInstance = (props: HttpUseAgentInstanceProps) => {
   );
   const resolvePrompt = async (key: string, args: Record<string, string>) => {
     const separator = key.indexOf("::");
-    if (separator === -1) return null;
+    if (separator === -1) {
+      return null;
+    }
     return resolveMcpPrompt(
       key.slice(0, separator),
       key.slice(separator + 2),

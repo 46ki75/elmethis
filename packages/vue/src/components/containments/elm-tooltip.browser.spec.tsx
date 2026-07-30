@@ -23,9 +23,7 @@ describe("[browser] hover", () => {
   test("mouseover marks the tooltip shown, mouseleave hides it after the delay", async () => {
     render(Harness);
 
-    const host = document.querySelector(
-      "[class*='elm-tooltip']",
-    )! as HTMLElement;
+    const host = document.querySelector("[class*='elm-tooltip']")!;
     await vi.waitFor(() => expect(host).toBeTruthy());
 
     const tooltip = host.querySelector<HTMLElement>("[class*='tooltip']")!;

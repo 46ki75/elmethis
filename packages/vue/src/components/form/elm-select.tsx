@@ -99,7 +99,9 @@ export const ElmSelect = defineComponent({
     const containerRef = ref<HTMLDivElement | null>(null);
 
     const handleOutsideClick = (event: MouseEvent): void => {
-      if (!isOpen.value || !containerRef.value) return;
+      if (!isOpen.value || !containerRef.value) {
+        return;
+      }
       if (!containerRef.value.contains(event.target as Node)) {
         isOpen.value = false;
       }

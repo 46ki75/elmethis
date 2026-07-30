@@ -1,21 +1,33 @@
 import js from "@eslint/js";
+import vitest from "@vitest/eslint-plugin";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 import { defineConfig, globalIgnores } from "eslint/config";
+import {
+  strictLinterOptions,
+  strictRules,
+  typedTestRules,
+} from "../../eslint.strict.ts";
 
 export default defineConfig([
   globalIgnores(["dist", "node_modules"]),
   {
     files: ["**/*.{ts,tsx}"],
-    extends: [js.configs.recommended, tseslint.configs.recommended],
+    linterOptions: strictLinterOptions,
+    extends: [js.configs.recommended, tseslint.configs.recommendedTypeChecked],
     languageOptions: {
       ecmaVersion: 2020,
-      globals: globals.browser,
+      globals: {
+        ...globals.node,
+        ...globals.browser,
+      },
       parserOptions: {
+        projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },
     rules: {
+      ...strictRules,
       "@typescript-eslint/no-empty-object-type": "off",
       "@typescript-eslint/no-unused-vars": [
         "error",
@@ -27,5 +39,10 @@ export default defineConfig([
         },
       ],
     },
+  },
+  {
+    files: ["**/*.spec.{ts,tsx}", "**/*.browser.spec.{ts,tsx}"],
+    extends: [vitest.configs.recommended],
+    rules: typedTestRules,
   },
 ]);

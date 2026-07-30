@@ -19,7 +19,9 @@ export function createDelayedSignal<T>(
   let timer: ReturnType<typeof setTimeout> | undefined;
 
   const clearTimer = () => {
-    if (timer === undefined) return;
+    if (timer === undefined) {
+      return;
+    }
     clearTimeout(timer);
     timer = undefined;
   };

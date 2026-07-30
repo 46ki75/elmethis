@@ -88,7 +88,9 @@ function evaluateGuess(guess: string, answer: string): LetterResult[] {
 
   for (let index = 0; index < MAX_WORD_LENGTH; index++) {
     const letterResult = result[index];
-    if (letterResult.status === "correct") continue;
+    if (letterResult.status === "correct") {
+      continue;
+    }
     if ((answerLetterCounts[letterResult.letter] ?? 0) > 0) {
       result[index] = { ...letterResult, status: "present" };
       answerLetterCounts[letterResult.letter]--;
@@ -114,7 +116,9 @@ function reducer(state: WordleState, action: WordleAction): WordleState {
       };
 
     case "removeLetter":
-      if (state.currentGuess.length === 0) return state;
+      if (state.currentGuess.length === 0) {
+        return state;
+      }
       return {
         ...state,
         currentGuess: state.currentGuess.slice(0, -1),
@@ -122,7 +126,9 @@ function reducer(state: WordleState, action: WordleAction): WordleState {
       };
 
     case "submit": {
-      if (state.gameStatus !== "playing") return state;
+      if (state.gameStatus !== "playing") {
+        return state;
+      }
       if (state.currentGuess.length !== MAX_WORD_LENGTH) {
         return { ...state, errorMessage: "Not enough letters" };
       }
@@ -171,6 +177,7 @@ function reducer(state: WordleState, action: WordleAction): WordleState {
         errorMessage: "",
       };
   }
+  return state;
 }
 
 function getCell(
@@ -225,7 +232,9 @@ export const useWordle = (options?: UseWordleOptions) => {
   const Wordle: Component = () => {
     const onKeyDown = (event: KeyboardEvent): void => {
       const { key, ctrlKey, altKey, metaKey } = event;
-      if (ctrlKey || altKey || metaKey) return;
+      if (ctrlKey || altKey || metaKey) {
+        return;
+      }
       if (key === "Enter") {
         submit();
       } else if (key === "Backspace") {
@@ -244,10 +253,14 @@ export const useWordle = (options?: UseWordleOptions) => {
       event,
     ) => {
       const target = event.target;
-      if (!(target instanceof Element)) return;
+      if (!(target instanceof Element)) {
+        return;
+      }
       const button = target.closest<HTMLButtonElement>("button[data-key]");
       const key = button?.dataset.key;
-      if (!key) return;
+      if (!key) {
+        return;
+      }
       if (key === "Enter") {
         submit();
       } else if (key === "⌫") {
@@ -316,7 +329,7 @@ export const useWordle = (options?: UseWordleOptions) => {
                         class={clsx(
                           styles.key,
                           (key === "Enter" || key === "⌫") && styles.wide,
-                          keyStatus() && styles[keyStatus()!],
+                          keyStatus() && styles[keyStatus()],
                         )}
                       >
                         {key}

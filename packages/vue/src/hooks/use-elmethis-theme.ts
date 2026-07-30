@@ -73,7 +73,9 @@ const applyTheme = (theme: Theme | null, persist: boolean): void => {
  * so the `ref` seeds identically during SSR.
  */
 const initialIsDark = (): boolean => {
-  if (typeof window === "undefined") return false;
+  if (typeof window === "undefined") {
+    return false;
+  }
   const stored = parseTheme(localStorage.getItem(LOCAL_STORAGE_KEY));
   // An explicit choice wins; otherwise mirror the OS so the toggle icon
   // reflects what `color-scheme: light dark` actually renders.
@@ -119,7 +121,9 @@ export function useElmethisTheme(): {
   // The `storage` event fires on `window`, not `document`. A cleared key
   // (next == null) reverts to the OS preference rather than locking in a theme.
   const onStorage = (event: StorageEvent): void => {
-    if (event.key !== LOCAL_STORAGE_KEY) return;
+    if (event.key !== LOCAL_STORAGE_KEY) {
+      return;
+    }
     const next = parseTheme(event.newValue);
     isDarkTheme.value = next != null ? next === "dark" : prefersDark();
     // `persist: false` — the other tab already wrote to localStorage; we just
@@ -146,7 +150,9 @@ export function useElmethisTheme(): {
     // the ref initializer). With no explicit choice we leave
     // `color-scheme: light dark` in place so the page follows the OS natively.
     const stored = parseTheme(localStorage.getItem(LOCAL_STORAGE_KEY));
-    if (stored != null) applyTheme(stored, false);
+    if (stored != null) {
+      applyTheme(stored, false);
+    }
 
     if (typeof matchMedia !== "undefined") {
       mql = matchMedia("(prefers-color-scheme: dark)");

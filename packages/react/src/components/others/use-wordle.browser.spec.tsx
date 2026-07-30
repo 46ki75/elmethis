@@ -24,7 +24,7 @@ const Harness = () => {
 // CSR — the keyboard keys only respond if their click handler runs against the
 // real React event system in a real browser, which happy-dom cannot verify.
 test("keyboard clicks build a guess and submit wins the game", async () => {
-  render(<Harness />);
+  await render(<Harness />);
 
   for (const key of ["C", "R", "A", "N", "E"]) {
     await page.getByRole("button", { name: key, exact: true }).click();

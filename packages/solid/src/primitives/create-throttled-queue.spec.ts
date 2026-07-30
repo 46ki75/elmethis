@@ -54,12 +54,12 @@ describe("ThrottledQueue", () => {
     const failed = queue.push(async () => {
       throw new Error("failed");
     });
-    const failedRejection = expect(failed).rejects.toThrow("failed");
+    const failedRejection = failed.catch((error: unknown) => error);
     const next = queue.push(async () => "next");
 
     await vi.runAllTimersAsync();
 
-    await failedRejection;
+    expect(await failedRejection).toEqual(new Error("failed"));
     await expect(next).resolves.toBe("next");
   });
 
@@ -67,11 +67,11 @@ describe("ThrottledQueue", () => {
     vi.useFakeTimers();
     const queue = new ThrottledQueue();
     const pending = queue.push(async () => "pending");
-    const rejection = expect(pending).rejects.toThrow("stopped");
+    const rejection = pending.catch((error: unknown) => error);
 
     queue.destroy("stopped");
 
-    await rejection;
+    expect(await rejection).toEqual(new Error("stopped"));
     await expect(queue.push(async () => "future")).rejects.toThrow(
       /destroyed/i,
     );
@@ -92,10 +92,10 @@ describe("createThrottledQueue", () => {
     });
 
     const pending = queue.push(async () => "pending");
-    const rejection = expect(pending).rejects.toThrow("owner disposed");
+    const rejection = pending.catch((error: unknown) => error);
     dispose();
 
-    await rejection;
+    expect(await rejection).toEqual(new Error("owner disposed"));
     expect(vi.getTimerCount()).toBe(0);
   });
 });

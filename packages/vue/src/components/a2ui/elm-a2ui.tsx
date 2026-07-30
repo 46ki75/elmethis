@@ -195,7 +195,9 @@ export const ElmA2ui = defineComponent({
       if (isExtension && existing) {
         // Append-only path: process whatever's new since the last run.
         const fresh = effective.slice(existing.processed);
-        if (!fresh.length) return;
+        if (!fresh.length) {
+          return;
+        }
         for (const msg of fresh) {
           try {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -220,22 +222,27 @@ export const ElmA2ui = defineComponent({
       // so its surfaces release their dataModel / componentsModel / per-surface
       // emitters.
       if (existing) {
-        for (const s of existing.subs) s.unsubscribe();
+        for (const s of existing.subs) {
+          s.unsubscribe();
+        }
         existing.processor.model.dispose();
       }
 
       const ids = new Set<string>([BASIC_CATALOG_ID]);
-      if (propsCatalogId) ids.add(propsCatalogId);
+      if (propsCatalogId) {
+        ids.add(propsCatalogId);
+      }
       for (const m of effective) {
         if (m && typeof m === "object" && "createSurface" in m) {
           const id = (m as { createSurface?: { catalogId?: string } })
             .createSurface?.catalogId;
-          if (typeof id === "string") ids.add(id);
+          if (typeof id === "string") {
+            ids.add(id);
+          }
         }
       }
       const catalogs = Array.from(ids).map(
-        (id) =>
-          new Catalog(id, BASIC_COMPONENTS as ComponentApi[], BASIC_FUNCTIONS),
+        (id) => new Catalog(id, BASIC_COMPONENTS, BASIC_FUNCTIONS),
       );
       const processor = new MessageProcessor<ComponentApi>(catalogs);
       const newMap = new Map<string, SurfaceModel<ComponentApi>>();
@@ -291,17 +298,22 @@ export const ElmA2ui = defineComponent({
     // ---- JSONL streaming (only when url is provided) ----
     let ctrl: AbortController | null = null;
     onMounted(() => {
-      if (!props.url) return;
+      if (!props.url) {
+        return;
+      }
       ctrl = new AbortController();
       const signal = ctrl.signal;
       fetch(props.url, { headers: props.headers, signal })
         .then(async (res) => {
-          if (!res.body) return;
+          if (!res.body) {
+            return;
+          }
           await streamJsonLines(res.body, {
             signal,
             onMessage: (m) => {
-              if (m && typeof m === "object")
-                streamList.value.push(m as object);
+              if (m && typeof m === "object") {
+                streamList.value.push(m);
+              }
             },
             onError: (err, line) => {
               console.warn("[ElmA2ui] skipped invalid JSON line:", line, err);
@@ -317,8 +329,12 @@ export const ElmA2ui = defineComponent({
 
     onUnmounted(() => {
       ctrl?.abort();
-      if (!internal) return;
-      for (const s of internal.subs) s.unsubscribe();
+      if (!internal) {
+        return;
+      }
+      for (const s of internal.subs) {
+        s.unsubscribe();
+      }
       // Dispose the SurfaceGroupModel — cascades into per-surface dispose, so
       // the entire processor graph is released on unmount.
       internal.processor.model.dispose();

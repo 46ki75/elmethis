@@ -8,7 +8,9 @@ import type { Scenario } from "./types";
 
 async function drain(iterable: AsyncIterable<BaseEvent>): Promise<BaseEvent[]> {
   const out: BaseEvent[] = [];
-  for await (const event of iterable) out.push(event);
+  for await (const event of iterable) {
+    out.push(event);
+  }
   return out;
 }
 

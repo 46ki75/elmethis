@@ -5,8 +5,9 @@ import { streamJsonLines } from "./stream-json-lines";
 const streamOf = (...chunks: string[]) =>
   new ReadableStream<Uint8Array>({
     start(controller) {
-      for (const chunk of chunks)
+      for (const chunk of chunks) {
         controller.enqueue(new TextEncoder().encode(chunk));
+      }
       controller.close();
     },
   });

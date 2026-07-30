@@ -253,10 +253,10 @@ describe("basicCatalog — write-back round-trip", () => {
       expect(wrapper.findAll('input[type="checkbox"]').length).toBe(2),
     );
 
-    await wrapper.findAll('input[type="checkbox"]')[0]!.setValue(true);
+    await wrapper.findAll('input[type="checkbox"]')[0].setValue(true);
 
     await vi.waitFor(() => {
-      const second = wrapper.findAll('input[type="checkbox"]')[1]!;
+      const second = wrapper.findAll('input[type="checkbox"]')[1];
       expect((second.element as HTMLInputElement).checked).toBe(true);
     });
   });

@@ -14,7 +14,9 @@ export function reconcileMessages(
       current[index] = incoming;
     }
   }
-  if (current.length > next.length) current.length = next.length;
+  if (current.length > next.length) {
+    current.length = next.length;
+  }
 }
 
 function patchMessage(
@@ -22,16 +24,24 @@ function patchMessage(
   source: Record<string, unknown>,
 ): void {
   for (const key of Object.keys(source)) {
-    if (key === "toolCalls") continue;
-    if (target[key] !== source[key]) target[key] = source[key];
+    if (key === "toolCalls") {
+      continue;
+    }
+    if (target[key] !== source[key]) {
+      target[key] = source[key];
+    }
   }
   for (const key of Object.keys(target)) {
-    if (key !== "toolCalls" && !(key in source)) delete target[key];
+    if (key !== "toolCalls" && !(key in source)) {
+      delete target[key];
+    }
   }
 
   const sourceCalls = source.toolCalls;
   if (Array.isArray(sourceCalls)) {
-    if (!Array.isArray(target.toolCalls)) target.toolCalls = [];
+    if (!Array.isArray(target.toolCalls)) {
+      target.toolCalls = [];
+    }
     reconcileToolCalls(
       target.toolCalls as Array<Record<string, unknown>>,
       sourceCalls as Array<Record<string, unknown>>,
@@ -49,8 +59,12 @@ function reconcileToolCalls(
     const incoming = next[index];
     const existing = current[index];
     if (existing && existing.id === incoming.id) {
-      if (existing.type !== incoming.type) existing.type = incoming.type;
-      if (existing.function == null) existing.function = {};
+      if (existing.type !== incoming.type) {
+        existing.type = incoming.type;
+      }
+      if (existing.function == null) {
+        existing.function = {};
+      }
       const targetFunction = existing.function as Record<string, unknown>;
       const incomingFunction = (incoming.function ?? {}) as Record<
         string,
@@ -66,5 +80,7 @@ function reconcileToolCalls(
       current[index] = incoming;
     }
   }
-  if (current.length > next.length) current.length = next.length;
+  if (current.length > next.length) {
+    current.length = next.length;
+  }
 }

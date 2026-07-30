@@ -3,7 +3,6 @@ import {
   onBeforeUnmount,
   onMounted,
   ref,
-  type CSSProperties,
   type HTMLAttributes,
 } from "vue";
 import { clsx } from "clsx";
@@ -46,13 +45,11 @@ export const ElmPageTop = defineComponent({
     return () => (
       <nav
         class={clsx(styles["elm-page-top"], isVisible.value && styles.visible)}
-        style={
-          {
-            "--elmethis-scoped-size": `${64}px`,
-            left: props.position === "left" ? "0" : "auto",
-            right: props.position === "right" ? "0" : "auto",
-          } as CSSProperties
-        }
+        style={{
+          "--elmethis-scoped-size": `${64}px`,
+          left: props.position === "left" ? "0" : "auto",
+          right: props.position === "right" ? "0" : "auto",
+        }}
         onClick={toTop}
       >
         <div aria-hidden="true" class={styles.partial}></div>

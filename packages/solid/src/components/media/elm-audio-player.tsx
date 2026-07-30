@@ -58,7 +58,9 @@ export interface ElmAudioPlayerProps extends Omit<
 }
 
 const formatTime = (seconds: number): string => {
-  if (!Number.isFinite(seconds) || seconds < 0) seconds = 0;
+  if (!Number.isFinite(seconds) || seconds < 0) {
+    seconds = 0;
+  }
   const total = Math.floor(seconds);
   const hours = Math.floor(total / 3600);
   const minutes = Math.floor((total % 3600) / 60);
@@ -119,22 +121,34 @@ export const ElmAudioPlayer = (props: ElmAudioPlayerProps) => {
     () => local.title ?? fileNameFromSrc(local.src),
   );
   const volumeIcon = createMemo(() => {
-    if (isMuted() || volume() === 0) return mdiVolumeOff;
-    if (volume() < 0.34) return mdiVolumeLow;
-    if (volume() < 0.67) return mdiVolumeMedium;
+    if (isMuted() || volume() === 0) {
+      return mdiVolumeOff;
+    }
+    if (volume() < 0.34) {
+      return mdiVolumeLow;
+    }
+    if (volume() < 0.67) {
+      return mdiVolumeMedium;
+    }
     return mdiVolumeHigh;
   });
 
   const stopRaf = (): void => {
-    if (rafId == null) return;
+    if (rafId == null) {
+      return;
+    }
     cancelAnimationFrame(rafId);
     rafId = null;
   };
 
   const startRaf = (): void => {
-    if (rafId != null) return;
+    if (rafId != null) {
+      return;
+    }
     const tick = (): void => {
-      if (audioRef) setCurrentTime(audioRef.currentTime);
+      if (audioRef) {
+        setCurrentTime(audioRef.currentTime);
+      }
       rafId = requestAnimationFrame(tick);
     };
     rafId = requestAnimationFrame(tick);
@@ -149,7 +163,9 @@ export const ElmAudioPlayer = (props: ElmAudioPlayerProps) => {
       activeSrc = nextSrc;
       return;
     }
-    if (nextSrc === activeSrc) return;
+    if (nextSrc === activeSrc) {
+      return;
+    }
     activeSrc = nextSrc;
 
     stopRaf();
@@ -162,7 +178,9 @@ export const ElmAudioPlayer = (props: ElmAudioPlayerProps) => {
   });
 
   const togglePlay = (): void => {
-    if (!audioRef) return;
+    if (!audioRef) {
+      return;
+    }
     if (audioRef.paused) {
       void audioRef.play().catch(() => setIsPlaying(false));
     } else {
@@ -181,9 +199,13 @@ export const ElmAudioPlayer = (props: ElmAudioPlayerProps) => {
   };
 
   const ratioFromPointer = (clientX: number): number => {
-    if (!trackRef) return 0;
+    if (!trackRef) {
+      return 0;
+    }
     const rect = trackRef.getBoundingClientRect();
-    if (rect.width === 0) return 0;
+    if (rect.width === 0) {
+      return 0;
+    }
     return Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
   };
 
@@ -235,7 +257,9 @@ export const ElmAudioPlayer = (props: ElmAudioPlayerProps) => {
   };
 
   const toggleMute = (): void => {
-    if (!audioRef) return;
+    if (!audioRef) {
+      return;
+    }
     const next = !audioRef.muted;
     audioRef.muted = next;
     setIsMuted(next);
@@ -276,7 +300,9 @@ export const ElmAudioPlayer = (props: ElmAudioPlayerProps) => {
         onWaiting={() => setIsLoading(true)}
         onPlaying={() => setIsLoading(false)}
         onTimeUpdate={(event) => {
-          if (rafId == null) setCurrentTime(event.currentTarget.currentTime);
+          if (rafId == null) {
+            setCurrentTime(event.currentTarget.currentTime);
+          }
         }}
         onPlay={() => {
           setIsPlaying(true);

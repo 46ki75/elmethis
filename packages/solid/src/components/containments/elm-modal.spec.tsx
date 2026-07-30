@@ -21,7 +21,7 @@ describe("[CSR] ElmModal", () => {
         <span>Modal body</span>
       </ElmModal>
     ));
-    const dialog = rendered.getByTestId("modal") as HTMLDialogElement;
+    const dialog = rendered.getByTestId("modal");
 
     expect(dialog).toBe(root);
     expect(dialog).not.toHaveAttribute("open");
@@ -41,7 +41,7 @@ describe("[CSR] ElmModal", () => {
     const rendered = render(() => (
       <ElmModal delay={delay()} aria-label={label()} data-testid="modal" />
     ));
-    const dialog = rendered.getByTestId("modal") as HTMLDialogElement;
+    const dialog = rendered.getByTestId("modal");
 
     setDelay(350);
     setLabel("Second");
@@ -60,7 +60,7 @@ describe("[CSR] ElmModal", () => {
         <button type="button">Inside</button>
       </ElmModal>
     ));
-    const dialog = rendered.getByTestId("modal") as HTMLDialogElement;
+    const dialog = rendered.getByTestId("modal");
 
     fireEvent.click(dialog.querySelector("button")!);
     expect(onClick).not.toHaveBeenCalled();

@@ -39,6 +39,13 @@ const ERROR = "var(--elmethis-color-accent-error)";
 
 const activityView = (activity: AgentActivity): StatusView => {
   switch (activity) {
+    case "idle":
+      return {
+        d: mdiDotsHorizontalCircleOutline,
+        label: "Working...",
+        color: INFO,
+        pulse: true,
+      };
     case "thinking":
       return { d: mdiBrain, label: "Thinking...", color: INFO, pulse: true };
     case "writing":
@@ -52,14 +59,13 @@ const activityView = (activity: AgentActivity): StatusView => {
       };
     case "updating_state":
       return { d: mdiSync, label: "Updating...", color: INFO, pulse: true };
-    default:
-      return {
-        d: mdiDotsHorizontalCircleOutline,
-        label: "Working...",
-        color: INFO,
-        pulse: true,
-      };
   }
+  return {
+    d: mdiDotsHorizontalCircleOutline,
+    label: "Working...",
+    color: INFO,
+    pulse: true,
+  };
 };
 
 const resolveView = (
@@ -67,6 +73,8 @@ const resolveView = (
   activity: AgentActivity,
 ): StatusView | undefined => {
   switch (status) {
+    case "idle":
+      return undefined;
     case "running":
       return activityView(activity);
     case "awaiting_input":
@@ -85,9 +93,8 @@ const resolveView = (
       };
     case "aborted":
       return { d: mdiStopCircleOutline, label: "Stopped" };
-    default:
-      return undefined;
   }
+  return undefined;
 };
 
 export const ElmAgUiStatus = (props: ElmAgUiStatusProps) => {

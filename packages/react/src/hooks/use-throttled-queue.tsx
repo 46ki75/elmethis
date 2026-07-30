@@ -15,8 +15,9 @@ export class ThrottledQueue {
   }
 
   push<T>(fn: () => Promise<T>): Promise<T> {
-    if (this.destroyed)
+    if (this.destroyed) {
       return Promise.reject(new Error("ThrottledQueue is destroyed"));
+    }
 
     return new Promise((resolve, reject) => {
       this.queue.push({
@@ -24,7 +25,11 @@ export class ThrottledQueue {
           try {
             resolve(await fn());
           } catch (err) {
-            reject(err);
+            reject(
+              err instanceof Error
+                ? err
+                : new Error(String(err), { cause: err }),
+            );
           }
         },
         reject,
@@ -50,7 +55,9 @@ export class ThrottledQueue {
   }
 
   private drain(): void {
-    if (this.running || this.destroyed) return;
+    if (this.running || this.destroyed) {
+      return;
+    }
     this.running = true;
     this.scheduleNext();
   }
@@ -64,12 +71,13 @@ export class ThrottledQueue {
     const elapsed = Date.now() - this.lastFinishedAt;
     const delay = Math.max(0, this.minInterval - elapsed);
 
-    this.timer = setTimeout(async () => {
+    this.timer = setTimeout(() => {
       this.timer = null;
       const { task } = this.queue.shift()!;
-      await task();
-      this.lastFinishedAt = Date.now();
-      this.scheduleNext();
+      void task().then(() => {
+        this.lastFinishedAt = Date.now();
+        this.scheduleNext();
+      });
     }, delay);
   }
 }

@@ -123,12 +123,14 @@ const StreamingWrapper = defineComponent({
     let aborted = false;
 
     onMounted(() => {
-      (async () => {
+      void (async () => {
         for await (const token of tokenStream(
           MARKDOWN.split(/(?<=\s)|(?=\s)/),
           80,
         )) {
-          if (aborted) break;
+          if (aborted) {
+            break;
+          }
           content.value += token;
         }
       })();

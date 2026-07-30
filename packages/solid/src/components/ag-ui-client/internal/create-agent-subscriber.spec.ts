@@ -23,7 +23,9 @@ const call = (
   payload: Record<string, unknown> = {},
 ) => {
   const callback = subscriber[method];
-  if (!callback) throw new Error(`Missing subscriber method: ${method}`);
+  if (!callback) {
+    throw new Error(`Missing subscriber method: ${method}`);
+  }
   return (callback as (value: Record<string, unknown>) => unknown)(payload);
 };
 

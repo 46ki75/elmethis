@@ -20,6 +20,8 @@ const SIZE_MAP: Record<1 | 2 | 3 | 4 | 5 | 6, number> = Object.freeze({
   6: 1.1,
 } as const);
 
+const HEADING_TAGS = ["h1", "h2", "h3", "h4", "h5", "h6"] as const;
+
 export const ElmHeading = ({
   className,
   level,
@@ -29,7 +31,7 @@ export const ElmHeading = ({
   children,
   ...props
 }: ElmHeadingProps) => {
-  const Tag = `h${level}` as "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+  const Tag = HEADING_TAGS[level - 1];
   return (
     <Tag
       className={clsx(

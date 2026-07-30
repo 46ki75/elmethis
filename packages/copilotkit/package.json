@@ -9,6 +9,8 @@
         "prestart": "pnpm run build",
         "start": "node ./dist/index.mjs",
         "build": "node build.ts",
+        "lint": "eslint \"src/**/*.ts\" build.ts",
+        "check": "pnpm run lint && tsc --noEmit",
         "prebuild:container": "pnpm run build",
         "build:container": "docker buildx build -t copilotkit-minimal --platform linux/arm64 ."
     },
@@ -28,8 +30,13 @@
         "zod": "^4.0.0"
     },
     "devDependencies": {
+        "@eslint/js": "latest",
         "@types/node": "^26.1.2",
         "esbuild": "^0.28.1",
-        "typescript": "^5.6.2"
+        "eslint": "^10.8.0",
+        "globals": "^17.8.0",
+        "jiti": "2.4.2",
+        "typescript": "^5.6.2",
+        "typescript-eslint": "^8.65.0"
     }
 }

@@ -39,7 +39,9 @@ export function useMcpConnections(
 
   const close = async (id: string) => {
     const handle = handles.get(id);
-    if (!handle) return;
+    if (!handle) {
+      return;
+    }
     handles.delete(id);
     try {
       await handle.close();
@@ -72,7 +74,9 @@ export function useMcpConnections(
   };
 
   const reconnect = async (id?: string) => {
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
     const targets =
       id === undefined ? servers : servers.filter((server) => server.id === id);
     await Promise.all(

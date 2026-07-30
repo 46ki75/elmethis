@@ -21,7 +21,9 @@ export const ElmAgUiInputContent = (props: ElmAgUiInputContentImageProps) => {
 
   const renderContent = () => {
     const input = local.inputContent;
-    if (typeof input === "string") return renderText(input);
+    if (typeof input === "string") {
+      return renderText(input);
+    }
 
     const media: JSX.Element[] = [];
     const texts: string[] = [];

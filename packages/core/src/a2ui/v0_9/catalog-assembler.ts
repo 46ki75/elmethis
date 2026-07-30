@@ -255,12 +255,16 @@ const COMMON_BY_REF: ReadonlyArray<readonly [string, ZodTypeAny]> = [
 // ---------------------------------------------------------------------------
 
 function stripDescriptions(node: unknown): unknown {
-  if (Array.isArray(node)) return node.map(stripDescriptions);
+  if (Array.isArray(node)) {
+    return node.map(stripDescriptions);
+  }
   if (node && typeof node === "object") {
     const obj = node as Record<string, unknown>;
     const out: Record<string, unknown> = {};
     for (const key of Object.keys(obj).sort()) {
-      if (key === "description") continue;
+      if (key === "description") {
+        continue;
+      }
       out[key] = stripDescriptions(obj[key]);
     }
     return out;
@@ -296,8 +300,12 @@ for (const [name, schema] of COMMON_BY_REF) {
  * draft 2019-09+).
  */
 function collapseCommonRefs(node: unknown): unknown {
-  if (Array.isArray(node)) return node.map(collapseCommonRefs);
-  if (!node || typeof node !== "object") return node;
+  if (Array.isArray(node)) {
+    return node.map(collapseCommonRefs);
+  }
+  if (!node || typeof node !== "object") {
+    return node;
+  }
 
   const obj = node as Record<string, unknown>;
   const refName = FINGERPRINT_TO_REF.get(fingerprint(obj));
@@ -309,7 +317,9 @@ function collapseCommonRefs(node: unknown): unknown {
   }
 
   const out: Record<string, unknown> = {};
-  for (const [k, v] of Object.entries(obj)) out[k] = collapseCommonRefs(v);
+  for (const [k, v] of Object.entries(obj)) {
+    out[k] = collapseCommonRefs(v);
+  }
   return out;
 }
 
@@ -339,11 +349,15 @@ function buildComponentSchema(api: ComponentApi): Record<string, unknown> {
   const required: string[] = [];
 
   for (const [key, value] of Object.entries(rawProperties)) {
-    if (FACTORED_OUT_KEYS.has(key)) continue;
+    if (FACTORED_OUT_KEYS.has(key)) {
+      continue;
+    }
     properties[key] = collapseCommonRefs(value);
   }
   for (const key of inner.required ?? []) {
-    if (!FACTORED_OUT_KEYS.has(key)) required.push(key);
+    if (!FACTORED_OUT_KEYS.has(key)) {
+      required.push(key);
+    }
   }
 
   return {

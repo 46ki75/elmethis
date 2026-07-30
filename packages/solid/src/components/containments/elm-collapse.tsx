@@ -19,7 +19,9 @@ const mergeCollapseStyle = (
     "--elmethis-scoped-transition-timing-function": transitionTimingFunction,
   } satisfies JSX.CSSProperties;
 
-  if (typeof style !== "string") return { ...(style ?? {}), ...scopedStyle };
+  if (typeof style !== "string") {
+    return { ...(style ?? {}), ...scopedStyle };
+  }
 
   return [
     style.trim().replace(/;$/, ""),

@@ -43,7 +43,7 @@ describe("[Browser] ElmFile", () => {
       1,
       "https://example.com/files/first.txt?token=1",
     );
-    expect(createObjectUrlSpy.mock.calls[0]![0]).toBeInstanceOf(Blob);
+    expect(createObjectUrlSpy.mock.calls[0][0]).toBeInstanceOf(Blob);
     expect(downloads[0]).toEqual({
       href: "blob:https://example.com/first",
       name: "first.txt",
