@@ -137,7 +137,8 @@ describe("notionBlockCatalogJson", () => {
       level: 2,
       children: ["text-1", "text-2"],
     };
-    expect(validate(ok), JSON.stringify(validate.errors)).toBe(true);
+    expect(validate(ok)).toBe(true);
+    expect(validate.errors).toBeNull();
 
     // Missing required `level` → must fail.
     const missingLevel = {
@@ -170,7 +171,8 @@ describe("notionBlockCatalogJson", () => {
       component: "RichText",
       text: { path: "/user/name" },
     };
-    expect(validate(bound), JSON.stringify(validate.errors)).toBe(true);
+    expect(validate(bound)).toBe(true);
+    expect(validate.errors).toBeNull();
 
     // Literal form.
     const literal = {
@@ -178,7 +180,8 @@ describe("notionBlockCatalogJson", () => {
       component: "RichText",
       text: "Hello, world",
     };
-    expect(validate(literal), JSON.stringify(validate.errors)).toBe(true);
+    expect(validate(literal)).toBe(true);
+    expect(validate.errors).toBeNull();
   });
 
   test("ChildList template form validates as `children` (Heading)", () => {
@@ -194,6 +197,7 @@ describe("notionBlockCatalogJson", () => {
       level: 1,
       children: { componentId: "tpl-row", path: "/items" },
     };
-    expect(validate(templated), JSON.stringify(validate.errors)).toBe(true);
+    expect(validate(templated)).toBe(true);
+    expect(validate.errors).toBeNull();
   });
 });

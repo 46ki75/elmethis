@@ -61,7 +61,11 @@ describe("useAgent", () => {
       return null;
     };
     render(() => <Harness />);
-    await vi.waitFor(() => expect(fake.connected).toBe(true));
+    await vi.waitFor(() => {
+      if (!fake.connected) {
+        throw new Error("agent has not connected");
+      }
+    });
   });
 
   it("queues during a run, unwinds newest-first, and drains FIFO", async () => {

@@ -39,6 +39,9 @@ describe("[Browser] ElmHtml auto-height", () => {
     await waitForTallFrame(rendered.container);
     setHtml(GROWING_HTML);
     await waitForTallFrame(rendered.container);
+    expect(
+      parseInt(iframeOf(rendered.container).style.height, 10),
+    ).toBeGreaterThan(800);
   });
 
   it(
@@ -271,6 +274,9 @@ describe("[Browser] ElmHtml src and layout", () => {
     try {
       const rendered = render(() => <ElmHtml src={url} />);
       await waitForTallFrame(rendered.container);
+      expect(
+        parseInt(iframeOf(rendered.container).style.height, 10),
+      ).toBeGreaterThan(800);
     } finally {
       URL.revokeObjectURL(url);
     }

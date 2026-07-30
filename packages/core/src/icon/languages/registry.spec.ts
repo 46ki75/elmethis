@@ -12,13 +12,14 @@ describe("language registry derivations", () => {
   });
 
   it("gives every glyph language an icon, and none to file", () => {
-    for (const entry of LANGUAGE_REGISTRY) {
-      if (entry.key === "file") {
-        expect(entry.icon).toBeNull();
-        expect(languageIcons).not.toHaveProperty("file");
-      } else {
-        expect(languageIcons[entry.key]).toBe(entry.icon);
-      }
+    const file = LANGUAGE_REGISTRY.find((entry) => entry.key === "file");
+    expect(file?.icon).toBeNull();
+    expect(languageIcons).not.toHaveProperty("file");
+
+    for (const entry of LANGUAGE_REGISTRY.filter(
+      (candidate) => candidate.key !== "file",
+    )) {
+      expect(languageIcons[entry.key]).toBe(entry.icon);
     }
   });
 

@@ -1,9 +1,14 @@
 import js from "@eslint/js";
+import vitest from "@vitest/eslint-plugin";
 import solid from "eslint-plugin-solid/configs/typescript";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 import { defineConfig, globalIgnores } from "eslint/config";
-import { strictRules, typedTestRules } from "../../eslint.strict.ts";
+import {
+  strictLinterOptions,
+  strictRules,
+  typedTestRules,
+} from "../../eslint.strict.ts";
 
 export default defineConfig([
   globalIgnores([
@@ -18,6 +23,7 @@ export default defineConfig([
   ]),
   {
     files: ["**/*.{ts,tsx}"],
+    linterOptions: strictLinterOptions,
     extends: [
       js.configs.recommended,
       tseslint.configs.recommendedTypeChecked,
@@ -49,6 +55,7 @@ export default defineConfig([
   },
   {
     files: ["**/*.spec.{ts,tsx}", "**/*.browser.spec.{ts,tsx}"],
+    extends: [vitest.configs.recommended],
     rules: typedTestRules,
   },
 ]);
