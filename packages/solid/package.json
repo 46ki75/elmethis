@@ -93,7 +93,7 @@
     "@storybook/addon-docs": "^10.5.5",
     "@testing-library/jest-dom": "^7.0.0",
     "@types/katex": "^0.16.8",
-    "@types/node": "^26.1.1",
+    "@types/node": "^26.1.2",
     "@vitest/browser-playwright": "4.1.10",
     "@vitest/coverage-v8": "4.1.10",
     "concurrently": "^10.0.4",
