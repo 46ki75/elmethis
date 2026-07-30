@@ -1,4 +1,4 @@
-import { defineComponent, type CSSProperties, type HTMLAttributes } from "vue";
+import { defineComponent, type HTMLAttributes } from "vue";
 import { clsx } from "clsx";
 import { mdiCheckCircle, mdiCheckCircleOutline } from "@mdi/js";
 
@@ -28,11 +28,9 @@ export const ElmValidation = defineComponent({
     return () => (
       <div
         class={clsx(styles["elm-validation"])}
-        style={
-          {
-            "--elmethis-scoped-opacity": props.isValid ? 1 : 0.5,
-          } as CSSProperties
-        }
+        style={{
+          "--elmethis-scoped-opacity": props.isValid ? 1 : 0.5,
+        }}
       >
         <ElmMdiIcon
           path={props.isValid ? mdiCheckCircle : mdiCheckCircleOutline}

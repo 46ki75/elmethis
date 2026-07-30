@@ -3,7 +3,6 @@ import {
   defineComponent,
   type Component,
   type CSSProperties,
-  type StyleValue,
 } from "vue";
 import { clsx } from "clsx";
 import {
@@ -65,8 +64,10 @@ export const useClipboard = (
       return () => (
         <span
           class={clsx(styles["use-clipboard"], options.class)}
-          style={options.style as StyleValue}
-          onClick={copy}
+          style={options.style}
+          onClick={() => {
+            void copy();
+          }}
         >
           <ElmMdiIcon
             class={clsx(copied.value && styles["use-clipboard-icon-copied"])}

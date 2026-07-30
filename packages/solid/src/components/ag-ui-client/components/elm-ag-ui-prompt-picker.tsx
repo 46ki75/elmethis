@@ -66,7 +66,9 @@ export const ElmAgUiPromptPicker = (props: ElmAgUiPromptPickerProps) => {
   let firstField: HTMLInputElement | HTMLSelectElement | undefined;
 
   createEffect(() => {
-    if (!active.descriptor) return;
+    if (!active.descriptor) {
+      return;
+    }
     const frame = requestAnimationFrame(() => firstField?.focus());
     onCleanup(() => cancelAnimationFrame(frame));
   });
@@ -91,7 +93,9 @@ export const ElmAgUiPromptPicker = (props: ElmAgUiPromptPickerProps) => {
 
   createEffect(() => {
     const descriptor = local.triggerDescriptor?.();
-    if (!descriptor) return;
+    if (!descriptor) {
+      return;
+    }
     local.clearTriggerDescriptor?.();
     void selectPrompt(descriptor);
   });
@@ -103,7 +107,9 @@ export const ElmAgUiPromptPicker = (props: ElmAgUiPromptPickerProps) => {
 
   const submit = async () => {
     const descriptor = active.descriptor;
-    if (!descriptor) return;
+    if (!descriptor) {
+      return;
+    }
     const args = descriptor.arguments ?? [];
     for (const argument of args) {
       if (argument.required && !(active.values[argument.name] ?? "").trim()) {
@@ -115,10 +121,14 @@ export const ElmAgUiPromptPicker = (props: ElmAgUiPromptPickerProps) => {
     const payload: Record<string, string> = {};
     for (const argument of args) {
       const value = active.values[argument.name] ?? "";
-      if (argument.required || value !== "") payload[argument.name] = value;
+      if (argument.required || value !== "") {
+        payload[argument.name] = value;
+      }
     }
     for (const argument of args) {
-      if (!argument.pattern || payload[argument.name] === undefined) continue;
+      if (!argument.pattern || payload[argument.name] === undefined) {
+        continue;
+      }
       const source = /^\^|\$$/.test(argument.pattern)
         ? argument.pattern
         : `^(?:${argument.pattern})$`;
@@ -211,7 +221,9 @@ export const ElmAgUiPromptPicker = (props: ElmAgUiPromptPickerProps) => {
                           fallback={
                             <input
                               ref={(element) => {
-                                if (index() === 0) firstField = element;
+                                if (index() === 0) {
+                                  firstField = element;
+                                }
                               }}
                               class={styles["field-input"]}
                               type="text"
@@ -231,7 +243,9 @@ export const ElmAgUiPromptPicker = (props: ElmAgUiPromptPickerProps) => {
                         >
                           <select
                             ref={(element) => {
-                              if (index() === 0) firstField = element;
+                              if (index() === 0) {
+                                firstField = element;
+                              }
                             }}
                             class={styles["field-input"]}
                             value={active.values[argument.name] ?? ""}

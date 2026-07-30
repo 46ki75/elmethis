@@ -61,7 +61,7 @@ function evaluateGuess(guess: string, answer: string): LetterResult[] {
     { length: MAX_WORD_LENGTH },
     (_, i) => ({
       letter: guess[i],
-      status: "absent" as LetterStatus,
+      status: "absent",
     }),
   );
 
@@ -80,7 +80,9 @@ function evaluateGuess(guess: string, answer: string): LetterResult[] {
 
   // Second pass: mark present letters
   for (let i = 0; i < MAX_WORD_LENGTH; i++) {
-    if (result[i].status === "correct") continue;
+    if (result[i].status === "correct") {
+      continue;
+    }
     const letter = guess[i];
     if ((answerLetterCounts[letter] ?? 0) > 0) {
       result[i].status = "present";
@@ -121,8 +123,12 @@ type WordleAction =
 function reducer(state: WordleState, action: WordleAction): WordleState {
   switch (action.type) {
     case "addLetter": {
-      if (state.gameStatus !== "playing") return state;
-      if (state.currentGuess.length >= MAX_WORD_LENGTH) return state;
+      if (state.gameStatus !== "playing") {
+        return state;
+      }
+      if (state.currentGuess.length >= MAX_WORD_LENGTH) {
+        return state;
+      }
       return {
         ...state,
         currentGuess: state.currentGuess + action.letter.toLowerCase(),
@@ -131,7 +137,9 @@ function reducer(state: WordleState, action: WordleAction): WordleState {
     }
 
     case "removeLetter": {
-      if (state.currentGuess.length === 0) return state;
+      if (state.currentGuess.length === 0) {
+        return state;
+      }
       return {
         ...state,
         currentGuess: state.currentGuess.slice(0, -1),
@@ -140,7 +148,9 @@ function reducer(state: WordleState, action: WordleAction): WordleState {
     }
 
     case "submit": {
-      if (state.gameStatus !== "playing") return state;
+      if (state.gameStatus !== "playing") {
+        return state;
+      }
 
       const guess = state.currentGuess;
 
@@ -248,7 +258,9 @@ export const useWordle = (options?: UseWordleOptions): UseWordleReturn => {
     setup() {
       const onKeyDown = (e: KeyboardEvent) => {
         const { key, ctrlKey, altKey, metaKey } = e;
-        if (ctrlKey || altKey || metaKey) return;
+        if (ctrlKey || altKey || metaKey) {
+          return;
+        }
         if (key === "Enter") {
           submit();
         } else if (key === "Backspace") {
@@ -343,9 +355,11 @@ export const useWordle = (options?: UseWordleOptions): UseWordleReturn => {
               onClick={(event: MouseEvent) => {
                 const button = (event.target as HTMLElement).closest(
                   "button[data-key]",
-                ) as HTMLButtonElement | null;
-                const key = button?.dataset.key;
-                if (!key) return;
+                );
+                const key = button?.getAttribute("data-key");
+                if (!key) {
+                  return;
+                }
                 if (key === "Enter") {
                   submit();
                 } else if (key === "⌫") {

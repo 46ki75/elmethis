@@ -62,7 +62,9 @@ export const ElmTextField = defineComponent({
     // writes so the bound `update:value` listener is notified.
     const setNativeValue = (next: string): void => {
       const el = inputRef.value;
-      if (!el) return;
+      if (!el) {
+        return;
+      }
       const setter = Object.getOwnPropertyDescriptor(
         window.HTMLInputElement.prototype,
         "value",
@@ -198,7 +200,7 @@ export const ElmTextField = defineComponent({
 
           <div
             class={styles.loading}
-            style={{ opacity: props.isLoading ? 1 : 0 } as CSSProperties}
+            style={{ opacity: props.isLoading ? 1 : 0 }}
           ></div>
         </label>
       );

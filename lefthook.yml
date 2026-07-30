@@ -55,6 +55,21 @@ check:
       glob: "packages/ag-ui-stub/**/*.{ts,tsx}"
       run: pnpm exec eslint {files}
 
+    - name: eslint-copilotkit
+      root: "packages/copilotkit/"
+      glob: "packages/copilotkit/**/*.{ts,tsx}"
+      run: pnpm exec eslint {files}
+
+    - name: eslint-drawio
+      root: "packages/drawio/"
+      glob: "packages/drawio/**/*.{ts,tsx}"
+      run: pnpm exec eslint {files}
+
+    - name: eslint-ikuma-theme
+      root: "packages/ikuma-theme/"
+      glob: "packages/ikuma-theme/**/*.{ts,tsx}"
+      run: pnpm exec eslint {files}
+
     - name: stylelint-react
       root: "packages/react/"
       glob: "packages/react/**/*.{css,scss,sass,less}"

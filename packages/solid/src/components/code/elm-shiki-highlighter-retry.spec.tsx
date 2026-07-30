@@ -8,7 +8,9 @@ const shiki = vi.hoisted(() => ({
 
 vi.mock("shiki", () => {
   shiki.loadAttempts += 1;
-  if (shiki.loadAttempts === 1) throw new Error("Failed to load Shiki");
+  if (shiki.loadAttempts === 1) {
+    throw new Error("Failed to load Shiki");
+  }
 
   return {
     bundledLanguages: { rust: {} },

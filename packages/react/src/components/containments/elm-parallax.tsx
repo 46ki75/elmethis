@@ -46,7 +46,9 @@ export const ElmParallax = ({
     return () => {
       window.removeEventListener("scroll", scheduleUpdate);
       reducedMotion.removeEventListener("change", scheduleUpdate);
-      if (frame !== undefined) window.cancelAnimationFrame(frame);
+      if (frame !== undefined) {
+        window.cancelAnimationFrame(frame);
+      }
     };
   }, []);
 
@@ -60,8 +62,9 @@ export const ElmParallax = ({
         <div
           key={index}
           ref={(layer) => {
-            if (layer)
+            if (layer) {
               layer.style.transform = getTransform(appliedY.current, index);
+            }
           }}
           aria-hidden="true"
           className={styles.parallax}

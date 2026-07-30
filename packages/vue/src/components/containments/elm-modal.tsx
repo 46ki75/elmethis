@@ -4,7 +4,6 @@ import {
   onMounted,
   ref,
   watch,
-  type CSSProperties,
   type DialogHTMLAttributes,
   type PropType,
   type StyleValue,
@@ -54,7 +53,9 @@ export const ElmModal = defineComponent({
     // close-timer runs against the real DOM ref, as in React's mount effect.
     const sync = (open: boolean | undefined, delay: number): void => {
       const dialog = dialogRef.value;
-      if (!dialog) return;
+      if (!dialog) {
+        return;
+      }
       // Clear any pending close before re-evaluating (covers rapid toggles).
       if (closeTimer !== undefined) {
         clearTimeout(closeTimer);
@@ -66,7 +67,9 @@ export const ElmModal = defineComponent({
       } else {
         // Nothing to close if it was never opened — without this guard an
         // initially-closed modal would close() a dialog never showModal()'d.
-        if (!isShown.value) return;
+        if (!isShown.value) {
+          return;
+        }
         isShown.value = false;
         closeTimer = setTimeout(() => {
           dialogRef.value?.close();
@@ -79,7 +82,9 @@ export const ElmModal = defineComponent({
       sync(open, delay),
     );
     onBeforeUnmount(() => {
-      if (closeTimer !== undefined) clearTimeout(closeTimer);
+      if (closeTimer !== undefined) {
+        clearTimeout(closeTimer);
+      }
     });
 
     const handleClose = (event: Event): void => {
@@ -108,7 +113,7 @@ export const ElmModal = defineComponent({
             [
               {
                 "--elmethis-scoped-modal-delay": `${props.delay}ms`,
-              } as CSSProperties,
+              },
               style as StyleValue,
             ] as StyleValue
           }

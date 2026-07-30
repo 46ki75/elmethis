@@ -31,7 +31,9 @@ const useScrollOverflow = () => {
 
   useEffect(() => {
     const el = ref.current;
-    if (el == null) return;
+    if (el == null) {
+      return undefined;
+    }
 
     const measure = () => {
       const max = el.scrollWidth - el.clientWidth;

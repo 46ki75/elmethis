@@ -43,7 +43,9 @@ export const ElmParallax = (props: ElmParallaxProps) => {
     onCleanup(() => {
       window.removeEventListener("scroll", scheduleUpdate);
       reducedMotion.removeEventListener("change", scheduleUpdate);
-      if (frame !== undefined) window.cancelAnimationFrame(frame);
+      if (frame !== undefined) {
+        window.cancelAnimationFrame(frame);
+      }
     });
   });
 

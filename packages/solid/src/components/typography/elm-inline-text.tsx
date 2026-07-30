@@ -95,12 +95,24 @@ export const ElmInlineText = (props: ElmInlineTextProps) => {
       );
     }
 
-    if (local.kbd) node = <kbd class={styles.kbd}>{node}</kbd>;
-    if (local.strikethrough) node = <del>{node}</del>;
-    if (local.italic) node = <em>{node}</em>;
-    if (local.underline) node = <ins>{node}</ins>;
-    if (local.bold) node = <strong>{node}</strong>;
-    if (local.code) node = <code class={styles.code}>{node}</code>;
+    if (local.kbd) {
+      node = <kbd class={styles.kbd}>{node}</kbd>;
+    }
+    if (local.strikethrough) {
+      node = <del>{node}</del>;
+    }
+    if (local.italic) {
+      node = <em>{node}</em>;
+    }
+    if (local.underline) {
+      node = <ins>{node}</ins>;
+    }
+    if (local.bold) {
+      node = <strong>{node}</strong>;
+    }
+    if (local.code) {
+      node = <code class={styles.code}>{node}</code>;
+    }
 
     if (local.ruby) {
       node = (

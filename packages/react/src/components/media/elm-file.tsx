@@ -42,7 +42,9 @@ export const ElmFile = ({
     let link: HTMLAnchorElement | undefined;
     try {
       const response = await fetch(src);
-      if (!response.ok) throw new Error("Failed to download file");
+      if (!response.ok) {
+        throw new Error("Failed to download file");
+      }
 
       const blob = await response.blob();
 
@@ -54,7 +56,9 @@ export const ElmFile = ({
     } catch (error) {
       console.error("ERROR:", error);
     } finally {
-      if (link) URL.revokeObjectURL(link.href);
+      if (link) {
+        URL.revokeObjectURL(link.href);
+      }
     }
   };
 
@@ -74,7 +78,12 @@ export const ElmFile = ({
         <ElmInlineText>{filesize}</ElmInlineText>
       </div>
 
-      <div className={styles["download-icon"]} onClick={downloadFile}>
+      <div
+        className={styles["download-icon"]}
+        onClick={() => {
+          void downloadFile();
+        }}
+      >
         <ElmMdiIcon path={mdiDownload} size="1.25rem" />
       </div>
     </div>

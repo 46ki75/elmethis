@@ -46,7 +46,9 @@ describe("[CSR] useWordle", () => {
     const Wordle = game.Wordle;
     const initialBoard = game.board();
 
-    for (const letter of "civic") game.addLetter(letter);
+    for (const letter of "civic") {
+      game.addLetter(letter);
+    }
     game.submit();
 
     expect(game.Wordle).toBe(Wordle);
@@ -90,11 +92,17 @@ describe("[CSR] useWordle", () => {
 
     winningGame.submit();
     expect(winningGame.errorMessage()).toBe("Not enough letters");
-    for (const letter of "zzzzz") winningGame.addLetter(letter);
+    for (const letter of "zzzzz") {
+      winningGame.addLetter(letter);
+    }
     winningGame.submit();
     expect(winningGame.errorMessage()).toBe("Not in word list");
-    for (let index = 0; index < 5; index++) winningGame.removeLetter();
-    for (const letter of "crane") winningGame.addLetter(letter);
+    for (let index = 0; index < 5; index++) {
+      winningGame.removeLetter();
+    }
+    for (const letter of "crane") {
+      winningGame.addLetter(letter);
+    }
     winningGame.submit();
     expect(winningGame.gameStatus()).toBe("won");
     expect(winningGame.board()).toHaveLength(1);
@@ -115,7 +123,9 @@ describe("[CSR] useWordle", () => {
       "write",
       "first",
     ]) {
-      for (const letter of guess) losingGame.addLetter(letter);
+      for (const letter of guess) {
+        losingGame.addLetter(letter);
+      }
       losingGame.submit();
     }
     expect(losingGame.gameStatus()).toBe("lost");

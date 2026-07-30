@@ -109,7 +109,9 @@ export const ComponentHost = defineComponent({
     // resolves the model synchronously off the injected surface and emits the
     // initial tree; no listeners are attached.
     onMounted(() => {
-      if (!surface) return;
+      if (!surface) {
+        return;
+      }
 
       const subscribeToModel = (model: ComponentModel) => {
         updateSub?.unsubscribe();
@@ -120,18 +122,24 @@ export const ComponentHost = defineComponent({
       };
 
       const initial = surface.componentsModel.get(props.id);
-      if (initial) subscribeToModel(initial);
+      if (initial) {
+        subscribeToModel(initial);
+      }
 
       subs.push(
         surface.componentsModel.onCreated.subscribe((m) => {
-          if (m.id !== props.id) return;
+          if (m.id !== props.id) {
+            return;
+          }
           subscribeToModel(m);
           tick.value++;
         }),
       );
       subs.push(
         surface.componentsModel.onDeleted.subscribe((id) => {
-          if (id !== props.id) return;
+          if (id !== props.id) {
+            return;
+          }
           updateSub?.unsubscribe();
           updateSub = null;
           tick.value++;
@@ -145,7 +153,9 @@ export const ComponentHost = defineComponent({
     });
 
     onUnmounted(() => {
-      for (const s of subs) s.unsubscribe();
+      for (const s of subs) {
+        s.unsubscribe();
+      }
       updateSub?.unsubscribe();
     });
 
@@ -154,8 +164,12 @@ export const ComponentHost = defineComponent({
       // structural / data events bump it.
       void tick.value;
 
-      if (isCycle) return null;
-      if (!surface || !catalog) return null;
+      if (isCycle) {
+        return null;
+      }
+      if (!surface || !catalog) {
+        return null;
+      }
 
       const model = surface.componentsModel.get(props.id);
       if (!model) {
@@ -163,7 +177,9 @@ export const ComponentHost = defineComponent({
         // swap-in-progress (`onDeleted` has fired, `onCreated` for the
         // replacement hasn't yet). Render nothing rather than flash the
         // placeholder — the next microtask will bring `onCreated`.
-        if (everHadModel.value) return null;
+        if (everHadModel.value) {
+          return null;
+        }
         // Out-of-order arrival: a parent referenced this id before its own
         // `updateComponents` message landed. The placeholder mirrors the
         // official React renderer's `[Loading {id}…]` affordance and lets
@@ -201,22 +217,30 @@ export const ComponentHost = defineComponent({
       const ctx = new ComponentContext(surface, props.id, props.basePath);
 
       const resolve = <V,>(v: unknown): V => {
-        if (typeof v === "string") return v as V;
-        if (v == null) return "" as V;
-        if (typeof v === "object")
+        if (typeof v === "string") {
+          return v as V;
+        }
+        if (v == null) {
+          return "" as V;
+        }
+        if (typeof v === "object") {
           return (ctx.dataContext.resolveDynamicValue(v as never) ?? "") as V;
+        }
         return String(v) as V;
       };
 
       const childRefs = (value: unknown): ChildRef[] => {
-        if (Array.isArray(value))
+        if (Array.isArray(value)) {
           return value
             .filter((id): id is string => typeof id === "string")
             .map((id) => ({ id, path: props.basePath }));
+        }
         if (value && typeof value === "object" && "componentId" in value) {
           const tmpl = value as { componentId: string; path: string };
           const items = surface.dataModel.get(tmpl.path);
-          if (!Array.isArray(items)) return [];
+          if (!Array.isArray(items)) {
+            return [];
+          }
           return items.map((_, i) => ({
             id: tmpl.componentId,
             path: `${tmpl.path}/${i}`,
@@ -253,11 +277,17 @@ export const ComponentHost = defineComponent({
       // re-mounting the input.
       const idCapture = props.id;
       const setBinding = (propName: string, value: unknown): void => {
-        if (!surface) return;
+        if (!surface) {
+          return;
+        }
         const m = surface.componentsModel.get(idCapture);
-        if (!m) return;
+        if (!m) {
+          return;
+        }
         const raw = (m.properties as Record<string, unknown>)[propName];
-        if (!raw || typeof raw !== "object" || !("path" in raw)) return;
+        if (!raw || typeof raw !== "object" || !("path" in raw)) {
+          return;
+        }
         const path = (raw as { path: string }).path;
         new ComponentContext(surface, idCapture).dataContext.set(path, value);
       };
@@ -271,20 +301,32 @@ export const ComponentHost = defineComponent({
       // only walks the top-level context record, so nested bindings would
       // otherwise reach the action listener as unresolved `{ path }` objects.
       const dispatchAction = (propName: string = "action"): void => {
-        if (!surface) return;
+        if (!surface) {
+          return;
+        }
         const m = surface.componentsModel.get(idCapture);
-        if (!m) return;
+        if (!m) {
+          return;
+        }
         const action = (m.properties as Record<string, unknown>)[propName];
-        if (!action) return;
+        if (!action) {
+          return;
+        }
         const dispatchCtx = new ComponentContext(surface, idCapture);
         const resolveDeep = (val: unknown): unknown => {
-          if (val === null || typeof val !== "object") return val;
+          if (val === null || typeof val !== "object") {
+            return val;
+          }
           if ("path" in val || "call" in val) {
             return dispatchCtx.dataContext.resolveDynamicValue(val as never);
           }
-          if (Array.isArray(val)) return val.map(resolveDeep);
+          if (Array.isArray(val)) {
+            return val.map(resolveDeep);
+          }
           const out: Record<string, unknown> = {};
-          for (const [k, v] of Object.entries(val)) out[k] = resolveDeep(v);
+          for (const [k, v] of Object.entries(val)) {
+            out[k] = resolveDeep(v);
+          }
           return out;
         };
         surface

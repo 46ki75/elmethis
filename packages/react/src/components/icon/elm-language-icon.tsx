@@ -1,17 +1,12 @@
 import type { CSSProperties } from "react";
 
-import {
-  LANGUAGES,
-  languageIcons,
-  normalizeLanguage,
-  type Language,
-} from "@elmethis/core";
+import { languageIcons, normalizeLanguage } from "@elmethis/core";
 import { LanguageGlyph } from "./language-glyph";
 import { ElmMdiIcon } from "./elm-mdi-icon";
 import { mdiCodeTags } from "@mdi/js";
 
 // Re-exported for the Storybook radio control and the `Language` union.
-export { LANGUAGES, type Language };
+export { LANGUAGES, type Language } from "@elmethis/core";
 
 export interface ElmLanguageIconProps {
   className?: string;
@@ -26,7 +21,7 @@ export interface ElmLanguageIconProps {
   /**
    * The language of the icon.
    */
-  language: Language | string;
+  language: string;
 }
 
 export const ElmLanguageIcon = ({

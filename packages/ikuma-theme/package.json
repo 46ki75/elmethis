@@ -28,7 +28,8 @@
     "build.types": "tsc --noEmit",
     "fmt": "prettier --write ./scripts",
     "fmt.check": "prettier --check ./scripts",
-    "check": "pnpm run fmt.check && pnpm run build.types && pnpm run build",
+    "lint": "eslint \"scripts/**/*.ts\"",
+    "check": "pnpm run fmt.check && pnpm run lint && pnpm run build.types && pnpm run build",
     "check.ci": "pnpm run check",
     "prepublish:npm": "pnpm run build:npm",
     "publish:npm": "pnpm publish dist/npm",
@@ -49,10 +50,14 @@
     ]
   },
   "devDependencies": {
+    "@eslint/js": "latest",
     "@types/node": "^26.1.2",
     "@vscode/vsce": "^3.9.1",
+    "eslint": "^10.8.0",
+    "globals": "^17.8.0",
     "prettier": "3.9.6",
     "rimraf": "^6.1.3",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "typescript-eslint": "^8.65.0"
   }
 }

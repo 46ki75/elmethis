@@ -101,7 +101,9 @@ export const ElmAgUiInput = (props: ElmAgUiInputProps) => {
   const detectSlash = (element: HTMLTextAreaElement) => {
     const caret = element.selectionStart;
     let index = caret - 1;
-    while (index >= 0 && !/\s/.test(element.value[index] ?? "")) index -= 1;
+    while (index >= 0 && !/\s/.test(element.value[index] ?? "")) {
+      index -= 1;
+    }
     if (element.value[index + 1] === "/") {
       setSlashRange({ start: index + 1, end: caret });
       setSlashQuery(element.value.slice(index + 2, caret));
@@ -124,7 +126,9 @@ export const ElmAgUiInput = (props: ElmAgUiInputProps) => {
   const handleKeyDown: JSX.EventHandler<HTMLTextAreaElement, KeyboardEvent> = (
     event,
   ) => {
-    if (slashRange() === null) return;
+    if (slashRange() === null) {
+      return;
+    }
     const prompts = filteredPrompts();
     if (event.key === "ArrowDown" && prompts.length > 0) {
       event.preventDefault();
@@ -187,7 +191,9 @@ export const ElmAgUiInput = (props: ElmAgUiInputProps) => {
               onClick={() => {
                 const next = !isPickerOpen();
                 setIsPickerOpen(next);
-                if (next) textAreaRef?.focus();
+                if (next) {
+                  textAreaRef?.focus();
+                }
               }}
               aria-label={isPickerOpen() ? "Close prompts" : "Open prompts"}
             >

@@ -154,7 +154,7 @@ describe("[CSR] ElmHtml — toggling autoHeight with unchanged html", () => {
       }
     }
 
-    globalThis.ResizeObserver = TrackingResizeObserver as typeof ResizeObserver;
+    globalThis.ResizeObserver = TrackingResizeObserver;
 
     try {
       const screen = render(ElmHtml, {
@@ -225,7 +225,7 @@ describe("[CSR] ElmHtml — ResizeObserver on in-frame re-navigation", () => {
       }
     }
 
-    globalThis.ResizeObserver = TrackingResizeObserver as typeof ResizeObserver;
+    globalThis.ResizeObserver = TrackingResizeObserver;
 
     try {
       const screen = render(ElmHtml, { props: { html: TALL_HTML } });

@@ -35,8 +35,11 @@ export const ElmToggleTheme = (props: ElmToggleThemeProps) => {
     theme.toggleTheme();
 
     const handler = local.onClick;
-    if (typeof handler === "function") handler(event);
-    else handler?.[0](handler[1], event);
+    if (typeof handler === "function") {
+      handler(event);
+    } else {
+      handler?.[0](handler[1], event);
+    }
   };
 
   const handleKeyDown: JSX.EventHandler<SVGSVGElement, KeyboardEvent> = (
@@ -48,8 +51,11 @@ export const ElmToggleTheme = (props: ElmToggleThemeProps) => {
     }
 
     const handler = local.onKeyDown;
-    if (typeof handler === "function") handler(event);
-    else handler?.[0](handler[1], event);
+    if (typeof handler === "function") {
+      handler(event);
+    } else {
+      handler?.[0](handler[1], event);
+    }
   };
 
   const sharedProps = {

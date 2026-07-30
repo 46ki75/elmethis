@@ -50,7 +50,9 @@ export const ElmModal = ({
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     const dialog = dialogRef.current;
-    if (!dialog) return;
+    if (!dialog) {
+      return undefined;
+    }
     if (isOpen) {
       dialog.showModal();
       setIsShown(true);
@@ -58,7 +60,9 @@ export const ElmModal = ({
       // Nothing to close if it was never opened. Without this guard, every
       // initially-closed modal arms a needless close timer on mount (and
       // calls close() on a dialog that was never showModal()'d).
-      if (!isShown) return;
+      if (!isShown) {
+        return undefined;
+      }
       setIsShown(false);
       const timer = setTimeout(() => {
         dialogRef.current?.close();
@@ -67,6 +71,7 @@ export const ElmModal = ({
         clearTimeout(timer);
       };
     }
+    return undefined;
     // `isShown` is read but intentionally not tracked: it mirrors `isOpen`
     // and re-running on its change would re-arm the close timer.
     // eslint-disable-next-line react-hooks/exhaustive-deps

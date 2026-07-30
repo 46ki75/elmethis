@@ -48,7 +48,9 @@ export function createControllableSignal<T>(
           ? (nextValue as (previous: T) => T)(currentValue)
           : (nextValue as T);
 
-      if (Object.is(resolvedValue, currentValue)) return resolvedValue;
+      if (Object.is(resolvedValue, currentValue)) {
+        return resolvedValue;
+      }
 
       if (options.value?.() === undefined) {
         setInternalValue((() => resolvedValue) as (previous: T) => T);

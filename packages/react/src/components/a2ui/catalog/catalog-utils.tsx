@@ -45,7 +45,9 @@ export function renderChildList(
   childList: unknown,
   buildChild: (id: string, basePath?: string) => ReactNode,
 ): ReactNode {
-  if (!Array.isArray(childList)) return null;
+  if (!Array.isArray(childList)) {
+    return null;
+  }
   return childList.map((item, i) => {
     if (item && typeof item === "object" && "id" in item) {
       const node = item as { id: string; basePath?: string };
@@ -70,9 +72,13 @@ export function renderChildList(
 export function childEntries(
   childList: unknown,
 ): { id: string; basePath?: string }[] {
-  if (!Array.isArray(childList)) return [];
+  if (!Array.isArray(childList)) {
+    return [];
+  }
   return childList.flatMap((item) => {
-    if (typeof item === "string") return [{ id: item }];
+    if (typeof item === "string") {
+      return [{ id: item }];
+    }
     if (item && typeof item === "object" && "id" in item) {
       const node = item as { id: string; basePath?: string };
       return [{ id: node.id, basePath: node.basePath }];
@@ -83,7 +89,9 @@ export function childEntries(
 
 /** Flattens a resolved child-list value to its string ids (templates expanded). */
 export function childListIds(childList: unknown): string[] {
-  if (!Array.isArray(childList)) return [];
+  if (!Array.isArray(childList)) {
+    return [];
+  }
   return childList
     .map((item) =>
       typeof item === "string"

@@ -36,7 +36,7 @@ const Harness = ({ children }: { children?: ReactNode }) => {
 
 describe("[CSR] open lifecycle", () => {
   test("showModal() runs on open and renders content", async () => {
-    render(
+    await render(
       <Harness>
         <div>
           <p>Modal body</p>
@@ -56,7 +56,7 @@ describe("[CSR] open lifecycle", () => {
   });
 
   test("backdrop click fires onClose", async () => {
-    render(
+    await render(
       <Harness>
         <div>
           <p>Body</p>

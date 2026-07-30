@@ -130,12 +130,14 @@ const StreamingWrapper = () => {
   useEffect(() => {
     let aborted = false;
 
-    (async () => {
+    void (async () => {
       for await (const token of tokenStream(
         MARKDOWN.split(/(?<=\s)|(?=\s)/),
         80,
       )) {
-        if (aborted) break;
+        if (aborted) {
+          break;
+        }
         setContent((prev) => prev + token);
       }
     })();

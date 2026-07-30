@@ -49,33 +49,50 @@ export function createAsyncState<Data>(
     });
 
   const execute = async (delay = 0): Promise<Data | undefined> => {
-    if (disposed) return;
+    if (disposed) {
+      return undefined;
+    }
 
     const execution = ++generation;
-    if (options.resetOnExecute ?? true) setState(() => initialState);
+    if (options.resetOnExecute ?? true) {
+      setState(() => initialState);
+    }
     setError(undefined);
     setIsReady(false);
     setIsLoading(true);
 
-    if (delay > 0) await wait(delay);
-    if (disposed || execution !== generation) return;
+    if (delay > 0) {
+      await wait(delay);
+    }
+    if (disposed || execution !== generation) {
+      return undefined;
+    }
 
     try {
       const data = await task();
-      if (disposed || execution !== generation) return data;
+      if (disposed || execution !== generation) {
+        return data;
+      }
 
       setState(() => data);
       setIsReady(true);
       options.onSuccess?.(data);
       return data;
     } catch (caughtError) {
-      if (disposed || execution !== generation) return;
+      if (disposed || execution !== generation) {
+        return undefined;
+      }
 
       setError(caughtError);
       options.onError?.(caughtError);
-      if (options.throwError ?? false) throw caughtError;
+      if (options.throwError ?? false) {
+        throw caughtError;
+      }
+      return undefined;
     } finally {
-      if (!disposed && execution === generation) setIsLoading(false);
+      if (!disposed && execution === generation) {
+        setIsLoading(false);
+      }
     }
   };
 

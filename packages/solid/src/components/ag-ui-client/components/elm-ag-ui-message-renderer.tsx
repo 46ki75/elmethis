@@ -8,12 +8,7 @@ import {
 } from "solid-js";
 import { clsx } from "clsx";
 import { mdiAccount, mdiCreation, mdiLightbulbOn, mdiRefresh } from "@mdi/js";
-import {
-  EventType,
-  type ActivityMessage,
-  type Message,
-  type ToolCall,
-} from "@ag-ui/core";
+import { EventType, type Message, type ToolCall } from "@ag-ui/core";
 
 import { ElmA2ui } from "../../a2ui/elm-a2ui";
 import { ElmToggle } from "../../containments/elm-toggle";
@@ -46,9 +41,13 @@ const Reasoning = (props: ReasoningProps) => {
   createEffect(() => setIsOpen(props.isReasoningRunning));
   createEffect(() => {
     const markdown = props.markdown;
-    if (!reasoningRef || markdown === "") return;
+    if (!reasoningRef || markdown === "") {
+      return;
+    }
     const now = Date.now();
-    if (now - lastScrollTime < 500) return;
+    if (now - lastScrollTime < 500) {
+      return;
+    }
     lastScrollTime = now;
     reasoningRef.scrollTo({
       behavior: "smooth",
@@ -89,8 +88,12 @@ const Reasoning = (props: ReasoningProps) => {
 };
 
 const contentToText = (message: Message): string => {
-  if (typeof message.content === "string") return message.content;
-  if (!Array.isArray(message.content)) return "";
+  if (typeof message.content === "string") {
+    return message.content;
+  }
+  if (!Array.isArray(message.content)) {
+    return "";
+  }
   return message.content
     .map((item) =>
       typeof item === "string" ? item : item.type === "text" ? item.text : "",
@@ -118,8 +121,12 @@ export const ElmAgUiMessageRenderer = (props: ElmAgUiMessageRendererProps) => {
           message.content != null,
       );
     const eventType = () => {
-      if (result()?.content != null) return EventType.TOOL_CALL_RESULT;
-      if (toolCall.function.arguments != null) return EventType.TOOL_CALL_ARGS;
+      if (result()?.content != null) {
+        return EventType.TOOL_CALL_RESULT;
+      }
+      if (toolCall.function.arguments != null) {
+        return EventType.TOOL_CALL_ARGS;
+      }
       return EventType.TOOL_CALL_START;
     };
     const resultContent = () => {
@@ -142,7 +149,7 @@ export const ElmAgUiMessageRenderer = (props: ElmAgUiMessageRendererProps) => {
   ): JSX.Element => {
     switch (message.role) {
       case "activity": {
-        const activity = message as ActivityMessage;
+        const activity = message;
         return activity.activityType === "a2ui-surface" ? (
           <ElmA2ui messages={activity.content["a2ui_operations"] as object[]} />
         ) : undefined;
@@ -220,6 +227,7 @@ export const ElmAgUiMessageRenderer = (props: ElmAgUiMessageRendererProps) => {
       case "tool":
         return undefined;
     }
+    return undefined;
   };
 
   return (

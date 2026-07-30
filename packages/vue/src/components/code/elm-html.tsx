@@ -40,14 +40,20 @@ const splitDeclarations = (css: string): string[] => {
   for (let i = 0; i < css.length; i++) {
     const char = css[i];
     if (quote) {
-      if (char === "\\") i++;
-      else if (char === quote) quote = undefined;
+      if (char === "\\") {
+        i++;
+      } else if (char === quote) {
+        quote = undefined;
+      }
       continue;
     }
-    if (char === '"' || char === "'") quote = char;
-    else if (char === "(") depth++;
-    else if (char === ")") depth = Math.max(0, depth - 1);
-    else if (char === ";" && depth === 0) {
+    if (char === '"' || char === "'") {
+      quote = char;
+    } else if (char === "(") {
+      depth++;
+    } else if (char === ")") {
+      depth = Math.max(0, depth - 1);
+    } else if (char === ";" && depth === 0) {
       declarations.push(css.slice(start, i));
       start = i + 1;
     }
@@ -60,10 +66,14 @@ const parseStyleString = (css: string): CSSProperties => {
   const result: Record<string, string> = {};
   for (const declaration of splitDeclarations(css)) {
     const separatorIndex = declaration.indexOf(":");
-    if (separatorIndex === -1) continue;
+    if (separatorIndex === -1) {
+      continue;
+    }
     const property = declaration.slice(0, separatorIndex).trim();
     const value = declaration.slice(separatorIndex + 1).trim();
-    if (!property || !value) continue;
+    if (!property || !value) {
+      continue;
+    }
     // A leading `--` marks a CSS custom property, whose name is
     // case-sensitive and must be left exactly as written.
     const camelProperty = property.startsWith("--")
@@ -73,14 +83,18 @@ const parseStyleString = (css: string): CSSProperties => {
         );
     result[camelProperty] = value;
   }
-  return result as CSSProperties;
+  return result;
 };
 
 const toStyleObject = (
   style: HTMLAttributes["style"],
 ): CSSProperties | undefined => {
-  if (style === undefined) return undefined;
-  if (typeof style === "string") return parseStyleString(style);
+  if (style === undefined) {
+    return undefined;
+  }
+  if (typeof style === "string") {
+    return parseStyleString(style);
+  }
   return normalizeStyle(style) as CSSProperties;
 };
 
@@ -94,7 +108,9 @@ const sandboxHasAllowScripts = (
   sandbox: string | undefined,
   allowScripts: boolean,
 ): boolean => {
-  if (allowScripts) return true;
+  if (allowScripts) {
+    return true;
+  }
   const tokens = sandbox?.split(/\s+/).filter(Boolean) ?? [];
   return tokens.some((token) => token.toLowerCase() === "allow-scripts");
 };
@@ -226,7 +242,9 @@ export const ElmHtml = defineComponent({
     watch(
       () => [props.html, props.src, props.autoHeight] as const,
       ([, , autoHeight]) => {
-        if (autoHeight) contentHeight.value = undefined;
+        if (autoHeight) {
+          contentHeight.value = undefined;
+        }
       },
       { flush: "pre" },
     );
@@ -257,8 +275,12 @@ export const ElmHtml = defineComponent({
       allowScripts: boolean,
     ) => {
       const iframe = iframeRef.value;
-      if (!iframe) return;
-      if (!autoHeight) return;
+      if (!iframe) {
+        return;
+      }
+      if (!autoHeight) {
+        return;
+      }
 
       // In `src` mode there's no markup of ours to inject a reporter script
       // into (the document is whatever the remote URL serves), so once
@@ -268,7 +290,9 @@ export const ElmHtml = defineComponent({
       // `src` without allow-scripts falls through to the `contentDocument` +
       // `ResizeObserver` path below like `html` mode, since that path just
       // reads `iframe.contentDocument` generically.
-      if (usingSrc() && sandboxHasAllowScripts(sandbox, allowScripts)) return;
+      if (usingSrc() && sandboxHasAllowScripts(sandbox, allowScripts)) {
+        return;
+      }
 
       // `contentDocument` is opaque whenever scripts are allowed
       // (allow-same-origin is never granted alongside allow-scripts — see
@@ -282,7 +306,9 @@ export const ElmHtml = defineComponent({
           // `event.source` is set by the browser to the actual sender
           // window and can't be forged via message content, so this alone
           // is sufficient to reject reports from any other frame/page.
-          if (event.source !== iframe.contentWindow) return;
+          if (event.source !== iframe.contentWindow) {
+            return;
+          }
           const data = event.data as
             { kind?: unknown; height?: unknown } | null | undefined;
           if (
@@ -305,12 +331,16 @@ export const ElmHtml = defineComponent({
 
       const measure = () => {
         const root = iframe.contentDocument?.documentElement;
-        if (root) contentHeight.value = root.scrollHeight;
+        if (root) {
+          contentHeight.value = root.scrollHeight;
+        }
       };
 
       const attachObserver = () => {
         const root = iframe.contentDocument?.documentElement;
-        if (!root) return;
+        if (!root) {
+          return;
+        }
         observer?.disconnect();
         observer = new ResizeObserver(measure);
         observer.observe(root);
@@ -393,7 +423,9 @@ export const ElmHtml = defineComponent({
       const sandboxTokens = new Set(
         props.sandbox?.split(/\s+/).filter(Boolean) ?? [],
       );
-      if (props.allowScripts) sandboxTokens.add("allow-scripts");
+      if (props.allowScripts) {
+        sandboxTokens.add("allow-scripts");
+      }
       const hasAllowScripts = [...sandboxTokens].some(
         (token) => token.toLowerCase() === "allow-scripts",
       );
@@ -431,7 +463,7 @@ export const ElmHtml = defineComponent({
           class={clsx(styles["elm-html"], className as string | undefined)}
           style={
             props.autoHeight
-              ? ({
+              ? {
                   ...callerStyle,
                   // A number here (unlike react) would produce an invalid,
                   // silently-ignored CSS value in vue — vue does not
@@ -443,8 +475,8 @@ export const ElmHtml = defineComponent({
                     contentHeight.value !== undefined
                       ? `${contentHeight.value}px`
                       : callerStyleHeight,
-                } as CSSProperties)
-              : (callerStyle as CSSProperties | undefined)
+                }
+              : callerStyle
           }
           height={
             props.autoHeight

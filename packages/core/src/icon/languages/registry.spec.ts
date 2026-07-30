@@ -17,9 +17,7 @@ describe("language registry derivations", () => {
         expect(entry.icon).toBeNull();
         expect(languageIcons).not.toHaveProperty("file");
       } else {
-        expect(languageIcons[entry.key as keyof typeof languageIcons]).toBe(
-          entry.icon,
-        );
+        expect(languageIcons[entry.key]).toBe(entry.icon);
       }
     }
   });

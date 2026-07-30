@@ -3,7 +3,6 @@ import {
   defineComponent,
   onBeforeUnmount,
   ref,
-  type CSSProperties,
   type HTMLAttributes,
 } from "vue";
 import { clsx } from "clsx";
@@ -66,7 +65,9 @@ export interface ElmAudioPlayerProps extends /* @vue-ignore */ HTMLAttributes {
 }
 
 const formatTime = (seconds: number): string => {
-  if (!Number.isFinite(seconds) || seconds < 0) seconds = 0;
+  if (!Number.isFinite(seconds) || seconds < 0) {
+    seconds = 0;
+  }
   const total = Math.floor(seconds);
   const h = Math.floor(total / 3600);
   const m = Math.floor((total % 3600) / 60);
@@ -121,9 +122,15 @@ export const ElmAudioPlayer = defineComponent({
     );
 
     const volumeIcon = computed(() => {
-      if (isMuted.value || volume.value === 0) return mdiVolumeOff;
-      if (volume.value < 0.34) return mdiVolumeLow;
-      if (volume.value < 0.67) return mdiVolumeMedium;
+      if (isMuted.value || volume.value === 0) {
+        return mdiVolumeOff;
+      }
+      if (volume.value < 0.34) {
+        return mdiVolumeLow;
+      }
+      if (volume.value < 0.67) {
+        return mdiVolumeMedium;
+      }
       return mdiVolumeHigh;
     });
 
@@ -134,9 +141,13 @@ export const ElmAudioPlayer = defineComponent({
     // While playing, sample `currentTime` every frame so the playhead glides
     // instead of stepping with the ~4Hz `timeupdate` event.
     const startRaf = (): void => {
-      if (rafId != null) return;
+      if (rafId != null) {
+        return;
+      }
       const tick = (): void => {
-        if (audioRef.value) currentTime.value = audioRef.value.currentTime;
+        if (audioRef.value) {
+          currentTime.value = audioRef.value.currentTime;
+        }
         rafId = requestAnimationFrame(tick);
       };
       rafId = requestAnimationFrame(tick);
@@ -153,7 +164,9 @@ export const ElmAudioPlayer = defineComponent({
 
     const togglePlay = (): void => {
       const audio = audioRef.value;
-      if (!audio) return;
+      if (!audio) {
+        return;
+      }
       if (audio.paused) {
         void audio.play().catch(() => (isPlaying.value = false));
       } else {
@@ -173,9 +186,13 @@ export const ElmAudioPlayer = defineComponent({
 
     const ratioFromClientX = (clientX: number): number => {
       const el = seekbarRef.value;
-      if (!el) return 0;
+      if (!el) {
+        return 0;
+      }
       const rect = el.getBoundingClientRect();
-      if (rect.width === 0) return 0;
+      if (rect.width === 0) {
+        return 0;
+      }
       return Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
     };
 
@@ -224,7 +241,9 @@ export const ElmAudioPlayer = defineComponent({
 
     const toggleMute = (): void => {
       const audio = audioRef.value;
-      if (!audio) return;
+      if (!audio) {
+        return;
+      }
       const next = !audio.muted;
       audio.muted = next;
       isMuted.value = next;
@@ -239,12 +258,10 @@ export const ElmAudioPlayer = defineComponent({
           isLoading.value && styles.loading,
           hasError.value && styles.errored,
         )}
-        style={
-          {
-            "--elmethis-scoped-progress": progress.value,
-            "--elmethis-scoped-hover": hoverRatio.value ?? 0,
-          } as CSSProperties
-        }
+        style={{
+          "--elmethis-scoped-progress": progress.value,
+          "--elmethis-scoped-hover": hoverRatio.value ?? 0,
+        }}
       >
         <audio
           ref={audioRef}
@@ -254,14 +271,18 @@ export const ElmAudioPlayer = defineComponent({
           preload="metadata"
           onLoadedmetadata={() => {
             const audio = audioRef.value;
-            if (!audio) return;
+            if (!audio) {
+              return;
+            }
             duration.value = audio.duration;
             volume.value = audio.volume;
             isMuted.value = audio.muted;
             isLoading.value = false;
           }}
           onDurationchange={() => {
-            if (audioRef.value) duration.value = audioRef.value.duration;
+            if (audioRef.value) {
+              duration.value = audioRef.value.duration;
+            }
           }}
           onCanplay={() => (isLoading.value = false)}
           onWaiting={() => (isLoading.value = true)}
@@ -285,7 +306,9 @@ export const ElmAudioPlayer = defineComponent({
           }}
           onVolumechange={() => {
             const audio = audioRef.value;
-            if (!audio) return;
+            if (!audio) {
+              return;
+            }
             volume.value = audio.volume;
             isMuted.value = audio.muted;
           }}
@@ -417,13 +440,11 @@ export const ElmAudioPlayer = defineComponent({
                   onInput={(e) =>
                     changeVolume((e.target as HTMLInputElement).valueAsNumber)
                   }
-                  style={
-                    {
-                      "--elmethis-scoped-volume": isMuted.value
-                        ? 0
-                        : volume.value,
-                    } as CSSProperties
-                  }
+                  style={{
+                    "--elmethis-scoped-volume": isMuted.value
+                      ? 0
+                      : volume.value,
+                  }}
                 />
               </div>
 

@@ -133,13 +133,14 @@ export const useAsyncState = <Data,>(
           // Stale error: a newer execute() has already overwritten state.
           // Swallow it (no state writes, no callback, no rethrow) so the
           // newer call's success isn't undone.
-          return;
+          return undefined;
         }
         setError(e);
         onErrorRef.current?.(e);
         if (throwErrorRef.current) {
           throw e;
         }
+        return undefined;
       } finally {
         // Only the current generation is allowed to flip isLoading off — a
         // stale call's `finally` would otherwise hide the newer call's

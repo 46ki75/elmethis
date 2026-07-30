@@ -110,12 +110,24 @@ export const ElmInlineText = ({
     );
   }
 
-  if (kbd) vnode = <kbd className={styles.kbd}>{vnode}</kbd>;
-  if (strikethrough) vnode = <del>{vnode}</del>;
-  if (italic) vnode = <em>{vnode}</em>;
-  if (underline) vnode = <ins>{vnode}</ins>;
-  if (bold) vnode = <strong>{vnode}</strong>;
-  if (code) vnode = <code className={styles.code}>{vnode}</code>;
+  if (kbd) {
+    vnode = <kbd className={styles.kbd}>{vnode}</kbd>;
+  }
+  if (strikethrough) {
+    vnode = <del>{vnode}</del>;
+  }
+  if (italic) {
+    vnode = <em>{vnode}</em>;
+  }
+  if (underline) {
+    vnode = <ins>{vnode}</ins>;
+  }
+  if (bold) {
+    vnode = <strong>{vnode}</strong>;
+  }
+  if (code) {
+    vnode = <code className={styles.code}>{vnode}</code>;
+  }
 
   if (ruby) {
     vnode = (

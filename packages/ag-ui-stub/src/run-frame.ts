@@ -31,23 +31,35 @@ export async function* runFrame(
   options: RunFrameOptions = {},
 ): AsyncIterable<BaseEvent> {
   yield runStarted(input.threadId, input.runId);
-  if (options.signal?.aborted) return;
+  if (options.signal?.aborted) {
+    return;
+  }
 
   const delay = makeDelay(options.chunkDelayMs ?? 0, options.signal);
   let terminated = false;
 
   try {
     for await (const event of scenario({ input, delay })) {
-      if (options.signal?.aborted) return;
-      if (isTerminal(event)) terminated = true;
+      if (options.signal?.aborted) {
+        return;
+      }
+      if (isTerminal(event)) {
+        terminated = true;
+      }
       yield event;
     }
   } catch (error) {
-    if (options.signal?.aborted) return;
+    if (options.signal?.aborted) {
+      return;
+    }
     yield runError(error instanceof Error ? error.message : String(error));
     return;
   }
 
-  if (options.signal?.aborted) return;
-  if (!terminated) yield runFinished(input.threadId, input.runId);
+  if (options.signal?.aborted) {
+    return;
+  }
+  if (!terminated) {
+    yield runFinished(input.threadId, input.runId);
+  }
 }

@@ -4,7 +4,6 @@ import {
   provide,
   type CSSProperties,
   type HTMLAttributes,
-  type Ref,
 } from "vue";
 import { clsx } from "clsx";
 
@@ -51,7 +50,7 @@ export const ElmTabs = defineComponent({
     const context: ElmTabsContextValue = {
       // `defaultValue` ("") guarantees a string at runtime; the model ref's type
       // widens to `string | undefined`, so narrow it back here.
-      selectedValue: selectedValue as Ref<string>,
+      selectedValue: selectedValue,
       setSelectedValue: (value: string) => {
         selectedValue.value = value;
       },

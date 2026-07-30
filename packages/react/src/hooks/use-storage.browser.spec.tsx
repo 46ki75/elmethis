@@ -49,7 +49,7 @@ describe("[CSR] useLocalStorage", () => {
   afterEach(() => vi.restoreAllMocks());
 
   test("writes propagate to localStorage", async () => {
-    render(<LocalWrapper />);
+    await render(<LocalWrapper />);
 
     await page.getByRole("button", { name: "A", exact: true }).click();
 
@@ -64,7 +64,7 @@ describe("[CSR] useLocalStorage", () => {
   test("writer effect persists initialValue when storage was empty at mount", async () => {
     expect(localStorage.getItem("k")).toBeNull();
 
-    render(<LocalWrapper />);
+    await render(<LocalWrapper />);
 
     await vi.waitFor(() =>
       expect(localStorage.getItem("k")).toBe(JSON.stringify("seed")),
@@ -94,11 +94,10 @@ describe("[CSR] useSessionStorage BroadcastChannel reuse", () => {
         constructions++;
       }
     }
-    globalThis.BroadcastChannel =
-      CountingBroadcastChannel as typeof BroadcastChannel;
+    globalThis.BroadcastChannel = CountingBroadcastChannel;
 
     try {
-      render(<SessionWrapper />);
+      await render(<SessionWrapper />);
 
       // Wait for the mount effect to allocate its (one) channel.
       await vi.waitFor(() => expect(constructions).toBeGreaterThanOrEqual(1));

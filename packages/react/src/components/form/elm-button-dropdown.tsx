@@ -4,7 +4,6 @@ import {
   useRef,
   useState,
   type ComponentPropsWithoutRef,
-  type CSSProperties,
   type ReactNode,
 } from "react";
 import { clsx } from "clsx";
@@ -175,7 +174,9 @@ export const ElmButtonDropdown = ({
   const setOpen = useCallback(
     (next: boolean) => {
       setIsOpen((prev) => {
-        if (prev !== next) onOpenChange?.(next);
+        if (prev !== next) {
+          onOpenChange?.(next);
+        }
         return next;
       });
     },
@@ -184,10 +185,16 @@ export const ElmButtonDropdown = ({
 
   // Close on outside click, mirroring ElmSelect's dropdown.
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) {
+      return undefined;
+    }
     const handler = (event: MouseEvent) => {
-      if (!rootRef.current) return;
-      if (!rootRef.current.contains(event.target as Node)) setOpen(false);
+      if (!rootRef.current) {
+        return;
+      }
+      if (!rootRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
     };
     document.addEventListener("click", handler);
     return () => document.removeEventListener("click", handler);
@@ -197,16 +204,22 @@ export const ElmButtonDropdown = ({
   const mainDisabled = disabled || disableMainButton;
 
   const handleToggle = useCallback(() => {
-    if (!dropdownDisabled) setOpen(!isOpen);
+    if (!dropdownDisabled) {
+      setOpen(!isOpen);
+    }
   }, [dropdownDisabled, isOpen, setOpen]);
 
   const handleItemClick = useCallback(
     (item: ElmButtonDropdownItem) => {
-      if (item.disabled) return;
+      if (item.disabled) {
+        return;
+      }
       setSelected(item.id);
       item.onClick?.();
       onItemClick?.(item);
-      if (autoClose) setOpen(false);
+      if (autoClose) {
+        setOpen(false);
+      }
     },
     [setSelected, autoClose, onItemClick, setOpen],
   );
@@ -221,7 +234,7 @@ export const ElmButtonDropdown = ({
         block && styles["block"],
         className,
       )}
-      style={style as CSSProperties}
+      style={style}
       {...rest}
     >
       <ElmButton

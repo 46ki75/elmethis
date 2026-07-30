@@ -29,9 +29,11 @@ export const ElmShikiHighlighter = ({
   useEffect(() => {
     let active = true;
 
-    (async () => {
+    void (async () => {
       if (!code) {
-        if (active) setRawHtml("");
+        if (active) {
+          setRawHtml("");
+        }
         return;
       }
 
@@ -51,9 +53,13 @@ export const ElmShikiHighlighter = ({
             "#121212": "transparent",
           },
         });
-        if (active) setRawHtml(html);
+        if (active) {
+          setRawHtml(html);
+        }
       } catch {
-        if (active) setRawHtml(`<pre>${code.replace(/</g, "&lt;")}</pre>`);
+        if (active) {
+          setRawHtml(`<pre>${code.replace(/</g, "&lt;")}</pre>`);
+        }
       }
     })();
 

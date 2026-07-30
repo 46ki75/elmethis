@@ -42,7 +42,9 @@ export const ElmModal = (props: ElmModalProps) => {
   let closeTimer: ReturnType<typeof setTimeout> | undefined;
 
   const clearCloseTimer = () => {
-    if (closeTimer === undefined) return;
+    if (closeTimer === undefined) {
+      return;
+    }
     clearTimeout(closeTimer);
     closeTimer = undefined;
   };
@@ -53,7 +55,9 @@ export const ElmModal = (props: ElmModalProps) => {
     const element = dialog;
 
     clearCloseTimer();
-    if (!element) return;
+    if (!element) {
+      return;
+    }
 
     if (open) {
       if (element.open) {
@@ -75,14 +79,20 @@ export const ElmModal = (props: ElmModalProps) => {
       return;
     }
 
-    if (!isShown() && !element.open) return;
+    if (!isShown() && !element.open) {
+      return;
+    }
     setIsShown(false);
-    if (!element.open) return;
+    if (!element.open) {
+      return;
+    }
 
     closeTimer = setTimeout(
       () => {
         closeTimer = undefined;
-        if (!local.isOpen && element.open) element.close();
+        if (!local.isOpen && element.open) {
+          element.close();
+        }
       },
       Math.max(0, delay),
     );
@@ -94,13 +104,17 @@ export const ElmModal = (props: ElmModalProps) => {
     event,
   ) => {
     callEventHandler(local.onClick, event);
-    if (event.defaultPrevented || event.target !== event.currentTarget) return;
+    if (event.defaultPrevented || event.target !== event.currentTarget) {
+      return;
+    }
     local.onClose?.(event, event.currentTarget);
   };
 
   const handleCancel: JSX.EventHandler<HTMLDialogElement, Event> = (event) => {
     callEventHandler(local.onCancel, event);
-    if (event.defaultPrevented) return;
+    if (event.defaultPrevented) {
+      return;
+    }
 
     // Keep the dialog in the top layer while the controlled fade-out runs.
     event.preventDefault();
@@ -114,7 +128,9 @@ export const ElmModal = (props: ElmModalProps) => {
     setIsShown(false);
 
     // A form method="dialog" or imperative close can bypass controlled state.
-    if (local.isOpen) local.onClose?.(event, event.currentTarget);
+    if (local.isOpen) {
+      local.onClose?.(event, event.currentTarget);
+    }
   };
 
   return (
@@ -122,7 +138,9 @@ export const ElmModal = (props: ElmModalProps) => {
       {...rest}
       ref={(element) => {
         dialog = element;
-        if (typeof local.ref === "function") local.ref(element);
+        if (typeof local.ref === "function") {
+          local.ref(element);
+        }
       }}
       class={clsx(styles["elm-modal"], isShown() && styles.shown, local.class)}
       style={mergeStyle(local.style, {

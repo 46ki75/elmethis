@@ -68,8 +68,11 @@ export const ElmTextField = (props: ElmTextFieldProps) => {
       ? Object.getOwnPropertyDescriptor(prototype, "value")?.set
       : undefined;
 
-    if (setter) setter.call(input, next);
-    else input.value = next;
+    if (setter) {
+      setter.call(input, next);
+    } else {
+      input.value = next;
+    }
 
     const EventConstructor = view?.Event ?? Event;
     input.dispatchEvent(new EventConstructor("input", { bubbles: true }));
@@ -78,28 +81,40 @@ export const ElmTextField = (props: ElmTextFieldProps) => {
   const handleInput: JSX.InputEventHandler<HTMLInputElement, InputEvent> = (
     event,
   ) => {
-    if (typeof local.onInput === "function") local.onInput(event);
-    else if (local.onInput) local.onInput[0](local.onInput[1], event);
+    if (typeof local.onInput === "function") {
+      local.onInput(event);
+    } else if (local.onInput) {
+      local.onInput[0](local.onInput[1], event);
+    }
   };
   const handleChange: JSX.ChangeEventHandler<HTMLInputElement, Event> = (
     event,
   ) => {
-    if (typeof local.onChange === "function") local.onChange(event);
-    else if (local.onChange) local.onChange[0](local.onChange[1], event);
+    if (typeof local.onChange === "function") {
+      local.onChange(event);
+    } else if (local.onChange) {
+      local.onChange[0](local.onChange[1], event);
+    }
   };
   const handleFocus: JSX.FocusEventHandler<HTMLInputElement, FocusEvent> = (
     event,
   ) => {
     setIsFocused(true);
-    if (typeof local.onFocus === "function") local.onFocus(event);
-    else if (local.onFocus) local.onFocus[0](local.onFocus[1], event);
+    if (typeof local.onFocus === "function") {
+      local.onFocus(event);
+    } else if (local.onFocus) {
+      local.onFocus[0](local.onFocus[1], event);
+    }
   };
   const handleBlur: JSX.FocusEventHandler<HTMLInputElement, FocusEvent> = (
     event,
   ) => {
     setIsFocused(false);
-    if (typeof local.onBlur === "function") local.onBlur(event);
-    else if (local.onBlur) local.onBlur[0](local.onBlur[1], event);
+    if (typeof local.onBlur === "function") {
+      local.onBlur(event);
+    } else if (local.onBlur) {
+      local.onBlur[0](local.onBlur[1], event);
+    }
   };
 
   return (
@@ -145,7 +160,9 @@ export const ElmTextField = (props: ElmTextFieldProps) => {
           {...rest}
           ref={(element) => {
             input = element;
-            if (typeof local.ref === "function") local.ref(element);
+            if (typeof local.ref === "function") {
+              local.ref(element);
+            }
           }}
           value={
             (local.value ?? local.defaultValue) as

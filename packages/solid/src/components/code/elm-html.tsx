@@ -53,7 +53,9 @@ function sandboxHasAllowScripts(
   sandbox: string | undefined,
   allowScripts: boolean,
 ): boolean {
-  if (allowScripts) return true;
+  if (allowScripts) {
+    return true;
+  }
   return (sandbox?.split(/\s+/).filter(Boolean) ?? []).some(
     (token) => token.toLowerCase() === "allow-scripts",
   );
@@ -72,7 +74,9 @@ function normalizeSandbox(
   const hasToken = (name: string) =>
     tokens.some((token) => token.toLowerCase() === name);
 
-  if (allowScripts && !hasToken("allow-scripts")) tokens.push("allow-scripts");
+  if (allowScripts && !hasToken("allow-scripts")) {
+    tokens.push("allow-scripts");
+  }
 
   if (sandboxHasAllowScripts(sandbox, allowScripts)) {
     return tokens
@@ -112,7 +116,9 @@ function withoutProtectedAttributes<T extends Record<string, unknown>>(
   const safe = {} as T;
 
   for (const name of Object.keys(props)) {
-    if (PROTECTED_ATTRIBUTES.has(name.toLowerCase())) continue;
+    if (PROTECTED_ATTRIBUTES.has(name.toLowerCase())) {
+      continue;
+    }
     Object.defineProperty(safe, name, {
       configurable: true,
       enumerable: true,
@@ -127,7 +133,9 @@ function mergeMeasuredHeight(
   style: JSX.CSSProperties | string | undefined,
   height: number | undefined,
 ): JSX.CSSProperties | string | undefined {
-  if (height === undefined) return style;
+  if (height === undefined) {
+    return style;
+  }
   if (typeof style === "string") {
     return [style.trim().replace(/;$/, ""), `height:${height}px`]
       .filter(Boolean)
@@ -165,14 +173,20 @@ const ElmHtmlFrame = (props: ElmHtmlFrameProps) => {
       () => [props.html, props.src, props.sandbox, props.allowScripts] as const,
       ([, src, sandbox, allowScripts]) => {
         setContentHeight(undefined);
-        if (!props.autoHeight || !iframe) return;
+        if (!props.autoHeight || !iframe) {
+          return;
+        }
 
         const scriptsAllowed = sandboxHasAllowScripts(sandbox, allowScripts);
-        if (src !== undefined && scriptsAllowed) return;
+        if (src !== undefined && scriptsAllowed) {
+          return;
+        }
 
         if (scriptsAllowed) {
           const onMessage = (event: MessageEvent) => {
-            if (event.source !== iframe?.contentWindow) return;
+            if (event.source !== iframe?.contentWindow) {
+              return;
+            }
             const data = event.data as
               { kind?: unknown; height?: unknown } | null | undefined;
             if (
@@ -200,11 +214,15 @@ const ElmHtmlFrame = (props: ElmHtmlFrameProps) => {
         };
         const measure = () => {
           const root = contentRoot();
-          if (root) setContentHeight(root.scrollHeight);
+          if (root) {
+            setContentHeight(root.scrollHeight);
+          }
         };
         const attachObserver = () => {
           const root = contentRoot();
-          if (!root) return;
+          if (!root) {
+            return;
+          }
           observer?.disconnect();
           observer = new ResizeObserver(measure);
           observer.observe(root);

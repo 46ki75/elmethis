@@ -7,7 +7,9 @@ export function makeDelay(
   ms: number,
   signal?: AbortSignal,
 ): () => Promise<void> {
-  if (!Number.isFinite(ms) || ms <= 0) return () => Promise.resolve();
+  if (!Number.isFinite(ms) || ms <= 0) {
+    return () => Promise.resolve();
+  }
   return () =>
     new Promise<void>((resolve) => {
       if (signal?.aborted) {

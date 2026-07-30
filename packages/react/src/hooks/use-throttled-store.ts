@@ -92,7 +92,9 @@ export const useThrottledStore = <T extends object>(
   // Unmount-only cleanup: clears any pending cooldown timer.
   useEffect(() => {
     return () => {
-      if (cooldownId.current !== undefined) clearTimeout(cooldownId.current);
+      if (cooldownId.current !== undefined) {
+        clearTimeout(cooldownId.current);
+      }
     };
   }, []);
 
@@ -120,7 +122,9 @@ export const useThrottledStore = <T extends object>(
     };
 
     if (cooldownId.current === undefined) {
-      if (isEqual(value, throttledRef.current)) return;
+      if (isEqual(value, throttledRef.current)) {
+        return;
+      }
       throttledRef.current = value;
       setThrottledValue(value);
       arm();

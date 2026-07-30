@@ -126,7 +126,7 @@ describe("[Browser] ElmAudioPlayer media integration", () => {
     const audio = rendered.container.querySelector("audio")!;
     const volume = rendered.getByRole("slider", {
       name: "Volume",
-    }) as HTMLInputElement;
+    });
     await vi.waitFor(() => expect(audio.readyState).toBeGreaterThan(0));
 
     volume.value = "0.3";

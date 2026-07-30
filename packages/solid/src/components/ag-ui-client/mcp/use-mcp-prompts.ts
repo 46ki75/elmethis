@@ -65,7 +65,9 @@ export function useMcpPrompts(
     args: Record<string, string>,
   ): Promise<InputContent[] | null> => {
     const handle = getHandle(serverId);
-    if (!handle) return null;
+    if (!handle) {
+      return null;
+    }
     const result = await handle.getPrompt(name, args);
     const content: InputContent[] = [];
     for (const message of result.messages) {

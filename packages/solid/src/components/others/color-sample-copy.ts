@@ -11,7 +11,9 @@ export interface ColorSampleCopyController {
 
 const rgbToHex = (rgb: string): string | null => {
   const parts = rgb.match(/\d+(?:\.\d+)?/g);
-  if (!parts || parts.length < 3) return null;
+  if (!parts || parts.length < 3) {
+    return null;
+  }
 
   const channel = (part: string) =>
     Math.max(0, Math.min(255, Math.round(Number(part))))
@@ -29,7 +31,9 @@ export const createColorSampleCopy = (): ColorSampleCopyController => {
 
   onCleanup(() => {
     disposed = true;
-    if (resetTimerId !== undefined) clearTimeout(resetTimerId);
+    if (resetTimerId !== undefined) {
+      clearTimeout(resetTimerId);
+    }
   });
 
   const copyToken = async (event: MouseEvent): Promise<void> => {
@@ -37,11 +41,15 @@ export const createColorSampleCopy = (): ColorSampleCopyController => {
       "[data-copy-token]",
     );
     const token = target?.dataset.copyToken;
-    if (!target || !token) return;
+    if (!target || !token) {
+      return;
+    }
 
     const view = target.ownerDocument.defaultView;
     const clipboard = view?.navigator.clipboard;
-    if (!view || !clipboard) return;
+    if (!view || !clipboard) {
+      return;
+    }
 
     let text = token;
     if (copyMode() === "hex") {
@@ -61,9 +69,13 @@ export const createColorSampleCopy = (): ColorSampleCopyController => {
     }
 
     await clipboard.writeText(text);
-    if (disposed) return;
+    if (disposed) {
+      return;
+    }
 
-    if (resetTimerId !== undefined) clearTimeout(resetTimerId);
+    if (resetTimerId !== undefined) {
+      clearTimeout(resetTimerId);
+    }
     setCopiedToken(token);
     resetTimerId = setTimeout(() => {
       setCopiedToken(null);

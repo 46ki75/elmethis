@@ -49,7 +49,9 @@ const resolveLanguage = (
   bundledLanguages: Record<string, unknown>,
 ): BundledLanguage | "text" => {
   const normalized = language.trim().toLowerCase();
-  if (normalized in bundledLanguages) return normalized as BundledLanguage;
+  if (normalized in bundledLanguages) {
+    return normalized as BundledLanguage;
+  }
   return "text";
 };
 
@@ -63,7 +65,9 @@ const highlightCode = async (
 ): Promise<string> => {
   try {
     const { shiki, dark, light } = await loadRuntime();
-    if (isStale()) return escapeHtml(code);
+    if (isStale()) {
+      return escapeHtml(code);
+    }
 
     const resolvedLanguage = resolveLanguage(language, shiki.bundledLanguages);
     const html = await shiki.codeToHtml(code, {

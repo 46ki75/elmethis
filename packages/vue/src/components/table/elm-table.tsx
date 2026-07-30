@@ -48,7 +48,9 @@ export const ElmTable = defineComponent({
 
     const measure = () => {
       const el = scrollRef.value;
-      if (el == null) return;
+      if (el == null) {
+        return;
+      }
       const max = el.scrollWidth - el.clientWidth;
       canScroll.value = max > 1;
       atStart.value = el.scrollLeft <= 1;
@@ -58,7 +60,9 @@ export const ElmTable = defineComponent({
     let observer: ResizeObserver | null = null;
     onMounted(() => {
       const el = scrollRef.value;
-      if (el == null) return;
+      if (el == null) {
+        return;
+      }
       measure();
       el.addEventListener("scroll", measure, { passive: true });
       // Guarded for the jsdom test env, which lacks ResizeObserver.

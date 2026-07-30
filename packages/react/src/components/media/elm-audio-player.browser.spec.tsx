@@ -20,8 +20,9 @@ const silentWavDataUri = (seconds = 2, sampleRate = 8000): string => {
   const buffer = new ArrayBuffer(44 + dataBytes);
   const view = new DataView(buffer);
   const writeStr = (offset: number, s: string) => {
-    for (let i = 0; i < s.length; i++)
+    for (let i = 0; i < s.length; i++) {
       view.setUint8(offset + i, s.charCodeAt(i));
+    }
   };
   writeStr(0, "RIFF");
   view.setUint32(4, 36 + dataBytes, true);
@@ -39,13 +40,14 @@ const silentWavDataUri = (seconds = 2, sampleRate = 8000): string => {
   // Samples stay zero (silence).
   let binary = "";
   const bytes = new Uint8Array(buffer);
-  for (let i = 0; i < bytes.length; i++)
+  for (let i = 0; i < bytes.length; i++) {
     binary += String.fromCharCode(bytes[i]);
+  }
   return `data:audio/wav;base64,${btoa(binary)}`;
 };
 
 type Screen = Awaited<ReturnType<typeof render>>;
-const root = (screen: Screen) => screen.container as HTMLElement;
+const root = (screen: Screen) => screen.container;
 const audioEl = (screen: Screen) =>
   root(screen).querySelector("audio") as HTMLAudioElement;
 const sliderEl = (screen: Screen) =>

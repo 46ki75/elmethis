@@ -24,7 +24,7 @@ describe("[CSR] ElmTextField", () => {
         placeholder="you@example.com"
       />
     ));
-    const input = rendered.getByTestId("field") as HTMLInputElement;
+    const input = rendered.getByTestId("field");
     const root = input.closest("label")!;
 
     expect(input).toBe(inputRef);

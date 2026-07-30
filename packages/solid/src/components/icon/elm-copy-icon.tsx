@@ -37,8 +37,11 @@ export const ElmCopyIcon = (props: ElmCopyIconProps) => {
     void clipboard.copy().catch(() => undefined);
 
     const handler = local.onClick;
-    if (typeof handler === "function") handler(event);
-    else handler?.[0](handler[1], event);
+    if (typeof handler === "function") {
+      handler(event);
+    } else {
+      handler?.[0](handler[1], event);
+    }
   };
 
   return (

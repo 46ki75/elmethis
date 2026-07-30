@@ -157,7 +157,9 @@ export const basicComponents: SolidRendererEntry[] = [
             [styles["button-disabled"]]: isDisabled(),
           }}
           onClick={() => {
-            if (!isDisabled()) props.props.action?.();
+            if (!isDisabled()) {
+              props.props.action?.();
+            }
           }}
           onKeyDown={(event) => {
             if (!isDisabled() && (event.key === "Enter" || event.key === " ")) {

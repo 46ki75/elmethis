@@ -27,9 +27,9 @@ describe("[CSR] ElmPageTop", () => {
     expect(control).toHaveAttribute("tabindex", "-1");
     expect(control).toHaveClass("custom-page-top");
     expect(control).toHaveStyle({ right: "0px", left: "auto" });
-    expect(
-      (control as HTMLElement).style.getPropertyValue("--elmethis-scoped-size"),
-    ).toBe("80px");
+    expect(control.style.getPropertyValue("--elmethis-scoped-size")).toBe(
+      "80px",
+    );
 
     setPosition("left");
     expect(control).toHaveStyle({ left: "0px", right: "auto" });

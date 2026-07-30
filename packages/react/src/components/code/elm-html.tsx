@@ -66,7 +66,9 @@ function sandboxHasAllowScripts(
   sandbox: string | undefined,
   allowScripts: boolean,
 ): boolean {
-  if (allowScripts) return true;
+  if (allowScripts) {
+    return true;
+  }
   const tokens = sandbox?.split(/\s+/).filter(Boolean) ?? [];
   return tokens.some((token) => token.toLowerCase() === "allow-scripts");
 }
@@ -137,7 +139,9 @@ export const ElmHtml = ({
     loadKey.autoHeight !== autoHeight
   ) {
     setLoadKey({ html, src, autoHeight });
-    if (autoHeight) setContentHeight(undefined);
+    if (autoHeight) {
+      setContentHeight(undefined);
+    }
   }
 
   // Measuring content height needs `allow-same-origin` (to read
@@ -157,7 +161,9 @@ export const ElmHtml = ({
   // `sandbox` attribute matches its keywords case-insensitively, so a
   // case-sensitive check here could be defeated by a differently-cased token.
   const sandboxTokens = new Set(sandbox?.split(/\s+/).filter(Boolean) ?? []);
-  if (allowScripts) sandboxTokens.add("allow-scripts");
+  if (allowScripts) {
+    sandboxTokens.add("allow-scripts");
+  }
   const hasAllowScripts = sandboxHasAllowScripts(sandbox, allowScripts);
   if (hasAllowScripts) {
     for (const token of sandboxTokens) {
@@ -178,14 +184,20 @@ export const ElmHtml = ({
 
   useEffect(() => {
     const iframe = iframeRef.current;
-    if (!iframe) return;
-    if (!autoHeight) return;
+    if (!iframe) {
+      return undefined;
+    }
+    if (!autoHeight) {
+      return undefined;
+    }
 
     // In `src` mode there's no markup of ours to inject a reporter script
     // into (the document is whatever the remote URL serves), so once scripts
     // are allowed — and `contentDocument` is therefore opaque, see below —
     // there's no way left to measure at all. Just don't attach anything.
-    if (usingSrc && sandboxHasAllowScripts(sandbox, allowScripts)) return;
+    if (usingSrc && sandboxHasAllowScripts(sandbox, allowScripts)) {
+      return undefined;
+    }
 
     // `contentDocument` is opaque whenever scripts are allowed (allow-
     // same-origin is never granted alongside allow-scripts — see the
@@ -198,7 +210,9 @@ export const ElmHtml = ({
         // `event.source` is set by the browser to the actual sender window
         // and can't be forged via message content, so this alone is
         // sufficient to reject reports from any other frame/page.
-        if (event.source !== iframe.contentWindow) return;
+        if (event.source !== iframe.contentWindow) {
+          return;
+        }
         const data = event.data as
           { kind?: unknown; height?: unknown } | null | undefined;
         if (
@@ -218,12 +232,16 @@ export const ElmHtml = ({
 
     const measure = () => {
       const root = iframe.contentDocument?.documentElement;
-      if (root) setContentHeight(root.scrollHeight);
+      if (root) {
+        setContentHeight(root.scrollHeight);
+      }
     };
 
     const attachObserver = () => {
       const root = iframe.contentDocument?.documentElement;
-      if (!root) return;
+      if (!root) {
+        return;
+      }
       observer?.disconnect();
       observer = new ResizeObserver(measure);
       observer.observe(root);

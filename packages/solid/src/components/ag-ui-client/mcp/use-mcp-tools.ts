@@ -47,7 +47,9 @@ export function useMcpTools(options: UseMcpToolsOptions): UseMcpToolsReturn {
 
   const dropToolsFor = (id: string) => {
     const prefix = shouldPrefix ? `${id}__` : undefined;
-    if (!prefix) return;
+    if (!prefix) {
+      return;
+    }
     setTools(
       Object.fromEntries(
         Object.entries(tools()).filter(([name]) => !name.startsWith(prefix)),

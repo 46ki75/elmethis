@@ -9,7 +9,7 @@ describe("[CSR] createClipboard", () => {
     "clipboard",
   );
   const OriginalClipboardItem = globalThis.ClipboardItem;
-  let writeText: ReturnType<typeof vi.fn>;
+  let writeText = vi.fn<() => Promise<void>>();
 
   beforeEach(() => {
     vi.useFakeTimers();

@@ -73,9 +73,7 @@ describe("[CSR] ElmHtml source precedence and protected attributes", () => {
 
   it("lets src win when both source forms are supplied", () => {
     const { container } = render(() => (
-      <ElmHtml
-        {...({ html: "<p>inline</p>", src: REMOTE_SRC } as ElmHtmlProps)}
-      />
+      <ElmHtml {...{ html: "<p>inline</p>", src: REMOTE_SRC }} />
     ));
     const iframe = iframeOf(container);
 

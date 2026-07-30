@@ -36,7 +36,9 @@ const activeTab = (wrapper: VueWrapper, label: string) => {
     .find(
       (node) => node.text() === label && /tab/.test(node.classes().join(" ")),
     );
-  if (!el) throw new Error(`Tab not found: ${label}`);
+  if (!el) {
+    throw new Error(`Tab not found: ${label}`);
+  }
   return el;
 };
 

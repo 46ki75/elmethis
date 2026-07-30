@@ -34,7 +34,9 @@ export const ElmShikiHighlighter = defineComponent({
       isActive: () => boolean,
     ): Promise<void> => {
       if (!code) {
-        if (isActive()) rawHtml.value = "";
+        if (isActive()) {
+          rawHtml.value = "";
+        }
         return;
       }
       try {
@@ -53,10 +55,13 @@ export const ElmShikiHighlighter = defineComponent({
             "#121212": "transparent",
           },
         });
-        if (isActive()) rawHtml.value = html;
+        if (isActive()) {
+          rawHtml.value = html;
+        }
       } catch {
-        if (isActive())
+        if (isActive()) {
           rawHtml.value = `<pre>${code.replace(/</g, "&lt;")}</pre>`;
+        }
       }
     };
 

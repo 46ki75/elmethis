@@ -19,7 +19,7 @@ const Harness = defineComponent({
 });
 
 type Screen = ReturnType<typeof render>;
-const root = (screen: Screen) => screen.container as HTMLElement;
+const root = (screen: Screen) => screen.container;
 const dialogEl = (screen: Screen) => root(screen).querySelector("dialog")!;
 const containerEl = (screen: Screen) =>
   root(screen).querySelector('[class*="image-container"]') as HTMLElement;
@@ -47,7 +47,7 @@ describe("[browser] ElmBlockImage lightbox lifecycle", () => {
     // The close control lives INSIDE the dialog (the enlarged image's own
     // onClick -> hide); an outside button would be unclickable under the open
     // modal's top layer.
-    const enlarged = dialog.querySelector("img")! as HTMLImageElement;
+    const enlarged = dialog.querySelector("img")!;
     enlarged.click();
 
     await vi.waitFor(() => expect(dialog.open).toBe(false));

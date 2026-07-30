@@ -116,7 +116,9 @@ export const useStorage = <T>({
   // that persists `initialValue` when storage was empty at mount.
   useEffect(() => {
     const storage = storageRef.current;
-    if (!storage) return;
+    if (!storage) {
+      return;
+    }
 
     try {
       storage.setItem(key, JSON.stringify(state));

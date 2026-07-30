@@ -42,7 +42,7 @@ describe("[CSR] controlled toggle", () => {
   };
 
   test("clicking writes back to the parent-owned value", async () => {
-    render(<Controlled />);
+    await render(<Controlled />);
 
     await expect.element(page.getByTestId("state")).toHaveTextContent("false");
 

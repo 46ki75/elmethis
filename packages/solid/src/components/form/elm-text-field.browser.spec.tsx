@@ -62,7 +62,7 @@ describe("[Browser] ElmTextField", () => {
       </form>
     ));
     const screen = page.elementLocator(rendered.baseElement);
-    const input = rendered.getByTestId("password") as HTMLInputElement;
+    const input = rendered.getByTestId("password");
 
     expect(input.type).toBe("password");
     await screen.getByRole("button", { name: "Show password" }).click();

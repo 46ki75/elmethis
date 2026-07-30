@@ -76,8 +76,12 @@ export const basicCatalog: CatalogRenderer = new CatalogRenderer([
   defineRenderer(TextApi, ({ props, resolve }) => {
     const text = resolve(props.text);
     const variant = props.variant ?? "body";
-    if (variant === "caption") return <ElmInlineText>{text}</ElmInlineText>;
-    if (variant === "body") return <ElmParagraph>{text}</ElmParagraph>;
+    if (variant === "caption") {
+      return <ElmInlineText>{text}</ElmInlineText>;
+    }
+    if (variant === "body") {
+      return <ElmParagraph>{text}</ElmParagraph>;
+    }
     return <ElmHeading level={headingLevel(variant)}>{text}</ElmHeading>;
   }),
 
@@ -309,7 +313,7 @@ export const basicCatalog: CatalogRenderer = new CatalogRenderer([
           onChange={(e: Event) => {
             const wrapper = e.currentTarget as HTMLDivElement;
             const inputs = wrapper.querySelectorAll<HTMLInputElement>("input");
-            const isMulti = inputs.length > 0 && inputs[0]!.type === "checkbox";
+            const isMulti = inputs.length > 0 && inputs[0].type === "checkbox";
             const checked = Array.from(
               wrapper.querySelectorAll<HTMLInputElement>("input:checked"),
             ).map((i) => i.value);

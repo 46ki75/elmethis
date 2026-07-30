@@ -134,7 +134,9 @@ describe("[CSR] ElmButton", () => {
       </>
     ));
 
-    for (const button of getAllByRole("button")) fireEvent.click(button);
+    for (const button of getAllByRole("button")) {
+      fireEvent.click(button);
+    }
 
     expect(onClick).not.toHaveBeenCalled();
   });

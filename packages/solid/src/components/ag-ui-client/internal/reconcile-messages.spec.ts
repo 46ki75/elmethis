@@ -6,8 +6,11 @@ import { describe, expect, it, vi } from "vitest";
 
 import { reconcileMessages } from "./reconcile-messages";
 
-const assistant = (id: string, content: string): Message =>
-  ({ id, role: "assistant", content }) as Message;
+const assistant = (id: string, content: string): Message => ({
+  id,
+  role: "assistant",
+  content,
+});
 
 describe("reconcileMessages", () => {
   it("preserves identities and notifies Solid for streamed content", async () => {

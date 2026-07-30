@@ -67,7 +67,9 @@ describe("[CSR] createElmethisTheme", () => {
             listener: EventListenerOrEventListenerObject,
           ) => {
             removePreferenceListener(listener);
-            if (preferenceListener === listener) preferenceListener = undefined;
+            if (preferenceListener === listener) {
+              preferenceListener = undefined;
+            }
           },
           addListener: vi.fn(),
           removeListener: vi.fn(),

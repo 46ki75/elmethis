@@ -17,7 +17,9 @@ type CopyMode = "variable" | "hex";
 // Convert a computed `rgb(...)`/`rgba(...)` string into a `#rrggbb` hex code.
 const rgbToHex = (rgb: string): string | null => {
   const parts = rgb.match(/\d+(\.\d+)?/g);
-  if (!parts || parts.length < 3) return null;
+  if (!parts || parts.length < 3) {
+    return null;
+  }
   const channel = (n: string) =>
     Math.round(Number(n)).toString(16).padStart(2, "0");
   return `#${channel(parts[0])}${channel(parts[1])}${channel(parts[2])}`;
@@ -53,7 +55,9 @@ export const ElmColorPrimitiveSample = defineComponent({
     let resetTimerId: ReturnType<typeof setTimeout> | undefined;
 
     onBeforeUnmount(() => {
-      if (resetTimerId !== undefined) clearTimeout(resetTimerId);
+      if (resetTimerId !== undefined) {
+        clearTimeout(resetTimerId);
+      }
     });
 
     // Single delegated handler on the component root; per-item handlers inside
@@ -63,7 +67,9 @@ export const ElmColorPrimitiveSample = defineComponent({
         "[data-copy-token]",
       );
       const token = target?.getAttribute("data-copy-token");
-      if (!target || !token) return;
+      if (!target || !token) {
+        return;
+      }
 
       let text = token;
       if (copyMode.value === "hex") {
@@ -74,12 +80,16 @@ export const ElmColorPrimitiveSample = defineComponent({
         root.appendChild(probe);
         const hex = rgbToHex(window.getComputedStyle(probe).color);
         probe.remove();
-        if (hex) text = hex;
+        if (hex) {
+          text = hex;
+        }
       }
 
       await window.navigator.clipboard.writeText(text);
 
-      if (resetTimerId !== undefined) clearTimeout(resetTimerId);
+      if (resetTimerId !== undefined) {
+        clearTimeout(resetTimerId);
+      }
       copiedToken.value = token;
       resetTimerId = setTimeout(() => {
         copiedToken.value = null;

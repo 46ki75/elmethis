@@ -34,7 +34,9 @@ export const ElmTable = (props: ElmTableProps) => {
 
   onMount(() => {
     const element = scrollElement;
-    if (element == null) return;
+    if (element == null) {
+      return;
+    }
 
     const measure = () => {
       const max = element.scrollWidth - element.clientWidth;

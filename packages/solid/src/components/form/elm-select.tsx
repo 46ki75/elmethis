@@ -119,7 +119,9 @@ export const ElmSelect = (props: ElmSelectProps) => {
       {...rest}
       ref={(element) => {
         root = element;
-        if (typeof local.ref === "function") local.ref(element);
+        if (typeof local.ref === "function") {
+          local.ref(element);
+        }
       }}
       class={clsx(
         styles["elm-select"],

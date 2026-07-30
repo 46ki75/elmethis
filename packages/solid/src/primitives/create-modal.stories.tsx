@@ -30,5 +30,5 @@ const Example = (props: CreateModalOptions) => {
 };
 
 export const Primary: Story = {
-  render: (args) => <Example {...(args as CreateModalOptions)} />,
+  render: (args) => <Example {...args} />,
 };

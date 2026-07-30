@@ -28,7 +28,9 @@ const renderNode = (node: SvgNode, suffix: string, key: number): ReactNode => {
   for (const [k, v] of Object.entries(node.attrs ?? {})) {
     props[toReactAttr(k)] = scopeId(v, k, suffix);
   }
-  if (node.style) props.style = node.style;
+  if (node.style) {
+    props.style = node.style;
+  }
   const children = node.children?.map((child, i) =>
     renderNode(child, suffix, i),
   );

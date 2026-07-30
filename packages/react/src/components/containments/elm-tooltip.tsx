@@ -35,7 +35,9 @@ export const ElmTooltip = ({
   const handleMouseOver = useCallback(
     (event: React.MouseEvent<HTMLSpanElement>) => {
       const el = elRef.current;
-      if (!el) return;
+      if (!el) {
+        return;
+      }
 
       if (isHideScheduleRef.current) {
         window.clearTimeout(hideTimerIdRef.current);

@@ -21,7 +21,9 @@ export const ElmTooltip = defineComponent({
 
     const handleMouseOver = () => {
       const el = elRef.value;
-      if (!el) return;
+      if (!el) {
+        return;
+      }
 
       if (isHideSchedule) {
         window.clearTimeout(hideTimerId);
@@ -47,7 +49,9 @@ export const ElmTooltip = defineComponent({
     };
 
     const handleMouseLeave = () => {
-      if (isHideSchedule) return;
+      if (isHideSchedule) {
+        return;
+      }
       isHideSchedule = true;
 
       hideTimerId = setTimeout(() => {
@@ -69,7 +73,7 @@ export const ElmTooltip = defineComponent({
 
         <div
           class={clsx(styles.tooltip, isHover.value && styles.show)}
-          style={position.value as CSSProperties}
+          style={position.value}
         >
           {slots.tooltip?.()}
         </div>

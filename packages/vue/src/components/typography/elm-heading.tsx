@@ -1,4 +1,4 @@
-import { defineComponent, type CSSProperties, type HTMLAttributes } from "vue";
+import { defineComponent, type HTMLAttributes } from "vue";
 import { clsx } from "clsx";
 
 import styles from "./elm-heading.module.css";
@@ -23,6 +23,15 @@ const SIZE_MAP: Record<1 | 2 | 3 | 4 | 5 | 6, number> = Object.freeze({
   6: 1.1,
 } as const);
 
+const HEADING_TAGS = {
+  1: "h1",
+  2: "h2",
+  3: "h3",
+  4: "h4",
+  5: "h5",
+  6: "h6",
+} as const;
+
 export const ElmHeading = defineComponent({
   name: "ElmHeading",
   props: {
@@ -35,7 +44,7 @@ export const ElmHeading = defineComponent({
   setup(props, { slots }) {
     // inheritAttrs default: passthrough class/style merge onto the root tag.
     return () => {
-      const Tag = `h${props.level}` as "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+      const Tag = HEADING_TAGS[props.level];
 
       return (
         <Tag
@@ -44,11 +53,9 @@ export const ElmHeading = defineComponent({
             textStyles.text,
             styles[`h${props.level}`],
           )}
-          style={
-            {
-              "--elmethis-scoped-font-size": `${SIZE_MAP[props.level]}em`,
-            } as CSSProperties
-          }
+          style={{
+            "--elmethis-scoped-font-size": `${SIZE_MAP[props.level]}em`,
+          }}
           id={props.id}
         >
           <span>{props.text}</span>

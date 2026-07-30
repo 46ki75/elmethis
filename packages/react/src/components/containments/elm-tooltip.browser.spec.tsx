@@ -16,9 +16,7 @@ describe("[CSR] hover", () => {
       />,
     );
 
-    const host = document.querySelector(
-      "[class*='elm-tooltip']",
-    )! as HTMLElement;
+    const host = document.querySelector("[class*='elm-tooltip']")!;
     await vi.waitFor(() => expect(host).toBeTruthy());
 
     const tooltip = host.querySelector<HTMLElement>("[class*='tooltip']")!;

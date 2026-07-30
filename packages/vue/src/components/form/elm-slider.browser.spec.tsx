@@ -17,7 +17,7 @@ const harness = (props: ElmSliderProps) =>
   defineComponent({ setup: () => () => h(ElmSlider, props) });
 
 type Screen = ReturnType<typeof render>;
-const root = (screen: Screen) => screen.container as HTMLElement;
+const root = (screen: Screen) => screen.container;
 const sliderEl = (screen: Screen) =>
   root(screen).querySelector('[role="slider"]') as HTMLElement;
 

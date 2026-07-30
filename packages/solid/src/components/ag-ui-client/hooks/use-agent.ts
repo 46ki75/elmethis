@@ -107,7 +107,9 @@ export function useAgent(options: UseAgentOptions): UseAgentReturn {
   const getTools = () => dynamicTools?.() ?? staticTools ?? {};
 
   const executeRun = async (withContext: boolean) => {
-    if (!agent) return;
+    if (!agent) {
+      return;
+    }
     state.error = null;
     try {
       await agent.runAgent({
@@ -121,7 +123,9 @@ export function useAgent(options: UseAgentOptions): UseAgentReturn {
       });
     } catch {
       state.isRunning = false;
-      if (state.status === "running") state.status = "error";
+      if (state.status === "running") {
+        state.status = "error";
+      }
     }
   };
 
@@ -140,18 +144,24 @@ export function useAgent(options: UseAgentOptions): UseAgentReturn {
         state,
         getTools,
         onNeedsReRun: async (pending) => {
-          if (!agent) return;
+          if (!agent) {
+            return;
+          }
           agent.messages.push(...pending);
           await executeRun(false);
         },
         onIdle: async () => {
-          if (!agent || state.status !== "success") return;
+          if (!agent || state.status !== "success") {
+            return;
+          }
           const next = state.queue.shift();
-          if (!next) return;
+          if (!next) {
+            return;
+          }
           const userMessage: UserMessage = {
             id: next.id,
             role: "user",
-            content: next.content.map((item) => ({ ...item }) as InputContent),
+            content: next.content.map((item) => ({ ...item })),
           };
           agent.messages.push(userMessage);
           state.messages.push(userMessage);
@@ -162,12 +172,16 @@ export function useAgent(options: UseAgentOptions): UseAgentReturn {
     onCleanup(() => {
       mountedAgent.abortRun();
       subscription.unsubscribe();
-      if (agent === mountedAgent) agent = undefined;
+      if (agent === mountedAgent) {
+        agent = undefined;
+      }
     });
   });
 
   const send = async (content: InputContent[]) => {
-    if (!agent) return;
+    if (!agent) {
+      return;
+    }
     if (state.isRunning) {
       state.queue.push({ id: v7(), content });
       return;
@@ -179,11 +193,15 @@ export function useAgent(options: UseAgentOptions): UseAgentReturn {
   };
 
   const retry = async () => {
-    if (!agent) return;
+    if (!agent) {
+      return;
+    }
     const lastUserMessageIndex = state.messages.findLastIndex(
       (message) => message.role === "user",
     );
-    if (lastUserMessageIndex === -1) return;
+    if (lastUserMessageIndex === -1) {
+      return;
+    }
     const messages = agent.messages.slice(0, lastUserMessageIndex + 1);
     agent.messages = [...messages];
     state.messages = [...messages];
@@ -195,7 +213,9 @@ export function useAgent(options: UseAgentOptions): UseAgentReturn {
     send,
     retry,
     abort: () => {
-      if (!agent) return;
+      if (!agent) {
+        return;
+      }
       if (state.queue.length > 0) {
         state.queue.pop();
         return;
@@ -207,10 +227,14 @@ export function useAgent(options: UseAgentOptions): UseAgentReturn {
     },
     dequeue: (id) => {
       const index = state.queue.findIndex((queued) => queued.id === id);
-      if (index !== -1) state.queue.splice(index, 1);
+      if (index !== -1) {
+        state.queue.splice(index, 1);
+      }
     },
     addTool: (name, tool) => {
-      if (!dynamicTools) staticTools = { ...(staticTools ?? {}), [name]: tool };
+      if (!dynamicTools) {
+        staticTools = { ...(staticTools ?? {}), [name]: tool };
+      }
     },
     setContext: (context) => {
       state.context = context;

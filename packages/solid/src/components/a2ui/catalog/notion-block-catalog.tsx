@@ -121,10 +121,14 @@ const BoundContentTab = (props: BoundContentTabProps) => {
     const id = props.id;
     setModel(surface.componentsModel.get(id));
     const created = surface.componentsModel.onCreated.subscribe((next) => {
-      if (next.id === id) setModel(next);
+      if (next.id === id) {
+        setModel(next);
+      }
     });
     const deleted = surface.componentsModel.onDeleted.subscribe((deletedId) => {
-      if (deletedId === id) setModel(undefined);
+      if (deletedId === id) {
+        setModel(undefined);
+      }
     });
     onCleanup(() => {
       created.unsubscribe();

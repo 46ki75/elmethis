@@ -1,10 +1,4 @@
-import type {
-  McpClientHandle,
-  McpPromptDescriptor,
-  McpPromptResult,
-  McpServerConfig,
-  McpToolDescriptor,
-} from "./mcp-types";
+import type { McpClientHandle, McpServerConfig } from "./mcp-types";
 
 const CLIENT_INFO = { name: "@elmethis/solid", version: "1.0.0" };
 
@@ -24,19 +18,19 @@ export async function createMcpClient(
   return {
     listTools: async () => {
       const { tools } = await client.listTools();
-      return tools as McpToolDescriptor[];
+      return tools;
     },
     callTool: async (name, args) =>
       await client.callTool({ name, arguments: args }),
     listPrompts: async () => {
       const { prompts } = await client.listPrompts();
-      return prompts as McpPromptDescriptor[];
+      return prompts;
     },
     getPrompt: async (name, args) =>
-      (await client.getPrompt({
+      await client.getPrompt({
         name,
         arguments: args,
-      })) as McpPromptResult,
+      }),
     close: async () => await client.close(),
   };
 }

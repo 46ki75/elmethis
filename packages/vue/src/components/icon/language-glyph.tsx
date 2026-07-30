@@ -12,7 +12,9 @@ const renderNode = (node: SvgNode, suffix: string): VNode => {
   for (const [k, v] of Object.entries(node.attrs ?? {})) {
     attrs[k] = scopeId(v, k, suffix);
   }
-  if (node.style) attrs.style = node.style;
+  if (node.style) {
+    attrs.style = node.style;
+  }
   return h(
     node.tag,
     attrs,

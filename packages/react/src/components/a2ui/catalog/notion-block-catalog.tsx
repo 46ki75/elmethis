@@ -123,8 +123,9 @@ const blockImplementations: ReactComponentImplementation[] = [
   // ----- Inline -----
   createComponentImplementation(RichTextApi, ({ props }: any) => {
     const decoration: string[] = props.decoration ?? [];
-    if (decoration.includes("katex"))
+    if (decoration.includes("katex")) {
       return <ElmKatex expression={props.text} block={false} />;
+    }
     return (
       <ElmInlineText
         bold={decoration.includes("bold")}

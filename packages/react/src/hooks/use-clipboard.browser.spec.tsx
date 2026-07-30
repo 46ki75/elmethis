@@ -22,7 +22,7 @@ const Harness = () => {
   });
   return (
     <div>
-      <button data-testid="copy" onClick={() => copy()}>
+      <button data-testid="copy" onClick={() => void copy()}>
         Copy
       </button>
       <CopyButton />

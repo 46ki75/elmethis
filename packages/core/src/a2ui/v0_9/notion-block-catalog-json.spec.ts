@@ -49,7 +49,7 @@ describe("notionBlockCatalogJson", () => {
       typeof v === "object" &&
       v !== null &&
       "name" in v &&
-      typeof (v as { name: unknown }).name === "string";
+      typeof v.name === "string";
 
     const apiNames = Object.values(schemas)
       .filter(hasNameField)
@@ -117,7 +117,7 @@ describe("notionBlockCatalogJson", () => {
     const ajv = newAjv();
     // Compile the catalog as a meta-schema-aware document. Add it once with
     // its $id and then compile a reference into one of its component slots.
-    ajv.addSchema(notionBlockCatalogJson as object);
+    ajv.addSchema(notionBlockCatalogJson);
     const validate = ajv.compile({
       $ref: `${NOTION_BLOCK_CATALOG_ID}#/components/Heading`,
     });
@@ -126,7 +126,7 @@ describe("notionBlockCatalogJson", () => {
 
   test("a valid Heading payload validates; an invalid one fails", () => {
     const ajv = newAjv();
-    ajv.addSchema(notionBlockCatalogJson as object);
+    ajv.addSchema(notionBlockCatalogJson);
     const validate = ajv.compile({
       $ref: `${NOTION_BLOCK_CATALOG_ID}#/components/Heading`,
     });
@@ -159,7 +159,7 @@ describe("notionBlockCatalogJson", () => {
 
   test("a RichText payload validates with a path-bound text (DynamicString)", () => {
     const ajv = newAjv();
-    ajv.addSchema(notionBlockCatalogJson as object);
+    ajv.addSchema(notionBlockCatalogJson);
     const validate = ajv.compile({
       $ref: `${NOTION_BLOCK_CATALOG_ID}#/components/RichText`,
     });
@@ -183,7 +183,7 @@ describe("notionBlockCatalogJson", () => {
 
   test("ChildList template form validates as `children` (Heading)", () => {
     const ajv = newAjv();
-    ajv.addSchema(notionBlockCatalogJson as object);
+    ajv.addSchema(notionBlockCatalogJson);
     const validate = ajv.compile({
       $ref: `${NOTION_BLOCK_CATALOG_ID}#/components/Heading`,
     });

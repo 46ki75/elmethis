@@ -29,12 +29,16 @@ export function createClipboard(
 
   onCleanup(() => {
     disposed = true;
-    if (resetTimer !== undefined) clearTimeout(resetTimer);
+    if (resetTimer !== undefined) {
+      clearTimeout(resetTimer);
+    }
   });
 
   const copy = async (): Promise<void> => {
     const clipboard = globalThis.navigator?.clipboard;
-    if (!clipboard) throw new Error("The Clipboard API is not available");
+    if (!clipboard) {
+      throw new Error("The Clipboard API is not available");
+    }
 
     const content = options.content;
     if (typeof content === "string") {
@@ -49,8 +53,12 @@ export function createClipboard(
       await clipboard.write(content.map((item) => new ClipboardItem(item)));
     }
 
-    if (disposed) return;
-    if (resetTimer !== undefined) clearTimeout(resetTimer);
+    if (disposed) {
+      return;
+    }
+    if (resetTimer !== undefined) {
+      clearTimeout(resetTimer);
+    }
 
     setCopied(true);
     resetTimer = setTimeout(() => {
