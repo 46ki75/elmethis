@@ -1,3 +1,7 @@
+type RuleSeverity = "off" | "warn" | "error";
+type RuleConfig = RuleSeverity | [RuleSeverity, ...unknown[]];
+type Rules = Record<string, RuleConfig>;
+
 export const strictRules = {
   eqeqeq: ["error", "always", { null: "ignore" }],
   curly: ["error", "all"],
@@ -15,8 +19,8 @@ export const strictRules = {
   "@typescript-eslint/no-unsafe-return": "warn",
   "@typescript-eslint/require-await": "warn",
   "@typescript-eslint/unbound-method": "warn",
-};
+} satisfies Rules;
 
 export const typedTestRules = {
   "@typescript-eslint/await-thenable": "warn",
-};
+} satisfies Rules;

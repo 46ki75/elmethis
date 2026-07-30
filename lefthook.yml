@@ -23,7 +23,7 @@ check:
   parallel: true
   jobs:
     # Every job runs per-package: `root:` sets the CWD so each package's own
-    # config (eslint.config.js / stylelint.config.mjs / vitest config) resolves
+    # config (eslint.config.ts / stylelint.config.mjs / vitest config) resolves
     # deterministically instead of relying on the tool walking up from the repo
     # root, and rebases {files} relative to it. The glob is matched against the
     # repo-root-relative path; `**` matches one-or-more dirs deep, so

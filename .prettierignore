@@ -22,5 +22,5 @@ tsconfig.json
 tsconfig.*.json
 
 # Config files
-eslint.config.js
+eslint.config.ts
 prettier.config.js
