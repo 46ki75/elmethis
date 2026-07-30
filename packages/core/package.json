@@ -34,6 +34,16 @@
         "default": "./dist/tokens.cjs"
       }
     },
+    "./stylelint": {
+      "import": {
+        "types": "./dist/stylelint.d.mts",
+        "default": "./dist/stylelint.mjs"
+      },
+      "require": {
+        "types": "./dist/stylelint.d.cts",
+        "default": "./dist/stylelint.cjs"
+      }
+    },
     "./tokens.css": "./dist/tokens.css"
   },
   "files": [
@@ -63,6 +73,9 @@
     "zod": "^3"
   },
   "dependencies": {
+    "stylelint-config-css-modules": "^4.6.0",
+    "stylelint-config-standard": "^40.0.0",
+    "stylelint-value-no-unknown-custom-properties": "^6.1.1",
     "zod-to-json-schema": "^3.25.2"
   },
   "devDependencies": {
