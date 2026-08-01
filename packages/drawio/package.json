@@ -37,7 +37,7 @@
     "build.types": "tsc --noEmit",
     "fmt": "prettier --write ./scripts ./README.md",
     "fmt.check": "prettier --check ./scripts ./README.md",
-    "lint": "eslint \"scripts/**/*.ts\"",
+    "lint": "eslint \"scripts/**/*.ts\" eslint.config.ts",
     "check": "pnpm run fmt.check && pnpm run lint && pnpm run build.types && pnpm run build",
     "check.ci": "pnpm run check",
     "prepublishOnly": "pnpm run check"

@@ -28,7 +28,7 @@
     "build.types": "tsc --noEmit",
     "fmt": "prettier --write ./scripts",
     "fmt.check": "prettier --check ./scripts",
-    "lint": "eslint \"scripts/**/*.ts\"",
+    "lint": "eslint \"scripts/**/*.ts\" eslint.config.ts",
     "check": "pnpm run fmt.check && pnpm run lint && pnpm run build.types && pnpm run build",
     "check.ci": "pnpm run check",
     "prepublish:npm": "pnpm run build:npm",

@@ -9,7 +9,7 @@
         "prestart": "pnpm run build",
         "start": "node ./dist/index.mjs",
         "build": "node build.ts",
-        "lint": "eslint \"src/**/*.ts\" build.ts",
+        "lint": "eslint \"src/**/*.ts\" build.ts eslint.config.ts",
         "check": "pnpm run lint && tsc --noEmit",
         "prebuild:container": "pnpm run build",
         "build:container": "docker buildx build -t copilotkit-minimal --platform linux/arm64 ."

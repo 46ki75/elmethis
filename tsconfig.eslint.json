@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "types": ["node"],
+    "skipLibCheck": true,
+    "rootDir": "."
+  },
+  "files": [
+    "eslint.strict.ts",
+    "packages/ag-ui-stub/eslint.config.ts",
+    "packages/copilotkit/eslint.config.ts",
+    "packages/core/eslint.config.ts",
+    "packages/drawio/eslint.config.ts",
+    "packages/ikuma-theme/eslint.config.ts",
+    "packages/react/eslint.config.ts",
+    "packages/solid/eslint.config.ts",
+    "packages/vue/eslint.config.ts"
+  ]
+}
