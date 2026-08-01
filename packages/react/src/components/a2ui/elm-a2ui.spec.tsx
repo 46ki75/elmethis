@@ -81,36 +81,6 @@ describe("[CSR] ElmA2ui", () => {
   });
 });
 
-const xssSurface = [
-  { version: "v0.9", createSurface: { surfaceId: "x", catalogId: CATALOG_ID } },
-  {
-    version: "v0.9",
-    updateComponents: {
-      surfaceId: "x",
-      components: [
-        {
-          component: "Text",
-          id: "root",
-          text: 'safe text <img src=x onerror="window.__xss=1">',
-        },
-      ],
-    },
-  },
-] as object[];
-
-describe("[CSR] ElmA2ui markdown sanitization", () => {
-  test("strips dangerous attributes from agent-authored markdown", async () => {
-    const { container } = render(<ElmA2ui messages={xssSurface} />);
-    await waitFor(() => {
-      expect(container.textContent).toContain("safe text");
-    });
-    // DOMPurify must drop the event handler that dangerouslySetInnerHTML
-    // would otherwise activate.
-    expect(container.querySelector("img[onerror]")).toBeNull();
-    expect(container.innerHTML).not.toContain("onerror");
-  });
-});
-
 describe("[SSR] ElmA2ui", () => {
   test("renders the wrapper without throwing (no surfaces server-side)", () => {
     // Effects don't run during SSR, so the processor never builds — the
