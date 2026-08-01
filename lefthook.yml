@@ -7,6 +7,8 @@ pre-commit:
   jobs:
     - name: check
       run: pnpm run --recursive check
+    - name: configs
+      run: pnpm run check.configs
 
 fmt:
   parallel: true
@@ -29,6 +31,9 @@ check:
     # repo-root-relative path; `**` matches one-or-more dirs deep, so
     # `packages/<pkg>/**` covers everything under the package (e.g. src/) while
     # skipping top-level package config files.
+
+    - name: configs
+      run: pnpm run check.configs
 
     - name: eslint-core
       root: "packages/core/"

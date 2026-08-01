@@ -5,9 +5,16 @@
     "url": "git@github.com:46ki75/elmethis.git"
   },
   "homepage": "https://46ki75.github.io/elmethis",
+  "scripts": {
+    "check.configs": "pnpm run fmt.configs && pnpm run lint.configs && pnpm run typecheck.configs",
+    "fmt.configs": "prettier --check \"**/tsconfig*.json\" \"**/eslint.config.ts\"",
+    "lint.configs": "pnpm --recursive exec eslint eslint.config.ts",
+    "typecheck.configs": "tsc --project tsconfig.eslint.json"
+  },
   "devDependencies": {
     "@types/node": "^26.1.2",
     "lefthook": "^2.1.10",
+    "prettier": "3.9.6",
     "stylelint": "^17.14.1",
     "typescript": "~6.0.3"
   },
