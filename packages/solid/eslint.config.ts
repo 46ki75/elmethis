@@ -1,3 +1,6 @@
+/// <reference types="node" />
+
+import { fileURLToPath } from "node:url";
 import js from "@eslint/js";
 import vitest from "@vitest/eslint-plugin";
 import solid from "eslint-plugin-solid/configs/typescript";
@@ -9,6 +12,8 @@ import {
   strictRules,
   typedTestRules,
 } from "../../eslint.strict.ts";
+
+const tsconfigRootDir = fileURLToPath(new URL(".", import.meta.url));
 
 export default defineConfig([
   globalIgnores([
@@ -36,7 +41,7 @@ export default defineConfig([
       globals: globals.browser,
       parserOptions: {
         projectService: true,
-        tsconfigRootDir: import.meta.dirname,
+        tsconfigRootDir,
       },
     },
     rules: {
@@ -57,5 +62,16 @@ export default defineConfig([
     files: ["**/*.spec.{ts,tsx}", "**/*.browser.spec.{ts,tsx}"],
     extends: [vitest.configs.recommended],
     rules: typedTestRules,
+  },
+  {
+    files: ["eslint.config.ts"],
+    languageOptions: {
+      globals: globals.node,
+      parserOptions: {
+        projectService: false,
+        project: "../../tsconfig.eslint.json",
+        tsconfigRootDir,
+      },
+    },
   },
 ]);

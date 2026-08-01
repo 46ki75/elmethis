@@ -18,9 +18,3 @@ storybook-static
 pnpm-lock.yaml
 package-lock.json
 package.json
-tsconfig.json
-tsconfig.*.json
-
-# Config files
-eslint.config.ts
-prettier.config.js
