@@ -7,9 +7,7 @@
     "outDir": "lib-types",
     "rootDir": "src"
   },
-  "include": [
-    "src"
-  ],
+  "include": ["src"],
   "exclude": [
     "src/**/*.spec.ts",
     "src/**/*.spec.tsx",

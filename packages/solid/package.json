@@ -54,7 +54,7 @@
     "dev.lib": "vite build --watch",
     "fmt": "prettier --write ./src",
     "fmt.check": "prettier --check ./src",
-    "lint": "eslint \"src/**/*.ts*\"",
+    "lint": "eslint \"src/**/*.ts*\" eslint.config.ts",
     "lint.css": "stylelint \"{src,.storybook}/**/*.css\"",
     "test": "pnpm run test.unit && pnpm run test.browser",
     "test.unit": "vitest --run && vitest --run --config vitest.ssr.config.ts",

@@ -61,7 +61,7 @@
     "dev": "tsdown --watch",
     "fmt": "prettier --write ./src",
     "fmt.check": "prettier --check ./src",
-    "lint": "eslint \"src/**/*.ts*\"",
+    "lint": "eslint \"src/**/*.ts*\" eslint.config.ts",
     "test.unit": "vitest --run",
     "test.coverage": "vitest --run --coverage",
     "prepublishOnly": "pnpm run build",
