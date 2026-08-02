@@ -33,7 +33,7 @@ built output and emitted `tokens.css`.
 | Command                                          | Description                                                             |
 | ------------------------------------------------ | ----------------------------------------------------------------------- |
 | `pnpm install`                                   | Install all workspace deps                                              |
-| `pnpm --filter @elmethis/core run build`         | Build core (tsdown + tokens.css + catalog JSON) — do this first         |
+| `pnpm --filter @elmethis/core run build`         | Build core (tsdown + tokens.css + DESIGN.md + catalog JSON) first       |
 | `pnpm --filter @elmethis/draw.io run build`      | Generate the diagrams.net configuration from core tokens                |
 | `pnpm --filter @elmethis/ag-ui-stub run build`   | Build the in-process AG-UI test agent used by Solid tests and Storybook |
 | `pnpm --filter ikuma-theme run build`            | Build VS Code, Shiki, Windows Terminal, and VSIX artifacts              |
@@ -57,8 +57,9 @@ runs eslint / stylelint / vitest-related per package.
 ## Architecture
 
 - **core is the single source of truth.** Design tokens (`src/style/token.ts` → emitted
-  `tokens.css`), A2UI Notion block catalogs, JSON schemas, and language-icon registries live here and
-  are consumed by all three framework libs — defined once, mirrored everywhere.
+  `tokens.css` and light/dark `DESIGN.md` files), A2UI Notion block catalogs, JSON schemas, and
+  language-icon registries live here and are consumed by all three framework libs — defined once,
+  mirrored everywhere.
 - **draw.io is a generated artifact package.** `@elmethis/draw.io` consumes the public
   `@elmethis/core/tokens` entry point and emits `dist/draw.io-config.json`; build core first.
 - **Component leadership is per-feature, not fixed to one framework.** The mature implementations
@@ -78,8 +79,8 @@ runs eslint / stylelint / vitest-related per package.
 
 ## Gotchas
 
-- Build `@elmethis/core` before working on draw.io/react/solid/vue, or their imports and `tokens.css` resolve
-  to stale/missing output.
+- Build `@elmethis/core` before working on draw.io/react/solid/vue, or their imports and `tokens.css`
+  resolve to stale/missing output. The same build refreshes the generated design artifacts.
 - Build `@elmethis/ag-ui-stub` before Solid AG-UI tests or Storybook; its workspace package exports built
   output from `dist`.
 - Theme outputs are generated under `packages/ikuma-theme/dist` and ignored by Git. Build the theme

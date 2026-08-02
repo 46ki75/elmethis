@@ -44,7 +44,9 @@
         "default": "./dist/stylelint.cjs"
       }
     },
-    "./tokens.css": "./dist/tokens.css"
+    "./tokens.css": "./dist/tokens.css",
+    "./design/light/DESIGN.md": "./dist/design/light/DESIGN.md",
+    "./design/dark/DESIGN.md": "./dist/design/dark/DESIGN.md"
   },
   "files": [
     "dist"
@@ -56,7 +58,8 @@
     "**/*.css"
   ],
   "scripts": {
-    "build": "tsdown && tsx scripts/emit-catalog.ts && tsx scripts/build-tokens.ts",
+    "build": "tsdown && tsx scripts/emit-catalog.ts && tsx scripts/build-tokens.ts && tsx scripts/build-design-md.ts",
+    "build.design": "tsx scripts/build-design-md.ts",
     "build.types": "exit 0",
     "dev": "tsdown --watch",
     "fmt": "prettier --write ./src",
@@ -81,15 +84,16 @@
   "devDependencies": {
     "@a2ui/web_core": "^0.10.5",
     "@eslint/js": "latest",
+    "@google/design.md": "0.4.0",
     "@types/node": "26.1.2",
     "@vanilla-extract/css": "^1.21.2",
     "@vanilla-extract/esbuild-plugin": "^2.3.22",
     "@vitest/coverage-v8": "^4.1.10",
+    "@vitest/eslint-plugin": "1.6.24",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
     "concurrently": "^10.0.4",
     "esbuild": "^0.28.1",
-    "@vitest/eslint-plugin": "1.6.24",
     "eslint": "^10.8.0",
     "globals": "^17.8.0",
     "jiti": "2.7.0",
@@ -99,6 +103,7 @@
     "typescript": "5.9.3",
     "typescript-eslint": "^8.65.0",
     "vitest": "^4.1.10",
+    "yaml": "2.8.3",
     "zod": "^3"
   }
 }
