@@ -22,11 +22,11 @@
         "@anthropic-ai/sdk": "^0.115.0",
         "@copilotkit/runtime": "^1.64.1",
         "@copilotkit/shared": "^1.64.1",
-        "@hono/node-server": "^2.0.12",
+        "@hono/node-server": "^2.1.0",
         "@modelcontextprotocol/sdk": "^1.30.0",
         "consola": "^3.4.2",
         "dotenv": "^17.4.2",
-        "hono": "^4.12.33",
+        "hono": "^4.12.34",
         "zod": "^4.0.0"
     },
     "devDependencies": {
