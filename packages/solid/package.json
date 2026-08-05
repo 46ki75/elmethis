@@ -97,7 +97,7 @@
     "@vitest/browser-playwright": "4.1.10",
     "@vitest/coverage-v8": "4.1.10",
     "concurrently": "^10.0.4",
-    "@vitest/eslint-plugin": "1.6.24",
+    "@vitest/eslint-plugin": "1.6.25",
     "eslint": "^10.8.0",
     "eslint-plugin-solid": "~0.14.5",
     "globals": "^17.8.0",
