@@ -54,7 +54,7 @@
     "@types/node": "26.1.2",
     "@vitest/coverage-v8": "^4.1.10",
     "concurrently": "^10.0.4",
-    "@vitest/eslint-plugin": "1.6.24",
+    "@vitest/eslint-plugin": "1.6.25",
     "eslint": "^10.8.0",
     "globals": "^17.9.0",
     "jiti": "2.7.0",
