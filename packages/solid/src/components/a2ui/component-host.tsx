@@ -34,6 +34,7 @@ export interface ComponentHostProps {
   basePath: string;
   index?: number | Accessor<number>;
   ancestors?: readonly string[];
+  wrap?: boolean;
 }
 
 interface BoundRenderer {
@@ -129,12 +130,14 @@ export const ComponentHost = (props: ComponentHostProps) => {
     id: string,
     basePath = props.basePath,
     index: number | Accessor<number> = 0,
+    wrap = true,
   ): JSX.Element => (
     <ComponentHost
       id={id}
       basePath={basePath}
       index={index}
       ancestors={[...ancestors(), props.id]}
+      wrap={wrap}
     />
   );
 
@@ -146,13 +149,38 @@ export const ComponentHost = (props: ComponentHostProps) => {
     return encodeInstanceId(currentSurface.id, props.id, props.basePath);
   };
 
+  const BoundComponent = () => (
+    <Show when={bound()} keyed>
+      {(resolved) => {
+        const Renderer = resolved.entry.render;
+        return (
+          <Renderer
+            componentId={props.id}
+            componentKey={`${props.id}@${props.basePath}`}
+            instanceId={instanceId()}
+            index={
+              typeof props.index === "function"
+                ? props.index()
+                : (props.index ?? 0)
+            }
+            props={resolvedProps}
+            surface={surface!()}
+            context={resolved.context}
+            childRefs={normalizeChildren}
+            renderChild={renderChild}
+          />
+        );
+      }}
+    </Show>
+  );
+
   return (
     <Show when={surface?.() != null && catalog?.() != null && !isCycle()}>
       <Show
         when={model()}
         keyed
         fallback={
-          <Show when={!everHadModel()}>
+          <Show when={!everHadModel() && props.wrap !== false}>
             <span
               data-a2ui-state="loading"
               data-a2ui-component-id={props.id}
@@ -169,45 +197,29 @@ export const ComponentHost = (props: ComponentHostProps) => {
             when={catalog?.().get(current.type)}
             keyed
             fallback={
-              <span
-                data-a2ui-state="unknown"
-                data-a2ui-component-id={props.id}
-                data-a2ui-component-key={`${props.id}@${props.basePath}`}
-                data-a2ui-component-type={current.type}
-                class="a2ui-unknown"
-              >
-                Unknown component: {current.type}
-              </span>
+              <Show when={props.wrap !== false}>
+                <span
+                  data-a2ui-state="unknown"
+                  data-a2ui-component-id={props.id}
+                  data-a2ui-component-key={`${props.id}@${props.basePath}`}
+                  data-a2ui-component-type={current.type}
+                  class="a2ui-unknown"
+                >
+                  Unknown component: {current.type}
+                </span>
+              </Show>
             }
           >
             {(_entry: SolidRendererEntry) => (
-              <span
-                data-a2ui-component-id={props.id}
-                data-a2ui-component-key={`${props.id}@${props.basePath}`}
-                style={{ display: "contents" }}
-              >
-                <Show when={bound()} keyed>
-                  {(resolved) => {
-                    const Renderer = resolved.entry.render;
-                    return (
-                      <Renderer
-                        componentId={props.id}
-                        instanceId={instanceId()}
-                        index={
-                          typeof props.index === "function"
-                            ? props.index()
-                            : (props.index ?? 0)
-                        }
-                        props={resolvedProps}
-                        surface={surface!()}
-                        context={resolved.context}
-                        childRefs={normalizeChildren}
-                        renderChild={renderChild}
-                      />
-                    );
-                  }}
-                </Show>
-              </span>
+              <Show when={props.wrap !== false} fallback={<BoundComponent />}>
+                <span
+                  data-a2ui-component-id={props.id}
+                  data-a2ui-component-key={`${props.id}@${props.basePath}`}
+                  style={{ display: "contents" }}
+                >
+                  <BoundComponent />
+                </span>
+              </Show>
             )}
           </Show>
         )}
