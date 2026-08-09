@@ -489,6 +489,7 @@ const blockComponents = [
                 child={child}
                 index={index}
                 renderChild={props.renderChild}
+                wrap={false}
               />
             )}
           </For>
@@ -501,6 +502,7 @@ const blockComponents = [
               child={child}
               index={index}
               renderChild={props.renderChild}
+              wrap={false}
             />
           )}
         </For>
@@ -508,20 +510,29 @@ const blockComponents = [
     </ElmTable>
   )),
   defineRenderer(TableRowApi, (props) => (
-    <ElmTableRow>
+    <ElmTableRow
+      data-a2ui-component-id={props.componentId}
+      data-a2ui-component-key={props.componentKey}
+    >
       <For each={props.childRefs(props.props.children)}>
         {(child, index) => (
           <RenderIndexedChild
             child={child}
             index={index}
             renderChild={props.renderChild}
+            wrap={false}
           />
         )}
       </For>
     </ElmTableRow>
   )),
   defineRenderer(TableCellApi, (props) => (
-    <ElmTableCell isHeader={props.props.isHeader} columnIndex={props.index}>
+    <ElmTableCell
+      data-a2ui-component-id={props.componentId}
+      data-a2ui-component-key={props.componentKey}
+      isHeader={props.props.isHeader}
+      columnIndex={props.index}
+    >
       <For each={props.childRefs(props.props.children)}>
         {(child, childIndex) => (
           <RenderIndexedChild

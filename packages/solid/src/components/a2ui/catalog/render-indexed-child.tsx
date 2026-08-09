@@ -9,10 +9,19 @@ interface RenderIndexedChildProps {
     componentId: string,
     basePath?: string,
     index?: number | Accessor<number>,
+    wrap?: boolean,
   ) => JSX.Element;
+  wrap?: boolean;
 }
 
 /** Passes the reactive sibling index through without rebuilding child JSX. */
 export const RenderIndexedChild = (props: RenderIndexedChildProps) => (
-  <>{props.renderChild(props.child.id, props.child.basePath, props.index)}</>
+  <>
+    {props.renderChild(
+      props.child.id,
+      props.child.basePath,
+      props.index,
+      props.wrap,
+    )}
+  </>
 );

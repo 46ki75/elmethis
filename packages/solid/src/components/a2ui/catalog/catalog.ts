@@ -58,6 +58,7 @@ export const createChildRefs = (
 
 export interface RenderArgs<TProps = Record<string, unknown>> {
   componentId: string;
+  componentKey: string;
   /** Stable DOM-safe identity scoped by surface, component, and data path. */
   instanceId: string;
   index: number;
@@ -69,6 +70,8 @@ export interface RenderArgs<TProps = Record<string, unknown>> {
     componentId: string,
     basePath?: string,
     index?: number | Accessor<number>,
+    /** Disable the generic span host when the parent requires native children. */
+    wrap?: boolean,
   ) => JSX.Element;
 }
 
