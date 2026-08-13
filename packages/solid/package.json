@@ -79,7 +79,7 @@
     "@elmethis/core": "workspace:^",
     "@modelcontextprotocol/sdk": "^1.30.0",
     "clsx": "^2.1.1",
-    "katex": "^0.18.1",
+    "katex": "^0.18.4",
     "marked": "^18.0.7",
     "shiki": "^4.4.2",
     "uuid": "^14.0.1",
