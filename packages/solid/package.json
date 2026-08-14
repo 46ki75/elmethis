@@ -91,7 +91,7 @@
     "@eslint/js": "latest",
     "@solidjs/testing-library": "^0.8.10",
     "@storybook/addon-docs": "^10.5.7",
-    "@testing-library/jest-dom": "^7.0.0",
+    "@testing-library/jest-dom": "^7.0.1",
     "@types/katex": "^0.16.8",
     "@types/node": "^26.1.2",
     "@vitest/browser-playwright": "4.1.10",
