@@ -95,7 +95,7 @@
     "concurrently": "^10.0.4",
     "esbuild": "^0.28.2",
     "eslint": "^10.8.1",
-    "globals": "^17.9.0",
+    "globals": "^17.11.0",
     "jiti": "2.7.0",
     "prettier": "3.9.6",
     "tsdown": "^0.22.14",
