@@ -145,7 +145,7 @@ describe("[CSR] ElmA2ui", () => {
           action: {
             event: {
               name: "submit",
-              context: { nested: { name: { path: "/form/name" } } },
+              context: { nested: [{ name: { path: "/form/name" } }] },
             },
           },
         },
@@ -171,7 +171,7 @@ describe("[CSR] ElmA2ui", () => {
     fireEvent.click(rendered.getByRole("button", { name: "Go" }));
     expect(actionSpy).toHaveBeenCalledWith(
       {
-        event: { name: "submit", context: { nested: { name: "Ada" } } },
+        event: { name: "submit", context: { nested: [{ name: "Ada" }] } },
       },
       "go",
     );

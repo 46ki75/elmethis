@@ -183,6 +183,7 @@ describe("basicCatalog — form fields", () => {
           { value: "a", label: "A" },
           { value: "b", label: "B" },
         ],
+        value: [],
       },
     ]);
     await vi.waitFor(() =>
@@ -197,6 +198,7 @@ describe("basicCatalog — form fields", () => {
         id: "root",
         variant: "multipleSelection",
         options: [{ value: "a", label: "A" }],
+        value: [],
       },
     ]);
     await vi.waitFor(() =>

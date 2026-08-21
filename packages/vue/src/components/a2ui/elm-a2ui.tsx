@@ -21,15 +21,11 @@ import {
 } from "vue";
 
 import {
-  Catalog,
   MessageProcessor,
   type ComponentApi,
   type SurfaceModel,
 } from "@a2ui/web_core/v0_9";
-import {
-  BASIC_COMPONENTS,
-  BASIC_FUNCTIONS,
-} from "@a2ui/web_core/v0_9/basic_catalog";
+import { BASIC_FUNCTIONS } from "@a2ui/web_core/v0_9/basic_catalog";
 
 import { basicCatalog } from "./catalog/basic-catalog";
 import { type CatalogRenderer } from "./catalog/catalog";
@@ -241,8 +237,9 @@ export const ElmA2ui = defineComponent({
           }
         }
       }
-      const catalogs = Array.from(ids).map(
-        (id) => new Catalog(id, BASIC_COMPONENTS, BASIC_FUNCTIONS),
+      const rendererCatalog = props.catalog ?? basicCatalog;
+      const catalogs = Array.from(ids).map((id) =>
+        rendererCatalog.toCatalog(id, BASIC_FUNCTIONS),
       );
       const processor = new MessageProcessor<ComponentApi>(catalogs);
       const newMap = new Map<string, SurfaceModel<ComponentApi>>();

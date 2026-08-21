@@ -296,7 +296,6 @@ export const basicComponents: SolidRendererEntry[] = [
         value={Number(props.props.value ?? 0)}
         min={props.props.min ?? 0}
         max={props.props.max}
-        step={props.props.step}
         aria-invalid={props.props.isValid === false}
         aria-describedby={
           props.props.isValid === false
