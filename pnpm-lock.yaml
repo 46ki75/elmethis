@@ -159,8 +159,8 @@ importers:
         version: 3.25.2(zod@3.25.76)
     devDependencies:
       '@a2ui/web_core':
-        specifier: ^0.10.5
-        version: 0.10.5
+        specifier: ^0.10.6
+        version: 0.10.6
       '@eslint/js':
         specifier: latest
         version: 10.0.1(eslint@10.8.1(jiti@2.7.0))
@@ -303,8 +303,8 @@ importers:
         specifier: ^0.10.2
         version: 0.10.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(zod@3.25.76)
       '@a2ui/web_core':
-        specifier: ^0.10.5
-        version: 0.10.5
+        specifier: ^0.10.6
+        version: 0.10.6
       '@elmethis/core':
         specifier: workspace:^
         version: link:../core
@@ -460,8 +460,8 @@ importers:
         specifier: ^0.0.10
         version: 0.0.10
       '@a2ui/web_core':
-        specifier: ^0.10.5
-        version: 0.10.5
+        specifier: ^0.10.6
+        version: 0.10.6
       '@ag-ui/client':
         specifier: ^0.0.58
         version: 0.0.58
@@ -587,8 +587,8 @@ importers:
         specifier: ^0.0.10
         version: 0.0.10
       '@a2ui/web_core':
-        specifier: ^0.10.5
-        version: 0.10.5
+        specifier: ^0.10.6
+        version: 0.10.6
       '@elmethis/core':
         specifier: workspace:^
         version: link:../core
@@ -726,8 +726,8 @@ packages:
       react-dom: ^19.2.7
       zod: ^3.25.76
 
-  '@a2ui/web_core@0.10.5':
-    resolution: {integrity: sha512-q+HyK1V/jM8l+/VmuXRbBNCS9yDguqdjsJ7/8aqY9O/WUdRE14FbhkFyQyGWQNqPJa9QbVfQyAjGQIK0B1aQtg==}
+  '@a2ui/web_core@0.10.6':
+    resolution: {integrity: sha512-kTwir93Fk5eupl4FZ6CkhJDrisR2fnQgEIlDCTp06uzx2PvUhItbq1E+h7hFyeHGTu/NMci9Tqn7Is1IVRpufw==}
 
   '@adobe/css-tools@4.5.0':
     resolution: {integrity: sha512-6OzddxPio9UiWTCemp4N8cYLV2ZN1ncRnV1cVGtve7dhPOtRkleRyx32GQCYSwDYgaHU3USMm84tNsvKzRCa1Q==}
@@ -7205,23 +7205,23 @@ snapshots:
 
   '@46ki75/ikuma-theme@0.0.10': {}
 
-  '@a2ui/markdown-it@0.0.3(@a2ui/web_core@0.10.5)':
+  '@a2ui/markdown-it@0.0.3(@a2ui/web_core@0.10.6)':
     dependencies:
-      '@a2ui/web_core': 0.10.5
+      '@a2ui/web_core': 0.10.6
       dompurify: 3.4.13
       markdown-it: 14.2.0
 
   '@a2ui/react@0.10.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(zod@3.25.76)':
     dependencies:
-      '@a2ui/markdown-it': 0.0.3(@a2ui/web_core@0.10.5)
-      '@a2ui/web_core': 0.10.5
+      '@a2ui/markdown-it': 0.0.3(@a2ui/web_core@0.10.6)
+      '@a2ui/web_core': 0.10.6
       clsx: 2.1.1
       markdown-it: 14.2.0
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
       zod: 3.25.76
 
-  '@a2ui/web_core@0.10.5':
+  '@a2ui/web_core@0.10.6':
     dependencies:
       '@preact/signals-core': 1.14.4
       date-fns: 4.4.0
