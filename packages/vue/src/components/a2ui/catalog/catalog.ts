@@ -11,8 +11,10 @@ import { type VNodeChild } from "vue";
 import { type z } from "zod";
 
 import {
+  Catalog,
   type ComponentApi,
   type ComponentContext,
+  type FunctionImplementation,
   type SurfaceModel,
 } from "@a2ui/web_core/v0_9";
 
@@ -94,11 +96,10 @@ export type RenderFn<TProps = Record<string, unknown>> = (
   args: RenderArgs<TProps>,
 ) => VNodeChild;
 
-/** One entry in a `CatalogRenderer`. */
-export interface RendererEntry<TProps = Record<string, unknown>> {
-  name: string;
+/** One component API paired with its renderer implementation. */
+export type RendererEntry<TProps = Record<string, unknown>> = ComponentApi & {
   render: RenderFn<TProps>;
-}
+};
 
 /**
  * Type-safe factory that derives the props type from a `ComponentApi`'s Zod
@@ -113,10 +114,7 @@ export function defineRenderer<Api extends ComponentApi>(
   api: Api,
   render: RenderFn<z.infer<Api["schema"]>>,
 ): RendererEntry<z.infer<Api["schema"]>> {
-  return {
-    name: api.name,
-    render: render,
-  };
+  return { ...api, render };
 }
 
 /**
@@ -150,6 +148,14 @@ export class CatalogRenderer {
   /** Enumerates registered component-type names. */
   names(): string[] {
     return Array.from(this.entries.keys());
+  }
+
+  /** Builds the data-layer catalog from the same schemas used by renderers. */
+  toCatalog(
+    id: string,
+    functions: readonly FunctionImplementation[] = [],
+  ): Catalog<AnyRendererEntry> {
+    return new Catalog(id, [...this.entries.values()], [...functions]);
   }
 
   /**

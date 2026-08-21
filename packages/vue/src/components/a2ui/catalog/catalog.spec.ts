@@ -24,6 +24,11 @@ describe("defineRenderer", () => {
     const entry = defineRenderer(TextApi, fn);
     expect(entry.render).toBe(fn);
   });
+
+  test("preserves the component schema", () => {
+    const entry = defineRenderer(TextApi, () => null);
+    expect(entry.schema).toBe(TextApi.schema);
+  });
 });
 
 describe("CatalogRenderer", () => {
@@ -44,6 +49,12 @@ describe("CatalogRenderer", () => {
       defineRenderer(ButtonApi, () => null),
     ]);
     expect(catalog.names().sort()).toEqual(["Button", "Text"]);
+  });
+
+  test("builds a processor catalog with the renderer schemas", () => {
+    const entry = defineRenderer(TextApi, () => null);
+    const catalog = new CatalogRenderer([entry]);
+    expect(catalog.toCatalog("test").components.get("Text")).toBe(entry);
   });
 
   test("extend layers new entries on top without mutating the base", () => {
