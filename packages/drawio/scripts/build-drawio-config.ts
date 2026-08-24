@@ -40,13 +40,16 @@ const collectPrimitiveValues = (node: Record<string, unknown>): void => {
 collectPrimitiveValues(primitive);
 
 const resolvePrimitiveRefs = (cssValue: string): string =>
-  cssValue.replace(/var\((--elmethis-primitive-[^)]+)\)/g, (ref, property) => {
-    const resolved = primitiveValues.get(property);
-    if (!resolved) {
-      throw new Error(`Unknown primitive token reference: ${ref}`);
-    }
-    return resolved;
-  });
+  cssValue.replace(
+    /var\((--elmethis-primitive-[^)]+)\)/g,
+    (ref: string, property: string) => {
+      const resolved = primitiveValues.get(property);
+      if (!resolved) {
+        throw new Error(`Unknown primitive token reference: ${ref}`);
+      }
+      return resolved;
+    },
+  );
 
 const semanticColor = (name: keyof typeof semanticTokens): string => {
   const token = semanticTokens[name];
@@ -174,6 +177,15 @@ const config = {
         return {
           title: `Display ${label} Surface`,
           fill: semanticColor(`color-display-${name}-surface`),
+          stroke: base,
+          font: base,
+        };
+      }),
+      ...displayColors.map(([name, label]) => {
+        const base = commonSemanticColor(`color-display-${name}`);
+        return {
+          title: `Display ${label} 20% Fill`,
+          fill: `${base}33`,
           stroke: base,
           font: base,
         };
