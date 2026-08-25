@@ -190,8 +190,16 @@ const config = {
           font: base,
         };
       }),
+
       {
-        title: "Elmethis",
+        title: "Neutral Surface",
+        fill: raisedSurfaceColor,
+        stroke: neutralColor,
+        font: neutralColor,
+      },
+
+      {
+        title: "Accent Surface",
         fill: raisedSurfaceColor,
         stroke: primaryColor,
         font: neutralColor,
