@@ -204,39 +204,12 @@ const config = {
         ];
       }),
 
-      // ...displayColors.map(([name, label]) => {
-      //   const base = commonSemanticColor(`color-display-${name}`);
-      //   return {
-      //     title: `Display ${label}`,
-      //     fill: base,
-      //     stroke: base,
-      //     font: base,
-      //   };
-      // }),
-      // ...displayColors.map(([name, label]) => {
-      //   const base = commonSemanticColor(`color-display-${name}`);
-      //   return {
-      //     title: `Display ${label} Surface`,
-      //     fill: semanticColor(`color-display-${name}-surface`),
-      //     stroke: base,
-      //     font: base,
-      //   };
-      // }),
-      // ...displayColors.map(([name, label]) => {
-      //   const base = commonSemanticColor(`color-display-${name}`);
-      //   return {
-      //     title: `Display ${label} 20% Fill`,
-      //     fill: `${base}33`,
-      //     stroke: base,
-      //     font: base,
-      //   };
-      // }),
-
       {
         title: "Neutral Surface",
         fill: raisedSurfaceColor,
         stroke: neutralColor,
         font: neutralColor,
+        border: "4px solid",
       },
 
       {
@@ -244,6 +217,7 @@ const config = {
         fill: raisedSurfaceColor,
         stroke: primaryColor,
         font: neutralColor,
+        border: "4px solid",
       },
     ],
   ],
