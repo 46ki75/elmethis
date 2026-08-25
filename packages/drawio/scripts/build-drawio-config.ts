@@ -23,10 +23,12 @@ const displayColors = [
   ["magenta", "Magenta", color.magenta],
 ] as const;
 
+/** Converts a hex primitive token into draw.io's hashless palette format. */
 const paletteValue = (token: PrimitiveToken): string =>
   token.value.replace(/^#/, "");
 
 const primitiveValues = new Map<string, string>();
+/** Recursively indexes primitive token values by their CSS custom property. */
 const collectPrimitiveValues = (node: Record<string, unknown>): void => {
   for (const child of Object.values(node)) {
     if (typeof child === "object" && child !== null && "property" in child) {
@@ -39,6 +41,7 @@ const collectPrimitiveValues = (node: Record<string, unknown>): void => {
 };
 collectPrimitiveValues(primitive);
 
+/** Replaces primitive CSS variable references with their concrete token values. */
 const resolvePrimitiveRefs = (cssValue: string): string =>
   cssValue.replace(
     /var\((--elmethis-primitive-[^)]+)\)/g,
@@ -51,6 +54,7 @@ const resolvePrimitiveRefs = (cssValue: string): string =>
     },
   );
 
+/** Resolves a semantic token into an adaptive CSS light-dark color. */
 const semanticColor = (name: keyof typeof semanticTokens): string => {
   const token = semanticTokens[name];
   if ("common" in token) {
@@ -60,6 +64,7 @@ const semanticColor = (name: keyof typeof semanticTokens): string => {
   return `light-dark(${resolvePrimitiveRefs(token.light)}, ${resolvePrimitiveRefs(token.dark)})`;
 };
 
+/** Resolves a semantic color that must have the same value in every theme. */
 const commonSemanticColor = (name: keyof typeof semanticTokens): string => {
   const token = semanticTokens[name];
   if (!("common" in token)) {
@@ -68,9 +73,11 @@ const commonSemanticColor = (name: keyof typeof semanticTokens): string => {
   return resolvePrimitiveRefs(token.common);
 };
 
+/** Normalizes a CSS color into the key format expected by draw.io colorNames. */
 const colorNameKey = (cssValue: string): string =>
   cssValue.replace(/^#/, "").toUpperCase();
 const colorNames: Record<string, string> = {};
+/** Registers a human-readable name for a draw.io color value. */
 const addColorName = (cssValue: string, name: string): void => {
   colorNames[colorNameKey(cssValue)] = name;
 };
@@ -163,33 +170,67 @@ const config = {
   ],
   customColorSchemes: [
     [
-      ...displayColors.map(([name, label]) => {
+      ...displayColors.flatMap(([name, label]) => {
         const base = commonSemanticColor(`color-display-${name}`);
-        return {
-          title: `Display ${label}`,
-          fill: base,
-          stroke: base,
-          font: base,
-        };
+        return [
+          {
+            title: `Display ${label}`,
+            fill: base,
+            stroke: base,
+            font: base,
+            border: "4px solid",
+          },
+          {
+            title: `Display ${label} Surface`,
+            fill: semanticColor(`color-display-${name}-surface`),
+            stroke: base,
+            font: base,
+            border: "4px solid",
+          },
+          {
+            title: `Display ${label} 20% Fill`,
+            fill: `${base}33`,
+            stroke: base,
+            font: base,
+            border: "4px solid",
+          },
+          {
+            title: `Display ${label} Transparent Fill`,
+            fill: "none",
+            stroke: base,
+            font: base,
+            border: "4px solid",
+          },
+        ];
       }),
-      ...displayColors.map(([name, label]) => {
-        const base = commonSemanticColor(`color-display-${name}`);
-        return {
-          title: `Display ${label} Surface`,
-          fill: semanticColor(`color-display-${name}-surface`),
-          stroke: base,
-          font: base,
-        };
-      }),
-      ...displayColors.map(([name, label]) => {
-        const base = commonSemanticColor(`color-display-${name}`);
-        return {
-          title: `Display ${label} 20% Fill`,
-          fill: `${base}33`,
-          stroke: base,
-          font: base,
-        };
-      }),
+
+      // ...displayColors.map(([name, label]) => {
+      //   const base = commonSemanticColor(`color-display-${name}`);
+      //   return {
+      //     title: `Display ${label}`,
+      //     fill: base,
+      //     stroke: base,
+      //     font: base,
+      //   };
+      // }),
+      // ...displayColors.map(([name, label]) => {
+      //   const base = commonSemanticColor(`color-display-${name}`);
+      //   return {
+      //     title: `Display ${label} Surface`,
+      //     fill: semanticColor(`color-display-${name}-surface`),
+      //     stroke: base,
+      //     font: base,
+      //   };
+      // }),
+      // ...displayColors.map(([name, label]) => {
+      //   const base = commonSemanticColor(`color-display-${name}`);
+      //   return {
+      //     title: `Display ${label} 20% Fill`,
+      //     fill: `${base}33`,
+      //     stroke: base,
+      //     font: base,
+      //   };
+      // }),
 
       {
         title: "Neutral Surface",
