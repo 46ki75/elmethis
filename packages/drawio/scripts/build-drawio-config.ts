@@ -121,9 +121,9 @@ const fontFamilies = [...font.family.sans.value.matchAll(/"([^"]+)"/g)].map(
   (match) => match[1],
 );
 const webFontFamilies = fontFamilies.slice(0, 2);
-const defaultFontFamily = webFontFamilies[0];
+const defaultFontFamily = font.family.sans.value;
 
-if (!defaultFontFamily) {
+if (webFontFamilies.length === 0) {
   throw new Error("The sans font token does not contain a quoted font family");
 }
 
@@ -131,7 +131,17 @@ const fontDefinitions = webFontFamilies.map((fontFamily) => ({
   fontFamily,
   fontUrl: `https://fonts.googleapis.com/css?family=${fontFamily.replaceAll(" ", "+")}`,
 }));
-const defaultFontSource = encodeURIComponent(fontDefinitions[0].fontUrl);
+const defaultFontSource = encodeURIComponent(
+  `https://fonts.googleapis.com/css?family=${webFontFamilies
+    .map((fontFamily) => fontFamily.replaceAll(" ", "+"))
+    .join("|")}`,
+);
+const gridColorToken = semanticTokens["color-divider"];
+
+if (!("light" in gridColorToken)) {
+  throw new Error("Expected color-divider to define light and dark colors");
+}
+
 const neutralColor = semanticColor("color-neutral");
 const primaryColor = semanticColor("color-primary");
 const raisedSurfaceColor = semanticColor("color-surface-raised");
