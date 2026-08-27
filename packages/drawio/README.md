@@ -17,8 +17,8 @@ pnpm --filter @elmethis/draw.io run build
 
 The generated configuration uses explicit `light-dark()` color pairs with
 simple adaptive colors, Elmethis color palettes and named color schemes, and
-the Elmethis sans-serif fonts for shapes, connectors, standalone text, and SVG
-font embedding.
+the Elmethis sans-serif and monospace fonts for shapes, connectors, standalone
+text, and SVG font embedding.
 
 ## Package Export
 

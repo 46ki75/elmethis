@@ -120,13 +120,14 @@ for (const [token, label] of namedSemanticColors) {
 const fontFamilies = [...font.family.sans.value.matchAll(/"([^"]+)"/g)].map(
   (match) => match[1],
 );
-const webFontFamilies = fontFamilies.slice(0, 2);
+const monospaceFontFamily = font.family.monospace.value.match(/"([^"]+)"/)?.[1];
 const defaultFontFamily = font.family.sans.value;
 
-if (webFontFamilies.length === 0) {
-  throw new Error("The sans font token does not contain a quoted font family");
+if (fontFamilies.length === 0 || !monospaceFontFamily) {
+  throw new Error("The font tokens do not contain quoted font families");
 }
 
+const webFontFamilies = [...fontFamilies.slice(0, 2), monospaceFontFamily];
 const fontDefinitions = webFontFamilies.map((fontFamily) => ({
   fontFamily,
   fontUrl: `https://fonts.googleapis.com/css?family=${fontFamily.replaceAll(" ", "+")}`,
