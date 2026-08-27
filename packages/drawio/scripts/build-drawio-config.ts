@@ -277,6 +277,7 @@ const config = {
     fontColor: neutralColor,
     fontSource: defaultFontSource,
   },
+
   defaultEdgeStyle: {
     fontFamily: defaultFontFamily,
     fontSize: "16",
@@ -285,6 +286,10 @@ const config = {
     strokeColor: neutralColor,
     startFillColor: neutralColor,
     endFillColor: neutralColor,
+
+    rounded: "1",
+    jumpStyle: "gap",
+    jumpSize: "8",
   },
 };
 
