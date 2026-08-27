@@ -276,6 +276,7 @@ const config = {
     fontSize: "16",
     fontColor: neutralColor,
     fontSource: defaultFontSource,
+    spacing: "8",
   },
 
   defaultEdgeStyle: {
@@ -286,6 +287,9 @@ const config = {
     strokeColor: neutralColor,
     startFillColor: neutralColor,
     endFillColor: neutralColor,
+
+    sourcePerimeterSpacing: "8",
+    targetPerimeterSpacing: "8",
 
     rounded: "1",
     jumpStyle: "gap",
