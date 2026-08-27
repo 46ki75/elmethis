@@ -229,6 +229,14 @@ const config = {
         font: neutralColor,
         border: "4px solid",
       },
+
+      {
+        title: "Default",
+        fill: undefined,
+        stroke: undefined,
+        font: neutralColor,
+        border: "4px solid",
+      },
     ],
   ],
   presetColors: [
