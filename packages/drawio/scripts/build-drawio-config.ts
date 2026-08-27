@@ -169,6 +169,13 @@ const config = {
   version: "elmethis-1",
   defaultAdaptiveColors: "simple",
   embedSvgFonts: true,
+
+  shadowColor: "#000000",
+  shadowOpacity: 0.1,
+  shadowOffsetX: 0,
+  shadowOffsetY: 0,
+  shadowBlur: 2,
+
   styles: [
     {
       commonStyle: {
