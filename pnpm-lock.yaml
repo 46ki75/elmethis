@@ -101,7 +101,7 @@ importers:
         version: 1.69.2(@ag-ui/core@0.0.58)
       '@hono/node-server':
         specifier: ^2.1.1
-        version: 2.1.1(hono@4.13.1)
+        version: 2.1.1(hono@4.13.4)
       '@modelcontextprotocol/sdk':
         specifier: ^1.30.0
         version: 1.30.0(@cfworker/json-schema@4.1.1)(zod@4.4.3)
@@ -112,8 +112,8 @@ importers:
         specifier: ^17.4.2
         version: 17.4.2
       hono:
-        specifier: ^4.13.1
-        version: 4.13.1
+        specifier: ^4.13.4
+        version: 4.13.4
       zod:
         specifier: ^4.0.0
         version: 4.4.3
@@ -4748,8 +4748,8 @@ packages:
   hermes-parser@0.25.1:
     resolution: {integrity: sha512-6pEjquH3rqaI6cYAXYPcz9MS4rY6R4ngRgrgfDshRptUZIc3lw0MCIJIGDj9++mfySOuPTHB4nrSW99BCvOPIA==}
 
-  hono@4.13.1:
-    resolution: {integrity: sha512-kdJoFVv2xmayw6cY09H7AbMJMt8Jn5jdlEdXsP7AGBdF2DIptVlKlOLKXP41yPip4/a3yQPv9gVcJYI8YY04dw==}
+  hono@4.13.4:
+    resolution: {integrity: sha512-AGEwKIyRMHRv1t8Wjwa3LHxQ61X5CqrdFT+4BRNTpqS5aJNnpl5WLjADb7vFlJzI/8uK7T5QLVApCMQKNa3LgQ==}
     engines: {node: '>=16.9.0'}
 
   hookable@6.1.1:
@@ -8027,7 +8027,7 @@ snapshots:
       '@copilotkit/license-verifier': 0.5.0
       '@copilotkit/shared': 1.69.0(@ag-ui/core@0.0.57)
       '@graphql-yoga/plugin-defer-stream': 3.22.0(graphql-yoga@5.22.0(graphql@16.14.2))(graphql@16.14.2)
-      '@hono/node-server': 1.19.17(hono@4.13.1)
+      '@hono/node-server': 1.19.17(hono@4.13.4)
       '@langchain/core': 1.2.9(@opentelemetry/api@1.9.1)(@opentelemetry/exporter-trace-otlp-proto@0.203.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.7.0(@opentelemetry/api@1.9.1))(openai@6.42.0(ws@8.21.3)(zod@4.4.3))(ws@8.21.3)
       '@modelcontextprotocol/sdk': 1.30.0(@cfworker/json-schema@4.1.1)(zod@3.25.76)
       '@remix-run/node-fetch-server': 0.13.3
@@ -8042,7 +8042,7 @@ snapshots:
       graphql: 16.14.2
       graphql-scalars: 1.26.0(graphql@16.14.2)
       graphql-yoga: 5.22.0(graphql@16.14.2)
-      hono: 4.13.1
+      hono: 4.13.4
       partial-json: 0.1.7
       phoenix: 1.8.13
       pino: 9.14.0
@@ -8411,13 +8411,13 @@ snapshots:
       '@repeaterjs/repeater': 3.1.0
       tslib: 2.8.1
 
-  '@hono/node-server@1.19.17(hono@4.13.1)':
+  '@hono/node-server@1.19.17(hono@4.13.4)':
     dependencies:
-      hono: 4.13.1
+      hono: 4.13.4
 
-  '@hono/node-server@2.1.1(hono@4.13.1)':
+  '@hono/node-server@2.1.1(hono@4.13.4)':
     dependencies:
-      hono: 4.13.1
+      hono: 4.13.4
 
   '@humanfs/core@0.19.2':
     dependencies:
@@ -8576,7 +8576,7 @@ snapshots:
 
   '@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1)(zod@3.25.76)':
     dependencies:
-      '@hono/node-server': 2.1.1(hono@4.13.1)
+      '@hono/node-server': 2.1.1(hono@4.13.4)
       ajv: 8.20.0
       ajv-formats: 3.0.1(ajv@8.20.0)
       content-type: 1.0.5
@@ -8586,7 +8586,7 @@ snapshots:
       eventsource-parser: 3.1.0
       express: 5.2.1
       express-rate-limit: 8.6.1(express@5.2.1)
-      hono: 4.13.1
+      hono: 4.13.4
       jose: 6.2.4
       json-schema-typed: 8.0.2
       pkce-challenge: 5.0.1
@@ -8600,7 +8600,7 @@ snapshots:
 
   '@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1)(zod@4.4.3)':
     dependencies:
-      '@hono/node-server': 2.1.1(hono@4.13.1)
+      '@hono/node-server': 2.1.1(hono@4.13.4)
       ajv: 8.20.0
       ajv-formats: 3.0.1(ajv@8.20.0)
       content-type: 1.0.5
@@ -8610,7 +8610,7 @@ snapshots:
       eventsource-parser: 3.1.0
       express: 5.2.1
       express-rate-limit: 8.6.1(express@5.2.1)
-      hono: 4.13.1
+      hono: 4.13.4
       jose: 6.2.4
       json-schema-typed: 8.0.2
       pkce-challenge: 5.0.1
@@ -11832,7 +11832,7 @@ snapshots:
     dependencies:
       hermes-estree: 0.25.1
 
-  hono@4.13.1: {}
+  hono@4.13.4: {}
 
   hookable@6.1.1: {}
 
