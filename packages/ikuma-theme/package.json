@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "@eslint/js": "latest",
-    "@types/node": "^26.2.0",
+    "@types/node": "^26.3.0",
     "@vscode/vsce": "^3.9.1",
     "eslint": "^10.9.0",
     "globals": "^17.11.0",
