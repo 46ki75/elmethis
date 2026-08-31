@@ -88,7 +88,6 @@ describe("[CSR] ElmA2ui", () => {
   it("keeps destructured custom renderer props reactive", () => {
     const catalog = basicCatalog.extend(
       // Public render callbacks may destructure their stable store-backed props.
-      // eslint-disable-next-line solid/no-destructure
       defineRenderer(TextApi, ({ props }) => (
         <strong data-custom-renderer>{props.text}</strong>
       )),
