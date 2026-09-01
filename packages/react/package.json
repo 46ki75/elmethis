@@ -86,7 +86,7 @@
     "@storybook/addon-docs": "^10.5.10",
     "@storybook/react-vite": "^10.5.10",
     "@testing-library/jest-dom": "^7.0.1",
-    "@testing-library/react": "^16.3.0",
+    "@testing-library/react": "^16.3.3",
     "@types/babel__core": "^7.20.5",
     "@types/katex": "^0.16.8",
     "@types/node": "^26.3.0",
