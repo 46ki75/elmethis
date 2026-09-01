@@ -99,7 +99,7 @@
     "concurrently": "^10.0.5",
     "@vitest/eslint-plugin": "1.6.27",
     "eslint": "^10.9.1",
-    "eslint-plugin-solid": "~0.16.1",
+    "eslint-plugin-solid": "~0.17.0",
     "globals": "^17.11.0",
     "happy-dom": "^20.11.13",
     "jiti": "2.7.0",
