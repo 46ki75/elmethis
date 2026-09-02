@@ -111,7 +111,7 @@
     "react-dom": "^19.2.8",
     "storybook": "^10.5.10",
     "stylelint": "^17.14.1",
-    "tsx": "^4.23.12",
+    "tsx": "^4.23.13",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.68.0",
     "vite": "^8.2.2",
