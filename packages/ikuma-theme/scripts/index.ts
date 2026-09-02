@@ -1,7 +1,7 @@
 import { writeFile, mkdir } from "node:fs/promises";
 import { dirname } from "node:path";
 import { format, resolveConfig } from "prettier";
-import { buildWindowsTerminal, createTheme } from "./helper.ts";
+import { buildGhostty, buildWindowsTerminal, createTheme } from "./helper.ts";
 import { getOpenCodeTheme } from "./opencode.ts";
 import { getTheme, type GetThemeOptions } from "./theme.ts";
 
@@ -13,6 +13,12 @@ async function writeJson(file: string, data: unknown) {
     filepath: file,
   });
   await writeFile(file, formatted);
+  console.log(`wrote ${file}`);
+}
+
+async function writeText(file: string, data: string) {
+  await mkdir(dirname(file), { recursive: true });
+  await writeFile(file, data);
   console.log(`wrote ${file}`);
 }
 
@@ -38,6 +44,14 @@ await Promise.all([
 
   // Windows Terminal: both schemes in one fragment for settings.json
   writeJson("dist/windows-terminal/ikuma.json", windowsTerminal),
+
+  // Ghostty: extensionless filenames become the selectable theme names
+  ...targets.map((target) =>
+    writeText(
+      `dist/ghostty/Ikuma ${target.color === "dark" ? "Dark" : "Light"}`,
+      buildGhostty(createTheme(target.color)),
+    ),
+  ),
 
   // OpenCode TUI theme
   writeJson("dist/opencode-theme/ikuma.json", getOpenCodeTheme()),

@@ -71,3 +71,37 @@ export function buildWindowsTerminal({ p, v }: ThemeHelpers, name: string) {
     brightWhite: p("base07"),
   };
 }
+
+// Ghostty theme file. Themes use the regular Ghostty config syntax and are
+// named by their extensionless filename.
+export function buildGhostty({ p, v }: ThemeHelpers) {
+  const ansi = [
+    p("base02"),
+    p("ansiRed"),
+    p("ansiGreen"),
+    p("ansiYellow"),
+    p("ansiBlue"),
+    p("ansiMagenta"),
+    p("ansiCyan"),
+    p("base05"),
+    p("ansiGray"),
+    p("ansiOrange"),
+    p("ansiGreenBright"),
+    p("ansiYellowBright"),
+    p("ansiBlueBright"),
+    p("ansiPurple"),
+    p("ansiCyanBright"),
+    p("base07"),
+  ];
+
+  return [
+    ...ansi.map((color, index) => `palette = ${index}=${color}`),
+    `background = ${v("background")}`,
+    `foreground = ${v("foreground")}`,
+    `cursor-color = ${v("primaryBright")}`,
+    `cursor-text = ${v("background")}`,
+    `selection-background = ${v("primary")}`,
+    `selection-foreground = ${v("background")}`,
+    "",
+  ].join("\n");
+}
