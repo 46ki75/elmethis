@@ -73,7 +73,7 @@
   },
   "peerDependencies": {
     "@a2ui/web_core": ">=0.10.0",
-    "zod": "^3"
+    "zod": "^4"
   },
   "dependencies": {
     "stylelint-config-css-modules": "^4.6.0",
@@ -104,6 +104,6 @@
     "typescript-eslint": "^8.68.0",
     "vitest": "^4.1.11",
     "yaml": "2.9.0",
-    "zod": "^3"
+    "zod": "^4"
   }
 }
