@@ -103,7 +103,7 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.5",
     "globals": "^17.11.0",
-    "happy-dom": "^20.11.13",
+    "happy-dom": "^20.12.0",
     "jiti": "2.7.0",
     "playwright": "^1.62.1",
     "prettier": "3.9.6",
