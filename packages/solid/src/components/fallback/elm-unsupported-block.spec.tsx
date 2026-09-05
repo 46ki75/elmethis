@@ -7,7 +7,7 @@ import { ElmUnsupportedBlock } from "./elm-unsupported-block";
 describe("[CSR] ElmUnsupportedBlock", () => {
   it("renders its message and forwards native attributes and refs", () => {
     let root: HTMLDivElement | undefined;
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmUnsupportedBlock
         ref={(element) => {
           root = element;
@@ -17,7 +17,7 @@ describe("[CSR] ElmUnsupportedBlock", () => {
         aria-label="Unsupported content"
       />
     ));
-    const unsupported = getByTestId("unsupported");
+    const unsupported = rendered.getByTestId("unsupported");
 
     expect(unsupported).toBe(root);
     expect(unsupported).toHaveClass("custom-unsupported");
@@ -28,10 +28,10 @@ describe("[CSR] ElmUnsupportedBlock", () => {
 
   it("reactively adds, updates, and removes details", () => {
     const [details, setDetails] = createSignal<string>();
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmUnsupportedBlock details={details()} data-testid="unsupported" />
     ));
-    const unsupported = getByTestId("unsupported");
+    const unsupported = rendered.getByTestId("unsupported");
 
     expect(unsupported).not.toHaveTextContent("type: mermaid");
     setDetails("type: mermaid");

@@ -10,7 +10,7 @@ describe("[CSR] ElmParagraph", () => {
     const [backgroundColor, setBackgroundColor] = createSignal("yellow");
     const [text, setText] = createSignal("paragraph text");
     let root: HTMLParagraphElement | undefined;
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmParagraph
         ref={(element) => {
           root = element;
@@ -25,7 +25,7 @@ describe("[CSR] ElmParagraph", () => {
         {text()}
       </ElmParagraph>
     ));
-    const paragraph = getByTestId("paragraph");
+    const paragraph = rendered.getByTestId("paragraph");
 
     expect(paragraph).toBe(root);
     expect(paragraph.tagName).toBe("P");

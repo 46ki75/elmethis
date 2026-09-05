@@ -70,7 +70,7 @@ describe("[CSR] ElmBreadcrumb", () => {
 
   it("merges class and forwards native attributes and refs to the nav", () => {
     let root: HTMLElement | undefined;
-    const { getByRole } = render(() => (
+    const rendered = render(() => (
       <ElmBreadcrumb
         ref={(element) => {
           root = element;
@@ -82,7 +82,7 @@ describe("[CSR] ElmBreadcrumb", () => {
       />
     ));
 
-    const nav = getByRole("navigation", { name: "Breadcrumb" });
+    const nav = rendered.getByRole("navigation", { name: "Breadcrumb" });
     expect(nav).toBe(root);
     expect(nav).toHaveClass("custom-breadcrumb");
     expect(nav).toHaveAttribute("data-navigation", "breadcrumb");

@@ -1,4 +1,5 @@
 import { createMemo, createSignal, For, Match, Show, Switch } from "solid-js";
+import type { ResolveA2uiProps } from "@a2ui/web_core/v0_9";
 
 import {
   AudioPlayerApi,
@@ -317,7 +318,10 @@ export const basicComponents: SolidRendererEntry[] = [
       <ElmTabList>
         <For each={props.props.tabs}>
           {(tab, index) => (
-            <ElmTab value={String(index())}>{String(tab.title)}</ElmTab>
+            <ElmTab value={String(index())}>
+              {/* The binder resolves nested strings; ResolveA2uiProps is shallow. */}
+              {String((tab as ResolveA2uiProps<typeof tab>).title)}
+            </ElmTab>
           )}
         </For>
       </ElmTabList>
@@ -401,7 +405,10 @@ export const basicComponents: SolidRendererEntry[] = [
                     props.props.setValue(next);
                   }}
                 />
-                <span>{String(option.label)}</span>
+                <span>
+                  {/* The binder resolves nested strings; ResolveA2uiProps is shallow. */}
+                  {String((option as ResolveA2uiProps<typeof option>).label)}
+                </span>
               </label>
             )}
           </For>

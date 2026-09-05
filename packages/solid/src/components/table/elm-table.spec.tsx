@@ -43,7 +43,7 @@ describe("[CSR] ElmTable composition", () => {
         </ElmTableBody>
       </ElmTable>
     ));
-    const table = rendered.getByRole("table");
+    const table = rendered.getByRole<HTMLTableElement>("table");
 
     expect(table.caption?.textContent).toContain("Quarterly Revenue");
     expect(rendered.getByTestId("head").parentElement).toBe(table);

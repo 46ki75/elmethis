@@ -77,7 +77,7 @@ describe("[CSR] ElmTextField — value binding", () => {
     expect(wrapper.emitted("update:value")?.at(-1)).toEqual(["Ada"]);
   });
 
-  it("typing updates a controlled parent value (v-model)", async () => {
+  it("typing and clearing update a controlled parent value (v-model)", async () => {
     const Harness = defineComponent({
       setup() {
         const value = ref("");
@@ -95,6 +95,10 @@ describe("[CSR] ElmTextField — value binding", () => {
     const wrapper = mount(Harness);
     await wrapper.find("input").setValue("Ada");
     expect(wrapper.get('[data-testid="value"]').text()).toBe("Ada");
+
+    await wrapper.findAll('[class*="clickable-icon"]')[1].trigger("click");
+    expect(wrapper.get('[data-testid="value"]').text()).toBe("");
+    expect(wrapper.get("input").element.value).toBe("");
   });
 
   it("renders a character counter when value is set (with maxLength)", () => {

@@ -64,12 +64,12 @@ export const ElmTextField = (props: ElmTextFieldProps) => {
   const setNativeValue = (next: string) => {
     const view = input.ownerDocument.defaultView;
     const prototype = view?.HTMLInputElement.prototype;
-    const setter = prototype
-      ? Object.getOwnPropertyDescriptor(prototype, "value")?.set
+    const descriptor = prototype
+      ? Object.getOwnPropertyDescriptor(prototype, "value")
       : undefined;
 
-    if (setter) {
-      setter.call(input, next);
+    if (descriptor?.set) {
+      descriptor.set.call(input, next);
     } else {
       input.value = next;
     }

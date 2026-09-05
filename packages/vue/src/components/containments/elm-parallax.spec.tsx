@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, assert } from "vitest";
 import { mount } from "@vue/test-utils";
 import { createSSRApp, h } from "vue";
 import { renderToString } from "vue/server-renderer";
@@ -11,7 +11,9 @@ describe("[CSR] ElmParallax", () => {
   it("renders one layer per image", () => {
     const wrapper = mount(ElmParallax, { props: { images } });
 
-    const layers = wrapper.element.querySelectorAll("[class*='parallax']");
+    const root: unknown = wrapper.element;
+    assert(root instanceof Element);
+    const layers = root.querySelectorAll("[class*='parallax']");
     // One watcher + one layer per image.
     expect(layers.length).toBeGreaterThanOrEqual(images.length);
     for (const src of images) {
@@ -45,9 +47,9 @@ describe("[CSR] ElmParallax", () => {
 
     expect(frame).toBeDefined();
     frame?.(0);
-    const layer = wrapper.element.querySelector(
-      "[aria-hidden='true']",
-    ) as HTMLElement | null;
+    const root: unknown = wrapper.element;
+    assert(root instanceof Element);
+    const layer = root.querySelector<HTMLElement>("[aria-hidden='true']");
     expect(layer?.style.transform).toBe("scale(1.2) translateY(0.5%)");
 
     wrapper.unmount();
@@ -87,9 +89,9 @@ describe("[CSR] ElmParallax", () => {
     frame?.(0);
     await wrapper.setProps({ images: ["/first.png", "/second.png"] });
 
-    const layers = wrapper.element.querySelectorAll(
-      "[aria-hidden='true']",
-    ) as NodeListOf<HTMLElement>;
+    const root: unknown = wrapper.element;
+    assert(root instanceof Element);
+    const layers = root.querySelectorAll<HTMLElement>("[aria-hidden='true']");
     expect(layers[1]?.style.transform).toBe("scale(1.2) translateY(0.25%)");
     wrapper.unmount();
     requestAnimationFrame.mockRestore();

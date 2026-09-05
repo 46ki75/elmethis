@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, assert } from "vitest";
 import { mount } from "@vue/test-utils";
 import { createSSRApp, h } from "vue";
 import { renderToString } from "vue/server-renderer";
@@ -27,7 +27,9 @@ describe("[CSR] ElmNotionCallout", () => {
     const wrapper = mount(ElmNotionCallout, {
       slots: { default: () => "callout body" },
     });
-    expect(wrapper.element.tagName).toBe("DIV");
+    const root: unknown = wrapper.element;
+    assert(root instanceof Element);
+    expect(root.tagName).toBe("DIV");
     expect(wrapper.text()).toContain("callout body");
   });
 

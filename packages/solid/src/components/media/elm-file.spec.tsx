@@ -37,7 +37,7 @@ describe("[CSR] ElmFile", () => {
 
   it("merges class and forwards native attributes and refs to the root", () => {
     let root: HTMLDivElement | undefined;
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmFile
         ref={(element) => {
           root = element;
@@ -49,7 +49,7 @@ describe("[CSR] ElmFile", () => {
       />
     ));
 
-    const file = getByTestId("file");
+    const file = rendered.getByTestId("file");
     expect(file).toBe(root);
     expect(file).toHaveClass("custom-file");
     expect(file).toHaveAttribute("aria-label", "Download file");

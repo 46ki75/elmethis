@@ -11,7 +11,7 @@ const isChecked = (root: HTMLElement) =>
 describe("[CSR] ElmCheckbox", () => {
   it("forwards native props, class, style, and a ref without leaking semantic props", () => {
     let root: HTMLDivElement | undefined;
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmCheckbox
         ref={(element) => {
           root = element;
@@ -24,7 +24,7 @@ describe("[CSR] ElmCheckbox", () => {
         disabled
       />
     ));
-    const checkbox = getByTestId("checkbox");
+    const checkbox = rendered.getByTestId("checkbox");
 
     expect(checkbox).toBe(root);
     expect(checkbox).toHaveClass("custom-checkbox", styles.disabled);
@@ -36,7 +36,7 @@ describe("[CSR] ElmCheckbox", () => {
 
   it("toggles uncontrolled state from the default and reports changes", () => {
     const onCheckedChange = vi.fn();
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmCheckbox
         data-testid="checkbox"
         label="Toggle"
@@ -44,7 +44,7 @@ describe("[CSR] ElmCheckbox", () => {
         onCheckedChange={onCheckedChange}
       />
     ));
-    const checkbox = getByTestId("checkbox");
+    const checkbox = rendered.getByTestId("checkbox");
 
     expect(isChecked(checkbox)).toBe(true);
     fireEvent.click(checkbox);
@@ -54,7 +54,7 @@ describe("[CSR] ElmCheckbox", () => {
 
   it("treats false as controlled and follows parent updates", () => {
     const [checked, setChecked] = createSignal(false);
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <>
         <output data-testid="state">{String(checked())}</output>
         <ElmCheckbox
@@ -65,11 +65,11 @@ describe("[CSR] ElmCheckbox", () => {
         />
       </>
     ));
-    const checkbox = getByTestId("checkbox");
+    const checkbox = rendered.getByTestId("checkbox");
 
     expect(isChecked(checkbox)).toBe(false);
     fireEvent.click(checkbox);
-    expect(getByTestId("state")).toHaveTextContent("true");
+    expect(rendered.getByTestId("state")).toHaveTextContent("true");
     expect(isChecked(checkbox)).toBe(true);
 
     setChecked(false);
@@ -78,7 +78,7 @@ describe("[CSR] ElmCheckbox", () => {
 
   it("does not mutate a controlled value when the parent declines the change", () => {
     const onCheckedChange = vi.fn();
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmCheckbox
         data-testid="checkbox"
         label="Controlled"
@@ -87,7 +87,7 @@ describe("[CSR] ElmCheckbox", () => {
         onCheckedChange={onCheckedChange}
       />
     ));
-    const checkbox = getByTestId("checkbox");
+    const checkbox = rendered.getByTestId("checkbox");
 
     fireEvent.click(checkbox);
     expect(onCheckedChange).toHaveBeenCalledWith(true);
@@ -96,10 +96,10 @@ describe("[CSR] ElmCheckbox", () => {
 
   it("composes consumer clicks and allows preventDefault to cancel toggling", () => {
     const onClick = vi.fn((event: MouseEvent) => event.preventDefault());
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmCheckbox data-testid="checkbox" label="Composed" onClick={onClick} />
     ));
-    const checkbox = getByTestId("checkbox");
+    const checkbox = rendered.getByTestId("checkbox");
 
     fireEvent.click(checkbox);
     expect(onClick).toHaveBeenCalledOnce();
@@ -110,7 +110,7 @@ describe("[CSR] ElmCheckbox", () => {
     const [loading, setLoading] = createSignal(true);
     const [disabled, setDisabled] = createSignal(false);
     const [label, setLabel] = createSignal("Pending");
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmCheckbox
         data-testid="checkbox"
         label={label()}
@@ -118,7 +118,7 @@ describe("[CSR] ElmCheckbox", () => {
         disabled={disabled()}
       />
     ));
-    const checkbox = getByTestId("checkbox");
+    const checkbox = rendered.getByTestId("checkbox");
 
     fireEvent.click(checkbox);
     expect(isChecked(checkbox)).toBe(false);

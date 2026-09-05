@@ -8,7 +8,7 @@ describe("[CSR] ElmInlineText", () => {
   it("forwards native span attributes while keeping semantic props private", () => {
     const onClick = vi.fn();
     let root: HTMLSpanElement | undefined;
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmInlineText
         ref={(element) => {
           root = element;
@@ -23,7 +23,7 @@ describe("[CSR] ElmInlineText", () => {
         base
       </ElmInlineText>
     ));
-    const text = getByTestId("text");
+    const text = rendered.getByTestId("text");
 
     expect(text).toBe(root);
     expect(text).toHaveClass("custom-text");
@@ -86,7 +86,7 @@ describe("[CSR] ElmInlineText", () => {
 
   /* eslint-disable solid/style-prop -- This verifies native string-style passthrough. */
   it("merges object and string styles with scoped variables", () => {
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <>
         <ElmInlineText
           data-testid="object-style"
@@ -106,8 +106,8 @@ describe("[CSR] ElmInlineText", () => {
         </ElmInlineText>
       </>
     ));
-    const objectStyle = getByTestId("object-style").style;
-    const stringStyle = getByTestId("string-style").style;
+    const objectStyle = rendered.getByTestId("object-style").style;
+    const stringStyle = rendered.getByTestId("string-style").style;
 
     expect(objectStyle.letterSpacing).toBe("1px");
     expect(objectStyle.getPropertyValue("--elmethis-scoped-color")).toBe("red");
@@ -127,7 +127,7 @@ describe("[CSR] ElmInlineText", () => {
   it("reactively updates wrappers, link metadata, classes, styles, and children", () => {
     const [decorated, setDecorated] = createSignal(false);
     const [label, setLabel] = createSignal("before");
-    const { container, getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmInlineText
         data-testid="text"
         class={decorated() ? "decorated" : "plain"}
@@ -141,11 +141,11 @@ describe("[CSR] ElmInlineText", () => {
         {label()}
       </ElmInlineText>
     ));
-    const root = getByTestId("text");
+    const root = rendered.getByTestId("text");
 
     expect(root).toHaveClass("plain");
     expect(root).toHaveTextContent("before");
-    expect(container.querySelector("ruby")).toBeNull();
+    expect(rendered.container.querySelector("ruby")).toBeNull();
 
     setLabel("after");
     setDecorated(true);
@@ -154,13 +154,13 @@ describe("[CSR] ElmInlineText", () => {
     expect(root).not.toHaveClass("plain");
     expect(root).toHaveTextContent("after");
     expect(
-      container.querySelector("ruby code > strong > a img"),
+      rendered.container.querySelector("ruby code > strong > a img"),
     ).not.toBeNull();
     expect(root.style.getPropertyValue("--elmethis-scoped-color")).toBe("red");
 
     setDecorated(false);
-    expect(container.querySelector("ruby")).toBeNull();
-    expect(container.querySelector("a")).toBeNull();
+    expect(rendered.container.querySelector("ruby")).toBeNull();
+    expect(rendered.container.querySelector("a")).toBeNull();
     expect(root).toHaveTextContent("after");
   });
 });

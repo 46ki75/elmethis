@@ -12,7 +12,7 @@ const squares = (root: HTMLElement) =>
 describe("[CSR] ElmSquareLoadingIcon", () => {
   it("renders the grid and forwards native attributes and refs", () => {
     let root: HTMLSpanElement | undefined;
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmSquareLoadingIcon
         ref={(element) => {
           root = element;
@@ -22,7 +22,7 @@ describe("[CSR] ElmSquareLoadingIcon", () => {
         data-testid="grid"
       />
     ));
-    const grid = getByTestId("grid");
+    const grid = rendered.getByTestId("grid");
 
     expect(grid).toBe(root);
     expect(grid).toHaveClass("custom-grid");
@@ -37,7 +37,7 @@ describe("[CSR] ElmSquareLoadingIcon", () => {
 
   it("reactively updates dimensions, size, class, and stagger delays", () => {
     const [dimensions, setDimensions] = createSignal(2);
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmSquareLoadingIcon
         dimensions={dimensions()}
         size={dimensions() === 2 ? "4rem" : "6rem"}
@@ -45,7 +45,7 @@ describe("[CSR] ElmSquareLoadingIcon", () => {
         data-testid="grid"
       />
     ));
-    const grid = getByTestId("grid");
+    const grid = rendered.getByTestId("grid");
 
     expect(squares(grid)).toHaveLength(4);
     expect(

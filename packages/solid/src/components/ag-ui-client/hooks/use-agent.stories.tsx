@@ -45,7 +45,7 @@ interface AgentFrameProps {
   ) => Promise<import("@ag-ui/client").InputContent[] | null>;
 }
 
-const resolveNoPrompt = async () => null;
+const resolveNoPrompt = () => Promise.resolve(null);
 
 const AgentFrame = (props: AgentFrameProps) => {
   const [enableToolCalls, setEnableToolCalls] = createSignal(true);
@@ -134,9 +134,10 @@ const HttpUseAgentInstance = (props: HttpUseAgentInstanceProps) => {
             "The version of UUID to generate. Supported values are 'v4' and 'v7'.",
           ),
       }),
-      execute: async ({ version }) => ({
-        uuid: version === "v4" ? v4() : v7(),
-      }),
+      execute: ({ version }) =>
+        Promise.resolve({
+          uuid: version === "v4" ? v4() : v7(),
+        }),
     }),
   };
   const { tools: mcpTools } = useMcpTools({

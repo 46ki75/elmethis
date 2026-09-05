@@ -31,20 +31,20 @@ describe("[CSR] ElmTabs", () => {
   });
 
   it("selects and switches the uncontrolled value", () => {
-    const { getByText } = render(() => <SampleTabs defaultValue="tab3" />);
+    const rendered = render(() => <SampleTabs defaultValue="tab3" />);
 
-    expect(getByText("Tab 3")).toHaveClass(styles.active);
-    expect(getByText("Tab 1")).not.toHaveClass(styles.active);
+    expect(rendered.getByText("Tab 3")).toHaveClass(styles.active);
+    expect(rendered.getByText("Tab 1")).not.toHaveClass(styles.active);
 
-    fireEvent.click(getByText("Tab 2"));
+    fireEvent.click(rendered.getByText("Tab 2"));
 
-    expect(getByText("Tab 2")).toHaveClass(styles.active);
-    expect(getByText("Tab 3")).not.toHaveClass(styles.active);
+    expect(rendered.getByText("Tab 2")).toHaveClass(styles.active);
+    expect(rendered.getByText("Tab 3")).not.toHaveClass(styles.active);
   });
 
   it("treats an empty string as controlled and waits for its parent to update", () => {
     const onValueChange = vi.fn();
-    const { getByText } = render(() => (
+    const rendered = render(() => (
       <ElmTabs value="" onValueChange={onValueChange}>
         <ElmTabList>
           <ElmTab value="">Empty</ElmTab>
@@ -55,18 +55,18 @@ describe("[CSR] ElmTabs", () => {
       </ElmTabs>
     ));
 
-    expect(getByText("Empty")).toHaveClass(styles.active);
-    fireEvent.click(getByText("Next"));
+    expect(rendered.getByText("Empty")).toHaveClass(styles.active);
+    fireEvent.click(rendered.getByText("Next"));
 
     expect(onValueChange).toHaveBeenCalledWith("next");
-    expect(getByText("Empty")).toHaveClass(styles.active);
-    expect(getByText("Next")).not.toHaveClass(styles.active);
+    expect(rendered.getByText("Empty")).toHaveClass(styles.active);
+    expect(rendered.getByText("Next")).not.toHaveClass(styles.active);
   });
 
   it("reacts to parent-owned value, timing, and class updates", () => {
     const [value, setValue] = createSignal("first");
     const [linear, setLinear] = createSignal(true);
-    const { getByTestId, getByText } = render(() => (
+    const rendered = render(() => (
       <ElmTabs
         value={value()}
         class={linear() ? "linear-tabs" : "eased-tabs"}
@@ -84,18 +84,18 @@ describe("[CSR] ElmTabs", () => {
         </ElmTabPanel>
       </ElmTabs>
     ));
-    const root = getByText("First").parentElement!.parentElement!;
+    const root = rendered.getByText("First").parentElement!.parentElement!;
 
     expect(root).toHaveClass("linear-tabs");
-    expect(getByText("First")).toHaveClass(styles.active);
+    expect(rendered.getByText("First")).toHaveClass(styles.active);
 
     setValue("second");
     setLinear(false);
 
     expect(root).toHaveClass("eased-tabs");
     expect(root).not.toHaveClass("linear-tabs");
-    expect(getByText("Second")).toHaveClass(styles.active);
-    expect(getByTestId("second-panel").firstElementChild).toHaveStyle(
+    expect(rendered.getByText("Second")).toHaveClass(styles.active);
+    expect(rendered.getByTestId("second-panel").firstElementChild).toHaveStyle(
       "--elmethis-scoped-transition-timing-function: ease-in",
     );
   });
@@ -105,7 +105,7 @@ describe("[CSR] ElmTabs", () => {
     let list: HTMLDivElement | undefined;
     let tab: HTMLDivElement | undefined;
     let panel: HTMLDivElement | undefined;
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmTabs
         ref={(element) => {
           root = element;
@@ -148,10 +148,10 @@ describe("[CSR] ElmTabs", () => {
       </ElmTabs>
     ));
 
-    expect(getByTestId("tabs")).toBe(root);
-    expect(getByTestId("list")).toBe(list);
-    expect(getByTestId("tab")).toBe(tab);
-    expect(getByTestId("panel")).toBe(panel);
+    expect(rendered.getByTestId("tabs")).toBe(root);
+    expect(rendered.getByTestId("list")).toBe(list);
+    expect(rendered.getByTestId("tab")).toBe(tab);
+    expect(rendered.getByTestId("panel")).toBe(panel);
     expect(root).toHaveClass("custom-tabs");
     expect(root?.style.margin).toBe("1rem");
     expect(root).toHaveAttribute("data-root", "forwarded");
@@ -167,7 +167,7 @@ describe("[CSR] ElmTabs", () => {
       calls.push(label);
       expect(event.currentTarget).toHaveTextContent("Second");
     });
-    const { getByText } = render(() => (
+    const rendered = render(() => (
       <ElmTabs defaultValue="first" onValueChange={() => calls.push("change")}>
         <ElmTabList>
           <ElmTab value="first">First</ElmTab>
@@ -180,10 +180,10 @@ describe("[CSR] ElmTabs", () => {
       </ElmTabs>
     ));
 
-    fireEvent.click(getByText("Second"));
+    fireEvent.click(rendered.getByText("Second"));
 
     expect(calls).toEqual(["change", "click"]);
     expect(onClick).toHaveBeenCalledOnce();
-    expect(getByText("Second")).toHaveClass(styles.active);
+    expect(rendered.getByText("Second")).toHaveClass(styles.active);
   });
 });

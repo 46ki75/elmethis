@@ -2,8 +2,8 @@ import { renderToStringAsync } from "solid-js/web";
 import { describe, expect, it, vi } from "vitest";
 
 const shiki = vi.hoisted(() => ({
-  codeToHtml: vi.fn(),
-  createHighlighter: vi.fn(),
+  codeToHtml: vi.fn<typeof import("shiki").codeToHtml>(),
+  createHighlighter: vi.fn<typeof import("shiki").createHighlighter>(),
 }));
 vi.mock("shiki", () => ({
   bundledLanguages: { rust: {} },
@@ -45,8 +45,11 @@ describe("[SSR] ElmShikiHighlighter", () => {
       expect.objectContaining({
         defaultColor: false,
         lang: "rust",
-        themes: expect.objectContaining({ dark: expect.anything() }),
       }),
+    );
+    expect(shiki.codeToHtml.mock.calls[0]?.[1]).toHaveProperty(
+      "themes.dark",
+      expect.anything(),
     );
     expect(shiki.createHighlighter).not.toHaveBeenCalled();
   });

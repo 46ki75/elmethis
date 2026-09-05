@@ -2,9 +2,8 @@ import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { ElmInlineText } from "./elm-inline-text";
 
 const slotted =
-  (content: string) =>
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (args: any) => ({
+  (content: string): NonNullable<Meta<typeof ElmInlineText>["render"]> =>
+  (args) => ({
     components: { ElmInlineText },
     setup() {
       return { args };

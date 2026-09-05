@@ -9,7 +9,7 @@ describe("[CSR] ElmList", () => {
     const [ordered, setOrdered] = createSignal(false);
     const [className, setClassName] = createSignal("before");
     let root: HTMLUListElement | HTMLOListElement | undefined;
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmList
         ref={(element) => {
           root = element;
@@ -25,7 +25,7 @@ describe("[CSR] ElmList", () => {
       </ElmList>
     ));
 
-    let list = getByTestId("list");
+    let list = rendered.getByTestId("list");
     expect(list).toBe(root);
     expect(list.tagName).toBe("UL");
     expect(list).toHaveTextContent("alphabeta");
@@ -34,7 +34,7 @@ describe("[CSR] ElmList", () => {
     setOrdered(true);
     setClassName("after");
 
-    list = getByTestId("list");
+    list = rendered.getByTestId("list");
     expect(list.tagName).toBe("OL");
     expect(list).toHaveAttribute("type", "A");
     expect(list).toHaveClass("after");

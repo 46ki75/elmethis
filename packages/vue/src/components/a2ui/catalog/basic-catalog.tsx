@@ -365,8 +365,8 @@ export const basicCatalog: CatalogRenderer = new CatalogRenderer([
           class={styles.input}
           type={inputType}
           value={props.value ? resolve(props.value) : ""}
-          min={props.min != null ? String(props.min) : undefined}
-          max={props.max != null ? String(props.max) : undefined}
+          min={props.min != null ? resolve(props.min) : undefined}
+          max={props.max != null ? resolve(props.max) : undefined}
           onInput={(e: Event) =>
             setBinding("value", (e.target as HTMLInputElement).value)
           }

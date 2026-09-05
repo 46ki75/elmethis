@@ -7,7 +7,7 @@ import { ElmRectangleWave } from "./elm-rectangle-wave";
 describe("[CSR] ElmRectangleWave", () => {
   it("renders an aria-hidden div and forwards native attributes and refs", () => {
     let root: HTMLDivElement | undefined;
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmRectangleWave
         ref={(element) => {
           root = element;
@@ -17,7 +17,7 @@ describe("[CSR] ElmRectangleWave", () => {
         data-testid="wave"
       />
     ));
-    const wave = getByTestId("wave");
+    const wave = rendered.getByTestId("wave");
 
     expect(wave).toBe(root);
     expect(wave).toHaveAttribute("aria-hidden", "true");
@@ -27,14 +27,14 @@ describe("[CSR] ElmRectangleWave", () => {
 
   it("reactively updates class and native attributes", () => {
     const [active, setActive] = createSignal(false);
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmRectangleWave
         class={active() ? "active" : "idle"}
         data-state={active() ? "active" : "idle"}
         data-testid="wave"
       />
     ));
-    const wave = getByTestId("wave");
+    const wave = rendered.getByTestId("wave");
 
     setActive(true);
     expect(wave).toHaveClass("active");

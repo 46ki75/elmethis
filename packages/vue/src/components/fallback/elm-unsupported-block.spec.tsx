@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, assert } from "vitest";
 import { mount } from "@vue/test-utils";
 import { createSSRApp, h } from "vue";
 import { renderToString } from "vue/server-renderer";
@@ -22,14 +22,18 @@ describe("[CSR] ElmUnsupportedBlock", () => {
 
   it("omits the details line when no details prop is given", () => {
     const wrapper = mount(ElmUnsupportedBlock);
-    expect(wrapper.element.querySelector('[class*="details"]')).toBeFalsy();
+    const root: unknown = wrapper.element;
+    assert(root instanceof Element);
+    expect(root.querySelector('[class*="details"]')).toBeFalsy();
   });
 
   it("renders the details line when details is supplied", () => {
     const wrapper = mount(ElmUnsupportedBlock, {
       props: { details: "type: mermaid" },
     });
-    expect(wrapper.element.querySelector('[class*="details"]')).toBeTruthy();
+    const root: unknown = wrapper.element;
+    assert(root instanceof Element);
+    expect(root.querySelector('[class*="details"]')).toBeTruthy();
     expect(wrapper.html()).toContain("type: mermaid");
   });
 

@@ -124,6 +124,41 @@ describe("basicCatalog — structure", () => {
 });
 
 describe("basicCatalog — form fields", () => {
+  it.each([
+    { kind: "literal", min: "2026-01-01", max: "2026-12-31" },
+    { kind: "path", min: { path: "/min" }, max: { path: "/max" } },
+    {
+      kind: "function",
+      min: { call: "formatString", args: { value: "${/min}" } },
+      max: { call: "formatString", args: { value: "${/max}" } },
+    },
+    { kind: "omitted", min: undefined, max: undefined },
+  ])("DateTimeInput resolves $kind bounds", async ({ min, max, kind }) => {
+    const wrapper = mountSurface(
+      [
+        {
+          component: "DateTimeInput",
+          id: "root",
+          value: "2026-06-15",
+          enableDate: true,
+          min,
+          max,
+        },
+      ],
+      { "/min": "2026-01-01", "/max": "2026-12-31" },
+    );
+    await vi.waitFor(() => {
+      const input = wrapper.find('input[type="date"]');
+      expect(input.exists()).toBe(true);
+      expect(input.attributes("min")).toBe(
+        kind === "omitted" ? undefined : "2026-01-01",
+      );
+      expect(input.attributes("max")).toBe(
+        kind === "omitted" ? undefined : "2026-12-31",
+      );
+    });
+  });
+
   it("TextField renders an <input> with the resolved value", async () => {
     const wrapper = mountSurface(
       [

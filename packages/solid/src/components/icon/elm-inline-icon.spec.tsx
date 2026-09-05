@@ -10,7 +10,7 @@ describe("[CSR] ElmInlineIcon", () => {
   it("renders the image and forwards native attributes to its root", () => {
     const onClick = vi.fn();
     let root: HTMLSpanElement | undefined;
-    const { container, getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmInlineIcon
         ref={(element) => {
           root = element;
@@ -23,8 +23,8 @@ describe("[CSR] ElmInlineIcon", () => {
       />
     ));
 
-    const wrapper = getByTestId("icon");
-    const image = container.querySelector("img");
+    const wrapper = rendered.getByTestId("icon");
+    const image = rendered.container.querySelector("img");
 
     expect(wrapper).toBe(root);
     expect(wrapper).toHaveClass("custom-icon");

@@ -22,26 +22,28 @@ afterEach(() => {
 
 describe("[CSR] ElmColorPrimitiveSample", () => {
   it("renders representative primitive swatches and the default copy mode", () => {
-    const { container, getByRole } = render(() => <ElmColorPrimitiveSample />);
+    const rendered = render(() => <ElmColorPrimitiveSample />);
 
     expect(
-      container.querySelector(
+      rendered.container.querySelector(
         '[data-copy-token="--elmethis-primitive-color-red-500"]',
       ),
     ).toBeInTheDocument();
     expect(
-      container.querySelector(
+      rendered.container.querySelector(
         '[data-copy-token="--elmethis-primitive-color-slate-700"]',
       ),
     ).toBeInTheDocument();
-    expect(getByRole("button")).toHaveTextContent("Copy: variable name");
+    expect(rendered.getByRole("button")).toHaveTextContent(
+      "Copy: variable name",
+    );
   });
 
   it("forwards a ref and native props while reactively merging class and style", () => {
     const [decorated, setDecorated] = createSignal(false);
     const onClick = vi.fn();
     let root: HTMLDivElement | undefined;
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmColorPrimitiveSample
         ref={(element) => {
           root = element;
@@ -53,7 +55,7 @@ describe("[CSR] ElmColorPrimitiveSample", () => {
         onClick={onClick}
       />
     ));
-    const sample = getByTestId("sample");
+    const sample = rendered.getByTestId("sample");
 
     expect(sample).toBe(root);
     expect(sample).toHaveClass("before");

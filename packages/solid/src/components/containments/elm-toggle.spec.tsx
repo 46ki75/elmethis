@@ -7,15 +7,15 @@ import { ElmToggle } from "./elm-toggle";
 
 describe("[CSR] ElmToggle", () => {
   it("renders string and custom summary content", () => {
-    const { getByText, unmount } = render(() => (
+    const rendered = render(() => (
       <ElmToggle summary="Summary text">
         <span>Body content</span>
       </ElmToggle>
     ));
 
-    expect(getByText("Summary text")).toBeInTheDocument();
-    expect(getByText("Body content")).toBeInTheDocument();
-    unmount();
+    expect(rendered.getByText("Summary text")).toBeInTheDocument();
+    expect(rendered.getByText("Body content")).toBeInTheDocument();
+    rendered.unmount();
 
     const custom = render(() => (
       <ElmToggle summary={<strong>Custom summary</strong>}>Content</ElmToggle>
@@ -26,7 +26,7 @@ describe("[CSR] ElmToggle", () => {
   it("forwards native props, styles, handlers, and a ref without leaking semantic props", () => {
     let root: HTMLDivElement | undefined;
     const onClick = vi.fn();
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmToggle
         ref={(element) => {
           root = element;
@@ -43,7 +43,7 @@ describe("[CSR] ElmToggle", () => {
         Content
       </ElmToggle>
     ));
-    const toggle = getByTestId("toggle");
+    const toggle = rendered.getByTestId("toggle");
 
     expect(toggle).toBe(root);
     expect(toggle).toHaveClass("custom-toggle", styles.open);
@@ -60,7 +60,7 @@ describe("[CSR] ElmToggle", () => {
   it("treats false as controlled and calls back before the native root click", () => {
     const calls: string[] = [];
     const onOpenChange = vi.fn(() => calls.push("change"));
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmToggle
         data-testid="toggle"
         summary="Summary"
@@ -71,7 +71,7 @@ describe("[CSR] ElmToggle", () => {
         Content
       </ElmToggle>
     ));
-    const toggle = getByTestId("toggle");
+    const toggle = rendered.getByTestId("toggle");
 
     fireEvent.click(toggle.querySelector(`.${styles.summary}`)!);
 
@@ -82,7 +82,7 @@ describe("[CSR] ElmToggle", () => {
 
   it("toggles uncontrolled state and reports each next value synchronously", () => {
     const values: boolean[] = [];
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmToggle
         data-testid="toggle"
         summary="Summary"
@@ -91,7 +91,7 @@ describe("[CSR] ElmToggle", () => {
         Content
       </ElmToggle>
     ));
-    const toggle = getByTestId("toggle");
+    const toggle = rendered.getByTestId("toggle");
     const summary = toggle.querySelector(`.${styles.summary}`)!;
 
     fireEvent.click(summary);
@@ -105,7 +105,7 @@ describe("[CSR] ElmToggle", () => {
   it("reactively reflects controlled state, class, summary, and monochrome color", () => {
     const [isOpen, setIsOpen] = createSignal(false);
     const [monochrome, setMonochrome] = createSignal(false);
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmToggle
         data-testid="toggle"
         class={isOpen() ? "open-toggle" : "closed-toggle"}
@@ -116,7 +116,7 @@ describe("[CSR] ElmToggle", () => {
         Content
       </ElmToggle>
     ));
-    const toggle = getByTestId("toggle");
+    const toggle = rendered.getByTestId("toggle");
 
     expect(toggle).toHaveClass("closed-toggle");
     expect(toggle).toHaveTextContent("Closed summary");

@@ -60,6 +60,7 @@ export const ElmAgUiInput = (props: ElmAgUiInputProps) => {
   const hasPicker = () =>
     local.prompts !== undefined && local.resolvePrompt !== undefined;
   const filteredPrompts = createMemo(() => {
+    // eslint-disable-next-line solid/reactivity -- Tracked memo read; filter consumes this value synchronously.
     const query = slashQuery().trim().toLowerCase();
     const prompts = local.prompts ?? [];
     return query
@@ -129,6 +130,7 @@ export const ElmAgUiInput = (props: ElmAgUiInputProps) => {
     if (slashRange() === null) {
       return;
     }
+    // eslint-disable-next-line solid/reactivity -- Read for this keydown; signal setters consume it synchronously.
     const prompts = filteredPrompts();
     if (event.key === "ArrowDown" && prompts.length > 0) {
       event.preventDefault();

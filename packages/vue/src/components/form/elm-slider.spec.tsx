@@ -1,6 +1,6 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, assert } from "vitest";
 import { mount } from "@vue/test-utils";
-import { createSSRApp, defineComponent, h, ref } from "vue";
+import { createSSRApp, defineComponent, h, nextTick, ref } from "vue";
 import { renderToString } from "vue/server-renderer";
 
 import { ElmSlider } from "./elm-slider";
@@ -85,14 +85,16 @@ describe("[CSR] ElmSlider — keyboard interaction", () => {
     });
     const el = slider(wrapper);
 
-    await el.dispatchEvent(
+    el.dispatchEvent(
       new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }),
     );
+    await nextTick();
     expect(el.getAttribute("aria-valuenow")).toBe("55");
 
-    await el.dispatchEvent(
+    el.dispatchEvent(
       new KeyboardEvent("keydown", { key: "ArrowUp", bubbles: true }),
     );
+    await nextTick();
     expect(el.getAttribute("aria-valuenow")).toBe("60");
   });
 
@@ -102,14 +104,16 @@ describe("[CSR] ElmSlider — keyboard interaction", () => {
     });
     const el = slider(wrapper);
 
-    await el.dispatchEvent(
+    el.dispatchEvent(
       new KeyboardEvent("keydown", { key: "ArrowLeft", bubbles: true }),
     );
+    await nextTick();
     expect(el.getAttribute("aria-valuenow")).toBe("45");
 
-    await el.dispatchEvent(
+    el.dispatchEvent(
       new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true }),
     );
+    await nextTick();
     expect(el.getAttribute("aria-valuenow")).toBe("40");
   });
 
@@ -119,14 +123,16 @@ describe("[CSR] ElmSlider — keyboard interaction", () => {
     });
     const el = slider(wrapper);
 
-    await el.dispatchEvent(
+    el.dispatchEvent(
       new KeyboardEvent("keydown", { key: "End", bubbles: true }),
     );
+    await nextTick();
     expect(el.getAttribute("aria-valuenow")).toBe("80");
 
-    await el.dispatchEvent(
+    el.dispatchEvent(
       new KeyboardEvent("keydown", { key: "Home", bubbles: true }),
     );
+    await nextTick();
     expect(el.getAttribute("aria-valuenow")).toBe("20");
   });
 
@@ -136,9 +142,10 @@ describe("[CSR] ElmSlider — keyboard interaction", () => {
     });
     const el = slider(wrapper);
 
-    await el.dispatchEvent(
+    el.dispatchEvent(
       new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }),
     );
+    await nextTick();
     expect(el.getAttribute("aria-valuenow")).toBe("100");
   });
 
@@ -148,9 +155,10 @@ describe("[CSR] ElmSlider — keyboard interaction", () => {
     });
     const el = slider(wrapper);
 
-    await el.dispatchEvent(
+    el.dispatchEvent(
       new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }),
     );
+    await nextTick();
     expect(el.getAttribute("aria-valuenow")).toBe("50");
   });
 
@@ -173,9 +181,10 @@ describe("[CSR] ElmSlider — keyboard interaction", () => {
     const wrapper = mount(Harness);
     const el = slider(wrapper);
 
-    await el.dispatchEvent(
+    el.dispatchEvent(
       new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }),
     );
+    await nextTick();
 
     expect(wrapper.find("output").text()).toBe("60");
     expect(el.getAttribute("aria-valuenow")).toBe("60");
@@ -271,9 +280,10 @@ describe("[CSR] ElmSlider — hardened edge cases", () => {
     });
     const el = slider(wrapper);
 
-    await el.dispatchEvent(
+    el.dispatchEvent(
       new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }),
     );
+    await nextTick();
 
     expect(Number(el.getAttribute("aria-valuenow"))).toBeGreaterThan(50);
   });
@@ -342,9 +352,10 @@ describe("[CSR] ElmSlider — hardened edge cases", () => {
     });
     const el = slider(wrapper);
 
-    await el.dispatchEvent(
+    el.dispatchEvent(
       new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }),
     );
+    await nextTick();
 
     // 7 is a legitimate off-grid controlled value (e.g. a persisted user
     // preference); a single ArrowRight must move by exactly `step` from the
@@ -398,9 +409,10 @@ describe("[CSR] ElmSlider — hardened edge cases", () => {
     // The very first ArrowLeft must decrease the *displayed* value by one
     // step (80 -> 79), not compute from the raw out-of-range controlled
     // value (95 -> clampValue(94) = 80, i.e. no visible change).
-    await el.dispatchEvent(
+    el.dispatchEvent(
       new KeyboardEvent("keydown", { key: "ArrowLeft", bubbles: true }),
     );
+    await nextTick();
     expect(el.getAttribute("aria-valuenow")).toBe("79");
   });
 
@@ -414,9 +426,9 @@ describe("[CSR] ElmSlider — hardened edge cases", () => {
       props: { defaultValue: 50 },
       attrs: { "aria-valuenow": 999, role: "button" },
     });
-    const el = wrapper.element.querySelector(
-      "[aria-orientation]",
-    ) as HTMLElement;
+    const root: unknown = wrapper.element;
+    assert(root instanceof Element);
+    const el = root.querySelector("[aria-orientation]") as HTMLElement;
 
     expect(el.getAttribute("role")).toBe("slider");
     expect(el.getAttribute("aria-valuenow")).toBe("50");
@@ -447,9 +459,10 @@ describe("[CSR] ElmSlider — hardened edge cases", () => {
     });
     const el = slider(wrapper);
 
-    await el.dispatchEvent(
+    el.dispatchEvent(
       new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }),
     );
+    await nextTick();
 
     expect(onKeydownSpy).toHaveBeenCalledTimes(1);
     expect(el.getAttribute("aria-valuenow")).toBe("51");
@@ -469,9 +482,10 @@ describe("[CSR] ElmSlider — hardened edge cases", () => {
     });
     const el = slider(wrapper);
 
-    await el.dispatchEvent(
+    el.dispatchEvent(
       new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }),
     );
+    await nextTick();
 
     expect(onKeydownSpy).not.toHaveBeenCalled();
     expect(el.getAttribute("aria-valuenow")).toBe("50");
@@ -505,9 +519,10 @@ describe("[CSR] ElmSlider — hardened edge cases", () => {
     expect(el.getAttribute("aria-valuenow")).toBe("50");
 
     // The control must not be frozen: a step still moves the value.
-    await el.dispatchEvent(
+    el.dispatchEvent(
       new KeyboardEvent("keydown", { key: "ArrowLeft", bubbles: true }),
     );
+    await nextTick();
     expect(el.getAttribute("aria-valuenow")).toBe("49");
   });
 

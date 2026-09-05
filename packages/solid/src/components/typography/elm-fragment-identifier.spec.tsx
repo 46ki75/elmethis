@@ -10,7 +10,7 @@ describe("[CSR] ElmFragmentIdentifier", () => {
     const firstScroll = vi.fn();
     const secondScroll = vi.fn();
     let root: HTMLSpanElement | undefined;
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <>
         <ElmFragmentIdentifier
           ref={(element) => {
@@ -35,7 +35,7 @@ describe("[CSR] ElmFragmentIdentifier", () => {
         />
       </>
     ));
-    const fragment = getByTestId("fragment");
+    const fragment = rendered.getByTestId("fragment");
 
     expect(fragment).toBe(root);
     expect(fragment).toHaveTextContent("#");

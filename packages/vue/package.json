@@ -50,7 +50,7 @@
     "dev": "storybook dev -p 19231 --no-open",
     "fmt": "prettier --write ./src",
     "fmt.check": "prettier --check ./src",
-    "lint": "eslint \"src/**/*.ts*\" eslint.config.ts",
+    "lint": "eslint \"src/**/*.ts*\" eslint.config.ts --max-warnings=0",
     "lint.css": "stylelint \"{src,.storybook}/**/*.css\"",
     "test": "pnpm run test.unit && pnpm run test.browser",
     "test.unit": "vitest --run",

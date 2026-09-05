@@ -122,11 +122,11 @@ describe("[CSR] ElmAudioPlayer media integration", () => {
 
     // React's controlled-input value tracker swallows a plain `.value =` write,
     // so go through the prototype's native setter before dispatching `input`.
-    const nativeSetter = Object.getOwnPropertyDescriptor(
+    const descriptor = Object.getOwnPropertyDescriptor(
       HTMLInputElement.prototype,
       "value",
-    )!.set!;
-    nativeSetter.call(range, "0.3");
+    )!;
+    descriptor.set!.call(range, "0.3");
     range.dispatchEvent(new Event("input", { bubbles: true }));
 
     await vi.waitFor(() => expect(audio.volume).toBeCloseTo(0.3, 2));

@@ -218,16 +218,20 @@ export const ComponentHost = defineComponent({
       const ctx = new ComponentContext(surface, props.id, props.basePath);
 
       const resolve = <V,>(v: unknown): V => {
-        if (typeof v === "string") {
-          return v as V;
-        }
         if (v == null) {
           return "" as V;
         }
-        if (typeof v === "object") {
-          return (ctx.dataContext.resolveDynamicValue(v as never) ?? "") as V;
+        if (
+          typeof v === "string" ||
+          typeof v === "number" ||
+          typeof v === "boolean" ||
+          typeof v === "bigint" ||
+          typeof v === "symbol" ||
+          typeof v === "function"
+        ) {
+          return String(v) as V;
         }
-        return String(v) as V;
+        return (ctx.dataContext.resolveDynamicValue(v as never) ?? "") as V;
       };
 
       const childRefs = (value: unknown): ChildRef[] => {
@@ -238,7 +242,7 @@ export const ComponentHost = defineComponent({
         }
         if (value && typeof value === "object" && "componentId" in value) {
           const tmpl = value as { componentId: string; path: string };
-          const items = surface.dataModel.get(tmpl.path);
+          const items: unknown = surface.dataModel.get(tmpl.path);
           if (!Array.isArray(items)) {
             return [];
           }
