@@ -29,6 +29,7 @@ import {
   onUnmounted,
   provide,
   ref,
+  unref,
   type InjectionKey,
   type VNodeChild,
 } from "vue";
@@ -162,7 +163,7 @@ export const ComponentHost = defineComponent({
     return () => {
       // Establish a reactive dependency on tick so the render re-runs when
       // structural / data events bump it.
-      void tick.value;
+      unref(tick);
 
       if (isCycle) {
         return null;

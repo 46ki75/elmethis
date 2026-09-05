@@ -1,8 +1,4 @@
-import {
-  CopilotRuntime,
-  InMemoryAgentRunner,
-  type AgentsConfig,
-} from "@copilotkit/runtime/v2";
+import { CopilotRuntime, InMemoryAgentRunner } from "@copilotkit/runtime/v2";
 import { ClaudeAgentAdapter } from "@ag-ui/claude-agent-sdk";
 import type { AgentDefinition } from "@anthropic-ai/claude-agent-sdk";
 import type { AbstractAgent } from "@ag-ui/client";
@@ -107,22 +103,15 @@ const generateAgent = (
     disallowedTools: DISALLOWED_TOOLS,
   }) as unknown as AbstractAgent;
 
-// CopilotKit pins @ag-ui/client 0.0.57 while the adapter uses 0.0.58. Their
-// private fields make the compatible AbstractAgent declarations nominally
-// distinct, so bridge that type-identity gap at the runtime boundary.
-const asRuntimeAgents = (
-  agents: Record<string, AbstractAgent>,
-): AgentsConfig => agents as unknown as AgentsConfig;
-
 // `/copilotkit/claude/agent/opus/run`
 // `/copilotkit/claude/agent/sonnet/run`
 // `/copilotkit/claude/agent/haiku/run`
 export const copilotkitClaudeRuntime = new CopilotRuntime({
-  agents: asRuntimeAgents({
+  agents: {
     opus: generateAgent("opus", "claude-opus-4-8", "Claude Opus 4.8"),
     sonnet: generateAgent("sonnet", "claude-sonnet-4-6", "Claude Sonnet 4.6"),
     haiku: generateAgent("haiku", "claude-haiku-4-5", "Claude Haiku 4.5"),
-  }),
+  },
   runner: new InMemoryAgentRunner(),
   a2ui: {
     injectA2UITool: true,
@@ -131,8 +120,8 @@ export const copilotkitClaudeRuntime = new CopilotRuntime({
 
 // `/copilotkit/wordle/agent/default/run`
 export const wordleRuntime = new CopilotRuntime({
-  agents: asRuntimeAgents({
+  agents: {
     default: generateAgent("default", "claude-haiku-4-5", "Claude Haiku 4.5"),
-  }),
+  },
   runner: new InMemoryAgentRunner(),
 });
