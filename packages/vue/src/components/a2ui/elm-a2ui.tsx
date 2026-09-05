@@ -16,6 +16,7 @@ import {
   onUnmounted,
   provide,
   ref,
+  unref,
   watch,
   type PropType,
 } from "vue";
@@ -339,7 +340,7 @@ export const ElmA2ui = defineComponent({
 
     return () => {
       // tick establishes the reactive dep on surface-map mutations.
-      void tick.value;
+      unref(tick);
       return (
         <div class={styles["elm-a2ui"]}>
           {Array.from(surfaceMap.values()).map((surface) => (
