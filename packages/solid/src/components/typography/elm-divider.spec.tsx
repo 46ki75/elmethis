@@ -6,19 +6,19 @@ import { ElmDivider } from "./elm-divider";
 
 describe("[CSR] ElmDivider", () => {
   it("renders an <hr> and forwards native attributes", () => {
-    const { getByRole } = render(() => (
+    const rendered = render(() => (
       <ElmDivider aria-label="Section break" data-testid="divider" />
     ));
 
-    const divider = getByRole("separator", { name: "Section break" });
+    const divider = rendered.getByRole("separator", { name: "Section break" });
     expect(divider).toBeInTheDocument();
     expect(divider).toHaveAttribute("data-testid", "divider");
   });
 
   it("merges and reactively updates a passthrough class", () => {
     const [className, setClassName] = createSignal("custom-divider");
-    const { getByRole } = render(() => <ElmDivider class={className()} />);
-    const divider = getByRole("separator");
+    const rendered = render(() => <ElmDivider class={className()} />);
+    const divider = rendered.getByRole("separator");
 
     expect(divider).toHaveClass("custom-divider");
 

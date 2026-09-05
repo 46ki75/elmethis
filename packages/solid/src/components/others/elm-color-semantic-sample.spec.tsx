@@ -6,26 +6,34 @@ import { ElmColorSemanticSample } from "./elm-color-semantic-sample";
 
 describe("[CSR] ElmColorSemanticSample", () => {
   it("renders both themes and representative semantic copy targets", () => {
-    const { container, getByRole } = render(() => <ElmColorSemanticSample />);
+    const rendered = render(() => <ElmColorSemanticSample />);
 
-    expect(container.querySelector('[data-theme="light"]')).toBeInTheDocument();
-    expect(container.querySelector('[data-theme="dark"]')).toBeInTheDocument();
     expect(
-      container.querySelector(
+      rendered.container.querySelector('[data-theme="light"]'),
+    ).toBeInTheDocument();
+    expect(
+      rendered.container.querySelector('[data-theme="dark"]'),
+    ).toBeInTheDocument();
+    expect(
+      rendered.container.querySelector(
         '[data-copy-token="--elmethis-color-surface-base"]',
       ),
     ).toBeInTheDocument();
     expect(
-      container.querySelector('[data-copy-token="--elmethis-color-primary"]'),
+      rendered.container.querySelector(
+        '[data-copy-token="--elmethis-color-primary"]',
+      ),
     ).toBeInTheDocument();
-    expect(getByRole("button")).toHaveTextContent("Copy: variable name");
+    expect(rendered.getByRole("button")).toHaveTextContent(
+      "Copy: variable name",
+    );
   });
 
   it("forwards refs and native props with reactive class and style", () => {
     const [decorated, setDecorated] = createSignal(false);
     const onClick = vi.fn();
     let root: HTMLDivElement | undefined;
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmColorSemanticSample
         ref={(element) => {
           root = element;
@@ -36,7 +44,7 @@ describe("[CSR] ElmColorSemanticSample", () => {
         onClick={onClick}
       />
     ));
-    const sample = getByTestId("sample");
+    const sample = rendered.getByTestId("sample");
 
     expect(sample).toBe(root);
     expect(sample).toHaveClass("before");
@@ -52,8 +60,8 @@ describe("[CSR] ElmColorSemanticSample", () => {
   });
 
   it("reactively toggles the copy mode", () => {
-    const { getByRole } = render(() => <ElmColorSemanticSample />);
-    const toggle = getByRole("button");
+    const rendered = render(() => <ElmColorSemanticSample />);
+    const toggle = rendered.getByRole("button");
 
     fireEvent.click(toggle);
     expect(toggle).toHaveTextContent("Copy: hex value");

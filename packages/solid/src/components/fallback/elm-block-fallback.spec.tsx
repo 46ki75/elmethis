@@ -7,7 +7,7 @@ import { ElmBlockFallback } from "./elm-block-fallback";
 describe("[CSR] ElmBlockFallback", () => {
   it("composes local loaders and forwards native attributes and refs", () => {
     let root: HTMLDivElement | undefined;
-    const { container, getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmBlockFallback
         ref={(element) => {
           root = element;
@@ -17,22 +17,22 @@ describe("[CSR] ElmBlockFallback", () => {
         aria-label="Loading block"
       />
     ));
-    const fallback = getByTestId("fallback");
+    const fallback = rendered.getByTestId("fallback");
 
     expect(fallback).toBe(root);
     expect(fallback).toHaveClass("custom-fallback");
     expect(fallback).toHaveAttribute("aria-label", "Loading block");
-    expect(container.querySelectorAll('span[aria-hidden="true"]')).toHaveLength(
-      3,
-    );
     expect(
-      container.querySelector('div[aria-hidden="true"]'),
+      rendered.container.querySelectorAll('span[aria-hidden="true"]'),
+    ).toHaveLength(3);
+    expect(
+      rendered.container.querySelector('div[aria-hidden="true"]'),
     ).toBeInTheDocument();
   });
 
   it("reactively updates height and class while consumer styles can override", () => {
     const [large, setLarge] = createSignal(false);
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmBlockFallback
         height={large() ? "32rem" : "16rem"}
         class={large() ? "large" : "small"}
@@ -40,7 +40,7 @@ describe("[CSR] ElmBlockFallback", () => {
         data-testid="fallback"
       />
     ));
-    const fallback = getByTestId("fallback");
+    const fallback = rendered.getByTestId("fallback");
 
     expect(fallback.style.getPropertyValue("--elmethis-scoped-height")).toBe(
       "16rem",

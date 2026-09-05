@@ -5,7 +5,7 @@ import {
   type ReactNode,
 } from "react";
 import { clsx } from "clsx";
-import { marked, type Token, type Tokens } from "marked";
+import { marked, type MarkedToken, type Token, type Tokens } from "marked";
 
 import { ElmInlineText } from "../typography/elm-inline-text";
 import { ElmHeading } from "../typography/elm-heading";
@@ -37,7 +37,8 @@ const renderByToken = (tokens: Token[]): ReactNode[] => {
   const results: ReactNode[] = [];
 
   for (let i = 0; i < tokens.length; i++) {
-    const token = tokens[i];
+    // Known token names follow Marked's built-in shapes; extension names fall through.
+    const token = tokens[i] as MarkedToken;
     switch (token.type) {
       case "blockquote":
         if (token.tokens && token.tokens.length !== 0) {
@@ -220,6 +221,7 @@ const renderByToken = (tokens: Token[]): ReactNode[] => {
           results.push(token.text);
         }
         break;
+      case "checkbox":
       default:
         // Generic or unknown token
         break;

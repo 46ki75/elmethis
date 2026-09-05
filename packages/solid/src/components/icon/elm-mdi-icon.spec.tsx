@@ -63,10 +63,8 @@ describe("[CSR] ElmMdiIcon", () => {
   });
 
   it("uses native ARIA naming when provided", () => {
-    const { getByRole } = render(() => (
-      <ElmMdiIcon path={PATH} aria-label="Code" />
-    ));
-    expect(getByRole("img", { name: "Code" })).not.toHaveAttribute(
+    const rendered = render(() => <ElmMdiIcon path={PATH} aria-label="Code" />);
+    expect(rendered.getByRole("img", { name: "Code" })).not.toHaveAttribute(
       "aria-hidden",
     );
   });

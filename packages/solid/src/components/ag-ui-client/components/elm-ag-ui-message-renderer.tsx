@@ -87,7 +87,7 @@ const Reasoning = (props: ReasoningProps) => {
   );
 };
 
-const contentToText = (message: Message): string => {
+const contentToText = (message: Extract<Message, { role: "user" }>): string => {
   if (typeof message.content === "string") {
     return message.content;
   }

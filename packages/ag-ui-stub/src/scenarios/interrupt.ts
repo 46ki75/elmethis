@@ -15,6 +15,7 @@ const INTERRUPT_ID = "stub-confirm-1";
  * When the client resumes (`RunAgentInput.resume` is non-empty) it continues to
  * a normal success completion.
  */
+// eslint-disable-next-line @typescript-eslint/require-await -- Scenario consumers require an async iterator, even for immediately available events.
 export const interrupt: Scenario = async function* ({ input }) {
   const resumed = (input.resume?.length ?? 0) > 0;
 

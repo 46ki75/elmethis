@@ -1,8 +1,9 @@
-import { mkdir, copyFile, writeFile, rm, readFile } from "node:fs/promises";
+import { mkdir, copyFile, writeFile, rm } from "node:fs/promises";
 import { dirname } from "node:path";
 import { format, resolveConfig } from "prettier";
 import { getOpenCodeTheme } from "./opencode.ts";
 import { getShikiTheme, type GetThemeOptions } from "./theme.ts";
+import root from "../package.json" with { type: "json" };
 
 const OUT = "dist/npm";
 
@@ -16,8 +17,6 @@ async function writeJson(file: string, data: unknown) {
   await writeFile(file, formatted);
   console.log(`wrote ${file}`);
 }
-
-const root = JSON.parse(await readFile("package.json", "utf8"));
 
 const targets: GetThemeOptions[] = [
   { color: "dark", name: "ikuma-theme" },

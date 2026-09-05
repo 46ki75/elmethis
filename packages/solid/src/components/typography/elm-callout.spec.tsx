@@ -9,7 +9,7 @@ describe("[CSR] ElmCallout", () => {
     const [type, setType] = createSignal<AlertType>();
     const [className, setClassName] = createSignal("before");
     let root: HTMLElement | undefined;
-    const { container, getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmCallout
         ref={(element) => {
           root = element;
@@ -22,8 +22,10 @@ describe("[CSR] ElmCallout", () => {
         callout body
       </ElmCallout>
     ));
-    const callout = getByTestId("callout");
-    const initialPath = container.querySelector("path")?.getAttribute("d");
+    const callout = rendered.getByTestId("callout");
+    const initialPath = rendered.container
+      .querySelector("path")
+      ?.getAttribute("d");
 
     expect(callout).toBe(root);
     expect(callout.tagName).toBe("ASIDE");
@@ -36,8 +38,8 @@ describe("[CSR] ElmCallout", () => {
 
     expect(callout).toHaveTextContent("warningcallout body");
     expect(callout).toHaveClass("after");
-    expect(container.querySelector("path")?.getAttribute("d")).not.toBe(
-      initialPath,
-    );
+    expect(
+      rendered.container.querySelector("path")?.getAttribute("d"),
+    ).not.toBe(initialPath);
   });
 });

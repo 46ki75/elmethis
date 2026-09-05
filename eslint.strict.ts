@@ -24,7 +24,7 @@ export const strictRules = {
   ],
   "@typescript-eslint/switch-exhaustiveness-check": "error",
   "@typescript-eslint/use-unknown-in-catch-callback-variable": "error",
-  // Keep third-party and test-double type boundaries visible while they migrate.
+  // Check third-party type boundaries as well as application code.
   "@typescript-eslint/no-base-to-string": "warn",
   "@typescript-eslint/no-unsafe-argument": "warn",
   "@typescript-eslint/no-unsafe-assignment": "warn",
@@ -41,5 +41,7 @@ export const strictLinterOptions = {
 } as const;
 
 export const typedTestRules = {
-  "@typescript-eslint/await-thenable": "warn",
+  "@typescript-eslint/await-thenable": "error",
+  // Async test doubles intentionally satisfy Promise/AsyncIterable contracts.
+  "@typescript-eslint/require-await": "off",
 } satisfies Rules;

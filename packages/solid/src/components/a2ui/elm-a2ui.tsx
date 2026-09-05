@@ -144,6 +144,7 @@ export const ElmA2ui = (props: ElmA2uiProps) => {
   });
 
   createRenderEffect(() => {
+    // eslint-disable-next-line solid/reactivity -- Tracked effect read; every consumes this value synchronously.
     const effective = local.messages ?? streamMessages();
     const catalogId = local.catalogId;
     const catalog = local.catalog ?? notionBlockCatalog;

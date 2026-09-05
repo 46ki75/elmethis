@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { useState } from "react";
+import { useState, type ChangeEvent } from "react";
 import { render, fireEvent } from "@testing-library/react";
 import { renderToStaticMarkup } from "react-dom/server";
 
@@ -68,7 +68,7 @@ describe("[CSR] ElmTextField — value binding", () => {
     // `value=""`, React resets the input's value after the change event, so
     // reading `event.target.value` after the fact would observe the reset "".
     let captured: string | undefined;
-    const onChange = vi.fn((event) => {
+    const onChange = vi.fn((event: ChangeEvent<HTMLInputElement>) => {
       captured = event.target.value;
     });
     const { container } = render(

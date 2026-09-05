@@ -66,7 +66,7 @@ describe("[CSR] ElmBookmark", () => {
 
   it("merges class and forwards native attributes and refs to the root", () => {
     let root: HTMLDivElement | undefined;
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmBookmark
         ref={(element) => {
           root = element;
@@ -78,7 +78,7 @@ describe("[CSR] ElmBookmark", () => {
       />
     ));
 
-    const bookmark = getByTestId("bookmark");
+    const bookmark = rendered.getByTestId("bookmark");
     expect(bookmark).toBe(root);
     expect(bookmark).toHaveClass("custom-bookmark");
     expect(bookmark).toHaveAttribute("aria-label", "Example bookmark");

@@ -15,7 +15,7 @@ describe("[CSR] ElmNotionCallout", () => {
     const [color, setColor] = createSignal<NotionCalloutColor>();
     const [variant, setVariant] = createSignal<NotionCalloutVariant>();
     let root: HTMLDivElement | undefined;
-    const { container, getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmNotionCallout
         ref={(element) => {
           root = element;
@@ -30,26 +30,34 @@ describe("[CSR] ElmNotionCallout", () => {
         callout body
       </ElmNotionCallout>
     ));
-    const callout = getByTestId("notion-callout");
+    const callout = rendered.getByTestId("notion-callout");
 
     expect(callout).toBe(root);
     expect(callout).toHaveTextContent("callout body");
     expect(callout).toHaveClass("custom-callout");
     expect(callout.className).toMatch(/gray/);
     expect(callout.className).toMatch(/filled/);
-    expect(container.querySelector("[role='img']")).toBeNull();
+    expect(rendered.container.querySelector("[role='img']")).toBeNull();
 
     setIcon({ kind: "emoji", emoji: "info" });
     setColor("blue");
     setVariant("outlined");
 
-    expect(container.querySelector("[role='img']")).toHaveTextContent("info");
+    expect(rendered.container.querySelector("[role='img']")).toHaveTextContent(
+      "info",
+    );
     expect(callout.className).toMatch(/blue/);
     expect(callout.className).toMatch(/outlined/);
 
     setIcon({ kind: "image", src: "/icon.png", alt: "icon" });
-    expect(container.querySelector("[role='img']")).toBeNull();
-    expect(container.querySelector("img")).toHaveAttribute("src", "/icon.png");
-    expect(container.querySelector("img")).toHaveAttribute("alt", "icon");
+    expect(rendered.container.querySelector("[role='img']")).toBeNull();
+    expect(rendered.container.querySelector("img")).toHaveAttribute(
+      "src",
+      "/icon.png",
+    );
+    expect(rendered.container.querySelector("img")).toHaveAttribute(
+      "alt",
+      "icon",
+    );
   });
 });

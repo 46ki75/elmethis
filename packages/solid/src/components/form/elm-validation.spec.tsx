@@ -8,7 +8,7 @@ describe("[CSR] ElmValidation", () => {
   it("forwards native props and a ref while keeping semantic props private", () => {
     const onClick = vi.fn();
     let root: HTMLDivElement | undefined;
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmValidation
         ref={(element) => {
           root = element;
@@ -21,7 +21,7 @@ describe("[CSR] ElmValidation", () => {
         onClick={onClick}
       />
     ));
-    const validation = getByTestId("validation");
+    const validation = rendered.getByTestId("validation");
 
     expect(validation).toBe(root);
     expect(validation).toHaveClass("custom-validation");
@@ -39,7 +39,7 @@ describe("[CSR] ElmValidation", () => {
 
   /* eslint-disable solid/style-prop -- This verifies native string-style passthrough. */
   it("merges object and string styles after the scoped opacity default", () => {
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <>
         <ElmValidation
           data-testid="object-style"
@@ -57,24 +57,24 @@ describe("[CSR] ElmValidation", () => {
     ));
 
     expect(
-      getByTestId("object-style").style.getPropertyValue(
-        "--elmethis-scoped-opacity",
-      ),
+      rendered
+        .getByTestId("object-style")
+        .style.getPropertyValue("--elmethis-scoped-opacity"),
     ).toBe("0.25");
-    expect(getByTestId("object-style")).toHaveStyle({ gap: "1rem" });
+    expect(rendered.getByTestId("object-style")).toHaveStyle({ gap: "1rem" });
     expect(
-      getByTestId("string-style").style.getPropertyValue(
-        "--elmethis-scoped-opacity",
-      ),
+      rendered
+        .getByTestId("string-style")
+        .style.getPropertyValue("--elmethis-scoped-opacity"),
     ).toBe("0.75");
-    expect(getByTestId("string-style")).toHaveStyle({ gap: "2rem" });
+    expect(rendered.getByTestId("string-style")).toHaveStyle({ gap: "2rem" });
   });
   /* eslint-enable solid/style-prop */
 
   it("reactively updates validity, text, class, color, opacity, and icon", () => {
     const [valid, setValid] = createSignal(false);
     const [text, setText] = createSignal("Pending");
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmValidation
         data-testid="validation"
         class={valid() ? "valid" : "invalid"}
@@ -83,7 +83,7 @@ describe("[CSR] ElmValidation", () => {
         validColor="rgb(10, 20, 30)"
       />
     ));
-    const validation = getByTestId("validation");
+    const validation = rendered.getByTestId("validation");
     const icon = validation.querySelector("svg")!;
     const initialPath = icon.querySelector("path")!.getAttribute("d");
 

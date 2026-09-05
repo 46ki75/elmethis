@@ -51,10 +51,12 @@ const BASIC_CATALOG_ID =
 // Provide `marked` (the engine ElmMarkdown already uses) so those variants
 // resolve to real HTML, and sanitize the result with DOMPurify since A2UI
 // content is agent-authored and goes through `dangerouslySetInnerHTML`.
-const renderMarkdown = async (markdown: string): Promise<string> => {
-  const html = marked.parse(markdown, { async: false, gfm: true });
-  return DOMPurify.sanitize(html);
-};
+const renderMarkdown = (markdown: string): Promise<string> =>
+  // Keep parse/sanitize failures as rejections for the async renderer contract.
+  new Promise((resolve) => {
+    const html = marked.parse(markdown, { async: false, gfm: true });
+    resolve(DOMPurify.sanitize(html));
+  });
 
 export interface ElmA2uiProps extends Omit<
   ComponentPropsWithoutRef<"div">,

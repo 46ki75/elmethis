@@ -31,7 +31,7 @@
  * property block because they are factored out into `ComponentCommon` /
  * `CatalogComponentCommon` respectively and arrive via the `allOf` refs.
  */
-import { z, type ZodTypeAny } from "zod";
+import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 
 import {
@@ -237,7 +237,7 @@ const COMMON_DEFS: Record<string, unknown> = {
 // Map of common Zod schemas → `$defs` names. Used to build structural
 // fingerprints so that when these schemas appear inside a component, the
 // inlined output can be collapsed into a `$ref` to the catalog-level `$def`.
-const COMMON_BY_REF: ReadonlyArray<readonly [string, ZodTypeAny]> = [
+const COMMON_BY_REF: ReadonlyArray<readonly [string, z.ZodType<unknown>]> = [
   ["AccessibilityAttributes", AccessibilityAttributesSchema],
   ["ChildList", ChildListSchema],
   ["DataBinding", DataBindingSchema],
@@ -276,7 +276,7 @@ function fingerprint(node: unknown): string {
   return JSON.stringify(stripDescriptions(node));
 }
 
-function inlineZod(schema: ZodTypeAny): unknown {
+function inlineZod(schema: z.ZodType<unknown>): unknown {
   const raw = zodToJsonSchema(schema, {
     $refStrategy: "none",
     target: "jsonSchema7",

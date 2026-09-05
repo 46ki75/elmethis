@@ -9,7 +9,7 @@ describe("[CSR] ElmBlockQuote", () => {
     const [className, setClassName] = createSignal("before");
     const [text, setText] = createSignal("quoted");
     let root: HTMLQuoteElement | undefined;
-    const { container, getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmBlockQuote
         ref={(element) => {
           root = element;
@@ -21,13 +21,13 @@ describe("[CSR] ElmBlockQuote", () => {
         {text()}
       </ElmBlockQuote>
     ));
-    const quote = getByTestId("quote");
+    const quote = rendered.getByTestId("quote");
 
     expect(quote).toBe(root);
     expect(quote).toHaveAttribute("cite", "https://example.com/source");
     expect(quote).toHaveClass("before");
     expect(quote).toHaveTextContent("quoted");
-    expect(container.querySelectorAll("svg")).toHaveLength(2);
+    expect(rendered.container.querySelectorAll("svg")).toHaveLength(2);
 
     setClassName("after");
     setText("updated");

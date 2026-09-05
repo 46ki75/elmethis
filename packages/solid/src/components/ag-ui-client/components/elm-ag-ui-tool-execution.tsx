@@ -52,7 +52,7 @@ export const ElmAgUiToolExecution = (props: ElmAgUiToolExecutionProps) => {
   const queue = createThrottledQueue(200);
   let latestPhase = -1;
   const enqueue = (task: () => void) => {
-    void queue.push(async () => task()).catch(() => undefined);
+    void queue.push(() => Promise.resolve(task())).catch(() => undefined);
   };
 
   createEffect(() => {

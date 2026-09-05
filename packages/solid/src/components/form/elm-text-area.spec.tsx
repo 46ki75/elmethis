@@ -61,7 +61,7 @@ describe("[CSR] ElmTextArea", () => {
   it("supports controlled value updates with native input and change timing", () => {
     const [value, setValue] = createSignal("");
     const onInput = vi.fn();
-    const onChange = vi.fn();
+    const onChange = vi.fn<(value: string) => void>();
     const rendered = render(() => (
       <ElmTextArea
         label="Body"

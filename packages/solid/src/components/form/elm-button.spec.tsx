@@ -8,7 +8,7 @@ import styles from "./elm-button.module.css";
 describe("[CSR] ElmButton", () => {
   it("forwards native props and a ref while keeping semantic props private", () => {
     let root: HTMLButtonElement | undefined;
-    const { getByRole } = render(() => (
+    const rendered = render(() => (
       <ElmButton
         ref={(element) => {
           root = element;
@@ -22,7 +22,7 @@ describe("[CSR] ElmButton", () => {
         Submit
       </ElmButton>
     ));
-    const button = getByRole("button", { name: "Submit form" });
+    const button = rendered.getByRole("button", { name: "Submit form" });
 
     expect(button).toBe(root);
     expect(button).toHaveClass("custom-button", styles.primary);
@@ -33,7 +33,7 @@ describe("[CSR] ElmButton", () => {
 
   /* eslint-disable solid/style-prop -- This verifies native string-style passthrough. */
   it("merges object and string styles after component defaults", () => {
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <>
         <ElmButton
           data-testid="object-style"
@@ -53,17 +53,17 @@ describe("[CSR] ElmButton", () => {
     ));
 
     expect(
-      getByTestId("object-style").style.getPropertyValue(
-        "--elmethis-scoped-color",
-      ),
+      rendered
+        .getByTestId("object-style")
+        .style.getPropertyValue("--elmethis-scoped-color"),
     ).toBe("blue");
-    expect(getByTestId("object-style").style.width).toBe("12rem");
+    expect(rendered.getByTestId("object-style").style.width).toBe("12rem");
     expect(
-      getByTestId("string-style").style.getPropertyValue(
-        "--elmethis-scoped-color",
-      ),
+      rendered
+        .getByTestId("string-style")
+        .style.getPropertyValue("--elmethis-scoped-color"),
     ).toBe("green");
-    expect(getByTestId("string-style").style.width).toBe("10rem");
+    expect(rendered.getByTestId("string-style").style.width).toBe("10rem");
   });
   /* eslint-enable solid/style-prop */
 
@@ -71,7 +71,7 @@ describe("[CSR] ElmButton", () => {
     const [loading, setLoading] = createSignal(false);
     const [disabled, setDisabled] = createSignal(false);
     const [primary, setPrimary] = createSignal(false);
-    const { getByRole } = render(() => (
+    const rendered = render(() => (
       <ElmButton
         class={loading() ? "loading" : "ready"}
         isLoading={loading()}
@@ -82,7 +82,7 @@ describe("[CSR] ElmButton", () => {
         Save
       </ElmButton>
     ));
-    const button = getByRole("button");
+    const button = rendered.getByRole("button");
 
     expect(button).toHaveClass("ready", styles.normal, styles.enable);
     expect(button).toHaveTextContent("Save");
@@ -125,7 +125,7 @@ describe("[CSR] ElmButton", () => {
 
   it("suppresses clicks while loading or disabled", () => {
     const onClick = vi.fn();
-    const { getAllByRole } = render(() => (
+    const rendered = render(() => (
       <>
         <ElmButton isLoading onClick={onClick} aria-label="Loading" />
         <ElmButton disabled onClick={onClick}>
@@ -134,7 +134,7 @@ describe("[CSR] ElmButton", () => {
       </>
     ));
 
-    for (const button of getAllByRole("button")) {
+    for (const button of rendered.getAllByRole("button")) {
       fireEvent.click(button);
     }
 

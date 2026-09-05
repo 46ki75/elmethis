@@ -71,7 +71,7 @@ describe("[CSR] ElmTextField", () => {
 
   it("uses native input for live updates and native change for commit", () => {
     const onInput = vi.fn();
-    const onChange = vi.fn();
+    const onChange = vi.fn<(value: string) => void>();
     const [value, setValue] = createSignal("");
     const rendered = render(() => (
       <div>

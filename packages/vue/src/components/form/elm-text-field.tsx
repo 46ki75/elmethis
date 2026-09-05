@@ -65,11 +65,11 @@ export const ElmTextField = defineComponent({
       if (!el) {
         return;
       }
-      const setter = Object.getOwnPropertyDescriptor(
+      const descriptor = Object.getOwnPropertyDescriptor(
         window.HTMLInputElement.prototype,
         "value",
-      )?.set;
-      setter?.call(el, next);
+      );
+      descriptor?.set?.call(el, next);
       el.dispatchEvent(new Event("input", { bubbles: true }));
     };
 

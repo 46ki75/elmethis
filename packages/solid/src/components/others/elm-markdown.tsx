@@ -1,6 +1,6 @@
 import { createMemo, For, splitProps, type JSX } from "solid-js";
 import { clsx } from "clsx";
-import { marked, type Token, type Tokens } from "marked";
+import { marked, type MarkedToken, type Token, type Tokens } from "marked";
 
 import { ElmCodeBlock } from "../code/elm-code-block";
 import { ElmBlockImage } from "../media/elm-block-image";
@@ -38,7 +38,9 @@ const tokenChildren = (token: Token): readonly Token[] =>
 const tokenText = (token: Token): string =>
   "text" in token && typeof token.text === "string" ? token.text : "";
 
-const renderToken = (token: Token): JSX.Element => {
+const renderToken = (input: Token): JSX.Element => {
+  // Known token names follow Marked's built-in shapes; extension names fall through.
+  const token = input as MarkedToken;
   const children = tokenChildren(token);
   const nested = () =>
     children.length > 0 ? <TokenList tokens={children} /> : tokenText(token);
@@ -135,6 +137,7 @@ const renderToken = (token: Token): JSX.Element => {
       return nested();
     case "def":
     case "space":
+    case "checkbox":
     default:
       return undefined;
   }

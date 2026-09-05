@@ -115,14 +115,10 @@ const columnListStyle: CSSProperties = {
  * The Elm block component implementations. Each is typed by its
  * `@elmethis/core` API schema; the binder injects resolved `props`.
  */
-// The binder's resolved prop types vary per schema and don't all expose the
-// exact fields these renderers read; cast access where the inferred type is
-// too narrow. Behavior is validated by the component specs.
-/* eslint-disable @typescript-eslint/no-explicit-any */
 const blockImplementations: ReactComponentImplementation[] = [
   // ----- Inline -----
-  createComponentImplementation(RichTextApi, ({ props }: any) => {
-    const decoration: string[] = props.decoration ?? [];
+  createComponentImplementation(RichTextApi, ({ props }) => {
+    const decoration = props.decoration ?? [];
     if (decoration.includes("katex")) {
       return <ElmKatex expression={props.text} block={false} />;
     }
@@ -141,18 +137,18 @@ const blockImplementations: ReactComponentImplementation[] = [
     );
   }),
 
-  createComponentImplementation(LinkTextApi, ({ props }: any) => (
+  createComponentImplementation(LinkTextApi, ({ props }) => (
     <ElmInlineText href={props.href} favicon={props.favicon}>
       {props.text}
     </ElmInlineText>
   )),
 
-  createComponentImplementation(IconApi, ({ props }: any) => (
+  createComponentImplementation(IconApi, ({ props }) => (
     <ElmInlineIcon src={props.src} alt={props.alt} />
   )),
 
   // ----- Layout (overrides basic Column with widthRatio support) -----
-  createComponentImplementation(ColumnApi, ({ props, buildChild }: any) => (
+  createComponentImplementation(ColumnApi, ({ props, buildChild }) => (
     <div
       style={{
         display: "flex",
@@ -169,26 +165,26 @@ const blockImplementations: ReactComponentImplementation[] = [
     </div>
   )),
 
-  createComponentImplementation(ColumnListApi, ({ props, buildChild }: any) => (
+  createComponentImplementation(ColumnListApi, ({ props, buildChild }) => (
     <div style={columnListStyle}>
       {renderChildList(props.children, buildChild)}
     </div>
   )),
 
   // ----- Block typography -----
-  createComponentImplementation(HeadingApi, ({ props, buildChild }: any) => (
+  createComponentImplementation(HeadingApi, ({ props, buildChild }) => (
     <ElmHeading level={props.level}>
       {renderChildList(props.children, buildChild)}
     </ElmHeading>
   )),
 
-  createComponentImplementation(ParagraphApi, ({ props, buildChild }: any) => (
+  createComponentImplementation(ParagraphApi, ({ props, buildChild }) => (
     <ElmParagraph color={props.color} backgroundColor={props.backgroundColor}>
       {renderChildList(props.children, buildChild)}
     </ElmParagraph>
   )),
 
-  createComponentImplementation(ListApi, ({ props, buildChild }: any) => (
+  createComponentImplementation(ListApi, ({ props, buildChild }) => (
     <ElmList listStyle={props.style ?? "unordered"}>
       {childEntries(props.children).map(({ id, basePath }, i) => (
         <li key={`${id}:${i}`}>{buildChild(id, basePath)}</li>
@@ -196,45 +192,42 @@ const blockImplementations: ReactComponentImplementation[] = [
     </ElmList>
   )),
 
-  createComponentImplementation(ListItemApi, ({ props, buildChild }: any) => (
+  createComponentImplementation(ListItemApi, ({ props, buildChild }) => (
     <>{renderChildList(props.children, buildChild)}</>
   )),
 
-  createComponentImplementation(BlockQuoteApi, ({ props, buildChild }: any) => (
+  createComponentImplementation(BlockQuoteApi, ({ props, buildChild }) => (
     <ElmBlockQuote cite={props.cite}>
       {renderChildList(props.children, buildChild)}
     </ElmBlockQuote>
   )),
 
-  createComponentImplementation(CalloutApi, ({ props, buildChild }: any) => (
+  createComponentImplementation(CalloutApi, ({ props, buildChild }) => (
     <ElmCallout type={props.type}>
       {renderChildList(props.children, buildChild)}
     </ElmCallout>
   )),
 
-  createComponentImplementation(
-    NotionCalloutApi,
-    ({ props, buildChild }: any) => (
-      <ElmNotionCallout
-        icon={props.icon}
-        color={props.color}
-        variant={props.variant}
-      >
-        {renderChildList(props.children, buildChild)}
-      </ElmNotionCallout>
-    ),
-  ),
+  createComponentImplementation(NotionCalloutApi, ({ props, buildChild }) => (
+    <ElmNotionCallout
+      icon={props.icon}
+      color={props.color}
+      variant={props.variant}
+    >
+      {renderChildList(props.children, buildChild)}
+    </ElmNotionCallout>
+  )),
 
   createComponentImplementation(DividerApi, () => <ElmDivider />),
 
-  createComponentImplementation(ToggleApi, ({ props, buildChild }: any) => (
+  createComponentImplementation(ToggleApi, ({ props, buildChild }) => (
     <ElmToggle summary={renderChildList(props.summary, buildChild)}>
       {renderChildList(props.children, buildChild)}
     </ElmToggle>
   )),
 
   // ----- Media / embed -----
-  createComponentImplementation(BookmarkApi, ({ props }: any) => (
+  createComponentImplementation(BookmarkApi, ({ props }) => (
     <ElmBookmark
       url={props.url}
       title={props.title}
@@ -243,11 +236,11 @@ const blockImplementations: ReactComponentImplementation[] = [
     />
   )),
 
-  createComponentImplementation(FileApi, ({ props }: any) => (
+  createComponentImplementation(FileApi, ({ props }) => (
     <ElmFile src={props.src} name={props.name} />
   )),
 
-  createComponentImplementation(AudioApi, ({ props }: any) => (
+  createComponentImplementation(AudioApi, ({ props }) => (
     <ElmAudioPlayer
       src={props.src}
       title={props.title}
@@ -258,7 +251,7 @@ const blockImplementations: ReactComponentImplementation[] = [
     />
   )),
 
-  createComponentImplementation(VideoApi, ({ props }: any) => (
+  createComponentImplementation(VideoApi, ({ props }) => (
     <figure style={{ margin: 0 }}>
       <video
         src={props.src}
@@ -276,7 +269,7 @@ const blockImplementations: ReactComponentImplementation[] = [
     </figure>
   )),
 
-  createComponentImplementation(BlockImageApi, ({ props }: any) => (
+  createComponentImplementation(BlockImageApi, ({ props }) => (
     <ElmBlockImage
       src={props.src}
       alt={props.alt}
@@ -289,7 +282,7 @@ const blockImplementations: ReactComponentImplementation[] = [
     />
   )),
 
-  createComponentImplementation(HtmlApi, ({ props }: any) => (
+  createComponentImplementation(HtmlApi, ({ props }) => (
     <ElmHtmlViewer
       html={props.html}
       src={props.src}
@@ -300,7 +293,7 @@ const blockImplementations: ReactComponentImplementation[] = [
   )),
 
   // ----- Code / math / diagram -----
-  createComponentImplementation(CodeBlockApi, ({ props }: any) => (
+  createComponentImplementation(CodeBlockApi, ({ props }) => (
     <ElmCodeBlock
       code={props.code}
       language={props.language}
@@ -308,13 +301,13 @@ const blockImplementations: ReactComponentImplementation[] = [
     />
   )),
 
-  createComponentImplementation(KatexApi, ({ props }: any) => (
+  createComponentImplementation(KatexApi, ({ props }) => (
     <ElmKatex expression={props.expression} block={true} />
   )),
 
   // Mermaid renders as a syntax-highlighted code block — no dedicated Mermaid
   // renderer in this package. The source is preserved for host post-processing.
-  createComponentImplementation(MermaidApi, ({ props }: any) => (
+  createComponentImplementation(MermaidApi, ({ props }) => (
     <ElmCodeBlock code={props.code} language="mermaid" />
   )),
 
@@ -323,7 +316,7 @@ const blockImplementations: ReactComponentImplementation[] = [
 
   createComponentImplementation(
     ContentTabsApi,
-    ({ props, buildChild, context }: any) => {
+    ({ props, buildChild, context }) => {
       const tabIds = childListIds(props.children);
       const tabs = tabIds.map((tabId) => {
         const tabModel = context.surfaceComponents.get(tabId);
@@ -359,7 +352,7 @@ const blockImplementations: ReactComponentImplementation[] = [
   ),
 
   // ----- Table -----
-  createComponentImplementation(TableApi, ({ props, buildChild }: any) => (
+  createComponentImplementation(TableApi, ({ props, buildChild }) => (
     <ElmTable
       caption={props.caption ? String(props.caption) : undefined}
       hasRowHeader={props.hasRowHeader}
@@ -373,18 +366,18 @@ const blockImplementations: ReactComponentImplementation[] = [
     </ElmTable>
   )),
 
-  createComponentImplementation(TableRowApi, ({ props, buildChild }: any) => (
+  createComponentImplementation(TableRowApi, ({ props, buildChild }) => (
     <ElmTableRow>{renderChildList(props.children, buildChild)}</ElmTableRow>
   )),
 
-  createComponentImplementation(TableCellApi, ({ props, buildChild }: any) => (
+  createComponentImplementation(TableCellApi, ({ props, buildChild }) => (
     <ElmTableCell isHeader={props.isHeader}>
       {renderChildList(props.children, buildChild)}
     </ElmTableCell>
   )),
 
   // ----- Fallback -----
-  createComponentImplementation(UnsupportedApi, ({ props }: any) => (
+  createComponentImplementation(UnsupportedApi, ({ props }) => (
     <ElmUnsupportedBlock
       details={
         props.details
@@ -394,7 +387,6 @@ const blockImplementations: ReactComponentImplementation[] = [
     />
   )),
 ];
-/* eslint-enable @typescript-eslint/no-explicit-any */
 
 /**
  * The merged component list: the official A2UI basic catalog underneath, with

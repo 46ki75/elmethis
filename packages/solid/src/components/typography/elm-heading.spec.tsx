@@ -10,7 +10,7 @@ describe("[CSR] ElmHeading", () => {
     const [id, setId] = createSignal<string>();
     const [text, setText] = createSignal("Title");
     let root: HTMLHeadingElement | undefined;
-    const { container, getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmHeading
         ref={(element) => {
           root = element;
@@ -26,7 +26,7 @@ describe("[CSR] ElmHeading", () => {
       </ElmHeading>
     ));
 
-    let heading = getByTestId("heading");
+    let heading = rendered.getByTestId("heading");
     expect(heading).toBe(root);
     expect(heading.tagName).toBe("H1");
     expect(heading).toHaveTextContent("Titlechild");
@@ -35,13 +35,13 @@ describe("[CSR] ElmHeading", () => {
     expect(heading.style.getPropertyValue("--elmethis-scoped-font-size")).toBe(
       "1.5em",
     );
-    expect(container).not.toHaveTextContent("#");
+    expect(rendered.container).not.toHaveTextContent("#");
 
     setLevel(2);
     setId("section");
     setText("Updated");
 
-    heading = getByTestId("heading");
+    heading = rendered.getByTestId("heading");
     expect(heading.tagName).toBe("H2");
     expect(heading).toHaveAttribute("id", "section");
     expect(heading).toHaveTextContent("Updatedchild#");

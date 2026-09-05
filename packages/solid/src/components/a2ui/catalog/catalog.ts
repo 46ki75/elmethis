@@ -37,7 +37,8 @@ export const createChildRefs = (
     if (!Array.isArray(value)) {
       return [];
     }
-    return value.flatMap((child) => {
+    const children: unknown[] = value;
+    return children.flatMap((child) => {
       if (typeof child === "string") {
         return [getRef(child, defaultBasePath())];
       }

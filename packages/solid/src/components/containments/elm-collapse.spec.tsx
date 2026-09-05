@@ -8,7 +8,7 @@ import styles from "./elm-collapse.module.css";
 describe("[CSR] ElmCollapse", () => {
   it("forwards native props and a ref while keeping semantic props private", () => {
     let root: HTMLDivElement | undefined;
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmCollapse
         ref={(element) => {
           root = element;
@@ -22,7 +22,7 @@ describe("[CSR] ElmCollapse", () => {
         Content
       </ElmCollapse>
     ));
-    const collapse = getByTestId("collapse");
+    const collapse = rendered.getByTestId("collapse");
 
     expect(collapse).toBe(root);
     expect(collapse).toHaveClass("custom-collapse", styles.column, styles.open);
@@ -34,7 +34,7 @@ describe("[CSR] ElmCollapse", () => {
 
   /* eslint-disable solid/style-prop -- This verifies native string-style passthrough. */
   it("merges styles while the semantic timing prop retains precedence", () => {
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <>
         <ElmCollapse
           data-testid="object-style"
@@ -53,24 +53,24 @@ describe("[CSR] ElmCollapse", () => {
     ));
 
     expect(
-      getByTestId("object-style").style.getPropertyValue(
-        "--elmethis-scoped-transition-timing-function",
-      ),
+      rendered
+        .getByTestId("object-style")
+        .style.getPropertyValue("--elmethis-scoped-transition-timing-function"),
     ).toBe("linear");
-    expect(getByTestId("object-style").style.width).toBe("10rem");
+    expect(rendered.getByTestId("object-style").style.width).toBe("10rem");
     expect(
-      getByTestId("string-style").style.getPropertyValue(
-        "--elmethis-scoped-transition-timing-function",
-      ),
+      rendered
+        .getByTestId("string-style")
+        .style.getPropertyValue("--elmethis-scoped-transition-timing-function"),
     ).toBe("steps(2)");
-    expect(getByTestId("string-style").style.width).toBe("12rem");
+    expect(rendered.getByTestId("string-style").style.width).toBe("12rem");
   });
   /* eslint-enable solid/style-prop */
 
   it("reactively updates open state, direction, timing, class, and children", () => {
     const [open, setOpen] = createSignal(false);
     const [direction, setDirection] = createSignal<"row" | "both">("row");
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmCollapse
         data-testid="collapse"
         class={open() ? "open-class" : "closed-class"}
@@ -81,7 +81,7 @@ describe("[CSR] ElmCollapse", () => {
         {open() ? "Open content" : "Closed content"}
       </ElmCollapse>
     ));
-    const collapse = getByTestId("collapse");
+    const collapse = rendered.getByTestId("collapse");
 
     expect(collapse).toHaveClass("closed-class", styles.row);
     expect(collapse).not.toHaveClass(styles.open);

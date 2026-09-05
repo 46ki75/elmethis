@@ -20,6 +20,7 @@ const MESSAGES: Message[] = [
  * components. This scenario covers the analogous server-emitted path (history
  * replacement) that the message renderer needs to exercise.
  */
+// eslint-disable-next-line @typescript-eslint/require-await -- Scenario consumers require an async iterator, even for immediately available events.
 export const messagesSnapshotScenario: Scenario = async function* () {
   yield messagesSnapshot(MESSAGES);
 };

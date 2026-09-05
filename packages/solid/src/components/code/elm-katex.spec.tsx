@@ -36,7 +36,7 @@ describe("[CSR] ElmKatex", () => {
 
   it("merges class and forwards native attributes and refs to the root", () => {
     let root: HTMLDivElement | undefined;
-    const { getByTestId } = render(() => (
+    const rendered = render(() => (
       <ElmKatex
         ref={(element) => {
           root = element;
@@ -48,7 +48,7 @@ describe("[CSR] ElmKatex", () => {
       />
     ));
 
-    const formula = getByTestId("formula");
+    const formula = rendered.getByTestId("formula");
     expect(formula).toBe(root);
     expect(formula).toHaveClass("custom-katex");
     expect(formula).toHaveAttribute("aria-label", "Formula");

@@ -745,7 +745,7 @@ describe("[CSR] ElmA2ui", () => {
         controller.close();
       },
     });
-    const fetchMock = vi.fn(() =>
+    const fetchMock = vi.fn<typeof fetch>(() =>
       Promise.resolve(new Response(body, { status: 200 })),
     );
     vi.stubGlobal("fetch", fetchMock);
@@ -759,8 +759,9 @@ describe("[CSR] ElmA2ui", () => {
     );
     expect(fetchMock).toHaveBeenCalledWith(
       "/surface.jsonl",
-      expect.objectContaining({ headers, signal: expect.any(AbortSignal) }),
+      expect.objectContaining({ headers }),
     );
+    expect(fetchMock.mock.calls[0]?.[1]?.signal).toBeInstanceOf(AbortSignal);
     expect(console.warn).toHaveBeenCalledWith(
       "[ElmA2ui] skipped invalid JSON line:",
       "invalid",

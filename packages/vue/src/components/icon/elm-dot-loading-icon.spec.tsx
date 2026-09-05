@@ -1,4 +1,4 @@
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, assert } from "vitest";
 import { mount } from "@vue/test-utils";
 import { createSSRApp, h } from "vue";
 import { renderToString } from "vue/server-renderer";
@@ -8,7 +8,9 @@ import { ElmDotLoadingIcon } from "./elm-dot-loading-icon";
 describe("[CSR] ElmDotLoadingIcon", () => {
   test("renders exactly three decorative (aria-hidden) dots", () => {
     const wrapper = mount(ElmDotLoadingIcon);
-    const dots = wrapper.element.querySelectorAll('span[aria-hidden="true"]');
+    const root: unknown = wrapper.element;
+    assert(root instanceof Element);
+    const dots = root.querySelectorAll('span[aria-hidden="true"]');
     expect(dots.length).toBe(3);
   });
 

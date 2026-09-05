@@ -51,7 +51,7 @@ function buildServer(log: ConsolaInstance): McpServer {
         "vibes, and one fun fact. Takes no arguments.",
       argsSchema: {},
     },
-    async () => {
+    () => {
       log.info("prompt requested", { prompt: "daily_briefing" });
       return {
         description: "Generic morning briefing prompt",
@@ -93,7 +93,7 @@ function buildServer(log: ConsolaInstance): McpServer {
           ),
       },
     },
-    async ({ cities, tone }) => {
+    ({ cities, tone }) => {
       log.info("prompt requested", {
         prompt: "weather_report",
         cities,
@@ -147,7 +147,7 @@ function buildServer(log: ConsolaInstance): McpServer {
           ),
       },
     },
-    async ({ destination, days, interests }) => {
+    ({ destination, days, interests }) => {
       log.info("prompt requested", {
         prompt: "trip_planner",
         destination,
@@ -192,7 +192,7 @@ function buildServer(log: ConsolaInstance): McpServer {
           ),
       },
     },
-    async ({ city }) => {
+    ({ city }) => {
       const h = hashCity(city);
       const result = {
         city,

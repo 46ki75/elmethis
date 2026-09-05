@@ -22,11 +22,12 @@ const call = (
   method: keyof AgentSubscriber,
   payload: Record<string, unknown> = {},
 ) => {
-  const callback = subscriber[method];
-  if (!callback) {
+  if (!subscriber[method]) {
     throw new Error(`Missing subscriber method: ${method}`);
   }
-  return (callback as (value: Record<string, unknown>) => unknown)(payload);
+  return (
+    subscriber[method] as (value: Record<string, unknown>) => unknown
+  ).call(subscriber, payload);
 };
 
 describe("createAgentSubscriber", () => {

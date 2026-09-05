@@ -43,7 +43,12 @@ const UseAsyncStateBasic = () => {
       </p>
       {!!error && (
         <p style={{ color: "red" }}>
-          <strong>error:</strong> {String(error)}
+          <strong>error:</strong>{" "}
+          {error instanceof Error
+            ? error.toString()
+            : typeof error === "string"
+              ? error
+              : "Unknown error"}
         </p>
       )}
       <pre style={{ background: "#f4f4f4", padding: "0.5rem" }}>
@@ -93,7 +98,12 @@ const UseAsyncStateWithError = () => {
       </p>
       {!!error && (
         <p style={{ color: "red" }}>
-          <strong>error:</strong> {String(error)}
+          <strong>error:</strong>{" "}
+          {error instanceof Error
+            ? error.toString()
+            : typeof error === "string"
+              ? error
+              : "Unknown error"}
         </p>
       )}
       <pre style={{ background: "#f4f4f4", padding: "0.5rem" }}>
