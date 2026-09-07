@@ -46,7 +46,7 @@
     "@elmethis/core": "workspace:^",
     "@eslint/js": "latest",
     "@types/node": "26.4.0",
-    "eslint": "^10.9.1",
+    "eslint": "^10.10.0",
     "globals": "^17.12.0",
     "jiti": "2.7.0",
     "prettier": "3.9.6",
