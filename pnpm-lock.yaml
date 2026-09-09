@@ -80,7 +80,7 @@ importers:
     dependencies:
       '@ag-ui/claude-agent-sdk':
         specifier: ^0.0.3
-        version: 0.0.3(@ag-ui/client@0.0.59)(@ag-ui/core@0.0.59)(@anthropic-ai/claude-agent-sdk@0.3.261(@anthropic-ai/sdk@0.122.0(zod@4.4.3))(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1)(zod@4.4.3))(zod@4.4.3))(@anthropic-ai/sdk@0.122.0(zod@4.4.3))(zod@4.4.3)
+        version: 0.0.3(@ag-ui/client@0.0.59)(@ag-ui/core@0.0.59)(@anthropic-ai/claude-agent-sdk@0.3.261(@anthropic-ai/sdk@0.124.0(zod@4.4.3))(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1)(zod@4.4.3))(zod@4.4.3))(@anthropic-ai/sdk@0.124.0(zod@4.4.3))(zod@4.4.3)
       '@ag-ui/client':
         specifier: 0.0.59
         version: 0.0.59
@@ -89,13 +89,13 @@ importers:
         version: 0.0.59
       '@anthropic-ai/claude-agent-sdk':
         specifier: ^0.3.261
-        version: 0.3.261(@anthropic-ai/sdk@0.122.0(zod@4.4.3))(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1)(zod@4.4.3))(zod@4.4.3)
+        version: 0.3.261(@anthropic-ai/sdk@0.124.0(zod@4.4.3))(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1)(zod@4.4.3))(zod@4.4.3)
       '@anthropic-ai/sdk':
-        specifier: ^0.122.0
-        version: 0.122.0(zod@4.4.3)
+        specifier: ^0.124.0
+        version: 0.124.0(zod@4.4.3)
       '@copilotkit/runtime':
         specifier: ^1.70.1
-        version: 1.70.1(l2ggtxjt3abkqba7ytm5ktyd2m)
+        version: 1.70.1(ta4csmovqchrdbc2lf7yjenxm4)
       '@copilotkit/shared':
         specifier: ^1.70.0
         version: 1.70.1(@ag-ui/core@0.0.59)
@@ -912,8 +912,8 @@ packages:
       '@modelcontextprotocol/sdk': ^1.29.0
       zod: ^4.0.0
 
-  '@anthropic-ai/sdk@0.122.0':
-    resolution: {integrity: sha512-GGPNftt0caaz9MDlmNQGHX8855Ojaduyy5pm9Sm1h7HalCn0cWNb5/bweadJF+4yzbal+QL6ztBa09WAAOzLmQ==}
+  '@anthropic-ai/sdk@0.124.0':
+    resolution: {integrity: sha512-cN5O8i9UVxHeOQAzj/XjshWXG8KiibJDw9OGpH2Z/eR3n/RBxdoLxDJOcfqAJWvjaMDFfHTBADU04hWRJVkDyA==}
     hasBin: true
     peerDependencies:
       zod: ^3.25.0 || ^4.0.0
@@ -7317,12 +7317,12 @@ snapshots:
 
   '@ag-ui/a2ui-toolkit@0.0.4': {}
 
-  '@ag-ui/claude-agent-sdk@0.0.3(@ag-ui/client@0.0.59)(@ag-ui/core@0.0.59)(@anthropic-ai/claude-agent-sdk@0.3.261(@anthropic-ai/sdk@0.122.0(zod@4.4.3))(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1)(zod@4.4.3))(zod@4.4.3))(@anthropic-ai/sdk@0.122.0(zod@4.4.3))(zod@4.4.3)':
+  '@ag-ui/claude-agent-sdk@0.0.3(@ag-ui/client@0.0.59)(@ag-ui/core@0.0.59)(@anthropic-ai/claude-agent-sdk@0.3.261(@anthropic-ai/sdk@0.124.0(zod@4.4.3))(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1)(zod@4.4.3))(zod@4.4.3))(@anthropic-ai/sdk@0.124.0(zod@4.4.3))(zod@4.4.3)':
     dependencies:
       '@ag-ui/client': 0.0.59
       '@ag-ui/core': 0.0.59
-      '@anthropic-ai/claude-agent-sdk': 0.3.261(@anthropic-ai/sdk@0.122.0(zod@4.4.3))(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1)(zod@4.4.3))(zod@4.4.3)
-      '@anthropic-ai/sdk': 0.122.0(zod@4.4.3)
+      '@anthropic-ai/claude-agent-sdk': 0.3.261(@anthropic-ai/sdk@0.124.0(zod@4.4.3))(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1)(zod@4.4.3))(zod@4.4.3)
+      '@anthropic-ai/sdk': 0.124.0(zod@4.4.3)
       rxjs: 7.8.1
       zod: 4.4.3
 
@@ -7532,9 +7532,9 @@ snapshots:
   '@anthropic-ai/claude-agent-sdk-win32-x64@0.3.261':
     optional: true
 
-  '@anthropic-ai/claude-agent-sdk@0.3.261(@anthropic-ai/sdk@0.122.0(zod@4.4.3))(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1)(zod@4.4.3))(zod@4.4.3)':
+  '@anthropic-ai/claude-agent-sdk@0.3.261(@anthropic-ai/sdk@0.124.0(zod@4.4.3))(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1)(zod@4.4.3))(zod@4.4.3)':
     dependencies:
-      '@anthropic-ai/sdk': 0.122.0(zod@4.4.3)
+      '@anthropic-ai/sdk': 0.124.0(zod@4.4.3)
       '@modelcontextprotocol/sdk': 1.30.0(@cfworker/json-schema@4.1.1)(zod@4.4.3)
       zod: 4.4.3
     optionalDependencies:
@@ -7547,7 +7547,7 @@ snapshots:
       '@anthropic-ai/claude-agent-sdk-win32-arm64': 0.3.261
       '@anthropic-ai/claude-agent-sdk-win32-x64': 0.3.261
 
-  '@anthropic-ai/sdk@0.122.0(zod@4.4.3)':
+  '@anthropic-ai/sdk@0.124.0(zod@4.4.3)':
     dependencies:
       json-schema-to-ts: 3.1.1
       standardwebhooks: 1.1.1
@@ -7985,7 +7985,7 @@ snapshots:
 
   '@copilotkit/license-verifier@0.5.0': {}
 
-  '@copilotkit/runtime@1.70.1(l2ggtxjt3abkqba7ytm5ktyd2m)':
+  '@copilotkit/runtime@1.70.1(ta4csmovqchrdbc2lf7yjenxm4)':
     dependencies:
       '@ag-ui/a2ui-middleware': 0.0.10(@ag-ui/client@0.0.59)(rxjs@7.8.1)
       '@ag-ui/client': 0.0.59
@@ -8033,7 +8033,7 @@ snapshots:
       ws: 8.21.3
       zod: 3.25.76
     optionalDependencies:
-      '@anthropic-ai/sdk': 0.122.0(zod@4.4.3)
+      '@anthropic-ai/sdk': 0.124.0(zod@4.4.3)
       '@langchain/langgraph-sdk': 1.10.2(@langchain/core@1.2.9(@opentelemetry/api@1.9.1)(@opentelemetry/exporter-trace-otlp-proto@0.203.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.7.0(@opentelemetry/api@1.9.1))(openai@6.42.0(ws@8.21.3)(zod@4.4.3))(ws@8.21.3))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       langchain: 1.5.10(@langchain/core@1.2.9(@opentelemetry/api@1.9.1)(@opentelemetry/exporter-trace-otlp-proto@0.203.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.7.0(@opentelemetry/api@1.9.1))(openai@6.42.0(ws@8.21.3)(zod@4.4.3))(ws@8.21.3))(@opentelemetry/api@1.9.1)(@opentelemetry/exporter-trace-otlp-proto@0.203.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.7.0(@opentelemetry/api@1.9.1))(openai@6.42.0(ws@8.21.3)(zod@4.4.3))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(ws@8.21.3)
       openai: 6.42.0(ws@8.21.3)(zod@4.4.3)
