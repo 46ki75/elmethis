@@ -47,7 +47,7 @@ const silentWavDataUri = (seconds = 2, sampleRate = 8000): string => {
 const harness = (props: ElmAudioPlayerProps) =>
   defineComponent({ setup: () => () => h(ElmAudioPlayer, props) });
 
-type Screen = ReturnType<typeof render>;
+type Screen = Awaited<ReturnType<typeof render>>;
 const root = (screen: Screen) => screen.container;
 const audioEl = (screen: Screen) =>
   root(screen).querySelector("audio") as HTMLAudioElement;
@@ -58,7 +58,7 @@ const playBtn = (screen: Screen) =>
 
 describe("[browser] ElmAudioPlayer media integration", () => {
   test("reads duration from loadedmetadata and exposes it on the slider", async () => {
-    const screen = render(harness({ src: silentWavDataUri(2) }));
+    const screen = await render(harness({ src: silentWavDataUri(2) }));
     const slider = sliderEl(screen);
 
     await vi.waitFor(() =>
@@ -68,7 +68,9 @@ describe("[browser] ElmAudioPlayer media integration", () => {
   });
 
   test("keyboard seek advances currentTime and updates the slider value", async () => {
-    const screen = render(harness({ src: silentWavDataUri(5), seekStep: 1 }));
+    const screen = await render(
+      harness({ src: silentWavDataUri(5), seekStep: 1 }),
+    );
     const slider = sliderEl(screen);
     const audio = audioEl(screen);
 
@@ -88,7 +90,7 @@ describe("[browser] ElmAudioPlayer media integration", () => {
   });
 
   test("clicking the seek line seeks proportionally to the click position", async () => {
-    const screen = render(harness({ src: silentWavDataUri(8) }));
+    const screen = await render(harness({ src: silentWavDataUri(8) }));
     const slider = sliderEl(screen);
     const audio = audioEl(screen);
 
@@ -109,7 +111,7 @@ describe("[browser] ElmAudioPlayer media integration", () => {
   });
 
   test("the volume slider sets the audio element's volume", async () => {
-    const screen = render(harness({ src: silentWavDataUri(2) }));
+    const screen = await render(harness({ src: silentWavDataUri(2) }));
     const audio = audioEl(screen);
     const range = root(screen).querySelector(
       'input[type="range"]',
@@ -124,7 +126,7 @@ describe("[browser] ElmAudioPlayer media integration", () => {
   });
 
   test("play/pause UI wiring flips with the media element's events", async () => {
-    const screen = render(harness({ src: silentWavDataUri(2) }));
+    const screen = await render(harness({ src: silentWavDataUri(2) }));
     const audio = audioEl(screen);
     const button = playBtn(screen);
 

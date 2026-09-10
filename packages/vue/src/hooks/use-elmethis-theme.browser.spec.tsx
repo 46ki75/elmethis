@@ -41,7 +41,7 @@ describe("[browser] useElmethisTheme — native color-scheme", () => {
     // Seed "light" so the mount effect has a definite settling point to wait on
     // before toggling — otherwise a late mount effect could clobber the click.
     localStorage.setItem(KEY, "light");
-    const screen = render(Probe);
+    const screen = await render(Probe);
     await vi.waitFor(() =>
       expect(root().getAttribute("data-theme")).toBe("light"),
     );
@@ -59,7 +59,7 @@ describe("[browser] useElmethisTheme — native color-scheme", () => {
 
   test("a persisted choice is pinned by the mount effect", async () => {
     localStorage.setItem(KEY, "dark");
-    const screen = render(Probe);
+    const screen = await render(Probe);
 
     // No interaction: the mount effect alone must read storage and pin dark.
     await vi.waitFor(() =>
@@ -70,7 +70,7 @@ describe("[browser] useElmethisTheme — native color-scheme", () => {
   });
 
   test("a cross-tab storage event updates the live state and the DOM", async () => {
-    const screen = render(Probe);
+    const screen = await render(Probe);
     await vi.waitFor(() =>
       expect(screen.getByTestId("isDark").element().textContent).toBe("false"),
     );
@@ -90,7 +90,7 @@ describe("[browser] useElmethisTheme — native color-scheme", () => {
 
   test("a cleared key in another tab reverts to OS auto (unpins color-scheme)", async () => {
     localStorage.setItem(KEY, "dark");
-    const screen = render(Probe);
+    const screen = await render(Probe);
     await vi.waitFor(() =>
       expect(screen.getByTestId("isDark").element().textContent).toBe("true"),
     );

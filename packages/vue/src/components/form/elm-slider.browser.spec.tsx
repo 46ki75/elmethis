@@ -16,14 +16,14 @@ import { ElmSlider, type ElmSliderProps } from "./elm-slider";
 const harness = (props: ElmSliderProps) =>
   defineComponent({ setup: () => () => h(ElmSlider, props) });
 
-type Screen = ReturnType<typeof render>;
+type Screen = Awaited<ReturnType<typeof render>>;
 const root = (screen: Screen) => screen.container;
 const sliderEl = (screen: Screen) =>
   root(screen).querySelector('[role="slider"]') as HTMLElement;
 
 describe("[CSR] ElmSlider pointer interaction", () => {
   test("clicking the track sets the value proportionally to the click position", async () => {
-    const screen = render(harness({ min: 0, max: 100, step: 1 }));
+    const screen = await render(harness({ min: 0, max: 100, step: 1 }));
     const el = sliderEl(screen);
     el.style.width = "200px";
 
@@ -42,7 +42,7 @@ describe("[CSR] ElmSlider pointer interaction", () => {
   });
 
   test("dragging past innerMax clamps the value at the inner bound", async () => {
-    const screen = render(
+    const screen = await render(
       harness({ min: 0, max: 100, innerMin: 20, innerMax: 80 }),
     );
     const el = sliderEl(screen);
@@ -61,7 +61,7 @@ describe("[CSR] ElmSlider pointer interaction", () => {
   });
 
   test("vertical orientation increases the value toward the top of the track", async () => {
-    const screen = render(
+    const screen = await render(
       harness({ min: 0, max: 100, orientation: "vertical" }),
     );
     const el = sliderEl(screen);
@@ -84,7 +84,7 @@ describe("[CSR] ElmSlider pointer interaction", () => {
 
 describe("[CSR] ElmSlider — layout & CSS regressions", () => {
   test("vertical: the progress fill renders with non-zero width", async () => {
-    const screen = render(
+    const screen = await render(
       harness({ min: 0, max: 100, orientation: "vertical", defaultValue: 70 }),
     );
     const fill = root(screen).querySelector('[class*="fill"]') as HTMLElement;
@@ -95,7 +95,7 @@ describe("[CSR] ElmSlider — layout & CSS regressions", () => {
   });
 
   test("vertical: the progress fill spans the rail's full cross-axis width", async () => {
-    const screen = render(
+    const screen = await render(
       harness({ min: 0, max: 100, orientation: "vertical", defaultValue: 70 }),
     );
     const fill = root(screen).querySelector('[class*="fill"]') as HTMLElement;
@@ -114,7 +114,7 @@ describe("[CSR] ElmSlider — layout & CSS regressions", () => {
     // Keyboard stepping treats `step` as a granularity via `Math.abs(step)`,
     // so ArrowRight/PageUp move in multiples of 10 even when step is -10.
     // Pointer-driven clicks must snap to the same grid.
-    const screen = render(harness({ min: 0, max: 100, step: -10 }));
+    const screen = await render(harness({ min: 0, max: 100, step: -10 }));
     const el = sliderEl(screen);
     el.style.width = "200px";
 
@@ -137,7 +137,7 @@ describe("[CSR] ElmSlider — layout & CSS regressions", () => {
     // `.marks`/`.mark`/`.mark-label` are all `position: absolute`, so they
     // never contribute to `.track`'s or `.elm-slider`'s box size. The label
     // row must render inside the wrapper's own bottom edge.
-    const screen = render(
+    const screen = await render(
       harness({
         min: 0,
         max: 100,
@@ -165,7 +165,7 @@ describe("[CSR] ElmSlider — layout & CSS regressions", () => {
     // `--elmethis-scoped-max-marker-label-chars`. A range whose marker labels
     // reach 4+ digits (e.g. 25000, 100000) must still render inside the
     // wrapper's own edge instead of spilling past it.
-    const screen = render(
+    const screen = await render(
       harness({
         orientation: "vertical",
         min: 0,
@@ -208,7 +208,7 @@ describe("[CSR] ElmSlider — layout & CSS regressions", () => {
         ]),
     });
 
-    const screen = render(RtlWrapper);
+    const screen = await render(RtlWrapper);
     const wrapper = root(screen).querySelector(
       '[class*="elm-slider"]',
     ) as HTMLElement;
@@ -229,7 +229,7 @@ describe("[CSR] ElmSlider — layout & CSS regressions", () => {
     // untransformed box (via `bottom: 100%`) sits one row-height above the
     // track's top edge, so it needs a `+100%` Y-translate to bring it down
     // flush with the top edge.
-    const screen = render(
+    const screen = await render(
       harness({
         orientation: "vertical",
         min: 0,

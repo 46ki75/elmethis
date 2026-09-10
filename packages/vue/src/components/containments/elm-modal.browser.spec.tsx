@@ -36,7 +36,7 @@ const Harness = defineComponent({
 
 describe("[browser] ElmModal open lifecycle", () => {
   test("showModal() runs on open and renders content", async () => {
-    const screen = render(Harness);
+    const screen = await render(Harness);
 
     await screen.getByTestId("open").click();
 
@@ -50,7 +50,7 @@ describe("[browser] ElmModal open lifecycle", () => {
   });
 
   test("backdrop click fires onClose", async () => {
-    const screen = render(Harness);
+    const screen = await render(Harness);
 
     await screen.getByTestId("open").click();
     const dialog = document.querySelector("dialog")!;

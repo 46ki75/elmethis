@@ -4,10 +4,10 @@ import { describe, expect, it } from "vitest";
 import { ElmParallax } from "./elm-parallax";
 
 describe("[Browser] ElmParallax", () => {
-  it("contains negative layers above the document canvas", () => {
+  it("contains negative layers above the document canvas", async () => {
     const image =
       "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3C/svg%3E";
-    const screen = render(ElmParallax, { props: { images: [image] } });
+    const screen = await render(ElmParallax, { props: { images: [image] } });
     const root = screen.container.firstElementChild as HTMLElement;
     const layer = root.lastElementChild as HTMLElement;
 

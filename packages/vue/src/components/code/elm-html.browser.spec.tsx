@@ -23,7 +23,7 @@ const GROWING_HTML = `<style>
 
 describe("[CSR] ElmHtml — autoHeight measurement", () => {
   test("measures and applies the content height by default", async () => {
-    const screen = render(ElmHtml, { props: { html: TALL_HTML } });
+    const screen = await render(ElmHtml, { props: { html: TALL_HTML } });
     const iframe = screen.container.querySelector("iframe")!;
 
     await vi.waitFor(
@@ -39,7 +39,7 @@ describe("[CSR] ElmHtml — autoHeight measurement", () => {
   // the parent: `allow-same-origin` should still be force-added so the
   // height keeps getting measured.
   test("still measures the content height when a caller's sandbox override doesn't request scripts", async () => {
-    const screen = render(ElmHtml, {
+    const screen = await render(ElmHtml, {
       props: { html: TALL_HTML, sandbox: "allow-forms" },
     });
     const iframe = screen.container.querySelector("iframe")!;
@@ -57,7 +57,7 @@ describe("[CSR] ElmHtml — autoHeight measurement", () => {
   // autoHeight must never force allow-same-origin onto a sandbox that also
   // allows scripts — even though that means autoHeight can't measure there.
   test("never adds allow-same-origin when the caller's sandbox override allows scripts", async () => {
-    const screen = render(ElmHtml, {
+    const screen = await render(ElmHtml, {
       props: { html: TALL_HTML, sandbox: "allow-scripts" },
     });
     const iframe = screen.container.querySelector("iframe")!;
@@ -87,7 +87,7 @@ describe("[CSR] ElmHtml — autoHeight measurement with allowScripts", () => {
   // stays stuck at the browser's ~150px iframe default no matter how tall
   // the real content is.
   test("measures the content height even when allowScripts is on (contentDocument is opaque)", async () => {
-    const screen = render(ElmHtml, {
+    const screen = await render(ElmHtml, {
       props: { html: SCRIPT_BUILT_HTML, allowScripts: true },
     });
     const iframe = screen.container.querySelector("iframe")!;
@@ -108,7 +108,7 @@ describe("[CSR] ElmHtml — ResizeObserver keeps tracking real content", () => {
   // on a premature or stale measurement, so later height growth keeps being
   // observed.
   test("keeps measuring height changes when autoHeight is toggled off and back on across an html change", async () => {
-    const screen = render(ElmHtml, {
+    const screen = await render(ElmHtml, {
       props: { autoHeight: false, html: "<p>a</p>" },
     });
 
@@ -157,7 +157,7 @@ describe("[CSR] ElmHtml — toggling autoHeight with unchanged html", () => {
     globalThis.ResizeObserver = TrackingResizeObserver;
 
     try {
-      const screen = render(ElmHtml, {
+      const screen = await render(ElmHtml, {
         props: { html: TALL_HTML, autoHeight: true },
       });
       const getIframe = () => screen.container.querySelector("iframe")!;
@@ -228,7 +228,7 @@ describe("[CSR] ElmHtml — ResizeObserver on in-frame re-navigation", () => {
     globalThis.ResizeObserver = TrackingResizeObserver;
 
     try {
-      const screen = render(ElmHtml, { props: { html: TALL_HTML } });
+      const screen = await render(ElmHtml, { props: { html: TALL_HTML } });
       const iframe = screen.container.querySelector("iframe")!;
 
       await vi.waitFor(
@@ -269,7 +269,7 @@ describe("[CSR] ElmHtml — remote src", () => {
     "data:text/html,<div style=%22height:900px%22></div>";
 
   test("navigates the iframe without crashing and never measures a height", async () => {
-    const screen = render(ElmHtml, {
+    const screen = await render(ElmHtml, {
       props: { src: OPAQUE_ORIGIN_SRC, autoHeight: true, height: 200 },
     });
     const iframe = screen.container.querySelector("iframe")!;
@@ -299,7 +299,7 @@ describe("[CSR] ElmHtml — remote src", () => {
         }),
       );
       try {
-        const screen = render(ElmHtml, { props: { src: blobUrl } });
+        const screen = await render(ElmHtml, { props: { src: blobUrl } });
         const iframe = screen.container.querySelector("iframe")!;
 
         await vi.waitFor(
@@ -329,7 +329,7 @@ describe("[CSR] ElmHtml — layout defaults", () => {
         );
       },
     });
-    const screen = render(Harness);
+    const screen = await render(Harness);
     const iframe = screen.container.querySelector("iframe")!;
 
     await vi.waitFor(() => {
@@ -338,7 +338,7 @@ describe("[CSR] ElmHtml — layout defaults", () => {
   });
 
   test("renders as a block-level box, not inline", async () => {
-    const screen = render(ElmHtml, {
+    const screen = await render(ElmHtml, {
       props: { html: "<p>x</p>", autoHeight: false, height: 100 },
     });
     const iframe = screen.container.querySelector("iframe")!;
