@@ -12,7 +12,9 @@ const SIMPLE_HTML = "<p>hello from ElmHtmlViewer</p>";
 
 describe("[CSR] ElmHtmlViewer — rendering", () => {
   test("renders the download and open-in-new-tab buttons", async () => {
-    const screen = render(ElmHtmlViewer, { props: { html: SIMPLE_HTML } });
+    const screen = await render(ElmHtmlViewer, {
+      props: { html: SIMPLE_HTML },
+    });
 
     await expect
       .element(screen.getByRole("button", { name: "Download" }))
@@ -23,7 +25,9 @@ describe("[CSR] ElmHtmlViewer — rendering", () => {
   });
 
   test("renders html inside the wrapped ElmHtml's iframe", async () => {
-    const screen = render(ElmHtmlViewer, { props: { html: SIMPLE_HTML } });
+    const screen = await render(ElmHtmlViewer, {
+      props: { html: SIMPLE_HTML },
+    });
     const iframe = screen.container.querySelector("iframe")!;
 
     await vi.waitFor(() => {
@@ -34,7 +38,7 @@ describe("[CSR] ElmHtmlViewer — rendering", () => {
   });
 
   test("forwards sandbox and autoHeight to the inner ElmHtml", async () => {
-    const screen = render(ElmHtmlViewer, {
+    const screen = await render(ElmHtmlViewer, {
       props: { html: SIMPLE_HTML, sandbox: "allow-forms", autoHeight: false },
     });
     const iframe = screen.container.querySelector("iframe")!;
@@ -43,7 +47,7 @@ describe("[CSR] ElmHtmlViewer — rendering", () => {
   });
 
   test("forwards allowScripts to the inner ElmHtml", async () => {
-    const screen = render(ElmHtmlViewer, {
+    const screen = await render(ElmHtmlViewer, {
       props: { html: SIMPLE_HTML, allowScripts: true },
     });
     const iframe = screen.container.querySelector("iframe")!;
@@ -54,7 +58,7 @@ describe("[CSR] ElmHtmlViewer — rendering", () => {
   });
 
   test("renders src content inside the wrapped ElmHtml's iframe instead of html", async () => {
-    const screen = render(ElmHtmlViewer, {
+    const screen = await render(ElmHtmlViewer, {
       props: { src: "https://example.com/doc.html" },
     });
     const iframe = screen.container.querySelector("iframe")!;
@@ -85,7 +89,9 @@ describe("[CSR] ElmHtmlViewer — open in new tab", () => {
   });
 
   test("opens a blob: url in a new tab without noopener", async () => {
-    const screen = render(ElmHtmlViewer, { props: { html: SIMPLE_HTML } });
+    const screen = await render(ElmHtmlViewer, {
+      props: { html: SIMPLE_HTML },
+    });
 
     await screen.getByRole("button", { name: "Open in new tab" }).click();
 
@@ -105,7 +111,9 @@ describe("[CSR] ElmHtmlViewer — open in new tab", () => {
     // fallback-revoke test below), so the Blob passed to createObjectURL is
     // read directly instead of re-fetching the URL afterward.
     const createObjectURLSpy = vi.spyOn(URL, "createObjectURL");
-    const screen = render(ElmHtmlViewer, { props: { html: SIMPLE_HTML } });
+    const screen = await render(ElmHtmlViewer, {
+      props: { html: SIMPLE_HTML },
+    });
 
     await screen.getByRole("button", { name: "Open in new tab" }).click();
 
@@ -135,7 +143,7 @@ describe("[CSR] ElmHtmlViewer — open in new tab", () => {
   test("keeps a </script>-containing html confined to the wrapper's own script instead of breaking out of it", async () => {
     const html = "<script>window.__pwned = true;</script><p>escaped-marker</p>";
     const createObjectURLSpy = vi.spyOn(URL, "createObjectURL");
-    const screen = render(ElmHtmlViewer, { props: { html } });
+    const screen = await render(ElmHtmlViewer, { props: { html } });
 
     await screen.getByRole("button", { name: "Open in new tab" }).click();
 
@@ -158,7 +166,9 @@ describe("[CSR] ElmHtmlViewer — open in new tab", () => {
 
   test("labels the popup document and its wrapper iframe for accessibility", async () => {
     const createObjectURLSpy = vi.spyOn(URL, "createObjectURL");
-    const screen = render(ElmHtmlViewer, { props: { html: SIMPLE_HTML } });
+    const screen = await render(ElmHtmlViewer, {
+      props: { html: SIMPLE_HTML },
+    });
 
     await screen.getByRole("button", { name: "Open in new tab" }).click();
 
@@ -184,7 +194,9 @@ describe("[CSR] ElmHtmlViewer — open in new tab", () => {
 
   test("revokes the object URL when window.open doesn't return a popup (e.g. blocked)", async () => {
     const revokeSpy = vi.spyOn(URL, "revokeObjectURL");
-    const screen = render(ElmHtmlViewer, { props: { html: SIMPLE_HTML } });
+    const screen = await render(ElmHtmlViewer, {
+      props: { html: SIMPLE_HTML },
+    });
 
     try {
       await screen.getByRole("button", { name: "Open in new tab" }).click();
@@ -196,7 +208,7 @@ describe("[CSR] ElmHtmlViewer — open in new tab", () => {
 
   test("src mode: navigates straight to the URL, no blob-wrapping", async () => {
     const createObjectURLSpy = vi.spyOn(URL, "createObjectURL");
-    const screen = render(ElmHtmlViewer, {
+    const screen = await render(ElmHtmlViewer, {
       props: { src: "https://example.com/doc.html" },
     });
 
@@ -240,7 +252,9 @@ describe("[CSR] ElmHtmlViewer — download", () => {
   });
 
   test("downloads with the default filename, via an anchor attached to the document", async () => {
-    const screen = render(ElmHtmlViewer, { props: { html: SIMPLE_HTML } });
+    const screen = await render(ElmHtmlViewer, {
+      props: { html: SIMPLE_HTML },
+    });
 
     await screen.getByRole("button", { name: "Download" }).click();
 
@@ -253,7 +267,7 @@ describe("[CSR] ElmHtmlViewer — download", () => {
   });
 
   test("falls back to the default filename when filename is an empty string", async () => {
-    const screen = render(ElmHtmlViewer, {
+    const screen = await render(ElmHtmlViewer, {
       props: { html: SIMPLE_HTML, filename: "" },
     });
 
@@ -263,7 +277,7 @@ describe("[CSR] ElmHtmlViewer — download", () => {
   });
 
   test("uses a caller-supplied filename", async () => {
-    const screen = render(ElmHtmlViewer, {
+    const screen = await render(ElmHtmlViewer, {
       props: { html: SIMPLE_HTML, filename: "report.html" },
     });
 
@@ -273,7 +287,9 @@ describe("[CSR] ElmHtmlViewer — download", () => {
   });
 
   test("removes the anchor from the document and revokes the object URL after clicking", async () => {
-    const screen = render(ElmHtmlViewer, { props: { html: SIMPLE_HTML } });
+    const screen = await render(ElmHtmlViewer, {
+      props: { html: SIMPLE_HTML },
+    });
     const revokeSpy = vi.spyOn(URL, "revokeObjectURL");
 
     await screen.getByRole("button", { name: "Download" }).click();
@@ -284,7 +300,7 @@ describe("[CSR] ElmHtmlViewer — download", () => {
 
   test("src mode: points the anchor directly at the URL, no blob", async () => {
     const createObjectURLSpy = vi.spyOn(URL, "createObjectURL");
-    const screen = render(ElmHtmlViewer, {
+    const screen = await render(ElmHtmlViewer, {
       props: { src: "https://example.com/doc.html" },
     });
 

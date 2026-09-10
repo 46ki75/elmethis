@@ -39,7 +39,7 @@ const selectedText = () =>
 
 describe("[browser] ElmSelect option selection", () => {
   test("clicking an option resolves its handler and updates the binding", async () => {
-    const screen = render(Harness);
+    const screen = await render(Harness);
 
     await screen.getByText("Pick").click();
     await screen.getByText("Banana").click();
@@ -51,7 +51,7 @@ describe("[browser] ElmSelect option selection", () => {
   });
 
   test("selecting an option closes the dropdown", async () => {
-    const screen = render(Harness);
+    const screen = await render(Harness);
 
     await screen.getByText("Pick").click();
     await vi.waitFor(() => expect(isActive()).toBe(true));

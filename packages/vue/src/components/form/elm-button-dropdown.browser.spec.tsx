@@ -37,7 +37,7 @@ const mainButtonText = () =>
 
 describe("[browser] ElmButtonDropdown selection", () => {
   test("the caret opens the menu and an item click updates the binding + display", async () => {
-    const screen = render(Harness);
+    const screen = await render(Harness);
 
     await screen.getByRole("button", { name: "Toggle dropdown" }).click();
     await screen.getByText("Remove").click();

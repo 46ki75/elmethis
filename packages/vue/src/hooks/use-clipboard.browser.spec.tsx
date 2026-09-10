@@ -33,7 +33,7 @@ const copiedIcon = () =>
 
 describe("[browser] useClipboard", () => {
   test("writes the content to the real clipboard", async () => {
-    const screen = render(Harness);
+    const screen = await render(Harness);
 
     await screen.getByTestId("copy").click();
 
@@ -43,7 +43,7 @@ describe("[browser] useClipboard", () => {
   });
 
   test("shows the copied icon then resets it after the delay", async () => {
-    const screen = render(Harness);
+    const screen = await render(Harness);
     expect(copiedIcon()).toBeNull();
 
     await screen.getByTestId("copy").click();

@@ -29,7 +29,7 @@ const Harness = defineComponent({
 
 describe("[browser] useModal native dialog lifecycle", () => {
   test("show() calls showModal() — dialog opens, content visible", async () => {
-    const screen = render(Harness);
+    const screen = await render(Harness);
     const dialog = document.querySelector("dialog")!;
 
     await screen.getByTestId("show").click();
@@ -40,7 +40,7 @@ describe("[browser] useModal native dialog lifecycle", () => {
   });
 
   test("hide() closes the dialog after the fade delay", async () => {
-    const screen = render(Harness);
+    const screen = await render(Harness);
     const dialog = document.querySelector("dialog")!;
 
     await screen.getByTestId("show").click();

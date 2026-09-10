@@ -18,14 +18,14 @@ const Harness = defineComponent({
   },
 });
 
-type Screen = ReturnType<typeof render>;
+type Screen = Awaited<ReturnType<typeof render>>;
 const root = (screen: Screen) => screen.container;
 const dialogEl = (screen: Screen) => root(screen).querySelector("dialog")!;
 const containerEl = (screen: Screen) =>
   root(screen).querySelector('[class*="image-container"]') as HTMLElement;
 describe("[browser] ElmBlockImage lightbox lifecycle", () => {
   test("dialog mounts closed and out of the top layer", async () => {
-    const screen = render(Harness);
+    const screen = await render(Harness);
 
     const dialog = dialogEl(screen);
     expect(dialog).toBeTruthy();
@@ -35,7 +35,7 @@ describe("[browser] ElmBlockImage lightbox lifecycle", () => {
   // The click target is the `image-container` div (it carries `onClick`), not
   // the 1x1 image itself — a tiny img fails actionability checks.
   test("clicking the loaded image opens the lightbox with an enlarged image, and clicking it closes again", async () => {
-    const screen = render(Harness);
+    const screen = await render(Harness);
     const dialog = dialogEl(screen);
 
     containerEl(screen).click();

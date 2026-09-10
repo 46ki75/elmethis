@@ -11,7 +11,7 @@ import { ElmToggle } from "./elm-toggle";
 
 describe("[browser] uncontrolled toggle", () => {
   test("clicking the summary flips the open modifier", async () => {
-    render(
+    await render(
       defineComponent({
         setup() {
           return () =>
@@ -59,7 +59,7 @@ describe("[browser] controlled toggle", () => {
   });
 
   test("clicking writes back to the parent-owned value", async () => {
-    render(Controlled);
+    await render(Controlled);
 
     await expect.element(page.getByTestId("state")).toHaveTextContent("false");
 
