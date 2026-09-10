@@ -27,9 +27,9 @@ describe("[Browser] ElmTextArea", () => {
     const area = screen.getByTestId("area");
 
     await expect.element(area).toHaveValue("seed");
-    expect(rendered.container).toHaveTextContent("4 / 30");
+    expect(rendered.container).toMatchTextContent("4 / 30");
     await area.fill("hello browser");
-    expect(rendered.container).toHaveTextContent("13 / 30");
+    expect(rendered.container).toMatchTextContent("13 / 30");
     await expect
       .element(screen.getByTestId("committed"))
       .toHaveTextContent("none");
