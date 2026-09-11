@@ -82,7 +82,7 @@
   "devDependencies": {
     "@babel/core": "^7.29.7",
     "@eslint/js": "latest",
-    "@rolldown/plugin-babel": "^0.2.3",
+    "@rolldown/plugin-babel": "^0.2.4",
     "@storybook/addon-docs": "^10.6.0",
     "@storybook/react-vite": "^10.6.0",
     "@testing-library/jest-dom": "^7.0.1",
