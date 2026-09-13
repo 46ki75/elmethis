@@ -46,7 +46,7 @@ function diffBackground(name: PaletteColor) {
 }
 
 export function getOpenCodeTheme() {
-  const background = color("base00");
+  const background = "none";
   const panel = color("base01");
   const element = color("bgBrightest");
   const text = color("base05");
