@@ -1,12 +1,42 @@
 # Ikuma Theme
 
-Ikuma Theme provides dark and light themes for VS Code, OpenCode, Shiki,
+Ikuma Theme provides dark and light themes for VS Code, Neovim, OpenCode, Shiki,
 Windows Terminal, and Ghostty.
 
 ## VS Code
 
 Install the `46ki75.ikuma-theme` extension from the VS Code Marketplace, then
 select either **Ikuma Theme Dark** or **Ikuma Theme Light**.
+
+## Neovim
+
+From the repository root, generate the themes and copy the standalone Lua
+colorscheme into your Neovim configuration:
+
+```sh
+pnpm --filter ikuma-theme run build:theme
+mkdir -p ~/.config/nvim/colors
+cp packages/ikuma-theme/dist/neovim/colors/ikuma.lua ~/.config/nvim/colors/ikuma.lua
+```
+
+If your configuration lives elsewhere, use the directory reported by
+`:lua print(vim.fn.stdpath("config"))` instead of `~/.config/nvim`.
+
+Add this to `init.lua`:
+
+```lua
+vim.opt.termguicolors = true
+vim.opt.background = "dark" -- or "light"
+vim.cmd.colorscheme("ikuma")
+```
+
+The colorscheme includes editor UI, standard syntax highlighting, Tree-sitter
+captures, LSP semantic tokens, diagnostics, diffs, and terminal colors. Changing
+`:set background=light` or `:set background=dark` automatically reloads the
+matching palette. Terminal colors apply to newly opened terminal buffers.
+
+After changing the shared palette, regenerate and copy the file again, then run
+`:colorscheme ikuma` to reload it.
 
 ## Shiki
 
@@ -44,7 +74,7 @@ Reload the Ghostty configuration after changing the theme.
 
 ## Development
 
-`pnpm --filter ikuma-theme run build` generates the VS Code theme, OpenCode
-theme, Shiki package, Windows Terminal scheme, Ghostty themes, and VSIX. Edit
-`scripts/colors.ts` to change the shared palette and semantic color
-assignments.
+`pnpm --filter ikuma-theme run build` generates the VS Code theme, Neovim
+colorscheme, OpenCode theme, Shiki package, Windows Terminal scheme, Ghostty
+themes, and VSIX. Edit `scripts/colors.ts` to change the shared palette and
+semantic color assignments.
