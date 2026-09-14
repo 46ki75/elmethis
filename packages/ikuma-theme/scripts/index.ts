@@ -2,6 +2,7 @@ import { writeFile, mkdir } from "node:fs/promises";
 import { dirname } from "node:path";
 import { format, resolveConfig } from "prettier";
 import { buildGhostty, buildWindowsTerminal, createTheme } from "./helper.ts";
+import { getNeovimTheme } from "./neovim.ts";
 import { getOpenCodeTheme } from "./opencode.ts";
 import { getTheme, type GetThemeOptions } from "./theme.ts";
 
@@ -55,4 +56,7 @@ await Promise.all([
 
   // OpenCode TUI theme
   writeJson("dist/opencode-theme/ikuma.json", getOpenCodeTheme()),
+
+  // Neovim: one standalone colorscheme selected by the 'background' option
+  writeText("dist/neovim/colors/ikuma.lua", getNeovimTheme()),
 ]);
