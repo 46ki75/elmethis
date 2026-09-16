@@ -32,7 +32,8 @@ const SHIM = "react-compiler-runtime";
 
 const bundles = ["lib/index.react.mjs", "lib/index.react.cjs"] as const;
 
-const escapeRe = (s: string): string => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const escapeRe = (s: string): string =>
+  s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 // The runtime export is the memo-cache hook `c`, but the bundler renames or
 // namespaces it, so we can't grep a fixed token. Both shapes we emit are:

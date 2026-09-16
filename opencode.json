@@ -3,10 +3,7 @@
   "mcp": {
     "playwright": {
       "type": "local",
-      "command": [
-        "pnpx",
-        "@playwright/mcp@latest"
-      ],
+      "command": ["pnpx", "@playwright/mcp@latest"],
       "enabled": true
     }
   },

@@ -1,3 +1,5 @@
+lefthook: mise exec -- pnpm exec lefthook
+
 output:
   - failure
   - summary
@@ -6,11 +8,10 @@ pre-commit:
   parallel: true
   jobs:
     - name: check
-      run: pnpm run --recursive check
-    - name: configs
-      run: pnpm run check.configs
+      run: mise run check
 
 fmt:
+  files: git ls-files
   parallel: true
   jobs:
     # prettier runs once from the repo root: unlike eslint/stylelint/vitest it
@@ -19,6 +20,13 @@ fmt:
     # default, and also covers non-package files (root configs, docs, .claude/).
     - name: prettier
       run: pnpm exec prettier --write {files}
+      glob: "*.{js,ts,jsx,tsx,json}"
+
+fmt-check:
+  files: git ls-files
+  jobs:
+    - name: prettier
+      run: pnpm exec prettier --check {files}
       glob: "*.{js,ts,jsx,tsx,json}"
 
 check:

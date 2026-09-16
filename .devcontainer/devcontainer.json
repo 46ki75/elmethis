@@ -1,5 +1,6 @@
 {
   "name": "elmethis",
+  "remoteUser": "vscode",
   "build": {
     "dockerfile": "Dockerfile"
   },
@@ -30,15 +31,7 @@
   },
   "features": {
     "ghcr.io/devcontainers-extra/features/starship": {},
-    "ghcr.io/devcontainers/features/github-cli": {},
-    // Node.js
-    "ghcr.io/devcontainers/features/node": {
-      "version": 24
-    },
-    // Rust
-    "ghcr.io/devcontainers/features/rust": {},
-    // Terraform
-    "ghcr.io/devcontainers/features/terraform": {}
+    "ghcr.io/devcontainers/features/github-cli": {}
   },
-  "postCreateCommand": "echo 'eval \"$(starship init bash)\"' >> ~/.bashrc"
+  "postCreateCommand": "mise trust mise.toml && mise install node pnpm && mise run setup && echo 'eval \"$(starship init bash)\"' >> ~/.bashrc"
 }

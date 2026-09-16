@@ -1,5 +1,9 @@
 notes/
 tmp/
+mise.local.toml
+mise.local.lock
+.mise/locks/mise.local/
+pages-site/
 
 # Logs
 logs

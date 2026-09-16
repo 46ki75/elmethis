@@ -26,9 +26,13 @@ Rust MCP server — no code yet.
 
 ## Commands
 
-Package manager is **pnpm** (`pnpm@9.12.3`); Node 22. Run scripts per-package with `--filter`, or
-`cd` into the package. **Build `@elmethis/core` before draw.io/react/solid/vue** — they import its
-built output and emitted `tokens.css`.
+Use root **mise** tasks; read the setup instructions in `README.md` first.
+Exact Node and pnpm pins come from `mise.toml` and `package.json`, respectively.
+Run `mise tasks ls` for the full catalog. For example, `mise run solid:dev`,
+`mise run solid:check`, `mise run solid:ci`, and `mise run test` automatically
+build core and the AG-UI stub where required. `mise run check` is the workspace
+gate. The underlying pnpm package commands below are also available through
+`mise exec -- pnpm ...`.
 
 | Command                                          | Description                                                             |
 | ------------------------------------------------ | ----------------------------------------------------------------------- |
@@ -51,8 +55,9 @@ Run a single test (from inside the package, or via `--filter @elmethis/<pkg> exe
 - When fixing a bug, first write a test that reproduces it and confirm the test fails before changing
   the implementation.
 
-Git hooks run via **lefthook** (`lefthook.yml`): `fmt` runs prettier once at the repo root; `check`
-runs eslint / stylelint / vitest-related per package.
+Git hooks run via **lefthook** in the mise environment (`lefthook.yml`).
+`mise run fmt` and `mise run fmt-check` select the same tracked files, or accept
+repeated `--file` arguments. Pre-commit invokes `mise run check`.
 
 ## Architecture
 

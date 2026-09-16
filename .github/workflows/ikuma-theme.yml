@@ -10,9 +10,6 @@ on:
 permissions:
   contents: read
 
-env:
-  NODE_VERSION: 22.x
-
 jobs:
   check:
     name: Check (ikuma-theme)
@@ -23,19 +20,13 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Use Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v4
+      - uses: jdx/mise-action@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          registry-url: "https://registry.npmjs.org"
-          cache: "pnpm"
+          version: "2026.9.9"
+          install_args: "node pnpm"
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: mise run setup
 
       - name: Check
-        run: pnpm run check.ci
-        working-directory: packages/ikuma-theme
+        run: mise run ikuma-theme:ci

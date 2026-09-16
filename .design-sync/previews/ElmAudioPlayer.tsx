@@ -28,7 +28,12 @@ export const FilenameFallback = () => (
 );
 
 export const BigSeekStep = () => (
-  <ElmAudioPlayer src={tts} title="Podcast Episode 12" artist="Skips 30s" seekStep={30} />
+  <ElmAudioPlayer
+    src={tts}
+    title="Podcast Episode 12"
+    artist="Skips 30s"
+    seekStep={30}
+  />
 );
 
 // Intentionally-broken source to show the load-error state, using a local

@@ -13,18 +13,38 @@ implementations.
 | `@elmethis/solid`   | SolidJS components and reactive primitives                     |
 | `@elmethis/vue`     | Vue 3 components authored in TSX                               |
 
-Build core before packages that consume it. The build emits its compiled modules,
-`tokens.css`, catalogs, and generated design guides:
+## Setup and tasks
+
+Install [mise](https://mise.jdx.dev/installing-mise.html) 2026.9.9 or newer, then:
 
 ```sh
-pnpm install
-pnpm --filter @elmethis/core run build
-pnpm --filter @elmethis/draw.io run build
-pnpm --filter @elmethis/solid run check.ci
+mise trust mise.toml
+mise install node pnpm
+mise run setup
+mise run drawio:build
+mise run solid:browser:install
+mise run solid:ci
 ```
 
+`mise.toml` pins Node exactly; `package.json#packageManager` pins pnpm exactly.
+Commit `mise.lock` and its `.mise/locks/` sidecars when updating tools. The lock
+covers macOS arm64 and Linux x64/arm64. CI and devcontainers use these same pins.
+
+Run `mise tasks ls` to discover commands. `mise run check` runs the workspace
+checks; `mise run test` runs unit/SSR tests. Browser tests and their explicit
+installation are separate tasks. `mise run pages:build` assembles the Pages site.
+Component tasks build core and the AG-UI stub first when required.
+
+`mise run fmt` and `mise run fmt-check` use the same tracked JS/TS/JSON scope;
+pass repeated `--file <repo-relative-path>` arguments for a selection. Package
+checks also apply their existing package-specific formatting policies.
+Tasks work from the root or a subdirectory without shell activation. Make mise
+available on PATH for editor and Git hooks too.
+
 See `AGENTS.md` for repository commands and architecture, and `TESTING.md` for
-the CSR, SSR, and browser test layers.
+the CSR, SSR, and browser test layers. The shared
+[mise standard](https://github.com/46ki75/engineering-standard/blob/main/skills/engineering-standard/references/mise/README.md)
+describes tool ownership and task conventions.
 
 ## Development Ports
 
