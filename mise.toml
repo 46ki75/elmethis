@@ -1,0 +1,289 @@
+min_version = "2026.9.9"
+
+[tools]
+node = "22.23.2"
+
+[tool_config]
+locked = true
+
+[task_config]
+shell = "bash -euo pipefail -c"
+
+[settings]
+idiomatic_version_file_enable_tools = ["pnpm"]
+# Keep package.json's pnpm pin ahead of an alternate global npm:pnpm install.
+disable_tools = ["npm:pnpm", "rust"]
+auto_install = false
+lockfile_platforms = ["macos-arm64", "linux-x64", "linux-arm64"]
+
+[tasks.setup]
+description = "Install locked workspace dependencies and Git hooks"
+run = ["pnpm install --frozen-lockfile", "pnpm exec lefthook install"]
+
+[tasks.fmt]
+description = "Format tracked files; accepts repeated --file arguments"
+raw_args = true
+run = "pnpm exec lefthook run fmt --no-auto-install"
+
+[tasks.fmt-check]
+description = "Check the same file scope as fmt"
+raw_args = true
+run = "pnpm exec lefthook run fmt-check --no-auto-install"
+
+[tasks.lint]
+description = "Lint every package and shared ESLint configuration"
+depends = ["core:build"]
+run = ["pnpm --recursive run lint", "pnpm --recursive --if-present run lint.css", "pnpm run lint.configs"]
+
+[tasks.check]
+description = "Check formatting, lint, and types across the workspace"
+depends = ["fmt-check --all-files", "configs:check", "core:check", "ag-ui-stub:check", "drawio:check", "ikuma-theme:check", "react:check", "solid:check", "vue:check", "copilotkit:check"]
+
+[tasks.build]
+description = "Build all workspace packages in dependency order"
+depends = ["drawio:build", "ikuma-theme:build", "react:build", "solid:build", "vue:build", "copilotkit:build"]
+
+[tasks.test]
+description = "Run unit and SSR tests (browser tests have separate tasks)"
+depends = ["core:test", "ag-ui-stub:test", "react:test", "solid:test", "vue:test"]
+
+[tasks."configs:check"]
+description = "Check shared TypeScript and ESLint configuration"
+run = "pnpm run check.configs"
+
+[tasks."core:build"]
+description = "Build core modules, tokens, designs, and catalogs"
+dir = "packages/core"
+run = "pnpm run build"
+
+[tasks."core:check"]
+description = "Check core formatting, lint, and types"
+dir = "packages/core"
+run = "pnpm run check"
+
+[tasks."core:ci"]
+description = "Run the core CI gate including coverage"
+dir = "packages/core"
+depends = ["configs:check"]
+run = "pnpm run check.ci"
+
+[tasks."core:test"]
+description = "Run core unit tests"
+dir = "packages/core"
+run = "pnpm run test.unit"
+
+[tasks."ag-ui-stub:build"]
+description = "Build the in-process AG-UI test agent"
+dir = "packages/ag-ui-stub"
+run = "pnpm run build"
+
+[tasks."ag-ui-stub:check"]
+description = "Check the AG-UI test agent"
+dir = "packages/ag-ui-stub"
+run = "pnpm run check"
+
+[tasks."ag-ui-stub:ci"]
+description = "Run the AG-UI test agent CI gate"
+dir = "packages/ag-ui-stub"
+run = "pnpm run check.ci"
+
+[tasks."ag-ui-stub:test"]
+description = "Run AG-UI test agent unit tests"
+dir = "packages/ag-ui-stub"
+run = "pnpm run test.unit"
+
+[tasks."drawio:build"]
+description = "Generate the diagrams.net configuration"
+dir = "packages/drawio"
+depends = ["core:build"]
+run = "pnpm run build"
+
+[tasks."drawio:check"]
+description = "Check and build the diagrams.net configuration"
+alias = "drawio:ci"
+dir = "packages/drawio"
+depends = ["core:build"]
+run = "pnpm run check"
+
+[tasks."ikuma-theme:build"]
+description = "Build VS Code, Shiki, Windows Terminal, and VSIX artifacts"
+dir = "packages/ikuma-theme"
+run = "pnpm run build"
+
+[tasks."ikuma-theme:check"]
+description = "Check and build all theme artifacts"
+alias = "ikuma-theme:ci"
+dir = "packages/ikuma-theme"
+run = "pnpm run check"
+
+[tasks."react:build"]
+description = "Build the React library"
+dir = "packages/react"
+depends = ["core:build"]
+run = "pnpm run build"
+
+[tasks."react:dev"]
+description = "Start the React Storybook on port 19221"
+dir = "packages/react"
+depends = ["core:build"]
+run = "pnpm run dev"
+
+[tasks."react:check"]
+description = "Check the React library"
+dir = "packages/react"
+depends = ["core:build"]
+run = "pnpm run check"
+
+[tasks."react:ci"]
+description = "Run React builds, checks, and unit/browser coverage"
+dir = "packages/react"
+depends = ["core:build"]
+run = "pnpm run check.ci"
+
+[tasks."react:test"]
+description = "Run React unit tests"
+dir = "packages/react"
+depends = ["core:build"]
+run = "pnpm run test.unit"
+
+[tasks."react:test:browser"]
+description = "Run React Chromium tests"
+dir = "packages/react"
+depends = ["core:build"]
+run = "pnpm run test.browser"
+
+[tasks."react:browser:install"]
+description = "Provision Chromium; accepts --with-deps for CI"
+dir = "packages/react"
+raw_args = true
+run = "pnpm exec playwright install chromium"
+
+[tasks."react:storybook:build"]
+description = "Build the React Storybook"
+dir = "packages/react"
+depends = ["core:build"]
+run = "pnpm run build-storybook"
+
+[tasks."solid:build"]
+description = "Build the Solid library"
+dir = "packages/solid"
+depends = ["core:build", "ag-ui-stub:build"]
+run = "pnpm run build"
+
+[tasks."solid:dev"]
+description = "Start the Solid Storybook on port 19241"
+dir = "packages/solid"
+depends = ["core:build", "ag-ui-stub:build"]
+run = "pnpm run dev"
+
+[tasks."solid:check"]
+description = "Check the Solid library"
+dir = "packages/solid"
+depends = ["core:build", "ag-ui-stub:build"]
+run = "pnpm run check"
+
+[tasks."solid:ci"]
+description = "Run Solid builds, checks, and unit/browser coverage"
+dir = "packages/solid"
+depends = ["core:build", "ag-ui-stub:build"]
+run = "pnpm run check.ci"
+
+[tasks."solid:test"]
+description = "Run Solid unit and SSR tests"
+dir = "packages/solid"
+depends = ["core:build", "ag-ui-stub:build"]
+run = "pnpm run test.unit"
+
+[tasks."solid:test:browser"]
+description = "Run Solid Chromium tests"
+dir = "packages/solid"
+depends = ["core:build", "ag-ui-stub:build"]
+run = "pnpm run test.browser"
+
+[tasks."solid:browser:install"]
+description = "Provision Chromium; accepts --with-deps for CI"
+dir = "packages/solid"
+raw_args = true
+run = "pnpm exec playwright install chromium"
+
+[tasks."solid:storybook:build"]
+description = "Build the Solid Storybook"
+dir = "packages/solid"
+depends = ["core:build", "ag-ui-stub:build"]
+run = "pnpm run build-storybook"
+
+[tasks."vue:build"]
+description = "Build the Vue library"
+dir = "packages/vue"
+depends = ["core:build"]
+run = "pnpm run build"
+
+[tasks."vue:dev"]
+description = "Start the Vue Storybook on port 19231"
+dir = "packages/vue"
+depends = ["core:build"]
+run = "pnpm run dev"
+
+[tasks."vue:check"]
+description = "Check the Vue library"
+dir = "packages/vue"
+depends = ["core:build"]
+run = "pnpm run check"
+
+[tasks."vue:ci"]
+description = "Run Vue builds, checks, and unit/browser coverage"
+dir = "packages/vue"
+depends = ["core:build"]
+run = "pnpm run check.ci"
+
+[tasks."vue:test"]
+description = "Run Vue unit tests"
+dir = "packages/vue"
+depends = ["core:build"]
+run = "pnpm run test.unit"
+
+[tasks."vue:test:browser"]
+description = "Run Vue Chromium tests"
+dir = "packages/vue"
+depends = ["core:build"]
+run = "pnpm run test.browser"
+
+[tasks."vue:browser:install"]
+description = "Provision Chromium; accepts --with-deps for CI"
+dir = "packages/vue"
+raw_args = true
+run = "pnpm exec playwright install chromium"
+
+[tasks."vue:storybook:build"]
+description = "Build the Vue Storybook"
+dir = "packages/vue"
+depends = ["core:build"]
+run = "pnpm run build-storybook"
+
+[tasks."copilotkit:build"]
+description = "Build the CopilotKit backend"
+dir = "packages/copilotkit"
+run = "pnpm run build"
+
+[tasks."copilotkit:check"]
+description = "Lint and type-check the CopilotKit backend"
+dir = "packages/copilotkit"
+run = "pnpm run check"
+
+[tasks."copilotkit:dev"]
+description = "Start the CopilotKit backend on port 19101"
+dir = "packages/copilotkit"
+run = "pnpm run dev"
+
+[tasks."pages:build"]
+description = "Build Storybooks and assemble the GitHub Pages site"
+depends = ["react:storybook:build", "solid:storybook:build", "vue:storybook:build"]
+run = '''
+rm -rf ./pages-site
+mkdir -p ./pages-site/a2ui/v0_9
+cp ./index.html ./pages-site/index.html
+cp -r ./packages/react/storybook-static ./pages-site/react
+cp -r ./packages/solid/storybook-static ./pages-site/solid
+cp -r ./packages/vue/storybook-static ./pages-site/vue
+cp ./packages/core/dist/a2ui/v0_9/notion_block_catalog.json ./pages-site/a2ui/v0_9/notion_block_catalog.json
+'''
