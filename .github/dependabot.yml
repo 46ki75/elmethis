@@ -6,6 +6,12 @@ updates:
     schedule:
       interval: "daily"
     target-branch: "main"
+    ignore:
+      # A2UI schemas and zod-to-json-schema require Zod 3 compatibility.
+      # Coordinate major migrations manually; minor and patch updates stay enabled.
+      - dependency-name: "zod"
+        update-types:
+          - "version-update:semver-major"
     groups:
       react-updates:
         patterns:

@@ -225,7 +225,7 @@ importers:
         specifier: 2.9.1
         version: 2.9.1
       zod:
-        specifier: ^3
+        specifier: ^3.25.76
         version: 3.25.76
 
   packages/drawio:
@@ -339,7 +339,7 @@ importers:
         specifier: ^3.1.1
         version: 3.1.1(react@19.3.0)
       zod:
-        specifier: ^3
+        specifier: ^3.25.76
         version: 3.25.76
     devDependencies:
       '@babel/core':
@@ -493,7 +493,7 @@ importers:
         specifier: ^14.0.2
         version: 14.0.2
       zod:
-        specifier: ^3
+        specifier: ^3.25.76
         version: 3.25.76
       zod-to-json-schema:
         specifier: ^3.25.2
@@ -620,7 +620,7 @@ importers:
         specifier: ^4.4.3
         version: 4.4.3
       zod:
-        specifier: ^3
+        specifier: ^3.25.76
         version: 3.25.76
     devDependencies:
       '@eslint/js':
