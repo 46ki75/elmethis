@@ -231,11 +231,16 @@ export default defineConfig({
     `import { createRequire } from "node:module";
 import { Window } from "happy-dom";
 const window = new Window();
+// Browser-conditioned A2UI imports register Lit elements during module evaluation.
 Object.assign(globalThis, {
+  customElements: window.customElements,
   document: window.document,
   window,
+  CSSStyleSheet: window.CSSStyleSheet,
+  Document: window.Document,
   Node: window.Node,
   HTMLElement: window.HTMLElement,
+  ShadowRoot: window.ShadowRoot,
 });
 const require = createRequire(import.meta.url);
 require.extensions[".css"] = () => {};
