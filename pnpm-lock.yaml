@@ -330,8 +330,8 @@ importers:
         specifier: ^0.18.7
         version: 0.18.7
       marked:
-        specifier: ^18.0.11
-        version: 18.0.11
+        specifier: ^18.0.13
+        version: 18.0.13
       shiki:
         specifier: ^4.4.3
         version: 4.4.3
@@ -484,8 +484,8 @@ importers:
         specifier: ^0.18.7
         version: 0.18.7
       marked:
-        specifier: ^18.0.11
-        version: 18.0.11
+        specifier: ^18.0.13
+        version: 18.0.13
       shiki:
         specifier: ^4.4.3
         version: 4.4.3
@@ -614,8 +614,8 @@ importers:
         specifier: ^0.18.7
         version: 0.18.7
       marked:
-        specifier: ^18.0.11
-        version: 18.0.11
+        specifier: ^18.0.13
+        version: 18.0.13
       shiki:
         specifier: ^4.4.3
         version: 4.4.3
@@ -5453,8 +5453,8 @@ packages:
     resolution: {integrity: sha512-sHHjZ5fJKlgrG4qns2YwVcdNep35h5fERrfkD2YNsb9UFk0UIHarbiTaHKVMlPuWAoiilyK8Fv/jAm11slsY7Q==}
     hasBin: true
 
-  marked@18.0.11:
-    resolution: {integrity: sha512-HnslJfsZkRPBDJRHvVtAaWlZHEpSu7u8LgQuJCELjRKuWR+hpq4A7sLq3p8HaI9ypVoXDXxV34CsQJEe1+J5Aw==}
+  marked@18.0.13:
+    resolution: {integrity: sha512-xTxVzZsBFwunP6HDmtBkabUQEYArnP7/rMDGmPj9SlrKlQ4i8MdYVow+nJL0eOqwpUqhzBoTBRADGN6uYwPyOw==}
     engines: {node: '>= 20'}
     hasBin: true
 
@@ -12589,7 +12589,7 @@ snapshots:
       punycode.js: 2.3.1
       uc.micro: 2.1.0
 
-  marked@18.0.11: {}
+  marked@18.0.13: {}
 
   math-intrinsics@1.1.0: {}
 
