@@ -94,11 +94,11 @@ importers:
         specifier: ^0.125.0
         version: 0.125.0(zod@4.4.3)
       '@copilotkit/runtime':
-        specifier: ^1.71.1
-        version: 1.71.1(zboa3h4veb6dpv3o4rqwvllh4y)
+        specifier: ^1.72.0
+        version: 1.72.0(m5kw6hqmupjiovt7brtxiutaru)
       '@copilotkit/shared':
-        specifier: ^1.71.0
-        version: 1.71.1(@ag-ui/core@0.0.59)
+        specifier: ^1.72.0
+        version: 1.72.0(@ag-ui/core@0.0.59)
       '@hono/node-server':
         specifier: ^2.1.1
         version: 2.1.1(hono@4.13.7)
@@ -765,10 +765,11 @@ packages:
       '@ag-ui/client': '>=0.0.42'
       '@ag-ui/core': '>=0.0.42'
 
-  '@ag-ui/mcp-apps-middleware@0.0.3':
-    resolution: {integrity: sha512-Z+NZQXj4J+Y/2PLNsiyhNzRWFtTT2sAoC5dztoAlIsdfzvLvYEa52YGdHesNTN85JJqaIrYxQ8e31IBpKjrnoA==}
+  '@ag-ui/mcp-apps-middleware@0.1.1':
+    resolution: {integrity: sha512-bX02Hly+9oKTsBT+4RG7ntY9HSF1O+ysRHgXbkKY+ZNVYTCrtpiwgzUfQ1MqMPhBLbZUaVBh9uNfLVxU0maaNQ==}
     peerDependencies:
       '@ag-ui/client': '>=0.0.40'
+      rxjs: 7.8.1
 
   '@ag-ui/mcp-middleware@0.0.2':
     resolution: {integrity: sha512-+CwY9SUjXTvk1h77/nqpXEPj79i/Gt0G7ZEcZLlYsJHJkYYC8IG9yN/tiR++HS1Qb1R46btomrgoBfpBvpGwDw==}
@@ -791,8 +792,8 @@ packages:
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
 
-  '@ai-sdk/gateway@3.0.194':
-    resolution: {integrity: sha512-i6l8f9IT2dmqAC2/Pa1o09ouR4Lu6JYAkEAIRzNgJwJr3pbPR8mYPzi+w4LFKt6fImEz+b4EHYTFz4Ly5XLdJQ==}
+  '@ai-sdk/gateway@3.0.196':
+    resolution: {integrity: sha512-YMsbvS2UiPKDdg+dSusbC+SR9KkKyWEvRcURysYrsGK9A3ZIzC7n+Pi+67exlXT2FXC+yvCP1O8z8bbvOJ2ABA==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -809,14 +810,14 @@ packages:
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
 
-  '@ai-sdk/google@3.0.122':
-    resolution: {integrity: sha512-GntcGIfRviU9ZhORN2yoQcp9Hy5cv0w6iqRLaX0/BNdTogG5JX7g7l/Tv6Uev379iJizcHBd+U0cLB78KDrMxw==}
+  '@ai-sdk/google@3.0.123':
+    resolution: {integrity: sha512-5r6Ie37dBzJltNwA4WkJV5xDMv9ntJHYjxTgO/11TtOjY4jJJA721w8wdsFZcpkIhtA4rRvCw/S1VYbtdqNvbQ==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
 
-  '@ai-sdk/mcp@1.0.80':
-    resolution: {integrity: sha512-bf2j+8IMg1nf9GDJ8b53himMMd2jWZnOJwXQCl5gDRzDjslxI/fCCOwC3Ax8pjvHfkt185db6Z344M8ctJ7Rtw==}
+  '@ai-sdk/mcp@1.0.82':
+    resolution: {integrity: sha512-/rVkbeqju0u1Ei732mbB5GKs9ui3zVLDKP3drAxVg5L3oWCPm9yqbRm/QZSVzZQGYFi1OR4nnFFsv/hscwSDlQ==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -827,8 +828,8 @@ packages:
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
 
-  '@ai-sdk/openai@3.0.112':
-    resolution: {integrity: sha512-0ho3a9CJ+3KCcrPdBQx8fX7/gyUxFHsfs1M6++SpunYk8+pgGOPMskr0GVOOxY+94jsJbuGxksKfMuSYhYHcxw==}
+  '@ai-sdk/openai@3.0.114':
+    resolution: {integrity: sha512-1Y8EYQpeY+Sb1YtRTN077X2v8DEhGw6RvGHudPRbNNP9JPDC5/y/M9OUx9WX/s/adU7IcSY8AENxurdqaEwJDg==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -1077,6 +1078,11 @@ packages:
     engines: {node: '>=6.0.0'}
     hasBin: true
 
+  '@babel/parser@7.29.9':
+    resolution: {integrity: sha512-CjXrNHTnvqBVqHgdBysY3vk2T8tpJHb5/RMeHJBTyVa9xgugCB0CJTx/3oO8RV2QRQP391RWpB7D6hLjm8V9uA==}
+    engines: {node: '>=6.0.0'}
+    hasBin: true
+
   '@babel/plugin-syntax-jsx@7.29.7':
     resolution: {integrity: sha512-TSu8+mHCoEaaCDEZ0I3+6mvTBYR4PCxQwf2z9/r5Tbztv6NaLR3B9thGTTxX2WGuGHJqRiAbKPeGTJ5XWXVg6A==}
     engines: {node: '>=6.9.0'}
@@ -1145,25 +1151,36 @@ packages:
   '@cfworker/json-schema@4.1.1':
     resolution: {integrity: sha512-gAmrUZSGtKc3AiBL71iNWxDsyUC5uMaKKGdvzYsBoTW/xi42JQHl7eKV2OYzCUqvc+D2RCcf7EXY2iCyFIk6og==}
 
-  '@copilotkit/channels-core@0.9.3':
-    resolution: {integrity: sha512-fLXWTH5XwThrzg5U8zDIhHhhILqsLQirbgY+7hUn28/aErrisNdRgKRYFG04X7bLUad5L1aL3fEpnaeuHx8edQ==}
+  '@copilotkit/channels-core@0.10.0':
+    resolution: {integrity: sha512-dmj1JDWzGR7TQu4TLKua/9qd6GaTjySppOQpGdkG+ake63Dwdw7yJn64iGXuYETsECk1jLsZWSF6R7qVvIfltg==}
     peerDependencies:
       vitest: ^4.0.0
     peerDependenciesMeta:
       vitest:
         optional: true
 
-  '@copilotkit/channels-intelligence@0.9.2':
-    resolution: {integrity: sha512-0wi1u1OER1LSZmA3xq1j9HT/juxedIW715ogY//aZViyT2kmfmKABOMY0JhQEzgKUFbThyFggfKqPzE+xZtT+A==}
+  '@copilotkit/channels-intelligence@0.10.0':
+    resolution: {integrity: sha512-Z1e+kdT9eB+nLNkPIpxL6MZ4Rnmp1abyOnBW6RwxuYF+B4wxcLAuBLpXPHQ0E72NxwVMbJ8qjwH8473rAm+LTQ==}
 
-  '@copilotkit/channels-slack@0.9.3':
-    resolution: {integrity: sha512-XXyfvi2sJvT+rb5tQKYn3c6MpiqVrc/bcROzYCI4THGcensjYMiFJvpQPSVzDPx9/VtaEvBgJWmvnx6ilS2RlA==}
+  '@copilotkit/channels-slack@0.10.0':
+    resolution: {integrity: sha512-zmojMtOwooAF3FVFQglYcq/icNZMdDpwk2HtBmFYZ2o44Sof77VQg7G3cdnb9UJuDyvOOMTSNRC2VOlXjXOK/g==}
 
-  '@copilotkit/channels-teams@0.9.3':
-    resolution: {integrity: sha512-mgueEDcoNSWk3h7mlK0GNhjmGIS8qcYNYC8u9D1XuUm3pOzxLa3IxQsvM6Z3eHKuxFwpuWeziRG8j0YDHXQYlg==}
+  '@copilotkit/channels-teams@0.10.0':
+    resolution: {integrity: sha512-6CZ6wcnjZr/AB2zMOJUVzrjixLeUGQ6GSOaXMwWrBrR3Ik3dIMzUaNeIMFLuKE7cCUb30v0DUetDpNHsP1WNBQ==}
+    peerDependencies:
+      '@microsoft/agents-activity': ^1.5.3
+      '@microsoft/agents-hosting': ^1.5.3
+      express: ^4.21.2 || ^5.0.0
+    peerDependenciesMeta:
+      '@microsoft/agents-activity':
+        optional: true
+      '@microsoft/agents-hosting':
+        optional: true
+      express:
+        optional: true
 
-  '@copilotkit/channels-ui@0.9.3':
-    resolution: {integrity: sha512-uGG6tOqhG9wa2reE8kYSfbTehlR1jVntKwVsbFIr7AW1W8xvQxR26jbg3gT2vc9EtyuYImC/fz3XMYobOppKtg==}
+  '@copilotkit/channels-ui@0.10.0':
+    resolution: {integrity: sha512-SpldPYXtP6j+n70srKlYYCHsyZsOt8Frr7RcnwRjFwmaqukPlOqc4AVg0UM8lxRmlascN679a4fQyg5Hxr2NEw==}
 
   '@copilotkit/core@1.72.0':
     resolution: {integrity: sha512-0kTTakTO20ZXwQu+YYxbwQoVA6QgDqKyl2vECDcGuX3etEGYGCKgrKf4r0aKc3WxeCiuvhwutXfPPxnCCC0sIA==}
@@ -1172,8 +1189,9 @@ packages:
   '@copilotkit/license-verifier@0.5.0':
     resolution: {integrity: sha512-vrwKtIpYwF0FT9ZoYASH8owa2cGV0dhDvJGaCRaRMStwDxpc6DRdydKkhx8cWZXyBRxEYcq/Vygv4JvevhQQdQ==}
 
-  '@copilotkit/runtime@1.71.1':
-    resolution: {integrity: sha512-Pp+wj9ga5f2TnX5jNf6ywRnx8YOvZvuhh5YTkr9/FzqiavXctm1Q9VNXoRH02dycoTN3lqOagTgpfuEZvpJl4g==}
+  '@copilotkit/runtime@1.72.0':
+    resolution: {integrity: sha512-XTler40g1iONbr5euHkB5t3e6A/MzPKb26KHlyl220fb6mzgDUk0fBUfwlsBpXw/g8AXY1LiPGIP0+0eXQ7GUg==}
+    engines: {node: '>=20'}
     peerDependencies:
       '@anthropic-ai/sdk': '>=0.57.0'
       '@langchain/aws': '>=0.1.9'
@@ -1204,11 +1222,6 @@ packages:
         optional: true
       openai:
         optional: true
-
-  '@copilotkit/shared@1.71.1':
-    resolution: {integrity: sha512-peecVvjgJqLNkx4o3M+O0OrUXLJZsWq8IvPekzwXvPITz8WVTCSpO1sj5fYNQQAV1wtq9/g/RIwSk3MTD0kT7A==}
-    peerDependencies:
-      '@ag-ui/core': '>=0.0.48'
 
   '@copilotkit/shared@1.72.0':
     resolution: {integrity: sha512-lqt2V2P063vEfb9xGIX4JWnuyNRJHz3MAUgwfTLpdpHU7k1nNcStbWlUCZUc7oSxLXaZ+cGj1Ncx/jcgNd7FFQ==}
@@ -1286,16 +1299,16 @@ packages:
   '@emotion/hash@0.9.2':
     resolution: {integrity: sha512-MyqliTZGuOm3+5ZRSaaBGP3USLw6+EGykkwZns2EPC5g8jJ4z9OrdZY9apkl3+UP9+sdz76YYkwCKP5gh8iY3g==}
 
-  '@envelop/core@5.6.0':
-    resolution: {integrity: sha512-cD7HNfAzJVw/0Pxneu51UAKzUGLvkctk9rr9DVJ9b7FDe4nSa9kAGMRxx145H6ooELIUMjTd2buk3PuvjJmp/A==}
+  '@envelop/core@5.6.1':
+    resolution: {integrity: sha512-KEbJ7yrAA+W7IY9MZzpZJ77w/72ndaV/16+hhPapd+0Ohjqffl0mmF3QWy62/m3nRP4qidD+1eiEjJhS/O38Tg==}
     engines: {node: '>=18.0.0'}
 
-  '@envelop/instrumentation@1.0.0':
-    resolution: {integrity: sha512-cxgkB66RQB95H3X27jlnxCRNTmPuSTgmBAq6/4n2Dtv4hsk4yz8FadA1ggmd0uZzvKqWD6CR+WFgTjhDqg7eyw==}
+  '@envelop/instrumentation@1.0.1':
+    resolution: {integrity: sha512-FuexE2qd3Yc1Kh1DjTliwGxb9kyyv4ySBNnfJOxnQasVmGdcqX6AkkO5sIMxLWFRftp8PErOcIn2dQW/1RwytQ==}
     engines: {node: '>=18.0.0'}
 
-  '@envelop/types@5.2.1':
-    resolution: {integrity: sha512-CsFmA3u3c2QoLDTfEpGr4t25fjMU31nyvse7IzWTvb0ZycuPjMjb0fjlheh+PbhBYb9YLugnT2uY6Mwcg1o+Zg==}
+  '@envelop/types@5.2.2':
+    resolution: {integrity: sha512-nl9cmUh8F+2/NNzpcLjzNqtaVn0m8XSzzxrPU2ByHhlz4Hqlc5QBfRsemZkoJMKrMviJXyJYdKZiUP1o70F3Kw==}
     engines: {node: '>=18.0.0'}
 
   '@esbuild/aix-ppc64@0.28.2':
@@ -1543,23 +1556,23 @@ packages:
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
 
-  '@graphql-yoga/logger@2.0.1':
-    resolution: {integrity: sha512-Nv0BoDGLMg9QBKy9cIswQ3/6aKaKjlTh87x3GiBg2Z4RrjyrM48DvOOK0pJh1C1At+b0mUIM67cwZcFTDLN4sA==}
+  '@graphql-yoga/logger@2.0.2':
+    resolution: {integrity: sha512-k2QGHCcH10O+GGe1sgXn0paaP9GCK91wxkuNQaA4IvXBF/RcdBLaX15UeZLW9kMG8kfz7bL0r4Yu+BXYe0JOaw==}
     engines: {node: '>=18.0.0'}
 
-  '@graphql-yoga/plugin-defer-stream@3.23.0':
-    resolution: {integrity: sha512-iagM1UTRBzP/WEuq4lfrh5XGrXAZ4IZycfu07W6TPBrLKooD6H+Pw7a+RyKg6nq+26BUlnRmSMtWFMjqWUhQAg==}
+  '@graphql-yoga/plugin-defer-stream@3.24.1':
+    resolution: {integrity: sha512-/ltqbHZWbNbyVj63/GflXm2EQxAZxdt5OTa87TM9Z/ZNBLkJmmzYybGzoyj5N2Chf6QvCSjfwkoJqmjIR0xqTg==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       graphql: ^15.2.0 || ^16.0.0 || ^17.0.0
-      graphql-yoga: ^5.23.0
+      graphql-yoga: ^5.24.1
 
-  '@graphql-yoga/subscription@5.1.0':
-    resolution: {integrity: sha512-cQ7rUdaVgnktmF98zg52O3qYbrTqqv4+ZyodVUz5smKYSr4qLUBzJSs5b/rA+mQC8FbOT1NvDy4hxBIIvxx6qg==}
+  '@graphql-yoga/subscription@5.1.1':
+    resolution: {integrity: sha512-I48DpyPTxYzmO5TwvKOXxiLI/tsbyeYNhb4/6/oJEBn6nlb8snHL0G0Fw1LC2ApNW1QKYuCPRDTp9yUwVBqhNQ==}
     engines: {node: '>=18.0.0'}
 
-  '@graphql-yoga/typed-event-target@3.0.2':
-    resolution: {integrity: sha512-ZpJxMqB+Qfe3rp6uszCQoag4nSw42icURnBRfFYSOmTgEeOe4rD0vYlbA8spvCu2TlCesNTlEN9BLWtQqLxabA==}
+  '@graphql-yoga/typed-event-target@3.0.3':
+    resolution: {integrity: sha512-j/EgVfZSzKA2lVeiZ0un8E2eVIqWa9Woyqta4A40ht1M93ui9CDVHU6pmphoQTpFa92BNbMVexXdOtMQk8LCjA==}
     engines: {node: '>=18.0.0'}
 
   '@hono/node-server@1.19.17':
@@ -3721,8 +3734,8 @@ packages:
     resolution: {integrity: sha512-MnA+YT8fwfJPgBx3m60MNqakm30XOkyIoH1y6huTQvC0PwZG7ki8NacLBcrPbNoo8vEZy7Jpuk7+jMO+CUovTQ==}
     engines: {node: '>= 14'}
 
-  ai@6.0.283:
-    resolution: {integrity: sha512-1/vdLNPDNZhdDTMvEvDldEXELCY4k3Ak3ztiH3/f59odFHzDO2VRtm3VYwaIX+eF1Gh22I3Ai3Su30l2Yp3+GQ==}
+  ai@6.0.286:
+    resolution: {integrity: sha512-Wr4gUpAYrXF3XCxcyA1WYwD25nD5k9uCFM5gTNkof+S3zmzR9Nh+E2QrHswV+uV6EtHQv+Cqb1iVzKT+4XBVvg==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -4767,8 +4780,8 @@ packages:
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
 
-  graphql-yoga@5.23.0:
-    resolution: {integrity: sha512-TsgX8y4oXY6oPrzHEyYci7cFprkZ2VuwNvlZN/52PwlBGbUOm6Ewmgwhe1e1HX/b4/SzG89e/BHoGBVvMBlGMQ==}
+  graphql-yoga@5.24.1:
+    resolution: {integrity: sha512-NA2aQ4sZvR/bniCCLOlMG6OSZf5hPg3mUf3Phm33ObqRMZEq6WtZrj2hTcHfT2ZEFVV5FRCbcMb4NB1w7BIKaA==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       graphql: ^15.2.0 || ^16.0.0 || ^17.0.0
@@ -5968,6 +5981,9 @@ packages:
   pino-abstract-transport@2.0.0:
     resolution: {integrity: sha512-F63x5tizV6WCh4R6RHyi2Ml+M70DNRXt/+HANowMflpgGFMAym/VKm6G7ZOQRjqN7XbGxK1Lg9t6ZrtzOaivMw==}
 
+  pino-abstract-transport@3.0.0:
+    resolution: {integrity: sha512-wlfUczU+n7Hy/Ha5j9a/gZNy7We5+cXp8YL+X+PG8S0KXxw7n/JXA3c46Y0zQznIJ83URJiwy7Lh56WLokNuxg==}
+
   pino-pretty@11.3.0:
     resolution: {integrity: sha512-oXwn7ICywaZPHmu3epHGU2oJX4nPmKvHvB/bwrJHlGcbEWaVcotkpyVHMKLKmiVryWYByNp0jpgAcXpFJDXJzA==}
     hasBin: true
@@ -5975,8 +5991,8 @@ packages:
   pino-std-serializers@7.1.0:
     resolution: {integrity: sha512-BndPH67/JxGExRgiX1dX0w1FvZck5Wa4aal9198SrRhZjH3GxKQUKIBnYJTdj2HDN3UQAS06HlfcSbQj2OHmaw==}
 
-  pino@9.14.0:
-    resolution: {integrity: sha512-8OEwKp5juEvb/MjpIc4hjqfgCNysrS94RIOMXYvpYCdm/jglrKEiAYmiumbmGhCvs+IcInsphYDFwqrjr7398w==}
+  pino@10.3.1:
+    resolution: {integrity: sha512-r34yH/GlQpKZbU1BvFFqOjhISRo1MNx1tWYsYvmj6KIRHSPMT2+yHOEb1SG6NMvRoHRF0a07kCOox/9yakl1vg==}
     hasBin: true
 
   pkce-challenge@5.0.1:
@@ -6216,6 +6232,9 @@ packages:
   real-require@0.2.0:
     resolution: {integrity: sha512-57frrGM/OCTLqLOAh0mhVA9VBMHd+9U7Zb2THMGdBUoZVOtGbJzjxsYGDJ3A9AYYCP4hn6y1TVbaOfzWtm5GFg==}
     engines: {node: '>= 12.13.0'}
+
+  real-require@1.0.0:
+    resolution: {integrity: sha512-P4nbQYQfePJxRSmY+v/KINxVucm4NF3p3s7pJveMTtom52FR4YGltUQLB8idDXwDDWW+eYrWDFbuzUnjoWHF7g==}
 
   recast@0.23.21:
     resolution: {integrity: sha512-mFAyJq9vUbSTARLZUvAEf1z3YxlvAwswbmxMx2mPA/MSm4KmpwvwvhsH/NIrZhyOuwD60Lzyw2qh83uCbgTPYw==}
@@ -6685,8 +6704,9 @@ packages:
     resolution: {integrity: sha512-tXJwSr9355kFJI3lbCkPpUH5cP8/M0GGy2xLO34aZCjMXBaK3SoPnZwr/oWmo1FdCnELcs4npdCIOFtq9W3ruQ==}
     engines: {node: '>=4'}
 
-  thread-stream@3.2.0:
-    resolution: {integrity: sha512-zLBvqpwr4Esa0kRjcrzGU6zL25lePWaCLMx0RQFrmteozIfeNdaMLpG5U7PeHzvlFkAWaRKA9/KVW4F60iB+qw==}
+  thread-stream@4.2.0:
+    resolution: {integrity: sha512-e2zZ96wSChazBsbENf/Pcm/4swHt2cEKQ92rhUjkL9GCKiTDJIaTBenjE/m9DXi0QBmTMDkFDdOomUy20A1tDQ==}
+    engines: {node: '>=20'}
 
   tiny-invariant@1.3.3:
     resolution: {integrity: sha512-+FbBPE1o9QAYvviau/qC5SE3caw21q3xkvWKBtja5vgqOWIHHJ3ioaq1VPfn/Szqctz2bU/oYeKd9/z5BL+PVg==}
@@ -7461,7 +7481,7 @@ snapshots:
       - react-dom
       - ws
 
-  '@ag-ui/mcp-apps-middleware@0.0.3(@ag-ui/client@0.0.59)(@cfworker/json-schema@4.1.1)(zod@3.25.76)':
+  '@ag-ui/mcp-apps-middleware@0.1.1(@ag-ui/client@0.0.59)(@cfworker/json-schema@4.1.1)(rxjs@7.8.1)(zod@3.25.76)':
     dependencies:
       '@ag-ui/client': 0.0.59
       '@modelcontextprotocol/sdk': 1.30.0(@cfworker/json-schema@4.1.1)(zod@3.25.76)
@@ -7499,7 +7519,7 @@ snapshots:
       '@ai-sdk/provider-utils': 4.0.51(zod@3.25.76)
       zod: 3.25.76
 
-  '@ai-sdk/gateway@3.0.194(zod@3.25.76)':
+  '@ai-sdk/gateway@3.0.196(zod@3.25.76)':
     dependencies:
       '@ai-sdk/provider': 3.0.16
       '@ai-sdk/provider-utils': 4.0.51(zod@3.25.76)
@@ -7524,13 +7544,13 @@ snapshots:
       '@ai-sdk/provider-utils': 3.0.37(zod@3.25.76)
       zod: 3.25.76
 
-  '@ai-sdk/google@3.0.122(zod@3.25.76)':
+  '@ai-sdk/google@3.0.123(zod@3.25.76)':
     dependencies:
       '@ai-sdk/provider': 3.0.16
       '@ai-sdk/provider-utils': 4.0.51(zod@3.25.76)
       zod: 3.25.76
 
-  '@ai-sdk/mcp@1.0.80(zod@3.25.76)':
+  '@ai-sdk/mcp@1.0.82(zod@3.25.76)':
     dependencies:
       '@ai-sdk/provider': 3.0.16
       '@ai-sdk/provider-utils': 4.0.51(zod@3.25.76)
@@ -7544,7 +7564,7 @@ snapshots:
       '@ai-sdk/provider-utils': 3.0.37(zod@3.25.76)
       zod: 3.25.76
 
-  '@ai-sdk/openai@3.0.112(zod@3.25.76)':
+  '@ai-sdk/openai@3.0.114(zod@3.25.76)':
     dependencies:
       '@ai-sdk/provider': 3.0.16
       '@ai-sdk/provider-utils': 4.0.51(zod@3.25.76)
@@ -7703,12 +7723,14 @@ snapshots:
 
   '@azure/msal-common@16.11.1': {}
 
-  '@azure/msal-common@16.5.2': {}
+  '@azure/msal-common@16.5.2':
+    optional: true
 
   '@azure/msal-node@5.1.5':
     dependencies:
       '@azure/msal-common': 16.5.2
       jsonwebtoken: 9.0.3
+    optional: true
 
   '@azure/msal-node@5.4.0':
     dependencies:
@@ -7860,6 +7882,11 @@ snapshots:
     dependencies:
       '@babel/types': 7.29.8
 
+  '@babel/parser@7.29.9':
+    dependencies:
+      '@babel/types': 7.29.8
+    optional: true
+
   '@babel/plugin-syntax-jsx@7.29.7(@babel/core@7.29.7)':
     dependencies:
       '@babel/core': 7.29.7
@@ -7951,11 +7978,11 @@ snapshots:
 
   '@cfworker/json-schema@4.1.1': {}
 
-  '@copilotkit/channels-core@0.9.3(vitest@4.1.11)(zod@3.25.76)':
+  '@copilotkit/channels-core@0.10.0(vitest@4.1.11)(zod@3.25.76)':
     dependencies:
       '@ag-ui/client': 0.0.59
       '@ag-ui/core': 0.0.59
-      '@copilotkit/channels-ui': 0.9.3(@ag-ui/core@0.0.59)
+      '@copilotkit/channels-ui': 0.10.0(@ag-ui/core@0.0.59)
       '@copilotkit/core': 1.72.0(@ag-ui/core@0.0.59)(zod@3.25.76)
       '@copilotkit/shared': 1.72.0(@ag-ui/core@0.0.59)
       zod-to-json-schema: 3.25.2(zod@3.25.76)
@@ -7965,33 +7992,34 @@ snapshots:
       - encoding
       - zod
 
-  '@copilotkit/channels-intelligence@0.9.2(@ag-ui/core@0.0.59)(@opentelemetry/api@1.9.1)(@types/express@4.17.25)(vitest@4.1.11)(zod@3.25.76)':
+  '@copilotkit/channels-intelligence@0.10.0(@ag-ui/core@0.0.59)(@microsoft/agents-activity@1.8.1)(@microsoft/agents-hosting@1.8.1(@opentelemetry/api@1.9.1))(@types/express@4.17.25)(express@4.22.3)(vitest@4.1.11)(zod@3.25.76)':
     dependencies:
       '@ag-ui/client': 0.0.59
-      '@copilotkit/channels-core': 0.9.3(vitest@4.1.11)(zod@3.25.76)
-      '@copilotkit/channels-slack': 0.9.3(@types/express@4.17.25)(vitest@4.1.11)(zod@3.25.76)
-      '@copilotkit/channels-teams': 0.9.3(@opentelemetry/api@1.9.1)(vitest@4.1.11)(zod@3.25.76)
-      '@copilotkit/channels-ui': 0.9.3(@ag-ui/core@0.0.59)
+      '@copilotkit/channels-core': 0.10.0(vitest@4.1.11)(zod@3.25.76)
+      '@copilotkit/channels-slack': 0.10.0(@types/express@4.17.25)(vitest@4.1.11)(zod@3.25.76)
+      '@copilotkit/channels-teams': 0.10.0(@microsoft/agents-activity@1.8.1)(@microsoft/agents-hosting@1.8.1(@opentelemetry/api@1.9.1))(express@4.22.3)(vitest@4.1.11)(zod@3.25.76)
+      '@copilotkit/channels-ui': 0.10.0(@ag-ui/core@0.0.59)
       phoenix: 1.8.14
     transitivePeerDependencies:
       - '@ag-ui/core'
-      - '@opentelemetry/api'
-      - '@opentelemetry/api-logs'
+      - '@microsoft/agents-activity'
+      - '@microsoft/agents-hosting'
       - '@types/express'
       - bufferutil
       - debug
       - encoding
+      - express
       - supports-color
       - utf-8-validate
       - vitest
       - zod
 
-  '@copilotkit/channels-slack@0.9.3(@types/express@4.17.25)(vitest@4.1.11)(zod@3.25.76)':
+  '@copilotkit/channels-slack@0.10.0(@types/express@4.17.25)(vitest@4.1.11)(zod@3.25.76)':
     dependencies:
       '@ag-ui/client': 0.0.59
       '@ag-ui/core': 0.0.59
-      '@copilotkit/channels-core': 0.9.3(vitest@4.1.11)(zod@3.25.76)
-      '@copilotkit/channels-ui': 0.9.3(@ag-ui/core@0.0.59)
+      '@copilotkit/channels-core': 0.10.0(vitest@4.1.11)(zod@3.25.76)
+      '@copilotkit/channels-ui': 0.10.0(@ag-ui/core@0.0.59)
       '@copilotkit/core': 1.72.0(@ag-ui/core@0.0.59)(zod@3.25.76)
       '@copilotkit/shared': 1.72.0(@ag-ui/core@0.0.59)
       '@slack/bolt': 4.7.3(@types/express@4.17.25)
@@ -8008,27 +8036,25 @@ snapshots:
       - vitest
       - zod
 
-  '@copilotkit/channels-teams@0.9.3(@opentelemetry/api@1.9.1)(vitest@4.1.11)(zod@3.25.76)':
+  '@copilotkit/channels-teams@0.10.0(@microsoft/agents-activity@1.8.1)(@microsoft/agents-hosting@1.8.1(@opentelemetry/api@1.9.1))(express@4.22.3)(vitest@4.1.11)(zod@3.25.76)':
     dependencies:
       '@ag-ui/client': 0.0.59
       '@ag-ui/core': 0.0.59
-      '@copilotkit/channels-core': 0.9.3(vitest@4.1.11)(zod@3.25.76)
-      '@copilotkit/channels-ui': 0.9.3(@ag-ui/core@0.0.59)
+      '@copilotkit/channels-core': 0.10.0(vitest@4.1.11)(zod@3.25.76)
+      '@copilotkit/channels-ui': 0.10.0(@ag-ui/core@0.0.59)
       '@copilotkit/core': 1.72.0(@ag-ui/core@0.0.59)(zod@3.25.76)
       '@copilotkit/shared': 1.72.0(@ag-ui/core@0.0.59)
+      rxjs: 7.8.1
+    optionalDependencies:
       '@microsoft/agents-activity': 1.8.1
       '@microsoft/agents-hosting': 1.8.1(@opentelemetry/api@1.9.1)
       express: 4.22.3
-      rxjs: 7.8.1
     transitivePeerDependencies:
-      - '@opentelemetry/api'
-      - '@opentelemetry/api-logs'
       - encoding
-      - supports-color
       - vitest
       - zod
 
-  '@copilotkit/channels-ui@0.9.3(@ag-ui/core@0.0.59)':
+  '@copilotkit/channels-ui@0.10.0(@ag-ui/core@0.0.59)':
     dependencies:
       '@copilotkit/shared': 1.72.0(@ag-ui/core@0.0.59)
     transitivePeerDependencies:
@@ -8050,25 +8076,26 @@ snapshots:
 
   '@copilotkit/license-verifier@0.5.0': {}
 
-  '@copilotkit/runtime@1.71.1(zboa3h4veb6dpv3o4rqwvllh4y)':
+  '@copilotkit/runtime@1.72.0(m5kw6hqmupjiovt7brtxiutaru)':
     dependencies:
       '@ag-ui/a2ui-middleware': 0.0.10(@ag-ui/client@0.0.59)(rxjs@7.8.1)
       '@ag-ui/client': 0.0.59
       '@ag-ui/core': 0.0.59
       '@ag-ui/encoder': 0.0.59
       '@ag-ui/langgraph': 0.0.43(@ag-ui/client@0.0.59)(@ag-ui/core@0.0.59)(@opentelemetry/api@1.9.1)(@opentelemetry/exporter-trace-otlp-proto@0.203.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.7.0(@opentelemetry/api@1.9.1))(openai@6.42.0(ws@8.21.3)(zod@4.4.3))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(ws@8.21.3)
-      '@ag-ui/mcp-apps-middleware': 0.0.3(@ag-ui/client@0.0.59)(@cfworker/json-schema@4.1.1)(zod@3.25.76)
+      '@ag-ui/mcp-apps-middleware': 0.1.1(@ag-ui/client@0.0.59)(@cfworker/json-schema@4.1.1)(rxjs@7.8.1)(zod@3.25.76)
       '@ag-ui/mcp-middleware': 0.0.2(@ag-ui/client@0.0.59)(@cfworker/json-schema@4.1.1)(rxjs@7.8.1)(zod@3.25.76)
       '@ai-sdk/anthropic': 3.0.118(zod@3.25.76)
-      '@ai-sdk/google': 3.0.122(zod@3.25.76)
+      '@ai-sdk/google': 3.0.123(zod@3.25.76)
       '@ai-sdk/google-vertex': 3.0.174(zod@3.25.76)
-      '@ai-sdk/mcp': 1.0.80(zod@3.25.76)
-      '@ai-sdk/openai': 3.0.112(zod@3.25.76)
-      '@copilotkit/channels-core': 0.9.3(vitest@4.1.11)(zod@3.25.76)
-      '@copilotkit/channels-intelligence': 0.9.2(@ag-ui/core@0.0.59)(@opentelemetry/api@1.9.1)(@types/express@4.17.25)(vitest@4.1.11)(zod@3.25.76)
+      '@ai-sdk/mcp': 1.0.82(zod@3.25.76)
+      '@ai-sdk/openai': 3.0.114(zod@3.25.76)
+      '@cfworker/json-schema': 4.1.1
+      '@copilotkit/channels-core': 0.10.0(vitest@4.1.11)(zod@3.25.76)
+      '@copilotkit/channels-intelligence': 0.10.0(@ag-ui/core@0.0.59)(@microsoft/agents-activity@1.8.1)(@microsoft/agents-hosting@1.8.1(@opentelemetry/api@1.9.1))(@types/express@4.17.25)(express@4.22.3)(vitest@4.1.11)(zod@3.25.76)
       '@copilotkit/license-verifier': 0.5.0
-      '@copilotkit/shared': 1.71.1(@ag-ui/core@0.0.59)
-      '@graphql-yoga/plugin-defer-stream': 3.23.0(graphql-yoga@5.23.0(graphql@16.14.2))(graphql@16.14.2)
+      '@copilotkit/shared': 1.72.0(@ag-ui/core@0.0.59)
+      '@graphql-yoga/plugin-defer-stream': 3.24.1(graphql-yoga@5.24.1(graphql@16.14.2))(graphql@16.14.2)
       '@hono/node-server': 1.19.17(hono@4.13.7)
       '@langchain/core': 1.2.11(@opentelemetry/api@1.9.1)(@opentelemetry/exporter-trace-otlp-proto@0.203.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.7.0(@opentelemetry/api@1.9.1))(openai@6.42.0(ws@8.21.3)(zod@4.4.3))(ws@8.21.3)
       '@modelcontextprotocol/sdk': 1.30.0(@cfworker/json-schema@4.1.1)(zod@3.25.76)
@@ -8077,7 +8104,7 @@ snapshots:
       '@segment/analytics-node': 2.3.0
       '@types/cors': 2.8.19
       '@types/express': 4.17.25
-      ai: 6.0.283(zod@3.25.76)
+      ai: 6.0.286(zod@3.25.76)
       clarinet: 0.12.6
       class-transformer: 0.5.1
       class-validator: 0.14.4
@@ -8085,11 +8112,11 @@ snapshots:
       express: 4.22.3
       graphql: 16.14.2
       graphql-scalars: 1.26.0(graphql@16.14.2)
-      graphql-yoga: 5.23.0(graphql@16.14.2)
+      graphql-yoga: 5.24.1(graphql@16.14.2)
       hono: 4.13.7
       partial-json: 0.1.7
       phoenix: 1.8.14
-      pino: 9.14.0
+      pino: 10.3.1
       pino-pretty: 11.3.0
       reflect-metadata: 0.2.2
       rxjs: 7.8.1
@@ -8103,9 +8130,9 @@ snapshots:
       langchain: 1.5.11(@langchain/core@1.2.11(@opentelemetry/api@1.9.1)(@opentelemetry/exporter-trace-otlp-proto@0.203.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.7.0(@opentelemetry/api@1.9.1))(openai@6.42.0(ws@8.21.3)(zod@4.4.3))(ws@8.21.3))(@opentelemetry/api@1.9.1)(@opentelemetry/exporter-trace-otlp-proto@0.203.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.7.0(@opentelemetry/api@1.9.1))(openai@6.42.0(ws@8.21.3)(zod@4.4.3))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(ws@8.21.3)
       openai: 6.42.0(ws@8.21.3)(zod@4.4.3)
     transitivePeerDependencies:
-      - '@cfworker/json-schema'
+      - '@microsoft/agents-activity'
+      - '@microsoft/agents-hosting'
       - '@opentelemetry/api'
-      - '@opentelemetry/api-logs'
       - '@opentelemetry/exporter-trace-otlp-proto'
       - '@opentelemetry/sdk-trace-base'
       - bufferutil
@@ -8116,22 +8143,6 @@ snapshots:
       - supports-color
       - utf-8-validate
       - vitest
-
-  '@copilotkit/shared@1.71.1(@ag-ui/core@0.0.59)':
-    dependencies:
-      '@ag-ui/client': 0.0.59
-      '@ag-ui/core': 0.0.59
-      '@copilotkit/license-verifier': 0.5.0
-      '@segment/analytics-node': 2.3.0
-      '@standard-schema/spec': 1.1.0
-      chalk: 4.1.2
-      graphql: 16.14.2
-      partial-json: 0.1.7
-      uuid: 11.1.1
-      zod: 3.25.76
-      zod-to-json-schema: 3.25.2(zod@3.25.76)
-    transitivePeerDependencies:
-      - encoding
 
   '@copilotkit/shared@1.72.0(@ag-ui/core@0.0.59)':
     dependencies:
@@ -8222,19 +8233,19 @@ snapshots:
 
   '@emotion/hash@0.9.2': {}
 
-  '@envelop/core@5.6.0':
+  '@envelop/core@5.6.1':
     dependencies:
-      '@envelop/instrumentation': 1.0.0
-      '@envelop/types': 5.2.1
+      '@envelop/instrumentation': 1.0.1
+      '@envelop/types': 5.2.2
       '@whatwg-node/promise-helpers': 1.3.2
       tslib: 2.8.1
 
-  '@envelop/instrumentation@1.0.0':
+  '@envelop/instrumentation@1.0.1':
     dependencies:
       '@whatwg-node/promise-helpers': 1.3.2
       tslib: 2.8.1
 
-  '@envelop/types@5.2.1':
+  '@envelop/types@5.2.2':
     dependencies:
       '@whatwg-node/promise-helpers': 1.3.2
       tslib: 2.8.1
@@ -8414,24 +8425,24 @@ snapshots:
     dependencies:
       graphql: 16.14.2
 
-  '@graphql-yoga/logger@2.0.1':
+  '@graphql-yoga/logger@2.0.2':
     dependencies:
       tslib: 2.8.1
 
-  '@graphql-yoga/plugin-defer-stream@3.23.0(graphql-yoga@5.23.0(graphql@16.14.2))(graphql@16.14.2)':
+  '@graphql-yoga/plugin-defer-stream@3.24.1(graphql-yoga@5.24.1(graphql@16.14.2))(graphql@16.14.2)':
     dependencies:
       '@graphql-tools/utils': 11.2.2(graphql@16.14.2)
       graphql: 16.14.2
-      graphql-yoga: 5.23.0(graphql@16.14.2)
+      graphql-yoga: 5.24.1(graphql@16.14.2)
 
-  '@graphql-yoga/subscription@5.1.0':
+  '@graphql-yoga/subscription@5.1.1':
     dependencies:
-      '@graphql-yoga/typed-event-target': 3.0.2
+      '@graphql-yoga/typed-event-target': 3.0.3
       '@repeaterjs/repeater': 3.1.0
       '@whatwg-node/events': 0.1.2
       tslib: 2.8.1
 
-  '@graphql-yoga/typed-event-target@3.0.2':
+  '@graphql-yoga/typed-event-target@3.0.3':
     dependencies:
       '@repeaterjs/repeater': 3.1.0
       tslib: 2.8.1
@@ -8563,6 +8574,7 @@ snapshots:
   '@microsoft/agents-activity@1.8.1':
     dependencies:
       zod: 3.25.75
+    optional: true
 
   '@microsoft/agents-hosting@1.8.1(@opentelemetry/api@1.9.1)':
     dependencies:
@@ -8577,6 +8589,7 @@ snapshots:
       - '@opentelemetry/api'
       - '@opentelemetry/api-logs'
       - supports-color
+    optional: true
 
   '@microsoft/agents-telemetry@1.8.1(@opentelemetry/api@1.9.1)':
     dependencies:
@@ -8587,6 +8600,7 @@ snapshots:
       '@opentelemetry/api': 1.9.1
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   '@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1)(zod@3.25.76)':
     dependencies:
@@ -8657,7 +8671,8 @@ snapshots:
       '@tybys/wasm-util': 0.10.4
     optional: true
 
-  '@noble/hashes@1.8.0': {}
+  '@noble/hashes@1.8.0':
+    optional: true
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
@@ -10712,7 +10727,7 @@ snapshots:
 
   '@whatwg-node/server@0.11.0':
     dependencies:
-      '@envelop/instrumentation': 1.0.0
+      '@envelop/instrumentation': 1.0.1
       '@whatwg-node/disposablestack': 0.0.6
       '@whatwg-node/fetch': 0.10.13
       '@whatwg-node/promise-helpers': 1.3.2
@@ -10824,9 +10839,9 @@ snapshots:
 
   agent-base@7.1.4: {}
 
-  ai@6.0.283(zod@3.25.76):
+  ai@6.0.286(zod@3.25.76):
     dependencies:
-      '@ai-sdk/gateway': 3.0.194(zod@3.25.76)
+      '@ai-sdk/gateway': 3.0.196(zod@3.25.76)
       '@ai-sdk/provider': 3.0.16
       '@ai-sdk/provider-utils': 4.0.51(zod@3.25.76)
       '@opentelemetry/api': 1.9.1
@@ -11960,15 +11975,15 @@ snapshots:
       graphql: 16.14.2
       tslib: 2.8.1
 
-  graphql-yoga@5.23.0(graphql@16.14.2):
+  graphql-yoga@5.24.1(graphql@16.14.2):
     dependencies:
-      '@envelop/core': 5.6.0
-      '@envelop/instrumentation': 1.0.0
+      '@envelop/core': 5.6.1
+      '@envelop/instrumentation': 1.0.1
       '@graphql-tools/executor': 2.0.1(graphql@16.14.2)
       '@graphql-tools/schema': 10.1.1(graphql@16.14.2)
       '@graphql-tools/utils': 11.2.2(graphql@16.14.2)
-      '@graphql-yoga/logger': 2.0.1
-      '@graphql-yoga/subscription': 5.1.0
+      '@graphql-yoga/logger': 2.0.2
+      '@graphql-yoga/subscription': 5.1.1
       '@whatwg-node/fetch': 0.10.13
       '@whatwg-node/promise-helpers': 1.3.2
       '@whatwg-node/server': 0.11.0
@@ -12252,7 +12267,8 @@ snapshots:
 
   jose@5.10.0: {}
 
-  jose@6.2.12: {}
+  jose@6.2.12:
+    optional: true
 
   jose@6.2.4: {}
 
@@ -12348,6 +12364,7 @@ snapshots:
       lru-memoizer: 3.0.0
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   jws@4.0.1:
     dependencies:
@@ -12504,7 +12521,8 @@ snapshots:
       lightningcss-win32-arm64-msvc: 1.33.0
       lightningcss-win32-x64-msvc: 1.33.0
 
-  limiter@1.1.5: {}
+  limiter@1.1.5:
+    optional: true
 
   lines-and-columns@1.2.4: {}
 
@@ -12520,7 +12538,8 @@ snapshots:
     dependencies:
       p-locate: 5.0.0
 
-  lodash.clonedeep@4.5.0: {}
+  lodash.clonedeep@4.5.0:
+    optional: true
 
   lodash.debounce@4.0.8: {}
 
@@ -12569,6 +12588,7 @@ snapshots:
     dependencies:
       lodash.clonedeep: 4.5.0
       lru-cache: 11.5.2
+    optional: true
 
   lz-string@1.5.0: {}
 
@@ -12588,7 +12608,7 @@ snapshots:
 
   magicast@0.5.5:
     dependencies:
-      '@babel/parser': 7.29.8
+      '@babel/parser': 7.29.9
       '@babel/types': 7.29.8
       source-map-js: 1.2.1
     optional: true
@@ -13330,6 +13350,10 @@ snapshots:
     dependencies:
       split2: 4.2.0
 
+  pino-abstract-transport@3.0.0:
+    dependencies:
+      split2: 4.2.0
+
   pino-pretty@11.3.0:
     dependencies:
       colorette: 2.0.20
@@ -13349,19 +13373,19 @@ snapshots:
 
   pino-std-serializers@7.1.0: {}
 
-  pino@9.14.0:
+  pino@10.3.1:
     dependencies:
       '@pinojs/redact': 0.4.0
       atomic-sleep: 1.0.0
       on-exit-leak-free: 2.1.2
-      pino-abstract-transport: 2.0.0
+      pino-abstract-transport: 3.0.0
       pino-std-serializers: 7.1.0
       process-warning: 5.1.0
       quick-format-unescaped: 4.0.4
       real-require: 0.2.0
       safe-stable-stringify: 2.5.0
       sonic-boom: 4.2.1
-      thread-stream: 3.2.0
+      thread-stream: 4.2.0
 
   pkce-challenge@5.0.1: {}
 
@@ -13661,6 +13685,8 @@ snapshots:
     optional: true
 
   real-require@0.2.0: {}
+
+  real-require@1.0.0: {}
 
   recast@0.23.21:
     dependencies:
@@ -14370,9 +14396,9 @@ snapshots:
     dependencies:
       editions: 6.22.0
 
-  thread-stream@3.2.0:
+  thread-stream@4.2.0:
     dependencies:
-      real-require: 0.2.0
+      real-require: 1.0.0
 
   tiny-invariant@1.3.3: {}
 
@@ -14490,7 +14516,7 @@ snapshots:
 
   type-graphql@2.0.0-rc.1(class-validator@0.14.4)(graphql-scalars@1.26.0(graphql@16.14.2))(graphql@16.14.2):
     dependencies:
-      '@graphql-yoga/subscription': 5.1.0
+      '@graphql-yoga/subscription': 5.1.1
       '@types/node': 26.5.1
       '@types/semver': 7.8.0
       graphql: 16.14.2
@@ -14991,7 +15017,8 @@ snapshots:
     dependencies:
       zod: 3.25.76
 
-  zod@3.25.75: {}
+  zod@3.25.75:
+    optional: true
 
   zod@3.25.76: {}
 
