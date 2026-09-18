@@ -87,7 +87,7 @@
     "@storybook/vue3-vite": "^10.6.0",
     "@types/katex": "^0.16.8",
     "@types/node": "^26.5.1",
-    "@vitejs/plugin-vue": "^6.0.8",
+    "@vitejs/plugin-vue": "^6.0.9",
     "@vitejs/plugin-vue-jsx": "^5.1.6",
     "@vitest/browser-playwright": "^5.0.1",
     "@vitest/coverage-v8": "^5.0.1",
