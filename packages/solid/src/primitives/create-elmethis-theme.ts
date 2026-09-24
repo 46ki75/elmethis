@@ -60,10 +60,21 @@ export function createElmethisTheme(): ElmethisThemeController {
   const [isDarkTheme, setIsDarkTheme] = createSignal(false);
   let mediaQuery: MediaQueryList | undefined;
 
-  const resolveAutoTheme = (): boolean => mediaQuery?.matches ?? false;
+  const resolveDocumentTheme = (
+    prefersDark = mediaQuery?.matches ?? false,
+  ): boolean => {
+    // Hosts such as Storybook can pin a scheme without persisting a choice.
+    // Read computed CSS so stylesheet pins (including `only light`) count too.
+    const schemes = window
+      .getComputedStyle(document.documentElement)
+      .colorScheme.split(/\s+/);
+    const supportsDark = schemes.includes("dark");
+    const supportsLight = schemes.includes("light");
+    return supportsDark !== supportsLight ? supportsDark : prefersDark;
+  };
 
   const toggleTheme = (): void => {
-    const next: ElmethisTheme = isDarkTheme() ? "light" : "dark";
+    const next: ElmethisTheme = resolveDocumentTheme() ? "light" : "dark";
     setIsDarkTheme(next === "dark");
     applyTheme(next, true);
   };
@@ -75,20 +86,21 @@ export function createElmethisTheme(): ElmethisThemeController {
 
     const onThemeChange = (event: Event): void => {
       const theme = (event as CustomEvent<ElmethisTheme | null>).detail;
-      setIsDarkTheme(theme === null ? resolveAutoTheme() : theme === "dark");
+      setIsDarkTheme(
+        theme === null ? resolveDocumentTheme() : theme === "dark",
+      );
     };
     const onStorage = (event: StorageEvent): void => {
       if (event.key !== null && event.key !== LOCAL_STORAGE_KEY) {
         return;
       }
 
-      const theme = parseTheme(event.newValue);
-      setIsDarkTheme(theme === null ? resolveAutoTheme() : theme === "dark");
-      applyTheme(theme, false);
+      // Apply first; the broadcast resolves auto mode after the pin is removed.
+      applyTheme(parseTheme(event.newValue), false);
     };
     const onPreferenceChange = (event: MediaQueryListEvent): void => {
       if (readStoredTheme() === null) {
-        setIsDarkTheme(event.matches);
+        setIsDarkTheme(resolveDocumentTheme(event.matches));
       }
     };
 
@@ -98,7 +110,7 @@ export function createElmethisTheme(): ElmethisThemeController {
 
     const storedTheme = readStoredTheme();
     setIsDarkTheme(
-      storedTheme === null ? resolveAutoTheme() : storedTheme === "dark",
+      storedTheme === null ? resolveDocumentTheme() : storedTheme === "dark",
     );
     if (storedTheme !== null) {
       applyTheme(storedTheme, false);

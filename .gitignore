@@ -57,3 +57,6 @@ target/
 .ds-sync/
 ds-bundle/
 packages/react/.ds-style-entry.css
+
+# Pi
+.pi/tasks/

@@ -2,6 +2,8 @@ import { render } from "vitest-browser-react";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
 import { useElmethisTheme } from "./use-elmethis-theme";
+import { ElmToggleTheme } from "../components/icon/elm-toggle-theme";
+import "@elmethis/core/tokens.css";
 
 // What this layer adds over `use-elmethis-theme.spec.tsx` (happy-dom): the
 // things that only a real browser resolves — the *computed* `color-scheme` on
@@ -39,6 +41,48 @@ const text = (screen: Awaited<ReturnType<typeof render>>, id: string) =>
 describe("[CSR] useElmethisTheme — native color-scheme", () => {
   beforeEach(resetRoot);
   afterEach(resetRoot);
+
+  test("the icon changes the background on the first click when the host overrides the OS theme", async () => {
+    const hostTheme = matchMedia("(prefers-color-scheme: dark)").matches
+      ? "light"
+      : "dark";
+    const nextTheme = hostTheme === "dark" ? "light" : "dark";
+    root().style.colorScheme = `only ${hostTheme}`;
+    const screen = await render(
+      <>
+        <div
+          data-testid="surface"
+          style={{ backgroundColor: "var(--elmethis-color-surface-base)" }}
+        >
+          <ElmToggleTheme data-testid="theme-toggle" />
+        </div>
+        <div
+          data-testid="reference"
+          style={{
+            backgroundColor: "var(--elmethis-color-surface-base)",
+            colorScheme: nextTheme,
+          }}
+        />
+      </>,
+    );
+    const background = () =>
+      getComputedStyle(screen.getByTestId("surface").element()).backgroundColor;
+    const initialBackground = background();
+    const nextBackground = getComputedStyle(
+      screen.getByTestId("reference").element(),
+    ).backgroundColor;
+    expect(initialBackground).not.toBe(nextBackground);
+
+    await screen.getByTestId("theme-toggle").click();
+
+    await vi.waitFor(() => expect(background()).toBe(nextBackground));
+    expect(root().style.colorScheme).toBe(nextTheme);
+    expect(localStorage.getItem(KEY)).toBe(nextTheme);
+
+    await screen.getByTestId("theme-toggle").click();
+
+    await vi.waitFor(() => expect(background()).toBe(initialBackground));
+  });
 
   test("toggle pins the computed color-scheme + data-theme on <html>", async () => {
     // Seed a persisted "light" so the mount effect has a definite, observable
@@ -99,5 +143,10 @@ describe("[CSR] useElmethisTheme — native color-scheme", () => {
       expect(root().hasAttribute("data-theme")).toBe(false),
     );
     expect(root().style.colorScheme).toBe("");
+    await vi.waitFor(() =>
+      expect(text(screen, "isDark")).toBe(
+        String(matchMedia("(prefers-color-scheme: dark)").matches),
+      ),
+    );
   });
 });

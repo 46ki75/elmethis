@@ -94,6 +94,44 @@ describe("[CSR] createElmethisTheme", () => {
     expect(document.documentElement).toHaveAttribute("data-theme", "dark");
   });
 
+  it.each(["light", "dark"] as const)(
+    "resolves a host-pinned %s theme instead of the opposite OS preference",
+    (theme) => {
+      matches = theme === "light";
+      document.documentElement.style.colorScheme = theme;
+      document.documentElement.setAttribute("data-theme", theme);
+      const rendered = render(() => <ThemeHarness />);
+
+      expect(rendered.getByTestId("dark")).toHaveTextContent(
+        String(theme === "dark"),
+      );
+      expect(localStorage.getItem(KEY)).toBeNull();
+
+      preferenceListener?.({ matches } as MediaQueryListEvent);
+      expect(rendered.getByTestId("dark")).toHaveTextContent(
+        String(theme === "dark"),
+      );
+
+      fireEvent.click(rendered.getByRole("button", { name: "Toggle" }));
+
+      const nextTheme = theme === "dark" ? "light" : "dark";
+      expect(document.documentElement.style.colorScheme).toBe(nextTheme);
+      expect(localStorage.getItem(KEY)).toBe(nextTheme);
+    },
+  );
+
+  it("toggles the current document theme if the host changes it after mount", () => {
+    const rendered = render(() => <ThemeHarness />);
+    document.documentElement.style.colorScheme = "dark";
+    document.documentElement.setAttribute("data-theme", "dark");
+
+    fireEvent.click(rendered.getByRole("button", { name: "Toggle" }));
+
+    expect(rendered.getByTestId("dark")).toHaveTextContent("false");
+    expect(document.documentElement.style.colorScheme).toBe("light");
+    expect(localStorage.getItem(KEY)).toBe("light");
+  });
+
   it("toggles, persists, and broadcasts after applying the root theme", () => {
     const received: string[] = [];
     const rendered = render(() => <ThemeHarness />);

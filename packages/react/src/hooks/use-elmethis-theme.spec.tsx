@@ -3,6 +3,7 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { render, fireEvent, act } from "@testing-library/react";
 import { renderToStaticMarkup } from "react-dom/server";
+import { StrictMode } from "react";
 
 import {
   parseTheme,
@@ -83,6 +84,80 @@ describe("[CSR] toggleTheme()", () => {
     expect(document.documentElement.style.colorScheme).toBe("light");
     expect(document.documentElement.getAttribute("data-theme")).toBe("light");
     expect(localStorage.getItem(LOCAL_STORAGE_KEY)).toBe("light");
+  });
+});
+
+describe("[CSR] host-provided color scheme", () => {
+  beforeEach(resetRoot);
+  afterEach(() => {
+    vi.restoreAllMocks();
+    resetRoot();
+  });
+
+  test.each(["light", "dark"] as const)(
+    "resolves a host-pinned %s theme instead of the opposite OS preference",
+    (theme) => {
+      const preference = window.matchMedia("(prefers-color-scheme: dark)");
+      vi.spyOn(preference, "matches", "get").mockReturnValue(theme === "light");
+      vi.spyOn(window, "matchMedia").mockReturnValue(preference);
+      document.documentElement.style.colorScheme = theme;
+      const { container } = render(<ThemeWrapper />);
+
+      expect(container.querySelector("#isDark")!.textContent).toBe(
+        String(theme === "dark"),
+      );
+      expect(localStorage.getItem(LOCAL_STORAGE_KEY)).toBeNull();
+
+      act(() => {
+        preference.dispatchEvent(
+          new MediaQueryListEvent("change", { matches: theme === "light" }),
+        );
+      });
+      expect(container.querySelector("#isDark")!.textContent).toBe(
+        String(theme === "dark"),
+      );
+
+      fireEvent.click(container.querySelector("#toggle")!);
+
+      const nextTheme = theme === "dark" ? "light" : "dark";
+      expect(document.documentElement.style.colorScheme).toBe(nextTheme);
+      expect(localStorage.getItem(LOCAL_STORAGE_KEY)).toBe(nextTheme);
+    },
+  );
+
+  test("toggles the current document theme if the host changes it after mount", () => {
+    const { container } = render(<ThemeWrapper />);
+    document.documentElement.style.colorScheme = "dark";
+
+    fireEvent.click(container.querySelector("#toggle")!);
+
+    expect(container.querySelector("#isDark")!.textContent).toBe("false");
+    expect(document.documentElement.style.colorScheme).toBe("light");
+    expect(localStorage.getItem(LOCAL_STORAGE_KEY)).toBe("light");
+  });
+
+  test("applies each toggle once in Strict Mode and synchronizes sibling state", () => {
+    const { container } = render(
+      <StrictMode>
+        <PairWrapper />
+      </StrictMode>,
+    );
+    const listener = vi.fn();
+    window.addEventListener(THEME_CHANGE_EVENT, listener);
+
+    try {
+      fireEvent.click(container.querySelector("#toggle-a")!);
+      expect(listener).toHaveBeenCalledTimes(1);
+      expect(container.querySelector("#a")!.textContent).toBe("true");
+      expect(container.querySelector("#b")!.textContent).toBe("true");
+
+      fireEvent.click(container.querySelector("#toggle-a")!);
+      expect(listener).toHaveBeenCalledTimes(2);
+      expect(container.querySelector("#a")!.textContent).toBe("false");
+      expect(container.querySelector("#b")!.textContent).toBe("false");
+    } finally {
+      window.removeEventListener(THEME_CHANGE_EVENT, listener);
+    }
   });
 });
 
