@@ -3,7 +3,7 @@ import { defineConfig } from "vite";
 import react, { reactCompilerPreset } from "@vitejs/plugin-react";
 import babel from "@rolldown/plugin-babel";
 
-import pkg from "./package.json";
+import pkg from "./package.json" with { type: "json" };
 
 const { dependencies = {}, peerDependencies = {} } = pkg as {
   dependencies?: Record<string, string>;

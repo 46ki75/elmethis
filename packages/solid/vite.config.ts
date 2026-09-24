@@ -2,7 +2,7 @@
 import { defineConfig } from "vite";
 import solid from "vite-plugin-solid";
 
-import pkg from "./package.json";
+import pkg from "./package.json" with { type: "json" };
 
 const { dependencies = {}, peerDependencies = {} } = pkg as {
   dependencies?: Record<string, string>;
