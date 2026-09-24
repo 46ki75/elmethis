@@ -3,7 +3,7 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 
-import pkg from "./package.json";
+import pkg from "./package.json" with { type: "json" };
 
 const { dependencies = {}, peerDependencies = {} } = pkg as {
   dependencies?: Record<string, string>;
