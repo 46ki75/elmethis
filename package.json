@@ -14,7 +14,7 @@
   "devDependencies": {
     "@types/node": "^26.5.1",
     "lefthook": "^2.1.14",
-    "prettier": "3.9.6",
+    "prettier": "3.9.8",
     "stylelint": "^17.15.0",
     "typescript": "~6.0.3"
   },

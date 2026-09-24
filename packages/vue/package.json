@@ -100,7 +100,7 @@
     "happy-dom": "^20.14.3",
     "jiti": "2.7.0",
     "playwright": "^1.63.0",
-    "prettier": "3.9.6",
+    "prettier": "3.9.8",
     "storybook": "^10.6.0",
     "stylelint": "^17.15.0",
     "typescript": "~6.0.3",
