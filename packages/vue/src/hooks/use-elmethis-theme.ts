@@ -7,7 +7,7 @@ const LOCAL_STORAGE_KEY = "elmethis-theme";
  * theme mutation. Each `useElmethisTheme()` call owns an independent piece of
  * state, and the `storage` event only fires in *other* tabs — so without this
  * event, sibling components in the same tab would never see a toggle.
- * `detail` carries the new `Theme | null` (`null` = reverted to OS auto).
+ * `detail` carries the new `Theme | null` (`null` = inline pin removed).
  */
 export const THEME_CHANGE_EVENT = "elmethis-theme-change";
 
@@ -15,16 +15,15 @@ type Theme = "light" | "dark";
 
 /**
  * Coerce a raw storage value into an explicit Theme, or `null` when no
- * explicit choice is stored. `null` means "follow the OS" — i.e. fall back
- * to the `color-scheme: light dark` default, which tracks
- * `prefers-color-scheme`.
+ * explicit choice is stored. Without a stored choice, the host's computed
+ * `color-scheme` wins; the `light dark` default tracks `prefers-color-scheme`.
  *
  * Exported so the (otherwise inline) decision rule can be regression-tested
  * directly without having to dispatch a real `StorageEvent`.
  *
  * Only the literal strings `"dark"` and `"light"` are explicit choices;
  * anything else — including `null` (the key was cleared in another tab) and
- * unknown strings — resolves to `null` (auto / OS).
+ * unknown strings — resolves to `null` (no stored override).
  */
 export const parseTheme = (raw: string | null): Theme | null =>
   raw === "dark" ? "dark" : raw === "light" ? "light" : null;
@@ -33,6 +32,17 @@ export const parseTheme = (raw: string | null): Theme | null =>
 const prefersDark = (): boolean =>
   typeof matchMedia !== "undefined" &&
   matchMedia("(prefers-color-scheme: dark)").matches;
+
+const resolveDocumentTheme = (osPrefersDark = prefersDark()): boolean => {
+  // Hosts such as Storybook can pin a scheme without persisting a choice.
+  // Read computed CSS so stylesheet pins (including `only light`) count too.
+  const schemes = window
+    .getComputedStyle(document.documentElement)
+    .colorScheme.split(/\s+/);
+  const supportsDark = schemes.includes("dark");
+  const supportsLight = schemes.includes("light");
+  return supportsDark !== supportsLight ? supportsDark : osPrefersDark;
+};
 
 // Theme switching is native: every themed token is a `light-dark()` value
 // that resolves against the root's computed `color-scheme`. Pinning a theme
@@ -48,7 +58,7 @@ const prefersDark = (): boolean =>
 const applyTheme = (theme: Theme | null, persist: boolean): void => {
   const root = document.documentElement;
   if (theme == null) {
-    // Revert to the OS-driven default (`color-scheme: light dark`).
+    // Release the inline pin so host CSS (by default `light dark`) takes over.
     root.style.removeProperty("color-scheme");
     root.removeAttribute("data-theme");
     if (persist && typeof localStorage !== "undefined") {
@@ -68,7 +78,7 @@ const applyTheme = (theme: Theme | null, persist: boolean): void => {
 };
 
 /**
- * Resolve the initial dark-mode flag without touching the DOM. Falls back to
+ * Resolve the initial dark-mode flag without mutating the DOM. Falls back to
  * `false` on the server, where neither `localStorage` nor `matchMedia` exists,
  * so the `ref` seeds identically during SSR.
  */
@@ -77,9 +87,8 @@ const initialIsDark = (): boolean => {
     return false;
   }
   const stored = parseTheme(localStorage.getItem(LOCAL_STORAGE_KEY));
-  // An explicit choice wins; otherwise mirror the OS so the toggle icon
-  // reflects what `color-scheme: light dark` actually renders.
-  return stored != null ? stored === "dark" : prefersDark();
+  // A stored choice wins; otherwise respect the host's scheme before the OS.
+  return stored != null ? stored === "dark" : resolveDocumentTheme();
 };
 
 /**
@@ -106,7 +115,7 @@ export function useElmethisTheme(): {
   // No SSR guard needed — this is only invoked from a DOM click handler,
   // which by definition runs on the hydrated client.
   const toggleTheme = (): void => {
-    isDarkTheme.value = !isDarkTheme.value;
+    isDarkTheme.value = !resolveDocumentTheme();
     applyTheme(isDarkTheme.value ? "dark" : "light", true);
   };
 
@@ -115,20 +124,18 @@ export function useElmethisTheme(): {
   // from `toggleTheme` are idempotent here, so re-entry is harmless.
   const onThemeChange = (event: Event): void => {
     const theme = (event as CustomEvent<Theme | null>).detail;
-    isDarkTheme.value = theme != null ? theme === "dark" : prefersDark();
+    isDarkTheme.value =
+      theme != null ? theme === "dark" : resolveDocumentTheme();
   };
 
-  // The `storage` event fires on `window`, not `document`. A cleared key
-  // (next == null) reverts to the OS preference rather than locking in a theme.
+  // The `storage` event fires on `window`, not `document`.
   const onStorage = (event: StorageEvent): void => {
     if (event.key !== LOCAL_STORAGE_KEY) {
       return;
     }
-    const next = parseTheme(event.newValue);
-    isDarkTheme.value = next != null ? next === "dark" : prefersDark();
-    // `persist: false` — the other tab already wrote to localStorage; we just
-    // mirror the DOM here.
-    applyTheme(next, false);
+    // Apply first; the broadcast resolves the default after removing the pin.
+    // The other tab already wrote storage, so only mirror the DOM here.
+    applyTheme(parseTheme(event.newValue), false);
   };
 
   // In auto mode the page restyles natively when the OS preference flips
@@ -138,7 +145,7 @@ export function useElmethisTheme(): {
   let mql: MediaQueryList | undefined;
   const onOsChange = (event: MediaQueryListEvent): void => {
     if (parseTheme(localStorage.getItem(LOCAL_STORAGE_KEY)) == null) {
-      isDarkTheme.value = event.matches;
+      isDarkTheme.value = resolveDocumentTheme(event.matches);
     }
   };
 
@@ -147,8 +154,8 @@ export function useElmethisTheme(): {
     window.addEventListener("storage", onStorage);
 
     // Mirror a persisted choice into the DOM (the flag was already resolved in
-    // the ref initializer). With no explicit choice we leave
-    // `color-scheme: light dark` in place so the page follows the OS natively.
+    // the ref initializer). With no stored choice we preserve the host's scheme,
+    // including `color-scheme: light dark` for native OS preference tracking.
     const stored = parseTheme(localStorage.getItem(LOCAL_STORAGE_KEY));
     if (stored != null) {
       applyTheme(stored, false);

@@ -1,6 +1,6 @@
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { mount } from "@vue/test-utils";
-import { createSSRApp, defineComponent, h } from "vue";
+import { createSSRApp, defineComponent, h, nextTick } from "vue";
 import { renderToString } from "vue/server-renderer";
 
 import {
@@ -96,6 +96,51 @@ describe("[CSR] useElmethisTheme — toggleTheme()", () => {
     const wrapper = mount(ThemeProbe);
     // The ref initializer reads storage synchronously during setup.
     expect(wrapper.find(".is-dark").text()).toBe("true");
+  });
+});
+
+describe("[CSR] useElmethisTheme — host-provided color scheme", () => {
+  beforeEach(resetRoot);
+  afterEach(() => {
+    vi.restoreAllMocks();
+    resetRoot();
+  });
+
+  it.each(["light", "dark"] as const)(
+    "resolves a host-pinned %s theme instead of the opposite OS preference",
+    async (theme) => {
+      const preference = window.matchMedia("(prefers-color-scheme: dark)");
+      vi.spyOn(preference, "matches", "get").mockReturnValue(theme === "light");
+      vi.spyOn(window, "matchMedia").mockReturnValue(preference);
+      root().style.colorScheme = theme;
+      const wrapper = mount(ThemeProbe);
+
+      expect(wrapper.find(".is-dark").text()).toBe(String(theme === "dark"));
+      expect(localStorage.getItem(LOCAL_STORAGE_KEY)).toBeNull();
+
+      preference.dispatchEvent(
+        new MediaQueryListEvent("change", { matches: theme === "light" }),
+      );
+      await nextTick();
+      expect(wrapper.find(".is-dark").text()).toBe(String(theme === "dark"));
+
+      await wrapper.find("button").trigger("click");
+
+      const nextTheme = theme === "dark" ? "light" : "dark";
+      expect(root().style.colorScheme).toBe(nextTheme);
+      expect(localStorage.getItem(LOCAL_STORAGE_KEY)).toBe(nextTheme);
+    },
+  );
+
+  it("toggles the current document theme if the host changes it after mount", async () => {
+    const wrapper = mount(ThemeProbe);
+    root().style.colorScheme = "dark";
+
+    await wrapper.find("button").trigger("click");
+
+    expect(wrapper.find(".is-dark").text()).toBe("false");
+    expect(root().style.colorScheme).toBe("light");
+    expect(localStorage.getItem(LOCAL_STORAGE_KEY)).toBe("light");
   });
 });
 
