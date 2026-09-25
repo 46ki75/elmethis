@@ -110,7 +110,7 @@
     "storybook-solidjs-vite": "^10.7.2",
     "stylelint": "^17.15.0",
     "typescript": "~6.0.3",
-    "typescript-eslint": "^8.70.0",
+    "typescript-eslint": "^8.70.1",
     "vite": "^8.3.0",
     "vite-plugin-solid": "^2.11.14",
     "vitest": "5.0.1"
