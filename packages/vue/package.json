@@ -72,7 +72,7 @@
     "@elmethis/core": "workspace:^",
     "@formkit/auto-animate": "^0.10.0",
     "@mdi/js": "^7.4.47",
-    "@vueuse/core": "^14.4.0",
+    "@vueuse/core": "^15.0.0",
     "clsx": "^2.1.1",
     "dompurify": "^3.4.15",
     "es-toolkit": "^1.52.0",
