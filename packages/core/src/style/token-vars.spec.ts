@@ -7,6 +7,25 @@ describe("tokenVars", () => {
     expect(tokenVars["--elmethis-primitive-color-gold-200"]).toBe("#efecea");
   });
 
+  it("emits complete chromatic scales as concrete hex colors", () => {
+    for (const hue of [
+      "red",
+      "orange",
+      "yellow",
+      "green",
+      "cyan",
+      "blue",
+      "purple",
+      "magenta",
+    ]) {
+      for (const step of [100, 200, 300, 400, 500, 600, 700, 800, 900]) {
+        expect(tokenVars[`--elmethis-primitive-color-${hue}-${step}`]).toMatch(
+          /^#[\da-f]{6}$/,
+        );
+      }
+    }
+  });
+
   it("references primitives from common semantic tokens", () => {
     expect(tokenVars["--elmethis-color-accent-link"]).toBe(
       "var(--elmethis-primitive-color-blue-500)",

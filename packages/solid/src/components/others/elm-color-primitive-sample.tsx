@@ -12,19 +12,18 @@ const FORMAT_COLOR_FILL_PATH =
 const HEXADECIMAL_PATH =
   "M7 7C5.9 7 5 7.9 5 9V15C5 16.11 5.9 17 7 17H9C10.11 17 11 16.11 11 15V9C11 7.9 10.11 7 9 7H7M7 9H9V15H7V9M17.6 17L15.5 14.9L13.4 17L12 15.6L14.1 13.5L12 11.4L13.4 10L15.5 12.1L17.6 10L19 11.4L16.9 13.5L19 15.6L17.6 17Z";
 
-const CHROMATIC_STEPS = [100, 500, 900];
-const FULL_STEPS = [100, 200, 300, 400, 500, 600, 700, 800, 900];
+const COLOR_STEPS = [100, 200, 300, 400, 500, 600, 700, 800, 900];
 const PRIMITIVE_SCALES = [
-  { hue: "red", steps: CHROMATIC_STEPS },
-  { hue: "orange", steps: CHROMATIC_STEPS },
-  { hue: "yellow", steps: CHROMATIC_STEPS },
-  { hue: "green", steps: CHROMATIC_STEPS },
-  { hue: "cyan", steps: CHROMATIC_STEPS },
-  { hue: "blue", steps: CHROMATIC_STEPS },
-  { hue: "purple", steps: CHROMATIC_STEPS },
-  { hue: "magenta", steps: CHROMATIC_STEPS },
-  { hue: "slate", steps: FULL_STEPS },
-  { hue: "gold", steps: FULL_STEPS },
+  { hue: "red", steps: COLOR_STEPS },
+  { hue: "orange", steps: COLOR_STEPS },
+  { hue: "yellow", steps: COLOR_STEPS },
+  { hue: "green", steps: COLOR_STEPS },
+  { hue: "cyan", steps: COLOR_STEPS },
+  { hue: "blue", steps: COLOR_STEPS },
+  { hue: "purple", steps: COLOR_STEPS },
+  { hue: "magenta", steps: COLOR_STEPS },
+  { hue: "slate", steps: COLOR_STEPS },
+  { hue: "gold", steps: COLOR_STEPS },
 ];
 
 export const ElmColorPrimitiveSample = (

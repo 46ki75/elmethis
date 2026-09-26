@@ -21,14 +21,27 @@ afterEach(() => {
 });
 
 describe("[CSR] ElmColorPrimitiveSample", () => {
-  it("renders representative primitive swatches and the default copy mode", () => {
+  it("renders every primitive color step and the default copy mode", () => {
     const rendered = render(() => <ElmColorPrimitiveSample />);
 
-    expect(
-      rendered.container.querySelector(
-        '[data-copy-token="--elmethis-primitive-color-red-500"]',
-      ),
-    ).toBeInTheDocument();
+    for (const hue of [
+      "red",
+      "orange",
+      "yellow",
+      "green",
+      "cyan",
+      "blue",
+      "purple",
+      "magenta",
+    ]) {
+      for (const step of [200, 300, 400, 600, 700, 800]) {
+        expect(
+          rendered.container.querySelector(
+            `[data-copy-token="--elmethis-primitive-color-${hue}-${step}"]`,
+          ),
+        ).toBeInTheDocument();
+      }
+    }
     expect(
       rendered.container.querySelector(
         '[data-copy-token="--elmethis-primitive-color-slate-700"]',

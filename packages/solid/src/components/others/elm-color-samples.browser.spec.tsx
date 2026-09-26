@@ -16,12 +16,12 @@ describe("[Browser] color samples", () => {
       .mockResolvedValue();
     const rendered = render(() => <ElmColorPrimitiveSample />);
     const screen = page.elementLocator(rendered.baseElement);
-    const token = "--elmethis-primitive-color-red-500";
+    const token = "--elmethis-primitive-color-red-200";
 
     await screen.getByRole("button").click();
     await screen.getByTitle(token).click();
 
-    await vi.waitFor(() => expect(writeText).toHaveBeenCalledWith("#ae6e6e"));
+    await vi.waitFor(() => expect(writeText).toHaveBeenCalledWith("#dbc1c0"));
     expect(rendered.getByTitle(token)).toHaveTextContent("copied!");
   });
 

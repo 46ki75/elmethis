@@ -1,3 +1,5 @@
+import { createColorScale } from "./color-scale";
+
 /**
  * Design tokens for `@elmethis/core` — the single source of truth that the
  * vanilla-extract build (`scripts/build-tokens.ts`) emits to `dist/tokens.css`
@@ -24,14 +26,14 @@ export type SemanticValue =
 
 const PRIMITIVE_VALUES = {
   color: {
-    red: { 100: "#e9dddd", 500: "#ae6e6e", 900: "#291313" },
-    orange: { 100: "#ebdfdb", 500: "#b8816e", 900: "#3f251c" },
-    yellow: { 100: "#ebe6db", 500: "#b09a66", 900: "#332b19" },
-    green: { 100: "#dde9e2", 500: "#659878", 900: "#15281d" },
-    cyan: { 100: "#dde9e7", 500: "#6091a0", 900: "#203b37" },
-    blue: { 100: "#dde2e9", 500: "#68779f", 900: "#242d3e" },
-    purple: { 100: "#e3dde9", 500: "#8d799f", 900: "#271836" },
-    magenta: { 100: "#eadce4", 500: "#b17396", 900: "#3c1f2f" },
+    red: createColorScale("#e9dddd", "#ae6e6e", "#291313"),
+    orange: createColorScale("#ebdfdb", "#b8816e", "#3f251c"),
+    yellow: createColorScale("#ebe6db", "#b09a66", "#332b19"),
+    green: createColorScale("#dde9e2", "#659878", "#15281d"),
+    cyan: createColorScale("#dde9e7", "#6091a0", "#203b37"),
+    blue: createColorScale("#dde2e9", "#68779f", "#242d3e"),
+    purple: createColorScale("#e3dde9", "#8d799f", "#271836"),
+    magenta: createColorScale("#eadce4", "#b17396", "#3c1f2f"),
     slate: {
       100: "#d7d9e1",
       200: "#b0b5be",
