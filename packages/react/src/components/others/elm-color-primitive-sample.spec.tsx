@@ -18,12 +18,24 @@ describe("[CSR] ElmColorPrimitiveSample", () => {
   it("renders swatches stamped with their primitive token names", () => {
     const { container } = render(<ElmColorPrimitiveSample />);
 
-    // A chromatic hue (sparse 100/500/900 scale) and a neutral (full scale).
-    expect(
-      container.querySelector(
-        '[data-copy-token="--elmethis-primitive-color-red-500"]',
-      ),
-    ).not.toBeNull();
+    for (const hue of [
+      "red",
+      "orange",
+      "yellow",
+      "green",
+      "cyan",
+      "blue",
+      "purple",
+      "magenta",
+    ]) {
+      for (const step of [200, 300, 400, 600, 700, 800]) {
+        expect(
+          container.querySelector(
+            `[data-copy-token="--elmethis-primitive-color-${hue}-${step}"]`,
+          ),
+        ).not.toBeNull();
+      }
+    }
     expect(
       container.querySelector(
         '[data-copy-token="--elmethis-primitive-color-slate-700"]',

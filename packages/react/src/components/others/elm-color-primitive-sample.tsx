@@ -27,21 +27,19 @@ const rgbToHex = (rgb: string): string | null => {
   return `#${channel(parts[0])}${channel(parts[1])}${channel(parts[2])}`;
 };
 
-const CHROMATIC_STEPS = [100, 500, 900];
-
-const FULL_STEPS = [100, 200, 300, 400, 500, 600, 700, 800, 900];
+const COLOR_STEPS = [100, 200, 300, 400, 500, 600, 700, 800, 900];
 
 const PRIMITIVE_SCALES = [
-  { hue: "red", steps: CHROMATIC_STEPS },
-  { hue: "orange", steps: CHROMATIC_STEPS },
-  { hue: "yellow", steps: CHROMATIC_STEPS },
-  { hue: "green", steps: CHROMATIC_STEPS },
-  { hue: "cyan", steps: CHROMATIC_STEPS },
-  { hue: "blue", steps: CHROMATIC_STEPS },
-  { hue: "purple", steps: CHROMATIC_STEPS },
-  { hue: "magenta", steps: CHROMATIC_STEPS },
-  { hue: "slate", steps: FULL_STEPS },
-  { hue: "gold", steps: FULL_STEPS },
+  { hue: "red", steps: COLOR_STEPS },
+  { hue: "orange", steps: COLOR_STEPS },
+  { hue: "yellow", steps: COLOR_STEPS },
+  { hue: "green", steps: COLOR_STEPS },
+  { hue: "cyan", steps: COLOR_STEPS },
+  { hue: "blue", steps: COLOR_STEPS },
+  { hue: "purple", steps: COLOR_STEPS },
+  { hue: "magenta", steps: COLOR_STEPS },
+  { hue: "slate", steps: COLOR_STEPS },
+  { hue: "gold", steps: COLOR_STEPS },
 ];
 
 export const ElmColorPrimitiveSample = ({
@@ -147,8 +145,6 @@ export const ElmColorPrimitiveSample = ({
                 <div
                   key={token}
                   className={styles.swatch}
-                  // Align each step to its scale position so sparse
-                  // (100/500/900) and full rows share columns.
                   style={{ gridColumn: String(step / 100) }}
                   data-copy-token={token}
                   title={token}

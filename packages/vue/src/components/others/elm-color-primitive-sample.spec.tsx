@@ -15,11 +15,26 @@ import { ElmColorPrimitiveSample } from "./elm-color-primitive-sample";
 describe("[CSR] ElmColorPrimitiveSample", () => {
   it("renders swatches stamped with their primitive token names", () => {
     const wrapper = mount(ElmColorPrimitiveSample);
-    expect(
-      wrapper
-        .find('[data-copy-token="--elmethis-primitive-color-red-500"]')
-        .exists(),
-    ).toBe(true);
+    for (const hue of [
+      "red",
+      "orange",
+      "yellow",
+      "green",
+      "cyan",
+      "blue",
+      "purple",
+      "magenta",
+    ]) {
+      for (const step of [200, 300, 400, 600, 700, 800]) {
+        expect(
+          wrapper
+            .find(
+              `[data-copy-token="--elmethis-primitive-color-${hue}-${step}"]`,
+            )
+            .exists(),
+        ).toBe(true);
+      }
+    }
     expect(
       wrapper
         .find('[data-copy-token="--elmethis-primitive-color-slate-700"]')
