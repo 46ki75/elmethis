@@ -106,7 +106,7 @@ export function useAgent(options: UseAgentOptions): UseAgentReturn {
   });
   const getTools = () => dynamicTools?.() ?? staticTools ?? {};
 
-  const executeRun = async (withContext: boolean) => {
+  const executeRun = async () => {
     if (!agent) {
       return;
     }
@@ -114,12 +114,11 @@ export function useAgent(options: UseAgentOptions): UseAgentReturn {
     try {
       await agent.runAgent({
         tools: getToolDefinitions(getTools()),
-        ...(withContext && {
-          context: state.context?.map(({ value, description }) => ({
-            value,
-            description,
-          })),
-        }),
+        // Stateless backends reconstruct each run, including tool continuations.
+        context: state.context?.map(({ value, description }) => ({
+          value,
+          description,
+        })),
       });
     } catch {
       state.isRunning = false;
@@ -148,7 +147,7 @@ export function useAgent(options: UseAgentOptions): UseAgentReturn {
             return;
           }
           agent.messages.push(...pending);
-          await executeRun(false);
+          await executeRun();
         },
         onIdle: async () => {
           if (!agent || state.status !== "success") {
@@ -165,7 +164,7 @@ export function useAgent(options: UseAgentOptions): UseAgentReturn {
           };
           agent.messages.push(userMessage);
           state.messages.push(userMessage);
-          await executeRun(true);
+          await executeRun();
         },
       }),
     );
@@ -189,7 +188,7 @@ export function useAgent(options: UseAgentOptions): UseAgentReturn {
     const userMessage: UserMessage = { id: v7(), role: "user", content };
     agent.messages.push(userMessage);
     state.messages.push(userMessage);
-    await executeRun(true);
+    await executeRun();
   };
 
   const retry = async () => {
@@ -205,7 +204,7 @@ export function useAgent(options: UseAgentOptions): UseAgentReturn {
     const messages = agent.messages.slice(0, lastUserMessageIndex + 1);
     agent.messages = [...messages];
     state.messages = [...messages];
-    await executeRun(true);
+    await executeRun();
   };
 
   return {

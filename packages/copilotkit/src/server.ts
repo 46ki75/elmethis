@@ -1,12 +1,11 @@
+import "dotenv/config";
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { createCopilotHonoHandler } from "@copilotkit/runtime/v2";
+import { createCancellableCopilotHonoHandler } from "./cancellable-handler.ts";
 
-import { copilotkitClaudeRuntime, wordleRuntime } from "./copilotkit-claude.ts";
+import { copilotkitCodexRuntime, wordleRuntime } from "./copilotkit-codex.ts";
 import { weatherMcpApp } from "./mcp.ts";
-
-import "dotenv/config";
 
 const app = new Hono();
 
@@ -17,31 +16,30 @@ app.use("*", cors());
 // CopilotKit agents and the MCP endpoint used by frontend integrations.
 app.route("/", weatherMcpApp);
 
-// `/copilotkit/claude/agent/opus/run`
-// `/copilotkit/claude/agent/sonnet/run`
-// `/copilotkit/claude/agent/haiku/run`
+// `/copilotkit/codex/agent/default/run`
 app.route(
   "/",
-  createCopilotHonoHandler({
-    runtime: copilotkitClaudeRuntime,
-    basePath: "/copilotkit/claude",
+  createCancellableCopilotHonoHandler({
+    runtime: copilotkitCodexRuntime,
+    basePath: "/copilotkit/codex",
   }),
 );
 
 // `/copilotkit/wordle/agent/default/run`
 app.route(
   "/",
-  createCopilotHonoHandler({
+  createCancellableCopilotHonoHandler({
     runtime: wordleRuntime,
     basePath: "/copilotkit/wordle",
   }),
 );
 
 const port = parseInt(process.env.PORT || "8080", 10);
-const hostname = process.env.ADDRESS || "0.0.0.0";
+// This development backend spends the locally signed-in subscription.
+const hostname = process.env.ADDRESS || "127.0.0.1";
 
 serve({ fetch: app.fetch, port, hostname }, (info) => {
   console.log(
-    `CopilotKit (Claude Agent SDK) backend running on http://${info.address}:${info.port}`,
+    `CopilotKit (Codex subscription) backend running on http://${info.address}:${info.port}`,
   );
 });

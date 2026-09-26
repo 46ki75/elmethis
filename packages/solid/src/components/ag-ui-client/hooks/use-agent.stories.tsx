@@ -281,7 +281,7 @@ const meta = {
   tags: ["autodocs"],
   args: {
     scenario: "text-stream",
-    url: "http://localhost:19101/copilotkit/claude/agent/haiku/run",
+    url: "http://localhost:19101/copilotkit/codex/agent/default/run",
     mcpUrl: "http://localhost:19101/mcp",
   },
   argTypes: {
@@ -293,12 +293,7 @@ const meta = {
     },
     url: {
       description: "The live agent endpoint used when scenario is `http`.",
-      control: "radio",
-      options: [
-        "http://localhost:19101/copilotkit/claude/agent/opus/run",
-        "http://localhost:19101/copilotkit/claude/agent/sonnet/run",
-        "http://localhost:19101/copilotkit/claude/agent/haiku/run",
-      ],
+      control: "text",
     },
     mcpUrl: {
       description:

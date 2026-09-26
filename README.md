@@ -46,6 +46,9 @@ the CSR, SSR, and browser test layers. The shared
 [mise standard](https://github.com/46ki75/engineering-standard/blob/main/skills/engineering-standard/references/mise/README.md)
 describes tool ownership and task conventions.
 
+For the subscription-backed chat server, see the
+[CopilotKit Codex setup](packages/copilotkit/README.md).
+
 ## Development Ports
 
 - `packages/copilotkit/`: `19101` (also serves the stub Weather MCP server at `/mcp`)
