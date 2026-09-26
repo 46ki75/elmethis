@@ -45,7 +45,7 @@ depends = ["drawio:build", "ikuma-theme:build", "react:build", "solid:build", "v
 
 [tasks.test]
 description = "Run unit and SSR tests (browser tests have separate tasks)"
-depends = ["core:test", "ag-ui-stub:test", "react:test", "solid:test", "vue:test"]
+depends = ["core:test", "ag-ui-stub:test", "react:test", "solid:test", "vue:test", "copilotkit:test"]
 
 [tasks."configs:check"]
 description = "Check shared TypeScript and ESLint configuration"
@@ -266,9 +266,19 @@ dir = "packages/copilotkit"
 run = "pnpm run build"
 
 [tasks."copilotkit:check"]
-description = "Lint and type-check the CopilotKit backend"
+description = "Lint, type-check, and test the CopilotKit backend"
 dir = "packages/copilotkit"
 run = "pnpm run check"
+
+[tasks."copilotkit:login"]
+description = "Sign the CopilotKit backend into a ChatGPT/Codex subscription"
+dir = "packages/copilotkit"
+run = "pnpm run codex:login"
+
+[tasks."copilotkit:test"]
+description = "Test the Codex AG-UI adapter without a model or credentials"
+dir = "packages/copilotkit"
+run = "pnpm run test.unit"
 
 [tasks."copilotkit:dev"]
 description = "Start the CopilotKit backend on port 19101"

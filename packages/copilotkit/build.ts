@@ -1,21 +1,13 @@
 import { build } from "esbuild";
-import { readdirSync, rm } from "node:fs";
+import { readFileSync, rmSync, writeFileSync } from "node:fs";
+import { z } from "zod";
 
-const cwd = readdirSync(".");
+rmSync("dist", { recursive: true, force: true });
 
-if (cwd.includes("dist")) {
-  rm("dist", { recursive: true, force: true }, (err) => {
-    if (err) {
-      console.error("Error removing dist directory:", err);
-    } else {
-      console.log("dist directory removed successfully.");
-    }
-  });
-}
-
-const result = await build({
-  entryPoints: ["src/server.ts"],
-  outfile: "dist/index.mjs",
+await build({
+  entryPoints: { index: "src/server.ts", login: "src/codex-login.ts" },
+  outdir: "dist",
+  outExtension: { ".js": ".mjs" },
   bundle: true,
   platform: "node",
   target: "es2024",
@@ -25,4 +17,20 @@ const result = await build({
   },
 });
 
-console.log(result);
+// Codex resolves a platform-native executable at runtime; it cannot be bundled
+// into the server. Containers install their own target architecture's package.
+const manifest = z
+  .object({ dependencies: z.object({ "@openai/codex": z.string() }) })
+  .parse(JSON.parse(readFileSync("package.json", "utf8")));
+writeFileSync(
+  "dist/package.json",
+  JSON.stringify(
+    {
+      private: true,
+      type: "module",
+      dependencies: { "@openai/codex": manifest.dependencies["@openai/codex"] },
+    },
+    null,
+    2,
+  ) + "\n",
+);

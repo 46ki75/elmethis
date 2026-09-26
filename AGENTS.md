@@ -19,7 +19,7 @@ framework libraries are shipped as Storybooks to GitHub Pages.
 | `@elmethis/vue`        | `packages/vue`         | yes           | Vue 3 implementation (authored in TSX); same component surface as React. Storybook :19231                                                          |
 | `ikuma-theme`          | `packages/ikuma-theme` | VS Code / npm | VS Code dark/light extension; generates the published `@46ki75/ikuma-theme` Shiki package and Windows Terminal scheme                              |
 | `@elmethis/ag-ui-stub` | `packages/ag-ui-stub`  | no (private)  | Deterministic, LLM-free in-process `AbstractAgent` for frontend tests                                                                              |
-| `backend` (copilotkit) | `packages/copilotkit`  | no            | CopilotKit backend on the Claude Agent SDK (Hono :19101; also serves a stub Weather MCP at `/mcp`)                                                 |
+| `backend` (copilotkit) | `packages/copilotkit`  | no            | CopilotKit backend on Codex app-server with ChatGPT subscription login (Hono :19101; also serves a stub Weather MCP at `/mcp`)                                                 |
 
 `packages/mcp-server` and the root Cargo workspace (`crates/*`) are empty placeholders for a planned
 Rust MCP server — no code yet.

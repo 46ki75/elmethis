@@ -6,7 +6,7 @@ import {
   createAgentSubscriber,
   type AgentSubscriberState,
 } from "./create-agent-subscriber";
-import { defineTool } from "./tool-registry";
+import { defineTool, type ToolRegistry } from "./tool-registry";
 
 const state = (): AgentSubscriberState => ({
   error: null,
@@ -38,7 +38,7 @@ describe("createAgentSubscriber", () => {
       getTools: () => ({}),
       onNeedsReRun: vi.fn(),
     });
-    call(subscriber, "onRunInitialized");
+    call(subscriber, "onRunInitialized", { input: { tools: [] } });
     call(subscriber, "onReasoningStartEvent");
     expect(current).toMatchObject({
       isRunning: true,
@@ -56,6 +56,39 @@ describe("createAgentSubscriber", () => {
     expect(current.pendingInterrupts).not.toBe(interrupts);
   });
 
+  it("does not execute backend-origin calls added to the registry mid-run", async () => {
+    const execute = vi.fn();
+    const rerun = vi.fn();
+    let tools: ToolRegistry = {};
+    const subscriber = createAgentSubscriber({
+      state: state(),
+      getTools: () => tools,
+      onNeedsReRun: rerun,
+    });
+    call(subscriber, "onRunInitialized", { input: { tools: [] } });
+    call(subscriber, "onToolCallStartEvent", {
+      event: {
+        toolCallId: "backend-call",
+        metadata: { elmethisCodexTool: "backend" },
+      },
+    });
+    tools = {
+      mcp__aws_knowledge__search: defineTool({
+        description: "Late browser tool",
+        schema: z.object({}),
+        execute,
+      }),
+    };
+    await call(subscriber, "onToolCallEndEvent", {
+      event: { toolCallId: "backend-call" },
+      toolCallName: "mcp__aws_knowledge__search",
+      toolCallArgs: {},
+    });
+    await call(subscriber, "onRunFinalized");
+    expect(execute).not.toHaveBeenCalled();
+    expect(rerun).not.toHaveBeenCalled();
+  });
+
   it("executes frontend tools and requests a follow-up run", async () => {
     const rerun = vi.fn();
     const subscriber = createAgentSubscriber({
@@ -68,6 +101,15 @@ describe("createAgentSubscriber", () => {
         }),
       }),
       onNeedsReRun: rerun,
+    });
+    call(subscriber, "onRunInitialized", {
+      input: { tools: [{ name: "increment" }] },
+    });
+    call(subscriber, "onToolCallStartEvent", {
+      event: {
+        toolCallId: "tc1",
+        metadata: { elmethisCodexTool: "frontend" },
+      },
     });
     await call(subscriber, "onToolCallEndEvent", {
       event: { toolCallId: "tc1" },

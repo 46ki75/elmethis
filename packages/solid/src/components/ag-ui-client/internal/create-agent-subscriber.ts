@@ -35,9 +35,22 @@ export function createAgentSubscriber({
   onIdle,
 }: CreateAgentSubscriberOptions): AgentSubscriber {
   let pendingToolMessages: Message[] = [];
+  let toolsForRun: ToolRegistry = {};
+  const backendToolCalls = new Set<string>();
 
   return {
-    onRunInitialized() {
+    onRunInitialized({ input }) {
+      // Tool definitions are part of RunAgentInput. Registry changes apply to
+      // the next run, never to calls already emitted by the current backend.
+      const currentTools = getTools();
+      toolsForRun = {};
+      for (const { name } of input.tools) {
+        const tool = currentTools[name];
+        if (tool) {
+          toolsForRun[name] = tool;
+        }
+      }
+      backendToolCalls.clear();
       state.isRunning = true;
       state.status = "running";
       state.activity = "idle";
@@ -48,7 +61,10 @@ export function createAgentSubscriber({
       reconcileMessages(state.messages, messages);
     },
     async onToolCallEndEvent({ event, toolCallName, toolCallArgs }) {
-      const tool = getTools()[toolCallName];
+      if (backendToolCalls.delete(event.toolCallId)) {
+        return;
+      }
+      const tool = toolsForRun[toolCallName];
       if (!tool) {
         return;
       }
@@ -63,7 +79,10 @@ export function createAgentSubscriber({
     onTextMessageStartEvent() {
       state.activity = "writing";
     },
-    onToolCallStartEvent() {
+    onToolCallStartEvent({ event }) {
+      if (event.metadata?.elmethisCodexTool === "backend") {
+        backendToolCalls.add(event.toolCallId);
+      }
       state.activity = "calling_tool";
     },
     onReasoningStartEvent() {

@@ -1,5 +1,10 @@
 import { render } from "@solidjs/testing-library";
-import type { AbstractAgent, AgentSubscriber, Message } from "@ag-ui/client";
+import type {
+  AbstractAgent,
+  AgentSubscriber,
+  Message,
+  RunAgentParameters,
+} from "@ag-ui/client";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { useAgent, type UseAgentReturn } from "./use-agent";
@@ -7,6 +12,7 @@ import { useAgent, type UseAgentReturn } from "./use-agent";
 class FakeAgent {
   messages: Message[] = [];
   runStarted = 0;
+  runs: (RunAgentParameters | undefined)[] = [];
   aborted = 0;
   private subscriber: AgentSubscriber | undefined;
   private finishCurrent: (() => void) | undefined;
@@ -20,8 +26,11 @@ class FakeAgent {
     return this.subscriber !== undefined;
   }
 
-  async runAgent() {
-    await this.subscriber?.onRunInitialized?.({} as never);
+  async runAgent(parameters?: RunAgentParameters) {
+    this.runs.push(parameters);
+    await this.subscriber?.onRunInitialized?.({
+      input: { tools: parameters?.tools ?? [] },
+    } as never);
     this.runStarted += 1;
     return await new Promise<Record<string, never>>((resolve) => {
       this.finishCurrent = () => {
@@ -36,6 +45,14 @@ class FakeAgent {
         })();
       };
     });
+  }
+
+  async callTool() {
+    await this.subscriber?.onToolCallEndEvent?.({
+      event: { toolCallId: "weather-call" },
+      toolCallName: "weather",
+      toolCallArgs: {},
+    } as never);
   }
 
   finish() {
@@ -92,6 +109,33 @@ describe("useAgent", () => {
     expect(
       agent.state.messages.filter((message) => message.role === "user"),
     ).toHaveLength(2);
+  });
+
+  it("sends current application context on frontend-tool continuations", async () => {
+    const initial = [{ description: "location", value: "Tokyo" }];
+    const updated = [...initial, { description: "date", value: "2026-09-26" }];
+    agent.setContext(initial);
+    agent.addTool("weather", {
+      description: "Weather",
+      jsonSchema: { type: "object" },
+      execute: () => {
+        agent.setContext(updated);
+        return { weather: "sunny" };
+      },
+    });
+    const sent = agent.send([{ type: "text", text: "Weather here?" }]);
+    await vi.waitFor(() => expect(fake.runStarted).toBe(1));
+    await fake.callTool();
+    fake.finish();
+    await vi.waitFor(() => expect(fake.runStarted).toBe(2));
+    expect(fake.runs[0]?.context).toEqual(initial);
+    expect(fake.runs[1]?.context).toEqual(updated);
+    expect(fake.messages.at(-1)).toMatchObject({
+      role: "tool",
+      toolCallId: "weather-call",
+    });
+    fake.finish();
+    await sent;
   });
 
   it("dequeues a specific message without aborting the active run", async () => {
