@@ -39,6 +39,10 @@ run = ["pnpm --recursive run lint", "pnpm --recursive --if-present run lint.css"
 description = "Check formatting, lint, and types across the workspace"
 depends = ["fmt-check --all-files", "configs:check", "core:check", "ag-ui-stub:check", "drawio:check", "ikuma-theme:check", "react:check", "solid:check", "vue:check", "copilotkit:check"]
 
+[tasks.ci]
+description = "Run every package CI gate"
+depends = ["*:ci"]
+
 [tasks.build]
 description = "Build all workspace packages in dependency order"
 depends = ["drawio:build", "ikuma-theme:build", "react:build", "solid:build", "vue:build", "copilotkit:build"]
@@ -54,6 +58,9 @@ run = "pnpm run check.configs"
 [tasks."core:build"]
 description = "Build core modules, tokens, designs, and catalogs"
 dir = "packages/core"
+# The aggregate CI task also runs core:ci, which rebuilds dist internally.
+# Serialize these writers before dependent package gates consume core output.
+wait_for = ["core:ci"]
 run = "pnpm run build"
 
 [tasks."core:check"]
@@ -75,6 +82,8 @@ run = "pnpm run test.unit"
 [tasks."ag-ui-stub:build"]
 description = "Build the in-process AG-UI test agent"
 dir = "packages/ag-ui-stub"
+# Solid consumes this output while ag-ui-stub:ci also rebuilds it internally.
+wait_for = ["ag-ui-stub:ci"]
 run = "pnpm run build"
 
 [tasks."ag-ui-stub:check"]
@@ -267,6 +276,7 @@ run = "pnpm run build"
 
 [tasks."copilotkit:check"]
 description = "Lint, type-check, and test the CopilotKit backend"
+alias = "copilotkit:ci"
 dir = "packages/copilotkit"
 run = "pnpm run check"
 
