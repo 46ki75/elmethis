@@ -49,7 +49,7 @@
     "build.lib": "vite build",
     "build.solid": "tsc --project tsconfig.solid.json && node scripts/copy-solid-assets.mjs",
     "build.types": "tsc --project tsconfig.lib.json",
-    "build-storybook": "storybook build",
+    "build-storybook": "storybook build && node ../../scripts/verify-storybook-theme.mjs .",
     "dev": "storybook dev -p 19241 --no-open",
     "dev.lib": "vite build --watch",
     "fmt": "oxfmt --write ./src",

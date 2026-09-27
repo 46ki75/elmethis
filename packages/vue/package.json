@@ -46,7 +46,7 @@
     "build": "pnpm run build.lib && pnpm run build.types",
     "build.lib": "vite build",
     "build.types": "vue-tsc --project tsconfig.lib.json",
-    "build-storybook": "storybook build",
+    "build-storybook": "storybook build && node ../../scripts/verify-storybook-theme.mjs .",
     "dev": "storybook dev -p 19231 --no-open",
     "fmt": "oxfmt --write ./src",
     "fmt.check": "oxfmt --check ./src",

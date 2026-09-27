@@ -38,6 +38,9 @@ export default defineConfig({
   build: {
     outDir: "./lib/",
     target: "es2020",
+    // Preserve light-dark(): Lightning CSS's legacy fallback follows only the
+    // OS preference and cannot react to an explicit color-scheme switch.
+    cssTarget: ["chrome123", "firefox120", "safari17.5"],
     lib: {
       entry: "./src/index.ts",
       formats: ["es", "cjs"],
