@@ -43,7 +43,7 @@ child functions, `v-model` is manual `modelValue` + `onUpdate:modelValue`).
 | `pnpm test.browser` | Browser specs (real Chromium via Playwright)         |
 | `pnpm lint`         | ESLint                                               |
 | `pnpm lint.css`     | Stylelint                                            |
-| `pnpm fmt`          | Prettier                                             |
+| `pnpm fmt`          | Oxfmt                                                |
 
 ## Testing layers
 

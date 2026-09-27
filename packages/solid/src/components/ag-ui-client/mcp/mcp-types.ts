@@ -25,7 +25,8 @@ export interface McpPromptDescriptor {
 }
 
 export type McpPromptContent =
-  { type: "text"; text: string } | { type: string; [key: string]: unknown };
+  | { type: "text"; text: string }
+  | { type: string; [key: string]: unknown };
 
 export interface McpPromptMessage {
   role: "user" | "assistant";

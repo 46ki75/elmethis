@@ -35,11 +35,11 @@ checks; `mise run test` runs unit/SSR tests. Browser tests and their explicit
 installation are separate tasks. `mise run pages:build` assembles the Pages site.
 Component tasks build core and the AG-UI stub first when required.
 
-`mise run fmt` and `mise run fmt-check` use the same tracked JS/TS/JSON scope;
-pass repeated `--file <repo-relative-path>` arguments for a selection. Package
-checks also apply their existing package-specific formatting policies.
-Tasks work from the root or a subdirectory without shell activation. Make mise
-available on PATH for editor and Git hooks too.
+`mise run fmt` and `mise run fmt-check` use Oxfmt over the same tracked
+JS/TS/JSON scope; pass repeated `--file <repo-relative-path>` arguments for a
+selection. Package checks also apply their existing package-specific formatting
+policies. Tasks work from the root or a subdirectory without shell activation.
+Make mise available on PATH for editor and Git hooks too.
 
 See `AGENTS.md` for repository commands and architecture, and `TESTING.md` for
 the CSR, SSR, and browser test layers. The shared

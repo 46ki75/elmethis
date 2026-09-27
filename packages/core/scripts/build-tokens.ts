@@ -1,9 +1,10 @@
 import { build } from "esbuild";
 import { vanillaExtractPlugin } from "@vanilla-extract/esbuild-plugin";
-import prettier from "prettier";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+
+import { formatGenerated } from "./format-generated";
 
 /**
  * Compiles `src/style/token.css.ts` with vanilla-extract and writes the
@@ -37,12 +38,7 @@ const stripped = css.text.replace(
   "",
 );
 
-// Format with the project's prettier config so the artifact matches house style.
-const config = await prettier.resolveConfig(outFile);
-const output = await prettier.format(stripped, {
-  ...config,
-  parser: "css",
-});
+const output = await formatGenerated(outFile, stripped);
 
 await mkdir(path.dirname(outFile), { recursive: true });
 await writeFile(outFile, output);

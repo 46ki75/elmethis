@@ -166,7 +166,10 @@ export const ElmTextField = (props: ElmTextFieldProps) => {
           }}
           value={
             (local.value ?? local.defaultValue) as
-              string | number | string[] | undefined
+              | string
+              | number
+              | string[]
+              | undefined
           }
           type={inputType()}
           maxLength={local.maxLength}

@@ -7,14 +7,14 @@
   "homepage": "https://46ki75.github.io/elmethis",
   "scripts": {
     "check.configs": "pnpm run fmt.configs && pnpm run lint.configs && pnpm run typecheck.configs",
-    "fmt.configs": "prettier --check \"**/tsconfig*.json\" \"**/eslint.config.ts\"",
+    "fmt.configs": "oxfmt --check .oxfmtrc.json \"**/tsconfig*.json\" \"**/eslint.config.ts\"",
     "lint.configs": "pnpm --recursive exec eslint eslint.config.ts",
     "typecheck.configs": "tsc --project tsconfig.eslint.json"
   },
   "devDependencies": {
     "@types/node": "^26.5.1",
     "lefthook": "^2.1.14",
-    "prettier": "3.9.8",
+    "oxfmt": "0.70.0",
     "stylelint": "^17.15.0",
     "typescript": "~6.0.3"
   },

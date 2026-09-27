@@ -19,7 +19,7 @@ Components and hooks follow the shared Elmethis component surface:
 | `pnpm test.browser` | Browser specs (real Chromium via Playwright)        |
 | `pnpm lint`         | ESLint                                              |
 | `pnpm lint.css`     | Stylelint                                           |
-| `pnpm fmt`          | Prettier                                            |
+| `pnpm fmt`          | Oxfmt                                               |
 
 ## Testing layers
 

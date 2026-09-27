@@ -6,9 +6,18 @@ import { reconcileMessages } from "./reconcile-messages";
 import type { ToolRegistry } from "./tool-registry";
 
 export type AgentRunStatus =
-  "idle" | "running" | "success" | "awaiting_input" | "error" | "aborted";
+  | "idle"
+  | "running"
+  | "success"
+  | "awaiting_input"
+  | "error"
+  | "aborted";
 export type AgentActivity =
-  "idle" | "thinking" | "writing" | "calling_tool" | "updating_state";
+  | "idle"
+  | "thinking"
+  | "writing"
+  | "calling_tool"
+  | "updating_state";
 
 export interface AgentSubscriberState {
   error: string | null;

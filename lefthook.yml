@@ -14,20 +14,35 @@ fmt:
   files: git ls-files
   parallel: true
   jobs:
-    # prettier runs once from the repo root: unlike eslint/stylelint/vitest it
-    # has no per-package config, so there's nothing to resolve per-package. From
-    # the root it reads the single root .prettierignore (and .gitignore) by
-    # default, and also covers non-package files (root configs, docs, .claude/).
-    - name: prettier
-      run: pnpm exec prettier --write {files}
+    # Oxfmt runs once from the repo root because it has one repository-wide
+    # config. This also covers non-package files such as root configs and hooks.
+    - name: oxfmt
+      run: pnpm exec oxfmt --write {files}
       glob: "*.{js,ts,jsx,tsx,json}"
+      exclude: &oxfmt-excludes
+        - "node_modules/**"
+        - "**/node_modules/**"
+        - "dist/**"
+        - "**/dist/**"
+        - "lib/**"
+        - "**/lib/**"
+        - "lib-types/**"
+        - "**/lib-types/**"
+        - "storybook-static/**"
+        - "**/storybook-static/**"
+        - "package-lock.json"
+        - "**/package-lock.json"
+        - "package.json"
+        - "**/package.json"
+        - ".mise/locks/**"
 
 fmt-check:
   files: git ls-files
   jobs:
-    - name: prettier
-      run: pnpm exec prettier --check {files}
+    - name: oxfmt
+      run: pnpm exec oxfmt --check {files}
       glob: "*.{js,ts,jsx,tsx,json}"
+      exclude: *oxfmt-excludes
 
 check:
   parallel: true

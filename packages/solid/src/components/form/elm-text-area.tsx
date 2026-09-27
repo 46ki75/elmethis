@@ -139,7 +139,10 @@ export const ElmTextArea = (props: ElmTextAreaProps) => {
           }}
           value={
             (local.value ?? local.defaultValue) as
-              string | number | string[] | undefined
+              | string
+              | number
+              | string[]
+              | undefined
           }
           rows={local.rows ?? 3}
           maxLength={local.maxLength}

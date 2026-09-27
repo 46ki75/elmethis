@@ -5,7 +5,6 @@
 .gitattributes
 eslint.config.ts
 .markdownlint-cli2.yaml
-.prettierrc
 CLAUDE.md
 scripts/**
 pnpm-lock.yaml
