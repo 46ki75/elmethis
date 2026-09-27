@@ -310,7 +310,9 @@ export const ElmHtml = defineComponent({
             return;
           }
           const data = event.data as
-            { kind?: unknown; height?: unknown } | null | undefined;
+            | { kind?: unknown; height?: unknown }
+            | null
+            | undefined;
           if (
             !data ||
             data.kind !== AUTO_HEIGHT_MESSAGE_KIND ||

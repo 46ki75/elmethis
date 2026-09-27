@@ -15,7 +15,7 @@ would send; `run.sh` substitutes the real repo root before piping.
 
 | Stub                    | Hook                | Exercises                                            |
 | ----------------------- | ------------------- | --------------------------------------------------- |
-| `fmt-formattable.json`  | `lefthook-fmt.mts`   | matching glob → `prettier` formats it               |
+| `fmt-formattable.json`  | `lefthook-fmt.mts`   | matching glob → `oxfmt` formats it                  |
 | `fmt-non-matching.json` | `lefthook-fmt.mts`   | in-repo but glob miss (`.md`) → fmt job skipped      |
 | `fmt-outside-repo.json` | `lefthook-fmt.mts`   | path outside the repo → guard skips, exit 0          |
 | `fmt-no-path.json`      | `lefthook-fmt.mts`   | no `tool_input.file_path` → early exit 0             |
@@ -26,8 +26,8 @@ would send; `run.sh` substitutes the real repo root before piping.
 
 - Both hooks always exit 0; they signal via stdout (the `block` decision),
   not the exit code — so judge `stop-*` runs by the printed JSON, not "exit 0".
-- `fmt` runs prettier once from the repo root (it has no per-package config), so
-  it formats any matching file. `check` runs eslint/stylelint/vitest per-package
+- `fmt` runs Oxfmt once from the repo root using the shared config, so it
+  formats any matching file. `check` runs Oxlint/Stylelint/Vitest per-package
   (`root:`) since each needs its own config, so it only acts on files under
   `packages/<pkg>/`; edits outside a package match no check job and are skipped.
 - The fmt hook is silent on success, and `fmt-formattable.json` targets a clean

@@ -24,7 +24,7 @@ describe("[CSR] ElmHtml rendering", () => {
     const { container } = render(() => (
       <ElmHtml
         html="<p>x</p>"
-        // eslint-disable-next-line solid/style-prop
+        // oxlint-disable-next-line solid/style-prop
         style="background-image:url(data:image/svg+xml;base64,AAAA);height:275px"
       />
     ));

@@ -9,7 +9,7 @@ describe("[SSR] ElmHtml", () => {
       <ElmHtml
         html={'<p data-value="quoted">inline</p>'}
         class="custom-frame"
-        // eslint-disable-next-line solid/style-prop
+        // oxlint-disable-next-line solid/style-prop
         style="height:240px;color:red"
         data-kind="artifact"
       />

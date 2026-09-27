@@ -158,7 +158,7 @@ export const useAsyncState = <Data,>(
       void execute(delay);
     }
     // Run once on the client after mount.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react-hooks-js/exhaustive-deps
   }, []);
 
   return { state, isReady, isLoading, error, execute };

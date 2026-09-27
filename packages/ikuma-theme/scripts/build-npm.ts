@@ -1,6 +1,6 @@
 import { mkdir, copyFile, writeFile, rm } from "node:fs/promises";
 import { dirname } from "node:path";
-import { format, resolveConfig } from "prettier";
+import { formatGenerated } from "./format-generated.ts";
 import { getOpenCodeTheme } from "./opencode.ts";
 import { getShikiTheme, type GetThemeOptions } from "./theme.ts";
 import root from "../package.json" with { type: "json" };
@@ -9,12 +9,8 @@ const OUT = "dist/npm";
 
 async function writeJson(file: string, data: unknown) {
   await mkdir(dirname(file), { recursive: true });
-  const config = await resolveConfig(file, { editorconfig: true });
-  const formatted = await format(JSON.stringify(data), {
-    ...config,
-    filepath: file,
-  });
-  await writeFile(file, formatted);
+  const code = await formatGenerated(file, JSON.stringify(data));
+  await writeFile(file, code);
   console.log(`wrote ${file}`);
 }
 

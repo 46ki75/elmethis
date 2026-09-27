@@ -30,7 +30,7 @@ describe("[CSR] ElmSwitch", () => {
     expect(switchRoot).not.toHaveAttribute("size");
   });
 
-  /* eslint-disable solid/style-prop -- This verifies native string-style passthrough. */
+  /* oxlint-disable solid/style-prop -- This verifies native string-style passthrough. */
   it("merges object and string styles after scoped defaults", () => {
     const rendered = render(() => (
       <>
@@ -60,7 +60,7 @@ describe("[CSR] ElmSwitch", () => {
         .style.getPropertyValue("--elmethis-scoped-color"),
     ).toBe("green");
   });
-  /* eslint-enable solid/style-prop */
+  /* oxlint-enable solid/style-prop */
 
   it("reflects falsy controlled state and requests parent-owned updates", () => {
     const [checked, setChecked] = createSignal(false);

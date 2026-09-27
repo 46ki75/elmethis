@@ -49,7 +49,7 @@ export function useDebouncedStore<T extends object>(
   // the debounced store shares a (mutable) reference with `initialValue`. Seeded
   // once at construction, so
   // later `initialValue` identity changes are deliberately ignored.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // oxlint-disable-next-line react-hooks-js/exhaustive-deps
   const seed = useMemo(() => cloneDeep(initialValue), []);
 
   const [store, setStore] = useState<T>(seed);

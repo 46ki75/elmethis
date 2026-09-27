@@ -6,15 +6,16 @@
   },
   "homepage": "https://46ki75.github.io/elmethis",
   "scripts": {
-    "check.configs": "pnpm run fmt.configs && pnpm run lint.configs && pnpm run typecheck.configs",
-    "fmt.configs": "prettier --check \"**/tsconfig*.json\" \"**/eslint.config.ts\"",
-    "lint.configs": "pnpm --recursive exec eslint eslint.config.ts",
-    "typecheck.configs": "tsc --project tsconfig.eslint.json"
+    "check.configs": "pnpm run fmt.configs && pnpm run check.oxlint-configs",
+    "check.oxlint-configs": "for file in packages/ag-ui-stub/src/index.ts packages/copilotkit/build.ts packages/core/src/index.ts packages/drawio/scripts/build-drawio-config.ts packages/ikuma-theme/scripts/index.ts packages/react/src/index.ts packages/solid/src/index.ts packages/vue/src/index.ts; do package=${file#packages/}; package=${package%%/*}; oxlint --config \"packages/$package/.oxlintrc.json\" --deny-warnings \"$file\" || exit 1; done && oxlint --deny-warnings packages/core/src/index.ts",
+    "fmt.configs": "oxfmt --check .oxfmtrc.json .oxlintrc.json \"**/tsconfig*.json\" \"**/.oxlintrc.json\""
   },
   "devDependencies": {
     "@types/node": "^26.5.1",
     "lefthook": "^2.1.14",
-    "prettier": "3.9.8",
+    "oxfmt": "0.70.0",
+    "oxlint": "1.85.0",
+    "oxlint-tsgolint": "7.0.2003",
     "stylelint": "^17.15.0",
     "typescript": "~6.0.3"
   },
@@ -24,8 +25,7 @@
     "overrides": {},
     "peerDependencyRules": {
       "allowedVersions": {
-        "@a2ui/markdown-it>@a2ui/web_core": "0.10",
-        "eslint-plugin-solid>eslint": "10"
+        "@a2ui/markdown-it>@a2ui/web_core": "0.10"
       }
     }
   }

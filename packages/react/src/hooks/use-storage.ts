@@ -67,7 +67,7 @@ export const useStorage = <T>({
       if (item !== null) {
         // Mount-time hydration from the storage area into React state —
         // the canonical "subscribe to an external store" effect.
-        // eslint-disable-next-line react-hooks/set-state-in-effect
+        // oxlint-disable-next-line react-hooks-js/set-state-in-effect
         setStateRaw(JSON.parse(item) as T);
       }
     } catch (e) {
@@ -108,7 +108,7 @@ export const useStorage = <T>({
     };
     // Re-subscribe only when the storage identity changes. `initialValue` is
     // read through a ref above so it does not need to be a dependency.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react-hooks-js/exhaustive-deps
   }, [storageArea, key, channel]);
 
   // Persist whenever `state` changes. Runs after mount (once the storage ref

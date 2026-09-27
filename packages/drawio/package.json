@@ -35,23 +35,20 @@
   "scripts": {
     "build": "tsx scripts/build-drawio-config.ts",
     "build.types": "tsc --noEmit",
-    "fmt": "prettier --write ./scripts ./README.md",
-    "fmt.check": "prettier --check ./scripts ./README.md",
-    "lint": "eslint \"scripts/**/*.ts\" eslint.config.ts --max-warnings=0",
+    "fmt": "oxfmt --write ./scripts ./README.md",
+    "fmt.check": "oxfmt --check ./scripts ./README.md",
+    "lint": "oxlint --type-aware --report-unused-disable-directives-severity=error --deny-warnings scripts",
     "check": "pnpm run fmt.check && pnpm run lint && pnpm run build.types && pnpm run build",
     "check.ci": "pnpm run check",
     "prepublishOnly": "pnpm run check"
   },
   "devDependencies": {
     "@elmethis/core": "workspace:^",
-    "@eslint/js": "latest",
     "@types/node": "26.5.1",
-    "eslint": "^10.11.0",
-    "globals": "^17.12.0",
-    "jiti": "2.7.0",
-    "prettier": "3.9.8",
+    "oxfmt": "0.70.0",
+    "oxlint": "1.85.0",
+    "oxlint-tsgolint": "7.0.2003",
     "tsx": "^4.23.15",
-    "typescript": "5.9.3",
-    "typescript-eslint": "^8.70.1"
+    "typescript": "5.9.3"
   }
 }

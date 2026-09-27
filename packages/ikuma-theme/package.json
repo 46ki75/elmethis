@@ -26,9 +26,9 @@
     "build:npm": "node scripts/build-npm.ts",
     "build:vsix": "vsce package --out dist/",
     "build.types": "tsc --noEmit",
-    "fmt": "prettier --write ./scripts",
-    "fmt.check": "prettier --check ./scripts",
-    "lint": "eslint \"scripts/**/*.ts\" eslint.config.ts --max-warnings=0",
+    "fmt": "oxfmt --write ./scripts",
+    "fmt.check": "oxfmt --check ./scripts",
+    "lint": "oxlint --type-aware --report-unused-disable-directives-severity=error --deny-warnings scripts",
     "check": "pnpm run fmt.check && pnpm run lint && pnpm run build.types && pnpm run build",
     "check.ci": "pnpm run check",
     "prepublish:npm": "pnpm run build:npm",
@@ -50,15 +50,12 @@
     ]
   },
   "devDependencies": {
-    "@eslint/js": "latest",
     "@types/node": "^26.5.1",
     "@vscode/vsce": "^4.0.0",
-    "eslint": "^10.11.0",
-    "globals": "^17.12.0",
-    "jiti": "2.7.0",
-    "prettier": "3.9.8",
+    "oxfmt": "0.70.0",
+    "oxlint": "1.85.0",
+    "oxlint-tsgolint": "7.0.2003",
     "rimraf": "^6.1.3",
-    "typescript": "5.9.3",
-    "typescript-eslint": "^8.70.1"
+    "typescript": "5.9.3"
   }
 }

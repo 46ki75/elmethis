@@ -90,7 +90,7 @@ export const useThrottledSignal = <T>(
       // No throttling: mirror `value` synchronously. Set-state-in-effect is
       // intentional here — it is the passthrough path of a sync-external-state
       // hook's unthrottled `interval <= 0` branch.
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+      // oxlint-disable-next-line react-hooks-js/set-state-in-effect
       setThrottledValue(value);
       return;
     }
@@ -117,7 +117,7 @@ export const useThrottledSignal = <T>(
       arm();
     }
     // else: write suppressed; trailing-edge fire will pick it up.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react-hooks-js/exhaustive-deps
   }, [value]);
 
   return { value, setValue, throttledValue, isCooling };

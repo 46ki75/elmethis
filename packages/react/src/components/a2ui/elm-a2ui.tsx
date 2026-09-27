@@ -121,7 +121,7 @@ export const ElmA2ui = ({
     const ctrl = new AbortController();
     // Clear the previous source's buffered lines when the stream url changes —
     // synchronizing the local buffer with the external stream it mirrors.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    // oxlint-disable-next-line react-hooks-js/set-state-in-effect
     setStreamMessages([]);
     fetch(url, { headers, signal: ctrl.signal })
       .then(async (res) => {

@@ -1,4 +1,4 @@
-/* eslint-disable solid/reactivity -- createMutable status entries update in place. */
+/* oxlint-disable solid/reactivity -- createMutable status entries update in place. */
 import { onCleanup, onMount } from "solid-js";
 import { createMutable } from "solid-js/store";
 

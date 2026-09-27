@@ -49,7 +49,6 @@ const res = spawnSync(
 if (res.status === 0) process.exit(0);
 
 // Strip any ANSI a tool emitted on its own; never block with an empty reason.
-// eslint-disable-next-line no-control-regex
 let raw = `${res.stdout ?? ""}${res.stderr ?? ""}`.replace(
   /\x1b\[[0-9;]*m/g,
   "",

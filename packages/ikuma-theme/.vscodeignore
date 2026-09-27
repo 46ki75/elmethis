@@ -3,9 +3,8 @@
 .vscode-test/**
 .gitignore
 .gitattributes
-eslint.config.ts
+.oxlintrc.json
 .markdownlint-cli2.yaml
-.prettierrc
 CLAUDE.md
 scripts/**
 pnpm-lock.yaml

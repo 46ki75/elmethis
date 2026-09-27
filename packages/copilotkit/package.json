@@ -9,7 +9,7 @@
         "prestart": "pnpm run build",
         "start": "node ./dist/index.mjs",
         "build": "node build.ts",
-        "lint": "eslint \"src/**/*.ts\" build.ts eslint.config.ts --max-warnings=0",
+        "lint": "oxlint --type-aware --report-unused-disable-directives-severity=error --deny-warnings src build.ts",
         "check": "pnpm run lint && tsc --noEmit && pnpm run test.unit",
         "test.unit": "node --test src/*.spec.ts",
         "codex:login": "node src/codex-login.ts",
@@ -31,13 +31,10 @@
         "zod": "^4.0.0"
     },
     "devDependencies": {
-        "@eslint/js": "latest",
         "@types/node": "^26.5.1",
         "esbuild": "^0.28.2",
-        "eslint": "^10.11.0",
-        "globals": "^17.12.0",
-        "jiti": "2.7.0",
-        "typescript": "^5.6.2",
-        "typescript-eslint": "^8.70.1"
+        "oxlint": "1.85.0",
+        "oxlint-tsgolint": "7.0.2003",
+        "typescript": "^5.6.2"
     }
 }

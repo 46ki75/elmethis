@@ -31,7 +31,7 @@ describe("runFrame", () => {
 
   it("converts an unexpected throw into a terminal RUN_ERROR", async () => {
     // Throws before yielding by design — that's exactly the case under test.
-    // eslint-disable-next-line require-yield
+    // oxlint-disable-next-line require-yield
     const throwing: Scenario = async function* () {
       throw new Error("scenario blew up");
     };

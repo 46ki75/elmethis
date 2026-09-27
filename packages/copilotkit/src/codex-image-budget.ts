@@ -108,7 +108,7 @@ export function createRunImageResolver(
   const acquire = () => {
     signal.throwIfAborted();
     if (stopped) {
-      // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors -- Preserve a caller-supplied cancellation reason.
+      // oxlint-disable-next-line typescript/prefer-promise-reject-errors -- Preserve a caller-supplied cancellation reason.
       return Promise.reject(stopReason);
     }
     return new Promise<number>((resolve, reject) => {
@@ -121,7 +121,7 @@ export function createRunImageResolver(
           if (index !== -1) {
             waiters.splice(index, 1);
           }
-          // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors -- Preserve AbortSignal's caller-supplied reason.
+          // oxlint-disable-next-line typescript/prefer-promise-reject-errors -- Preserve AbortSignal's caller-supplied reason.
           reject(signal.reason);
         },
       };
