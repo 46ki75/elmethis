@@ -10,8 +10,8 @@ dynamic-tool API is experimental.
 After the root [setup](../../README.md#setup-and-tasks):
 
 ```sh
-mise run copilotkit:login
-mise run copilotkit:dev
+mise run --silent copilotkit:login
+mise run --silent copilotkit:dev
 ```
 
 Complete the browser login with the ChatGPT account whose subscription you want
@@ -91,13 +91,12 @@ could consume your subscription and invoke the configured tools.
 ## Verify
 
 ```sh
-mise run copilotkit:check
-mise run copilotkit:build
+mise run --silent copilotkit:check
 ```
 
-`check` includes adapter/transport, HTTP cancellation, and pinned-binary regression
-tests; it does not require credentials or spend subscription usage. Native tests
-use fresh temporary login stores with AWS MCP disabled and simulated completion
+`check` builds the backend and runs adapter/transport, HTTP cancellation, and
+pinned-binary regression tests; it does not require credentials or spend subscription usage.
+Native tests use fresh temporary login stores with AWS MCP disabled and simulated completion
 or a local mock inference server. A live chat still requires login.
 
 ## Container

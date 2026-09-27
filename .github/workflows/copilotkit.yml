@@ -1,4 +1,4 @@
-name: Ikuma Theme
+name: CopilotKit Backend
 
 on:
   push:
@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   check:
-    name: Check (ikuma-theme)
+    name: Check (CopilotKit backend)
     runs-on: ubuntu-latest
 
     steps:
@@ -29,4 +29,4 @@ jobs:
         run: mise run setup
 
       - name: Check
-        run: mise run ikuma-theme:check
+        run: mise run copilotkit:check

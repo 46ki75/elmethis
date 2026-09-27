@@ -1,0 +1,34 @@
+[tasks.build]
+alias = "drawio:build"
+description = "Generate the diagrams.net configuration"
+depends = ["//packages/core:build"]
+run = "pnpm run build"
+
+[tasks.fmt]
+description = "Format diagrams.net package sources"
+run = "pnpm run fmt"
+
+[tasks.fmt-check]
+description = "Check diagrams.net package formatting"
+run = "pnpm run fmt.check"
+
+[tasks.lint]
+description = "Lint diagrams.net package sources"
+depends = ["//packages/core:build"]
+run = "pnpm run lint"
+
+[tasks.typecheck]
+description = "Type-check the diagrams.net package"
+depends = ["//packages/core:build"]
+run = "pnpm run build.types"
+
+[tasks."check:quick"]
+alias = "drawio:check:quick"
+description = "Run fast diagrams.net package checks"
+depends = [":fmt-check", ":lint", ":typecheck"]
+
+[tasks.check]
+alias = "drawio:check"
+description = "Run the complete diagrams.net package quality gate"
+depends = [":check:quick"]
+run = "pnpm run build"

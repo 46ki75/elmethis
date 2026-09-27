@@ -1,0 +1,35 @@
+[tasks.build]
+alias = "ikuma-theme:build"
+description = "Build VS Code, Shiki, Windows Terminal, and VSIX artifacts"
+run = "pnpm run build"
+
+[tasks.dev]
+description = "Watch and regenerate theme artifacts"
+run = "pnpm run dev"
+
+[tasks.fmt]
+description = "Format theme package sources"
+run = "pnpm run fmt"
+
+[tasks.fmt-check]
+description = "Check theme package formatting"
+run = "pnpm run fmt.check"
+
+[tasks.lint]
+description = "Lint theme package sources"
+run = "pnpm run lint"
+
+[tasks.typecheck]
+description = "Type-check theme package sources"
+run = "pnpm run build.types"
+
+[tasks."check:quick"]
+alias = "ikuma-theme:check:quick"
+description = "Run fast theme package checks"
+depends = [":fmt-check", ":lint", ":typecheck"]
+
+[tasks.check]
+alias = "ikuma-theme:check"
+description = "Run the complete theme package quality gate"
+depends = [":check:quick"]
+run = "pnpm run build"

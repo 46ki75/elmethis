@@ -1,0 +1,39 @@
+[tasks.build]
+alias = "ag-ui-stub:build"
+description = "Build the in-process AG-UI test agent"
+# The complete package check rebuilds dist internally. Serialize these writers before
+# dependent package checks consume the stub output.
+wait_for = [":check"]
+run = "pnpm run build"
+
+[tasks.dev]
+description = "Watch the in-process AG-UI test agent"
+run = "pnpm run dev"
+
+[tasks.fmt]
+description = "Format AG-UI stub sources"
+run = "pnpm run fmt"
+
+[tasks.fmt-check]
+description = "Check AG-UI stub source formatting"
+run = "pnpm run fmt.check"
+
+[tasks.lint]
+description = "Lint AG-UI stub sources"
+run = "pnpm run lint"
+
+[tasks."check:quick"]
+alias = "ag-ui-stub:check:quick"
+description = "Run fast AG-UI stub checks"
+run = "pnpm run check"
+
+[tasks.check]
+alias = "ag-ui-stub:check"
+description = "Run the complete AG-UI stub quality gate"
+depends = [":check:quick"]
+run = ["pnpm run build", "pnpm run test.coverage"]
+
+[tasks.test]
+alias = "ag-ui-stub:test"
+description = "Run AG-UI test agent unit tests"
+run = "pnpm run test.unit"

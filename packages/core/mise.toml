@@ -1,0 +1,39 @@
+[tasks.build]
+alias = "core:build"
+description = "Build core modules, tokens, designs, and catalogs"
+# The complete package check rebuilds dist internally. Serialize these writers before
+# dependent package checks consume core output.
+wait_for = [":check"]
+run = "pnpm run build"
+
+[tasks.dev]
+description = "Watch the core library"
+run = "pnpm run dev"
+
+[tasks.fmt]
+description = "Format core sources"
+run = "pnpm run fmt"
+
+[tasks.fmt-check]
+description = "Check core source formatting"
+run = "pnpm run fmt.check"
+
+[tasks.lint]
+description = "Lint core sources"
+run = "pnpm run lint"
+
+[tasks."check:quick"]
+alias = "core:check:quick"
+description = "Run fast core checks"
+run = "pnpm run check"
+
+[tasks.check]
+alias = "core:check"
+description = "Run the complete core quality gate including coverage"
+depends = [":check:quick", "//:configs:check", "//:fmt-check --all-files"]
+run = ["pnpm run build", "pnpm run test.coverage"]
+
+[tasks.test]
+alias = "core:test"
+description = "Run core unit tests"
+run = "pnpm run test.unit"

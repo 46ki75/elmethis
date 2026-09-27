@@ -29,7 +29,7 @@ jobs:
         run: mise run setup
 
       - name: Check
-        run: mise run ag-ui-stub:ci
+        run: mise run ag-ui-stub:check
 
       # Visibility only — never fails the build.
       - name: Upload coverage to Codecov

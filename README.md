@@ -20,22 +20,23 @@ Install [mise](https://mise.jdx.dev/installing-mise.html) 2026.9.9 or newer, the
 ```sh
 mise trust mise.toml
 mise install node pnpm
-mise run setup
-mise run drawio:build
-mise run solid:browser:install
-mise run solid:ci
+mise run --silent setup
+mise run --silent drawio:build
+mise run --silent solid:browser:install
+mise run --silent solid:check
 ```
 
 `mise.toml` pins Node exactly; `package.json#packageManager` pins pnpm exactly.
 Commit `mise.lock` and its `.mise/locks/` sidecars when updating tools. The lock
 covers macOS arm64 and Linux x64/arm64. CI and devcontainers use these same pins.
 
-Run `mise tasks ls` to discover commands. `mise run check` runs the workspace
-checks; `mise run test` runs unit/SSR tests. Browser tests and their explicit
-installation are separate tasks. `mise run pages:build` assembles the Pages site.
-Component tasks build core and the AG-UI stub first when required.
+Run `mise tasks ls --all` to discover root and package commands. Use
+`mise run --silent check:quick` for fast feedback and `mise run --silent check` for the
+complete workspace gate. `mise run --silent test` runs unit/SSR tests without browser
+tests. Browser installation remains an explicit task. `mise run --silent pages:build`
+assembles the Pages site. Component tasks build core and the AG-UI stub first when required.
 
-`mise run fmt` and `mise run fmt-check` use Oxfmt over the same tracked
+`mise run --silent fmt` and `mise run --silent fmt-check` use Oxfmt over the same tracked
 JS/TS/JSON scope; pass repeated `--file <repo-relative-path>` arguments for a
 selection. Package checks apply their existing formatting policies and use
 Oxlint with type-aware rules; CSS remains under Stylelint. React and Solid keep
