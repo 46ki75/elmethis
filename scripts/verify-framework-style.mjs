@@ -36,4 +36,14 @@ if (tokenDeclarationIndex > componentStyleIndex) {
   );
 }
 
-console.log(`${manifest.name} style.css is self-contained.`);
+if (!/--elmethis-color-surface-base\s*:\s*light-dark\(/.test(style)) {
+  throw new Error(`${manifest.name} style.css does not preserve light-dark()`);
+}
+
+if (style.includes("--lightningcss-light")) {
+  throw new Error(
+    `${manifest.name} style.css contains Lightning CSS's OS-only theme fallback`,
+  );
+}
+
+console.log(`${manifest.name} style.css is self-contained and switchable.`);

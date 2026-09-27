@@ -353,6 +353,14 @@ export const components = <><ElmInlineText {...textProps}>Text</ElmInlineText><E
       "Packed style.css does not place core tokens before component styles",
     );
   }
+  if (!/--elmethis-color-surface-base\s*:\s*light-dark\(/.test(packedStyle)) {
+    throw new Error("Packed style.css does not preserve light-dark()");
+  }
+  if (packedStyle.includes("--lightningcss-light")) {
+    throw new Error(
+      "Packed style.css contains Lightning CSS's OS-only theme fallback",
+    );
+  }
 
   console.log("Solid package consumer smoke tests passed.");
 } finally {

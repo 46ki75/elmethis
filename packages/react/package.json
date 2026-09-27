@@ -41,7 +41,7 @@
     "build.lib": "vite build && pnpm run verify.compiler",
     "verify.compiler": "tsx scripts/verify-compiler-output.ts",
     "build.types": "tsc --project tsconfig.lib.json",
-    "build-storybook": "storybook build",
+    "build-storybook": "storybook build && node ../../scripts/verify-storybook-theme.mjs .",
     "dev": "storybook dev -p 19221 --no-open",
     "fmt": "oxfmt --write ./src",
     "fmt.check": "oxfmt --check ./src",
