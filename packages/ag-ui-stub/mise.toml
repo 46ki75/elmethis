@@ -1,0 +1,38 @@
+[tasks.build]
+alias = "ag-ui-stub:build"
+description = "Build the in-process AG-UI test agent"
+# The workspace CI task also runs this package's CI gate, which rebuilds dist internally.
+# Serialize these writers before dependent package gates consume the stub output.
+wait_for = [":ci"]
+run = "pnpm run build"
+
+[tasks.dev]
+description = "Watch the in-process AG-UI test agent"
+run = "pnpm run dev"
+
+[tasks.fmt]
+description = "Format AG-UI stub sources"
+run = "pnpm run fmt"
+
+[tasks.fmt-check]
+description = "Check AG-UI stub source formatting"
+run = "pnpm run fmt.check"
+
+[tasks.lint]
+description = "Lint AG-UI stub sources"
+run = "pnpm run lint"
+
+[tasks.check]
+alias = "ag-ui-stub:check"
+description = "Check the AG-UI test agent"
+run = "pnpm run check"
+
+[tasks.ci]
+alias = "ag-ui-stub:ci"
+description = "Run the AG-UI test agent CI gate"
+run = "pnpm run check.ci"
+
+[tasks.test]
+alias = "ag-ui-stub:test"
+description = "Run AG-UI test agent unit tests"
+run = "pnpm run test.unit"

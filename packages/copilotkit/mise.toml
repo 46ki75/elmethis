@@ -1,0 +1,41 @@
+[tasks.build]
+alias = "copilotkit:build"
+description = "Build the CopilotKit backend"
+run = "pnpm run build"
+
+[tasks.dev]
+alias = "copilotkit:dev"
+description = "Start the CopilotKit backend on port 19101"
+run = "pnpm run dev"
+
+[tasks.fmt]
+description = "Format CopilotKit backend sources"
+run = "pnpm exec oxfmt --write ./src ./build.ts"
+
+[tasks.fmt-check]
+description = "Check CopilotKit backend source formatting"
+run = "pnpm exec oxfmt --check ./src ./build.ts"
+
+[tasks.lint]
+description = "Lint CopilotKit backend sources"
+run = "pnpm run lint"
+
+[tasks.check]
+alias = "copilotkit:check"
+description = "Lint, type-check, and test the CopilotKit backend"
+run = "pnpm run check"
+
+[tasks.ci]
+alias = "copilotkit:ci"
+description = "Run the CopilotKit backend CI gate"
+depends = [":check"]
+
+[tasks.login]
+alias = "copilotkit:login"
+description = "Sign the CopilotKit backend into a ChatGPT/Codex subscription"
+run = "pnpm run codex:login"
+
+[tasks.test]
+alias = "copilotkit:test"
+description = "Test the Codex AG-UI adapter without a model or credentials"
+run = "pnpm run test.unit"

@@ -1,0 +1,60 @@
+[tasks.build]
+alias = "solid:build"
+description = "Build the Solid library"
+depends = ["//packages/core:build", "//packages/ag-ui-stub:build"]
+run = "pnpm run build"
+
+[tasks.dev]
+alias = "solid:dev"
+description = "Start the Solid Storybook on port 19241"
+depends = ["//packages/core:build", "//packages/ag-ui-stub:build"]
+run = "pnpm run dev"
+
+[tasks.fmt]
+description = "Format Solid sources"
+run = "pnpm run fmt"
+
+[tasks.fmt-check]
+description = "Check Solid source formatting"
+run = "pnpm run fmt.check"
+
+[tasks.lint]
+description = "Lint Solid sources and styles"
+depends = ["//packages/core:build"]
+run = ["pnpm run lint", "pnpm run lint.css"]
+
+[tasks.check]
+alias = "solid:check"
+description = "Check the Solid library"
+depends = ["//packages/core:build", "//packages/ag-ui-stub:build"]
+run = "pnpm run check"
+
+[tasks.ci]
+alias = "solid:ci"
+description = "Run Solid builds, checks, and unit/browser coverage"
+depends = ["//packages/core:build", "//packages/ag-ui-stub:build"]
+run = "pnpm run check.ci"
+
+[tasks.test]
+alias = "solid:test"
+description = "Run Solid unit and SSR tests"
+depends = ["//packages/core:build", "//packages/ag-ui-stub:build"]
+run = "pnpm run test.unit"
+
+[tasks."test:browser"]
+alias = "solid:test:browser"
+description = "Run Solid Chromium tests"
+depends = ["//packages/core:build", "//packages/ag-ui-stub:build"]
+run = "pnpm run test.browser"
+
+[tasks."browser:install"]
+alias = "solid:browser:install"
+description = "Provision Chromium; accepts --with-deps for CI"
+raw_args = true
+run = "pnpm exec playwright install chromium"
+
+[tasks."storybook:build"]
+alias = "solid:storybook:build"
+description = "Build the Solid Storybook"
+depends = ["//packages/core:build", "//packages/ag-ui-stub:build"]
+run = "pnpm run build-storybook"

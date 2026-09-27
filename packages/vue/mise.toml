@@ -1,0 +1,60 @@
+[tasks.build]
+alias = "vue:build"
+description = "Build the Vue library"
+depends = ["//packages/core:build"]
+run = "pnpm run build"
+
+[tasks.dev]
+alias = "vue:dev"
+description = "Start the Vue Storybook on port 19231"
+depends = ["//packages/core:build"]
+run = "pnpm run dev"
+
+[tasks.fmt]
+description = "Format Vue sources"
+run = "pnpm run fmt"
+
+[tasks.fmt-check]
+description = "Check Vue source formatting"
+run = "pnpm run fmt.check"
+
+[tasks.lint]
+description = "Lint Vue sources and styles"
+depends = ["//packages/core:build"]
+run = ["pnpm run lint", "pnpm run lint.css"]
+
+[tasks.check]
+alias = "vue:check"
+description = "Check the Vue library"
+depends = ["//packages/core:build"]
+run = "pnpm run check"
+
+[tasks.ci]
+alias = "vue:ci"
+description = "Run Vue builds, checks, and unit/browser coverage"
+depends = ["//packages/core:build"]
+run = "pnpm run check.ci"
+
+[tasks.test]
+alias = "vue:test"
+description = "Run Vue unit tests"
+depends = ["//packages/core:build"]
+run = "pnpm run test.unit"
+
+[tasks."test:browser"]
+alias = "vue:test:browser"
+description = "Run Vue Chromium tests"
+depends = ["//packages/core:build"]
+run = "pnpm run test.browser"
+
+[tasks."browser:install"]
+alias = "vue:browser:install"
+description = "Provision Chromium; accepts --with-deps for CI"
+raw_args = true
+run = "pnpm exec playwright install chromium"
+
+[tasks."storybook:build"]
+alias = "vue:storybook:build"
+description = "Build the Vue Storybook"
+depends = ["//packages/core:build"]
+run = "pnpm run build-storybook"

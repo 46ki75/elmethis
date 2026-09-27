@@ -1,0 +1,60 @@
+[tasks.build]
+alias = "react:build"
+description = "Build the React library"
+depends = ["//packages/core:build"]
+run = "pnpm run build"
+
+[tasks.dev]
+alias = "react:dev"
+description = "Start the React Storybook on port 19221"
+depends = ["//packages/core:build"]
+run = "pnpm run dev"
+
+[tasks.fmt]
+description = "Format React sources"
+run = "pnpm run fmt"
+
+[tasks.fmt-check]
+description = "Check React source formatting"
+run = "pnpm run fmt.check"
+
+[tasks.lint]
+description = "Lint React sources and styles"
+depends = ["//packages/core:build"]
+run = ["pnpm run lint", "pnpm run lint.css"]
+
+[tasks.check]
+alias = "react:check"
+description = "Check the React library"
+depends = ["//packages/core:build"]
+run = "pnpm run check"
+
+[tasks.ci]
+alias = "react:ci"
+description = "Run React builds, checks, and unit/browser coverage"
+depends = ["//packages/core:build"]
+run = "pnpm run check.ci"
+
+[tasks.test]
+alias = "react:test"
+description = "Run React unit tests"
+depends = ["//packages/core:build"]
+run = "pnpm run test.unit"
+
+[tasks."test:browser"]
+alias = "react:test:browser"
+description = "Run React Chromium tests"
+depends = ["//packages/core:build"]
+run = "pnpm run test.browser"
+
+[tasks."browser:install"]
+alias = "react:browser:install"
+description = "Provision Chromium; accepts --with-deps for CI"
+raw_args = true
+run = "pnpm exec playwright install chromium"
+
+[tasks."storybook:build"]
+alias = "react:storybook:build"
+description = "Build the React Storybook"
+depends = ["//packages/core:build"]
+run = "pnpm run build-storybook"

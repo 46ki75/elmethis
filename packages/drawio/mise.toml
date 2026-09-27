@@ -1,0 +1,29 @@
+[tasks.build]
+alias = "drawio:build"
+description = "Generate the diagrams.net configuration"
+depends = ["//packages/core:build"]
+run = "pnpm run build"
+
+[tasks.fmt]
+description = "Format diagrams.net package sources"
+run = "pnpm run fmt"
+
+[tasks.fmt-check]
+description = "Check diagrams.net package formatting"
+run = "pnpm run fmt.check"
+
+[tasks.lint]
+description = "Lint diagrams.net package sources"
+depends = ["//packages/core:build"]
+run = "pnpm run lint"
+
+[tasks.check]
+alias = "drawio:check"
+description = "Check and build the diagrams.net configuration"
+depends = ["//packages/core:build"]
+run = "pnpm run check"
+
+[tasks.ci]
+alias = "drawio:ci"
+description = "Run the diagrams.net package CI gate"
+depends = [":check"]

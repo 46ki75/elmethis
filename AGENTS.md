@@ -28,11 +28,11 @@ Rust MCP server — no code yet.
 
 Use root **mise** tasks; read the setup instructions in `README.md` first.
 Exact Node and pnpm pins come from `mise.toml` and `package.json`, respectively.
-Run `mise tasks ls` for the full catalog. For example, `mise run solid:dev`,
-`mise run solid:check`, `mise run solid:ci`, and `mise run test` automatically
-build core and the AG-UI stub where required. `mise run check` is the workspace
-gate. The underlying pnpm package commands below are also available through
-`mise exec -- pnpm ...`.
+Run `mise tasks ls --all` for the full catalog. For example, `mise run --silent solid:dev`,
+`mise run --silent solid:check`, `mise run --silent solid:ci`, and
+`mise run --silent test` automatically build core and the AG-UI stub where required.
+`mise run --silent check` is the workspace gate. Direct pnpm package commands are also
+available through `mise exec -- pnpm ...`.
 
 | Command                                          | Description                                                             |
 | ------------------------------------------------ | ----------------------------------------------------------------------- |
@@ -46,7 +46,6 @@ gate. The underlying pnpm package commands below are also available through
 | `pnpm --filter @elmethis/<pkg> run check`        | fmt.check + lint + (css lint) + build.types                             |
 | `pnpm --filter @elmethis/<pkg> run test.unit`    | Unit + SSR layer                                                        |
 | `pnpm --filter @elmethis/<pkg> run test.browser` | Browser layer (real Chromium via Playwright)                            |
-| `pnpm run --recursive check`                     | Lefthook pre-commit check across all packages                           |
 
 Run a single test (from inside the package, or via `--filter @elmethis/<pkg> exec`):
 
@@ -56,8 +55,8 @@ Run a single test (from inside the package, or via `--filter @elmethis/<pkg> exe
   the implementation.
 
 Git hooks run via **lefthook** in the mise environment (`lefthook.yml`).
-`mise run fmt` and `mise run fmt-check` select the same tracked files, or accept
-repeated `--file` arguments. Pre-commit invokes `mise run check`.
+`mise run --silent fmt` and `mise run --silent fmt-check` select the same tracked files,
+or accept repeated `--file` arguments. Pre-commit invokes `mise run check`.
 
 ## Architecture
 

@@ -10,8 +10,8 @@ dynamic-tool API is experimental.
 After the root [setup](../../README.md#setup-and-tasks):
 
 ```sh
-mise run copilotkit:login
-mise run copilotkit:dev
+mise run --silent copilotkit:login
+mise run --silent copilotkit:dev
 ```
 
 Complete the browser login with the ChatGPT account whose subscription you want
@@ -91,8 +91,8 @@ could consume your subscription and invoke the configured tools.
 ## Verify
 
 ```sh
-mise run copilotkit:check
-mise run copilotkit:build
+mise run --silent copilotkit:check
+mise run --silent copilotkit:build
 ```
 
 `check` includes adapter/transport, HTTP cancellation, and pinned-binary regression
