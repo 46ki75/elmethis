@@ -31,7 +31,7 @@ describe("[CSR] ElmButton", () => {
     expect(button).not.toHaveAttribute("block");
   });
 
-  /* eslint-disable solid/style-prop -- This verifies native string-style passthrough. */
+  /* oxlint-disable solid/style-prop -- This verifies native string-style passthrough. */
   it("merges object and string styles after component defaults", () => {
     const rendered = render(() => (
       <>
@@ -65,7 +65,7 @@ describe("[CSR] ElmButton", () => {
     ).toBe("green");
     expect(rendered.getByTestId("string-style").style.width).toBe("10rem");
   });
-  /* eslint-enable solid/style-prop */
+  /* oxlint-enable solid/style-prop */
 
   it("reactively updates variants, loading content, layout, and disabled state", () => {
     const [loading, setLoading] = createSignal(false);

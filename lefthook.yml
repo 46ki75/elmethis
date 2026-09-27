@@ -48,55 +48,55 @@ check:
   parallel: true
   jobs:
     # Every job runs per-package: `root:` sets the CWD so each package's own
-    # config (eslint.config.ts / stylelint.config.mjs / vitest config) resolves
+    # config (.oxlintrc.json / stylelint.config.mjs / vitest config) resolves
     # deterministically instead of relying on the tool walking up from the repo
-    # root, and rebases {files} relative to it. The glob is matched against the
-    # repo-root-relative path; `**` matches one-or-more dirs deep, so
-    # `packages/<pkg>/**` covers everything under the package (e.g. src/) while
-    # skipping top-level package config files.
+    # root, and rebases {files} relative to it. Lint globs mirror each package's
+    # lint script so type-aware analysis only receives files in its tsconfig.
+    # CLI flags preserve options that Oxlint only permits in the workspace-root
+    # config when these commands run with a package as their root.
 
     - name: configs
       run: pnpm run check.configs
 
-    - name: eslint-core
+    - name: oxlint-core
       root: "packages/core/"
-      glob: "packages/core/**/*.{ts,tsx}"
-      run: pnpm exec eslint {files}
+      glob: "packages/core/src{,/**}/*.{ts,tsx}"
+      run: pnpm exec oxlint --type-aware --report-unused-disable-directives-severity=error --deny-warnings {files}
 
-    - name: eslint-react
+    - name: oxlint-react
       root: "packages/react/"
-      glob: "packages/react/**/*.{ts,tsx}"
-      run: pnpm exec eslint {files}
+      glob: "packages/react/src{,/**}/*.{ts,tsx}"
+      run: pnpm exec oxlint --type-aware --report-unused-disable-directives-severity=error --deny-warnings {files}
 
-    - name: eslint-solid
+    - name: oxlint-solid
       root: "packages/solid/"
-      glob: "packages/solid/**/*.{ts,tsx}"
-      run: pnpm exec eslint {files}
+      glob: "packages/solid/src{,/**}/*.{ts,tsx}"
+      run: pnpm exec oxlint --type-aware --report-unused-disable-directives-severity=error --deny-warnings {files}
 
-    - name: eslint-vue
+    - name: oxlint-vue
       root: "packages/vue/"
-      glob: "packages/vue/**/*.{ts,tsx}"
-      run: pnpm exec eslint {files}
+      glob: "packages/vue/src{,/**}/*.{ts,tsx}"
+      run: pnpm exec oxlint --type-aware --report-unused-disable-directives-severity=error --deny-warnings {files}
 
-    - name: eslint-ag-ui-stub
+    - name: oxlint-ag-ui-stub
       root: "packages/ag-ui-stub/"
-      glob: "packages/ag-ui-stub/**/*.{ts,tsx}"
-      run: pnpm exec eslint {files}
+      glob: "packages/ag-ui-stub/src{,/**}/*.{ts,tsx}"
+      run: pnpm exec oxlint --type-aware --report-unused-disable-directives-severity=error --deny-warnings {files}
 
-    - name: eslint-copilotkit
+    - name: oxlint-copilotkit
       root: "packages/copilotkit/"
-      glob: "packages/copilotkit/**/*.{ts,tsx}"
-      run: pnpm exec eslint {files}
+      glob: "packages/copilotkit/{build.ts,src{,/**}/*.{ts,tsx}}"
+      run: pnpm exec oxlint --type-aware --report-unused-disable-directives-severity=error --deny-warnings {files}
 
-    - name: eslint-drawio
+    - name: oxlint-drawio
       root: "packages/drawio/"
-      glob: "packages/drawio/**/*.{ts,tsx}"
-      run: pnpm exec eslint {files}
+      glob: "packages/drawio/scripts{,/**}/*.{ts,tsx}"
+      run: pnpm exec oxlint --type-aware --report-unused-disable-directives-severity=error --deny-warnings {files}
 
-    - name: eslint-ikuma-theme
+    - name: oxlint-ikuma-theme
       root: "packages/ikuma-theme/"
-      glob: "packages/ikuma-theme/**/*.{ts,tsx}"
-      run: pnpm exec eslint {files}
+      glob: "packages/ikuma-theme/scripts{,/**}/*.{ts,tsx}"
+      run: pnpm exec oxlint --type-aware --report-unused-disable-directives-severity=error --deny-warnings {files}
 
     - name: stylelint-react
       root: "packages/react/"

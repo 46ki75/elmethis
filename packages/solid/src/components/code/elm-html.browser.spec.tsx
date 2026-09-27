@@ -66,7 +66,7 @@ describe("[Browser] ElmHtml auto-height", () => {
       <ElmHtml
         html={TALL_HTML}
         height={200}
-        // eslint-disable-next-line solid/style-prop
+        // oxlint-disable-next-line solid/style-prop
         style="color:red"
       />
     ));

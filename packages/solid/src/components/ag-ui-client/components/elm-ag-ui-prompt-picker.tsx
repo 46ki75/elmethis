@@ -1,4 +1,4 @@
-/* eslint-disable solid/reactivity -- createMutable is intentionally mutated in place. */
+/* oxlint-disable solid/reactivity -- createMutable is intentionally mutated in place. */
 import {
   createEffect,
   For,

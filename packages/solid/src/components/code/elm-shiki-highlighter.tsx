@@ -11,7 +11,7 @@ import type { BundledLanguage, ThemeRegistrationRaw } from "shiki";
 
 import styles from "./elm-shiki-highlighter.module.css";
 
-/* eslint-disable solid/no-innerhtml -- Shiki escapes source code before producing this markup. */
+/* oxlint-disable solid/no-innerhtml -- Shiki escapes source code before producing this markup. */
 
 export interface ElmShikiHighlighterProps extends JSX.HTMLAttributes<HTMLPreElement> {
   /** The code to display. */

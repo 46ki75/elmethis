@@ -3,7 +3,7 @@
 .vscode-test/**
 .gitignore
 .gitattributes
-eslint.config.ts
+.oxlintrc.json
 .markdownlint-cli2.yaml
 CLAUDE.md
 scripts/**

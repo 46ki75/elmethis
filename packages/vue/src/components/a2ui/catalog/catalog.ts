@@ -126,7 +126,7 @@ export function defineRenderer<Api extends ComponentApi>(
 // per component. Type safety is enforced at the `defineRenderer` call site
 // (where the schema is known) and at lookup the consumer is `ComponentHost`,
 // which only cares about the `RenderFn` signature.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line typescript/no-explicit-any
 type AnyRendererEntry = RendererEntry<any>;
 
 export class CatalogRenderer {

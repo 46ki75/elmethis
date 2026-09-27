@@ -27,7 +27,7 @@ would send; `run.sh` substitutes the real repo root before piping.
 - Both hooks always exit 0; they signal via stdout (the `block` decision),
   not the exit code — so judge `stop-*` runs by the printed JSON, not "exit 0".
 - `fmt` runs Oxfmt once from the repo root using the shared config, so it
-  formats any matching file. `check` runs ESLint/Stylelint/Vitest per-package
+  formats any matching file. `check` runs Oxlint/Stylelint/Vitest per-package
   (`root:`) since each needs its own config, so it only acts on files under
   `packages/<pkg>/`; edits outside a package match no check job and are skipped.
 - The fmt hook is silent on success, and `fmt-formattable.json` targets a clean

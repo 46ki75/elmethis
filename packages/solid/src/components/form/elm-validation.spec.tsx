@@ -37,7 +37,7 @@ describe("[CSR] ElmValidation", () => {
     expect(onClick).toHaveBeenCalledOnce();
   });
 
-  /* eslint-disable solid/style-prop -- This verifies native string-style passthrough. */
+  /* oxlint-disable solid/style-prop -- This verifies native string-style passthrough. */
   it("merges object and string styles after the scoped opacity default", () => {
     const rendered = render(() => (
       <>
@@ -69,7 +69,7 @@ describe("[CSR] ElmValidation", () => {
     ).toBe("0.75");
     expect(rendered.getByTestId("string-style")).toHaveStyle({ gap: "2rem" });
   });
-  /* eslint-enable solid/style-prop */
+  /* oxlint-enable solid/style-prop */
 
   it("reactively updates validity, text, class, color, opacity, and icon", () => {
     const [valid, setValid] = createSignal(false);

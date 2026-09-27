@@ -266,7 +266,7 @@ export const ElmMarkdown = ({
   const stableKey = isStreamingActive ? stableCount : allTokens;
   const stableTokens = useMemo(
     () => allTokens.slice(0, stableCount),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react-hooks-js/exhaustive-deps
     [stableKey],
   );
 
