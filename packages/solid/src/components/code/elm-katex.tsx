@@ -5,7 +5,7 @@ import { renderToString } from "katex";
 import textStyles from "../../styles/text.module.css";
 import styles from "./elm-katex.module.css";
 
-/* eslint-disable solid/no-innerhtml -- KaTeX returns escaped MathML with trust disabled. */
+/* oxlint-disable solid/no-innerhtml -- KaTeX returns escaped MathML with trust disabled. */
 
 export interface ElmKatexProps extends JSX.HTMLAttributes<HTMLDivElement> {
   /** The KaTeX expression. */

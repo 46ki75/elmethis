@@ -1,4 +1,4 @@
-/* eslint-disable solid/reactivity -- AG-UI requires identity-preserving mutable state. */
+/* oxlint-disable solid/reactivity -- AG-UI requires identity-preserving mutable state. */
 import { onCleanup, onMount, type Accessor } from "solid-js";
 import { createMutable } from "solid-js/store";
 import {

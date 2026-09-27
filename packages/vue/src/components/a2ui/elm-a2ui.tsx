@@ -197,7 +197,7 @@ export const ElmA2ui = defineComponent({
         }
         for (const msg of fresh) {
           try {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            // oxlint-disable-next-line typescript/no-explicit-any
             existing.processor.processMessages([msg] as any[]);
           } catch (err) {
             console.warn("[ElmA2ui] skipped invalid A2UI message:", msg, err);
@@ -261,7 +261,7 @@ export const ElmA2ui = defineComponent({
 
       for (const msg of effective) {
         try {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          // oxlint-disable-next-line typescript/no-explicit-any
           processor.processMessages([msg] as any[]);
         } catch (err) {
           console.warn("[ElmA2ui] skipped invalid A2UI message:", msg, err);

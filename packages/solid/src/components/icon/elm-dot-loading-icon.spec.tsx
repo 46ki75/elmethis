@@ -37,7 +37,7 @@ describe("[CSR] ElmDotLoadingIcon", () => {
           style={{ "--elmethis-scoped-size": "5rem" }}
         />
         <ElmDotLoadingIcon data-testid="reactive" size={size()} />
-        {/* eslint-disable-next-line solid/style-prop */}
+        {/* oxlint-disable-next-line solid/style-prop */}
         <ElmDotLoadingIcon data-testid="string" style="opacity: 0.5" />
       </>
     ));

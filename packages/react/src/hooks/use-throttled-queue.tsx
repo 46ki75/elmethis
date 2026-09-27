@@ -114,11 +114,11 @@ export function useThrottledQueue(minInterval = 200): ThrottledQueue | null {
       queueRef.current = null;
     };
     // Set up once on the client after mount.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react-hooks-js/exhaustive-deps
   }, []);
 
   // The queue is lazily created above and only nulled on unmount cleanup, so
   // reading `.current` here returns the live instance for this render.
-  // eslint-disable-next-line react-hooks/refs
+  // oxlint-disable-next-line react-hooks-js/refs
   return queueRef.current;
 }

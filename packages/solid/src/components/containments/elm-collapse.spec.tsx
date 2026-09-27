@@ -32,7 +32,7 @@ describe("[CSR] ElmCollapse", () => {
     expect(collapse).toHaveTextContent("Content");
   });
 
-  /* eslint-disable solid/style-prop -- This verifies native string-style passthrough. */
+  /* oxlint-disable solid/style-prop -- This verifies native string-style passthrough. */
   it("merges styles while the semantic timing prop retains precedence", () => {
     const rendered = render(() => (
       <>
@@ -65,7 +65,7 @@ describe("[CSR] ElmCollapse", () => {
     ).toBe("steps(2)");
     expect(rendered.getByTestId("string-style").style.width).toBe("12rem");
   });
-  /* eslint-enable solid/style-prop */
+  /* oxlint-enable solid/style-prop */
 
   it("reactively updates open state, direction, timing, class, and children", () => {
     const [open, setOpen] = createSignal(false);

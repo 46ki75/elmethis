@@ -16,7 +16,6 @@
         "ms-azuretools.vscode-docker",
         "DavidAnson.vscode-markdownlint",
         "yzhang.markdown-all-in-one",
-        "dbaeumer.vscode-eslint",
         "oxc.oxc-vscode",
         // Vue
         "Vue.volar",

@@ -17,7 +17,7 @@ Components and hooks follow the shared Elmethis component surface:
 | `pnpm build`        | Build the library (`vite build`) + types (`tsc`)    |
 | `pnpm test.unit`    | Unit specs (happy-dom + React Testing Library, SSR) |
 | `pnpm test.browser` | Browser specs (real Chromium via Playwright)        |
-| `pnpm lint`         | ESLint                                              |
+| `pnpm lint`         | Oxlint                                              |
 | `pnpm lint.css`     | Stylelint                                           |
 | `pnpm fmt`          | Oxfmt                                               |
 

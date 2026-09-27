@@ -37,9 +37,15 @@ Component tasks build core and the AG-UI stub first when required.
 
 `mise run fmt` and `mise run fmt-check` use Oxfmt over the same tracked
 JS/TS/JSON scope; pass repeated `--file <repo-relative-path>` arguments for a
-selection. Package checks also apply their existing package-specific formatting
-policies. Tasks work from the root or a subdirectory without shell activation.
-Make mise available on PATH for editor and Git hooks too.
+selection. Package checks apply their existing formatting policies and use
+Oxlint with type-aware rules; CSS remains under Stylelint. React and Solid keep
+their framework rules through Oxlint's JavaScript-plugin compatibility layer,
+so those plugin packages retain ESLint peer dependencies even though this
+repository no longer invokes ESLint. The root Oxlint config supplies global
+options for editor and workspace linting; package scripts pass the same options
+when run independently because nested configs cannot declare them. Tasks work
+from the root or a subdirectory without shell activation. Make mise available
+on PATH for editor and Git hooks too.
 
 See `AGENTS.md` for repository commands and architecture, and `TESTING.md` for
 the CSR, SSR, and browser test layers. The shared

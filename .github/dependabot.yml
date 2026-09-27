@@ -34,12 +34,12 @@ updates:
         patterns:
           - "@copilotkit/runtime"
           - "@copilotkit/shared"
-      formatter-updates:
+      lint-tool-updates:
         patterns:
           - "oxfmt"
-      eslint-updates:
-        patterns:
-          - "*eslint*"
+          - "oxlint"
+          - "oxlint-tsgolint"
+          - "eslint-plugin-*"
       storybook-updates:
         patterns:
           - "@storybook/*"

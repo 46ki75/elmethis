@@ -177,7 +177,7 @@ void test(
   { skip: process.platform === "win32", timeout: 10_000 },
   async (t) => {
     const options = nativeOptions();
-    // eslint-disable-next-line @typescript-eslint/unbound-method -- Saved before mocking, then called with the original child as `this`.
+    // oxlint-disable-next-line typescript/unbound-method -- Saved before mocking, then called with the original child as `this`.
     const kill = ChildProcess.prototype.kill;
     let pid: number | undefined;
     let exited: Promise<unknown[]> | undefined;

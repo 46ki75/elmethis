@@ -84,7 +84,7 @@ describe("[CSR] ElmInlineText", () => {
     expect(container.querySelectorAll("img")).toHaveLength(1);
   });
 
-  /* eslint-disable solid/style-prop -- This verifies native string-style passthrough. */
+  /* oxlint-disable solid/style-prop -- This verifies native string-style passthrough. */
   it("merges object and string styles with scoped variables", () => {
     const rendered = render(() => (
       <>
@@ -122,7 +122,7 @@ describe("[CSR] ElmInlineText", () => {
       "green",
     );
   });
-  /* eslint-enable solid/style-prop */
+  /* oxlint-enable solid/style-prop */
 
   it("reactively updates wrappers, link metadata, classes, styles, and children", () => {
     const [decorated, setDecorated] = createSignal(false);

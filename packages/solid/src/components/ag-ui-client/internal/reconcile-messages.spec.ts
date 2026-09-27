@@ -1,4 +1,4 @@
-/* eslint-disable solid/reactivity -- This test intentionally inspects a mutable store. */
+/* oxlint-disable solid/reactivity -- This test intentionally inspects a mutable store. */
 import { createEffect, createRoot } from "solid-js";
 import { createMutable } from "solid-js/store";
 import type { Message } from "@ag-ui/client";

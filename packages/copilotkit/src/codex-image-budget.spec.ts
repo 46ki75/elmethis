@@ -35,7 +35,7 @@ void test("abort rejects active and queued image resolutions", async () => {
     (_url, signal) => {
       started++;
       return new Promise((_resolve, reject) => {
-        // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors -- Match resolver cancellation by preserving AbortSignal.reason.
+        // oxlint-disable-next-line typescript/prefer-promise-reject-errors -- Match resolver cancellation by preserving AbortSignal.reason.
         signal.addEventListener("abort", () => reject(signal.reason), {
           once: true,
         });

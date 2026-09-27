@@ -3,10 +3,5 @@
   "editor.defaultFormatter": "oxc.oxc-vscode",
   "[snippets]": {
     "editor.defaultFormatter": "vscode.json-language-features"
-  },
-  "eslint.workingDirectories": [
-    {
-      "mode": "auto"
-    }
-  ]
+  }
 }

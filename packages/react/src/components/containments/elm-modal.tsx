@@ -47,7 +47,7 @@ export const ElmModal = ({
   // setState calls here are intentional and must run inside the effect: the
   // `shown` fade class can only flip *after* the imperative `showModal()` /
   // close-timer runs against a real DOM ref.
-  /* eslint-disable react-hooks/set-state-in-effect */
+  /* oxlint-disable react-hooks-js/set-state-in-effect */
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) {
@@ -74,9 +74,9 @@ export const ElmModal = ({
     return undefined;
     // `isShown` is read but intentionally not tracked: it mirrors `isOpen`
     // and re-running on its change would re-arm the close timer.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react-hooks-js/exhaustive-deps
   }, [isOpen, delay]);
-  /* eslint-enable react-hooks/set-state-in-effect */
+  /* oxlint-enable react-hooks-js/set-state-in-effect */
 
   const handleClose = (event: MouseEvent<HTMLDialogElement>) => {
     if (dialogRef.current) {

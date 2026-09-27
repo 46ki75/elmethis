@@ -132,7 +132,7 @@ function abortable<T>(promise: Promise<T>, signal: AbortSignal): Promise<T> {
   return new Promise((resolve, reject) => {
     const onAbort = () => {
       signal.removeEventListener("abort", onAbort);
-      // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors -- Preserve AbortSignal's caller-supplied reason, which can be any value.
+      // oxlint-disable-next-line typescript/prefer-promise-reject-errors -- Preserve AbortSignal's caller-supplied reason, which can be any value.
       reject(signal.reason);
     };
     signal.addEventListener("abort", onAbort, { once: true });
@@ -204,7 +204,7 @@ function download(
     };
     const fail = (error: unknown) =>
       finish(() => {
-        // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors -- Cancellation must preserve even a non-Error AbortSignal reason.
+        // oxlint-disable-next-line typescript/prefer-promise-reject-errors -- Cancellation must preserve even a non-Error AbortSignal reason.
         reject(error);
       });
     const succeed = (result: Download) => finish(() => resolve(result));
