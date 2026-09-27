@@ -23,17 +23,22 @@ description = "Lint Vue sources and styles"
 depends = ["//packages/core:build"]
 run = ["pnpm run lint", "pnpm run lint.css"]
 
-[tasks.check]
-alias = "vue:check"
-description = "Check the Vue library"
+[tasks."check:quick"]
+alias = "vue:check:quick"
+description = "Run fast Vue checks"
 depends = ["//packages/core:build"]
 run = "pnpm run check"
 
-[tasks.ci]
-alias = "vue:ci"
-description = "Run Vue builds, checks, and unit/browser coverage"
-depends = ["//packages/core:build"]
-run = "pnpm run check.ci"
+[tasks.check]
+alias = "vue:check"
+description = "Run the complete Vue quality gate"
+depends = [":check:quick"]
+run = [
+  "pnpm run test.build",
+  "pnpm run test.style",
+  "pnpm run test.coverage",
+  "pnpm run test.coverage.browser",
+]
 
 [tasks.test]
 alias = "vue:test"

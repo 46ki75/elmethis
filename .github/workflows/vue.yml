@@ -32,7 +32,7 @@ jobs:
         run: mise run vue:browser:install --with-deps
 
       - name: Check
-        run: mise run vue:ci
+        run: mise run vue:check
 
       # Visibility only - never fails the build. Codecov merges both flags.
       - name: Upload unit coverage to Codecov

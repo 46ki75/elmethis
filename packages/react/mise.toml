@@ -23,17 +23,22 @@ description = "Lint React sources and styles"
 depends = ["//packages/core:build"]
 run = ["pnpm run lint", "pnpm run lint.css"]
 
-[tasks.check]
-alias = "react:check"
-description = "Check the React library"
+[tasks."check:quick"]
+alias = "react:check:quick"
+description = "Run fast React checks"
 depends = ["//packages/core:build"]
 run = "pnpm run check"
 
-[tasks.ci]
-alias = "react:ci"
-description = "Run React builds, checks, and unit/browser coverage"
-depends = ["//packages/core:build"]
-run = "pnpm run check.ci"
+[tasks.check]
+alias = "react:check"
+description = "Run the complete React quality gate"
+depends = [":check:quick"]
+run = [
+  "pnpm run test.build",
+  "pnpm run test.style",
+  "pnpm run test.coverage",
+  "pnpm run test.coverage.browser",
+]
 
 [tasks.test]
 alias = "react:test"

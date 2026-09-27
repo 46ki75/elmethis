@@ -29,10 +29,11 @@ Rust MCP server — no code yet.
 Use root **mise** tasks; read the setup instructions in `README.md` first.
 Exact Node and pnpm pins come from `mise.toml` and `package.json`, respectively.
 Run `mise tasks ls --all` for the full catalog. For example, `mise run --silent solid:dev`,
-`mise run --silent solid:check`, `mise run --silent solid:ci`, and
-`mise run --silent test` automatically build core and the AG-UI stub where required.
-`mise run --silent check` is the workspace gate. Direct pnpm package commands are also
-available through `mise exec -- pnpm ...`.
+`mise run --silent solid:check:quick`, `mise run --silent solid:check`, and
+`mise run --silent test` automatically build core and the AG-UI stub where required. Use
+`mise run --silent check:quick` for fast feedback; `mise run --silent check` is the complete
+workspace gate. Direct pnpm package commands are also available through
+`mise exec -- pnpm ...`.
 
 | Command                                          | Description                                                             |
 | ------------------------------------------------ | ----------------------------------------------------------------------- |
@@ -56,7 +57,7 @@ Run a single test (from inside the package, or via `--filter @elmethis/<pkg> exe
 
 Git hooks run via **lefthook** in the mise environment (`lefthook.yml`).
 `mise run --silent fmt` and `mise run --silent fmt-check` select the same tracked files,
-or accept repeated `--file` arguments. Pre-commit invokes `mise run check`.
+or accept repeated `--file` arguments. Pre-commit invokes `mise run check:quick`.
 
 ## Architecture
 
@@ -77,9 +78,10 @@ or accept repeated `--file` arguments. Pre-commit invokes `mise run check`.
   extension (`46ki75.ikuma-theme`); `scripts/build-npm.ts` emits the separately published scoped
   Shiki package (`@46ki75/ikuma-theme`) under `dist/npm`. The framework libraries currently consume
   the published Shiki package.
-- **Per-package CI.** Established component library workflows (`.github/workflows/<pkg>.yml`) run
-  lint, format-check, build, Storybook, and test jobs after building core. `ikuma-theme.yml` runs its
-  package `check`, including generation and VSIX packaging.
+- **Per-package CI.** Component library workflows (`.github/workflows/<pkg>.yml`) run package
+  gates covering lint, format checks, builds, Storybooks, and tests after building core.
+  `ikuma-theme.yml` includes generation and VSIX packaging; `copilotkit.yml` runs the backend's
+  lint, type, build, and unit-test gate.
 
 ## Gotchas
 

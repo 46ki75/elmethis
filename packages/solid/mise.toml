@@ -23,17 +23,22 @@ description = "Lint Solid sources and styles"
 depends = ["//packages/core:build"]
 run = ["pnpm run lint", "pnpm run lint.css"]
 
-[tasks.check]
-alias = "solid:check"
-description = "Check the Solid library"
+[tasks."check:quick"]
+alias = "solid:check:quick"
+description = "Run fast Solid checks"
 depends = ["//packages/core:build", "//packages/ag-ui-stub:build"]
 run = "pnpm run check"
 
-[tasks.ci]
-alias = "solid:ci"
-description = "Run Solid builds, checks, and unit/browser coverage"
-depends = ["//packages/core:build", "//packages/ag-ui-stub:build"]
-run = "pnpm run check.ci"
+[tasks.check]
+alias = "solid:check"
+description = "Run the complete Solid quality gate"
+depends = [":check:quick"]
+run = [
+  "pnpm run test.build",
+  "pnpm run test.package",
+  "pnpm run test.coverage",
+  "pnpm run test.coverage.browser",
+]
 
 [tasks.test]
 alias = "solid:test"

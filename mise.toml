@@ -38,13 +38,13 @@ run = "pnpm exec lefthook run fmt-check --no-auto-install"
 description = "Lint every package"
 depends = ["//...:lint"]
 
-[tasks.check]
-description = "Check formatting, lint, and types across the workspace"
-depends = ["fmt-check --all-files", "configs:check", "//...:check"]
+[tasks."check:quick"]
+description = "Run fast formatting, lint, and type checks across the workspace"
+depends = ["fmt-check --all-files", "configs:check", "//...:check:quick"]
 
-[tasks.ci]
-description = "Run every package CI gate"
-depends = ["//...:ci"]
+[tasks.check]
+description = "Run the complete workspace quality gate"
+depends = [":check:quick", "//...:check"]
 
 [tasks.build]
 description = "Build all workspace packages in dependency order"

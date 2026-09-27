@@ -92,12 +92,11 @@ could consume your subscription and invoke the configured tools.
 
 ```sh
 mise run --silent copilotkit:check
-mise run --silent copilotkit:build
 ```
 
-`check` includes adapter/transport, HTTP cancellation, and pinned-binary regression
-tests; it does not require credentials or spend subscription usage. Native tests
-use fresh temporary login stores with AWS MCP disabled and simulated completion
+`check` builds the backend and runs adapter/transport, HTTP cancellation, and
+pinned-binary regression tests; it does not require credentials or spend subscription usage.
+Native tests use fresh temporary login stores with AWS MCP disabled and simulated completion
 or a local mock inference server. A live chat still requires login.
 
 ## Container

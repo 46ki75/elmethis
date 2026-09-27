@@ -20,15 +20,19 @@ run = "pnpm exec oxfmt --check ./src ./build.ts"
 description = "Lint CopilotKit backend sources"
 run = "pnpm run lint"
 
+[tasks.typecheck]
+description = "Type-check the CopilotKit backend"
+run = "pnpm exec tsc --noEmit"
+
+[tasks."check:quick"]
+alias = "copilotkit:check:quick"
+description = "Run fast CopilotKit backend checks"
+depends = [":fmt-check", ":lint", ":typecheck"]
+
 [tasks.check]
 alias = "copilotkit:check"
-description = "Lint, type-check, and test the CopilotKit backend"
-run = "pnpm run check"
-
-[tasks.ci]
-alias = "copilotkit:ci"
-description = "Run the CopilotKit backend CI gate"
-depends = [":check"]
+description = "Run the complete CopilotKit backend quality gate"
+depends = [":check:quick", ":build", ":test"]
 
 [tasks.login]
 alias = "copilotkit:login"

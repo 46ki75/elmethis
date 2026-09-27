@@ -19,12 +19,17 @@ run = "pnpm run fmt.check"
 description = "Lint theme package sources"
 run = "pnpm run lint"
 
+[tasks.typecheck]
+description = "Type-check theme package sources"
+run = "pnpm run build.types"
+
+[tasks."check:quick"]
+alias = "ikuma-theme:check:quick"
+description = "Run fast theme package checks"
+depends = [":fmt-check", ":lint", ":typecheck"]
+
 [tasks.check]
 alias = "ikuma-theme:check"
-description = "Check and build all theme artifacts"
-run = "pnpm run check"
-
-[tasks.ci]
-alias = "ikuma-theme:ci"
-description = "Run the theme package CI gate"
-depends = [":check"]
+description = "Run the complete theme package quality gate"
+depends = [":check:quick"]
+run = "pnpm run build"

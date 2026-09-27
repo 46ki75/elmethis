@@ -17,13 +17,18 @@ description = "Lint diagrams.net package sources"
 depends = ["//packages/core:build"]
 run = "pnpm run lint"
 
+[tasks.typecheck]
+description = "Type-check the diagrams.net package"
+depends = ["//packages/core:build"]
+run = "pnpm run build.types"
+
+[tasks."check:quick"]
+alias = "drawio:check:quick"
+description = "Run fast diagrams.net package checks"
+depends = [":fmt-check", ":lint", ":typecheck"]
+
 [tasks.check]
 alias = "drawio:check"
-description = "Check and build the diagrams.net configuration"
-depends = ["//packages/core:build"]
-run = "pnpm run check"
-
-[tasks.ci]
-alias = "drawio:ci"
-description = "Run the diagrams.net package CI gate"
-depends = [":check"]
+description = "Run the complete diagrams.net package quality gate"
+depends = [":check:quick"]
+run = "pnpm run build"

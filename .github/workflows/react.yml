@@ -32,7 +32,7 @@ jobs:
         run: mise run react:browser:install --with-deps
 
       - name: Check
-        run: mise run react:ci
+        run: mise run react:check
 
       # Visibility only - never fails the build. Codecov merges both flags.
       - name: Upload unit coverage to Codecov
