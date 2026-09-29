@@ -40,6 +40,26 @@ describe("Solid AG-UI components", () => {
     ).toHaveAttribute("src", "data:image/png;base64,AAAA");
   });
 
+  it("does not load opaque provider file handles in the browser", () => {
+    const rendered = render(() => (
+      <ElmAgUiInputContent
+        inputContent={[
+          {
+            type: "image",
+            source: {
+              type: "file",
+              provider: "openai",
+              value: "file_123",
+            },
+          },
+          { type: "text", text: "caption" },
+        ]}
+      />
+    ));
+    expect(rendered.queryByRole("img")).not.toBeInTheDocument();
+    expect(rendered.getByText("caption")).toBeInTheDocument();
+  });
+
   it("dispatches visible roles and suppresses private roles", () => {
     const messages = [
       { id: "u", role: "user", content: "question" },

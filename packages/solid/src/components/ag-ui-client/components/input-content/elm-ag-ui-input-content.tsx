@@ -32,18 +32,25 @@ export const ElmAgUiInputContent = (props: ElmAgUiInputContentImageProps) => {
         case "text":
           texts.push(content.text);
           break;
-        case "document":
+        case "document": {
+          const source = content.source;
+          if (source.type === "file") {
+            break;
+          }
           return (
             <div class={styles["media-component"]}>
               <ElmMdiIcon class={styles["type-icon"]} path={mdiTextBox} />
-              <pre class={styles.text}>{content.source.value}</pre>
-              <div class={styles["mime-type-label"]}>
-                {content.source.mimeType}
-              </div>
+              <pre class={styles.text}>{source.value}</pre>
+              <div class={styles["mime-type-label"]}>{source.mimeType}</div>
             </div>
           );
+        }
         case "image": {
           const source = content.source;
+          // Provider file handles are opaque and must not be treated as URLs.
+          if (source.type === "file") {
+            break;
+          }
           const url =
             source.type === "data"
               ? `data:${source.mimeType};base64,${source.value}`
@@ -65,7 +72,6 @@ export const ElmAgUiInputContent = (props: ElmAgUiInputContentImageProps) => {
         }
         case "audio":
         case "video":
-        case "binary":
           return undefined;
       }
     }
