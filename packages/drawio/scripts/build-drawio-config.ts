@@ -199,13 +199,6 @@ const config = {
             border: "4px solid",
           },
           {
-            title: `Display ${label} Surface`,
-            fill: semanticColor(`color-display-${name}-surface`),
-            stroke: base,
-            font: base,
-            border: "4px solid",
-          },
-          {
             title: `Display ${label} 20% Fill`,
             fill: `${base}33`,
             stroke: base,
@@ -213,8 +206,15 @@ const config = {
             border: "4px solid",
           },
           {
-            title: `Display ${label} Transparent Fill`,
-            fill: "none",
+            title: `Display ${label} 10% Fill`,
+            fill: `${base}1A`,
+            stroke: base,
+            font: base,
+            border: "4px solid",
+          },
+          {
+            title: `Display ${label} 5% Fill`,
+            fill: `${base}0D`,
             stroke: base,
             font: base,
             border: "4px solid",
