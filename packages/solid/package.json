@@ -89,7 +89,7 @@
   "devDependencies": {
     "@elmethis/ag-ui-stub": "workspace:^",
     "@solidjs/testing-library": "^0.8.10",
-    "@storybook/addon-docs": "^10.6.0",
+    "@storybook/addon-docs": "^10.6.1",
     "@testing-library/jest-dom": "^7.0.1",
     "@types/katex": "^0.16.8",
     "@types/node": "^26.6.3",
@@ -103,7 +103,7 @@
     "oxlint-tsgolint": "7.0.2003",
     "playwright": "^1.63.0",
     "solid-js": "^1.9.15",
-    "storybook": "^10.6.0",
+    "storybook": "^10.6.1",
     "storybook-solidjs-vite": "^10.7.2",
     "stylelint": "^17.15.0",
     "typescript": "~6.0.3",
