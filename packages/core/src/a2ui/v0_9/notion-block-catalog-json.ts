@@ -1,13 +1,14 @@
 /**
  * Method A — runtime catalog constant.
  *
- * Assembles the Notion block catalog from the `*Api` Zod definitions into a
- * freestanding A2UI v0.9 catalog JSON Schema document. Consumers that want
- * the catalog at runtime (e.g. to feed into an LLM system prompt or to
- * validate an inbound A2UI message) import `notionBlockCatalogJson` directly.
+ * Exposes the Notion block catalog as a freestanding A2UI v0.9 JSON Schema
+ * document. Assembly is deferred until `components` or `$defs` is accessed,
+ * so consumers importing only metadata do not run schema generation.
+ * Consumers that need the schema at runtime (e.g. for an LLM system prompt
+ * or inbound message validation) can serialize this object normally.
  *
  * Consumers that want the document as a hostable artifact use Method B:
- * `dist/a2ui/notion_block_catalog.json` is emitted at build time from this
+ * `dist/a2ui/v0_9/notion_block_catalog.json` is emitted at build time from this
  * same constant and is served at the URL identified by
  * `NOTION_BLOCK_CATALOG_ID`.
  */
@@ -86,12 +87,40 @@ const NOTION_BLOCK_CATALOG_COMPONENTS = [
   UnsupportedApi,
 ];
 
-export const notionBlockCatalogJson: AssembledCatalog = assembleCatalog(
-  {
-    id: NOTION_BLOCK_CATALOG_ID,
-    title: "Elmethis Notion Block Catalog",
-    description:
-      "Notion block-level A2UI components used by the @elmethis renderers (typography, media, code, math, table, tabs). Extends — does not replace — the A2UI Basic Catalog.",
+const envelope = {
+  id: NOTION_BLOCK_CATALOG_ID,
+  title: "Elmethis Notion Block Catalog",
+  description:
+    "Notion block-level A2UI components used by the @elmethis renderers (typography, media, code, math, table, tabs). Extends — does not replace — the A2UI Basic Catalog.",
+};
+
+let assembledCatalog: AssembledCatalog | undefined;
+
+function getCatalog(): AssembledCatalog {
+  return (assembledCatalog ??= assembleCatalog(
+    envelope,
+    NOTION_BLOCK_CATALOG_COMPONENTS,
+  ));
+}
+
+// Enumerable accessors preserve JSON serialization and share one assembled
+// result. Setters retain the existing writable AssembledCatalog interface.
+export const notionBlockCatalogJson: AssembledCatalog = {
+  $schema: "https://json-schema.org/draft/2020-12/schema",
+  $id: envelope.id,
+  catalogId: envelope.id,
+  title: envelope.title,
+  description: envelope.description,
+  get components() {
+    return getCatalog().components;
   },
-  NOTION_BLOCK_CATALOG_COMPONENTS,
-);
+  set components(value) {
+    getCatalog().components = value;
+  },
+  get $defs() {
+    return getCatalog().$defs;
+  },
+  set $defs(value) {
+    getCatalog().$defs = value;
+  },
+};

@@ -113,15 +113,15 @@ describe("notionBlockCatalogJson", () => {
     expect(externalRefs).toEqual([]);
   });
 
-  test("compiles cleanly with ajv (draft 2020-12)", () => {
+  test("every component compiles cleanly with ajv (draft 2020-12)", () => {
     const ajv = newAjv();
-    // Compile the catalog as a meta-schema-aware document. Add it once with
-    // its $id and then compile a reference into one of its component slots.
     ajv.addSchema(notionBlockCatalogJson);
-    const validate = ajv.compile({
-      $ref: `${NOTION_BLOCK_CATALOG_ID}#/components/Heading`,
-    });
-    expect(validate).toBeTypeOf("function");
+    for (const name of Object.keys(notionBlockCatalogJson.components)) {
+      const validate = ajv.compile({
+        $ref: `${NOTION_BLOCK_CATALOG_ID}#/components/${name}`,
+      });
+      expect(validate, `${name} schema references`).toBeTypeOf("function");
+    }
   });
 
   test("a valid Heading payload validates; an invalid one fails", () => {

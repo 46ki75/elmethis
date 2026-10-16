@@ -66,10 +66,11 @@
     "fmt.check": "oxfmt --check ./src",
     "lint": "oxlint --type-aware --report-unused-disable-directives-severity=error --deny-warnings src",
     "test.unit": "vitest --run",
+    "test.package": "node --test scripts/test-package.mjs",
     "test.coverage": "vitest --run --coverage",
     "prepublishOnly": "pnpm run build",
     "check": "concurrently -g \"pnpm:fmt.check\" \"pnpm:lint\" \"pnpm:build.types\"",
-    "check.ci": "pnpm run check && pnpm run build && pnpm run test.coverage"
+    "check.ci": "pnpm run check && pnpm run build && pnpm run test.package && pnpm run test.coverage"
   },
   "peerDependencies": {
     "@a2ui/web_core": ">=0.10.0",

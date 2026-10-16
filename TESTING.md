@@ -94,6 +94,14 @@ that lives in multiple targets shares a base name and differs only by the
   need a grant via the provider: `playwright({ contextOptions: { permissions:
 [...] } })` in `vitest.browser.config.ts`.
 
+## Core package imports
+
+Core has a single Vitest unit layer. Its complete gate, `mise run --silent core:check`,
+also builds the distribution and runs `test.package`: fresh-process ESM and CommonJS
+import checks against the public package entry points. These checks must run after
+`core:build` and verify that metadata imports do not generate schemas or suppress
+consumer warnings.
+
 ## CI
 
 Each framework package's workflow runs the layers as separate jobs: `lint`,
