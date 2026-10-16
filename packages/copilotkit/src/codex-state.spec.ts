@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { InMemoryAgentRunner } from "@copilotkit/runtime/v2";
-import { EventType, type RunAgentInput } from "@ag-ui/core";
+import { EventType, type BaseEvent, type RunAgentInput } from "@ag-ui/core";
 import { Subject, lastValueFrom, toArray } from "rxjs";
 import { CodexAgentAdapter } from "./codex-agent.ts";
 import type { CodexConnection, CodexMessage, RpcId } from "./codex-rpc.ts";
@@ -94,7 +94,8 @@ void test("handles state updates server-side, shallow-merges, and keeps the nati
     finish(events);
   });
   const runner = new InMemoryAgentRunner();
-  const events = await lastValueFrom(
+  // Use the app's event type across the runner's separate Zod peer context.
+  const events: BaseEvent[] = await lastValueFrom(
     runner.run({ threadId: input.threadId, agent, input }).pipe(toArray()),
   );
   assert.deepEqual(runner.getThreadState(input.threadId), {
