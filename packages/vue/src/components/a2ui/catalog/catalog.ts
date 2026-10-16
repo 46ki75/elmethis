@@ -155,7 +155,7 @@ export class CatalogRenderer {
     id: string,
     functions: readonly FunctionImplementation[] = [],
   ): Catalog<AnyRendererEntry> {
-    return new Catalog(id, [...this.entries.values()], [...functions]);
+    return new Catalog(id, "0.9", [...this.entries.values()], [...functions]);
   }
 
   /**

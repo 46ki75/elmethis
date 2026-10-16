@@ -176,6 +176,42 @@ describe("[CSR] ElmA2ui", () => {
     );
   });
 
+  it.each(["click", "Enter", " "])(
+    "reports rejected button actions activated with %s",
+    async (activation) => {
+      const error = new Error("action failed");
+      vi.spyOn(SurfaceModel.prototype, "dispatchAction").mockRejectedValue(
+        error,
+      );
+      const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+      const rendered = render(() => (
+        <ElmA2ui
+          messages={createMessages(
+            {
+              component: "Button",
+              id: "root",
+              child: "label",
+              action: { event: { name: "save" } },
+            },
+            { component: "Text", id: "label", text: "Save" },
+          )}
+        />
+      ));
+      const button = rendered.getByRole("button", { name: "Save" });
+      if (activation === "click") {
+        fireEvent.click(button);
+      } else {
+        fireEvent.keyDown(button, { key: activation });
+      }
+      await waitFor(() => {
+        expect(errorSpy).toHaveBeenCalledWith(
+          "[ElmA2ui] action failed:",
+          error,
+        );
+      });
+    },
+  );
+
   it("reactively enforces checks and exposes validation errors", () => {
     const actionSpy = vi.spyOn(SurfaceModel.prototype, "dispatchAction");
     const requiredCheck = {

@@ -62,7 +62,12 @@ describe("basicCatalog — Text", () => {
 describe("basicCatalog — structure", () => {
   it("Button renders a clickable role=button", async () => {
     const wrapper = mountSurface([
-      { component: "Button", id: "root", child: "c" },
+      {
+        component: "Button",
+        id: "root",
+        child: "c",
+        action: { event: { name: "go" } },
+      },
       { component: "Text", id: "c", variant: "caption", text: "Go" },
     ]);
     await vi.waitFor(() => {

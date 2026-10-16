@@ -15,7 +15,10 @@ describe("CatalogRenderer", () => {
 
     expect(base.get("Text")).toBe(original);
     expect(extended.get("Text")).toBe(replacement);
-    expect(extended.toCatalog("test").components.get("Text")).toBe(replacement);
+    const catalog = extended.toCatalog("test");
+    expect(catalog.id).toBe("test");
+    expect(catalog.protocolVersion).toBe("0.9");
+    expect(catalog.components.get("Text")).toBe(replacement);
   });
 
   it("merges inherited functions by name with later catalogs winning", () => {

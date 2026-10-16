@@ -145,6 +145,13 @@ export const basicComponents: SolidRendererEntry[] = [
   defineRenderer(ButtonApi, (props) => {
     const errorId = () => `${props.instanceId}-errors`;
     const isDisabled = () => props.props.isValid === false;
+    const activate = () => {
+      if (!isDisabled()) {
+        props.props.action?.().catch((error: unknown) => {
+          console.error("[ElmA2ui] action failed:", error);
+        });
+      }
+    };
     return (
       <div class={styles["action-control"]}>
         <div
@@ -157,15 +164,11 @@ export const basicComponents: SolidRendererEntry[] = [
             [styles["button-primary"]]: props.props.variant === "primary",
             [styles["button-disabled"]]: isDisabled(),
           }}
-          onClick={() => {
-            if (!isDisabled()) {
-              props.props.action?.();
-            }
-          }}
+          onClick={activate}
           onKeyDown={(event) => {
             if (!isDisabled() && (event.key === "Enter" || event.key === " ")) {
               event.preventDefault();
-              props.props.action?.();
+              activate();
             }
           }}
         >
