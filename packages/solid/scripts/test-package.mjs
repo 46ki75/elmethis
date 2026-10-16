@@ -92,6 +92,13 @@ try {
           "vite-plugin-solid":
             solidPackage.devDependencies["vite-plugin-solid"],
         },
+        // Packed workspace ranges target npm by default. Use the local core
+        // tarball transitively too, including before its version is published.
+        pnpm: {
+          overrides: {
+            "@elmethis/core": `file:${coreTarball}`,
+          },
+        },
       },
       null,
       2,
