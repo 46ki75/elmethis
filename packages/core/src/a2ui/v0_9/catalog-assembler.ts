@@ -287,9 +287,19 @@ function inlineZod(schema: z.ZodType<unknown>): unknown {
   return rest;
 }
 
-const FINGERPRINT_TO_REF = new Map<string, string>();
-for (const [name, schema] of COMMON_BY_REF) {
-  FINGERPRINT_TO_REF.set(fingerprint(inlineZod(schema)), name);
+let fingerprintToRef: ReadonlyMap<string, string> | undefined;
+
+function getFingerprintToRef(): ReadonlyMap<string, string> {
+  // Conversion traverses recursive upstream schemas and can emit warnings.
+  // Importing the assembler must not do this work before assembly is requested.
+  if (fingerprintToRef === undefined) {
+    const refs = new Map<string, string>();
+    for (const [name, schema] of COMMON_BY_REF) {
+      refs.set(fingerprint(inlineZod(schema)), name);
+    }
+    fingerprintToRef = refs;
+  }
+  return fingerprintToRef;
 }
 
 /**
@@ -308,7 +318,7 @@ function collapseCommonRefs(node: unknown): unknown {
   }
 
   const obj = node as Record<string, unknown>;
-  const refName = FINGERPRINT_TO_REF.get(fingerprint(obj));
+  const refName = getFingerprintToRef().get(fingerprint(obj));
   if (refName !== undefined) {
     const description = obj.description;
     return description !== undefined
