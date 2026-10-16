@@ -33,11 +33,11 @@ importers:
   packages/ag-ui-stub:
     dependencies:
       '@ag-ui/client':
-        specifier: 1.0.0
-        version: 1.0.0
+        specifier: 1.0.2
+        version: 1.0.2
       '@ag-ui/core':
-        specifier: 1.0.0
-        version: 1.0.0(zod@3.25.76)
+        specifier: 1.0.2
+        version: 1.0.2(zod@4.4.3)
       rxjs:
         specifier: 7.8.1
         version: 7.8.1
@@ -403,11 +403,11 @@ importers:
         specifier: ^0.11.0
         version: 0.11.0
       '@ag-ui/client':
-        specifier: ^1.0.0
-        version: 1.0.0
+        specifier: ^1.0.2
+        version: 1.0.2
       '@ag-ui/core':
-        specifier: ^1.0.0
-        version: 1.0.0(zod@3.25.76)
+        specifier: ^1.0.2
+        version: 1.0.2(zod@3.25.76)
       '@elmethis/core':
         specifier: workspace:^
         version: link:../core
@@ -660,22 +660,11 @@ packages:
   '@ag-ui/client@0.0.59':
     resolution: {integrity: sha512-d7++r8sBAq6z9G/D/WKrMznQ1Mdvew14pCqOVATReFIvl06mCi1BPqTwmos3zCDGAIiSgcvxc/8m472rYQgFFQ==}
 
-  '@ag-ui/client@1.0.0':
-    resolution: {integrity: sha512-Q24E4yuK35tz7ROOC0yWYltdOZK1K+5GmM2Syh/PReFE9e8lDcE8LoMoY5HZyxpQZ+0IizwpQm9LyVqAHP8mpw==}
-
   '@ag-ui/client@1.0.2':
     resolution: {integrity: sha512-BPxcQBPxJZi7XiQI8eBpiE6KBcySjD6hV7XWQhezYbLeK9WJkcUZ6RhX5dngWw+VgfapxPdJdEDTV/JxF21Duw==}
 
   '@ag-ui/core@0.0.59':
     resolution: {integrity: sha512-hDgy4ipTqXieT8YG8Mr917Y+FD/f11VK1GefZ5CwTDCuNqS/oTwjJ5l/DZkicThgS8hQW/Y7wPylPBMBJ8BkUg==}
-
-  '@ag-ui/core@1.0.0':
-    resolution: {integrity: sha512-yCRhsQvb4+lmGMrDsi4TOJxqKpm/kb3H64wwL+Z90jNVrkhy17RErfzsNgybfbjNKLM0nenEDYDVJsZHJJSigQ==}
-    peerDependencies:
-      zod: ^3.25.18 || ^4.0.0
-    peerDependenciesMeta:
-      zod:
-        optional: true
 
   '@ag-ui/core@1.0.2':
     resolution: {integrity: sha512-lb0YfvHY4eTHcXthTWzXjsElLqycGWDhaXGTejwMkUV5TtJVZircRS12/tMpqzd32sL+WZ2PWQ4m0+ThKrGF8A==}
@@ -687,9 +676,6 @@ packages:
 
   '@ag-ui/encoder@0.0.59':
     resolution: {integrity: sha512-wQCzBsStyZMm8nzhTdTx1G0B1C8yv5rbzZLnz1ka/l5LcJEsK3KTounU8CR9l+7QtcpOUUDJKd0xAbyI6gNcSw==}
-
-  '@ag-ui/encoder@1.0.0':
-    resolution: {integrity: sha512-8w+SHIjsatOcHHe5UBqdlqOiZaQWa3rMv1cUdNFXtHmfcIOLbMd1PG3SRWHD9AMUzApDl4964BV9xs3QPZogrw==}
 
   '@ag-ui/encoder@1.0.2':
     resolution: {integrity: sha512-SE8pQ7dpXwtqpD1WzW2Of9h4uZRDPVGZqT7kdrQ17w9+eOxAolqqRybVLBqJTqCZiUNgX0hFUNlAJSOV0z0UDg==}
@@ -714,9 +700,6 @@ packages:
 
   '@ag-ui/proto@0.0.59':
     resolution: {integrity: sha512-X+uvDaegLEHw5kJu8tv2eSqHH8ouat+JCfFokGV1uuMquY8qCEQSlGsM7xzexwX9fujuxgHOWumg5kJDqa0+RA==}
-
-  '@ag-ui/proto@1.0.0':
-    resolution: {integrity: sha512-RXEdjD3RfZ/8fUEX+ZqN5SrZAxrOZ9oQt0FlEhN4Ie/YEOKDVv0u1g83fOhGxWJTTVAmYSM/xf+ijwixsmz2RA==}
 
   '@ag-ui/proto@1.0.2':
     resolution: {integrity: sha512-uIp6TkQdos03Bkjl01Z46cK/D7QAKNO26RYIIX1WfxNy4penVatU0b/TFTjVrOtwSnp5mtl8Rpzkiiu9cZHwlg==}
@@ -7402,19 +7385,6 @@ snapshots:
       uuid: 11.1.1
       zod: 3.25.76
 
-  '@ag-ui/client@1.0.0':
-    dependencies:
-      '@ag-ui/core': 1.0.0(zod@3.25.76)
-      '@ag-ui/encoder': 1.0.0(zod@3.25.76)
-      '@ag-ui/proto': 1.0.0
-      '@types/uuid': 10.0.0
-      compare-versions: 6.1.1
-      fast-json-patch: 3.1.1
-      rxjs: 7.8.1
-      untruncate-json: 0.0.1
-      uuid: 11.1.1
-      zod: 3.25.76
-
   '@ag-ui/client@1.0.2':
     dependencies:
       '@ag-ui/core': 1.0.2(zod@3.25.76)
@@ -7432,10 +7402,6 @@ snapshots:
     dependencies:
       zod: 3.25.76
 
-  '@ag-ui/core@1.0.0(zod@3.25.76)':
-    optionalDependencies:
-      zod: 3.25.76
-
   '@ag-ui/core@1.0.2(zod@3.25.76)':
     optionalDependencies:
       zod: 3.25.76
@@ -7448,13 +7414,6 @@ snapshots:
     dependencies:
       '@ag-ui/core': 0.0.59
       '@ag-ui/proto': 0.0.59
-
-  '@ag-ui/encoder@1.0.0(zod@3.25.76)':
-    dependencies:
-      '@ag-ui/core': 1.0.0(zod@3.25.76)
-      '@ag-ui/proto': 1.0.0
-    transitivePeerDependencies:
-      - zod
 
   '@ag-ui/encoder@1.0.2(zod@3.25.76)':
     dependencies:
@@ -7507,13 +7466,6 @@ snapshots:
       '@ag-ui/core': 0.0.59
       '@bufbuild/protobuf': 2.16.0
       '@protobuf-ts/protoc': 2.11.1
-
-  '@ag-ui/proto@1.0.0':
-    dependencies:
-      '@ag-ui/core': 1.0.0(zod@3.25.76)
-      '@bufbuild/protobuf': 2.16.0
-      '@protobuf-ts/protoc': 2.11.1
-      zod: 3.25.76
 
   '@ag-ui/proto@1.0.2':
     dependencies:
