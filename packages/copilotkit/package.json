@@ -19,8 +19,8 @@
     "dependencies": {
         "@ag-ui/client": "1.0.2",
         "@ag-ui/core": "1.0.2",
-        "@copilotkit/runtime": "^1.73.3",
-        "@copilotkit/shared": "^1.73.3",
+        "@copilotkit/runtime": "^1.79.0",
+        "@copilotkit/shared": "^1.79.0",
         "@hono/node-server": "^2.1.1",
         "@modelcontextprotocol/sdk": "^1.32.1",
         "@openai/codex": "0.157.1",
@@ -33,7 +33,7 @@
     "devDependencies": {
         "@types/node": "^26.6.4",
         "esbuild": "^0.28.2",
-        "oxlint": "1.87.0",
+        "oxlint": "1.88.0",
         "oxlint-tsgolint": "7.0.2004",
         "typescript": "^5.6.2"
     }
