@@ -231,7 +231,7 @@ export const ComponentHost = defineComponent({
         ) {
           return String(v) as V;
         }
-        return (ctx.dataContext.resolveDynamicValue(v as never) ?? "") as V;
+        return (ctx.dataContext.resolveDynamicValue(v) ?? "") as V;
       };
 
       const childRefs = (value: unknown): ChildRef[] => {
@@ -323,7 +323,7 @@ export const ComponentHost = defineComponent({
             return val;
           }
           if ("path" in val || "call" in val) {
-            return dispatchCtx.dataContext.resolveDynamicValue(val as never);
+            return dispatchCtx.dataContext.resolveDynamicValue(val);
           }
           if (Array.isArray(val)) {
             return val.map(resolveDeep);

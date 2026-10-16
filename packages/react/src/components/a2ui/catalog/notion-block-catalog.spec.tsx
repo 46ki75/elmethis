@@ -1,4 +1,5 @@
 import { describe, expect, test } from "vitest";
+import { isWebComponentImplementation } from "@a2ui/web_core/v0_9/universal";
 
 import {
   notionBlockCatalog,
@@ -11,6 +12,10 @@ import {
 // These structural checks pin the merged surface without rendering.
 
 describe("notionBlockCatalog — composition", () => {
+  test("targets the v0.9 protocol", () => {
+    expect(notionBlockCatalog.protocolVersion).toBe("0.9");
+  });
+
   test("includes the official basic primitives", () => {
     for (const name of ["Text", "Row", "Card", "Button", "TextField"]) {
       expect(notionBlockCatalog.components.has(name)).toBe(true);
@@ -56,13 +61,17 @@ describe("notionBlockCatalog — composition", () => {
   });
 
   test("notionBlockComponents backs the catalog and carries the basic functions", () => {
-    // Every entry is a renderable implementation. The merged list is at least
-    // as large as the de-duplicated catalog (Column/List/Divider/Icon collide).
+    // Entries may be React implementations or upstream Web Components.
+    // The merged list is at least as large as the de-duplicated catalog
+    // (Column/List/Divider/Icon collide).
     expect(notionBlockComponents.length).toBeGreaterThanOrEqual(
       notionBlockCatalog.components.size,
     );
     expect(
-      notionBlockComponents.every((c) => typeof c.render === "function"),
+      notionBlockComponents.every(
+        (c) =>
+          isWebComponentImplementation(c) || typeof c.render === "function",
+      ),
     ).toBe(true);
     // Functions come from the official basic catalog (used by `{ call }`
     // expression bindings); the array is defined even if empty.

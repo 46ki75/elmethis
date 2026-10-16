@@ -54,7 +54,10 @@ describe("CatalogRenderer", () => {
   test("builds a processor catalog with the renderer schemas", () => {
     const entry = defineRenderer(TextApi, () => null);
     const catalog = new CatalogRenderer([entry]);
-    expect(catalog.toCatalog("test").components.get("Text")).toBe(entry);
+    const processorCatalog = catalog.toCatalog("test");
+    expect(processorCatalog.id).toBe("test");
+    expect(processorCatalog.protocolVersion).toBe("0.9");
+    expect(processorCatalog.components.get("Text")).toBe(entry);
   });
 
   test("extend layers new entries on top without mutating the base", () => {

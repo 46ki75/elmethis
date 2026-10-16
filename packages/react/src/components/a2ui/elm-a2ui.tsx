@@ -2,7 +2,7 @@
  * Public A2UI v0.9 renderer (React).
  *
  * Built on the **official** `@a2ui/react` package: the recursive host
- * (`A2uiSurface` / `DeferredChild`) and the generic binder are the library's,
+ * (`A2uiSurface`) and the generic binder are the library's,
  * so this component only owns the convenience API around them —
  *
  *   - `messages` — render a pre-collected v0.9 message list (tests / Storybook).
@@ -26,7 +26,7 @@ import DOMPurify from "dompurify";
 import {
   A2uiSurface,
   MarkdownContext,
-  type ReactComponentImplementation,
+  type ReactCatalogComponent,
 } from "@a2ui/react/v0_9";
 import {
   Catalog,
@@ -44,13 +44,9 @@ import styles from "./elm-a2ui.module.css";
 const BASIC_CATALOG_ID =
   "https://a2ui.org/specification/v0_9/basic_catalog.json";
 
-// The basic-catalog `Text` renderer turns its `variant` into markdown
-// (`h1` → `# text`, `caption` → `*text*`) and renders it through a renderer
-// pulled from `MarkdownContext` — injected via `dangerouslySetInnerHTML`.
-// Without one it falls back to dumping the raw markdown string ("# Heading").
-// Provide `marked` (the engine ElmMarkdown already uses) so those variants
-// resolve to real HTML, and sanitize the result with DOMPurify since A2UI
-// content is agent-authored and goes through `dangerouslySetInnerHTML`.
+// A2uiSurface bridges MarkdownContext to the upstream Web Component `Text`
+// renderer. Use the same engine as ElmMarkdown and sanitize agent-authored
+// content before the upstream renderer inserts the resulting HTML.
 const renderMarkdown = (markdown: string): Promise<string> =>
   // Keep parse/sanitize failures as rejections for the async renderer contract.
   new Promise((resolve) => {
@@ -78,11 +74,11 @@ export interface ElmA2uiProps extends Omit<
    * Component implementations registered under every referenced catalog id.
    * Defaults to {@link notionBlockComponents}. Pass a stable (memoized) array.
    */
-  components?: ReactComponentImplementation[];
+  components?: ReactCatalogComponent[];
 }
 
 interface ProcessorState {
-  processor: MessageProcessor<ReactComponentImplementation>;
+  processor: MessageProcessor<ReactCatalogComponent>;
   subs: Array<{ unsubscribe(): void }>;
   processed: number;
   messages: object[];
@@ -106,11 +102,11 @@ export const ElmA2ui = ({
   // The live surfaces, in state so create/delete events drive re-renders.
   // (Data/component updates re-render through the official binder, not here.)
   const [surfaces, setSurfaces] = useState<
-    SurfaceModel<ReactComponentImplementation>[]
+    SurfaceModel<ReactCatalogComponent>[]
   >([]);
   const processorRef = useRef<ProcessorState | null>(null);
   const surfaceMapRef = useRef<
-    Map<string, SurfaceModel<ReactComponentImplementation>>
+    Map<string, SurfaceModel<ReactCatalogComponent>>
   >(new Map());
 
   // ---- JSONL streaming (only when `url` is provided) ----
@@ -205,11 +201,9 @@ export const ElmA2ui = ({
       }
     }
     const catalogs = Array.from(ids).map(
-      (id) => new Catalog(id, components, notionBlockFunctions),
+      (id) => new Catalog(id, "0.9", components, notionBlockFunctions),
     );
-    const processor = new MessageProcessor<ReactComponentImplementation>(
-      catalogs,
-    );
+    const processor = new MessageProcessor<ReactCatalogComponent>(catalogs);
     const surfaceMap = surfaceMapRef.current;
     surfaceMap.clear();
     const subs: Array<{ unsubscribe(): void }> = [];

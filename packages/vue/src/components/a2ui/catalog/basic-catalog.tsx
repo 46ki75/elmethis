@@ -240,7 +240,7 @@ export const basicCatalog: CatalogRenderer = new CatalogRenderer([
     const value =
       typeof raw === "number"
         ? raw
-        : Number(ctx.dataContext.resolveDynamicValue(raw as never) ?? 0);
+        : Number(ctx.dataContext.resolveDynamicValue(raw) ?? 0);
     return (
       <input
         class={styles.slider}
@@ -296,7 +296,7 @@ export const basicCatalog: CatalogRenderer = new CatalogRenderer([
       const raw = props.value;
       const resolvedArr = Array.isArray(raw)
         ? raw
-        : (ctx.dataContext.resolveDynamicValue(raw as never) ?? []);
+        : (ctx.dataContext.resolveDynamicValue(raw) ?? []);
       const selected: string[] = Array.isArray(resolvedArr)
         ? (resolvedArr as string[])
         : [];

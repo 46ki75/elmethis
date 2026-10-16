@@ -150,6 +150,11 @@ export class CatalogRenderer {
   }
 
   toCatalog(id: string): Catalog<SolidRendererEntry> {
-    return new Catalog(id, [...this.components.values()], [...this.functions]);
+    return new Catalog(
+      id,
+      "0.9",
+      [...this.components.values()],
+      [...this.functions],
+    );
   }
 }

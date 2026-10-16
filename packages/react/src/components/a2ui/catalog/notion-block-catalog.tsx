@@ -19,11 +19,12 @@
  */
 import { Fragment, type CSSProperties } from "react";
 import {
-  basicCatalog,
   createComponentImplementation,
+  type ReactCatalogComponent,
   type ReactComponentImplementation,
 } from "@a2ui/react/v0_9";
 import { Catalog } from "@a2ui/web_core/v0_9";
+import { basicCatalog } from "@a2ui/web_core/v0_9/basic_catalog";
 import {
   AudioApi,
   BlockImageApi,
@@ -394,7 +395,7 @@ const blockImplementations: ReactComponentImplementation[] = [
  * `Column` / `List` / `Divider` / `Icon` resolve to the Elm versions). This is
  * the unit `ElmA2ui` registers under each referenced catalog id.
  */
-export const notionBlockComponents: ReactComponentImplementation[] = [
+export const notionBlockComponents: ReactCatalogComponent[] = [
   ...basicCatalog.components.values(),
   ...blockImplementations,
 ];
@@ -407,9 +408,9 @@ export const notionBlockFunctions = Array.from(basicCatalog.functions.values());
  * the basic-catalog id. `ElmA2ui` rebuilds equivalent catalogs per referenced
  * id; this export is for direct/standalone use.
  */
-export const notionBlockCatalog: Catalog<ReactComponentImplementation> =
-  new Catalog(
-    NOTION_BLOCK_CATALOG_ID,
-    notionBlockComponents,
-    notionBlockFunctions,
-  );
+export const notionBlockCatalog: Catalog<ReactCatalogComponent> = new Catalog(
+  NOTION_BLOCK_CATALOG_ID,
+  "0.9",
+  notionBlockComponents,
+  notionBlockFunctions,
+);
