@@ -59,8 +59,8 @@
     "prepublishOnly": "pnpm run build"
   },
   "peerDependencies": {
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
   },
   "dependencies": {
     "@46ki75/ikuma-theme": "^0.0.10",
@@ -104,8 +104,8 @@
     "oxlint": "1.88.0",
     "oxlint-tsgolint": "7.0.2004",
     "playwright": "^1.63.0",
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "storybook": "^10.6.2",
     "stylelint": "^17.16.0",
     "tsx": "^4.23.15",
