@@ -85,7 +85,7 @@
   "devDependencies": {
     "@a2ui/web_core": "^0.14.0",
     "@google/design.md": "0.4.0",
-    "@types/node": "26.6.4",
+    "@types/node": "26.6.5",
     "@vanilla-extract/css": "^1.21.3",
     "@vanilla-extract/esbuild-plugin": "^2.3.22",
     "@vitest/coverage-v8": "^5.0.5",

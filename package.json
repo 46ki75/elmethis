@@ -11,7 +11,7 @@
     "fmt.configs": "oxfmt --check .oxfmtrc.json .oxlintrc.json \"**/tsconfig*.json\" \"**/.oxlintrc.json\""
   },
   "devDependencies": {
-    "@types/node": "^26.6.4",
+    "@types/node": "^26.6.5",
     "lefthook": "^2.1.14",
     "oxfmt": "0.73.0",
     "oxlint": "1.88.0",
