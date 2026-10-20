@@ -88,7 +88,7 @@
     "@types/node": "26.6.4",
     "@vanilla-extract/css": "^1.21.3",
     "@vanilla-extract/esbuild-plugin": "^2.3.22",
-    "@vitest/coverage-v8": "^5.0.4",
+    "@vitest/coverage-v8": "^5.0.5",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
     "concurrently": "^10.0.5",
@@ -99,7 +99,7 @@
     "tsdown": "^0.23.0",
     "tsx": "^4.23.15",
     "typescript": "5.9.3",
-    "vitest": "^5.0.4",
+    "vitest": "^5.0.5",
     "yaml": "2.9.1",
     "zod": "^3.25.76"
   }
