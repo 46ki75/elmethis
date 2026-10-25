@@ -74,12 +74,12 @@
     "@mdi/js": "^7.4.47",
     "@vueuse/core": "^15.0.0",
     "clsx": "^2.1.1",
-    "dompurify": "^3.4.16",
+    "dompurify": "^3.4.17",
     "es-toolkit": "^1.52.0",
     "katex": "^0.18.9",
     "marked": "^18.0.14",
     "shiki": "^4.4.3",
-    "zod": "^3.25.76"
+    "zod": "^4.6.6"
   },
   "devDependencies": {
     "@storybook/addon-docs": "^10.6.2",
