@@ -22,7 +22,7 @@
         "@copilotkit/runtime": "^1.79.1",
         "@copilotkit/shared": "^1.79.1",
         "@hono/node-server": "^2.1.5",
-        "@modelcontextprotocol/sdk": "^1.32.1",
+        "@modelcontextprotocol/sdk": "^1.32.2",
         "@openai/codex": "0.163.0",
         "rxjs": "7.8.1",
         "consola": "^3.4.2",
