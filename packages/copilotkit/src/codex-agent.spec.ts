@@ -1,4 +1,7 @@
 import assert from "node:assert/strict";
+import { mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { test } from "node:test";
 import { Subject, lastValueFrom, toArray } from "rxjs";
 import { EventType, type RunAgentInput } from "@ag-ui/core";
@@ -98,24 +101,72 @@ void test("streams text with balanced lifecycle events and closes the process", 
   assert.equal(Reflect.get(params, "approvalPolicy"), "never");
 });
 
-for (const account of [null, { type: "apiKey" }]) {
-  void test(`rejects non-subscription authentication: ${JSON.stringify(account)}`, async () => {
-    const connection = new FakeConnection();
-    connection.account = account;
+void test("the default path requires a saved SIWC grant before any network or inference", async (t) => {
+  const home = mkdtempSync(join(tmpdir(), "elmethis-missing-plan-"));
+  const previous = process.env.COPILOTKIT_CODEX_HOME;
+  process.env.COPILOTKIT_CODEX_HOME = home;
+  let fetches = 0;
+  t.mock.method(globalThis, "fetch", () => {
+    fetches++;
+    return Promise.reject(
+      new Error("Network must not be used without a grant"),
+    );
+  });
+  try {
     const events = await lastValueFrom(
-      agentFor(connection).run(input()).pipe(toArray()),
+      new CodexAgentAdapter().run(input()).pipe(toArray()),
     );
     assert.deepEqual(
       events.map((event) => event.type),
       [EventType.RUN_STARTED, EventType.RUN_ERROR],
     );
-    assert.equal(
-      connection.requests.some((request) => request.method === "thread/start"),
-      false,
-    );
-    assert.equal(connection.closed, true);
+    const error = events.find((event) => event.type === EventType.RUN_ERROR);
+    assert.ok(error && typeof error.message === "string");
+    assert.match(error.message, /Sign in with ChatGPT/);
+    assert.equal(fetches, 0);
+  } finally {
+    if (previous === undefined) {
+      delete process.env.COPILOTKIT_CODEX_HOME;
+    } else {
+      process.env.COPILOTKIT_CODEX_HOME = previous;
+    }
+    rmSync(home, { recursive: true, force: true });
+  }
+});
+
+void test("uses an app-authorized provider without requiring a Codex account login", async () => {
+  const connection = new FakeConnection();
+  connection.account = null;
+  const events = await lastValueFrom(
+    agentFor(connection).run(input()).pipe(toArray()),
+  );
+  assert.equal(events.at(-1)?.type, EventType.RUN_FINISHED);
+  assert.equal(
+    connection.requests.some((request) => request.method === "account/read"),
+    false,
+  );
+  const params = connection.requests.find(
+    (request) => request.method === "thread/start",
+  )?.params;
+  assert.ok(params && typeof params === "object");
+  assert.equal(Reflect.get(params, "modelProvider"), "elmethis_chatgpt_plan");
+  assert.equal(connection.closed, true);
+});
+
+void test("closes a connection that finishes preparing after cancellation", async () => {
+  const connection = new FakeConnection();
+  const ready = Promise.withResolvers<CodexConnection>();
+  const agent = new CodexAgentAdapter({
+    connectionFactory: () => ready.promise,
   });
-}
+  const subscription = agent.run(input()).subscribe();
+  subscription.unsubscribe();
+  ready.resolve(connection);
+  await ready.promise;
+  // The adapter's continuation is registered before this one.
+  assert.equal(connection.closed, true);
+  assert.deepEqual(connection.requests, []);
+});
 
 void test("aliases distinct malformed-Unicode frontend names without forwarding them", async () => {
   const connection = new FakeConnection();
@@ -142,7 +193,8 @@ void test("aliases distinct malformed-Unicode frontend names without forwarding 
     (tool) =>
       typeof tool === "object" &&
       tool !== null &&
-      Reflect.get(tool, "type") === "namespace",
+      Reflect.get(tool, "type") === "namespace" &&
+      Reflect.get(tool, "name") === "elmethis_frontend",
   );
   assert.ok(namespace && typeof namespace === "object");
   const tools = Reflect.get(namespace, "tools") as Array<{
@@ -390,6 +442,33 @@ void test("turn failures produce RUN_ERROR, never RUN_FINISHED", async () => {
     [EventType.RUN_STARTED, EventType.STATE_SNAPSHOT, EventType.RUN_ERROR],
   );
   assert.equal(connection.closed, true);
+});
+
+void test("directs ChatGPT-plan usage-limit failures to Manage usage", async () => {
+  const connection = new FakeConnection();
+  connection.onTurn = () =>
+    connection.events.next({
+      method: "turn/completed",
+      params: {
+        turn: {
+          status: "failed",
+          error: {
+            message: "ChatGPT plan usage limit reached",
+            codexErrorInfo: "usageLimitExceeded",
+          },
+        },
+      },
+    });
+  const events = await lastValueFrom(
+    agentFor(connection).run(input()).pipe(toArray()),
+  );
+  const error = events.find((event) => event.type === EventType.RUN_ERROR);
+  assert.ok(error && typeof error.message === "string");
+  assert.match(error.message, /https:\/\/chatgpt\.com\/settings\/usage/);
+  assert.equal(
+    events.some((event) => event.type === EventType.RUN_FINISHED),
+    false,
+  );
 });
 
 void test("unknown approval requests fail closed instead of hanging", async () => {

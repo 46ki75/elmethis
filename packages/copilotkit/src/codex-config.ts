@@ -47,14 +47,27 @@ export const codexHome = () =>
       join(homedir(), ".local/share/elmethis/copilotkit-codex"),
   );
 
-export function codexProcessOptions() {
+export const CODEX_PROVIDER = "elmethis_chatgpt_plan";
+export const CODEX_TOKEN_ENV = "ELMETHIS_CHATGPT_ACCESS_TOKEN";
+
+export function codexProcessOptions(accessToken?: string) {
   const home = codexHome();
   const cwd = join(home, "workspace");
   mkdirSync(cwd, { recursive: true, mode: 0o700 });
   const env: NodeJS.ProcessEnv = { ...process.env, CODEX_HOME: home };
-  // Authentication must come from ChatGPT login, never an inherited API key.
-  for (const name of ["OPENAI_API_KEY", "CODEX_API_KEY", "OPENAI_BASE_URL"]) {
+  // Only an app-validated SIWC grant may reach the provider. Inherited keys or
+  // tokens must never silently select a different account or billing path.
+  for (const name of [
+    "OPENAI_API_KEY",
+    "CODEX_API_KEY",
+    "OPENAI_BASE_URL",
+    "ACCESS_TOKEN",
+    CODEX_TOKEN_ENV,
+  ]) {
     delete env[name];
+  }
+  if (accessToken !== undefined) {
+    env[CODEX_TOKEN_ENV] = accessToken;
   }
   return {
     command: codexExecutable(),
@@ -64,12 +77,19 @@ export function codexProcessOptions() {
   };
 }
 
-// Verified against @openai/codex 0.157.1's config schema. Keep the CLI pinned:
-// dynamic tools are an experimental app-server API.
+// Verified against @openai/codex 0.163.0. Keep the CLI pinned: dynamic tools
+// and raw response boundaries are experimental app-server APIs.
+// https://developers.openai.com/siwc/token-sharing-open-source/codex-app-server
 export const CODEX_CONFIG = [
-  'forced_login_method="chatgpt"',
-  'cli_auth_credentials_store="file"',
-  'model_provider="openai"',
+  'cli_auth_credentials_store="ephemeral"',
+  `model_provider="${CODEX_PROVIDER}"`,
+  `model_providers.${CODEX_PROVIDER}.name="ChatGPT plan"`,
+  `model_providers.${CODEX_PROVIDER}.base_url="https://api.openai.com/v1"`,
+  `model_providers.${CODEX_PROVIDER}.env_key="${CODEX_TOKEN_ENV}"`,
+  `model_providers.${CODEX_PROVIDER}.wire_api="responses"`,
+  `model_providers.${CODEX_PROVIDER}.requires_openai_auth=false`,
+  `model_providers.${CODEX_PROVIDER}.supports_websockets=false`,
+  `model_providers.${CODEX_PROVIDER}.supports_standalone_web_search=false`,
   'approval_policy="never"',
   // readOnly.access was removed in 0.157.1; restricted reads now require a
   // named profile: https://learn.chatgpt.com/codex/permissions
@@ -87,6 +107,8 @@ export const CODEX_CONFIG = [
   "features.codex_hooks=false",
   "features.multi_agent_v2=false",
   "agents.enabled=false",
-  'web_search="live"',
+  // Responses Lite omits hosted tools. Codex standalone search instead uses
+  // /v1/alpha/search, which is not a documented SIWC endpoint.
+  'web_search="disabled"',
   'mcp_servers.aws-knowledge.url="https://knowledge-mcp.global.api.aws"',
 ];

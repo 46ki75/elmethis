@@ -35,11 +35,14 @@ app.route(
 );
 
 const port = parseInt(process.env.PORT || "8080", 10);
-// This development backend spends the locally signed-in subscription.
+// SIWC requests must serve only the user who authorized this local runtime.
 const hostname = process.env.ADDRESS || "127.0.0.1";
 
 serve({ fetch: app.fetch, port, hostname }, (info) => {
   console.log(
-    `CopilotKit (Codex subscription) backend running on http://${info.address}:${info.port}`,
+    `CopilotKit (ChatGPT plan via SIWC) backend running on http://${info.address}:${info.port}`,
+  );
+  console.log(
+    "ChatGPT plan usage is managed at https://chatgpt.com/settings/usage",
   );
 });

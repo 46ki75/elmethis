@@ -84,6 +84,7 @@ void test("handles state updates server-side, shallow-merges, and keeps the nati
         id: 42,
         callId: "state-call",
         tool: "ag_ui_update_state",
+        namespace: "elmethis_state",
         arguments: { state_updates: { counter: 2 } },
       },
     ]);
@@ -124,6 +125,7 @@ void test("rejects malformed state updates without mutating state or ending the 
         id: "bad",
         callId: "state-call",
         tool: "ag_ui_update_state",
+        namespace: "elmethis_state",
         arguments: { state_updates: [] },
       },
     ]);
@@ -171,6 +173,7 @@ void test("multiple state updates compose without changing the supplied input", 
           id,
           callId: `state-${id}`,
           tool: "ag_ui_update_state",
+          namespace: "elmethis_state",
           arguments: { state_updates },
         },
       ]);

@@ -11,11 +11,13 @@ interface Call {
   namespace: string | null;
   arguments: unknown;
   frontendName?: string;
+  state: boolean;
 }
 interface Options {
   frontendNamespace: string;
   frontendNames: ReadonlyMap<string, string>;
   stateToolName: string;
+  stateToolNamespace: string;
   validateState(args: unknown): boolean;
   updateState(args: unknown): StateToolResult;
   frontend(callId: string, name: string, args: unknown): void;
@@ -94,6 +96,9 @@ export class CodexToolBatch {
     }
     this.seen.add(raw.call_id);
     const namespace = raw.namespace ?? null;
+    const state =
+      namespace === this.options.stateToolNamespace &&
+      raw.name === this.options.stateToolName;
     let frontendName: string | undefined;
     if (namespace === this.options.frontendNamespace) {
       frontendName = this.options.frontendNames.get(raw.name);
@@ -102,10 +107,7 @@ export class CodexToolBatch {
           `Codex requested an unregistered frontend tool: ${raw.name}`,
         );
       }
-    } else if (
-      !namespace?.startsWith("mcp__") &&
-      (namespace !== null || raw.name !== this.options.stateToolName)
-    ) {
+    } else if (!namespace?.startsWith("mcp__") && !state) {
       return;
     }
     let args: unknown;
@@ -120,6 +122,7 @@ export class CodexToolBatch {
       namespace,
       arguments: args,
       frontendName,
+      state,
     });
   }
 
@@ -129,7 +132,8 @@ export class CodexToolBatch {
       throw new Error("Codex tool request does not belong to the active turn.");
     }
     const isState =
-      call.namespace == null && call.tool === this.options.stateToolName;
+      call.namespace === this.options.stateToolNamespace &&
+      call.tool === this.options.stateToolName;
     if (isState && this.stateResults.has(call.callId)) {
       const result = this.stateResults.get(call.callId)!;
       this.stateResults.delete(call.callId);
@@ -139,7 +143,7 @@ export class CodexToolBatch {
     const raw = this.batch.get(call.callId);
     if (
       !raw ||
-      (raw.frontendName === undefined && raw.namespace !== null) ||
+      (raw.frontendName === undefined && !raw.state) ||
       raw.tool !== call.tool ||
       raw.namespace !== (call.namespace ?? null)
     ) {
@@ -165,9 +169,7 @@ export class CodexToolBatch {
     this.batch.clear();
     const handoff = calls.some((call) => call.frontendName !== undefined);
     if (handoff) {
-      const stateCalls = calls.filter(
-        (call) => call.frontendName === undefined && call.namespace === null,
-      );
+      const stateCalls = calls.filter((call) => call.state);
       // Validate the entire mixed batch before emitting TOOL_CALL_END, which can
       // execute side effects immediately in the browser.
       if (
@@ -185,7 +187,7 @@ export class CodexToolBatch {
       for (const call of calls) {
         if (call.frontendName !== undefined) {
           this.options.frontend(call.id, call.frontendName, call.arguments);
-        } else if (call.namespace !== null) {
+        } else if (!call.state && call.namespace !== null) {
           this.options.cancelBackend(
             call.id,
             call.namespace,
@@ -198,7 +200,7 @@ export class CodexToolBatch {
       return;
     }
     for (const call of calls) {
-      if (call.namespace === null) {
+      if (call.state) {
         this.stateResults.set(
           call.id,
           this.options.updateState(call.arguments),

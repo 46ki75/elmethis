@@ -36,7 +36,9 @@ depends = [":check:quick", ":build", ":test"]
 
 [tasks.login]
 alias = "copilotkit:login"
-description = "Sign the CopilotKit backend into a ChatGPT/Codex subscription"
+description = "Sign in with ChatGPT for CopilotKit plan usage (browser PKCE; no device auth)"
+# Keep the authorization URL and Ctrl+C available even with mise --silent.
+raw = true
 run = "pnpm run codex:login"
 
 [tasks.test]
