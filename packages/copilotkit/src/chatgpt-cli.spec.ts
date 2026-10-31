@@ -97,7 +97,7 @@ void test("default sign-in reuses the selected registration and reports account/
   assert.match(text, /Active account:.*account-1.*user@example.com/);
   assert.match(text, /connected/);
   assert.match(text, /Using ChatGPT plan/);
-  assert.ok(text.includes(`Manage usage: ${usageUrl}`));
+  assert.ok(text.split("\n").includes(`Manage usage: ${usageUrl}`));
   assert.deepEqual(h.stderr, []);
 });
 
@@ -134,7 +134,7 @@ void test("--list distinguishes registrations with the same email and marks conn
   assert.match(text, /\* account-1.*user@example.com/);
   assert.match(text, /account-2.*user@example.com.*plan usage: disabled/);
   assert.match(text, /account-3.*disconnected/);
-  assert.ok(text.includes(usageUrl));
+  assert.ok(text.split("\n").includes(`Manage usage: ${usageUrl}`));
 });
 
 void test("no saved accounts has actionable output without starting OAuth", async () => {
@@ -183,7 +183,7 @@ void test("--logout warns if remote revocation was not confirmed", async () => {
   const text = h.stdout.join("\n");
   assert.match(text, /remote revocation was not confirmed/i);
   assert.match(text, /disconnect.*ChatGPT Settings/i);
-  assert.ok(text.includes(usageUrl));
+  assert.ok(text.split("\n").includes(`Manage usage: ${usageUrl}`));
 });
 
 void test("--models preserves the account catalog's server order, with no inference", async () => {
@@ -195,7 +195,7 @@ void test("--models preserves the account catalog's server order, with no infere
   assert.match(text, /First model/);
   assert.match(text, /CODEX_MODEL/);
   assert.match(text, /catalog.*not.*inference/i);
-  assert.ok(text.includes(usageUrl));
+  assert.ok(text.split("\n").includes(`Manage usage: ${usageUrl}`));
 });
 
 void test("--models handles an empty visible catalog", async () => {
@@ -231,7 +231,7 @@ void test("--help is local-only and explains supported actions and migration", a
   assert.match(text, /PKCE/);
   assert.match(text, /auth\.json.*not.*SIWC/);
   assert.match(text, /device.*not supported/i);
-  assert.ok(text.includes(usageUrl));
+  assert.ok(text.split("\n").includes(`Manage usage: ${usageUrl}`));
   assert.deepEqual(h.calls, []);
 });
 
@@ -309,7 +309,7 @@ void test("upstream errors never expose credentials or stacks", async (t) => {
         [...h.stdout, ...h.stderr].join("\n"),
         /secret-|Error:|at /,
       );
-      assert.ok(h.stderr.join("\n").includes(usageUrl));
+      assert.ok(h.stderr.includes(`Manage usage: ${usageUrl}`));
     });
   }
 });
@@ -342,6 +342,10 @@ void test("untrusted or malformed authorization URLs are not logged", async (t) 
   for (const url of [
     "http://auth.openai.com/?secret-token",
     "https://example.com/?secret-token",
+    "https://auth.openai.com.evil.test/?secret-token",
+    "https://evil.test/https://auth.openai.com?secret-token",
+    "https://auth.openai.com@evil.test/?secret-token",
+    "https://evil.test/?next=https://auth.openai.com&secret-token",
     "https://secret-token:password@auth.openai.com/authorize",
     "malformed secret-token",
   ]) {
