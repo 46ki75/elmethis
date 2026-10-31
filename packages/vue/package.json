@@ -79,7 +79,7 @@
     "katex": "^0.18.9",
     "marked": "^18.0.14",
     "shiki": "^4.4.3",
-    "zod": "^3.25.76"
+    "zod": "^4.6.6"
   },
   "devDependencies": {
     "@storybook/addon-docs": "^10.6.4",
