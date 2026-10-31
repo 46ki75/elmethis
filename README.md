@@ -56,6 +56,20 @@ describes tool ownership and task conventions.
 For the subscription-backed chat server, see the
 [CopilotKit Codex setup](packages/copilotkit/README.md).
 
+## Dependency security
+
+Review `pnpm audit --fix` overrides before installing: they can force incompatible
+major upgrades. Upgrade the backend's Zod v4 dependency directly rather than using
+a Zod override, which also rewrites v3/v4 union peer ranges. The catalogs and
+`zod-to-json-schema` integration still require v3 schemas. The v3 dependency remains
+affected by [GHSA-mrhx-c7xc-m3w5](https://github.com/advisories/GHSA-mrhx-c7xc-m3w5),
+which lists no patched v3 release. Resolving it requires a coordinated migration,
+not a global v4 override. Do not suppress this audit finding.
+
+The OpenTelemetry API override pins 1.9.0 because the transitive SDKs require
+`<1.10.0`. The backend supplies Express v5 types for Slack Bolt's peer dependency
+without globally overriding other consumers' Express types.
+
 ## Development Ports
 
 - `packages/copilotkit/`: `19101` (also serves the stub Weather MCP server at `/mcp`)
