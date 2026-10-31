@@ -19,7 +19,7 @@ function nativeOptions() {
     join(tmpdir(), "elmethis-codex-protocol-"),
   );
   try {
-    const options = codexProcessOptions();
+    const options = codexProcessOptions("native-fixture-token");
     return {
       ...options,
       args: [
@@ -29,6 +29,8 @@ function nativeOptions() {
         ...CODEX_CONFIG.flatMap((value) => ["-c", value]),
         "-c",
         "mcp_servers.aws-knowledge.enabled=false",
+        "-c",
+        'model_providers.elmethis_chatgpt_plan.base_url="http://127.0.0.1:9/v1"',
       ],
     };
   } finally {
@@ -101,11 +103,8 @@ for (const fixture of cases) {
           respond: (id, result) => native.respond(id, result),
           async request(method, params) {
             methods.push(method);
-            // Authentication, downloading, and inference completion are simulated;
-            // the pinned executable parses every real protocol request.
-            if (method === "account/read") {
-              return { account: { type: "chatgpt" } };
-            }
+            // OAuth/model discovery, downloading, and inference completion are
+            // simulated; the executable parses every real protocol request.
             if (method === "thread/inject_items") {
               assert.doesNotMatch(JSON.stringify(params), /images\.example/);
             }

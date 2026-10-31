@@ -13,6 +13,8 @@ void test("uses a private login store and excludes inherited API credentials", (
     "OPENAI_API_KEY",
     "CODEX_API_KEY",
     "OPENAI_BASE_URL",
+    "ACCESS_TOKEN",
+    "ELMETHIS_CHATGPT_ACCESS_TOKEN",
   ];
   const previous = keys.map((key) => process.env[key]);
   try {
@@ -21,6 +23,8 @@ void test("uses a private login store and excludes inherited API credentials", (
     process.env.OPENAI_API_KEY = "test-key";
     process.env.CODEX_API_KEY = "test-key";
     process.env.OPENAI_BASE_URL = "https://example.com";
+    process.env.ACCESS_TOKEN = "unrelated-token";
+    process.env.ELMETHIS_CHATGPT_ACCESS_TOKEN = "stale-token";
     const options = codexProcessOptions();
     assert.equal(options.env.CODEX_HOME, home);
     assert.equal(options.cwd, join(home, "workspace"));
@@ -34,8 +38,32 @@ void test("uses a private login store and excludes inherited API credentials", (
     assert.equal(options.env.OPENAI_API_KEY, undefined);
     assert.equal(options.env.CODEX_API_KEY, undefined);
     assert.equal(options.env.OPENAI_BASE_URL, undefined);
+    assert.equal(options.env.ACCESS_TOKEN, undefined);
+    assert.equal(options.env.ELMETHIS_CHATGPT_ACCESS_TOKEN, undefined);
     assert.equal(process.env.OPENAI_API_KEY, "test-key");
-    assert.ok(CODEX_CONFIG.includes('forced_login_method="chatgpt"'));
+    assert.ok(!CODEX_CONFIG.includes('forced_login_method="chatgpt"'));
+    assert.ok(CODEX_CONFIG.includes('model_provider="elmethis_chatgpt_plan"'));
+    assert.ok(
+      CODEX_CONFIG.includes(
+        'model_providers.elmethis_chatgpt_plan.base_url="https://api.openai.com/v1"',
+      ),
+    );
+    assert.ok(
+      CODEX_CONFIG.includes(
+        "model_providers.elmethis_chatgpt_plan.requires_openai_auth=false",
+      ),
+    );
+    assert.ok(
+      CODEX_CONFIG.includes(
+        "model_providers.elmethis_chatgpt_plan.supports_websockets=false",
+      ),
+    );
+    assert.ok(
+      CODEX_CONFIG.includes(
+        "model_providers.elmethis_chatgpt_plan.supports_standalone_web_search=false",
+      ),
+    );
+    assert.ok(CODEX_CONFIG.includes('web_search="disabled"'));
     assert.ok(CODEX_CONFIG.includes("features.shell_tool=false"));
   } finally {
     keys.forEach((key, index) => {

@@ -11,6 +11,7 @@ import { lastValueFrom, timeout, toArray } from "rxjs";
 import { z } from "zod";
 import { CodexAgentAdapter } from "./codex-agent.ts";
 import { CODEX_CONFIG, codexProcessOptions } from "./codex-config.ts";
+import { createCodexModelCatalog } from "./codex-model-catalog.ts";
 import { spawnCodexConnection } from "./codex-rpc.ts";
 
 // Valid 32x32 PNG from the native omission probe. Its tEXt chunk makes the
@@ -38,6 +39,18 @@ const inferenceRequest = z.object({
   ),
 });
 
+function toolsForRequest(body: unknown): Record<string, unknown>[] {
+  const request = record.parse(body);
+  return [
+    ...z.array(record).parse(request.tools ?? []),
+    ...z
+      .array(record)
+      .parse(request.input)
+      .filter((item) => item.type === "additional_tools")
+      .flatMap((item) => z.array(record).parse(item.tools)),
+  ];
+}
+
 const completion = [
   {
     type: "message",
@@ -53,6 +66,7 @@ async function fixture(
     completion,
   extraConfig: string[] = [],
   gateFirstItem = false,
+  modelSlug = "fixture-model",
 ) {
   const bodies: unknown[] = [];
   const failures: unknown[] = [];
@@ -62,7 +76,7 @@ async function fixture(
   t.after(() => firstRequest.resolve());
   const server = http.createServer((req, res) => {
     void (async () => {
-      assert.equal(req.headers.authorization, undefined);
+      assert.equal(req.headers.authorization, "Bearer fixture-plan-token");
       assert.equal(req.method, "POST");
       assert.equal(req.url, "/v1/responses");
       const chunks: Buffer[] = [];
@@ -70,6 +84,42 @@ async function fixture(
         chunks.push(z.instanceof(Buffer).parse(chunk));
       }
       const body: unknown = JSON.parse(Buffer.concat(chunks).toString("utf8"));
+      const request = record.parse(body);
+      assert.equal(request.store, false);
+      assert.equal(request.stream, true);
+      for (const field of [
+        "background",
+        "conversation",
+        "max_output_tokens",
+        "max_tool_calls",
+        "metadata",
+        "moderation",
+        "multi_agent",
+        "prompt",
+        "prompt_cache_retention",
+        "safety_identifier",
+        "temperature",
+        "top_logprobs",
+        "top_p",
+        "truncation",
+        "user",
+        "previous_response_id",
+      ]) {
+        assert.equal(field in request, false, `SIWC does not support ${field}`);
+      }
+      const items = z.array(record).parse(request.input);
+      assert.equal(
+        items.some((item) => item.role === "system"),
+        false,
+      );
+      // The pinned CLI's Responses Lite mode is required for SIWC's documented
+      // additional_tools format. A Codex update must not restore root tools.
+      assert.deepEqual(request.tools ?? [], []);
+      assert.ok(items.some((item) => item.type === "additional_tools"));
+      assert.equal(
+        toolsForRequest(body).some((tool) => tool.type === "tool_search"),
+        false,
+      );
       bodies.push(body);
       const output = outputForRequest(bodies.length, body);
       const responseId = `fixture-response-${bodies.length}`;
@@ -136,6 +186,11 @@ async function fixture(
       process.env.COPILOTKIT_CODEX_HOME = previous;
     }
   }
+  const catalog = createCodexModelCatalog({
+    slug: modelSlug,
+    display_name: "Offline SIWC fixture",
+  });
+  t.after(() => catalog.close());
   const native = spawnCodexConnection({
     ...options,
     // Do not inherit credentials, user configuration, or external proxies.
@@ -146,6 +201,7 @@ async function fixture(
       HOME: home,
       USERPROFILE: home,
       CODEX_HOME: home,
+      ELMETHIS_CHATGPT_ACCESS_TOKEN: "fixture-plan-token",
       HTTP_PROXY: url,
       HTTPS_PROXY: url,
       ALL_PROXY: url,
@@ -158,13 +214,13 @@ async function fixture(
       "--strict-config",
       ...[
         ...CODEX_CONFIG,
+        `model_catalog_json=${JSON.stringify(catalog.path)}`,
         "mcp_servers.aws-knowledge.enabled=false",
         'web_search="disabled"',
         "check_for_update_on_startup=false",
         "analytics.enabled=false",
         "feedback.enabled=false",
-        `model_providers.fixture={name="fixture",base_url="${url}/v1",wire_api="responses",requires_openai_auth=false,supports_websockets=false}`,
-        'model_provider="fixture"',
+        `model_providers.elmethis_chatgpt_plan.base_url="${url}/v1"`,
         ...extraConfig,
       ].flatMap((value) => ["-c", value]),
     ],
@@ -191,28 +247,55 @@ async function fixture(
   });
   t.after(() => observed.unsubscribe());
   const agent = new CodexAgentAdapter({
-    model: "fixture-model",
-    connectionFactory: () => ({
-      events: native.events,
-      notify: (method, params) => native.notify(method, params),
-      respond: (id, result) => native.respond(id, result),
-      request(method, params) {
-        // Only the adapter's login gate is faked; protocol parsing, inference
-        // requests, and completion events come from the pinned native binary.
-        if (method === "account/read") {
-          return Promise.resolve({ account: { type: "chatgpt" } });
-        }
-        return native.request(
-          method,
-          method === "thread/start"
-            ? { ...record.parse(params), modelProvider: "fixture" }
-            : params,
-        );
-      },
-      close: () => native.close(),
-    }),
+    model: modelSlug,
+    // Only OAuth/model discovery is replaced. The real SIWC provider config,
+    // request serialization, protocol, and completion come from the pinned CLI.
+    connectionFactory: () => native,
   });
   return { agent, bodies, failures, requestsBeforeBoundary };
+}
+
+for (const model of ["fixture-model", "gpt-5.5"]) {
+  void test(
+    `native SIWC catalog enforces supported tool formatting for ${model}`,
+    { timeout: 30000 },
+    async (t) => {
+      const f = await fixture(t, () => completion, [], false, model);
+      const events = await lastValueFrom(
+        f.agent
+          .run({
+            threadId: "wire-format",
+            runId: "wire-format-run",
+            messages: [{ id: "user", role: "user", content: "Hello" }],
+            tools: [],
+            context: [],
+            state: {},
+            forwardedProps: {},
+          })
+          .pipe(timeout(20000), toArray()),
+      );
+      assert.deepEqual(f.failures, []);
+      assert.equal(
+        events.at(-1)?.type,
+        EventType.RUN_FINISHED,
+        JSON.stringify(events),
+      );
+      assert.equal(record.parse(f.bodies[0]).model, model);
+      const tools = toolsForRequest(f.bodies[0]);
+      assert.equal(
+        tools.some((tool) => tool.type === "web_search"),
+        false,
+      );
+      assert.equal(
+        tools.some((tool) => tool.name === "web"),
+        false,
+      );
+      assert.equal(
+        tools.some((tool) => tool.type === "tool_search"),
+        false,
+      );
+    },
+  );
 }
 
 void test(
@@ -226,6 +309,7 @@ void test(
               type: "function_call",
               call_id: "update-state",
               name: "ag_ui_update_state",
+              namespace: "elmethis_state",
               arguments: JSON.stringify({ state_updates: { counter: 2 } }),
             },
           ]
@@ -299,6 +383,7 @@ for (const order of [
         type: "function_call",
         call_id: "state-update",
         name: "ag_ui_update_state",
+        namespace: "elmethis_state",
         arguments: '{"state_updates":{"counter":2}}',
       };
       const f = await fixture(
@@ -404,8 +489,7 @@ for (const name of [
         if (sequence !== 1) {
           return completion;
         }
-        const { tools } = z.object({ tools: z.array(record) }).parse(body);
-        const namespace = tools.find(
+        const namespace = toolsForRequest(body).find(
           (tool) =>
             tool.type === "namespace" && tool.name === "elmethis_frontend",
         );
@@ -588,8 +672,7 @@ for (const serverName of ["fixture", "fixture-hyphen"]) {
             if (sequence !== 1) {
               return completion;
             }
-            const { tools } = z.object({ tools: z.array(record) }).parse(body);
-            const namespace = tools.find(
+            const namespace = toolsForRequest(body).find(
               (tool) =>
                 tool.type === "namespace" &&
                 String(tool.name).startsWith("mcp__fixture"),

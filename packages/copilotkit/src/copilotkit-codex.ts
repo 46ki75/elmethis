@@ -4,9 +4,9 @@ import { CodexAgentAdapter } from "./codex-agent.ts";
 const generateAgent = () =>
   new CodexAgentAdapter({
     agentId: "default",
-    description: "Codex (ChatGPT subscription)",
-    // Omission uses the account's Codex default rather than a hard-coded model
-    // that may not be included in the subscriber's plan.
+    description: "Codex (Sign in with ChatGPT plan)",
+    // Omission selects the first visible model in the active SIWC account's
+    // ordered catalog, not Codex's bundled catalog or a hard-coded default.
     model: process.env.CODEX_MODEL || undefined,
   });
 

@@ -5,6 +5,7 @@ import { CodexToolBatch, type StateToolResult } from "./codex-tool-batch.ts";
 const turn = { threadId: "native-thread", turnId: "native-turn" };
 const frontend = "elmethis_frontend";
 const state = "ag_ui_update_state";
+const stateNamespace = "elmethis_state";
 function fixture() {
   const handedOff: { id: string; name: string; args: unknown }[] = [];
   const updates: unknown[] = [];
@@ -14,6 +15,7 @@ function fixture() {
     frontendNamespace: frontend,
     frontendNames: new Map([["weather", "weather"]]),
     stateToolName: state,
+    stateToolNamespace: stateNamespace,
     validateState: (args) => args !== false,
     frontend: (id, name, args) => {
       handedOff.push({ id, name, args });
@@ -78,7 +80,7 @@ void test("an early callback cannot finish before all raw calls and the response
   assert.deepEqual(f.handedOff, []);
   assert.equal(f.finished(), 0);
   f.batch.capture(f.raw("Osaka", "weather", frontend, { city: "Osaka" }));
-  f.batch.capture(f.raw("state", state, null, { counter: 2 }));
+  f.batch.capture(f.raw("state", state, stateNamespace, { counter: 2 }));
   f.batch.complete(turn);
   assert.deepEqual(f.handedOff, [
     { id: "Tokyo", name: "weather", args: { city: "Tokyo" } },
@@ -92,9 +94,9 @@ void test("an early callback cannot finish before all raw calls and the response
 void test("state-only batches apply once in output order and correlate early/late requests", () => {
   const f = fixture();
   f.start();
-  f.batch.capture(f.raw("first", state, null, { counter: 1 }));
-  f.request("first", state, null);
-  f.batch.capture(f.raw("second", state, null, { counter: 2 }));
+  f.batch.capture(f.raw("first", state, stateNamespace, { counter: 1 }));
+  f.request("first", state, stateNamespace);
+  f.batch.capture(f.raw("second", state, stateNamespace, { counter: 2 }));
   assert.deepEqual(f.updates, []);
   f.batch.complete(turn);
   assert.deepEqual(f.updates, [{ counter: 1 }, { counter: 2 }]);
@@ -102,7 +104,7 @@ void test("state-only batches apply once in output order and correlate early/lat
     f.replies.map((reply) => reply.id),
     ["rpc-first"],
   );
-  f.request("second", state, null);
+  f.request("second", state, stateNamespace);
   assert.deepEqual(
     f.replies.map((reply) => reply.id),
     ["rpc-first", "rpc-second"],
@@ -116,9 +118,9 @@ void test("state-only batches apply once in output order and correlate early/lat
 void test("multiple upstream responses do not replay previously handled state calls", () => {
   const f = fixture();
   f.start();
-  f.batch.capture(f.raw("first", state, null, { counter: 1 }));
+  f.batch.capture(f.raw("first", state, stateNamespace, { counter: 1 }));
   f.batch.complete(turn);
-  f.request("first", state, null);
+  f.request("first", state, stateNamespace);
   f.batch.capture(f.raw("frontend", "weather", frontend));
   f.batch.complete(turn);
   assert.equal(f.updates.length, 1);
@@ -173,6 +175,18 @@ void test("duplicate raw call IDs and mismatched requests fail explicitly", () =
   );
 });
 
+void test("state calls outside their private namespace cannot mutate shared state", () => {
+  const f = fixture();
+  f.start();
+  f.batch.capture(f.raw("root-state", state, null, { counter: 9 }));
+  f.batch.complete(turn);
+  assert.deepEqual(f.updates, []);
+  assert.throws(
+    () => f.request("root-state", state, null),
+    /no matching raw call/,
+  );
+});
+
 void test("invalid arguments do not become a successful frontend handoff", () => {
   const f = fixture();
   f.start();
@@ -183,7 +197,7 @@ void test("invalid arguments do not become a successful frontend handoff", () =>
     /invalid JSON tool arguments/,
   );
   f.batch.capture(f.raw("frontend", "weather", frontend));
-  f.batch.capture(f.raw("invalid-state", state, null, false));
+  f.batch.capture(f.raw("invalid-state", state, stateNamespace, false));
   assert.throws(() => f.batch.complete(turn), /Invalid shared-state update/);
   assert.deepEqual(f.handedOff, []);
   assert.deepEqual(f.updates, []);
@@ -193,14 +207,17 @@ void test("invalid arguments do not become a successful frontend handoff", () =>
 void test("invalid state-only calls return a native failure and duplicate requests are rejected", () => {
   const f = fixture();
   f.start();
-  f.batch.capture(f.raw("state", state, null, false));
-  f.request("state", state, null);
+  f.batch.capture(f.raw("state", state, stateNamespace, false));
+  f.request("state", state, stateNamespace);
   assert.throws(
-    () => f.request("state", state, null),
+    () => f.request("state", state, stateNamespace),
     /duplicated a state tool request/,
   );
   f.batch.complete(turn);
   assert.equal(f.replies[0]?.result.success, false);
-  assert.throws(() => f.request("state", state, null), /no matching raw call/);
+  assert.throws(
+    () => f.request("state", state, stateNamespace),
+    /no matching raw call/,
+  );
   assert.equal(f.finished(), 0);
 });
