@@ -79,7 +79,7 @@
     "katex": "^0.18.9",
     "marked": "^18.0.14",
     "shiki": "^4.4.3",
-    "zod": "^3.25.76"
+    "zod": "^4.6.6"
   },
   "devDependencies": {
     "@storybook/addon-docs": "^10.6.4",
@@ -93,7 +93,7 @@
     "@vitest/ui": "^5.0.5",
     "@vue/test-utils": "^2.5.1",
     "concurrently": "^10.0.6",
-    "happy-dom": "^21.0.3",
+    "happy-dom": "^21.0.4",
     "oxfmt": "0.74.0",
     "oxlint": "1.89.0",
     "oxlint-tsgolint": "7.0.2005",
