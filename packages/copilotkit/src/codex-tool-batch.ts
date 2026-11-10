@@ -39,10 +39,11 @@ const requestSchema = z.object({
   arguments: z.unknown(),
 });
 
-// Dynamic callbacks execute serially, even when inference generates parallel
-// calls. The raw response boundary precedes draining those tool futures:
-// https://github.com/openai/codex/blob/rust-v0.157.1/codex-rs/core/src/session/turn.rs#L2872
-// Waiting for all callbacks would deadlock; closing on the first loses the rest.
+// Dynamic callbacks may run in parallel and arrive before the raw response
+// boundary, which precedes draining the tool futures:
+// https://github.com/openai/codex/blob/rust-v0.167.0/codex-rs/core/src/session/turn.rs#L3348
+// Waiting for tool results would deadlock on unanswered frontend calls;
+// closing on the first callback loses the rest of the batch.
 export class CodexToolBatch {
   private options: Options;
   private turn?: { threadId: string; turnId: string };

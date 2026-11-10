@@ -77,7 +77,7 @@ export function codexProcessOptions(accessToken?: string) {
   };
 }
 
-// Verified against @openai/codex 0.163.0. Keep the CLI pinned: dynamic tools
+// Verified against @openai/codex 0.167.0. Keep the CLI pinned: dynamic tools
 // and raw response boundaries are experimental app-server APIs.
 // https://developers.openai.com/siwc/token-sharing-open-source/codex-app-server
 export const CODEX_CONFIG = [
