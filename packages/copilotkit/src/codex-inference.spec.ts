@@ -460,7 +460,9 @@ for (const order of [
       );
       assert.equal(f.bodies.length, order === "state-only-first" ? 2 : 1);
       if (order === "gated-frontend-first") {
-        assert.deepEqual(f.requestsBeforeBoundary, ["weather-Tokyo"]);
+        // The gate guarantees Tokyo arrives early, but Codex 0.167.0 also
+        // permits later callbacks to run in parallel before the boundary.
+        assert.ok(f.requestsBeforeBoundary.includes("weather-Tokyo"));
       }
     },
   );
