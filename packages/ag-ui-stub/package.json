@@ -51,13 +51,13 @@
   },
   "devDependencies": {
     "@types/node": "26.6.5",
-    "@vitest/coverage-v8": "^5.0.5",
+    "@vitest/coverage-v8": "^5.1.0",
     "concurrently": "^10.0.6",
     "oxfmt": "0.77.0",
     "oxlint": "1.92.0",
     "oxlint-tsgolint": "7.0.2006",
     "tsdown": "^0.23.0",
     "typescript": "5.9.3",
-    "vitest": "^5.0.5"
+    "vitest": "^5.1.0"
   }
 }
