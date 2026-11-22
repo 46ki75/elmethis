@@ -1,5 +1,5 @@
 import { languageIcons } from "@elmethis/core";
-import { renderToString } from "solid-js/web";
+import { renderToString } from "@solidjs/web";
 import { describe, expect, it } from "vitest";
 
 import { LanguageGlyph } from "./language-glyph";

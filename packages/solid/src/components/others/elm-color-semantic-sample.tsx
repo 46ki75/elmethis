@@ -1,4 +1,5 @@
-import { For, splitProps, type JSX } from "solid-js";
+import { type JSX } from "@solidjs/web";
+import { For, omit } from "solid-js";
 import { clsx } from "clsx";
 
 import styles from "./elm-color-semantic-sample.module.css";
@@ -73,7 +74,7 @@ const DISPLAY_PAIRS = [
 }));
 
 export const ElmColorSemanticSample = (props: ElmColorSemanticSampleProps) => {
-  const [local, rest] = splitProps(props, ["class", "style"]);
+  const rest = omit(props, "class", "style");
   const copy = createColorSampleCopy();
   const label = (token: string) =>
     copy.copiedToken() === token ? "copied!" : token;
@@ -207,8 +208,8 @@ export const ElmColorSemanticSample = (props: ElmColorSemanticSampleProps) => {
   return (
     <div
       {...rest}
-      class={clsx(styles["elm-color-semantic-sample"], local.class)}
-      style={local.style}
+      class={clsx(styles["elm-color-semantic-sample"], props.class)}
+      style={props.style}
     >
       <div class={styles.toolbar}>
         <button

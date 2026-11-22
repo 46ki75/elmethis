@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { flush, createSignal } from "solid-js";
 import { describe, expect, it } from "vitest";
 
 import { ElmKatex } from "./elm-katex";
@@ -27,6 +27,7 @@ describe("[CSR] ElmKatex", () => {
 
     setExpression("y^2");
     setBlock(true);
+    flush();
 
     expect(root.innerHTML).toContain("<mi>y</mi>");
     expect(root.innerHTML).toContain("<msup");

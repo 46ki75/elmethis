@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { ElmHtmlViewer } from "./elm-html-viewer";
@@ -152,6 +152,7 @@ describe("[Browser] ElmHtmlViewer open in new tab", () => {
     const rendered = render(() => <ElmHtmlViewer src={src()} />);
 
     setSrc("https://example.com/current.html");
+    flush();
     rendered.getByRole("button", { name: "Open in new tab" }).click();
 
     expect(open).toHaveBeenCalledWith(
@@ -169,6 +170,7 @@ describe("[Browser] ElmHtmlViewer open in new tab", () => {
     const rendered = render(() => <ElmHtmlViewer html={html()} />);
 
     setHtml("<p>current</p>");
+    flush();
     rendered.getByRole("button", { name: "Open in new tab" }).click();
 
     const blob = createObjectUrl.mock.calls[0][0] as Blob;
@@ -230,6 +232,7 @@ describe("[Browser] ElmHtmlViewer download", () => {
     ));
 
     setSrc("https://example.com/current.html");
+    flush();
     rendered.getByRole("button", { name: "Download" }).click();
 
     expect(clicks).toEqual([
@@ -249,6 +252,7 @@ describe("[Browser] ElmHtmlViewer download", () => {
     const rendered = render(() => <ElmHtmlViewer html={html()} />);
 
     setHtml("<p>current</p>");
+    flush();
     rendered.getByRole("button", { name: "Download" }).click();
 
     const blob = createObjectUrl.mock.calls[0][0] as Blob;

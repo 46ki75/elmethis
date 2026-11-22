@@ -1,5 +1,5 @@
+import { renderToString } from "@solidjs/web";
 import { untrack } from "solid-js";
-import { renderToString } from "solid-js/web";
 import { describe, expect, it } from "vitest";
 
 import { createLocalStorage, createSessionStorage } from "./create-storage";

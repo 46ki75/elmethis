@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { flush, createSignal } from "solid-js";
 import { describe, expect, it, vi } from "vitest";
 
 import { ElmInlineIcon } from "./elm-inline-icon";
@@ -47,9 +47,11 @@ describe("[CSR] ElmInlineIcon", () => {
     expect(image).toHaveAttribute("height", "12");
 
     setSize(32);
+    flush();
     expect(image).toHaveAttribute("width", "32");
 
     setWidth(48);
+    flush();
     expect(image).toHaveAttribute("width", "48");
   });
 });

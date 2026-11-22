@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { describe, expect, it, vi } from "vitest";
 
 import { ElmButton } from "./elm-button";
@@ -88,11 +88,13 @@ describe("[CSR] ElmButton", () => {
     expect(button).toHaveTextContent("Save");
 
     setPrimary(true);
+    flush();
     expect(button).toHaveClass(styles.primary);
     expect(button.style.display).toBe("flex");
     expect(button.style.width).toBe("100%");
 
     setLoading(true);
+    flush();
     expect(button).toHaveClass("loading");
     expect(button).not.toHaveClass("ready", styles.enable);
     expect(button).not.toHaveTextContent("Save");
@@ -101,6 +103,7 @@ describe("[CSR] ElmButton", () => {
     ).not.toBeNull();
 
     setDisabled(true);
+    flush();
     expect(button).toBeDisabled();
     expect(button.style.cursor).toBe("not-allowed");
   });

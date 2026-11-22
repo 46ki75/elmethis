@@ -34,7 +34,7 @@ describe("createAgentSubscriber", () => {
   it("tracks lifecycle, activity, and interrupts", () => {
     const current = state();
     const subscriber = createAgentSubscriber({
-      state: current,
+      setState: (update) => update(current),
       getTools: () => ({}),
       onNeedsReRun: vi.fn(),
     });
@@ -60,8 +60,9 @@ describe("createAgentSubscriber", () => {
     const execute = vi.fn();
     const rerun = vi.fn();
     let tools: ToolRegistry = {};
+    const current = state();
     const subscriber = createAgentSubscriber({
-      state: state(),
+      setState: (update) => update(current),
       getTools: () => tools,
       onNeedsReRun: rerun,
     });
@@ -91,8 +92,9 @@ describe("createAgentSubscriber", () => {
 
   it("executes frontend tools and requests a follow-up run", async () => {
     const rerun = vi.fn();
+    const current = state();
     const subscriber = createAgentSubscriber({
-      state: state(),
+      setState: (update) => update(current),
       getTools: () => ({
         increment: defineTool({
           description: "Increment",

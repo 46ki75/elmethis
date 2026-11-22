@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { ElmAudioPlayer } from "./elm-audio-player";
@@ -55,6 +55,7 @@ describe("[CSR] ElmAudioPlayer", () => {
     expect(rendered.container.textContent).toContain("SoundHelix");
 
     setSrc("https://example.com/files/next-track.ogg#preview");
+    flush();
     expect(rendered.container.textContent).toContain("next-track.ogg");
   });
 
@@ -76,6 +77,7 @@ describe("[CSR] ElmAudioPlayer", () => {
     const audio = rendered.container.querySelector("audio")!;
 
     fireEvent.error(audio);
+    flush();
 
     expect(rendered.getByRole("alert")).toHaveTextContent(
       "Stream offline. Try later.",
@@ -96,8 +98,10 @@ describe("[CSR] ElmAudioPlayer", () => {
     const audio = root.querySelector("audio")!;
 
     fireEvent.play(audio);
+    flush();
     expect(root.className).toMatch(/playing/);
     fireEvent.error(audio);
+    flush();
 
     expect(cancel).toHaveBeenCalledWith(73);
     expect(root.className).not.toMatch(/playing/);
@@ -117,12 +121,17 @@ describe("[CSR] ElmAudioPlayer", () => {
     audio.currentTime = 42;
 
     fireEvent.loadedMetadata(audio);
+    flush();
     fireEvent.timeUpdate(audio);
+    flush();
     fireEvent.play(audio);
+    flush();
     fireEvent.error(audio);
+    flush();
     expect(rendered.getByRole("alert")).toBeTruthy();
 
     setSrc("/second.mp3");
+    flush();
 
     const seek = rendered.getByRole("slider", { name: "Seek" });
     expect(audio).toHaveAttribute("src", "/second.mp3");
@@ -140,6 +149,7 @@ describe("[CSR] ElmAudioPlayer", () => {
     const rendered = render(() => <ElmAudioPlayer src={SRC} />);
 
     fireEvent.play(rendered.container.querySelector("audio")!);
+    flush();
     expect(request).toHaveBeenCalledOnce();
 
     rendered.unmount();

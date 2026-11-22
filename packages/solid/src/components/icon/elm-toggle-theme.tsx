@@ -1,4 +1,5 @@
-import { createUniqueId, mergeProps, splitProps, type JSX } from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { createUniqueId, omit } from "solid-js";
 import { clsx } from "clsx";
 
 import { createElmethisTheme } from "../../primitives/create-elmethis-theme";
@@ -9,11 +10,12 @@ const setOpacity = (to: "0" | "1") => ({ attributeName: "opacity", to });
 export interface ElmToggleThemeProps extends JSX.SvgSVGAttributes<SVGSVGElement> {
   /** Specifies the size of the icon. */
   size?: string | number;
+  tabIndex?: JSX.SvgSVGAttributes<SVGSVGElement>["tabindex"];
 }
 
 export const ElmToggleTheme = (props: ElmToggleThemeProps) => {
-  const merged = mergeProps({ size: "2rem" }, props);
-  const [local, rest] = splitProps(merged, [
+  const rest = omit(
+    props,
     "class",
     "style",
     "size",
@@ -24,7 +26,7 @@ export const ElmToggleTheme = (props: ElmToggleThemeProps) => {
     "tabIndex",
     "aria-label",
     "children",
-  ]);
+  );
   const theme = createElmethisTheme();
   const uniqueId = createUniqueId();
   const moonMaskId = `elm-toggle-theme-moon-mask-${uniqueId}`;
@@ -34,7 +36,7 @@ export const ElmToggleTheme = (props: ElmToggleThemeProps) => {
   const handleClick: JSX.EventHandler<SVGSVGElement, MouseEvent> = (event) => {
     theme.toggleTheme();
 
-    const handler = local.onClick;
+    const handler = props.onClick;
     if (typeof handler === "function") {
       handler(event);
     } else {
@@ -50,7 +52,7 @@ export const ElmToggleTheme = (props: ElmToggleThemeProps) => {
       theme.toggleTheme();
     }
 
-    const handler = local.onKeyDown;
+    const handler = props.onKeyDown;
     if (typeof handler === "function") {
       handler(event);
     } else {
@@ -68,13 +70,13 @@ export const ElmToggleTheme = (props: ElmToggleThemeProps) => {
       {!theme.isDarkTheme() ? (
         <svg
           {...sharedProps}
-          width={local.size}
-          height={local.size}
-          class={clsx(styles["elm-toggle-theme"], local.class)}
-          style={local.style}
-          role={local.role ?? "button"}
-          tabindex={local.tabindex ?? local.tabIndex ?? 0}
-          aria-label={local["aria-label"] ?? "Switch to dark theme"}
+          width={props.size ?? "2rem"}
+          height={props.size ?? "2rem"}
+          class={clsx(styles["elm-toggle-theme"], props.class)}
+          style={props.style}
+          role={props.role ?? "button"}
+          tabindex={props.tabindex ?? props.tabIndex ?? 0}
+          aria-label={props["aria-label"] ?? "Switch to dark theme"}
           onClick={handleClick}
           onKeyDown={handleKeyDown}
           {...rest}
@@ -242,13 +244,13 @@ export const ElmToggleTheme = (props: ElmToggleThemeProps) => {
       ) : (
         <svg
           {...sharedProps}
-          width={local.size}
-          height={local.size}
-          class={clsx(styles["elm-toggle-theme"], local.class)}
-          style={local.style}
-          role={local.role ?? "button"}
-          tabindex={local.tabindex ?? local.tabIndex ?? 0}
-          aria-label={local["aria-label"] ?? "Switch to light theme"}
+          width={props.size ?? "2rem"}
+          height={props.size ?? "2rem"}
+          class={clsx(styles["elm-toggle-theme"], props.class)}
+          style={props.style}
+          role={props.role ?? "button"}
+          tabindex={props.tabindex ?? props.tabIndex ?? 0}
+          aria-label={props["aria-label"] ?? "Switch to light theme"}
           onClick={handleClick}
           onKeyDown={handleKeyDown}
           {...rest}

@@ -1,4 +1,5 @@
-import { mergeProps, splitProps, type JSX } from "solid-js";
+import { omit } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { clsx } from "clsx";
 
 import { mergeStyle } from "../../styles/merge-style";
@@ -18,32 +19,24 @@ const CHECK_CIRCLE_OUTLINE_PATH =
   "M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M12 20C7.59 20 4 16.41 4 12S7.59 4 12 4 20 7.59 20 12 16.41 20 12 20M16.59 7.58L10 14.17L7.41 11.59L6 13L10 17L18 9L16.59 7.58Z";
 
 export const ElmValidation = (props: ElmValidationProps) => {
-  const merged = mergeProps(
-    { validColor: "var(--elmethis-color-accent-success)" },
-    props,
-  );
-  const [local, rest] = splitProps(merged, [
-    "class",
-    "style",
-    "text",
-    "validColor",
-    "isValid",
-  ]);
+  const rest = omit(props, "class", "style", "text", "validColor", "isValid");
+  const color = () =>
+    props.isValid
+      ? (props.validColor ?? "var(--elmethis-color-accent-success)")
+      : undefined;
   return (
     <div
       {...rest}
-      class={clsx(styles["elm-validation"], local.class)}
-      style={mergeStyle(local.style, {
-        "--elmethis-scoped-opacity": local.isValid ? 1 : 0.5,
+      class={clsx(styles["elm-validation"], props.class)}
+      style={mergeStyle(props.style, {
+        "--elmethis-scoped-opacity": props.isValid ? 1 : 0.5,
       })}
     >
       <ElmMdiIcon
-        path={local.isValid ? CHECK_CIRCLE_PATH : CHECK_CIRCLE_OUTLINE_PATH}
-        color={local.isValid ? local.validColor : undefined}
+        path={props.isValid ? CHECK_CIRCLE_PATH : CHECK_CIRCLE_OUTLINE_PATH}
+        color={color()}
       />
-      <ElmInlineText color={local.isValid ? local.validColor : undefined}>
-        {local.text}
-      </ElmInlineText>
+      <ElmInlineText color={color()}>{props.text}</ElmInlineText>
     </div>
   );
 };

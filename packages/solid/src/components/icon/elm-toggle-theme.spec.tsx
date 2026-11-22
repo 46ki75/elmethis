@@ -1,3 +1,4 @@
+import { flush } from "solid-js";
 import { fireEvent, render } from "@solidjs/testing-library";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -60,6 +61,7 @@ describe("[CSR] ElmToggleTheme", () => {
     fireEvent.click(
       rendered.getByRole("button", { name: "Switch to dark theme" }),
     );
+    flush();
     expect(document.documentElement).toHaveAttribute("data-theme", "dark");
     expect(onClick).toHaveBeenCalledOnce();
 
@@ -67,6 +69,7 @@ describe("[CSR] ElmToggleTheme", () => {
       rendered.getByRole("button", { name: "Switch to light theme" }),
       { key: "Enter" },
     );
+    flush();
     expect(document.documentElement).toHaveAttribute("data-theme", "light");
     expect(onKeyDown).toHaveBeenCalledOnce();
   });

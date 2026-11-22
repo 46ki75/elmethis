@@ -53,7 +53,7 @@ describe("[Browser] ElmTextArea", () => {
     const root = textarea.closest("label")!;
     const loading = root.querySelector(`.${styles.loading}`)!;
 
-    expect(textarea.rows).toBe(3);
+    expect(textarea).toHaveAttribute("rows", "3");
     expect(textarea).toBeDisabled();
     expect(getComputedStyle(textarea).resize).toBe("vertical");
     expect(getComputedStyle(textarea).cursor).toBe("progress");

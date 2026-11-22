@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { describe, expect, it, vi } from "vitest";
 
 import { ElmValidation } from "./elm-validation";
@@ -95,6 +95,7 @@ describe("[CSR] ElmValidation", () => {
 
     setText("Looks good");
     setValid(true);
+    flush();
 
     expect(validation).toHaveClass("valid");
     expect(validation).not.toHaveClass("invalid");

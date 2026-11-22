@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { flush, createSignal } from "solid-js";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { ElmColorPrimitiveSample } from "./elm-color-primitive-sample";
@@ -76,9 +76,11 @@ describe("[CSR] ElmColorPrimitiveSample", () => {
     expect(sample).toHaveAttribute("aria-label", "Primitive colors");
 
     fireEvent.click(sample);
+    flush();
     expect(onClick).toHaveBeenCalledOnce();
 
     setDecorated(true);
+    flush();
     expect(sample).toHaveClass("after");
     expect(sample).not.toHaveClass("before");
     expect(sample.style.width).toBe("20rem");
@@ -97,6 +99,7 @@ describe("[CSR] ElmColorPrimitiveSample", () => {
 
     fireEvent.click(red);
     await Promise.resolve();
+    flush();
     expect(writeText).toHaveBeenLastCalledWith(
       "--elmethis-primitive-color-red-500",
     );
@@ -105,6 +108,7 @@ describe("[CSR] ElmColorPrimitiveSample", () => {
     vi.advanceTimersByTime(1000);
     fireEvent.click(blue);
     await Promise.resolve();
+    flush();
     vi.advanceTimersByTime(500);
 
     expect(blue).toHaveTextContent("copied!");
@@ -113,6 +117,7 @@ describe("[CSR] ElmColorPrimitiveSample", () => {
     vi.advanceTimersByTime(999);
     expect(blue).toHaveTextContent("copied!");
     vi.advanceTimersByTime(1);
+    flush();
     expect(blue).not.toHaveTextContent("copied!");
   });
 

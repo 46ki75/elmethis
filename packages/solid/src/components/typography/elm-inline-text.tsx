@@ -1,10 +1,5 @@
-import {
-  children,
-  createMemo,
-  mergeProps,
-  splitProps,
-  type JSX,
-} from "solid-js";
+import { type JSX } from "@solidjs/web";
+import { children, createMemo, omit } from "solid-js";
 import { clsx } from "clsx";
 
 import styles from "./elm-inline-text.module.css";
@@ -58,8 +53,8 @@ const mergeStyle = (
 };
 
 export const ElmInlineText = (props: ElmInlineTextProps) => {
-  const merged = mergeProps({ size: "1em" }, props);
-  const [local, rest] = splitProps(merged, [
+  const rest = omit(
+    props,
     "class",
     "style",
     "children",
@@ -75,50 +70,50 @@ export const ElmInlineText = (props: ElmInlineTextProps) => {
     "ruby",
     "href",
     "favicon",
-  ]);
-  const resolvedChildren = children(() => local.children);
+  );
+  const resolvedChildren = children(() => props.children);
 
   const content = createMemo<JSX.Element>(() => {
     let node: JSX.Element = resolvedChildren();
 
-    if (local.href) {
+    if (props.href) {
       node = (
         <a
           class={styles.link}
-          href={local.href}
+          href={props.href}
           target="_blank"
           rel="noopener noreferrer"
         >
-          {local.favicon && <ElmInlineIcon src={local.favicon} alt="favicon" />}
+          {props.favicon && <ElmInlineIcon src={props.favicon} alt="favicon" />}
           {node}
         </a>
       );
     }
 
-    if (local.kbd) {
+    if (props.kbd) {
       node = <kbd class={styles.kbd}>{node}</kbd>;
     }
-    if (local.strikethrough) {
+    if (props.strikethrough) {
       node = <del>{node}</del>;
     }
-    if (local.italic) {
+    if (props.italic) {
       node = <em>{node}</em>;
     }
-    if (local.underline) {
+    if (props.underline) {
       node = <ins>{node}</ins>;
     }
-    if (local.bold) {
+    if (props.bold) {
       node = <strong>{node}</strong>;
     }
-    if (local.code) {
+    if (props.code) {
       node = <code class={styles.code}>{node}</code>;
     }
 
-    if (local.ruby) {
+    if (props.ruby) {
       node = (
         <ruby class={styles["elm-inline-text"]}>
           <span>{node}</span>
-          <rt>{local.ruby}</rt>
+          <rt>{props.ruby}</rt>
         </ruby>
       );
     }
@@ -126,17 +121,17 @@ export const ElmInlineText = (props: ElmInlineTextProps) => {
     return node;
   });
   const rootStyle = createMemo(() =>
-    mergeStyle(local.style, {
-      "--elmethis-scoped-color": local.color,
-      "--elmethis-scoped-font-size": local.size,
-      "--elmethis-scoped-background-color": local.backgroundColor,
+    mergeStyle(props.style, {
+      "--elmethis-scoped-color": props.color,
+      "--elmethis-scoped-font-size": props.size ?? "1em",
+      "--elmethis-scoped-background-color": props.backgroundColor,
     }),
   );
 
   return (
     <span
       {...rest}
-      class={clsx(styles["elm-inline-text"], textStyles.text, local.class)}
+      class={clsx(styles["elm-inline-text"], textStyles.text, props.class)}
       style={rootStyle()}
     >
       {content()}

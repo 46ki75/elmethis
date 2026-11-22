@@ -1,4 +1,5 @@
-import { splitProps, type JSX } from "solid-js";
+import { omit } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { clsx } from "clsx";
 import { mdiChevronRight, mdiPlus } from "@mdi/js";
 
@@ -30,7 +31,8 @@ export interface ElmToggleProps extends Omit<
 }
 
 export const ElmToggle = (props: ElmToggleProps) => {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     "class",
     "children",
     "summary",
@@ -38,11 +40,11 @@ export const ElmToggle = (props: ElmToggleProps) => {
     "isOpen",
     "onOpenChange",
     "monochrome",
-  ]);
+  );
   const [isOpen, setIsOpen] = createControllableSignal<boolean>({
-    value: () => local.isOpen,
-    defaultValue: () => local.defaultIsOpen ?? false,
-    onChange: (value) => local.onOpenChange?.(value),
+    value: () => props.isOpen,
+    defaultValue: () => props.defaultIsOpen ?? false,
+    onChange: (value) => props.onOpenChange?.(value),
   });
   const handleSummaryClick: JSX.EventHandler<HTMLDivElement, MouseEvent> = (
     event,
@@ -54,7 +56,7 @@ export const ElmToggle = (props: ElmToggleProps) => {
   return (
     <div
       {...rest}
-      class={clsx(styles["elm-toggle"], isOpen() && styles.open, local.class)}
+      class={clsx(styles["elm-toggle"], isOpen() && styles.open, props.class)}
     >
       <div class={styles.summary} onClick={handleSummaryClick}>
         <div class={styles["summary-left"]}>
@@ -62,7 +64,7 @@ export const ElmToggle = (props: ElmToggleProps) => {
             <ElmMdiIcon
               path={mdiChevronRight}
               color={
-                local.monochrome
+                props.monochrome
                   ? "var(--elmethis-color-neutral-weak)"
                   : "var(--elmethis-color-primary)"
               }
@@ -70,10 +72,10 @@ export const ElmToggle = (props: ElmToggleProps) => {
             />
           </span>
           <div>
-            {typeof local.summary === "string" ? (
-              <ElmInlineText>{local.summary}</ElmInlineText>
+            {typeof props.summary === "string" ? (
+              <ElmInlineText>{props.summary}</ElmInlineText>
             ) : (
-              local.summary
+              props.summary
             )}
           </div>
         </div>
@@ -85,7 +87,7 @@ export const ElmToggle = (props: ElmToggleProps) => {
             path={mdiPlus}
             size="1rem"
             color={
-              local.monochrome
+              props.monochrome
                 ? "var(--elmethis-color-neutral-weak)"
                 : isOpen()
                   ? "var(--elmethis-color-accent-error)"
@@ -98,7 +100,7 @@ export const ElmToggle = (props: ElmToggleProps) => {
       <div class={styles.border} />
 
       <div class={clsx(styles.content, isOpen() && styles.open)}>
-        {local.children}
+        {props.children}
       </div>
     </div>
   );

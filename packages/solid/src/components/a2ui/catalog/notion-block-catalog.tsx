@@ -1,12 +1,5 @@
-import {
-  createEffect,
-  createSignal,
-  For,
-  onCleanup,
-  Show,
-  type Accessor,
-  type JSX,
-} from "solid-js";
+import { createEffect, createSignal, For, Show, type Accessor } from "solid-js";
+import type { JSX } from "@solidjs/web";
 
 import {
   ComponentContext,
@@ -116,49 +109,56 @@ const BoundContentTab = (props: BoundContentTabProps) => {
   const [bound, setBound] = createSignal<Record<string, unknown>>({});
   const normalizeChildren = createChildRefs(() => props.basePath);
 
-  createEffect(() => {
-    const surface = props.surface;
-    const id = props.id;
-    setModel(surface.componentsModel.get(id));
-    const created = surface.componentsModel.onCreated.subscribe((next) => {
-      if (next.id === id) {
-        setModel(next);
-      }
-    });
-    const deleted = surface.componentsModel.onDeleted.subscribe((deletedId) => {
-      if (deletedId === id) {
-        setModel(undefined);
-      }
-    });
-    onCleanup(() => {
-      created.unsubscribe();
-      deleted.unsubscribe();
-    });
-  });
+  createEffect(
+    () => ({ surface: props.surface, id: props.id }),
+    ({ surface, id }) => {
+      setModel(surface.componentsModel.get(id));
+      const created = surface.componentsModel.onCreated.subscribe((next) => {
+        if (next.id === id) {
+          setModel(next);
+        }
+      });
+      const deleted = surface.componentsModel.onDeleted.subscribe(
+        (deletedId) => {
+          if (deletedId === id) {
+            setModel(undefined);
+          }
+        },
+      );
+      return () => {
+        created.unsubscribe();
+        deleted.unsubscribe();
+      };
+    },
+  );
 
-  createEffect(() => {
-    if (model() == null) {
-      setBound({});
-      return;
-    }
-    const context = new ComponentContext(
-      props.surface,
-      props.id,
-      props.basePath,
-    );
-    const binder = new GenericBinder<Record<string, unknown>>(
-      context,
-      ContentTabApi.schema,
-    );
-    setBound({ ...binder.snapshot });
-    const subscription = binder.subscribe((next: Record<string, unknown>) =>
-      setBound({ ...next }),
-    );
-    onCleanup(() => {
-      subscription.unsubscribe();
-      binder.dispose();
-    });
-  });
+  createEffect(
+    () => ({
+      model: model(),
+      surface: props.surface,
+      id: props.id,
+      basePath: props.basePath,
+    }),
+    ({ model, surface, id, basePath }) => {
+      if (model == null) {
+        setBound({});
+        return undefined;
+      }
+      const context = new ComponentContext(surface, id, basePath);
+      const binder = new GenericBinder<Record<string, unknown>>(
+        context,
+        ContentTabApi.schema,
+      );
+      setBound({ ...binder.snapshot });
+      const subscription = binder.subscribe((next: Record<string, unknown>) =>
+        setBound({ ...next }),
+      );
+      return () => {
+        subscription.unsubscribe();
+        binder.dispose();
+      };
+    },
+  );
 
   return (
     <For each={normalizeChildren(bound()[props.slot])}>

@@ -1,24 +1,23 @@
-import {
-  createSignal,
-  mergeProps,
-  onCleanup,
-  onMount,
-  splitProps,
-  type JSX,
-} from "solid-js";
+import { createSignal, omit, onSettled } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { clsx } from "clsx";
 
 import { mergeStyle } from "../../styles/merge-style";
 import styles from "./elm-page-top.module.css";
 
-export interface ElmPageTopProps extends JSX.HTMLAttributes<HTMLElement> {
+export interface ElmPageTopProps extends Omit<
+  JSX.HTMLAttributes<HTMLElement>,
+  "aria-hidden"
+> {
+  tabIndex?: number | string;
+  "aria-hidden"?: boolean | "true" | "false";
   /** Specifies the position of the button. */
   position?: "left" | "right";
 }
 
 export const ElmPageTop = (props: ElmPageTopProps) => {
-  const merged = mergeProps({ position: "right" as const }, props);
-  const [local, rest] = splitProps(merged, [
+  const rest = omit(
+    props,
     "class",
     "style",
     "position",
@@ -28,15 +27,15 @@ export const ElmPageTop = (props: ElmPageTopProps) => {
     "aria-hidden",
     "tabindex",
     "tabIndex",
-  ]);
+  );
   const [isVisible, setIsVisible] = createSignal(false);
 
-  onMount(() => {
+  onSettled(() => {
     const checkScroll = () => setIsVisible(window.scrollY > 100);
 
     window.addEventListener("scroll", checkScroll, { passive: true });
     checkScroll();
-    onCleanup(() => window.removeEventListener("scroll", checkScroll));
+    return () => window.removeEventListener("scroll", checkScroll);
   });
 
   const toTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
@@ -44,7 +43,7 @@ export const ElmPageTop = (props: ElmPageTopProps) => {
   const handleClick: JSX.EventHandler<HTMLElement, MouseEvent> = (event) => {
     toTop();
 
-    const handler = local.onClick;
+    const handler = props.onClick;
     if (typeof handler === "function") {
       handler(event);
     } else {
@@ -60,7 +59,7 @@ export const ElmPageTop = (props: ElmPageTopProps) => {
       toTop();
     }
 
-    const handler = local.onKeyDown;
+    const handler = props.onKeyDown;
     if (typeof handler === "function") {
       handler(event);
     } else {
@@ -73,16 +72,16 @@ export const ElmPageTop = (props: ElmPageTopProps) => {
       class={clsx(
         styles["elm-page-top"],
         isVisible() && styles.visible,
-        local.class,
+        props.class,
       )}
-      style={mergeStyle(local.style, {
+      style={mergeStyle(props.style, {
         "--elmethis-scoped-size": "64px",
-        left: local.position === "left" ? "0" : "auto",
-        right: local.position === "right" ? "0" : "auto",
+        left: props.position === "left" ? "0" : "auto",
+        right: (props.position ?? "right") === "right" ? "0" : "auto",
       })}
-      role={local.role ?? "button"}
-      aria-hidden={local["aria-hidden"] ?? !isVisible()}
-      tabindex={isVisible() ? (local.tabindex ?? local.tabIndex ?? 0) : -1}
+      role={props.role ?? "button"}
+      aria-hidden={`${props["aria-hidden"] ?? !isVisible()}`}
+      tabindex={isVisible() ? (props.tabindex ?? props.tabIndex ?? 0) : -1}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       {...rest}

@@ -3,13 +3,12 @@ import {
   createMemo,
   createSignal,
   For,
-  onCleanup,
-  onMount,
+  omit,
+  onSettled,
   Show,
-  splitProps,
   type Accessor,
-  type JSX,
 } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { clsx } from "clsx";
 
 import { callEventHandler } from "../../primitives/call-event-handler";
@@ -23,6 +22,7 @@ export interface ElmSliderProps extends Omit<
   JSX.HTMLAttributes<HTMLDivElement>,
   "defaultValue" | "onChange"
 > {
+  tabIndex?: number | string;
   /** Lower bound of the track's full range. @defaultValue 0 */
   min?: number;
   /** Upper bound of the track's full range. @defaultValue 100 */
@@ -67,6 +67,9 @@ const clamp = (value: number, low: number, high: number) =>
 
 const preciseRound = (value: number) =>
   Math.round(value * 1_000_000_000) / 1_000_000_000;
+
+const roundAndClamp = (value: number, low: number, high: number) =>
+  clamp(preciseRound(value), low, high);
 
 const primitiveTextLength = (value: unknown): number => {
   if (typeof value === "string" || typeof value === "number") {
@@ -125,11 +128,14 @@ const buildMarks = (
 };
 
 export const ElmSlider = (props: ElmSliderProps) => {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     "ref",
     "class",
     "style",
     "children",
+    "tabIndex",
+    "tabindex",
     "onKeyDown",
     "onPointerDown",
     "onPointerMove",
@@ -149,21 +155,21 @@ export const ElmSlider = (props: ElmSliderProps) => {
     "markers",
     "markerLabels",
     "formatMarkerLabel",
-  ]);
-  const min = () => local.min ?? 0;
-  const max = () => local.max ?? 100;
-  const step = () => local.step ?? 1;
-  const orientation = () => local.orientation ?? "horizontal";
+  );
+  const min = () => props.min ?? 0;
+  const max = () => props.max ?? 100;
+  const step = () => props.step ?? 1;
+  const orientation = () => props.orientation ?? "horizontal";
   const rangeLow = createMemo(() => Math.min(min(), max()));
   const rangeHigh = createMemo(() => Math.max(min(), max()));
   const effectiveInnerMin = createMemo(() =>
-    clamp(local.innerMin ?? rangeLow(), rangeLow(), rangeHigh()),
+    clamp(props.innerMin ?? rangeLow(), rangeLow(), rangeHigh()),
   );
   const effectiveInnerMax = createMemo(() =>
-    clamp(local.innerMax ?? rangeHigh(), effectiveInnerMin(), rangeHigh()),
+    clamp(props.innerMax ?? rangeHigh(), effectiveInnerMin(), rangeHigh()),
   );
   const clampValue = (value: number) =>
-    clamp(preciseRound(value), effectiveInnerMin(), effectiveInnerMax());
+    roundAndClamp(value, effectiveInnerMin(), effectiveInnerMax());
   const snapValue = (value: number) => {
     const magnitude = Math.abs(step());
     const snapped =
@@ -176,12 +182,12 @@ export const ElmSlider = (props: ElmSliderProps) => {
     max() === min() ? 0 : clamp((value - min()) / (max() - min()), 0, 1);
 
   const [currentValue, setCurrentValue] = createControllableSignal<number>({
-    value: () => local.value,
+    value: () => props.value,
     defaultValue: () =>
       clampValue(
-        local.defaultValue ?? (effectiveInnerMin() + effectiveInnerMax()) / 2,
+        props.defaultValue ?? (effectiveInnerMin() + effectiveInnerMax()) / 2,
       ),
-    onChange: (value) => local.onValueChange?.(value),
+    onChange: (value) => props.onValueChange?.(value),
   });
   const displayValue = createMemo(() => clampValue(currentValue()));
   const valueRatio = createMemo(() => ratioOf(displayValue()));
@@ -201,7 +207,7 @@ export const ElmSlider = (props: ElmSliderProps) => {
   );
 
   const marksEnabled = createMemo(() =>
-    Boolean(local.markers || local.markerLabels),
+    Boolean(props.markers || props.markerLabels),
   );
   const marks = createMemo(() =>
     buildMarks(marksEnabled(), min(), max(), step()),
@@ -209,10 +215,11 @@ export const ElmSlider = (props: ElmSliderProps) => {
   const resolvedMarks = createMemo<ResolvedMark[]>(() => {
     return marks().map((mark) => {
       const label = createMemo(() => {
-        if (!local.markerLabels) {
+        if (!props.markerLabels) {
           return undefined;
         }
-        return local.formatMarkerLabel?.(mark.value) ?? mark.value;
+        const label = props.formatMarkerLabel?.(mark.value) ?? mark.value;
+        return typeof label === "number" ? String(label) : label;
       });
       return { ...mark, label };
     });
@@ -225,28 +232,33 @@ export const ElmSlider = (props: ElmSliderProps) => {
   );
 
   const [maxMarkerLabelWidth, setMaxMarkerLabelWidth] = createSignal(0);
-  const markerLabelElements = new Set<HTMLElement>();
-  let labelObserver: ResizeObserver | undefined;
   let track: HTMLDivElement | undefined;
   let capturedPointerId: number | undefined;
 
-  const measureMarkerLabels = () => {
-    let width = 0;
-    for (const element of markerLabelElements) {
-      width = Math.max(width, element.getBoundingClientRect().width);
-    }
-    setMaxMarkerLabelWidth(Math.ceil(width));
-  };
-
-  const registerMarkerLabel = (element: HTMLElement) => {
-    markerLabelElements.add(element);
-    labelObserver?.observe(element);
-    onCleanup(() => {
-      markerLabelElements.delete(element);
-      labelObserver?.unobserve(element);
-      measureMarkerLabels();
-    });
-  };
+  createEffect(
+    () => (props.markerLabels ? resolvedMarks() : undefined),
+    (marks) => {
+      const labels =
+        marks &&
+        track?.querySelectorAll<HTMLElement>(`.${styles["mark-label"]}`);
+      const measure = () => {
+        let width = 0;
+        for (const label of labels ?? []) {
+          width = Math.max(width, label.getBoundingClientRect().width);
+        }
+        setMaxMarkerLabelWidth(Math.ceil(width));
+      };
+      measure();
+      if (labels?.length && typeof ResizeObserver !== "undefined") {
+        const observer = new ResizeObserver(measure);
+        for (const label of labels) {
+          observer.observe(label);
+        }
+        return () => observer.disconnect();
+      }
+      return undefined;
+    },
+  );
 
   const releasePointer = (pointerId = capturedPointerId) => {
     if (pointerId === undefined || pointerId !== capturedPointerId) {
@@ -260,29 +272,16 @@ export const ElmSlider = (props: ElmSliderProps) => {
     }
   };
 
-  onMount(() => {
-    labelObserver =
-      typeof ResizeObserver === "undefined"
-        ? undefined
-        : new ResizeObserver(measureMarkerLabels);
-    for (const element of markerLabelElements) {
-      labelObserver?.observe(element);
-    }
-    measureMarkerLabels();
+  onSettled(() => releasePointer);
 
-    onCleanup(() => {
-      releasePointer();
-      labelObserver?.disconnect();
-      labelObserver = undefined;
-      markerLabelElements.clear();
-    });
-  });
-
-  createEffect(() => {
-    if (local.disabled) {
-      releasePointer();
-    }
-  });
+  createEffect(
+    () => props.disabled,
+    (disabled) => {
+      if (disabled) {
+        releasePointer();
+      }
+    },
+  );
 
   const valueFromPointer = (clientX: number, clientY: number) => {
     if (track == null) {
@@ -303,7 +302,7 @@ export const ElmSlider = (props: ElmSliderProps) => {
   const handlePointerDown: JSX.EventHandler<HTMLDivElement, PointerEvent> = (
     event,
   ) => {
-    if (local.disabled) {
+    if (props.disabled) {
       return;
     }
     if (
@@ -315,44 +314,44 @@ export const ElmSlider = (props: ElmSliderProps) => {
     event.currentTarget.setPointerCapture(event.pointerId);
     capturedPointerId = event.pointerId;
     setCurrentValue(valueFromPointer(event.clientX, event.clientY));
-    callEventHandler(local.onPointerDown, event);
+    callEventHandler(props.onPointerDown, event);
   };
 
   const handlePointerMove: JSX.EventHandler<HTMLDivElement, PointerEvent> = (
     event,
   ) => {
-    if (local.disabled) {
+    if (props.disabled) {
       return;
     }
     if (
       capturedPointerId !== event.pointerId ||
       !event.currentTarget.hasPointerCapture(event.pointerId)
     ) {
-      callEventHandler(local.onPointerMove, event);
+      callEventHandler(props.onPointerMove, event);
       return;
     }
     setCurrentValue(valueFromPointer(event.clientX, event.clientY));
-    callEventHandler(local.onPointerMove, event);
+    callEventHandler(props.onPointerMove, event);
   };
 
   const handlePointerUp: JSX.EventHandler<HTMLDivElement, PointerEvent> = (
     event,
   ) => {
-    if (local.disabled) {
+    if (props.disabled) {
       return;
     }
     releasePointer(event.pointerId);
-    callEventHandler(local.onPointerUp, event);
+    callEventHandler(props.onPointerUp, event);
   };
 
   const handlePointerCancel: JSX.EventHandler<HTMLDivElement, PointerEvent> = (
     event,
   ) => {
-    if (local.disabled) {
+    if (props.disabled) {
       return;
     }
     releasePointer(event.pointerId);
-    callEventHandler(local.onPointerCancel, event);
+    callEventHandler(props.onPointerCancel, event);
   };
 
   const handleLostPointerCapture: JSX.EventHandler<
@@ -362,49 +361,56 @@ export const ElmSlider = (props: ElmSliderProps) => {
     if (capturedPointerId === event.pointerId) {
       capturedPointerId = undefined;
     }
-    if (!local.disabled) {
-      callEventHandler(local.onLostPointerCapture, event);
+    if (!props.disabled) {
+      callEventHandler(props.onLostPointerCapture, event);
     }
   };
 
   const handleKeyDown: JSX.EventHandler<HTMLDivElement, KeyboardEvent> = (
     event,
   ) => {
-    if (local.disabled) {
+    if (props.disabled) {
       return;
     }
     const delta = Math.abs(step());
+    const low = effectiveInnerMin();
+    const high = effectiveInnerMax();
+    const moveBy = (distance: number) => {
+      setCurrentValue((current) =>
+        roundAndClamp(roundAndClamp(current, low, high) + distance, low, high),
+      );
+    };
 
     switch (event.key) {
       case "ArrowRight":
       case "ArrowUp":
         event.preventDefault();
-        setCurrentValue(clampValue(displayValue() + delta));
+        moveBy(delta);
         break;
       case "ArrowLeft":
       case "ArrowDown":
         event.preventDefault();
-        setCurrentValue(clampValue(displayValue() - delta));
+        moveBy(-delta);
         break;
       case "PageUp":
         event.preventDefault();
-        setCurrentValue(clampValue(displayValue() + delta * 10));
+        moveBy(delta * 10);
         break;
       case "PageDown":
         event.preventDefault();
-        setCurrentValue(clampValue(displayValue() - delta * 10));
+        moveBy(-delta * 10);
         break;
       case "Home":
         event.preventDefault();
-        setCurrentValue(effectiveInnerMin());
+        setCurrentValue(low);
         break;
       case "End":
         event.preventDefault();
-        setCurrentValue(effectiveInnerMax());
+        setCurrentValue(high);
         break;
     }
 
-    callEventHandler(local.onKeyDown, event);
+    callEventHandler(props.onKeyDown, event);
   };
 
   return (
@@ -412,12 +418,12 @@ export const ElmSlider = (props: ElmSliderProps) => {
       class={clsx(
         styles["elm-slider"],
         orientation() === "vertical" && styles.vertical,
-        local.disabled && styles.disabled,
-        local.markers && styles["has-markers"],
-        local.markerLabels && styles["has-marker-labels"],
-        local.class,
+        props.disabled && styles.disabled,
+        props.markers && styles["has-markers"],
+        props.markerLabels && styles["has-marker-labels"],
+        props.class,
       )}
-      style={mergeStyle(local.style, {
+      style={mergeStyle(props.style, {
         "--elmethis-scoped-value-ratio": valueRatio(),
         "--elmethis-scoped-inner-min-ratio": innerStartRatio(),
         "--elmethis-scoped-inner-max-ratio": innerEndRatio(),
@@ -428,21 +434,21 @@ export const ElmSlider = (props: ElmSliderProps) => {
       })}
     >
       <div
-        tabIndex={local.disabled ? -1 : 0}
         {...rest}
-        ref={(element) => {
-          track = element;
-          if (typeof local.ref === "function") {
-            local.ref(element);
-          }
-        }}
+        tabindex={props.tabindex ?? props.tabIndex ?? (props.disabled ? -1 : 0)}
+        ref={[
+          (element) => {
+            track = element;
+          },
+          props.ref,
+        ]}
         class={styles.track}
         role="slider"
         aria-orientation={orientation()}
         aria-valuemin={effectiveInnerMin()}
         aria-valuemax={effectiveInnerMax()}
         aria-valuenow={displayValue()}
-        aria-disabled={local.disabled || undefined}
+        aria-disabled={props.disabled ? "true" : undefined}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
@@ -472,16 +478,11 @@ export const ElmSlider = (props: ElmSliderProps) => {
                   )}
                   style={{ "--elmethis-scoped-marker-ratio": mark.ratio }}
                 >
-                  <Show when={local.markers}>
+                  <Show when={props.markers}>
                     <i class={styles.tick} />
                   </Show>
-                  <Show when={local.markerLabels}>
-                    <span
-                      ref={registerMarkerLabel}
-                      class={styles["mark-label"]}
-                    >
-                      {mark.label()}
-                    </span>
+                  <Show when={props.markerLabels}>
+                    <span class={styles["mark-label"]}>{mark.label()}</span>
                   </Show>
                 </span>
               )}

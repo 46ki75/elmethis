@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { describe, expect, it, vi } from "vitest";
 
 import { ElmTextArea } from "./elm-text-area";
@@ -52,8 +52,10 @@ describe("[CSR] ElmTextArea", () => {
     expect(textarea).toHaveAttribute("maxlength", "20");
     expect(textarea).toBeRequired();
     setRows(6);
+    flush();
     expect(textarea).toHaveAttribute("rows", "6");
     setLoading(true);
+    flush();
     expect(textarea).toBeDisabled();
     expect(root).toHaveClass(styles.disabled);
   });
@@ -77,12 +79,14 @@ describe("[CSR] ElmTextArea", () => {
     const textarea = rendered.container.querySelector("textarea")!;
 
     fireEvent.input(textarea, { target: { value: "hello" } });
+    flush();
     expect(onInput).toHaveBeenCalledWith("hello");
     expect(onChange).not.toHaveBeenCalled();
     expect(textarea.value).toBe("hello");
     expect(rendered.container).toHaveTextContent("5 / 20");
 
     fireEvent.change(textarea);
+    flush();
     expect(onChange).toHaveBeenCalledWith("hello");
   });
 
@@ -95,6 +99,7 @@ describe("[CSR] ElmTextArea", () => {
     expect(textarea.value).toBe("seed");
     expect(rendered.container).toHaveTextContent("4 / 20");
     fireEvent.input(textarea, { target: { value: "seed plus" } });
+    flush();
     expect(textarea.value).toBe("seed plus");
     expect(rendered.container).toHaveTextContent("9 / 20");
   });
@@ -115,9 +120,11 @@ describe("[CSR] ElmTextArea", () => {
 
     expect(rendered.container).not.toHaveTextContent("/ 10");
     fireEvent.focus(textarea);
+    flush();
     expect(onFocus).toHaveBeenCalledOnce();
     expect(root).toHaveClass(styles.active);
     fireEvent.blur(textarea);
+    flush();
     expect(onBlur).toHaveBeenCalledOnce();
     expect(root).not.toHaveClass(styles.active);
   });

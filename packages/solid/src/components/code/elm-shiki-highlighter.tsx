@@ -1,11 +1,5 @@
-import {
-  createResource,
-  mergeProps,
-  onCleanup,
-  splitProps,
-  Suspense,
-  type JSX,
-} from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { createDeferred, Loading, omit, onCleanup } from "solid-js";
 import { clsx } from "clsx";
 import type { BundledLanguage, ThemeRegistrationRaw } from "shiki";
 
@@ -68,9 +62,8 @@ const highlightCode = async (
     if (isStale()) {
       return escapeHtml(code);
     }
-
     const resolvedLanguage = resolveLanguage(language, shiki.bundledLanguages);
-    const html = await shiki.codeToHtml(code, {
+    return await shiki.codeToHtml(code, {
       lang: resolvedLanguage,
       themes: {
         dark,
@@ -82,49 +75,46 @@ const highlightCode = async (
         "#121212": "transparent",
       },
     });
-
-    return isStale() ? escapeHtml(code) : html;
   } catch {
     return escapeHtml(code);
   }
 };
 
 export const ElmShikiHighlighter = (props: ElmShikiHighlighterProps) => {
-  const merged = mergeProps({ language: "txt" }, props);
-  const [local, rest] = splitProps(merged, ["class", "code", "language"]);
+  const rest = omit(props, "class", "code", "language");
   let generation = 0;
-  const [rawHtml] = createResource(
-    () => {
-      const code = local.code;
-      const language = local.language;
-      const currentGeneration = ++generation;
-
-      return code ? { code, language, generation: currentGeneration } : false;
-    },
-    ({ code, language, generation: requestGeneration }) =>
-      highlightCode(code, language, () => requestGeneration !== generation),
-    { ssrLoadFrom: "server" },
-  );
-
+  const rawHtml = createDeferred(() => {
+    const code = props.code;
+    const request = ++generation;
+    // Solid discards obsolete results; skip the Shiki work as well if its
+    // runtime was still loading when the input changed.
+    return code
+      ? highlightCode(
+          code,
+          props.language ?? "txt",
+          () => request !== generation,
+        )
+      : "";
+  });
   onCleanup(() => {
-    generation += 1;
+    generation++;
   });
 
   return (
-    <Suspense
+    <Loading
       fallback={
         <pre
           {...rest}
-          class={clsx(styles["elm-shiki-highlighter"], local.class)}
-          innerHTML={escapeHtml(local.code)}
+          class={clsx(styles["elm-shiki-highlighter"], props.class)}
+          innerHTML={escapeHtml(props.code)}
         />
       }
     >
       <pre
         {...rest}
-        class={clsx(styles["elm-shiki-highlighter"], local.class)}
-        innerHTML={rawHtml() ?? ""}
+        class={clsx(styles["elm-shiki-highlighter"], props.class)}
+        innerHTML={rawHtml()}
       />
-    </Suspense>
+    </Loading>
   );
 };

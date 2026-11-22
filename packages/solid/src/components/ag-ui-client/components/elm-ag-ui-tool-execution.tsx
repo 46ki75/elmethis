@@ -1,10 +1,5 @@
-import {
-  createEffect,
-  createSignal,
-  Show,
-  splitProps,
-  type JSX,
-} from "solid-js";
+import { createEffect, createSignal, omit, Show } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { clsx } from "clsx";
 import {
   mdiCodeJson,
@@ -35,15 +30,16 @@ export interface ElmAgUiToolExecutionProps extends JSX.HTMLAttributes<HTMLDivEle
   toolCallResult?: string;
 }
 
-export const ElmAgUiToolExecution = (props: ElmAgUiToolExecutionProps) => {
-  const [local, rest] = splitProps(props, [
+export const ElmAgUiToolExecution = (local: ElmAgUiToolExecutionProps) => {
+  const rest = omit(
+    local,
     "class",
     "children",
     "toolName",
     "toolEventType",
     "toolCallArgs",
     "toolCallResult",
-  ]);
+  );
   const [isOpen, setIsOpen] = createSignal(false);
   const [isArgsShown, setIsArgsShown] = createSignal(false);
   const [isArgsOpen, setIsArgsOpen] = createSignal(false);
@@ -55,70 +51,72 @@ export const ElmAgUiToolExecution = (props: ElmAgUiToolExecutionProps) => {
     void queue.push(() => Promise.resolve(task())).catch(() => undefined);
   };
 
-  createEffect(() => {
-    const eventType = local.toolEventType;
-    const phase =
-      eventType === EventType.TOOL_CALL_START
-        ? 0
-        : eventType === EventType.TOOL_CALL_ARGS
-          ? 1
-          : eventType === EventType.TOOL_CALL_END ||
-              eventType === EventType.TOOL_CALL_CHUNK
-            ? 2
-            : eventType === EventType.TOOL_CALL_RESULT
-              ? 3
-              : -1;
-    if (phase <= latestPhase) {
-      return;
-    }
-    latestPhase = phase;
+  createEffect(
+    () => local.toolEventType,
+    (eventType) => {
+      const phase =
+        eventType === EventType.TOOL_CALL_START
+          ? 0
+          : eventType === EventType.TOOL_CALL_ARGS
+            ? 1
+            : eventType === EventType.TOOL_CALL_END ||
+                eventType === EventType.TOOL_CALL_CHUNK
+              ? 2
+              : eventType === EventType.TOOL_CALL_RESULT
+                ? 3
+                : -1;
+      if (phase <= latestPhase) {
+        return;
+      }
+      latestPhase = phase;
 
-    switch (eventType) {
-      case undefined:
-        break;
-      case EventType.TOOL_CALL_START:
-        enqueue(() => {
-          setIsOpen(true);
-          setIsArgsShown(true);
-          setIsArgsOpen(false);
-          setIsResultShown(false);
-          setIsResultOpen(false);
-        });
-        break;
-      case EventType.TOOL_CALL_ARGS:
-        enqueue(() => {
-          setIsOpen(true);
-          setIsArgsShown(true);
-          setIsArgsOpen(true);
-          setIsResultShown(false);
-          setIsResultOpen(false);
-        });
-        enqueue(() => setIsArgsOpen(false));
-        break;
-      case EventType.TOOL_CALL_END:
-      case EventType.TOOL_CALL_CHUNK:
-        enqueue(() => {
-          setIsOpen(true);
-          setIsArgsShown(true);
-          setIsArgsOpen(false);
-          setIsResultShown(true);
-          setIsResultOpen(false);
-        });
-        break;
-      case EventType.TOOL_CALL_RESULT:
-        enqueue(() => {
-          setIsArgsShown(true);
-          setIsArgsOpen(false);
-          setIsResultShown(true);
-          setIsResultOpen(true);
-        });
-        enqueue(() => {
-          setIsOpen(false);
-          setIsResultOpen(false);
-        });
-        break;
-    }
-  });
+      switch (eventType) {
+        case undefined:
+          break;
+        case EventType.TOOL_CALL_START:
+          enqueue(() => {
+            setIsOpen(true);
+            setIsArgsShown(true);
+            setIsArgsOpen(false);
+            setIsResultShown(false);
+            setIsResultOpen(false);
+          });
+          break;
+        case EventType.TOOL_CALL_ARGS:
+          enqueue(() => {
+            setIsOpen(true);
+            setIsArgsShown(true);
+            setIsArgsOpen(true);
+            setIsResultShown(false);
+            setIsResultOpen(false);
+          });
+          enqueue(() => setIsArgsOpen(false));
+          break;
+        case EventType.TOOL_CALL_END:
+        case EventType.TOOL_CALL_CHUNK:
+          enqueue(() => {
+            setIsOpen(true);
+            setIsArgsShown(true);
+            setIsArgsOpen(false);
+            setIsResultShown(true);
+            setIsResultOpen(false);
+          });
+          break;
+        case EventType.TOOL_CALL_RESULT:
+          enqueue(() => {
+            setIsArgsShown(true);
+            setIsArgsOpen(false);
+            setIsResultShown(true);
+            setIsResultOpen(true);
+          });
+          enqueue(() => {
+            setIsOpen(false);
+            setIsResultOpen(false);
+          });
+          break;
+      }
+    },
+  );
 
   const summary = (
     icon: string,

@@ -32,16 +32,16 @@ export function useMcpTools(options: UseMcpToolsOptions): UseMcpToolsReturn {
     handle: McpClientHandle,
   ) => {
     const descriptors = await handle.listTools();
-    const next = { ...tools() };
+    const connected: ToolRegistry = {};
     for (const descriptor of descriptors) {
       const adapted = adaptMcpTool(
         descriptor,
         (name, args) => handle.callTool(name, args),
         shouldPrefix ? { prefix: config.id } : undefined,
       );
-      next[adapted.name] = adapted.tool;
+      connected[adapted.name] = adapted.tool;
     }
-    setTools(next);
+    setTools((current) => ({ ...current, ...connected }));
     return descriptors.length;
   };
 
@@ -50,9 +50,9 @@ export function useMcpTools(options: UseMcpToolsOptions): UseMcpToolsReturn {
     if (!prefix) {
       return;
     }
-    setTools(
+    setTools((current) =>
       Object.fromEntries(
-        Object.entries(tools()).filter(([name]) => !name.startsWith(prefix)),
+        Object.entries(current).filter(([name]) => !name.startsWith(prefix)),
       ),
     );
   };

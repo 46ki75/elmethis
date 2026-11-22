@@ -1,4 +1,5 @@
-import { splitProps, type JSX } from "solid-js";
+import { type JSX } from "@solidjs/web";
+import { omit } from "solid-js";
 import { clsx } from "clsx";
 
 import styles from "./elm-block-quote.module.css";
@@ -13,18 +14,18 @@ const FORMAT_QUOTE_CLOSE =
 export interface ElmBlockQuoteProps extends JSX.BlockquoteHTMLAttributes<HTMLQuoteElement> {}
 
 export const ElmBlockQuote = (props: ElmBlockQuoteProps) => {
-  const [local, rest] = splitProps(props, ["class", "children"]);
+  const rest = omit(props, "class", "children");
 
   return (
     <blockquote
       {...rest}
-      class={clsx(styles["elm-block-quote"], textStyles.text, local.class)}
+      class={clsx(styles["elm-block-quote"], textStyles.text, props.class)}
     >
       <div class={clsx(styles.icon, styles["icon-top-left"])}>
         <ElmMdiIcon path={FORMAT_QUOTE_OPEN} />
       </div>
 
-      <div class={styles.body}>{local.children}</div>
+      <div class={styles.body}>{props.children}</div>
 
       <div class={clsx(styles.icon, styles["icon-bottom-right"])}>
         <ElmMdiIcon path={FORMAT_QUOTE_CLOSE} />

@@ -1,4 +1,4 @@
-import { createRoot } from "solid-js";
+import { createRoot, flush } from "solid-js";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
@@ -46,12 +46,10 @@ describe("createAsyncState", () => {
     const task = vi.fn(async () => "loaded");
     const { state, dispose } = setup(task, "initial", {});
 
-    await Promise.resolve();
-    await Promise.resolve();
+    await vi.waitFor(() => expect(state.isReady()).toBe(true));
 
     expect(task).toHaveBeenCalledOnce();
     expect(state.state()).toBe("loaded");
-    expect(state.isReady()).toBe(true);
     dispose();
   });
 
@@ -64,6 +62,7 @@ describe("createAsyncState", () => {
     });
 
     const result = state.execute();
+    flush();
     expect(state.state()).toBe("initial");
     expect(state.isLoading()).toBe(true);
     expect(state.isReady()).toBe(false);
@@ -107,6 +106,23 @@ describe("createAsyncState", () => {
     rethrown.dispose();
   });
 
+  it("preserves functions used as state or rejection reasons", async () => {
+    const initial = vi.fn(() => "initial");
+    const rejection = vi.fn();
+    const { state, dispose } = setup(async () => {
+      // oxlint-disable-next-line typescript/only-throw-error -- Verify non-Error rejection reasons are stored literally.
+      throw rejection;
+    }, initial);
+
+    expect(state.state()).toBe(initial);
+    await state.execute();
+    expect(state.state()).toBe(initial);
+    expect(state.error()).toBe(rejection);
+    expect(initial).not.toHaveBeenCalled();
+    expect(rejection).not.toHaveBeenCalled();
+    dispose();
+  });
+
   it("resets by default and preserves state when resetOnExecute is false", async () => {
     const first = deferred<string>();
     const second = deferred<string>();
@@ -117,6 +133,7 @@ describe("createAsyncState", () => {
     first.resolve("loaded");
     await firstRun;
     const secondRun = resetting.state.execute();
+    flush();
     expect(resetting.state.state()).toBe("initial");
     second.resolve("new");
     await secondRun;
@@ -196,6 +213,7 @@ describe("createAsyncState", () => {
     const task = vi.fn(async () => "loaded");
     const { state, dispose } = setup(task, "initial");
     const result = state.execute(100);
+    flush();
 
     expect(state.isLoading()).toBe(true);
     expect(task).not.toHaveBeenCalled();

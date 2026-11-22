@@ -1,4 +1,5 @@
-import { Show, splitProps, type JSX } from "solid-js";
+import { Show, omit } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { clsx } from "clsx";
 
 import { callEventHandler } from "../../primitives/call-event-handler";
@@ -30,7 +31,8 @@ export interface ElmCheckboxProps extends Omit<
 }
 
 export const ElmCheckbox = (props: ElmCheckboxProps) => {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     "class",
     "onClick",
     "label",
@@ -40,16 +42,16 @@ export const ElmCheckbox = (props: ElmCheckboxProps) => {
     "defaultChecked",
     "onCheckedChange",
     "children",
-  ]);
+  );
   const [isChecked, setIsChecked] = createControllableSignal({
-    value: () => local.checked,
-    defaultValue: () => local.defaultChecked ?? false,
-    onChange: (checked) => local.onCheckedChange?.(checked),
+    value: () => props.checked,
+    defaultValue: () => props.defaultChecked ?? false,
+    onChange: (checked) => props.onCheckedChange?.(checked),
   });
 
   const handleClick: JSX.EventHandler<HTMLDivElement, MouseEvent> = (event) => {
-    callEventHandler(local.onClick, event);
-    if (!event.defaultPrevented && !local.isLoading && !local.disabled) {
+    callEventHandler(props.onClick, event);
+    if (!event.defaultPrevented && !props.isLoading && !props.disabled) {
       setIsChecked((checked) => !checked);
     }
   };
@@ -59,8 +61,8 @@ export const ElmCheckbox = (props: ElmCheckboxProps) => {
       {...rest}
       class={clsx(
         styles["elm-checkbox"],
-        local.disabled && styles.disabled,
-        local.class,
+        props.disabled && styles.disabled,
+        props.class,
       )}
       onClick={handleClick}
     >
@@ -71,7 +73,7 @@ export const ElmCheckbox = (props: ElmCheckboxProps) => {
             cy="0"
             r="2"
             class={styles["loading-dot"]}
-            style={{ opacity: local.isLoading ? 1 : 0 }}
+            style={{ opacity: props.isLoading ? 1 : 0 }}
           >
             <animate
               attributeName="cx"
@@ -96,7 +98,7 @@ export const ElmCheckbox = (props: ElmCheckboxProps) => {
             cy="20"
             r="2"
             class={styles["loading-dot"]}
-            style={{ opacity: local.isLoading ? 1 : 0 }}
+            style={{ opacity: props.isLoading ? 1 : 0 }}
           >
             <animate
               attributeName="cx"
@@ -124,7 +126,7 @@ export const ElmCheckbox = (props: ElmCheckboxProps) => {
             class={clsx(
               styles.rect,
               isChecked() && styles.checked,
-              local.isLoading && styles.loading,
+              props.isLoading && styles.loading,
             )}
             stroke-width="0.8"
           />
@@ -195,7 +197,7 @@ export const ElmCheckbox = (props: ElmCheckboxProps) => {
             fill="transparent"
           />
         </svg>
-        <ElmInlineText>{local.label}</ElmInlineText>
+        <ElmInlineText>{props.label}</ElmInlineText>
       </div>
     </div>
   );

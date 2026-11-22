@@ -1,11 +1,5 @@
-import {
-  createEffect,
-  createSignal,
-  For,
-  Show,
-  splitProps,
-  type JSX,
-} from "solid-js";
+import { createEffect, createSignal, For, omit, Show } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { clsx } from "clsx";
 import { mdiAccount, mdiCreation, mdiLightbulbOn, mdiRefresh } from "@mdi/js";
 import { EventType, type Message, type ToolCall } from "@ag-ui/core";
@@ -34,26 +28,27 @@ interface ReasoningProps {
 }
 
 const Reasoning = (props: ReasoningProps) => {
-  const [isOpen, setIsOpen] = createSignal(false);
+  const [isOpen, setIsOpen] = createSignal(() => props.isReasoningRunning);
   let reasoningRef!: HTMLDivElement;
   let lastScrollTime = 0;
 
-  createEffect(() => setIsOpen(props.isReasoningRunning));
-  createEffect(() => {
-    const markdown = props.markdown;
-    if (!reasoningRef || markdown === "") {
-      return;
-    }
-    const now = Date.now();
-    if (now - lastScrollTime < 500) {
-      return;
-    }
-    lastScrollTime = now;
-    reasoningRef.scrollTo({
-      behavior: "smooth",
-      top: reasoningRef.scrollHeight,
-    });
-  });
+  createEffect(
+    () => props.markdown,
+    (markdown) => {
+      if (!reasoningRef || markdown === "") {
+        return;
+      }
+      const now = Date.now();
+      if (now - lastScrollTime < 500) {
+        return;
+      }
+      lastScrollTime = now;
+      reasoningRef.scrollTo({
+        behavior: "smooth",
+        top: reasoningRef.scrollHeight,
+      });
+    },
+  );
 
   return (
     <ElmToggle
@@ -101,8 +96,9 @@ const contentToText = (message: Extract<Message, { role: "user" }>): string => {
     .join(" ");
 };
 
-export const ElmAgUiMessageRenderer = (props: ElmAgUiMessageRendererProps) => {
-  const [local, rest] = splitProps(props, [
+export const ElmAgUiMessageRenderer = (local: ElmAgUiMessageRendererProps) => {
+  const rest = omit(
+    local,
     "class",
     "children",
     "handleRetry",
@@ -110,7 +106,7 @@ export const ElmAgUiMessageRenderer = (props: ElmAgUiMessageRendererProps) => {
     "messages",
     "enableToolCalls",
     "enableReasoning",
-  ]);
+  );
 
   const renderTool = (toolCall: ToolCall) => {
     const result = () =>

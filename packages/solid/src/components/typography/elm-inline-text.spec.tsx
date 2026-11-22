@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { flush, createSignal } from "solid-js";
 import { describe, expect, it, vi } from "vitest";
 
 import { ElmInlineText } from "./elm-inline-text";
@@ -32,6 +32,7 @@ describe("[CSR] ElmInlineText", () => {
     expect(text).not.toHaveAttribute("ruby");
 
     fireEvent.click(text);
+    flush();
     expect(onClick).toHaveBeenCalledOnce();
   });
 
@@ -149,6 +150,7 @@ describe("[CSR] ElmInlineText", () => {
 
     setLabel("after");
     setDecorated(true);
+    flush();
 
     expect(root).toHaveClass("decorated");
     expect(root).not.toHaveClass("plain");
@@ -159,6 +161,7 @@ describe("[CSR] ElmInlineText", () => {
     expect(root.style.getPropertyValue("--elmethis-scoped-color")).toBe("red");
 
     setDecorated(false);
+    flush();
     expect(rendered.container.querySelector("ruby")).toBeNull();
     expect(rendered.container.querySelector("a")).toBeNull();
     expect(root).toHaveTextContent("after");

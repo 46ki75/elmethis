@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { describe, expect, it } from "vitest";
 
 import { ElmCollapse } from "./elm-collapse";
@@ -69,14 +69,14 @@ describe("[CSR] ElmCollapse", () => {
 
   it("reactively updates open state, direction, timing, class, and children", () => {
     const [open, setOpen] = createSignal(false);
-    const [direction, setDirection] = createSignal<"row" | "both">("row");
+    const [direction, setDirection] = createSignal<"both">();
     const rendered = render(() => (
       <ElmCollapse
         data-testid="collapse"
         class={open() ? "open-class" : "closed-class"}
         isOpen={open()}
         direction={direction()}
-        transitionTimingFunction={open() ? "linear" : "ease-in"}
+        transitionTimingFunction={open() ? "linear" : undefined}
       >
         {open() ? "Open content" : "Closed content"}
       </ElmCollapse>
@@ -89,6 +89,7 @@ describe("[CSR] ElmCollapse", () => {
 
     setDirection("both");
     setOpen(true);
+    flush();
 
     expect(collapse).toHaveClass("open-class", styles.both, styles.open);
     expect(collapse).not.toHaveClass("closed-class", styles.row);
@@ -98,5 +99,16 @@ describe("[CSR] ElmCollapse", () => {
         "--elmethis-scoped-transition-timing-function",
       ),
     ).toBe("linear");
+
+    setDirection(undefined);
+    setOpen(false);
+    flush();
+
+    expect(collapse).toHaveClass("closed-class", styles.row);
+    expect(
+      collapse.style.getPropertyValue(
+        "--elmethis-scoped-transition-timing-function",
+      ),
+    ).toBe("ease-in-out");
   });
 });

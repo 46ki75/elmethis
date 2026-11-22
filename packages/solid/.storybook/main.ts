@@ -7,6 +7,7 @@ const config = {
   ],
   addons: ["@storybook/addon-docs"],
   framework: {
+    // The adapter's legacy vite-plugin-solid peer is aliased to @solidjs/vite-plugin.
     name: "storybook-solidjs-vite",
     options: {},
   },

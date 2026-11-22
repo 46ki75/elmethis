@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { ElmSelect, type ElmSelectOption } from "./elm-select";
@@ -53,8 +53,10 @@ describe("[CSR] ElmSelect", () => {
     const select = rendered.getByTestId("select");
 
     fireEvent.click(select);
+    flush();
     expect(select).toHaveClass(styles.active);
     fireEvent.click(rendered.getByText("Banana"));
+    flush();
 
     expect(onChange).toHaveBeenCalledWith("b");
     expect(select).not.toHaveClass(styles.active);
@@ -78,10 +80,13 @@ describe("[CSR] ElmSelect", () => {
 
     expect(rendered.getByText("Choose")).toBeInTheDocument();
     fireEvent.click(rendered.getByText("Fruit"));
+    flush();
     fireEvent.click(rendered.getByText("Apple"));
+    flush();
     expect(rendered.getAllByText("Apple")).toHaveLength(2);
 
     setSelected(null);
+    flush();
     expect(rendered.getByText("Choose")).toBeInTheDocument();
   });
 
@@ -98,6 +103,7 @@ describe("[CSR] ElmSelect", () => {
     const select = rendered.getByTestId("select");
 
     fireEvent.click(select);
+    flush();
     expect(onClick).toHaveBeenCalledOnce();
     expect(select).not.toHaveClass(styles.active);
   });
@@ -117,15 +123,20 @@ describe("[CSR] ElmSelect", () => {
     const select = rendered.getByTestId("select");
 
     fireEvent.click(select);
+    flush();
     expect(select).not.toHaveClass(styles.active);
 
     setDisabled(false);
     setLoading(true);
+    flush();
     fireEvent.click(select);
+    flush();
     expect(select).not.toHaveClass(styles.active);
 
     setLoading(false);
+    flush();
     fireEvent.click(select);
+    flush();
     expect(select).toHaveClass(styles.active);
   });
 
@@ -141,6 +152,7 @@ describe("[CSR] ElmSelect", () => {
 
     fireEvent.click(select);
     fireEvent.click(rendered.getByTestId("outside"));
+    flush();
     expect(select).not.toHaveClass(styles.active);
 
     rendered.unmount();

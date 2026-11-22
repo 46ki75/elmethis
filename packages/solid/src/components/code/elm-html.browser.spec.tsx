@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { describe, expect, it, vi } from "vitest";
 
 import { ElmHtml } from "./elm-html";
@@ -38,6 +38,7 @@ describe("[Browser] ElmHtml auto-height", () => {
 
     await waitForTallFrame(rendered.container);
     setHtml(GROWING_HTML);
+    flush();
     await waitForTallFrame(rendered.container);
     expect(
       parseInt(iframeOf(rendered.container).style.height, 10),
@@ -131,11 +132,13 @@ describe("[Browser] ElmHtml iframe ownership and cleanup", () => {
       const firstFrame = iframeOf(rendered.container);
 
       setAutoHeight(false);
+      flush();
       const fixedFrame = iframeOf(rendered.container);
       expect(fixedFrame).not.toBe(firstFrame);
       expect(instances.every((observer) => observer.disconnected)).toBe(true);
 
       setAutoHeight(true);
+      flush();
       const secondFrame = iframeOf(rendered.container);
       expect(secondFrame).not.toBe(fixedFrame);
       await waitForTallFrame(rendered.container);
@@ -244,6 +247,7 @@ describe("[Browser] ElmHtml iframe ownership and cleanup", () => {
     ));
 
     setAutoHeight(false);
+    flush();
     expect(
       remove.mock.calls.some(([eventName]) => eventName === "message"),
     ).toBe(true);

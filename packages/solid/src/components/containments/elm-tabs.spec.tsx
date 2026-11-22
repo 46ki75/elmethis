@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { describe, expect, it, vi } from "vitest";
 
 import styles from "./elm-tabs.module.css";
@@ -37,6 +37,7 @@ describe("[CSR] ElmTabs", () => {
     expect(rendered.getByText("Tab 1")).not.toHaveClass(styles.active);
 
     fireEvent.click(rendered.getByText("Tab 2"));
+    flush();
 
     expect(rendered.getByText("Tab 2")).toHaveClass(styles.active);
     expect(rendered.getByText("Tab 3")).not.toHaveClass(styles.active);
@@ -57,6 +58,7 @@ describe("[CSR] ElmTabs", () => {
 
     expect(rendered.getByText("Empty")).toHaveClass(styles.active);
     fireEvent.click(rendered.getByText("Next"));
+    flush();
 
     expect(onValueChange).toHaveBeenCalledWith("next");
     expect(rendered.getByText("Empty")).toHaveClass(styles.active);
@@ -91,6 +93,7 @@ describe("[CSR] ElmTabs", () => {
 
     setValue("second");
     setLinear(false);
+    flush();
 
     expect(root).toHaveClass("eased-tabs");
     expect(root).not.toHaveClass("linear-tabs");
@@ -181,6 +184,7 @@ describe("[CSR] ElmTabs", () => {
     ));
 
     fireEvent.click(rendered.getByText("Second"));
+    flush();
 
     expect(calls).toEqual(["change", "click"]);
     expect(onClick).toHaveBeenCalledOnce();

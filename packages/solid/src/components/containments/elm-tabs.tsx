@@ -1,11 +1,5 @@
-import {
-  createContext,
-  mergeProps,
-  splitProps,
-  useContext,
-  type Accessor,
-  type JSX,
-} from "solid-js";
+import { createContext, omit, useContext, type Accessor } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { clsx } from "clsx";
 
 import { callEventHandler } from "../../primitives/call-event-handler";
@@ -45,45 +39,45 @@ export interface ElmTabsProps extends JSX.HTMLAttributes<HTMLDivElement> {
 }
 
 export const ElmTabs = (props: ElmTabsProps) => {
-  const merged = mergeProps({ transitionTimingFunction: "linear" }, props);
-  const [local, rest] = splitProps(merged, [
+  const rest = omit(
+    props,
     "class",
     "children",
     "value",
     "defaultValue",
     "onValueChange",
     "transitionTimingFunction",
-  ]);
+  );
   const [selectedValue, setSelectedValue] = createControllableSignal<string>({
-    value: () => local.value,
-    defaultValue: () => local.defaultValue ?? "",
-    onChange: (value) => local.onValueChange?.(value),
+    value: () => props.value,
+    defaultValue: () => props.defaultValue ?? "",
+    onChange: (value) => props.onValueChange?.(value),
   });
   const context: ElmTabsContextValue = {
     selectedValue,
     setSelectedValue: (value) => {
       setSelectedValue(value);
     },
-    transitionTimingFunction: () => local.transitionTimingFunction,
+    transitionTimingFunction: () => props.transitionTimingFunction ?? "linear",
   };
 
   return (
-    <ElmTabsContext.Provider value={context}>
-      <div {...rest} class={clsx(styles["elm-tabs"], local.class)}>
-        {local.children}
+    <ElmTabsContext value={context}>
+      <div {...rest} class={clsx(styles["elm-tabs"], props.class)}>
+        {props.children}
       </div>
-    </ElmTabsContext.Provider>
+    </ElmTabsContext>
   );
 };
 
 export type ElmTabListProps = JSX.HTMLAttributes<HTMLDivElement>;
 
 export const ElmTabList = (props: ElmTabListProps) => {
-  const [local, rest] = splitProps(props, ["class", "children"]);
+  const rest = omit(props, "class", "children");
 
   return (
-    <div {...rest} class={clsx(styles["tab-container"], local.class)}>
-      {local.children}
+    <div {...rest} class={clsx(styles["tab-container"], props.class)}>
+      {props.children}
     </div>
   );
 };
@@ -95,15 +89,10 @@ export interface ElmTabProps extends JSX.HTMLAttributes<HTMLDivElement> {
 
 export const ElmTab = (props: ElmTabProps) => {
   const context = useElmTabsContext();
-  const [local, rest] = splitProps(props, [
-    "class",
-    "children",
-    "value",
-    "onClick",
-  ]);
+  const rest = omit(props, "class", "children", "value", "onClick");
   const handleClick: JSX.EventHandler<HTMLDivElement, MouseEvent> = (event) => {
-    context.setSelectedValue(local.value);
-    callEventHandler(local.onClick, event);
+    context.setSelectedValue(props.value);
+    callEventHandler(props.onClick, event);
   };
 
   return (
@@ -111,12 +100,12 @@ export const ElmTab = (props: ElmTabProps) => {
       {...rest}
       class={clsx(
         styles.tab,
-        context.selectedValue() === local.value && styles.active,
-        local.class,
+        context.selectedValue() === props.value && styles.active,
+        props.class,
       )}
       onClick={handleClick}
     >
-      {local.children}
+      {props.children}
     </div>
   );
 };
@@ -128,16 +117,16 @@ export interface ElmTabPanelProps extends JSX.HTMLAttributes<HTMLDivElement> {
 
 export const ElmTabPanel = (props: ElmTabPanelProps) => {
   const context = useElmTabsContext();
-  const [local, rest] = splitProps(props, ["class", "children", "value"]);
+  const rest = omit(props, "class", "children", "value");
 
   return (
-    <div {...rest} class={clsx(styles["tab-content"], local.class)}>
+    <div {...rest} class={clsx(styles["tab-content"], props.class)}>
       <ElmCollapse
         direction="row"
-        isOpen={context.selectedValue() === local.value}
+        isOpen={context.selectedValue() === props.value}
         transitionTimingFunction={context.transitionTimingFunction()}
       >
-        <div class={styles["tab-content-inner"]}>{local.children}</div>
+        <div class={styles["tab-content-inner"]}>{props.children}</div>
       </ElmCollapse>
     </div>
   );

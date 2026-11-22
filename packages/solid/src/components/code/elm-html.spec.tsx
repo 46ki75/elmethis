@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { flush, createSignal } from "solid-js";
 import { describe, expect, it, vi } from "vitest";
 
 import { ElmHtml, type ElmHtmlProps } from "./elm-html";
@@ -203,15 +203,18 @@ describe("[CSR] ElmHtml reactivity and lifecycle ownership", () => {
     const iframe = iframeOf(container);
 
     setHtml("<p>second</p>");
+    flush();
     expect(iframe).toHaveAttribute("srcdoc", "<p>second</p>");
     expect(iframe).not.toHaveAttribute("src");
 
     setSrc(REMOTE_SRC);
+    flush();
     expect(iframeOf(container)).toBe(iframe);
     expect(iframe).toHaveAttribute("src", REMOTE_SRC);
     expect(iframe).not.toHaveAttribute("srcdoc");
 
     setSrc(undefined);
+    flush();
     expect(iframe).not.toHaveAttribute("src");
     expect(iframe).toHaveAttribute("srcdoc", "<p>second</p>");
   });
@@ -224,6 +227,7 @@ describe("[CSR] ElmHtml reactivity and lifecycle ownership", () => {
     const fixedFrame = iframeOf(container);
 
     setAutoHeight(true);
+    flush();
     const automaticFrame = iframeOf(container);
     expect(automaticFrame).not.toBe(fixedFrame);
     expect(automaticFrame.getAttribute("sandbox")).toContain(
@@ -231,6 +235,7 @@ describe("[CSR] ElmHtml reactivity and lifecycle ownership", () => {
     );
 
     setAutoHeight(false);
+    flush();
     expect(iframeOf(container)).not.toBe(automaticFrame);
   });
 
@@ -246,6 +251,7 @@ describe("[CSR] ElmHtml reactivity and lifecycle ownership", () => {
     expect(firstListener).toBeTypeOf("function");
 
     setHtml("<p>second</p>");
+    flush();
     expect(remove).toHaveBeenCalledWith("message", firstListener);
 
     const currentListener = add.mock.calls

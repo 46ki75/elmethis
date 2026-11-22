@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { describe, expect, it, vi } from "vitest";
 
 import { ElmSwitch } from "./elm-switch";
@@ -79,6 +79,7 @@ describe("[CSR] ElmSwitch", () => {
 
     expect(input).not.toBeChecked();
     fireEvent.click(switchRoot);
+    flush();
     expect(rendered.getByTestId("state")).toHaveTextContent("true");
     expect(input).toBeChecked();
     expect(switchRoot.querySelector(`.${styles.bar}`)).toHaveClass(
@@ -93,6 +94,7 @@ describe("[CSR] ElmSwitch", () => {
     const switchRoot = rendered.getByTestId("switch");
 
     fireEvent.click(switchRoot);
+    flush();
     expect(switchRoot.querySelector("input")).not.toBeChecked();
   });
 
@@ -109,6 +111,7 @@ describe("[CSR] ElmSwitch", () => {
     ));
 
     fireEvent.click(rendered.getByTestId("switch"));
+    flush();
     expect(onClick).toHaveBeenCalledOnce();
     expect(onCheckedChange).not.toHaveBeenCalled();
   });
@@ -131,6 +134,7 @@ describe("[CSR] ElmSwitch", () => {
 
     setChecked(true);
     setDisabled(true);
+    flush();
 
     expect(switchRoot).toHaveClass("on");
     expect(switchRoot).not.toHaveClass("off");
@@ -159,6 +163,7 @@ describe("[CSR] ElmSwitch", () => {
     ));
 
     fireEvent.click(rendered.getByTestId("switch"));
+    flush();
     expect(onCheckedChange).not.toHaveBeenCalled();
   });
 });

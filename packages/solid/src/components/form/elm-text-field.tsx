@@ -1,4 +1,5 @@
-import { createSignal, Show, splitProps, untrack, type JSX } from "solid-js";
+import { createSignal, Show, omit, untrack } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { clsx } from "clsx";
 import {
   mdiEyeOffOutline,
@@ -13,7 +14,7 @@ import styles from "./elm-text-field.module.css";
 
 export interface ElmTextFieldProps extends Omit<
   JSX.InputHTMLAttributes<HTMLInputElement>,
-  "prefix" | "value"
+  "prefix" | "value" | "defaultValue"
 > {
   label: string;
   maxLength?: number;
@@ -33,13 +34,15 @@ export interface ElmTextFieldProps extends Omit<
 }
 
 export const ElmTextField = (props: ElmTextFieldProps) => {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     "ref",
     "class",
     "style",
     "children",
     "label",
     "maxLength",
+    "maxlength",
     "prefix",
     "suffix",
     "placeholder",
@@ -54,10 +57,10 @@ export const ElmTextField = (props: ElmTextFieldProps) => {
     "onChange",
     "onFocus",
     "onBlur",
-  ]);
+  );
   const [isFocused, setIsFocused] = createSignal(false);
   const [inputType, setInputType] = createSignal(
-    untrack(() => (local.isPassword ? "password" : "text")),
+    untrack(() => (props.isPassword ? "password" : "text")),
   );
   let input!: HTMLInputElement;
 
@@ -81,39 +84,39 @@ export const ElmTextField = (props: ElmTextFieldProps) => {
   const handleInput: JSX.InputEventHandler<HTMLInputElement, InputEvent> = (
     event,
   ) => {
-    if (typeof local.onInput === "function") {
-      local.onInput(event);
-    } else if (local.onInput) {
-      local.onInput[0](local.onInput[1], event);
+    if (typeof props.onInput === "function") {
+      props.onInput(event);
+    } else if (props.onInput) {
+      props.onInput[0](props.onInput[1], event);
     }
   };
   const handleChange: JSX.ChangeEventHandler<HTMLInputElement, Event> = (
     event,
   ) => {
-    if (typeof local.onChange === "function") {
-      local.onChange(event);
-    } else if (local.onChange) {
-      local.onChange[0](local.onChange[1], event);
+    if (typeof props.onChange === "function") {
+      props.onChange(event);
+    } else if (props.onChange) {
+      props.onChange[0](props.onChange[1], event);
     }
   };
   const handleFocus: JSX.FocusEventHandler<HTMLInputElement, FocusEvent> = (
     event,
   ) => {
     setIsFocused(true);
-    if (typeof local.onFocus === "function") {
-      local.onFocus(event);
-    } else if (local.onFocus) {
-      local.onFocus[0](local.onFocus[1], event);
+    if (typeof props.onFocus === "function") {
+      props.onFocus(event);
+    } else if (props.onFocus) {
+      props.onFocus[0](props.onFocus[1], event);
     }
   };
   const handleBlur: JSX.FocusEventHandler<HTMLInputElement, FocusEvent> = (
     event,
   ) => {
     setIsFocused(false);
-    if (typeof local.onBlur === "function") {
-      local.onBlur(event);
-    } else if (local.onBlur) {
-      local.onBlur[0](local.onBlur[1], event);
+    if (typeof props.onBlur === "function") {
+      props.onBlur(event);
+    } else if (props.onBlur) {
+      props.onBlur[0](props.onBlur[1], event);
     }
   };
 
@@ -122,79 +125,85 @@ export const ElmTextField = (props: ElmTextFieldProps) => {
       class={clsx(
         styles["elm-text-field"],
         isFocused() && styles.active,
-        (local.disabled || local.isLoading) && styles.disabled,
-        local.class,
+        (props.disabled || props.isLoading) && styles.disabled,
+        props.class,
       )}
-      style={local.style}
+      style={props.style}
     >
       <span class={clsx(styles.header, isFocused() && styles["label-active"])}>
-        {local.icon ?? <ElmMdiIcon path={mdiText} size="0.75rem" />}
+        {props.icon ?? <ElmMdiIcon path={mdiText} size="0.75rem" />}
         <span>
-          {local.label}
-          <Show when={local.required}>
+          {props.label}
+          <Show when={props.required}>
             <span class={styles.requierd}>*</span>
           </Show>
         </span>
-        <Show when={local.value != null}>
+        <Show when={props.value != null}>
           <ElmInlineText
             color={
-              local.maxLength != null &&
-              String(local.value).length > local.maxLength
+              props.maxLength != null &&
+              String(props.value).length > props.maxLength
                 ? "var(--elmethis-color-accent-error)"
                 : "gray"
             }
             size="0.75rem"
           >
-            {local.maxLength != null
-              ? `${String(local.value).length} / ${local.maxLength}`
-              : String(String(local.value).length)}
+            {props.maxLength != null
+              ? `${String(props.value).length} / ${props.maxLength}`
+              : String(String(props.value).length)}
           </ElmInlineText>
         </Show>
       </span>
 
       <div class={styles.body}>
-        <Show when={local.prefix} keyed>
+        <Show when={props.prefix} keyed>
           {(prefix) => <span class={styles["prefix-suffix"]}>{prefix}</span>}
         </Show>
         <input
           {...rest}
-          ref={(element) => {
-            input = element;
-            if (typeof local.ref === "function") {
-              local.ref(element);
-            }
-          }}
+          ref={[
+            (element) => {
+              input = element;
+            },
+            props.ref,
+          ]}
           value={
-            (local.value ?? local.defaultValue) as
+            (props.value ?? props.defaultValue) as
               | string
               | number
               | string[]
               | undefined
           }
           type={inputType()}
-          maxLength={local.maxLength}
+          maxlength={props.maxLength ?? props.maxlength}
           class={styles.input}
-          placeholder={local.placeholder}
+          placeholder={props.placeholder}
           onInput={handleInput}
           onChange={handleChange}
           onFocus={handleFocus}
           onBlur={handleBlur}
-          disabled={local.disabled || local.isLoading}
-          required={local.required}
+          disabled={props.disabled || props.isLoading}
+          required={props.required}
           style={{
-            cursor: local.disabled
+            cursor: props.disabled
               ? "not-allowed"
-              : local.isLoading
+              : props.isLoading
                 ? "progress"
                 : "auto",
           }}
-          aria-required={local.required}
+          aria-required={
+            props.required === undefined
+              ? undefined
+              : props.required
+                ? "true"
+                : "false"
+          }
         />
 
         <div class={styles["right-icon-box"]}>
           <span class={styles["prefix-suffix"]}>
-            <Show when={local.suffix != null}>
-              <ElmInlineText>{local.suffix}</ElmInlineText>
+            <Show when={props.suffix != null}>
+              <ElmInlineText>{props.suffix}</ElmInlineText>
             </Show>
           </span>
 
@@ -204,7 +213,7 @@ export const ElmTextField = (props: ElmTextFieldProps) => {
             aria-label={
               inputType() === "text" ? "Hide password" : "Show password"
             }
-            disabled={local.disabled || local.isLoading}
+            disabled={props.disabled || props.isLoading}
             onClick={() =>
               setInputType((previous) =>
                 previous === "text" ? "password" : "text",
@@ -222,7 +231,7 @@ export const ElmTextField = (props: ElmTextFieldProps) => {
             type="button"
             class={styles["clickable-icon"]}
             aria-label="Clear text"
-            disabled={local.disabled || local.isLoading}
+            disabled={props.disabled || props.isLoading}
             onClick={() => setNativeValue("")}
           >
             <ElmMdiIcon path={mdiTrashCanOutline} size="1.25rem" color="gray" />
@@ -232,7 +241,7 @@ export const ElmTextField = (props: ElmTextFieldProps) => {
 
       <div
         class={styles.loading}
-        style={{ opacity: local.isLoading ? 1 : 0 }}
+        style={{ opacity: props.isLoading ? 1 : 0 }}
       />
     </label>
   );

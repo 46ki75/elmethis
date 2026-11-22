@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { flush, createSignal } from "solid-js";
 import { describe, expect, it } from "vitest";
 
 import { ElmDivider } from "./elm-divider";
@@ -23,6 +23,7 @@ describe("[CSR] ElmDivider", () => {
     expect(divider).toHaveClass("custom-divider");
 
     setClassName("updated-divider");
+    flush();
 
     expect(divider).not.toHaveClass("custom-divider");
     expect(divider).toHaveClass("updated-divider");

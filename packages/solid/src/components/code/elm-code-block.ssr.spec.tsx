@@ -1,4 +1,4 @@
-import { renderToString } from "solid-js/web";
+import { renderToString } from "@solidjs/web";
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("./elm-shiki-highlighter", () => ({

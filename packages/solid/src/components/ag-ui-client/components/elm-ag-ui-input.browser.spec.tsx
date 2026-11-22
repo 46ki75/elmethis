@@ -1,4 +1,5 @@
 import { render } from "@solidjs/testing-library";
+import { flush } from "solid-js";
 import { describe, expect, it } from "vitest";
 
 import { ElmAgUiInput } from "./elm-ag-ui-input";
@@ -33,6 +34,7 @@ describe("[Browser] ElmAgUiInput", () => {
     expect(picker?.getBoundingClientRect().height).toBe(0);
 
     rendered.getByRole("button", { name: "Open prompts" }).click();
+    flush();
 
     expect(picker?.getBoundingClientRect().height).toBeGreaterThan(0);
   });

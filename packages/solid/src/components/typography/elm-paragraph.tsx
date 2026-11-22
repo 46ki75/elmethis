@@ -1,4 +1,5 @@
-import { splitProps, type JSX } from "solid-js";
+import { type JSX } from "@solidjs/web";
+import { omit } from "solid-js";
 import { clsx } from "clsx";
 
 import styles from "./elm-paragraph.module.css";
@@ -11,24 +12,25 @@ export interface ElmParagraphProps extends JSX.HTMLAttributes<HTMLParagraphEleme
 }
 
 export const ElmParagraph = (props: ElmParagraphProps) => {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     "class",
     "style",
     "children",
     "color",
     "backgroundColor",
-  ]);
+  );
 
   return (
     <p
       {...rest}
-      class={clsx(styles["elm-paragraph"], textStyles.text, local.class)}
-      style={mergeStyle(local.style, {
-        "--elmethis-scoped-color": local.color,
-        "--elmethis-scoped-background-color": local.backgroundColor,
+      class={clsx(styles["elm-paragraph"], textStyles.text, props.class)}
+      style={mergeStyle(props.style, {
+        "--elmethis-scoped-color": props.color,
+        "--elmethis-scoped-background-color": props.backgroundColor,
       })}
     >
-      {local.children}
+      {props.children}
     </p>
   );
 };

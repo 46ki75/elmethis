@@ -1,4 +1,4 @@
-import { renderToStringAsync } from "solid-js/web";
+import { renderToStream } from "@solidjs/web";
 import { describe, expect, it, vi } from "vitest";
 
 const shiki = vi.hoisted(() => ({
@@ -25,7 +25,7 @@ describe("[SSR] ElmShikiHighlighter", () => {
       '<pre class="shiki"><code><span style="--shiki-light:#111;--shiki-dark:#eee">server</span></code></pre>',
     );
 
-    const html = await renderToStringAsync(() => (
+    const html = await renderToStream(() => (
       <ElmShikiHighlighter
         code={'let server = "<safe> & readable";'}
         language="rust"

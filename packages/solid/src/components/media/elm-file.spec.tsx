@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { describe, expect, it } from "vitest";
 
 import { ElmFile } from "./elm-file";
@@ -30,6 +30,7 @@ describe("[CSR] ElmFile", () => {
     expect(container).toHaveTextContent("photo.png");
 
     setSrc("https://example.com/files/report.pdf#page=2");
+    flush();
 
     expect(container).not.toHaveTextContent("photo.png");
     expect(container).toHaveTextContent("report.pdf");

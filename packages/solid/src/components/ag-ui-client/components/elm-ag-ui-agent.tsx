@@ -1,11 +1,5 @@
-import {
-  createEffect,
-  createSignal,
-  For,
-  Show,
-  splitProps,
-  type JSX,
-} from "solid-js";
+import { createEffect, createSignal, For, omit, Show } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { clsx } from "clsx";
 import {
   mdiAlert,
@@ -49,8 +43,9 @@ const queuePreview = (content: InputContent[]): string => {
   return textBlock?.text ?? "Attachment";
 };
 
-export const ElmAgUiAgent = (props: ElmAgUiAgentProps) => {
-  const [local, rest] = splitProps(props, [
+export const ElmAgUiAgent = (local: ElmAgUiAgentProps) => {
+  const rest = omit(
+    local,
     "class",
     "style",
     "children",
@@ -65,25 +60,28 @@ export const ElmAgUiAgent = (props: ElmAgUiAgentProps) => {
     "enableReasoning",
     "prompts",
     "resolvePrompt",
-  ]);
+  );
   const [input, setInput] = createSignal("");
   let containerRef!: HTMLDivElement;
   let lastScrollTime = 0;
 
-  createEffect(() => {
-    if (local.state.messages.length === 0 || !local.enableAutoScroll) {
-      return;
-    }
-    const now = Date.now();
-    if (now - lastScrollTime < 500) {
-      return;
-    }
-    lastScrollTime = now;
-    containerRef?.scrollTo({
-      behavior: "smooth",
-      top: containerRef.scrollHeight,
-    });
-  });
+  createEffect(
+    () => (local.enableAutoScroll ? local.state.messages.length : 0),
+    (count) => {
+      if (count === 0) {
+        return;
+      }
+      const now = Date.now();
+      if (now - lastScrollTime < 500) {
+        return;
+      }
+      lastScrollTime = now;
+      containerRef?.scrollTo({
+        behavior: "smooth",
+        top: containerRef.scrollHeight,
+      });
+    },
+  );
 
   const submit = () => {
     if (!input().trim()) {

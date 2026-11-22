@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { flush, createSignal } from "solid-js";
 import { describe, expect, it } from "vitest";
 
 import { ElmBlockFallback } from "./elm-block-fallback";
@@ -47,6 +47,7 @@ describe("[CSR] ElmBlockFallback", () => {
     );
 
     setLarge(true);
+    flush();
     expect(fallback.style.getPropertyValue("--elmethis-scoped-height")).toBe(
       "40rem",
     );

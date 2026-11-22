@@ -1,4 +1,4 @@
-import { createSignal, onCleanup, onMount, type Accessor } from "solid-js";
+import { createSignal, onSettled, type Accessor } from "solid-js";
 
 const LOCAL_STORAGE_KEY = "elmethis-theme";
 const DARK_MEDIA_QUERY = "(prefers-color-scheme: dark)";
@@ -79,7 +79,7 @@ export function createElmethisTheme(): ElmethisThemeController {
     applyTheme(next, true);
   };
 
-  onMount(() => {
+  onSettled(() => {
     if (typeof window.matchMedia === "function") {
       mediaQuery = window.matchMedia(DARK_MEDIA_QUERY);
     }
@@ -116,12 +116,12 @@ export function createElmethisTheme(): ElmethisThemeController {
       applyTheme(storedTheme, false);
     }
 
-    onCleanup(() => {
+    return () => {
       window.removeEventListener(THEME_CHANGE_EVENT, onThemeChange);
       window.removeEventListener("storage", onStorage);
       mediaQuery?.removeEventListener("change", onPreferenceChange);
       mediaQuery = undefined;
-    });
+    };
   });
 
   return { isDarkTheme, toggleTheme };

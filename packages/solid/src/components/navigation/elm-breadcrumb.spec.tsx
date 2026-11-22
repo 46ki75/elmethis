@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { describe, expect, it, vi } from "vitest";
 
 import { ElmBreadcrumb, type ElmBreadcrumbProps } from "./elm-breadcrumb";
@@ -58,6 +58,7 @@ describe("[CSR] ElmBreadcrumb", () => {
     expect(docsCurrentTarget).toBe(initialItems[1]);
 
     setLinks([docs, home]);
+    flush();
 
     const reorderedItems = Array.from(
       container.querySelectorAll<HTMLElement>('[class*="link-container"]'),

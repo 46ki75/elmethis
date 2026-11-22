@@ -1,6 +1,6 @@
 /// <reference types="vitest/config" />
+import solid from "@solidjs/vite-plugin";
 import { defineConfig } from "vite";
-import solid from "vite-plugin-solid";
 
 import pkg from "./package.json" with { type: "json" };
 

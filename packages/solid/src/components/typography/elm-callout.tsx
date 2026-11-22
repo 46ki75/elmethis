@@ -1,4 +1,5 @@
-import { mergeProps, splitProps, type JSX } from "solid-js";
+import { type JSX } from "@solidjs/web";
+import { omit } from "solid-js";
 import { clsx } from "clsx";
 
 import styles from "./elm-callout.module.css";
@@ -22,24 +23,27 @@ export interface ElmCalloutProps extends JSX.HTMLAttributes<HTMLElement> {
 }
 
 export const ElmCallout = (props: ElmCalloutProps) => {
-  const merged = mergeProps({ type: "note" as const }, props);
-  const [local, rest] = splitProps(merged, ["class", "children", "type"]);
+  const rest = omit(props, "class", "children", "type");
 
   return (
     <aside
       {...rest}
-      class={clsx(styles["elm-callout"], styles[local.type], local.class)}
+      class={clsx(
+        styles["elm-callout"],
+        styles[props.type ?? "note"],
+        props.class,
+      )}
     >
       <div class={styles.header}>
         <ElmMdiIcon
           class={styles.icon}
-          path={ICON_MAP[local.type]}
+          path={ICON_MAP[props.type ?? "note"]}
           size="1.25rem"
         />
-        <span>{local.type}</span>
+        <span>{props.type ?? "note"}</span>
       </div>
 
-      <div class={styles.content}>{local.children}</div>
+      <div class={styles.content}>{props.children}</div>
     </aside>
   );
 };

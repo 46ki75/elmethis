@@ -1,5 +1,5 @@
 import { mdiClipboardOutline } from "@mdi/js";
-import { renderToString } from "solid-js/web";
+import { renderToString } from "@solidjs/web";
 import { describe, expect, it } from "vitest";
 
 import { ElmCopyIcon } from "./elm-copy-icon";

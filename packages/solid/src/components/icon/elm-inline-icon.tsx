@@ -1,4 +1,5 @@
-import { mergeProps, splitProps, type JSX } from "solid-js";
+import { type JSX } from "@solidjs/web";
+import { omit } from "solid-js";
 import { clsx } from "clsx";
 
 import styles from "./elm-inline-icon.module.css";
@@ -16,8 +17,8 @@ export interface ElmInlineIconProps extends JSX.HTMLAttributes<HTMLSpanElement> 
 }
 
 export const ElmInlineIcon = (props: ElmInlineIconProps) => {
-  const merged = mergeProps({ size: 16 }, props);
-  const [local, rest] = splitProps(merged, [
+  const rest = omit(
+    props,
     "class",
     "children",
     "src",
@@ -25,16 +26,16 @@ export const ElmInlineIcon = (props: ElmInlineIconProps) => {
     "width",
     "height",
     "size",
-  ]);
+  );
 
   return (
-    <span {...rest} class={clsx(styles["elm-inline-icon"], local.class)}>
+    <span {...rest} class={clsx(styles["elm-inline-icon"], props.class)}>
       <img
-        src={local.src}
-        alt={local.alt}
+        src={props.src}
+        alt={props.alt}
         class={styles["elm-inline-icon"]}
-        width={local.width ?? local.size}
-        height={local.height ?? local.size}
+        width={props.width ?? props.size ?? 16}
+        height={props.height ?? props.size ?? 16}
       />
     </span>
   );

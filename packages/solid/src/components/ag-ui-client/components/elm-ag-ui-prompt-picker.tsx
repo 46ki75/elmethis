@@ -1,14 +1,12 @@
-/* oxlint-disable solid/reactivity -- createMutable is intentionally mutated in place. */
 import {
   createEffect,
+  createStore,
   For,
-  onCleanup,
+  omit,
   Show,
-  splitProps,
   type Accessor,
-  type JSX,
 } from "solid-js";
-import { createMutable } from "solid-js/store";
+import type { JSX } from "@solidjs/web";
 import { clsx } from "clsx";
 
 import { createModal } from "../../../primitives/create-modal";
@@ -46,8 +44,9 @@ interface ActivePrompt {
   error: string | null;
 }
 
-export const ElmAgUiPromptPicker = (props: ElmAgUiPromptPickerProps) => {
-  const [local, rest] = splitProps(props, [
+export const ElmAgUiPromptPicker = (local: ElmAgUiPromptPickerProps) => {
+  const rest = omit(
+    local,
     "class",
     "children",
     "prompts",
@@ -55,9 +54,9 @@ export const ElmAgUiPromptPicker = (props: ElmAgUiPromptPickerProps) => {
     "activeIndex",
     "triggerDescriptor",
     "clearTriggerDescriptor",
-  ]);
+  );
   const { Modal, show, hide } = createModal();
-  const active = createMutable<ActivePrompt>({
+  const [active, setActive] = createStore<ActivePrompt>({
     descriptor: null,
     values: {},
     submitting: false,
@@ -65,13 +64,16 @@ export const ElmAgUiPromptPicker = (props: ElmAgUiPromptPickerProps) => {
   });
   let firstField: HTMLInputElement | HTMLSelectElement | undefined;
 
-  createEffect(() => {
-    if (!active.descriptor) {
-      return;
-    }
-    const frame = requestAnimationFrame(() => firstField?.focus());
-    onCleanup(() => cancelAnimationFrame(frame));
-  });
+  createEffect(
+    () => active.descriptor,
+    (descriptor) => {
+      if (!descriptor) {
+        return undefined;
+      }
+      const frame = requestAnimationFrame(() => firstField?.focus());
+      return () => cancelAnimationFrame(frame);
+    },
+  );
 
   const selectPrompt = async (descriptor: ElmAgUiPromptDescriptor) => {
     const args = descriptor.arguments ?? [];
@@ -79,30 +81,44 @@ export const ElmAgUiPromptPicker = (props: ElmAgUiPromptPickerProps) => {
       await local.onPick(descriptor.key, {});
       return;
     }
-    active.values = Object.fromEntries(
-      args.map((argument) => [
-        argument.name,
-        argument.default ?? argument.enum?.[0] ?? "",
-      ]),
-    );
-    active.descriptor = descriptor;
-    active.submitting = false;
-    active.error = null;
+    setActive(() => ({
+      descriptor,
+      values: Object.fromEntries(
+        args.map((argument) => [
+          argument.name,
+          argument.default ?? argument.enum?.[0] ?? "",
+        ]),
+      ),
+      submitting: false,
+      error: null,
+    }));
     show();
   };
 
-  createEffect(() => {
-    const descriptor = local.triggerDescriptor?.();
-    if (!descriptor) {
-      return;
-    }
-    local.clearTriggerDescriptor?.();
-    void selectPrompt(descriptor);
-  });
+  createEffect(
+    () => local.triggerDescriptor?.(),
+    (descriptor) => {
+      if (descriptor) {
+        local.clearTriggerDescriptor?.();
+        void selectPrompt(descriptor);
+      }
+    },
+  );
+
+  const setError = (error: string | null) => {
+    setActive((draft) => {
+      draft.error = error;
+    });
+  };
+  const setValue = (key: string, value: string) => {
+    setActive((draft) => {
+      draft.values[key] = value;
+    });
+  };
 
   const cancel = () => {
     hide();
-    active.error = null;
+    setError(null);
   };
 
   const submit = async () => {
@@ -113,7 +129,7 @@ export const ElmAgUiPromptPicker = (props: ElmAgUiPromptPickerProps) => {
     const args = descriptor.arguments ?? [];
     for (const argument of args) {
       if (argument.required && !(active.values[argument.name] ?? "").trim()) {
-        active.error = `"${argument.name}" is required.`;
+        setError(`"${argument.name}" is required.`);
         return;
       }
     }
@@ -136,25 +152,28 @@ export const ElmAgUiPromptPicker = (props: ElmAgUiPromptPickerProps) => {
       try {
         expression = new RegExp(source);
       } catch {
-        active.error = `"${argument.name}" has an invalid pattern definition.`;
+        setError(`"${argument.name}" has an invalid pattern definition.`);
         return;
       }
       if (!expression.test(payload[argument.name])) {
-        active.error =
-          argument.patternMessage ?? `"${argument.name}" is invalid.`;
+        setError(argument.patternMessage ?? `"${argument.name}" is invalid.`);
         return;
       }
     }
 
-    active.error = null;
-    active.submitting = true;
+    setActive((draft) => {
+      draft.error = null;
+      draft.submitting = true;
+    });
     try {
       await local.onPick(descriptor.key, payload);
       hide();
     } catch (error) {
-      active.error = error instanceof Error ? error.message : String(error);
+      setError(error instanceof Error ? error.message : String(error));
     } finally {
-      active.submitting = false;
+      setActive((draft) => {
+        draft.submitting = false;
+      });
     }
   };
 
@@ -229,15 +248,19 @@ export const ElmAgUiPromptPicker = (props: ElmAgUiPromptPickerProps) => {
                               type="text"
                               placeholder={argument.description}
                               value={active.values[argument.name] ?? ""}
-                              aria-required={argument.required}
+                              aria-required={
+                                argument.required ? "true" : undefined
+                              }
                               pattern={argument.pattern}
                               title={
                                 argument.patternMessage ?? argument.description
                               }
-                              onInput={(event) => {
-                                active.values[argument.name] =
-                                  event.currentTarget.value;
-                              }}
+                              onInput={(event) =>
+                                setValue(
+                                  argument.name,
+                                  event.currentTarget.value,
+                                )
+                              }
                             />
                           }
                         >
@@ -249,11 +272,12 @@ export const ElmAgUiPromptPicker = (props: ElmAgUiPromptPickerProps) => {
                             }}
                             class={styles["field-input"]}
                             value={active.values[argument.name] ?? ""}
-                            aria-required={argument.required}
-                            onChange={(event) => {
-                              active.values[argument.name] =
-                                event.currentTarget.value;
-                            }}
+                            aria-required={
+                              argument.required ? "true" : undefined
+                            }
+                            onChange={(event) =>
+                              setValue(argument.name, event.currentTarget.value)
+                            }
                           >
                             <Show when={!argument.required}>
                               <option value="">(none)</option>

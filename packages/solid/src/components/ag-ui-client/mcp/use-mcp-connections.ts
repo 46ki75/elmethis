@@ -1,6 +1,4 @@
-/* oxlint-disable solid/reactivity -- createMutable status entries update in place. */
-import { onCleanup, onMount } from "solid-js";
-import { createMutable } from "solid-js/store";
+import { createStore, onSettled } from "solid-js";
 
 import { createMcpClient } from "./create-mcp-client";
 import type {
@@ -29,8 +27,8 @@ export function useMcpConnections(
   options: UseMcpConnectionsOptions,
 ): UseMcpConnectionsReturn {
   const servers = [...options.servers];
-  const status = createMutable<Record<string, McpServerStatus>>(
-    Object.fromEntries(
+  const [status, setStatus] = createStore<Record<string, McpServerStatus>>(
+    Object.fromEntries<McpServerStatus>(
       servers.map((server) => [server.id, { state: "connecting" }]),
     ),
   );
@@ -51,7 +49,9 @@ export function useMcpConnections(
   };
 
   const open = async (config: McpServerConfig) => {
-    status[config.id] = { state: "connecting" };
+    setStatus((draft) => {
+      draft[config.id] = { state: "connecting" };
+    });
     try {
       const handle = await (options.clientFactory ?? createMcpClient)(config);
       if (!mounted) {
@@ -61,14 +61,18 @@ export function useMcpConnections(
       handles.set(config.id, handle);
       const count = await options.onConnect(config, handle);
       if (mounted) {
-        status[config.id] = { state: "ready", toolCount: count };
+        setStatus((draft) => {
+          draft[config.id] = { state: "ready", toolCount: count };
+        });
       }
     } catch (error) {
       if (mounted) {
-        status[config.id] = {
-          state: "error",
-          error: error instanceof Error ? error.message : String(error),
-        };
+        setStatus((draft) => {
+          draft[config.id] = {
+            state: "error",
+            error: error instanceof Error ? error.message : String(error),
+          };
+        });
       }
     }
   };
@@ -88,16 +92,16 @@ export function useMcpConnections(
     );
   };
 
-  onMount(() => {
+  onSettled(() => {
     mounted = true;
     void Promise.allSettled(servers.map(open));
-  });
-  onCleanup(() => {
-    mounted = false;
-    for (const handle of handles.values()) {
-      void handle.close().catch(() => undefined);
-    }
-    handles.clear();
+    return () => {
+      mounted = false;
+      for (const handle of handles.values()) {
+        void handle.close().catch(() => undefined);
+      }
+      handles.clear();
+    };
   });
 
   return {

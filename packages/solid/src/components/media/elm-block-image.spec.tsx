@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { describe, expect, it, vi } from "vitest";
 
 import { ElmBlockImage } from "./elm-block-image";
@@ -35,6 +35,7 @@ describe("[CSR] ElmBlockImage", () => {
     expect(figure.querySelector('[class*="fallback"]')).toBeNull();
 
     fireEvent.click(image);
+    flush();
     expect(onClick).toHaveBeenCalledOnce();
   });
 
@@ -88,6 +89,7 @@ describe("[CSR] ElmBlockImage", () => {
 
     setSrc("second.png");
     setCaption("Second caption");
+    flush();
 
     const image = rendered.container.querySelector("img")!;
     expect(image).toHaveAttribute("src", "second.png");
@@ -103,6 +105,7 @@ describe("[CSR] ElmBlockImage", () => {
     const image = rendered.container.querySelector("img")!;
 
     fireEvent.click(image);
+    flush();
 
     expect(rendered.container.querySelectorAll("img")).toHaveLength(1);
     expect(image.style.getPropertyValue("--elmethis-scoped-cursor")).toBe(

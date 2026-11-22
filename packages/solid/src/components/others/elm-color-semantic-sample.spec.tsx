@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { flush, createSignal } from "solid-js";
 import { describe, expect, it, vi } from "vitest";
 
 import { ElmColorSemanticSample } from "./elm-color-semantic-sample";
@@ -51,9 +51,11 @@ describe("[CSR] ElmColorSemanticSample", () => {
     expect(sample.style.width).toBe("15rem");
 
     fireEvent.click(sample);
+    flush();
     expect(onClick).toHaveBeenCalledOnce();
 
     setDecorated(true);
+    flush();
     expect(sample).toHaveClass("after");
     expect(sample).not.toHaveClass("before");
     expect(sample.style.width).toBe("30rem");
@@ -64,8 +66,10 @@ describe("[CSR] ElmColorSemanticSample", () => {
     const toggle = rendered.getByRole("button");
 
     fireEvent.click(toggle);
+    flush();
     expect(toggle).toHaveTextContent("Copy: hex value");
     fireEvent.click(toggle);
+    flush();
     expect(toggle).toHaveTextContent("Copy: variable name");
   });
 });

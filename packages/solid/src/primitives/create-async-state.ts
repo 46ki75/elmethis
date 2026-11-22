@@ -1,4 +1,6 @@
-import { createSignal, onCleanup, onMount, type Accessor } from "solid-js";
+import { createSignal, onCleanup, onSettled, type Accessor } from "solid-js";
+
+import { createValueSignal } from "./create-value-signal";
 
 export interface CreateAsyncStateOptions<Data = unknown> {
   /** Delay for the automatic client-side execution. @default 0 */
@@ -29,7 +31,7 @@ export function createAsyncState<Data>(
   initialState: Data,
   options: CreateAsyncStateOptions<Data> = {},
 ): CreateAsyncStateReturn<Data> {
-  const [state, setState] = createSignal(initialState, { equals: Object.is });
+  const [state, setState] = createValueSignal(initialState);
   const [isReady, setIsReady] = createSignal(false);
   const [isLoading, setIsLoading] = createSignal(false);
   const [error, setError] = createSignal<unknown>(undefined, {
@@ -83,7 +85,7 @@ export function createAsyncState<Data>(
         return undefined;
       }
 
-      setError(caughtError);
+      setError(() => caughtError);
       options.onError?.(caughtError);
       if (options.throwError ?? false) {
         throw caughtError;
@@ -96,7 +98,7 @@ export function createAsyncState<Data>(
     }
   };
 
-  onMount(() => {
+  onSettled(() => {
     if (options.immediate ?? true) {
       void execute(options.delay ?? 0).catch(() => undefined);
     }

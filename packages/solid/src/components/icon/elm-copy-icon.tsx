@@ -1,4 +1,5 @@
-import { splitProps, type JSX } from "solid-js";
+import { type JSX } from "@solidjs/web";
+import { omit } from "solid-js";
 import { mdiClipboardCheckOutline, mdiClipboardOutline } from "@mdi/js";
 import { clsx } from "clsx";
 
@@ -17,17 +18,18 @@ export interface ElmCopyIconProps extends Omit<
 }
 
 export const ElmCopyIcon = (props: ElmCopyIconProps) => {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     "class",
     "style",
     "content",
     "onClick",
     "type",
     "aria-label",
-  ]);
+  );
   const clipboard = createClipboard({
     get content() {
-      return local.content;
+      return props.content;
     },
   });
 
@@ -36,7 +38,7 @@ export const ElmCopyIcon = (props: ElmCopyIconProps) => {
   ) => {
     void clipboard.copy().catch(() => undefined);
 
-    const handler = local.onClick;
+    const handler = props.onClick;
     if (typeof handler === "function") {
       handler(event);
     } else {
@@ -46,11 +48,11 @@ export const ElmCopyIcon = (props: ElmCopyIconProps) => {
 
   return (
     <button
-      type={local.type ?? "button"}
-      class={clsx(styles["elm-copy-icon"], local.class)}
-      style={local.style}
+      type={props.type ?? "button"}
+      class={clsx(styles["elm-copy-icon"], props.class)}
+      style={props.style}
       aria-label={
-        local["aria-label"] ??
+        props["aria-label"] ??
         (clipboard.copied() ? "Copied" : "Copy to clipboard")
       }
       onClick={handleClick}

@@ -1,5 +1,5 @@
 import { fireEvent, render, waitFor } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
@@ -113,6 +113,7 @@ describe("[CSR] ElmA2ui", () => {
         updateDataModel: { surfaceId: "s", path: "/text", value: "updated" },
       },
     ]);
+    flush();
     expect(custom).toHaveTextContent("updated");
     expect(
       rendered.container.querySelector("strong[data-custom-renderer]"),
@@ -158,6 +159,7 @@ describe("[CSR] ElmA2ui", () => {
     input.focus();
     setSpy.mockClear();
     fireEvent.input(input, { target: { value: "Ada" } });
+    flush();
     expect(setSpy).toHaveBeenCalledOnce();
     expect(rendered.container).toHaveTextContent("Ada");
     expect(
@@ -255,6 +257,7 @@ describe("[CSR] ElmA2ui", () => {
     expect(actionSpy).not.toHaveBeenCalled();
 
     fireEvent.input(input, { target: { value: "Ada" } });
+    flush();
     expect(button).toHaveAttribute("aria-disabled", "false");
     expect(input).toHaveAttribute("aria-invalid", "false");
     expect(rendered.queryByText("Name is required")).toBeNull();
@@ -280,10 +283,12 @@ describe("[CSR] ElmA2ui", () => {
 
     expect(rendered.queryByText("Secret details")).toBeNull();
     fireEvent.click(rendered.getByRole("button", { name: "Open details" }));
+    flush();
     expect(rendered.getByText("Secret details")).toBeInTheDocument();
 
     const dialog = rendered.container.querySelector("dialog")!;
     dialog.dispatchEvent(new Event("cancel", { cancelable: true }));
+    flush();
     expect(rendered.queryByText("Secret details")).toBeNull();
   });
 
@@ -329,16 +334,19 @@ describe("[CSR] ElmA2ui", () => {
     disposeSpy.mockClear();
 
     setMessages(appended);
+    flush();
     expect(rendered.container).toHaveTextContent("alpha");
     expect(rendered.container).toHaveTextContent("beta");
     expect(disposeSpy).not.toHaveBeenCalled();
 
     setMessages(replacement);
+    flush();
     expect(rendered.container).toHaveTextContent("replacement");
     expect(rendered.container).not.toHaveTextContent("alpha");
     expect(disposeSpy).toHaveBeenCalledOnce();
 
     setMessages(deleted);
+    flush();
     expect(rendered.container).not.toHaveTextContent("replacement");
 
     rendered.unmount();
@@ -371,6 +379,7 @@ describe("[CSR] ElmA2ui", () => {
     const firstTrigger = rendered.getByRole("button", { name: "Open one" });
 
     fireEvent.click(firstTrigger);
+    flush();
     expect(rendered.getByText("Secret one")).toBeInTheDocument();
 
     setMessages([
@@ -389,6 +398,7 @@ describe("[CSR] ElmA2ui", () => {
       },
     ]);
 
+    flush();
     expect(rendered.getByText("Secret one")).toBeInTheDocument();
     expect(rendered.getByRole("button", { name: "Open one" })).toBe(
       firstTrigger,
@@ -417,6 +427,7 @@ describe("[CSR] ElmA2ui", () => {
     const rendered = render(() => <ElmA2ui messages={messages()} />);
     disposeSpy.mockClear();
     setMessages(dropped);
+    flush();
     expect(rendered.container).not.toHaveTextContent("beta");
     expect(disposeSpy).toHaveBeenCalled();
   });
@@ -457,11 +468,13 @@ describe("[CSR] ElmA2ui", () => {
     const rendered = render(() => <ElmA2ui messages={messages()} />);
     expect(rendered.container).toHaveTextContent("[Loading ghost…]");
     setMessages(typed);
+    flush();
     expect(rendered.container).toHaveTextContent("Unknown component: Mystery");
     expect(
       rendered.container.querySelectorAll('[data-a2ui-component-id="cycle"]'),
     ).toHaveLength(1);
     setMessages(replaced);
+    flush();
     expect(rendered.getByRole("checkbox", { name: "Ready" })).toBeChecked();
     expect(rendered.container).not.toHaveTextContent("Loading");
   });
@@ -693,6 +706,7 @@ describe("[CSR] ElmA2ui", () => {
       },
     ]);
 
+    flush();
     expect(rendered.container).toHaveTextContent("Updated");
     expect(
       rendered.container.querySelector(
@@ -721,6 +735,7 @@ describe("[CSR] ElmA2ui", () => {
     ));
     expect(rendered.container).toHaveTextContent("valid");
     setCatalogId("catalog-b");
+    flush();
     expect(rendered.container).toHaveTextContent("valid");
   });
 
@@ -740,6 +755,7 @@ describe("[CSR] ElmA2ui", () => {
     ));
     expect(requests).toHaveLength(1);
     setUrl("/two.jsonl");
+    flush();
     expect(requests[0]?.aborted).toBe(true);
     expect(requests).toHaveLength(2);
     setMessages(

@@ -1,10 +1,12 @@
 import {
-  createSignal,
-  onCleanup,
-  onMount,
+  isEqual,
+  onSettled,
+  untrack,
   type Accessor,
   type Setter,
 } from "solid-js";
+
+import { createValueSignal, resolveSetterValue } from "./create-value-signal";
 
 type StorageArea = "local" | "session";
 type StorageOperation = { type: "set"; value: string } | { type: "remove" };
@@ -67,14 +69,16 @@ function createStorage<T>(
   area: StorageArea,
   options: CreateStorageOptions<T>,
 ): StorageController<T> {
-  const [state, setStateRaw] = createSignal<T>(options.initialValue);
+  const [state, setStateRaw] = createValueSignal(
+    untrack(() => options.initialValue),
+    isEqual,
+  );
   const source = {};
   let storage: Storage | undefined;
   let channel: BroadcastChannel | undefined;
   let mounted = false;
 
-  const setRawValue = (value: T): T =>
-    setStateRaw((() => value) as (previous: T) => T);
+  const setRawValue = (value: T): T => setStateRaw(() => value);
 
   const applyIncoming = (operation: StorageOperation): void => {
     if (operation.type === "remove") {
@@ -131,8 +135,10 @@ function createStorage<T>(
     }
   };
 
-  const setState = ((value: Parameters<Setter<T>>[0]): T => {
-    const nextValue = setStateRaw(value);
+  const setState = ((value: unknown): T => {
+    const nextValue = setStateRaw((previous) =>
+      resolveSetterValue(value, previous),
+    );
     try {
       persist({ type: "set", value: serialize(nextValue) });
     } catch (error) {
@@ -146,7 +152,7 @@ function createStorage<T>(
     persist({ type: "remove" });
   };
 
-  onMount(() => {
+  onSettled(() => {
     mounted = true;
 
     try {
@@ -226,14 +232,14 @@ function createStorage<T>(
       }
     }
 
-    onCleanup(() => {
+    return () => {
       mounted = false;
       storage = undefined;
       window.removeEventListener("storage", onStorage);
       window.removeEventListener(LOCAL_STORAGE_SYNC_EVENT, onLocalSync);
       channel?.close();
       channel = undefined;
-    });
+    };
   });
 
   return { state, setState, remove };

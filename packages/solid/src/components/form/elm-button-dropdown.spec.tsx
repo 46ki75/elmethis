@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
@@ -63,9 +63,11 @@ describe("[CSR] ElmButtonDropdown", () => {
     const caret = rendered.getByRole("button", { name: "Toggle dropdown" });
 
     fireEvent.click(caret);
+    flush();
     expect(order).toEqual(["open:true"]);
     order.length = 0;
     fireEvent.click(rendered.getByText("Edit"));
+    flush();
 
     expect(order).toEqual(["selected:edit", "item", "aggregate", "open:false"]);
     expect(caret).toHaveAttribute("aria-expanded", "false");
@@ -87,16 +89,21 @@ describe("[CSR] ElmButtonDropdown", () => {
     ));
 
     fireEvent.click(rendered.getByRole("button", { name: "Run" }));
+    flush();
     expect(onClick).toHaveBeenLastCalledWith(null);
 
     fireEvent.click(rendered.getByRole("button", { name: "Toggle dropdown" }));
+    flush();
     fireEvent.click(rendered.getByText("Remove"));
+    flush();
     fireEvent.click(rendered.getByRole("button", { name: "Remove" }));
+    flush();
     expect(onClick).toHaveBeenLastCalledWith(
       expect.objectContaining({ id: "remove" }),
     );
 
     setSelected(null);
+    flush();
     expect(rendered.getByRole("button", { name: "Run" })).toBeInTheDocument();
   });
 
@@ -116,13 +123,41 @@ describe("[CSR] ElmButtonDropdown", () => {
     const caret = rendered.getByRole("button", { name: "Toggle dropdown" });
 
     fireEvent.click(caret);
+    flush();
     fireEvent.click(rendered.getByText("Edit"));
+    flush();
     expect(caret).toHaveAttribute("aria-expanded", "true");
     expect(onOpenChange).toHaveBeenCalledTimes(1);
 
     fireEvent.click(rendered.getByTestId("outside"));
+    flush();
     expect(caret).toHaveAttribute("aria-expanded", "false");
     expect(onOpenChange).toHaveBeenLastCalledWith(false);
+  });
+
+  it("can close from an outside click dispatched during the open callback", () => {
+    const onOpenChange = vi.fn((open: boolean) => {
+      if (open) {
+        fireEvent.click(rendered.getByTestId("outside"));
+      }
+    });
+    const rendered = render(() => (
+      <div>
+        <button data-testid="outside">Outside</button>
+        <ElmButtonDropdown
+          label="Run"
+          items={ITEMS}
+          onOpenChange={onOpenChange}
+        />
+      </div>
+    ));
+    const caret = rendered.getByRole("button", { name: "Toggle dropdown" });
+
+    fireEvent.click(caret);
+    flush();
+
+    expect(onOpenChange.mock.calls).toEqual([[true], [false]]);
+    expect(caret).toHaveAttribute("aria-expanded", "false");
   });
 
   it("ignores disabled items and independently disables both segments", () => {
@@ -140,6 +175,7 @@ describe("[CSR] ElmButtonDropdown", () => {
     expect(buttons[0]).toBeDisabled();
     expect(buttons[1]).not.toBeDisabled();
     fireEvent.click(rendered.getByText("Remove"));
+    flush();
     expect(onItemClick).not.toHaveBeenCalled();
   });
 

@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { describe, expect, it, vi } from "vitest";
 
 import styles from "./elm-toggle.module.css";
@@ -54,6 +54,7 @@ describe("[CSR] ElmToggle", () => {
     expect(toggle).not.toHaveAttribute("monochrome");
 
     fireEvent.click(toggle.querySelector(`.${styles.summary}`)!);
+    flush();
     expect(onClick).toHaveBeenCalledOnce();
   });
 
@@ -74,6 +75,7 @@ describe("[CSR] ElmToggle", () => {
     const toggle = rendered.getByTestId("toggle");
 
     fireEvent.click(toggle.querySelector(`.${styles.summary}`)!);
+    flush();
 
     expect(onOpenChange).toHaveBeenCalledWith(true);
     expect(calls).toEqual(["change", "click"]);
@@ -95,8 +97,10 @@ describe("[CSR] ElmToggle", () => {
     const summary = toggle.querySelector(`.${styles.summary}`)!;
 
     fireEvent.click(summary);
+    flush();
     expect(toggle).toHaveClass(styles.open);
     fireEvent.click(summary);
+    flush();
 
     expect(toggle).not.toHaveClass(styles.open);
     expect(values).toEqual([true, false]);
@@ -123,6 +127,7 @@ describe("[CSR] ElmToggle", () => {
 
     setIsOpen(true);
     setMonochrome(true);
+    flush();
 
     expect(toggle).toHaveClass("open-toggle", styles.open);
     expect(toggle).not.toHaveClass("closed-toggle");

@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { ElmFile } from "./elm-file";
@@ -52,6 +52,7 @@ describe("[Browser] ElmFile", () => {
 
     setSrc("https://example.com/files/second.txt");
     setName("renamed.txt");
+    flush();
     fireEvent.click(download);
 
     await vi.waitFor(() => expect(downloads).toHaveLength(2));

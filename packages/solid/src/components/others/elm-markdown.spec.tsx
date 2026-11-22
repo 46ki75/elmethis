@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { flush, createSignal } from "solid-js";
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("../code/elm-shiki-highlighter", () => ({
@@ -109,6 +109,7 @@ const value = 1;
 
     setMarkdown("# Updated");
     setClassName("updated-class");
+    flush();
 
     expect(rendered.getByTestId("markdown")).toHaveClass("updated-class");
     expect(rendered.getByRole("heading", { level: 1 })).toHaveTextContent(
@@ -130,6 +131,7 @@ describe("[CSR] ElmMarkdown streaming identity", () => {
     const oldTail = rendered.getByText("Tail begins").closest("p")!;
 
     setMarkdown("Completed paragraph\n\nTail begins and grows");
+    flush();
 
     expect(rendered.getByText("Completed paragraph").closest("p")).toBe(
       completed,
@@ -148,6 +150,7 @@ describe("[CSR] ElmMarkdown streaming identity", () => {
     const first = rendered.getByText("First stable").closest("p")!;
 
     setMarkdown("First stable\n\nSecond completed\n\nThird tail");
+    flush();
 
     expect(rendered.getByText("First stable").closest("p")).toBe(first);
     expect(rendered.container.textContent).toContain("Second completed");
@@ -162,6 +165,7 @@ describe("[CSR] ElmMarkdown streaming identity", () => {
     const oldPrefix = rendered.getByText("Old prefix").closest("p")!;
 
     setMarkdown("New prefix\n\nTail");
+    flush();
 
     expect(rendered.container.textContent).not.toContain("Old prefix");
     expect(rendered.getByText("New prefix").closest("p")).not.toBe(oldPrefix);

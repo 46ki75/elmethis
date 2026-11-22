@@ -1,7 +1,7 @@
 /// <reference types="vitest/config" />
+import solid from "@solidjs/vite-plugin";
 import { playwright } from "@vitest/browser-playwright";
 import { defineConfig } from "vite";
-import solid from "vite-plugin-solid";
 
 // Real-browser tests are reserved for native behavior, computed styles,
 // layout, and Web APIs that happy-dom cannot model accurately.
@@ -12,9 +12,6 @@ export default defineConfig({
   },
   test: {
     name: "browser",
-    // Browser Mode replaces this environment at runtime; declaring it keeps
-    // vite-plugin-solid from injecting its jsdom default during config merge.
-    environment: "node",
     include: ["src/**/*.browser.spec.tsx"],
     setupFiles: ["./vitest.browser.setup.ts"],
     coverage: {

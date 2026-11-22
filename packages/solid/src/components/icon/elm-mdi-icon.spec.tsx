@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { flush, createSignal } from "solid-js";
 import { describe, expect, it } from "vitest";
 
 import { ElmMdiIcon } from "./elm-mdi-icon";
@@ -49,6 +49,7 @@ describe("[CSR] ElmMdiIcon", () => {
     expect(icon).toHaveAttribute("aria-hidden", "true");
 
     setLarge(true);
+    flush();
 
     expect(icon).toHaveAttribute("width", "32");
     expect(icon).toHaveAttribute("height", "32");

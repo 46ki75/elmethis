@@ -1,11 +1,5 @@
-import {
-  createEffect,
-  createSignal,
-  mergeProps,
-  onCleanup,
-  splitProps,
-  type JSX,
-} from "solid-js";
+import { createEffect, createSignal, omit } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { clsx } from "clsx";
 
 import { callEventHandler } from "../../primitives/call-event-handler";
@@ -25,8 +19,8 @@ export interface ElmModalProps extends Omit<
 }
 
 export const ElmModal = (props: ElmModalProps) => {
-  const merged = mergeProps({ delay: 200, closedby: "none" as const }, props);
-  const [local, rest] = splitProps(merged, [
+  const rest = omit(
+    props,
     "class",
     "style",
     "ref",
@@ -36,7 +30,9 @@ export const ElmModal = (props: ElmModalProps) => {
     "onClick",
     "onCancel",
     "onClose",
-  ]);
+    "closedby",
+  );
+  const delay = () => props.delay ?? 200;
   const [isShown, setIsShown] = createSignal(false);
   let dialog: HTMLDialogElement | undefined;
   let closeTimer: ReturnType<typeof setTimeout> | undefined;
@@ -49,76 +45,69 @@ export const ElmModal = (props: ElmModalProps) => {
     closeTimer = undefined;
   };
 
-  createEffect(() => {
-    const open = Boolean(local.isOpen);
-    const delay = local.delay;
-    const element = dialog;
-
-    clearCloseTimer();
-    if (!element) {
-      return;
-    }
-
-    if (open) {
-      if (element.open) {
-        setIsShown(true);
-        return;
+  createEffect(
+    () => ({ open: Boolean(props.isOpen), delay: delay() }),
+    ({ open, delay }) => {
+      const element = dialog;
+      if (!element) {
+        return undefined;
       }
 
-      if (!element.isConnected || typeof element.showModal !== "function") {
-        return;
-      }
-
-      try {
-        element.showModal();
-        setIsShown(element.open);
-      } catch {
-        // A forwarded native `open` state or detached dialog can reject
-        // showModal(). The next prop change will retry against the live shell.
-      }
-      return;
-    }
-
-    if (!isShown() && !element.open) {
-      return;
-    }
-    setIsShown(false);
-    if (!element.open) {
-      return;
-    }
-
-    closeTimer = setTimeout(
-      () => {
-        closeTimer = undefined;
-        if (!local.isOpen && element.open) {
-          element.close();
+      if (open) {
+        if (element.open) {
+          setIsShown(true);
+        } else if (
+          element.isConnected &&
+          typeof element.showModal === "function"
+        ) {
+          try {
+            element.showModal();
+            setIsShown(element.open);
+          } catch {
+            // A forwarded native `open` state or detached dialog can reject
+            // showModal(). The next prop change will retry against the live shell.
+          }
         }
-      },
-      Math.max(0, delay),
-    );
-  });
+        return undefined;
+      }
 
-  onCleanup(clearCloseTimer);
+      setIsShown(false);
+      if (!element.open) {
+        return undefined;
+      }
+
+      closeTimer = setTimeout(
+        () => {
+          closeTimer = undefined;
+          if (!props.isOpen && element.open) {
+            element.close();
+          }
+        },
+        Math.max(0, delay),
+      );
+      return clearCloseTimer;
+    },
+  );
 
   const handleClick: JSX.EventHandler<HTMLDialogElement, MouseEvent> = (
     event,
   ) => {
-    callEventHandler(local.onClick, event);
+    callEventHandler(props.onClick, event);
     if (event.defaultPrevented || event.target !== event.currentTarget) {
       return;
     }
-    local.onClose?.(event, event.currentTarget);
+    props.onClose?.(event, event.currentTarget);
   };
 
   const handleCancel: JSX.EventHandler<HTMLDialogElement, Event> = (event) => {
-    callEventHandler(local.onCancel, event);
+    callEventHandler(props.onCancel, event);
     if (event.defaultPrevented) {
       return;
     }
 
     // Keep the dialog in the top layer while the controlled fade-out runs.
     event.preventDefault();
-    local.onClose?.(event, event.currentTarget);
+    props.onClose?.(event, event.currentTarget);
   };
 
   const handleNativeClose: JSX.EventHandler<HTMLDialogElement, Event> = (
@@ -128,29 +117,30 @@ export const ElmModal = (props: ElmModalProps) => {
     setIsShown(false);
 
     // A form method="dialog" or imperative close can bypass controlled state.
-    if (local.isOpen) {
-      local.onClose?.(event, event.currentTarget);
+    if (props.isOpen) {
+      props.onClose?.(event, event.currentTarget);
     }
   };
 
   return (
     <dialog
       {...rest}
-      ref={(element) => {
-        dialog = element;
-        if (typeof local.ref === "function") {
-          local.ref(element);
-        }
-      }}
-      class={clsx(styles["elm-modal"], isShown() && styles.shown, local.class)}
-      style={mergeStyle(local.style, {
-        "--elmethis-scoped-modal-delay": `${local.delay}ms`,
+      ref={[
+        (element) => {
+          dialog = element;
+        },
+        props.ref,
+      ]}
+      class={clsx(styles["elm-modal"], isShown() && styles.shown, props.class)}
+      style={mergeStyle(props.style, {
+        "--elmethis-scoped-modal-delay": `${delay()}ms`,
       })}
+      closedby={props.closedby ?? "none"}
       onClick={handleClick}
       onCancel={handleCancel}
       onClose={handleNativeClose}
     >
-      <div onClick={(event) => event.stopPropagation()}>{local.children}</div>
+      <div onClick={(event) => event.stopPropagation()}>{props.children}</div>
     </dialog>
   );
 };

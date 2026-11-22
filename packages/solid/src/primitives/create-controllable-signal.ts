@@ -1,11 +1,12 @@
 import {
   createMemo,
-  createSignal,
   untrack,
   type Accessor,
   type Setter,
   type Signal,
 } from "solid-js";
+
+import { createValueSignal, resolveSetterValue } from "./create-value-signal";
 
 export interface CreateControllableSignalOptions<T> {
   /** The parent-owned value. Returning `undefined` enables uncontrolled mode. */
@@ -14,7 +15,7 @@ export interface CreateControllableSignalOptions<T> {
   /** Creates the initial value used in uncontrolled mode. */
   defaultValue: Accessor<T>;
 
-  /** Called when a write changes the current effective value. */
+  /** Called when a write requests a value different from the current effective value. */
   onChange?: (value: T) => void;
 }
 
@@ -27,36 +28,35 @@ export interface CreateControllableSignalOptions<T> {
 export function createControllableSignal<T>(
   options: CreateControllableSignalOptions<T>,
 ): Signal<T> {
-  const defaultValue = options.defaultValue();
-  const [internalValue, setInternalValue] = createSignal(defaultValue, {
-    equals: Object.is,
-  });
+  const [internalValue, setInternalValue] = createValueSignal(
+    untrack(() => options.defaultValue()),
+  );
   const value = createMemo<T>(
     () => {
       const controlledValue = options.value?.();
       return controlledValue === undefined ? internalValue() : controlledValue;
     },
-    defaultValue,
     { equals: Object.is },
   );
 
   const setValue = ((nextValue: unknown) =>
     untrack(() => {
-      const currentValue = value();
-      const resolvedValue: T =
-        typeof nextValue === "function"
-          ? (nextValue as (previous: T) => T)(currentValue)
-          : (nextValue as T);
+      // A controlled request does not become current until the parent commits it.
+      const controlledValue = options.value?.();
+      let changed = false;
+      const resolve = (previous: T) => {
+        const next = resolveSetterValue(nextValue, previous);
+        changed = !Object.is(next, previous);
+        return next;
+      };
+      const resolvedValue =
+        controlledValue === undefined
+          ? setInternalValue(resolve)
+          : resolve(controlledValue);
 
-      if (Object.is(resolvedValue, currentValue)) {
-        return resolvedValue;
+      if (changed) {
+        options.onChange?.(resolvedValue);
       }
-
-      if (options.value?.() === undefined) {
-        setInternalValue((() => resolvedValue) as (previous: T) => T);
-      }
-
-      options.onChange?.(resolvedValue);
       return resolvedValue;
     })) as Setter<T>;
 

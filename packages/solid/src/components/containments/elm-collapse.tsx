@@ -1,4 +1,5 @@
-import { mergeProps, splitProps, type JSX } from "solid-js";
+import { omit } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { clsx } from "clsx";
 
 import styles from "./elm-collapse.module.css";
@@ -32,33 +33,34 @@ const mergeCollapseStyle = (
 };
 
 export const ElmCollapse = (props: ElmCollapseProps) => {
-  const merged = mergeProps(
-    { direction: "row" as const, transitionTimingFunction: "ease-in-out" },
+  const rest = omit(
     props,
-  );
-  const [local, rest] = splitProps(merged, [
     "class",
     "style",
     "children",
     "isOpen",
     "direction",
     "transitionTimingFunction",
-  ]);
+  );
+  const direction = () => props.direction ?? "row";
 
   return (
     <div
       {...rest}
       class={clsx(
         styles["elm-collapse"],
-        local.isOpen && styles.open,
-        local.direction === "row" && styles.row,
-        local.direction === "column" && styles.column,
-        local.direction === "both" && styles.both,
-        local.class,
+        props.isOpen && styles.open,
+        direction() === "row" && styles.row,
+        direction() === "column" && styles.column,
+        direction() === "both" && styles.both,
+        props.class,
       )}
-      style={mergeCollapseStyle(local.style, local.transitionTimingFunction)}
+      style={mergeCollapseStyle(
+        props.style,
+        props.transitionTimingFunction ?? "ease-in-out",
+      )}
     >
-      <div class={styles.inner}>{local.children}</div>
+      <div class={styles.inner}>{props.children}</div>
     </div>
   );
 };

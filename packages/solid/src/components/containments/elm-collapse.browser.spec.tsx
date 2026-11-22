@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { page } from "vitest/browser";
 import { describe, expect, it } from "vitest";
 
@@ -29,6 +29,7 @@ describe("[Browser] ElmCollapse", () => {
     expect(getComputedStyle(collapse).transitionTimingFunction).toBe("linear");
 
     setOpen(true);
+    flush();
 
     expect(collapse.getBoundingClientRect().height).toBe(48);
     expect(getComputedStyle(collapse).gridTemplateRows).not.toBe("0px");

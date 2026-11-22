@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { flush, createSignal } from "solid-js";
 import { describe, expect, it } from "vitest";
 
 import { ElmLanguageIcon, LANGUAGES } from "./elm-language-icon";
@@ -39,11 +39,13 @@ describe("[CSR] ElmLanguageIcon", () => {
     expect(container.innerHTML.toLowerCase()).toContain('fill="#a84f33"');
 
     setLanguage("typescript");
+    flush();
     expect(container.innerHTML.toLowerCase()).toContain('fill="#007acc"');
     expect(container.querySelector("svg")).toHaveAttribute("width", "40");
     expect(container.querySelector("svg")).toHaveClass("typescript");
 
     setLanguage("unknown");
+    flush();
     expect(container.querySelector("svg")).toHaveAttribute(
       "viewBox",
       "0 0 24 24",

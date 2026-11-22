@@ -1,4 +1,5 @@
-import { For, splitProps, type JSX } from "solid-js";
+import { For, omit } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { clsx } from "clsx";
 import {
   mdiApplicationOutline,
@@ -21,11 +22,11 @@ export interface ElmBreadcrumbProps extends JSX.HTMLAttributes<HTMLElement> {
 }
 
 export const ElmBreadcrumb = (props: ElmBreadcrumbProps) => {
-  const [local, rest] = splitProps(props, ["class", "links"]);
+  const rest = omit(props, "class", "links");
 
   return (
-    <nav class={clsx(styles["elm-breadcrumb"], local.class)} {...rest}>
-      <For each={local.links}>
+    <nav class={clsx(styles["elm-breadcrumb"], props.class)} {...rest}>
+      <For each={props.links}>
         {(link, index) => (
           <span style={{ display: "contents" }}>
             <span class={styles["link-container"]} onClick={link.onClick}>
@@ -34,7 +35,7 @@ export const ElmBreadcrumb = (props: ElmBreadcrumbProps) => {
                 path={
                   index() === 0
                     ? mdiHome
-                    : index() === local.links.length - 1
+                    : index() === props.links.length - 1
                       ? mdiApplicationOutline
                       : mdiFolderOpen
                 }
@@ -44,7 +45,7 @@ export const ElmBreadcrumb = (props: ElmBreadcrumbProps) => {
               <span class={styles.chunk}>{link.text}</span>
             </span>
 
-            {local.links.length !== index() + 1 && (
+            {props.links.length !== index() + 1 && (
               <ElmMdiIcon
                 class={styles.chevron}
                 path={mdiChevronRight}

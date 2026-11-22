@@ -1,4 +1,5 @@
-import { createMemo, createSignal, Show, untrack, type JSX } from "solid-js";
+import { createMemo, createSignal, onSettled, Show, untrack } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 import {
   scenarioNames,
@@ -195,28 +196,30 @@ const HttpUseAgentInstance = (props: HttpUseAgentInstanceProps) => {
     ],
     tools,
   });
-  agent.setPromptTemplates([
-    {
-      description: "Ask about AWS",
-      content: "What is a new feature called Amazon S3 Files?",
-    },
-    { description: "Generate UUID v7", content: "Generate a UUID v7 string" },
-    {
-      description: "Date and time",
-      content: "What is the current date and time?",
-    },
-    {
-      description: "Location information",
-      content: "What is my current location?",
-    },
-    {
-      description: "Render A2UI",
-      content: `Could you render a \`Card\` and \`Text\` component with A2UI?
+  onSettled(() =>
+    agent.setPromptTemplates([
+      {
+        description: "Ask about AWS",
+        content: "What is a new feature called Amazon S3 Files?",
+      },
+      { description: "Generate UUID v7", content: "Generate a UUID v7 string" },
+      {
+        description: "Date and time",
+        content: "What is the current date and time?",
+      },
+      {
+        description: "Location information",
+        content: "What is my current location?",
+      },
+      {
+        description: "Render A2UI",
+        content: `Could you render a \`Card\` and \`Text\` component with A2UI?
 
 - catalogId: <https://a2ui.org/specification/v0_9/basic_catalog.json>
 - surfaceId: \`my-card-surface\``,
-    },
-  ]);
+      },
+    ]),
+  );
 
   return (
     <AgentFrame

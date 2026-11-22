@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { flush, createSignal } from "solid-js";
 import { describe, expect, it, vi } from "vitest";
 
 import { ElmFragmentIdentifier } from "./elm-fragment-identifier";
@@ -43,10 +43,12 @@ describe("[CSR] ElmFragmentIdentifier", () => {
     expect(fragment).not.toHaveAttribute("id");
 
     fireEvent.click(fragment);
+    flush();
     expect(window.location.hash).toBe("#first-section");
     expect(firstScroll).toHaveBeenCalledWith({ behavior: "smooth" });
 
     setId("second-section");
+    flush();
     fireEvent.click(fragment);
     expect(window.location.hash).toBe("#second-section");
     expect(secondScroll).toHaveBeenCalledWith({ behavior: "smooth" });

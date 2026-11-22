@@ -66,7 +66,7 @@ describe("[CSR] ElmCopyIcon", () => {
     );
 
     await vi.waitFor(() => expect(writeText).toHaveBeenCalledWith("latest"));
-    const copied = rendered.getByRole("button", { name: "Copied" });
+    const copied = await rendered.findByRole("button", { name: "Copied" });
     expect(copied.querySelector("path")).toHaveAttribute(
       "d",
       mdiClipboardCheckOutline,

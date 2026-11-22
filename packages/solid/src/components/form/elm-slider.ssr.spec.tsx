@@ -1,4 +1,4 @@
-import { renderToString } from "solid-js/web";
+import { renderToString } from "@solidjs/web";
 import { describe, expect, it, vi } from "vitest";
 
 import { ElmSlider } from "./elm-slider";
@@ -21,7 +21,7 @@ describe("[SSR] ElmSlider", () => {
     expect(html).toContain('aria-valuenow="40"');
     expect(html).toContain('aria-label="Volume"');
     expect(html).toContain('data-slider="server"');
-    expect(html).toContain('tabIndex="-1"');
+    expect(html).toContain('tabindex="-1"');
     expect(html).not.toContain('defaultValue="40"');
   });
 

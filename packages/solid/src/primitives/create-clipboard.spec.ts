@@ -1,4 +1,4 @@
-import { createRoot, createSignal } from "solid-js";
+import { createRoot, createSignal, flush } from "solid-js";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { createClipboard } from "./create-clipboard";
@@ -50,6 +50,7 @@ describe("[CSR] createClipboard", () => {
     );
 
     setContent("latest");
+    flush();
     const pending = controller.copy();
 
     expect(writeText).toHaveBeenCalledWith("latest");
