@@ -1,0 +1,5 @@
+.elm-template {
+  padding: 1rem;
+  color: var(--elmethis-color-neutral);
+  background-color: var(--elmethis-color-surface-raised);
+}
