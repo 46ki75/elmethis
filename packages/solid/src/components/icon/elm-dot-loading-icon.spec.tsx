@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { flush, createSignal } from "solid-js";
 import { describe, expect, it } from "vitest";
 
 import { ElmDotLoadingIcon } from "./elm-dot-loading-icon";
@@ -50,6 +50,7 @@ describe("[CSR] ElmDotLoadingIcon", () => {
     expect(rendered.getByTestId("string").style.opacity).toBe("0.5");
 
     setSize("3rem");
+    flush();
     expect(
       rendered
         .getByTestId("object")

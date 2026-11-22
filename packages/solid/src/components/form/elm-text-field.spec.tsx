@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { describe, expect, it, vi } from "vitest";
 
 import { ElmTextField } from "./elm-text-field";
@@ -66,6 +66,7 @@ describe("[CSR] ElmTextField", () => {
 
     expect(input.value).toBe("seed");
     fireEvent.input(input, { target: { value: "edited" } });
+    flush();
     expect(input.value).toBe("edited");
   });
 
@@ -90,12 +91,14 @@ describe("[CSR] ElmTextField", () => {
     const input = rendered.container.querySelector("input")!;
 
     fireEvent.input(input, { target: { value: "Ada" } });
+    flush();
     expect(onInput).toHaveBeenCalledWith("Ada");
     expect(onChange).not.toHaveBeenCalled();
     expect(rendered.getByTestId("value")).toHaveTextContent("Ada");
     expect(rendered.container).toHaveTextContent("3");
 
     fireEvent.change(input);
+    flush();
     expect(onChange).toHaveBeenCalledWith("Ada");
   });
 
@@ -109,10 +112,12 @@ describe("[CSR] ElmTextField", () => {
     const root = input.closest("label")!;
 
     fireEvent.focus(input);
+    flush();
     expect(onFocus).toHaveBeenCalledOnce();
     expect(root).toHaveClass(styles.active);
 
     fireEvent.blur(input);
+    flush();
     expect(onBlur).toHaveBeenCalledOnce();
     expect(root).not.toHaveClass(styles.active);
   });
@@ -137,11 +142,13 @@ describe("[CSR] ElmTextField", () => {
     expect(input.type).toBe("password");
     expect(show).toHaveAttribute("type", "button");
     fireEvent.click(show);
+    flush();
     expect(input.type).toBe("text");
 
     const clear = rendered.getByRole("button", { name: "Clear text" });
     expect(clear).toHaveAttribute("type", "button");
     fireEvent.click(clear);
+    flush();
     expect(onInput).toHaveBeenCalledOnce();
     expect(input.value).toBe("");
   });
@@ -156,6 +163,7 @@ describe("[CSR] ElmTextField", () => {
 
     expect(input).not.toBeDisabled();
     setLoading(true);
+    flush();
     expect(input).toBeDisabled();
     expect(root).toHaveClass(styles.disabled);
     for (const button of rendered.getAllByRole("button")) {

@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { describe, expect, it, vi } from "vitest";
 
 import { ElmParallax } from "./elm-parallax";
@@ -27,6 +27,7 @@ describe("[CSR] ElmParallax", () => {
     const rendered = render(() => <ElmParallax images={images()} />);
 
     setImages(["/second.png", "/third.png"]);
+    flush();
 
     expect(
       rendered.container.querySelectorAll("[aria-hidden='true']"),
@@ -52,6 +53,7 @@ describe("[CSR] ElmParallax", () => {
 
     expect(frame).toBeDefined();
     frame?.(0);
+    flush();
     expect(layer.style.transform).toBe("scale(1.2) translateY(0.5%)");
 
     rendered.unmount();
@@ -90,7 +92,9 @@ describe("[CSR] ElmParallax", () => {
     const rendered = render(() => <ElmParallax images={images()} />);
 
     frame?.(0);
+    flush();
     setImages(["/first.png", "/second.png"]);
+    flush();
 
     const layers = rendered.container.querySelectorAll<HTMLElement>(
       "[aria-hidden='true']",

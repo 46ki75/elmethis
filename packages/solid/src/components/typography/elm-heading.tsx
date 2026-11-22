@@ -1,5 +1,5 @@
-import { splitProps, type JSX } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { dynamic, type JSX } from "@solidjs/web";
+import { omit } from "solid-js";
 import { clsx } from "clsx";
 
 import styles from "./elm-heading.module.css";
@@ -24,41 +24,34 @@ const SIZE_MAP: Record<ElmHeadingLevel, number> = Object.freeze({
 } as const);
 
 export const ElmHeading = (props: ElmHeadingProps) => {
-  const [local, rest] = splitProps(props, [
-    "class",
-    "style",
-    "children",
-    "level",
-    "text",
-    "id",
-  ]);
+  const rest = omit(props, "class", "style", "children", "level", "text", "id");
 
+  const Heading = dynamic(() => `h${props.level}` as const);
   return (
-    <Dynamic
-      component={`h${local.level}` as const}
+    <Heading
       {...rest}
       class={clsx(
         styles["elm-heading"],
         textStyles.text,
-        styles[`h${local.level}`],
-        local.class,
+        styles[`h${props.level}`],
+        props.class,
       )}
-      style={mergeStyle(local.style, {
-        "--elmethis-scoped-font-size": `${SIZE_MAP[local.level]}em`,
+      style={mergeStyle(props.style, {
+        "--elmethis-scoped-font-size": `${SIZE_MAP[props.level]}em`,
       })}
-      id={local.id}
+      id={props.id}
     >
-      <span>{local.text}</span>
-      {local.children}
-      {local.id && (
+      <span>{props.text}</span>
+      {props.children}
+      {props.id && (
         <span style={{ padding: "0.5rem" }}>
-          <ElmFragmentIdentifier id={local.id} />
+          <ElmFragmentIdentifier id={props.id} />
         </span>
       )}
 
-      {local.level === 2 && (
+      {props.level === 2 && (
         <span class={styles["h2-underline"]} aria-hidden="true" />
       )}
-    </Dynamic>
+    </Heading>
   );
 };

@@ -1,14 +1,16 @@
 import {
   createContext,
-  createRenderEffect,
+  createEffect,
+  createMemo,
   createSignal,
+  createStore,
   onCleanup,
+  reconcile,
   Show,
   useContext,
   type Accessor,
-  type JSX,
 } from "solid-js";
-import { createStore, reconcile } from "solid-js/store";
+import type { JSX } from "@solidjs/web";
 
 import {
   ComponentContext,
@@ -37,11 +39,6 @@ export interface ComponentHostProps {
   wrap?: boolean;
 }
 
-interface BoundRenderer {
-  entry: SolidRendererEntry;
-  context: ComponentContext;
-}
-
 const encodeInstanceId = (...parts: string[]): string =>
   `a2ui-${encodeURIComponent(JSON.stringify(parts))}`;
 
@@ -50,60 +47,58 @@ export const ComponentHost = (props: ComponentHostProps) => {
   const catalog = useContext(A2uiCatalogContext);
   const ancestors = () => props.ancestors ?? [];
   const isCycle = () => ancestors().includes(props.id);
-  const [model, setModel] = createSignal<ComponentModel>();
-  const [everHadModel, setEverHadModel] = createSignal(false);
-  const [bound, setBound] = createSignal<BoundRenderer>();
-  const [resolvedProps, setResolvedProps] = createStore<
-    Record<string, unknown>
-  >({});
+  const source = createMemo(() => ({
+    id: props.id,
+    components: isCycle() ? undefined : surface?.().componentsModel,
+  }));
+  // The initial snapshot is needed synchronously; subsequent updates are SDK events.
+  const [component, setComponent] = createSignal<{
+    model: ComponentModel | undefined;
+    everHadModel: boolean;
+  }>(() => {
+    const { id, components } = source();
+    const model = components?.get(id);
+    return { model, everHadModel: model != null };
+  });
+  const model = () => component().model;
 
-  createRenderEffect(() => {
-    const id = props.id;
-    const currentSurface = surface?.();
-    if (isCycle() || currentSurface == null) {
-      setModel(undefined);
-      return;
+  createEffect(source, ({ id, components }) => {
+    if (!components) {
+      return undefined;
     }
-    const initial = currentSurface.componentsModel.get(id);
-    setModel(initial);
-    setEverHadModel(initial != null);
-    const created = currentSurface.componentsModel.onCreated.subscribe(
-      (next: ComponentModel) => {
-        if (next.id !== id) {
-          return;
-        }
-        setEverHadModel(true);
-        setModel(next);
-      },
+    const created = components.onCreated.subscribe((next) => {
+      if (next.id === id) {
+        setComponent({ model: next, everHadModel: true });
+      }
+    });
+    const deleted = components.onDeleted.subscribe((deletedId) => {
+      if (deletedId === id) {
+        setComponent((previous) => ({ ...previous, model: undefined }));
+      }
+    });
+    // Catch changes between the render snapshot and subscribing to SDK events.
+    const current = components.get(id);
+    setComponent((previous) =>
+      previous.model === current
+        ? previous
+        : {
+            model: current,
+            everHadModel: previous.everHadModel || current != null,
+          },
     );
-    const deleted = currentSurface.componentsModel.onDeleted.subscribe(
-      (deletedId: string) => {
-        if (deletedId === id) {
-          setModel(undefined);
-        }
-      },
-    );
-    onCleanup(() => {
+    return () => {
       created.unsubscribe();
       deleted.unsubscribe();
-    });
+    };
   });
 
-  createRenderEffect(() => {
+  const bound = createMemo(() => {
     const current = model();
     const currentSurface = surface?.();
-    const entry = current == null ? undefined : catalog?.().get(current.type);
-    if (
-      current == null ||
-      entry == null ||
-      currentSurface == null ||
-      isCycle()
-    ) {
-      setBound(undefined);
-      setResolvedProps(reconcile({}));
-      return;
+    const entry = current && catalog?.().get(current.type);
+    if (!entry || !currentSurface || isCycle()) {
+      return undefined;
     }
-
     const context = new ComponentContext(
       currentSurface,
       props.id,
@@ -113,15 +108,24 @@ export const ComponentHost = (props: ComponentHostProps) => {
       context,
       entry.schema,
     );
-    setResolvedProps(reconcile({ ...binder.snapshot }));
-    setBound({ entry, context });
-    const subscription = binder.subscribe((next: Record<string, unknown>) => {
-      setResolvedProps(reconcile({ ...next }));
-    });
-    onCleanup(() => {
-      subscription.unsubscribe();
-      binder.dispose();
-    });
+    onCleanup(() => binder.dispose());
+    return { entry, context, binder, surface: currentSurface };
+  });
+  const [resolvedProps, setResolvedProps] = createStore<
+    Record<string, unknown>
+  >(() => ({ ...bound()?.binder.snapshot }), {});
+  createEffect(bound, (resolved) => {
+    if (!resolved) {
+      return undefined;
+    }
+    const updateProps = (next: Record<string, unknown>) => {
+      setResolvedProps((draft) => {
+        reconcile({ ...next })(draft);
+      });
+    };
+    updateProps(resolved.binder.snapshot);
+    const subscription = resolved.binder.subscribe(updateProps);
+    return () => subscription.unsubscribe();
   });
 
   const normalizeChildren = createChildRefs(() => props.basePath);
@@ -164,7 +168,7 @@ export const ComponentHost = (props: ComponentHostProps) => {
                 : (props.index ?? 0)
             }
             props={resolvedProps}
-            surface={surface!()}
+            surface={resolved.surface}
             context={resolved.context}
             childRefs={normalizeChildren}
             renderChild={renderChild}
@@ -180,7 +184,7 @@ export const ComponentHost = (props: ComponentHostProps) => {
         when={model()}
         keyed
         fallback={
-          <Show when={!everHadModel() && props.wrap !== false}>
+          <Show when={!component().everHadModel && props.wrap !== false}>
             <span
               data-a2ui-state="loading"
               data-a2ui-component-id={props.id}

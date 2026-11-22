@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { flush, createSignal } from "solid-js";
 import { describe, expect, it } from "vitest";
 
 import { ElmRectangleWave } from "./elm-rectangle-wave";
@@ -37,6 +37,7 @@ describe("[CSR] ElmRectangleWave", () => {
     const wave = rendered.getByTestId("wave");
 
     setActive(true);
+    flush();
     expect(wave).toHaveClass("active");
     expect(wave).not.toHaveClass("idle");
     expect(wave).toHaveAttribute("data-state", "active");

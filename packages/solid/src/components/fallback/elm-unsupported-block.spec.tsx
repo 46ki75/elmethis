@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { flush, createSignal } from "solid-js";
 import { describe, expect, it } from "vitest";
 
 import { ElmUnsupportedBlock } from "./elm-unsupported-block";
@@ -35,10 +35,13 @@ describe("[CSR] ElmUnsupportedBlock", () => {
 
     expect(unsupported).not.toHaveTextContent("type: mermaid");
     setDetails("type: mermaid");
+    flush();
     expect(unsupported).toHaveTextContent("type: mermaid");
     setDetails("type: video");
+    flush();
     expect(unsupported).toHaveTextContent("type: video");
     setDetails(undefined);
+    flush();
     expect(unsupported).not.toHaveTextContent("type: video");
   });
 });

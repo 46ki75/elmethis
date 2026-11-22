@@ -2,11 +2,10 @@ import {
   createEffect,
   createMemo,
   createSignal,
-  mergeProps,
   onCleanup,
-  splitProps,
-  type JSX,
+  omit,
 } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { clsx } from "clsx";
 import {
   mdiAlertCircleOutline,
@@ -82,14 +81,8 @@ const fileNameFromSrc = (src: string): string => {
 };
 
 export const ElmAudioPlayer = (props: ElmAudioPlayerProps) => {
-  const merged = mergeProps(
-    {
-      errorMessage: "This audio couldn't be loaded.",
-      seekStep: 10,
-    },
+  const rest = omit(
     props,
-  );
-  const [local, rest] = splitProps(merged, [
     "class",
     "style",
     "src",
@@ -99,7 +92,7 @@ export const ElmAudioPlayer = (props: ElmAudioPlayerProps) => {
     "seekStep",
     "loop",
     "autoPlay",
-  ]);
+  );
 
   let audioRef!: HTMLAudioElement;
   let trackRef!: HTMLDivElement;
@@ -118,7 +111,7 @@ export const ElmAudioPlayer = (props: ElmAudioPlayerProps) => {
     duration() > 0 ? Math.min(1, currentTime() / duration()) : 0,
   );
   const resolvedTitle = createMemo(
-    () => local.title ?? fileNameFromSrc(local.src),
+    () => props.title ?? fileNameFromSrc(props.src),
   );
   const volumeIcon = createMemo(() => {
     if (isMuted() || volume() === 0) {
@@ -156,26 +149,21 @@ export const ElmAudioPlayer = (props: ElmAudioPlayerProps) => {
 
   onCleanup(stopRaf);
 
-  let activeSrc: string | undefined;
-  createEffect(() => {
-    const nextSrc = local.src;
-    if (activeSrc === undefined) {
-      activeSrc = nextSrc;
-      return;
-    }
-    if (nextSrc === activeSrc) {
-      return;
-    }
-    activeSrc = nextSrc;
+  createEffect(
+    () => props.src,
+    () => {
+      stopRaf();
+      setIsPlaying(false);
+      setIsLoading(true);
+      setHasError(false);
+      setDuration(0);
+      setCurrentTime(0);
+      setHoverRatio(null);
+    },
+    { defer: true },
+  );
 
-    stopRaf();
-    setIsPlaying(false);
-    setIsLoading(true);
-    setHasError(false);
-    setDuration(0);
-    setCurrentTime(0);
-    setHoverRatio(null);
-  });
+  const seekStep = () => props.seekStep ?? 10;
 
   const togglePlay = (): void => {
     if (!audioRef) {
@@ -233,10 +221,10 @@ export const ElmAudioPlayer = (props: ElmAudioPlayerProps) => {
   ) => {
     if (event.key === "ArrowRight") {
       event.preventDefault();
-      seekTo(currentTime() + local.seekStep);
+      seekTo(audioRef.currentTime + seekStep());
     } else if (event.key === "ArrowLeft") {
       event.preventDefault();
-      seekTo(currentTime() - local.seekStep);
+      seekTo(audioRef.currentTime - seekStep());
     } else if (event.key === "Home") {
       event.preventDefault();
       seekTo(0);
@@ -273,9 +261,9 @@ export const ElmAudioPlayer = (props: ElmAudioPlayerProps) => {
         isPlaying() && styles.playing,
         isLoading() && styles.loading,
         hasError() && styles.errored,
-        local.class,
+        props.class,
       )}
-      style={mergeStyle(local.style, {
+      style={mergeStyle(props.style, {
         "--elmethis-scoped-progress": progress(),
         "--elmethis-scoped-hover": hoverRatio() ?? 0,
       })}
@@ -285,9 +273,9 @@ export const ElmAudioPlayer = (props: ElmAudioPlayerProps) => {
           audioRef = element;
         }}
         class={styles["native-audio"]}
-        src={local.src}
-        loop={local.loop}
-        autoplay={local.autoPlay}
+        src={props.src}
+        loop={props.loop}
+        autoplay={props.autoPlay}
         preload="metadata"
         onLoadedMetadata={(event) => {
           setDuration(event.currentTarget.duration);
@@ -343,7 +331,7 @@ export const ElmAudioPlayer = (props: ElmAudioPlayerProps) => {
           <span class={styles.title} title={resolvedTitle()}>
             {resolvedTitle()}
           </span>
-          {local.artist && <span class={styles.artist}>{local.artist}</span>}
+          {props.artist && <span class={styles.artist}>{props.artist}</span>}
         </div>
 
         <span class={styles.equalizer} aria-hidden="true">
@@ -357,7 +345,9 @@ export const ElmAudioPlayer = (props: ElmAudioPlayerProps) => {
       {hasError() ? (
         <div class={styles["error-notice"]} role="alert">
           <ElmMdiIcon path={mdiAlertCircleOutline} size="1.25rem" />
-          <span class={styles["error-message"]}>{local.errorMessage}</span>
+          <span class={styles["error-message"]}>
+            {props.errorMessage ?? "This audio couldn't be loaded."}
+          </span>
         </div>
       ) : (
         <>
@@ -367,7 +357,7 @@ export const ElmAudioPlayer = (props: ElmAudioPlayerProps) => {
             }}
             class={styles.seekbar}
             role="slider"
-            tabIndex={0}
+            tabindex={0}
             aria-label="Seek"
             aria-valuemin={0}
             aria-valuemax={Math.round(duration()) || 0}
@@ -394,8 +384,8 @@ export const ElmAudioPlayer = (props: ElmAudioPlayerProps) => {
               <button
                 type="button"
                 class={styles["icon-button"]}
-                onClick={() => seekTo(currentTime() - local.seekStep)}
-                aria-label={`Back ${local.seekStep} seconds`}
+                onClick={() => seekTo(audioRef.currentTime - seekStep())}
+                aria-label={`Back ${seekStep()} seconds`}
               >
                 <ElmMdiIcon path={mdiRewind10} size="1.25rem" />
               </button>
@@ -405,7 +395,7 @@ export const ElmAudioPlayer = (props: ElmAudioPlayerProps) => {
                 class={styles["play-button"]}
                 onClick={togglePlay}
                 aria-label={isPlaying() ? "Pause" : "Play"}
-                aria-pressed={isPlaying()}
+                aria-pressed={isPlaying() ? "true" : "false"}
               >
                 <ElmMdiIcon
                   path={isPlaying() ? mdiPause : mdiPlay}
@@ -416,8 +406,8 @@ export const ElmAudioPlayer = (props: ElmAudioPlayerProps) => {
               <button
                 type="button"
                 class={styles["icon-button"]}
-                onClick={() => seekTo(currentTime() + local.seekStep)}
-                aria-label={`Forward ${local.seekStep} seconds`}
+                onClick={() => seekTo(audioRef.currentTime + seekStep())}
+                aria-label={`Forward ${seekStep()} seconds`}
               >
                 <ElmMdiIcon path={mdiFastForward10} size="1.25rem" />
               </button>
@@ -429,7 +419,7 @@ export const ElmAudioPlayer = (props: ElmAudioPlayerProps) => {
                 class={styles["icon-button"]}
                 onClick={toggleMute}
                 aria-label={isMuted() ? "Unmute" : "Mute"}
-                aria-pressed={isMuted()}
+                aria-pressed={isMuted() ? "true" : "false"}
               >
                 <ElmMdiIcon path={volumeIcon()} size="1.25rem" />
               </button>

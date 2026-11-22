@@ -1,4 +1,5 @@
-import { createMemo, For, splitProps, type JSX } from "solid-js";
+import { type JSX } from "@solidjs/web";
+import { createMemo, For, omit } from "solid-js";
 import { clsx } from "clsx";
 import { marked, type MarkedToken, type Token, type Tokens } from "marked";
 
@@ -144,13 +145,13 @@ const renderToken = (input: Token): JSX.Element => {
 };
 
 export const ElmMarkdown = (props: ElmMarkdownProps) => {
-  const [local, rest] = splitProps(props, ["class", "markdown", "isStreaming"]);
+  const rest = omit(props, "class", "markdown", "isStreaming");
   let stableCache: Token[] = [];
 
   const tokenGroups = createMemo(() => {
-    const markdown = local.markdown;
+    const markdown = props.markdown;
     const allTokens = marked.lexer(markdown, { gfm: true }) as Token[];
-    const streaming = Boolean(local.isStreaming) && allTokens.length > 0;
+    const streaming = Boolean(props.isStreaming) && allTokens.length > 0;
 
     if (!streaming) {
       stableCache = allTokens;
@@ -180,7 +181,7 @@ export const ElmMarkdown = (props: ElmMarkdownProps) => {
   });
 
   return (
-    <div {...rest} class={clsx(styles["elm-markdown"], local.class)}>
+    <div {...rest} class={clsx(styles["elm-markdown"], props.class)}>
       <For each={tokenGroups().stable}>{(token) => renderToken(token)}</For>
       <For each={tokenGroups().tail}>{(token) => renderToken(token)}</For>
     </div>

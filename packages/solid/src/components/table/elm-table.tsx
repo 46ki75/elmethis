@@ -1,12 +1,5 @@
-import {
-  createMemo,
-  createSignal,
-  onCleanup,
-  onMount,
-  Show,
-  splitProps,
-  type JSX,
-} from "solid-js";
+import { type JSX } from "@solidjs/web";
+import { createMemo, createSignal, omit, onSettled, Show } from "solid-js";
 import { clsx } from "clsx";
 
 import styles from "./elm-table.module.css";
@@ -20,22 +13,17 @@ export interface ElmTableProps extends JSX.HTMLAttributes<HTMLTableElement> {
 }
 
 export const ElmTable = (props: ElmTableProps) => {
-  const [local, rest] = splitProps(props, [
-    "class",
-    "caption",
-    "hasRowHeader",
-    "children",
-  ]);
+  const rest = omit(props, "class", "caption", "hasRowHeader", "children");
   const [canScroll, setCanScroll] = createSignal(false);
   const [atStart, setAtStart] = createSignal(true);
   const [atEnd, setAtEnd] = createSignal(true);
-  const hasRowHeader = createMemo(() => local.hasRowHeader ?? false);
+  const hasRowHeader = createMemo(() => props.hasRowHeader ?? false);
   let scrollElement: HTMLDivElement | undefined;
 
-  onMount(() => {
+  onSettled(() => {
     const element = scrollElement;
     if (element == null) {
-      return;
+      return undefined;
     }
 
     const measure = () => {
@@ -54,14 +42,14 @@ export const ElmTable = (props: ElmTableProps) => {
         : new ResizeObserver(measure);
     observer?.observe(element);
 
-    onCleanup(() => {
+    return () => {
       element.removeEventListener("scroll", measure);
       observer?.disconnect();
-    });
+    };
   });
 
   return (
-    <HasRowHeaderContext.Provider value={hasRowHeader}>
+    <HasRowHeaderContext value={hasRowHeader}>
       <div
         class={styles["elm-table-frame"]}
         data-overflow-start={canScroll() && !atStart() ? "" : undefined}
@@ -72,10 +60,10 @@ export const ElmTable = (props: ElmTableProps) => {
             scrollElement = element;
           }}
           class={styles["elm-table-scroll"]}
-          tabIndex={canScroll() ? 0 : undefined}
-          role={canScroll() && local.caption != null ? "region" : undefined}
+          tabindex={canScroll() ? 0 : undefined}
+          role={canScroll() && props.caption != null ? "region" : undefined}
           aria-label={
-            canScroll() && local.caption != null ? local.caption : undefined
+            canScroll() && props.caption != null ? props.caption : undefined
           }
         >
           <table
@@ -83,11 +71,11 @@ export const ElmTable = (props: ElmTableProps) => {
             class={clsx(
               styles["elm-table"],
               textStyles.text,
-              local.hasRowHeader && styles["sticky-row-header"],
-              local.class,
+              props.hasRowHeader && styles["sticky-row-header"],
+              props.class,
             )}
           >
-            <Show when={local.caption}>
+            <Show when={props.caption}>
               {(caption) => (
                 <caption>
                   <span class={styles.caption}>
@@ -100,10 +88,10 @@ export const ElmTable = (props: ElmTableProps) => {
                 </caption>
               )}
             </Show>
-            {local.children}
+            {props.children}
           </table>
         </div>
       </div>
-    </HasRowHeaderContext.Provider>
+    </HasRowHeaderContext>
   );
 };

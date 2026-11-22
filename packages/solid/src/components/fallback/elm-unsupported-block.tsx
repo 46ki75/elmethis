@@ -1,4 +1,5 @@
-import { splitProps, type JSX } from "solid-js";
+import { type JSX } from "@solidjs/web";
+import { omit } from "solid-js";
 import { clsx } from "clsx";
 
 import styles from "./elm-unsupported-block.module.css";
@@ -9,10 +10,10 @@ export interface ElmUnsupportedBlockProps extends JSX.HTMLAttributes<HTMLDivElem
 }
 
 export const ElmUnsupportedBlock = (props: ElmUnsupportedBlockProps) => {
-  const [local, rest] = splitProps(props, ["class", "children", "details"]);
+  const rest = omit(props, "class", "children", "details");
 
   return (
-    <div class={clsx(styles["elm-unsupported-block"], local.class)} {...rest}>
+    <div class={clsx(styles["elm-unsupported-block"], props.class)} {...rest}>
       <div class={styles.message}>
         <svg
           viewBox="0 0 24 24"
@@ -24,9 +25,9 @@ export const ElmUnsupportedBlock = (props: ElmUnsupportedBlockProps) => {
         </svg>
         <ElmInlineText>UNSUPPORTED BLOCK</ElmInlineText>
       </div>
-      {local.details && (
+      {props.details && (
         <div class={styles.details}>
-          <ElmInlineText>{local.details}</ElmInlineText>
+          <ElmInlineText>{props.details}</ElmInlineText>
         </div>
       )}
     </div>

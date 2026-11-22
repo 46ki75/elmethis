@@ -1,4 +1,5 @@
-import { mergeProps, splitProps, type JSX } from "solid-js";
+import { type JSX } from "@solidjs/web";
+import { omit } from "solid-js";
 import { clsx } from "clsx";
 
 import styles from "./elm-dot-loading-icon.module.css";
@@ -10,18 +11,14 @@ export interface ElmDotLoadingIconProps extends JSX.HTMLAttributes<HTMLSpanEleme
 }
 
 export const ElmDotLoadingIcon = (props: ElmDotLoadingIconProps) => {
-  const merged = mergeProps({ size: "4em" }, props);
-  const [local, rest] = splitProps(merged, [
-    "class",
-    "style",
-    "children",
-    "size",
-  ]);
+  const rest = omit(props, "class", "style", "children", "size");
 
   return (
     <span
-      class={clsx(styles["elm-dot-loading-icon"], local.class)}
-      style={mergeStyle(local.style, { "--elmethis-scoped-size": local.size })}
+      class={clsx(styles["elm-dot-loading-icon"], props.class)}
+      style={mergeStyle(props.style, {
+        "--elmethis-scoped-size": props.size ?? "4em",
+      })}
       {...rest}
     >
       <span class={styles.dot} aria-hidden="true" />

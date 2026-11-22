@@ -1,4 +1,5 @@
-import { For, splitProps, type JSX } from "solid-js";
+import { type JSX } from "@solidjs/web";
+import { For, omit } from "solid-js";
 import { clsx } from "clsx";
 
 import styles from "./elm-color-primitive-sample.module.css";
@@ -29,15 +30,23 @@ const PRIMITIVE_SCALES = [
 export const ElmColorPrimitiveSample = (
   props: ElmColorPrimitiveSampleProps,
 ) => {
-  const [local, rest] = splitProps(props, ["class", "style"]);
+  const rest = omit(props, "class", "style", "onClick");
   const copy = createColorSampleCopy();
 
   return (
     <div
       {...rest}
-      class={clsx(styles["elm-color-primitive-sample"], local.class)}
-      style={local.style}
-      on:click={(event) => void copy.copyToken(event)}
+      class={clsx(styles["elm-color-primitive-sample"], props.class)}
+      style={props.style}
+      onClick={(event) => {
+        void copy.copyToken(event);
+        const handler = props.onClick;
+        if (typeof handler === "function") {
+          handler(event);
+        } else {
+          handler?.[0](handler[1], event);
+        }
+      }}
     >
       <div class={styles.toolbar}>
         <button

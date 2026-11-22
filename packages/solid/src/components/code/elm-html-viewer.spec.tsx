@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { flush, createSignal } from "solid-js";
 import { describe, expect, it } from "vitest";
 
 import { ElmHtmlViewer } from "./elm-html-viewer";
@@ -63,9 +63,11 @@ describe("[CSR] ElmHtmlViewer", () => {
     const iframe = container.querySelector("iframe")!;
 
     setHtml("<p>second</p>");
+    flush();
     expect(iframe).toHaveAttribute("srcdoc", "<p>second</p>");
 
     setSrc("data:text/html,<p>remote</p>");
+    flush();
     expect(container.querySelector("figure")).toBe(figure);
     expect(container.querySelector("iframe")).toBe(iframe);
     expect(iframe).toHaveAttribute("src", "data:text/html,<p>remote</p>");

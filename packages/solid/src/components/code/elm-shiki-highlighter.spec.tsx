@@ -118,6 +118,35 @@ describe("[CSR] ElmShikiHighlighter", () => {
     expect(rendered.container.textContent).not.toContain("old code");
   });
 
+  it("does not hold other views while a new highlight is pending", async () => {
+    let finishHighlight: (() => void) | undefined;
+    shiki.codeToHtml.mockImplementation(async (code) => {
+      if (code === "old code") {
+        return highlighted(code);
+      }
+      return new Promise((resolve) => {
+        finishHighlight = () => resolve(highlighted(code));
+      });
+    });
+    const [code, setCode] = createSignal("old code");
+    const rendered = render(() => (
+      <>
+        <output data-testid="current-code">{code()}</output>
+        <ElmShikiHighlighter code={code()} language="rust" />
+      </>
+    ));
+    const highlighter = () => rendered.container.querySelector("pre.shiki");
+    await vi.waitFor(() => expect(highlighter()).toHaveTextContent("old code"));
+
+    setCode("new code");
+    await vi.waitFor(() => expect(finishHighlight).toBeTypeOf("function"));
+    expect(rendered.getByTestId("current-code")).toHaveTextContent("new code");
+    expect(highlighter()).toHaveTextContent("old code");
+
+    finishHighlight!();
+    await vi.waitFor(() => expect(highlighter()).toHaveTextContent("new code"));
+  });
+
   it("ignores highlighting that resolves after unmount", async () => {
     let resolve: ((value: string) => void) | undefined;
     shiki.codeToHtml.mockImplementation(

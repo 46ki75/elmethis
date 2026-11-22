@@ -1,4 +1,5 @@
-import { Show, splitProps, type JSX } from "solid-js";
+import { Show, omit } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { clsx } from "clsx";
 
 import { callEventHandler } from "../../primitives/call-event-handler";
@@ -20,7 +21,8 @@ export interface ElmButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonEleme
 }
 
 export const ElmButton = (props: ElmButtonProps) => {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     "class",
     "style",
     "onClick",
@@ -30,49 +32,49 @@ export const ElmButton = (props: ElmButtonProps) => {
     "primary",
     "disabled",
     "children",
-  ]);
+  );
 
   const handleClick: JSX.EventHandler<HTMLButtonElement, MouseEvent> = (
     event,
   ) => {
-    if (local.isLoading || local.disabled || !local.onClick) {
+    if (props.isLoading || props.disabled || !props.onClick) {
       return;
     }
 
-    callEventHandler(local.onClick, event);
+    callEventHandler(props.onClick, event);
   };
 
   return (
     <button
       {...rest}
       onClick={handleClick}
-      disabled={local.disabled}
+      disabled={props.disabled}
       class={clsx(
         styles["elm-button"],
-        !local.isLoading && !local.disabled && styles.enable,
-        local.color && styles.colored,
-        !local.color && !local.primary && styles.normal,
-        !local.color && local.primary && styles.primary,
-        local.class,
+        !props.isLoading && !props.disabled && styles.enable,
+        props.color && styles.colored,
+        !props.color && !props.primary && styles.normal,
+        !props.color && props.primary && styles.primary,
+        props.class,
       )}
-      style={mergeStyle(local.style, {
-        display: local.block ? "flex" : "inline-flex",
-        width: local.block ? "100%" : "auto",
-        cursor: local.disabled
+      style={mergeStyle(props.style, {
+        display: props.block ? "flex" : "inline-flex",
+        width: props.block ? "100%" : "auto",
+        cursor: props.disabled
           ? "not-allowed"
-          : local.isLoading
+          : props.isLoading
             ? "progress"
             : "pointer",
         "--elmethis-scoped-opacity":
-          local.disabled || local.isLoading ? 0.6 : undefined,
-        "--elmethis-scoped-color": local.color,
+          props.disabled || props.isLoading ? 0.6 : undefined,
+        "--elmethis-scoped-color": props.color,
       })}
     >
       <Show
-        when={!local.isLoading}
+        when={!props.isLoading}
         fallback={<ElmDotLoadingIcon size="1.5rem" />}
       >
-        <span class={styles.flex}>{local.children}</span>
+        <span class={styles.flex}>{props.children}</span>
       </Show>
     </button>
   );

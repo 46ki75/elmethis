@@ -1,4 +1,5 @@
-import { onCleanup, splitProps, type JSX } from "solid-js";
+import { type JSX } from "@solidjs/web";
+import { onCleanup, omit } from "solid-js";
 import { clsx } from "clsx";
 import { mdiDownload, mdiOpenInNew } from "@mdi/js";
 
@@ -29,7 +30,8 @@ export interface ElmHtmlViewerProps
 }
 
 export const ElmHtmlViewer = (props: ElmHtmlViewerProps) => {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     "allowScripts",
     "autoHeight",
     "class",
@@ -38,7 +40,7 @@ export const ElmHtmlViewer = (props: ElmHtmlViewerProps) => {
     "html",
     "sandbox",
     "src",
-  ]);
+  );
   const pendingPopupUrls = new Set<string>();
 
   const revokePopupUrl = (url: string) => {
@@ -56,8 +58,8 @@ export const ElmHtmlViewer = (props: ElmHtmlViewerProps) => {
   });
 
   const handleOpenInNewTab = () => {
-    if (local.src !== undefined) {
-      window.open(local.src, "_blank", "noreferrer");
+    if (props.src !== undefined) {
+      window.open(props.src, "_blank", "noreferrer");
       return;
     }
 
@@ -66,7 +68,7 @@ export const ElmHtmlViewer = (props: ElmHtmlViewerProps) => {
       // JSON serialization avoids srcdoc attribute escaping. Escaping every
       // closing tag prevents an HTML parser from treating caller-supplied
       // `</script>` as the end of this wrapper's own script element.
-      const serializedHtml = JSON.stringify(local.html ?? "").replace(
+      const serializedHtml = JSON.stringify(props.html ?? "").replace(
         /<\//g,
         "<\\/",
       );
@@ -109,15 +111,15 @@ export const ElmHtmlViewer = (props: ElmHtmlViewerProps) => {
 
     try {
       link = document.createElement("a");
-      if (local.src !== undefined) {
-        link.href = local.src;
+      if (props.src !== undefined) {
+        link.href = props.src;
       } else {
         url = URL.createObjectURL(
-          new Blob([local.html ?? ""], { type: "text/html" }),
+          new Blob([props.html ?? ""], { type: "text/html" }),
         );
         link.href = url;
       }
-      link.download = local.filename || "download.html";
+      link.download = props.filename || "download.html";
       document.body.appendChild(link);
       link.click();
     } catch (error) {
@@ -131,7 +133,7 @@ export const ElmHtmlViewer = (props: ElmHtmlViewerProps) => {
   };
 
   return (
-    <figure {...rest} class={clsx(styles["elm-html-viewer"], local.class)}>
+    <figure {...rest} class={clsx(styles["elm-html-viewer"], props.class)}>
       <div class={styles.header}>
         <button
           type="button"
@@ -156,12 +158,12 @@ export const ElmHtmlViewer = (props: ElmHtmlViewerProps) => {
 
       <div class={styles.content}>
         <ElmHtml
-          html={local.html}
-          src={local.src}
-          sandbox={local.sandbox}
-          autoHeight={local.autoHeight}
-          allowScripts={local.allowScripts}
-          height={local.height}
+          html={props.html}
+          src={props.src}
+          sandbox={props.sandbox}
+          autoHeight={props.autoHeight}
+          allowScripts={props.allowScripts}
+          height={props.height}
         />
       </div>
     </figure>

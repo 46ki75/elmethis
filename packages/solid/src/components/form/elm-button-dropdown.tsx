@@ -1,14 +1,5 @@
-import {
-  createMemo,
-  createSignal,
-  For,
-  mergeProps,
-  onCleanup,
-  onMount,
-  Show,
-  splitProps,
-  type JSX,
-} from "solid-js";
+import { createMemo, For, omit, onSettled, Show } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { clsx } from "clsx";
 import { mdiChevronRight, mdiMenuDown } from "@mdi/js";
 
@@ -92,16 +83,8 @@ export interface ElmButtonDropdownProps extends Omit<
 }
 
 export const ElmButtonDropdown = (props: ElmButtonDropdownProps) => {
-  const merged = mergeProps(
-    {
-      defaultSelectedOptionId: null,
-      primary: true,
-      autoClose: true,
-      dropdownIcon: mdiMenuDown,
-    },
+  const rest = omit(
     props,
-  );
-  const [local, rest] = splitProps(merged, [
     "ref",
     "class",
     "style",
@@ -124,45 +107,36 @@ export const ElmButtonDropdown = (props: ElmButtonDropdownProps) => {
     "onClick",
     "onItemClick",
     "onOpenChange",
-  ]);
+  );
   const [selected, setSelected] = createControllableSignal<string | null>({
-    value: () => local.selectedOptionId,
-    defaultValue: () => local.defaultSelectedOptionId,
+    value: () => props.selectedOptionId,
+    defaultValue: () => props.defaultSelectedOptionId ?? null,
     onChange: (selectedOptionId) =>
-      local.onSelectedOptionIdChange?.(selectedOptionId),
+      props.onSelectedOptionIdChange?.(selectedOptionId),
   });
   const selectedItem = createMemo(
-    () => local.items.find((item) => item.id === selected()) ?? null,
+    () => props.items.find((item) => item.id === selected()) ?? null,
   );
-  const [isOpen, setIsOpen] = createSignal(false);
+  const [isOpen, setOpen] = createControllableSignal({
+    defaultValue: () => false,
+    onChange: (open) => props.onOpenChange?.(open),
+  });
   let root!: HTMLDivElement;
 
-  const setOpen = (next: boolean) => {
-    if (isOpen() === next) {
-      return;
-    }
-    setIsOpen(next);
-    local.onOpenChange?.(next);
-  };
-
-  onMount(() => {
+  onSettled(() => {
     const handleOutsideClick = (event: MouseEvent) => {
-      if (
-        isOpen() &&
-        event.target instanceof Node &&
-        !root.contains(event.target)
-      ) {
+      if (event.target instanceof Node && !root.contains(event.target)) {
         setOpen(false);
       }
     };
 
     document.addEventListener("click", handleOutsideClick);
-    onCleanup(() => document.removeEventListener("click", handleOutsideClick));
+    return () => document.removeEventListener("click", handleOutsideClick);
   });
 
   const dropdownDisabled = () =>
-    local.disabled || local.disableDropdown || local.isLoading;
-  const mainDisabled = () => local.disabled || local.disableMainButton;
+    props.disabled || props.disableDropdown || props.isLoading;
+  const mainDisabled = () => props.disabled || props.disableMainButton;
 
   const handleItemClick = (item: ElmButtonDropdownItem) => {
     if (item.disabled) {
@@ -170,8 +144,8 @@ export const ElmButtonDropdown = (props: ElmButtonDropdownProps) => {
     }
     setSelected(item.id);
     item.onClick?.();
-    local.onItemClick?.(item);
-    if (local.autoClose) {
+    props.onItemClick?.(item);
+    if (props.autoClose ?? true) {
       setOpen(false);
     }
   };
@@ -179,35 +153,35 @@ export const ElmButtonDropdown = (props: ElmButtonDropdownProps) => {
   return (
     <div
       {...rest}
-      ref={(element) => {
-        root = element;
-        if (typeof local.ref === "function") {
-          local.ref(element);
-        }
-      }}
+      ref={[
+        (element) => {
+          root = element;
+        },
+        props.ref,
+      ]}
       class={clsx(
         styles["elm-button-dropdown"],
-        local.block && styles.block,
-        local.class,
+        props.block && styles.block,
+        props.class,
       )}
-      style={local.style}
+      style={props.style}
     >
       <ElmButton
         class={clsx(styles.main, styles.segment)}
         type="button"
-        primary={local.primary}
-        color={local.color}
-        isLoading={local.isLoading}
+        primary={props.primary ?? true}
+        color={props.color}
+        isLoading={props.isLoading}
         disabled={mainDisabled()}
-        onClick={() => local.onClick?.(selectedItem())}
+        onClick={() => props.onClick?.(selectedItem())}
       >
         <Show
           when={selectedItem()}
           keyed
           fallback={
             <>
-              {local.icon}
-              {local.label}
+              {props.icon}
+              {props.label}
             </>
           }
         >
@@ -225,22 +199,22 @@ export const ElmButtonDropdown = (props: ElmButtonDropdownProps) => {
       <ElmButton
         class={clsx(styles.caret, styles.segment)}
         type="button"
-        primary={local.primary}
-        color={local.color}
+        primary={props.primary ?? true}
+        color={props.color}
         disabled={dropdownDisabled()}
         onClick={() => {
           if (!dropdownDisabled()) {
-            setOpen(!isOpen());
+            setOpen((open) => !open);
           }
         }}
         aria-label="Toggle dropdown"
-        aria-expanded={isOpen()}
+        aria-expanded={isOpen() ? "true" : "false"}
       >
-        <ElmMdiIcon path={local.dropdownIcon} size="1.25rem" />
+        <ElmMdiIcon path={props.dropdownIcon ?? mdiMenuDown} size="1.25rem" />
       </ElmButton>
 
       <ElmCollapse isOpen={isOpen()} class={styles.menu}>
-        <For each={local.items}>
+        <For each={props.items}>
           {(item) => (
             <div
               class={clsx(
@@ -249,7 +223,7 @@ export const ElmButtonDropdown = (props: ElmButtonDropdownProps) => {
                 item.id === selected() && styles.selected,
                 item.disabled && styles["item-disabled"],
               )}
-              aria-selected={item.id === selected()}
+              aria-selected={item.id === selected() ? "true" : "false"}
               onClick={(event) => {
                 event.stopPropagation();
                 handleItemClick(item);

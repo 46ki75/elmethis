@@ -1,4 +1,4 @@
-import { renderToString } from "solid-js/web";
+import { renderToString } from "@solidjs/web";
 import { Window } from "happy-dom";
 import { describe, expect, it } from "vitest";
 

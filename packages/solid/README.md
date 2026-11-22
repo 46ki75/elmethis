@@ -7,6 +7,12 @@ reactivity, ownership, and DOM conventions.
 Components live under `src/components` and the public inventory is maintained in
 `src/exports.ts`. Design tokens and shared schemas come from `@elmethis/core`.
 
+This package targets Solid 2 and requires Node.js 22.12 or later. Install
+`solid-js` and `@solidjs/web` alongside it. For Vite, use `@solidjs/vite-plugin`
+and set TypeScript's `jsxImportSource` to `@solidjs/web`. See the
+[Solid 1 migration guide](https://docs.solidjs.com/migration/from-solid-1/)
+if upgrading an existing app.
+
 ```tsx
 import { ElmDivider } from "@elmethis/solid";
 import "@elmethis/solid/style.css";
@@ -147,5 +153,5 @@ Always pass a function to the Solid renderer: `render(() => <Component />)`.
 See the repository-level `TESTING.md` for the shared conventions.
 
 The `solid` package export preserves JSX so Solid-aware consumers can compile
-components for their own client or SSR target. `solid-js` is a peer dependency
-to ensure the library and consuming application share one reactive runtime.
+components for their own client or SSR target. `solid-js` and `@solidjs/web`
+are peers so the library and app share the same runtime and renderer.

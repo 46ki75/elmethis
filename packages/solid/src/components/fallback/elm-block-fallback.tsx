@@ -1,4 +1,5 @@
-import { mergeProps, splitProps, type JSX } from "solid-js";
+import { type JSX } from "@solidjs/web";
+import { omit } from "solid-js";
 import { clsx } from "clsx";
 
 import styles from "./elm-block-fallback.module.css";
@@ -11,19 +12,13 @@ export interface ElmBlockFallbackProps extends JSX.HTMLAttributes<HTMLDivElement
 }
 
 export const ElmBlockFallback = (props: ElmBlockFallbackProps) => {
-  const merged = mergeProps({ height: "16rem" }, props);
-  const [local, rest] = splitProps(merged, [
-    "class",
-    "style",
-    "children",
-    "height",
-  ]);
+  const rest = omit(props, "class", "style", "children", "height");
 
   return (
     <div
-      class={clsx(styles["elm-block-fallback"], local.class)}
-      style={mergeStyle(local.style, {
-        "--elmethis-scoped-height": local.height,
+      class={clsx(styles["elm-block-fallback"], props.class)}
+      style={mergeStyle(props.style, {
+        "--elmethis-scoped-height": props.height ?? "16rem",
       })}
       {...rest}
     >

@@ -29,7 +29,7 @@ export interface AgentSubscriberState {
 }
 
 export interface CreateAgentSubscriberOptions {
-  state: AgentSubscriberState;
+  setState: (update: (draft: AgentSubscriberState) => void) => void;
   getTools: () => ToolRegistry;
   onNeedsReRun: (pendingToolMessages: Message[]) => unknown;
   onIdle?: () => unknown;
@@ -38,7 +38,7 @@ export interface CreateAgentSubscriberOptions {
 const isAbortError = (error: Error): boolean => error.name === "AbortError";
 
 export function createAgentSubscriber({
-  state,
+  setState,
   getTools,
   onNeedsReRun,
   onIdle,
@@ -46,6 +46,11 @@ export function createAgentSubscriber({
   let pendingToolMessages: Message[] = [];
   let toolsForRun: ToolRegistry = {};
   const backendToolCalls = new Set<string>();
+  const setActivity = (activity: AgentActivity) => {
+    setState((draft) => {
+      draft.activity = activity;
+    });
+  };
 
   return {
     onRunInitialized({ input }) {
@@ -60,14 +65,16 @@ export function createAgentSubscriber({
         }
       }
       backendToolCalls.clear();
-      state.isRunning = true;
-      state.status = "running";
-      state.activity = "idle";
-      state.error = null;
-      state.pendingInterrupts = [];
+      setState((draft) => {
+        draft.isRunning = true;
+        draft.status = "running";
+        draft.activity = "idle";
+        draft.error = null;
+        draft.pendingInterrupts = [];
+      });
     },
     onMessagesChanged({ messages }) {
-      reconcileMessages(state.messages, messages);
+      setState((draft) => reconcileMessages(draft.messages, messages));
     },
     async onToolCallEndEvent({ event, toolCallName, toolCallArgs }) {
       if (backendToolCalls.delete(event.toolCallId)) {
@@ -86,39 +93,43 @@ export function createAgentSubscriber({
       pendingToolMessages.push(toolMessage);
     },
     onTextMessageStartEvent() {
-      state.activity = "writing";
+      setActivity("writing");
     },
     onToolCallStartEvent({ event }) {
       if (event.metadata?.elmethisCodexTool === "backend") {
         backendToolCalls.add(event.toolCallId);
       }
-      state.activity = "calling_tool";
+      setActivity("calling_tool");
     },
     onReasoningStartEvent() {
-      state.activity = "thinking";
+      setActivity("thinking");
     },
     onReasoningMessageStartEvent() {
-      state.activity = "thinking";
+      setActivity("thinking");
     },
     onStateSnapshotEvent() {
-      state.activity = "updating_state";
+      setActivity("updating_state");
     },
     onStateDeltaEvent() {
-      state.activity = "updating_state";
+      setActivity("updating_state");
     },
     onRunFinishedEvent(params) {
-      state.activity = "idle";
-      if (params.outcome === "interrupt") {
-        state.status = "awaiting_input";
-        state.pendingInterrupts = [...params.interrupts];
-      } else if (pendingToolMessages.length === 0) {
-        state.status = "success";
-      }
+      setState((draft) => {
+        draft.activity = "idle";
+        if (params.outcome === "interrupt") {
+          draft.status = "awaiting_input";
+          draft.pendingInterrupts = [...params.interrupts];
+        } else if (pendingToolMessages.length === 0) {
+          draft.status = "success";
+        }
+      });
     },
     async onRunFinalized() {
       if (pendingToolMessages.length === 0) {
-        state.isRunning = false;
-        state.activity = "idle";
+        setState((draft) => {
+          draft.isRunning = false;
+          draft.activity = "idle";
+        });
         await onIdle?.();
         return;
       }
@@ -127,20 +138,24 @@ export function createAgentSubscriber({
       await onNeedsReRun(drained);
     },
     onRunFailed({ error }) {
-      state.isRunning = false;
-      state.activity = "idle";
-      if (isAbortError(error)) {
-        state.status = "aborted";
-        return;
-      }
-      state.error = error.message;
-      state.status = "error";
+      setState((draft) => {
+        draft.isRunning = false;
+        draft.activity = "idle";
+        if (isAbortError(error)) {
+          draft.status = "aborted";
+          return;
+        }
+        draft.error = error.message;
+        draft.status = "error";
+      });
     },
     onRunErrorEvent({ event }) {
-      state.error = event.message;
-      state.status = "error";
-      state.isRunning = false;
-      state.activity = "idle";
+      setState((draft) => {
+        draft.error = event.message;
+        draft.status = "error";
+        draft.isRunning = false;
+        draft.activity = "idle";
+      });
     },
   };
 }

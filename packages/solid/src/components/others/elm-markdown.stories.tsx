@@ -1,9 +1,5 @@
-import {
-  createSignal,
-  onCleanup,
-  onMount,
-  type ComponentProps,
-} from "solid-js";
+import { type ComponentProps } from "@solidjs/web";
+import { createSignal, onSettled } from "solid-js";
 import type { Meta, StoryObj } from "storybook-solidjs-vite";
 
 import { ElmMarkdown } from "./elm-markdown";
@@ -56,7 +52,7 @@ const StreamingMarkdown = () => {
   const chunks = MARKDOWN.split(/(?<=\s)|(?=\s)/);
   const [markdown, setMarkdown] = createSignal("");
 
-  onMount(() => {
+  onSettled(() => {
     let index = 0;
     const timer = setInterval(() => {
       const chunk = chunks[index++];
@@ -67,7 +63,7 @@ const StreamingMarkdown = () => {
       setMarkdown((current) => current + chunk);
     }, 80);
 
-    onCleanup(() => clearInterval(timer));
+    return () => clearInterval(timer);
   });
 
   return <ElmMarkdown markdown={markdown()} isStreaming />;

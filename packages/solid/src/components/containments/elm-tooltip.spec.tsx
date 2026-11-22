@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { describe, expect, it, vi } from "vitest";
 
 import { ElmTooltip } from "./elm-tooltip";
@@ -35,6 +35,7 @@ describe("[CSR] ElmTooltip", () => {
     ));
 
     setValue("Second");
+    flush();
 
     expect(rendered.container).not.toHaveTextContent("First");
     expect(rendered.container).toHaveTextContent("Second");

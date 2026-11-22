@@ -1,14 +1,5 @@
-import {
-  createEffect,
-  createMemo,
-  createSignal,
-  mergeProps,
-  on,
-  onCleanup,
-  Show,
-  splitProps,
-  type JSX,
-} from "solid-js";
+import type { JSX } from "@solidjs/web";
+import { createEffect, createMemo, createSignal, omit, Show } from "solid-js";
 import { clsx } from "clsx";
 
 import styles from "./elm-html.module.css";
@@ -110,29 +101,12 @@ function withAutoHeightReporter(html: string): string {
 })();</script>`;
 }
 
-function withoutProtectedAttributes<T extends Record<string, unknown>>(
-  props: T,
-): T {
-  const safe = {} as T;
-
-  for (const name of Object.keys(props)) {
-    if (PROTECTED_ATTRIBUTES.has(name.toLowerCase())) {
-      continue;
-    }
-    Object.defineProperty(safe, name, {
-      configurable: true,
-      enumerable: true,
-      get: () => Reflect.get(props, name),
-    });
-  }
-
-  return safe;
-}
+type IframeAttributes = JSX.IframeHTMLAttributes<HTMLIFrameElement>;
 
 function mergeMeasuredHeight(
-  style: JSX.CSSProperties | string | undefined,
+  style: IframeAttributes["style"],
   height: number | undefined,
-): JSX.CSSProperties | string | undefined {
+): IframeAttributes["style"] {
   if (height === undefined) {
     return style;
   }
@@ -141,7 +115,7 @@ function mergeMeasuredHeight(
       .filter(Boolean)
       .join(";");
   }
-  return { ...(style ?? {}), height: `${height}px` };
+  return { ...(style || {}), height: `${height}px` };
 }
 
 interface ElmHtmlFrameProps {
@@ -149,113 +123,119 @@ interface ElmHtmlFrameProps {
   src?: string;
   autoHeight: boolean;
   allowScripts: boolean;
-  sandbox?: string;
-  title?: string;
-  class?: string;
-  style?: JSX.CSSProperties | string;
-  height?: number | string;
-  forwardedRef?: HTMLIFrameElement | ((element: HTMLIFrameElement) => void);
-  nativeProps: JSX.IframeHTMLAttributes<HTMLIFrameElement>;
+  sandbox?: IframeAttributes["sandbox"];
+  title?: IframeAttributes["title"];
+  class?: IframeAttributes["class"];
+  style?: IframeAttributes["style"];
+  height?: IframeAttributes["height"];
+  forwardedRef?: IframeAttributes["ref"];
+  nativeProps: IframeAttributes;
 }
 
 const ElmHtmlFrame = (props: ElmHtmlFrameProps) => {
   let iframe: HTMLIFrameElement | undefined;
   const [contentHeight, setContentHeight] = createSignal<number>();
   const hasAllowScripts = createMemo(() =>
-    sandboxHasAllowScripts(props.sandbox, props.allowScripts),
+    sandboxHasAllowScripts(props.sandbox || undefined, props.allowScripts),
   );
   const effectiveSandbox = createMemo(() =>
-    normalizeSandbox(props.sandbox, props.autoHeight, props.allowScripts),
-  );
-
-  createEffect(
-    on(
-      () => [props.html, props.src, props.sandbox, props.allowScripts] as const,
-      ([, src, sandbox, allowScripts]) => {
-        setContentHeight(undefined);
-        if (!props.autoHeight || !iframe) {
-          return;
-        }
-
-        const scriptsAllowed = sandboxHasAllowScripts(sandbox, allowScripts);
-        if (src !== undefined && scriptsAllowed) {
-          return;
-        }
-
-        if (scriptsAllowed) {
-          const onMessage = (event: MessageEvent) => {
-            if (event.source !== iframe?.contentWindow) {
-              return;
-            }
-            const data = event.data as
-              | { kind?: unknown; height?: unknown }
-              | null
-              | undefined;
-            if (
-              !data ||
-              data.kind !== AUTO_HEIGHT_MESSAGE_KIND ||
-              typeof data.height !== "number"
-            ) {
-              return;
-            }
-            setContentHeight(data.height);
-          };
-
-          window.addEventListener("message", onMessage);
-          onCleanup(() => window.removeEventListener("message", onMessage));
-          return;
-        }
-
-        let observer: ResizeObserver | undefined;
-        const contentRoot = () => {
-          try {
-            return iframe?.contentDocument?.documentElement;
-          } catch {
-            return undefined;
-          }
-        };
-        const measure = () => {
-          const root = contentRoot();
-          if (root) {
-            setContentHeight(root.scrollHeight);
-          }
-        };
-        const attachObserver = () => {
-          const root = contentRoot();
-          if (!root) {
-            return;
-          }
-          observer?.disconnect();
-          observer = new ResizeObserver(measure);
-          observer.observe(root);
-        };
-        const onLoad = () => {
-          measure();
-          attachObserver();
-        };
-
-        iframe.addEventListener("load", onLoad);
-        onCleanup(() => {
-          iframe?.removeEventListener("load", onLoad);
-          observer?.disconnect();
-        });
-      },
+    normalizeSandbox(
+      props.sandbox || undefined,
+      props.autoHeight,
+      props.allowScripts,
     ),
   );
 
+  createEffect(
+    () =>
+      [
+        props.html,
+        props.src,
+        props.autoHeight,
+        hasAllowScripts(),
+        effectiveSandbox(),
+      ] as const,
+    ([, src, autoHeight, scriptsAllowed]) => {
+      setContentHeight(undefined);
+      const element = iframe;
+      if (!autoHeight || !element || (src !== undefined && scriptsAllowed)) {
+        return undefined;
+      }
+
+      if (scriptsAllowed) {
+        const onMessage = (event: MessageEvent) => {
+          if (event.source !== element.contentWindow) {
+            return;
+          }
+          const data = event.data as
+            | { kind?: unknown; height?: unknown }
+            | null
+            | undefined;
+          if (
+            !data ||
+            data.kind !== AUTO_HEIGHT_MESSAGE_KIND ||
+            typeof data.height !== "number"
+          ) {
+            return;
+          }
+          setContentHeight(data.height);
+        };
+
+        window.addEventListener("message", onMessage);
+        return () => window.removeEventListener("message", onMessage);
+      }
+
+      let observer: ResizeObserver | undefined;
+      const contentRoot = () => {
+        try {
+          return element.contentDocument?.documentElement;
+        } catch {
+          return undefined;
+        }
+      };
+      const measure = () => {
+        const root = contentRoot();
+        if (root) {
+          setContentHeight(root.scrollHeight);
+        }
+      };
+      const attachObserver = () => {
+        const root = contentRoot();
+        if (!root) {
+          return;
+        }
+        observer?.disconnect();
+        observer = new ResizeObserver(measure);
+        observer.observe(root);
+      };
+      const onLoad = () => {
+        measure();
+        attachObserver();
+      };
+
+      element.addEventListener("load", onLoad);
+      return () => {
+        element.removeEventListener("load", onLoad);
+        observer?.disconnect();
+      };
+    },
+  );
+
   const usingSrc = () => props.src !== undefined;
-  const callerHasObjectHeight = () =>
-    typeof props.style !== "string" && props.style?.height !== undefined;
+  const callerHasObjectHeight = () => {
+    const style = props.style;
+    return typeof style === "object" && style?.height !== undefined;
+  };
 
   return (
     <iframe
       {...props.nativeProps}
-      ref={(element) => {
-        iframe = element;
-        if (typeof props.forwardedRef === "function") {
-          props.forwardedRef(element);
-        }
-      }}
+      ref={[
+        (element) => {
+          iframe = element;
+        },
+        props.forwardedRef,
+      ]}
       title={props.title ?? "Embedded HTML content"}
       class={clsx(styles["elm-html"], props.class)}
       style={
@@ -285,8 +265,8 @@ const ElmHtmlFrame = (props: ElmHtmlFrameProps) => {
 };
 
 export const ElmHtml = (props: ElmHtmlProps) => {
-  const merged = mergeProps({ autoHeight: true, allowScripts: false }, props);
-  const [local, rest] = splitProps(merged, [
+  const rest = omit(
+    props,
     "allowScripts",
     "autoHeight",
     "class",
@@ -298,23 +278,25 @@ export const ElmHtml = (props: ElmHtmlProps) => {
     "src",
     "style",
     "title",
-  ]);
-  const nativeProps = withoutProtectedAttributes(
-    rest as Record<string, unknown>,
-  ) as JSX.IframeHTMLAttributes<HTMLIFrameElement>;
+  );
+  const nativeProps = omit(
+    rest,
+    (name) =>
+      typeof name === "string" && PROTECTED_ATTRIBUTES.has(name.toLowerCase()),
+  );
 
   const frame = (autoHeight: boolean) => (
     <ElmHtmlFrame
-      html={local.html}
-      src={local.src}
+      html={props.html}
+      src={props.src}
       autoHeight={autoHeight}
-      allowScripts={local.allowScripts}
-      sandbox={local.sandbox}
-      title={local.title}
-      class={local.class}
-      style={local.style}
-      height={local.height}
-      forwardedRef={local.ref}
+      allowScripts={props.allowScripts ?? false}
+      sandbox={props.sandbox}
+      title={props.title}
+      class={props.class}
+      style={props.style}
+      height={props.height}
+      forwardedRef={props.ref}
       nativeProps={nativeProps}
     />
   );
@@ -323,7 +305,7 @@ export const ElmHtml = (props: ElmHtmlProps) => {
   // exclusive owned branches dispose and recreate the iframe browsing context
   // whenever autoHeight changes, so sandbox flags apply to a fresh navigation.
   return (
-    <Show when={local.autoHeight} keyed fallback={frame(false)}>
+    <Show when={props.autoHeight ?? true} keyed fallback={frame(false)}>
       {frame(true)}
     </Show>
   );

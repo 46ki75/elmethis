@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { page, userEvent } from "vitest/browser";
 import { describe, expect, it, vi } from "vitest";
 
@@ -100,6 +100,7 @@ describe("[Browser] ElmSlider pointer interaction", () => {
     expect(onPointerDown).toHaveBeenCalledOnce();
 
     setDisabled(true);
+    flush();
     slider.dispatchEvent(
       new PointerEvent("pointerdown", {
         bubbles: true,
@@ -226,14 +227,33 @@ describe("[Browser] ElmSlider layout and measurement", () => {
     expect(formatter).toHaveBeenCalledTimes(3);
   });
 
-  it("disconnects its ResizeObserver on cleanup", () => {
+  it("clears measurements and disconnects its ResizeObserver when labels are hidden or unmounted", () => {
     const disconnect = vi.spyOn(ResizeObserver.prototype, "disconnect");
+    const [showLabels, setShowLabels] = createSignal(true);
     const rendered = render(() => (
-      <ElmSlider min={0} max={10} step={5} markerLabels />
+      <ElmSlider min={0} max={10} step={5} markerLabels={showLabels()} />
     ));
+    const wrapper = rendered.container.querySelector<HTMLElement>(
+      `.${styles["elm-slider"]}`,
+    )!;
+    const getLabelWidth = () =>
+      Number.parseFloat(
+        wrapper.style.getPropertyValue(
+          "--elmethis-scoped-max-marker-label-width",
+        ),
+      );
+    expect(getLabelWidth()).toBeGreaterThan(0);
 
+    setShowLabels(false);
+    flush();
+    expect(getLabelWidth()).toBe(0);
+    expect(disconnect).toHaveBeenCalledOnce();
+
+    setShowLabels(true);
+    flush();
+    expect(getLabelWidth()).toBeGreaterThan(0);
     rendered.unmount();
-    expect(disconnect).toHaveBeenCalled();
+    expect(disconnect).toHaveBeenCalledTimes(2);
   });
 
   it("positions the terminal vertical marker flush with the top edge", async () => {

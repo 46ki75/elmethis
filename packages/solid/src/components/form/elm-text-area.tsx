@@ -1,4 +1,5 @@
-import { createSignal, Show, splitProps, type JSX } from "solid-js";
+import { createSignal, omit, Show, untrack } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { clsx } from "clsx";
 import { mdiTextLong } from "@mdi/js";
 
@@ -8,7 +9,7 @@ import styles from "./elm-text-area.module.css";
 
 export interface ElmTextAreaProps extends Omit<
   JSX.TextareaHTMLAttributes<HTMLTextAreaElement>,
-  "value"
+  "value" | "defaultValue"
 > {
   label: string;
 
@@ -26,14 +27,15 @@ export interface ElmTextAreaProps extends Omit<
 }
 
 export const ElmTextArea = (props: ElmTextAreaProps) => {
-  const [local, rest] = splitProps(props, [
-    "ref",
+  const rest = omit(
+    props,
     "class",
     "style",
     "children",
     "label",
     "icon",
     "maxLength",
+    "maxlength",
     "placeholder",
     "disabled",
     "isLoading",
@@ -45,53 +47,53 @@ export const ElmTextArea = (props: ElmTextAreaProps) => {
     "onChange",
     "onFocus",
     "onBlur",
-  ]);
+  );
   const [isFocused, setIsFocused] = createSignal(false);
   const [internalLength, setInternalLength] = createSignal(
-    String(local.defaultValue ?? "").length,
+    untrack(() => String(props.defaultValue ?? "").length),
   );
   const hasTrackedValue = () =>
-    local.value != null || local.defaultValue != null;
+    props.value != null || props.defaultValue != null;
   const length = () =>
-    local.value != null ? String(local.value).length : internalLength();
+    props.value != null ? String(props.value).length : internalLength();
 
   const handleInput: JSX.InputEventHandler<HTMLTextAreaElement, InputEvent> = (
     event,
   ) => {
     setInternalLength(event.currentTarget.value.length);
-    if (typeof local.onInput === "function") {
-      local.onInput(event);
-    } else if (local.onInput) {
-      local.onInput[0](local.onInput[1], event);
+    if (typeof props.onInput === "function") {
+      props.onInput(event);
+    } else if (props.onInput) {
+      props.onInput[0](props.onInput[1], event);
     }
   };
   const handleChange: JSX.ChangeEventHandler<HTMLTextAreaElement, Event> = (
     event,
   ) => {
-    if (typeof local.onChange === "function") {
-      local.onChange(event);
-    } else if (local.onChange) {
-      local.onChange[0](local.onChange[1], event);
+    if (typeof props.onChange === "function") {
+      props.onChange(event);
+    } else if (props.onChange) {
+      props.onChange[0](props.onChange[1], event);
     }
   };
   const handleFocus: JSX.FocusEventHandler<HTMLTextAreaElement, FocusEvent> = (
     event,
   ) => {
     setIsFocused(true);
-    if (typeof local.onFocus === "function") {
-      local.onFocus(event);
-    } else if (local.onFocus) {
-      local.onFocus[0](local.onFocus[1], event);
+    if (typeof props.onFocus === "function") {
+      props.onFocus(event);
+    } else if (props.onFocus) {
+      props.onFocus[0](props.onFocus[1], event);
     }
   };
   const handleBlur: JSX.FocusEventHandler<HTMLTextAreaElement, FocusEvent> = (
     event,
   ) => {
     setIsFocused(false);
-    if (typeof local.onBlur === "function") {
-      local.onBlur(event);
-    } else if (local.onBlur) {
-      local.onBlur[0](local.onBlur[1], event);
+    if (typeof props.onBlur === "function") {
+      props.onBlur(event);
+    } else if (props.onBlur) {
+      props.onBlur[0](props.onBlur[1], event);
     }
   };
 
@@ -100,30 +102,30 @@ export const ElmTextArea = (props: ElmTextAreaProps) => {
       class={clsx(
         styles["elm-text-area"],
         isFocused() && styles.active,
-        (local.disabled || local.isLoading) && styles.disabled,
-        local.class,
+        (props.disabled || props.isLoading) && styles.disabled,
+        props.class,
       )}
-      style={local.style}
+      style={props.style}
     >
       <span class={clsx(styles.header, isFocused() && styles["label-active"])}>
-        {local.icon ?? <ElmMdiIcon path={mdiTextLong} size="0.75rem" />}
+        {props.icon ?? <ElmMdiIcon path={mdiTextLong} size="0.75rem" />}
         <span>
-          {local.label}
-          <Show when={local.required}>
+          {props.label}
+          <Show when={props.required}>
             <span class={styles.requierd}>*</span>
           </Show>
         </span>
         <Show when={hasTrackedValue()}>
           <ElmInlineText
             color={
-              local.maxLength != null && length() > local.maxLength
+              props.maxLength != null && length() > props.maxLength
                 ? "var(--elmethis-color-accent-error)"
                 : "gray"
             }
             size="0.75rem"
           >
-            {local.maxLength != null
-              ? `${length()} / ${local.maxLength}`
+            {props.maxLength != null
+              ? `${length()} / ${props.maxLength}`
               : String(length())}
           </ElmInlineText>
         </Show>
@@ -132,42 +134,43 @@ export const ElmTextArea = (props: ElmTextAreaProps) => {
       <div class={styles.body}>
         <textarea
           {...rest}
-          ref={(element) => {
-            if (typeof local.ref === "function") {
-              local.ref(element);
-            }
-          }}
           value={
-            (local.value ?? local.defaultValue) as
+            (props.value ?? props.defaultValue) as
               | string
               | number
               | string[]
               | undefined
           }
-          rows={local.rows ?? 3}
-          maxLength={local.maxLength}
+          rows={props.rows ?? 3}
+          maxlength={props.maxLength ?? props.maxlength}
           class={styles.textarea}
-          placeholder={local.placeholder}
+          placeholder={props.placeholder}
           onInput={handleInput}
           onChange={handleChange}
           onFocus={handleFocus}
           onBlur={handleBlur}
-          disabled={local.disabled || local.isLoading}
-          required={local.required}
+          disabled={props.disabled || props.isLoading}
+          required={props.required}
           style={{
-            cursor: local.disabled
+            cursor: props.disabled
               ? "not-allowed"
-              : local.isLoading
+              : props.isLoading
                 ? "progress"
                 : "auto",
           }}
-          aria-required={local.required}
+          aria-required={
+            props.required === undefined
+              ? undefined
+              : props.required
+                ? "true"
+                : "false"
+          }
         />
       </div>
 
       <div
         class={styles.loading}
-        style={{ opacity: local.isLoading ? 1 : 0 }}
+        style={{ opacity: props.isLoading ? 1 : 0 }}
       />
     </label>
   );

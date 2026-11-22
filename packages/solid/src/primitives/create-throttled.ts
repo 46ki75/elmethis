@@ -6,6 +6,8 @@ import {
   type Setter,
 } from "solid-js";
 
+import { createValueSignal, resolveSetterValue } from "./create-value-signal";
+
 export interface CreateThrottledReturn<T> {
   value: Accessor<T>;
   setValue: Setter<T>;
@@ -18,15 +20,19 @@ export function createThrottled<T>(
   initialValue: T,
   interval: number,
 ): CreateThrottledReturn<T> {
-  const [value, setImmediateValue] = createSignal(initialValue, {
-    equals: Object.is,
-  });
-  const [throttledValue, setThrottledValue] = createSignal(initialValue, {
-    equals: Object.is,
-  });
+  const [value, setImmediateValue] = createValueSignal(initialValue);
+  const [throttledValue, setThrottledValue] = createValueSignal(initialValue);
   const [isCooling, setIsCooling] = createSignal(false);
+  // Timer decisions follow writes even if Solid has not committed them yet.
+  let latestValue = initialValue;
+  let publishedValue = initialValue;
   let timer: ReturnType<typeof setTimeout> | undefined;
   let disposed = false;
+
+  const publish = (nextValue: T) => {
+    setThrottledValue(() => nextValue);
+    publishedValue = nextValue;
+  };
 
   const armCooldown = () => {
     setIsCooling(true);
@@ -37,9 +43,8 @@ export function createThrottled<T>(
           return;
         }
 
-        const latestValue = untrack(value);
-        if (!Object.is(latestValue, untrack(throttledValue))) {
-          setThrottledValue(() => latestValue);
+        if (!Object.is(latestValue, publishedValue)) {
+          publish(latestValue);
           armCooldown();
         } else {
           setIsCooling(false);
@@ -49,34 +54,24 @@ export function createThrottled<T>(
     );
   };
 
-  const setValue = ((nextValue: unknown) =>
-    untrack(() => {
-      const currentValue = value();
-      const resolvedValue =
-        typeof nextValue === "function"
-          ? (nextValue as (previous: T) => T)(currentValue)
-          : (nextValue as T);
-
-      if (Object.is(resolvedValue, currentValue)) {
-        return resolvedValue;
-      }
-
-      setImmediateValue(() => resolvedValue);
-
-      if (interval <= 0) {
-        if (timer !== undefined) {
-          clearTimeout(timer);
-          timer = undefined;
-        }
-        setThrottledValue(() => resolvedValue);
-        setIsCooling(false);
-      } else if (timer === undefined) {
-        setThrottledValue(() => resolvedValue);
-        armCooldown();
-      }
-
+  const setValue = ((nextValue: unknown) => {
+    const resolvedValue = setImmediateValue((previous) =>
+      untrack(() => resolveSetterValue(nextValue, previous)),
+    );
+    if (Object.is(resolvedValue, latestValue)) {
       return resolvedValue;
-    })) as Setter<T>;
+    }
+
+    latestValue = resolvedValue;
+    if (interval <= 0) {
+      publish(resolvedValue);
+    } else if (timer === undefined) {
+      publish(resolvedValue);
+      armCooldown();
+    }
+
+    return resolvedValue;
+  }) as Setter<T>;
 
   onCleanup(() => {
     disposed = true;

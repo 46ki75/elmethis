@@ -1,4 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
+import { createRoot, flush } from "solid-js";
 import { describe, expect, it } from "vitest";
 
 import { createModal } from "./create-modal";
@@ -40,13 +41,34 @@ describe("[CSR] createModal", () => {
     );
 
     fireEvent.click(rendered.getByRole("button", { name: "Show" }));
+    flush();
     expect(rendered.getByTestId("state")).toHaveTextContent("true");
 
     fireEvent.click(rendered.getByRole("button", { name: "Hide" }));
+    flush();
     expect(rendered.getByTestId("state")).toHaveTextContent("false");
 
     fireEvent.click(rendered.getByRole("button", { name: "Toggle" }));
+    flush();
     expect(rendered.getByTestId("state")).toHaveTextContent("true");
+  });
+
+  it("composes rapid toggles before Solid commits", () => {
+    const [modal, dispose] = createRoot(
+      (dispose) => [createModal(), dispose] as const,
+    );
+
+    modal.show();
+    modal.toggle();
+    flush();
+    expect(modal.isOpen()).toBe(false);
+
+    modal.toggle();
+    modal.toggle();
+    modal.toggle();
+    flush();
+    expect(modal.isOpen()).toBe(true);
+    dispose();
   });
 
   it("can be created without options", () => {

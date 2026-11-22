@@ -1,4 +1,4 @@
-import { renderToString } from "solid-js/web";
+import { renderToString } from "@solidjs/web";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { createAsyncState } from "./create-async-state";

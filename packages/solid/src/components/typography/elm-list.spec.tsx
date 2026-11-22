@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { flush, createSignal } from "solid-js";
 import { describe, expect, it } from "vitest";
 
 import { ElmList } from "./elm-list";
@@ -33,6 +33,7 @@ describe("[CSR] ElmList", () => {
 
     setOrdered(true);
     setClassName("after");
+    flush();
 
     list = rendered.getByTestId("list");
     expect(list.tagName).toBe("OL");

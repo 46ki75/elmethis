@@ -1,4 +1,5 @@
-import { mergeProps, splitProps, type JSX } from "solid-js";
+import { omit } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { clsx } from "clsx";
 
 import { callEventHandler } from "../../primitives/call-event-handler";
@@ -28,11 +29,8 @@ export interface ElmSwitchProps extends Omit<
 }
 
 export const ElmSwitch = (props: ElmSwitchProps) => {
-  const merged = mergeProps(
-    { color: "var(--elmethis-color-primary)", size: "18px" },
+  const rest = omit(
     props,
-  );
-  const [local, rest] = splitProps(merged, [
     "class",
     "style",
     "onClick",
@@ -42,12 +40,12 @@ export const ElmSwitch = (props: ElmSwitchProps) => {
     "checked",
     "onCheckedChange",
     "children",
-  ]);
+  );
 
   const handleClick: JSX.EventHandler<HTMLDivElement, MouseEvent> = (event) => {
-    callEventHandler(local.onClick, event);
-    if (!event.defaultPrevented && !local.disabled) {
-      local.onCheckedChange?.(!local.checked);
+    callEventHandler(props.onClick, event);
+    if (!event.defaultPrevented && !props.disabled) {
+      props.onCheckedChange?.(!props.checked);
     }
   };
 
@@ -55,11 +53,12 @@ export const ElmSwitch = (props: ElmSwitchProps) => {
     <div
       {...rest}
       onClick={handleClick}
-      class={local.class}
-      style={mergeStyle(local.style, {
-        "--elmethis-scoped-color": local.color,
+      class={props.class}
+      style={mergeStyle(props.style, {
+        "--elmethis-scoped-color":
+          props.color ?? "var(--elmethis-color-primary)",
         "--elmethis-scoped-padding": "2px",
-        "--elmethis-scoped-size": local.size,
+        "--elmethis-scoped-size": props.size ?? "18px",
         "--elmethis-scoped-width":
           "calc(var(--elmethis-scoped-size) * 2 + var(--elmethis-scoped-padding) * 2)",
       })}
@@ -67,22 +66,22 @@ export const ElmSwitch = (props: ElmSwitchProps) => {
       <input
         class={styles.switch}
         type="checkbox"
-        checked={local.checked}
-        disabled={local.disabled}
-        readOnly
+        checked={props.checked}
+        disabled={props.disabled}
+        readonly
       />
       <div
         class={clsx(
           styles.bar,
-          local.checked && styles.checked,
-          local.disabled && styles.disabled,
+          props.checked && styles.checked,
+          props.disabled && styles.disabled,
         )}
       >
         <div
           class={clsx(
             styles.circle,
-            local.checked && styles.checked,
-            local.disabled && styles.disabled,
+            props.checked && styles.checked,
+            props.disabled && styles.disabled,
           )}
         />
       </div>

@@ -1,4 +1,5 @@
-import { createMemo, createSignal, Show, splitProps, type JSX } from "solid-js";
+import { createMemo, createSignal, omit, Show } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { clsx } from "clsx";
 import { mdiClose, mdiPlus, mdiSend, mdiStop } from "@mdi/js";
 import type { InputContent } from "@ag-ui/client";
@@ -34,8 +35,9 @@ export interface ElmAgUiInputProps extends Omit<
   ) => Promise<InputContent[] | null>;
 }
 
-export const ElmAgUiInput = (props: ElmAgUiInputProps) => {
-  const [local, rest] = splitProps(props, [
+export const ElmAgUiInput = (local: ElmAgUiInputProps) => {
+  const rest = omit(
+    local,
     "class",
     "children",
     "isRunning",
@@ -46,7 +48,7 @@ export const ElmAgUiInput = (props: ElmAgUiInputProps) => {
     "onAbort",
     "prompts",
     "resolvePrompt",
-  ]);
+  );
   let textAreaRef!: HTMLTextAreaElement;
   const [isPickerOpen, setIsPickerOpen] = createSignal(false);
   const [slashRange, setSlashRange] = createSignal<{

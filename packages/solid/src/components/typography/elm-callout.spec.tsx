@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { flush, createSignal } from "solid-js";
 import { describe, expect, it } from "vitest";
 
 import { ElmCallout, type AlertType } from "./elm-callout";
@@ -35,6 +35,7 @@ describe("[CSR] ElmCallout", () => {
 
     setType("warning");
     setClassName("after");
+    flush();
 
     expect(callout).toHaveTextContent("warningcallout body");
     expect(callout).toHaveClass("after");

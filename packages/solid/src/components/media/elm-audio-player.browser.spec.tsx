@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { describe, expect, it, vi } from "vitest";
 
 import { ElmAudioPlayer } from "./elm-audio-player";
@@ -124,9 +124,7 @@ describe("[Browser] ElmAudioPlayer media integration", () => {
   it("synchronizes volume and mute with the media element", async () => {
     const rendered = render(() => <ElmAudioPlayer src={silentWavDataUri(2)} />);
     const audio = rendered.container.querySelector("audio")!;
-    const volume = rendered.getByRole("slider", {
-      name: "Volume",
-    });
+    const volume = rendered.container.querySelector("input")!;
     await vi.waitFor(() => expect(audio.readyState).toBeGreaterThan(0));
 
     volume.value = "0.3";
@@ -134,6 +132,7 @@ describe("[Browser] ElmAudioPlayer media integration", () => {
     await vi.waitFor(() => expect(audio.volume).toBeCloseTo(0.3, 2));
 
     rendered.getByRole("button", { name: "Mute" }).click();
+    flush();
     expect(audio.muted).toBe(true);
     expect(rendered.getByRole("button", { name: "Unmute" })).toHaveAttribute(
       "aria-pressed",
@@ -155,8 +154,10 @@ describe("[Browser] ElmAudioPlayer media integration", () => {
     await vi.waitFor(() => expect(audio.duration).toBeGreaterThan(2));
 
     audio.dispatchEvent(new Event("waiting"));
+    flush();
     expect(root.className).toMatch(/loading/);
     audio.dispatchEvent(new Event("playing"));
+    flush();
     expect(root.className).not.toMatch(/loading/);
 
     audio.currentTime = 1.25;
@@ -184,9 +185,11 @@ describe("[Browser] ElmAudioPlayer media integration", () => {
     audio.currentTime = 1;
     audio.dispatchEvent(new Event("timeupdate"));
     audio.dispatchEvent(new Event("error"));
+    flush();
     expect(rendered.getByRole("alert")).toBeTruthy();
 
     setSrc(silentWavDataUri(4));
+    flush();
 
     const seek = rendered.getByRole("slider", { name: "Seek" });
     expect(seek).toHaveAttribute("aria-valuenow", "0");

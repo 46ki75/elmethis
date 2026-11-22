@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { flush, createSignal } from "solid-js";
 import { describe, expect, it } from "vitest";
 
 import { ElmBlockQuote } from "./elm-block-quote";
@@ -31,6 +31,7 @@ describe("[CSR] ElmBlockQuote", () => {
 
     setClassName("after");
     setText("updated");
+    flush();
 
     expect(quote).not.toHaveClass("before");
     expect(quote).toHaveClass("after");

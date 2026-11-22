@@ -66,7 +66,7 @@ const ControlledSlider = (props: ElmSliderProps) => {
         value={value()}
         onValueChange={setValue}
       />
-      <span style={{ "font-family": "monospace" }}>value: {value()}</span>
+      <span style={{ "font-family": "monospace" }}>{`value: ${value()}`}</span>
       <button onClick={() => setValue(30)}>Reset</button>
     </div>
   );

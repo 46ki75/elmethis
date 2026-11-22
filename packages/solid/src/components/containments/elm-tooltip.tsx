@@ -1,4 +1,5 @@
-import { createSignal, onCleanup, splitProps, type JSX } from "solid-js";
+import { createSignal, onCleanup, omit } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { clsx } from "clsx";
 
 import { callEventHandler } from "../../primitives/call-event-handler";
@@ -13,7 +14,8 @@ export interface ElmTooltipProps extends JSX.HTMLAttributes<HTMLSpanElement> {
 }
 
 export const ElmTooltip = (props: ElmTooltipProps) => {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     "class",
     "ref",
     "children",
@@ -21,7 +23,7 @@ export const ElmTooltip = (props: ElmTooltipProps) => {
     "tooltip",
     "onMouseOver",
     "onMouseLeave",
-  ]);
+  );
   const [isHover, setIsHover] = createSignal(false);
   const [position, setPosition] = createSignal<JSX.CSSProperties>({});
   let host: HTMLSpanElement | undefined;
@@ -57,7 +59,7 @@ export const ElmTooltip = (props: ElmTooltipProps) => {
       setIsHover(true);
     }
 
-    callEventHandler(local.onMouseOver, event);
+    callEventHandler(props.onMouseOver, event);
   };
 
   const handleMouseLeave: JSX.EventHandler<HTMLSpanElement, MouseEvent> = (
@@ -70,28 +72,28 @@ export const ElmTooltip = (props: ElmTooltipProps) => {
       }, 250);
     }
 
-    callEventHandler(local.onMouseLeave, event);
+    callEventHandler(props.onMouseLeave, event);
   };
 
   return (
     <span
       {...rest}
-      ref={(element) => {
-        host = element;
-        if (typeof local.ref === "function") {
-          local.ref(element);
-        }
-      }}
-      class={clsx(styles["elm-tooltip"], local.class)}
+      ref={[
+        (element) => {
+          host = element;
+        },
+        props.ref,
+      ]}
+      class={clsx(styles["elm-tooltip"], props.class)}
       onMouseOver={handleMouseOver}
       onMouseLeave={handleMouseLeave}
     >
-      {local.original}
+      {props.original}
       <div
         class={clsx(styles.tooltip, isHover() && styles.show)}
         style={position()}
       >
-        {local.tooltip}
+        {props.tooltip}
       </div>
     </span>
   );

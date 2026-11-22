@@ -1,13 +1,5 @@
-import {
-  createMemo,
-  createSignal,
-  For,
-  onCleanup,
-  onMount,
-  Show,
-  splitProps,
-  type JSX,
-} from "solid-js";
+import { createMemo, createSignal, For, omit, onSettled, Show } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { clsx } from "clsx";
 import {
   mdiArrowDownDropCircleOutline,
@@ -64,7 +56,8 @@ export interface ElmSelectProps extends Omit<
 }
 
 export const ElmSelect = (props: ElmSelectProps) => {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     "ref",
     "class",
     "style",
@@ -79,37 +72,33 @@ export const ElmSelect = (props: ElmSelectProps) => {
     "defaultSelectedOptionId",
     "onSelectedOptionIdChange",
     "icon",
-  ]);
+  );
   const [selected, setSelected] = createControllableSignal<string | null>({
-    value: () => local.selectedOptionId,
-    defaultValue: () => local.defaultSelectedOptionId ?? null,
+    value: () => props.selectedOptionId,
+    defaultValue: () => props.defaultSelectedOptionId ?? null,
     onChange: (selectedOptionId) =>
-      local.onSelectedOptionIdChange?.(selectedOptionId),
+      props.onSelectedOptionIdChange?.(selectedOptionId),
   });
   const selectedOption = createMemo(
-    () => local.options.find((option) => option.id === selected()) ?? null,
+    () => props.options.find((option) => option.id === selected()) ?? null,
   );
   const [isOpen, setIsOpen] = createSignal(false);
   let root!: HTMLDivElement;
 
-  onMount(() => {
+  onSettled(() => {
     const handleOutsideClick = (event: MouseEvent) => {
-      if (
-        isOpen() &&
-        event.target instanceof Node &&
-        !root.contains(event.target)
-      ) {
+      if (event.target instanceof Node && !root.contains(event.target)) {
         setIsOpen(false);
       }
     };
 
     document.addEventListener("click", handleOutsideClick);
-    onCleanup(() => document.removeEventListener("click", handleOutsideClick));
+    return () => document.removeEventListener("click", handleOutsideClick);
   });
 
   const handleClick: JSX.EventHandler<HTMLDivElement, MouseEvent> = (event) => {
-    callEventHandler(local.onClick, event);
-    if (!event.defaultPrevented && !local.disabled && !local.isLoading) {
+    callEventHandler(props.onClick, event);
+    if (!event.defaultPrevented && !props.disabled && !props.isLoading) {
       setIsOpen((open) => !open);
     }
   };
@@ -117,26 +106,26 @@ export const ElmSelect = (props: ElmSelectProps) => {
   return (
     <div
       {...rest}
-      ref={(element) => {
-        root = element;
-        if (typeof local.ref === "function") {
-          local.ref(element);
-        }
-      }}
+      ref={[
+        (element) => {
+          root = element;
+        },
+        props.ref,
+      ]}
       class={clsx(
         styles["elm-select"],
         isOpen() && styles.active,
-        (local.disabled || local.isLoading) && styles.disabled,
-        local.class,
+        (props.disabled || props.isLoading) && styles.disabled,
+        props.class,
       )}
-      style={local.style}
+      style={props.style}
       onClick={handleClick}
     >
       <span class={clsx(styles.label, isOpen() && styles["label-active"])}>
-        {local.icon ?? (
+        {props.icon ?? (
           <ElmMdiIcon path={mdiArrowDownDropCircleOutline} size="0.75rem" />
         )}
-        {local.label}
+        {props.label}
       </span>
 
       <div class={styles.body}>
@@ -146,7 +135,7 @@ export const ElmSelect = (props: ElmSelectProps) => {
             keyed
             fallback={
               <div class={styles.fallback}>
-                <span>{local.placeholder ?? "Select an option"}</span>
+                <span>{props.placeholder ?? "Select an option"}</span>
               </div>
             }
           >
@@ -164,7 +153,7 @@ export const ElmSelect = (props: ElmSelectProps) => {
         <ElmMdiIcon path={mdiMenuDown} size="1.5rem" />
 
         <ElmCollapse isOpen={isOpen()} class={styles.pulldown}>
-          <For each={local.options}>
+          <For each={props.options}>
             {(option) => (
               <div
                 class={clsx(styles.option, textStyles.text)}

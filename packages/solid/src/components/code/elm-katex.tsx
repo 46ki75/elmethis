@@ -1,4 +1,5 @@
-import { createMemo, splitProps, type JSX } from "solid-js";
+import { type JSX } from "@solidjs/web";
+import { createMemo, omit } from "solid-js";
 import { clsx } from "clsx";
 import { renderToString } from "katex";
 
@@ -16,10 +17,10 @@ export interface ElmKatexProps extends JSX.HTMLAttributes<HTMLDivElement> {
 }
 
 export const ElmKatex = (props: ElmKatexProps) => {
-  const [local, rest] = splitProps(props, ["class", "expression", "block"]);
+  const rest = omit(props, "class", "expression", "block");
   const html = createMemo(() =>
-    renderToString(local.expression, {
-      displayMode: local.block ?? false,
+    renderToString(props.expression, {
+      displayMode: props.block ?? false,
       output: "mathml",
     }),
   );
@@ -28,8 +29,8 @@ export const ElmKatex = (props: ElmKatexProps) => {
     <div
       class={clsx(
         textStyles.text,
-        local.block && styles["elm-katex"],
-        local.class,
+        props.block && styles["elm-katex"],
+        props.class,
       )}
       innerHTML={html()}
       {...rest}

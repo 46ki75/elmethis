@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
-import { createSignal, Show, type Setter } from "solid-js";
+import { flush, createSignal, Show, type Setter } from "solid-js";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import styles from "./use-wordle.module.css";
@@ -50,6 +50,7 @@ describe("[CSR] useWordle", () => {
       game.addLetter(letter);
     }
     game.submit();
+    flush();
 
     expect(game.Wordle).toBe(Wordle);
     expect(initialBoard).toEqual([]);
@@ -91,11 +92,13 @@ describe("[CSR] useWordle", () => {
     render(() => <WinningHarness />);
 
     winningGame.submit();
+    flush();
     expect(winningGame.errorMessage()).toBe("Not enough letters");
     for (const letter of "zzzzz") {
       winningGame.addLetter(letter);
     }
     winningGame.submit();
+    flush();
     expect(winningGame.errorMessage()).toBe("Not in word list");
     for (let index = 0; index < 5; index++) {
       winningGame.removeLetter();
@@ -104,9 +107,11 @@ describe("[CSR] useWordle", () => {
       winningGame.addLetter(letter);
     }
     winningGame.submit();
+    flush();
     expect(winningGame.gameStatus()).toBe("won");
     expect(winningGame.board()).toHaveLength(1);
     winningGame.addLetter("x");
+    flush();
     expect(winningGame.currentGuess()).toBe("");
 
     let losingGame!: ReturnType<typeof useWordle>;
@@ -128,6 +133,7 @@ describe("[CSR] useWordle", () => {
       }
       losingGame.submit();
     }
+    flush();
     expect(losingGame.gameStatus()).toBe("lost");
     expect(losingGame.board()).toHaveLength(6);
   });
@@ -154,23 +160,28 @@ describe("[CSR] useWordle", () => {
     render(() => <Harness />);
 
     fireEvent.keyDown(document, { key: "A" });
+    flush();
     expect(game.currentGuess()).toBe("");
 
     setVisible(true);
+    flush();
     const keydownListener = addEventListener.mock.calls.find(
       ([type]) => type === "keydown",
     )?.[1];
     expect(keydownListener).toEqual(expect.any(Function));
     fireEvent.keyDown(document, { key: "A" });
     fireEvent.keyDown(document, { key: "B", ctrlKey: true });
+    flush();
     expect(game.currentGuess()).toBe("a");
 
     setVisible(false);
+    flush();
     expect(removeEventListener).toHaveBeenCalledWith(
       "keydown",
       keydownListener,
     );
     fireEvent.keyDown(document, { key: "B" });
+    flush();
     expect(game.currentGuess()).toBe("a");
   });
 });

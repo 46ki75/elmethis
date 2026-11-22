@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
-import { createSignal, type Accessor } from "solid-js";
+import { createSignal, flush, type Accessor } from "solid-js";
 import { describe, expect, it, vi } from "vitest";
 
 import { RenderIndexedChild } from "./render-indexed-child";
@@ -15,7 +15,9 @@ describe("[CSR] RenderIndexedChild", () => {
       ) => (
         <div>
           <span data-index>
-            {typeof childIndex === "function" ? childIndex() : childIndex}
+            {String(
+              typeof childIndex === "function" ? childIndex() : childIndex,
+            )}
           </span>
           <input aria-label="Draft" />
         </div>
@@ -31,7 +33,11 @@ describe("[CSR] RenderIndexedChild", () => {
     const input = rendered.getByRole("textbox", { name: "Draft" });
     fireEvent.input(input, { target: { value: "in progress" } });
 
+    expect(rendered.container.querySelector("[data-index]")).toHaveTextContent(
+      "0",
+    );
     setIndex(1);
+    flush();
 
     expect(rendered.container.querySelector("[data-index]")).toHaveTextContent(
       "1",

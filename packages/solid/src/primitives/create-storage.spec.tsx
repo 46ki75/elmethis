@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
-import { untrack } from "solid-js";
+import { flush, untrack } from "solid-js";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { createLocalStorage, createSessionStorage } from "./create-storage";
@@ -78,19 +78,23 @@ describe("[CSR] createLocalStorage", () => {
     render(() => <Harness />);
 
     expect(controller.setState((previous) => previous + 1)).toBe(2);
-    expect(controller.state()).toBe(2);
-    expect(localStorage.getItem("counter")).toBe("2");
+    expect(controller.setState((previous) => previous + 1)).toBe(3);
+    expect(localStorage.getItem("counter")).toBe("3");
+    flush();
+    expect(controller.state()).toBe(3);
   });
 
   it("synchronizes same-tab controllers and distinguishes null from removal", () => {
     const rendered = render(() => <LocalPair storageKey="shared" />);
 
     fireEvent.click(rendered.getByRole("button", { name: "Null" }));
+    flush();
     expect(rendered.getByTestId("first")).toHaveTextContent("null");
     expect(rendered.getByTestId("second")).toHaveTextContent("null");
     expect(localStorage.getItem("shared")).toBe("null");
 
     fireEvent.click(rendered.getByRole("button", { name: "Remove" }));
+    flush();
     expect(rendered.getByTestId("first")).toHaveTextContent('"seed"');
     expect(rendered.getByTestId("second")).toHaveTextContent('"seed"');
     expect(localStorage.getItem("shared")).toBeNull();
@@ -106,11 +110,13 @@ describe("[CSR] createLocalStorage", () => {
         newValue: JSON.stringify("external"),
       }),
     );
+    flush();
     expect(rendered.getByTestId("value")).toHaveTextContent('"external"');
 
     window.dispatchEvent(
       new StorageEvent("storage", { key: "events", newValue: "{" }),
     );
+    flush();
     expect(rendered.getByTestId("value")).toHaveTextContent('"external"');
     expect(warn).toHaveBeenCalledWith(
       'createStorage: failed to parse "events"',
@@ -126,9 +132,11 @@ describe("[CSR] createLocalStorage", () => {
     const rendered = render(() => <LocalHarness storageKey="denied" />);
 
     fireEvent.click(rendered.getByRole("button", { name: "Set" }));
+    flush();
     expect(rendered.getByTestId("value")).toHaveTextContent('"next"');
 
     fireEvent.click(rendered.getByRole("button", { name: "Remove" }));
+    flush();
     expect(rendered.getByTestId("value")).toHaveTextContent('"seed"');
   });
 
@@ -144,6 +152,7 @@ describe("[CSR] createLocalStorage", () => {
     circular.self = circular;
 
     expect(() => controller.setState(circular)).not.toThrow();
+    flush();
     expect(controller.state()).toBe(circular);
     expect(warn).toHaveBeenCalledWith(
       'createStorage: failed to serialize "circular"',

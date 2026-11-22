@@ -1,4 +1,4 @@
-import { renderToString } from "solid-js/web";
+import { renderToString } from "@solidjs/web";
 import { describe, expect, it } from "vitest";
 
 import { ElmCheckbox } from "./elm-checkbox";

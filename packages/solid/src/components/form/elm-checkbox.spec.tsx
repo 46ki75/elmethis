@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { describe, expect, it, vi } from "vitest";
 
 import { ElmCheckbox } from "./elm-checkbox";
@@ -48,6 +48,7 @@ describe("[CSR] ElmCheckbox", () => {
 
     expect(isChecked(checkbox)).toBe(true);
     fireEvent.click(checkbox);
+    flush();
     expect(isChecked(checkbox)).toBe(false);
     expect(onCheckedChange).toHaveBeenCalledWith(false);
   });
@@ -69,10 +70,12 @@ describe("[CSR] ElmCheckbox", () => {
 
     expect(isChecked(checkbox)).toBe(false);
     fireEvent.click(checkbox);
+    flush();
     expect(rendered.getByTestId("state")).toHaveTextContent("true");
     expect(isChecked(checkbox)).toBe(true);
 
     setChecked(false);
+    flush();
     expect(isChecked(checkbox)).toBe(false);
   });
 
@@ -90,6 +93,7 @@ describe("[CSR] ElmCheckbox", () => {
     const checkbox = rendered.getByTestId("checkbox");
 
     fireEvent.click(checkbox);
+    flush();
     expect(onCheckedChange).toHaveBeenCalledWith(true);
     expect(isChecked(checkbox)).toBe(false);
   });
@@ -102,6 +106,7 @@ describe("[CSR] ElmCheckbox", () => {
     const checkbox = rendered.getByTestId("checkbox");
 
     fireEvent.click(checkbox);
+    flush();
     expect(onClick).toHaveBeenCalledOnce();
     expect(isChecked(checkbox)).toBe(false);
   });
@@ -121,18 +126,23 @@ describe("[CSR] ElmCheckbox", () => {
     const checkbox = rendered.getByTestId("checkbox");
 
     fireEvent.click(checkbox);
+    flush();
     expect(isChecked(checkbox)).toBe(false);
 
     setLoading(false);
     setDisabled(true);
     setLabel("Disabled");
+    flush();
     expect(checkbox).toHaveClass(styles.disabled);
     expect(checkbox).toHaveTextContent("Disabled");
     fireEvent.click(checkbox);
+    flush();
     expect(isChecked(checkbox)).toBe(false);
 
     setDisabled(false);
+    flush();
     fireEvent.click(checkbox);
+    flush();
     expect(isChecked(checkbox)).toBe(true);
   });
 });

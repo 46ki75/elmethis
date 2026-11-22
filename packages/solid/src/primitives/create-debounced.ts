@@ -1,10 +1,6 @@
-import {
-  createSignal,
-  onCleanup,
-  untrack,
-  type Accessor,
-  type Setter,
-} from "solid-js";
+import { onCleanup, untrack, type Accessor, type Setter } from "solid-js";
+
+import { createValueSignal, resolveSetterValue } from "./create-value-signal";
 
 export interface CreateDebouncedReturn<T> {
   value: Accessor<T>;
@@ -18,12 +14,8 @@ export function createDebounced<T>(
   initialValue: T,
   delay: number,
 ): CreateDebouncedReturn<T> {
-  const [value, setImmediateValue] = createSignal(initialValue, {
-    equals: Object.is,
-  });
-  const [debouncedValue, setDebouncedValue] = createSignal(initialValue, {
-    equals: Object.is,
-  });
+  const [value, setImmediateValue] = createValueSignal(initialValue);
+  const [debouncedValue, setDebouncedValue] = createValueSignal(initialValue);
   let timer: ReturnType<typeof setTimeout> | undefined;
 
   const clearTimer = () => {
@@ -34,32 +26,29 @@ export function createDebounced<T>(
     timer = undefined;
   };
 
-  const setValue = ((nextValue: unknown) =>
-    untrack(() => {
-      const currentValue = value();
-      const resolvedValue =
-        typeof nextValue === "function"
-          ? (nextValue as (previous: T) => T)(currentValue)
-          : (nextValue as T);
-
-      if (Object.is(resolvedValue, currentValue)) {
-        return resolvedValue;
-      }
-
-      setImmediateValue(() => resolvedValue);
-      clearTimer();
-
-      if (delay <= 0) {
-        setDebouncedValue(() => resolvedValue);
-      } else {
-        timer = setTimeout(() => {
-          timer = undefined;
-          setDebouncedValue(() => resolvedValue);
-        }, delay);
-      }
-
+  const setValue = ((nextValue: unknown) => {
+    let changed = false;
+    const resolvedValue = setImmediateValue((previous) => {
+      const next = untrack(() => resolveSetterValue(nextValue, previous));
+      changed = !Object.is(next, previous);
+      return next;
+    });
+    if (!changed) {
       return resolvedValue;
-    })) as Setter<T>;
+    }
+
+    clearTimer();
+    if (delay <= 0) {
+      setDebouncedValue(() => resolvedValue);
+    } else {
+      timer = setTimeout(() => {
+        timer = undefined;
+        setDebouncedValue(() => resolvedValue);
+      }, delay);
+    }
+
+    return resolvedValue;
+  }) as Setter<T>;
 
   const isPending: Accessor<boolean> = () =>
     !Object.is(value(), debouncedValue());

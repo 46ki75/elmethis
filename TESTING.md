@@ -69,9 +69,12 @@ Solid has one additional physical config inside the unit layer:
 - `vite.config.ts` compiles `*.spec.tsx` with Solid's DOM transform and runs
   them in `happy-dom` through `@solidjs/testing-library`;
 - `vitest.ssr.config.ts` compiles `*.ssr.spec.tsx` with `solid({ ssr: true })`
-  and runs them in node;
-- `pnpm test.unit` runs both passes, so the public two-layer contract stays the
-  same.
+  and runs them in Node;
+- `pnpm test.unit` runs both passes with `@solidjs/vite-plugin`.
+
+Solid 2 commits signal and store writes on the next microtask. To assert state
+or DOM immediately after synchronous writes or synthetic events, call `flush()`
+before reading the result.
 
 ## Co-location
 

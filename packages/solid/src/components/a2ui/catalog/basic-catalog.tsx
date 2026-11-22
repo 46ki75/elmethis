@@ -121,10 +121,10 @@ export const basicComponents: SolidRendererEntry[] = [
   )),
   defineRenderer(ListApi, (props) => (
     <div
-      class={styles.list}
-      classList={{
-        [styles["list-horizontal"]]: props.props.direction === "horizontal",
-      }}
+      class={[
+        styles.list,
+        props.props.direction === "horizontal" && styles["list-horizontal"],
+      ]}
     >
       <For each={props.childRefs(props.props.children)}>
         {(child, index) => (
@@ -156,14 +156,14 @@ export const basicComponents: SolidRendererEntry[] = [
       <div class={styles["action-control"]}>
         <div
           role="button"
-          tabIndex={isDisabled() ? -1 : 0}
-          aria-disabled={isDisabled()}
+          tabindex={isDisabled() ? -1 : 0}
+          aria-disabled={isDisabled() ? "true" : "false"}
           aria-describedby={isDisabled() ? errorId() : undefined}
-          class={styles.button}
-          classList={{
-            [styles["button-primary"]]: props.props.variant === "primary",
-            [styles["button-disabled"]]: isDisabled(),
-          }}
+          class={[
+            styles.button,
+            props.props.variant === "primary" && styles["button-primary"],
+            isDisabled() && styles["button-disabled"],
+          ]}
           onClick={activate}
           onKeyDown={(event) => {
             if (!isDisabled() && (event.key === "Enter" || event.key === " ")) {
@@ -217,10 +217,10 @@ export const basicComponents: SolidRendererEntry[] = [
   }),
   defineRenderer(DividerApi, (props) => (
     <div
-      class={styles.divider}
-      classList={{
-        [styles["divider-vertical"]]: props.props.axis === "vertical",
-      }}
+      class={[
+        styles.divider,
+        props.props.axis === "vertical" && styles["divider-vertical"],
+      ]}
       role="separator"
     />
   )),
@@ -235,7 +235,7 @@ export const basicComponents: SolidRendererEntry[] = [
           <input
             id={`${props.instanceId}-input`}
             class={styles.input}
-            aria-invalid={props.props.isValid === false}
+            aria-invalid={props.props.isValid === false ? "true" : "false"}
             aria-describedby={
               props.props.isValid === false
                 ? `${props.instanceId}-errors`
@@ -252,7 +252,7 @@ export const basicComponents: SolidRendererEntry[] = [
         <textarea
           id={`${props.instanceId}-input`}
           class={styles.input}
-          aria-invalid={props.props.isValid === false}
+          aria-invalid={props.props.isValid === false ? "true" : "false"}
           aria-describedby={
             props.props.isValid === false
               ? `${props.instanceId}-errors`
@@ -274,7 +274,7 @@ export const basicComponents: SolidRendererEntry[] = [
         <input
           type="checkbox"
           checked={Boolean(props.props.value)}
-          aria-invalid={props.props.isValid === false}
+          aria-invalid={props.props.isValid === false ? "true" : "false"}
           aria-describedby={
             props.props.isValid === false
               ? `${props.instanceId}-errors`
@@ -300,7 +300,7 @@ export const basicComponents: SolidRendererEntry[] = [
         value={Number(props.props.value ?? 0)}
         min={props.props.min ?? 0}
         max={props.props.max}
-        aria-invalid={props.props.isValid === false}
+        aria-invalid={props.props.isValid === false ? "true" : "false"}
         aria-describedby={
           props.props.isValid === false
             ? `${props.instanceId}-errors`
@@ -345,7 +345,7 @@ export const basicComponents: SolidRendererEntry[] = [
         <div
           class={styles["modal-trigger"]}
           role="button"
-          tabIndex={0}
+          tabindex={0}
           onClick={open}
           onKeyDown={(event) => {
             if (event.key === "Enter" || event.key === " ") {
@@ -391,7 +391,9 @@ export const basicComponents: SolidRendererEntry[] = [
                   name={`${props.instanceId}-choice`}
                   value={option.value}
                   checked={selected().includes(option.value)}
-                  aria-invalid={props.props.isValid === false}
+                  aria-invalid={
+                    props.props.isValid === false ? "true" : "false"
+                  }
                   aria-describedby={
                     props.props.isValid === false
                       ? `${props.instanceId}-errors`
@@ -444,7 +446,7 @@ export const basicComponents: SolidRendererEntry[] = [
           value={props.props.value ?? ""}
           min={props.props.min == null ? undefined : String(props.props.min)}
           max={props.props.max == null ? undefined : String(props.props.max)}
-          aria-invalid={props.props.isValid === false}
+          aria-invalid={props.props.isValid === false ? "true" : "false"}
           aria-describedby={
             props.props.isValid === false
               ? `${props.instanceId}-errors`

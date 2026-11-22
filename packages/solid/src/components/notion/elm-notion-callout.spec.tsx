@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { flush, createSignal } from "solid-js";
 import { describe, expect, it } from "vitest";
 
 import {
@@ -42,6 +42,7 @@ describe("[CSR] ElmNotionCallout", () => {
     setIcon({ kind: "emoji", emoji: "info" });
     setColor("blue");
     setVariant("outlined");
+    flush();
 
     expect(rendered.container.querySelector("[role='img']")).toHaveTextContent(
       "info",
@@ -50,6 +51,7 @@ describe("[CSR] ElmNotionCallout", () => {
     expect(callout.className).toMatch(/outlined/);
 
     setIcon({ kind: "image", src: "/icon.png", alt: "icon" });
+    flush();
     expect(rendered.container.querySelector("[role='img']")).toBeNull();
     expect(rendered.container.querySelector("img")).toHaveAttribute(
       "src",

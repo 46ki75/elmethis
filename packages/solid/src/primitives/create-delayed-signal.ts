@@ -1,5 +1,7 @@
 import { createSignal, onCleanup, type Accessor } from "solid-js";
 
+import { createValueSignal } from "./create-value-signal";
+
 export interface CreateDelayedSignalReturn<T> {
   value: Accessor<T>;
   delayedValue: Accessor<T>;
@@ -11,10 +13,8 @@ export interface CreateDelayedSignalReturn<T> {
 export function createDelayedSignal<T>(
   initialValue: T,
 ): CreateDelayedSignalReturn<T> {
-  const [value, setValue] = createSignal(initialValue, { equals: Object.is });
-  const [delayedValue, setDelayedValue] = createSignal(initialValue, {
-    equals: Object.is,
-  });
+  const [value, setValue] = createValueSignal(initialValue);
+  const [delayedValue, setDelayedValue] = createValueSignal(initialValue);
   const [isValueChanging, setIsValueChanging] = createSignal(false);
   let timer: ReturnType<typeof setTimeout> | undefined;
 

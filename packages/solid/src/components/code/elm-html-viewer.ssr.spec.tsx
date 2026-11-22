@@ -1,4 +1,4 @@
-import { renderToString } from "solid-js/web";
+import { renderToString } from "@solidjs/web";
 import { describe, expect, it } from "vitest";
 
 import { ElmHtmlViewer } from "./elm-html-viewer";
@@ -18,7 +18,7 @@ describe("[SSR] ElmHtmlViewer", () => {
     expect(html).toContain('data-kind="viewer"');
     expect(html).toContain('aria-label="Download"');
     expect(html).toContain('aria-label="Open in new tab"');
-    expect(html).toContain('srcdoc="<p>hello</p>"');
+    expect(html).toContain('srcdoc="&lt;p>hello&lt;/p>"');
   });
 
   it("renders direct src, explicit height, and no-referrer without Blob APIs", () => {

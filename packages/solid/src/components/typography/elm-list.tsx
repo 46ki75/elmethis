@@ -1,5 +1,5 @@
-import { mergeProps, splitProps, type JSX } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { dynamic, type JSX } from "@solidjs/web";
+import { omit } from "solid-js";
 import { clsx } from "clsx";
 
 import styles from "./elm-list.module.css";
@@ -14,21 +14,21 @@ export interface ElmListProps extends Omit<
 }
 
 export const ElmList = (props: ElmListProps) => {
-  const merged = mergeProps({ listStyle: "unordered" as const }, props);
-  const [local, rest] = splitProps(merged, ["class", "children", "listStyle"]);
+  const rest = omit(props, "class", "children", "listStyle");
 
+  const isOrdered = () => props.listStyle === "ordered";
+  const List = dynamic(() => (isOrdered() ? "ol" : "ul"));
   return (
-    <Dynamic
-      component={local.listStyle === "ordered" ? "ol" : "ul"}
+    <List
       {...rest}
       class={clsx(
         textStyles.text,
         styles["elm-list"],
-        local.listStyle === "ordered" ? styles.numbered : styles.bulleted,
-        local.class,
+        isOrdered() ? styles.numbered : styles.bulleted,
+        props.class,
       )}
     >
-      {local.children}
-    </Dynamic>
+      {props.children}
+    </List>
   );
 };

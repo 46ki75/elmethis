@@ -1,4 +1,5 @@
-import { onCleanup, splitProps, type JSX } from "solid-js";
+import { onCleanup, omit } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { clsx } from "clsx";
 import { mdiDownload, mdiFile } from "@mdi/js";
 
@@ -26,7 +27,7 @@ function getLastPathSegmentWithoutQueryOrHash(
 }
 
 export const ElmFile = (props: ElmFileProps) => {
-  const [local, rest] = splitProps(props, ["class", "name", "src", "filesize"]);
+  const rest = omit(props, "class", "name", "src", "filesize");
   let objectUrl: string | undefined;
   let disposed = false;
 
@@ -38,8 +39,8 @@ export const ElmFile = (props: ElmFileProps) => {
   });
 
   const downloadFile = async () => {
-    const src = local.src;
-    const name = local.name;
+    const src = props.src;
+    const name = props.name;
 
     try {
       const response = await fetch(src);
@@ -69,19 +70,19 @@ export const ElmFile = (props: ElmFileProps) => {
   };
 
   return (
-    <div class={clsx(styles["elm-file"], local.class)} {...rest}>
+    <div class={clsx(styles["elm-file"], props.class)} {...rest}>
       <div>
         <ElmMdiIcon path={mdiFile} size="1.25rem" />
       </div>
 
       <div>
         <ElmInlineText>
-          {local.name ?? getLastPathSegmentWithoutQueryOrHash(local.src)}
+          {props.name ?? getLastPathSegmentWithoutQueryOrHash(props.src)}
         </ElmInlineText>
       </div>
 
       <div class={styles["file-size"]}>
-        <ElmInlineText>{local.filesize}</ElmInlineText>
+        <ElmInlineText>{props.filesize}</ElmInlineText>
       </div>
 
       <div class={styles["download-icon"]} onClick={() => void downloadFile()}>

@@ -1,4 +1,4 @@
-import type { JSX } from "solid-js";
+import type { JSX } from "@solidjs/web";
 
 export const callEventHandler = <T extends Element, E extends Event>(
   handler: JSX.EventHandlerUnion<T, E> | undefined,

@@ -1,4 +1,5 @@
-import { mergeProps, splitProps, type JSX } from "solid-js";
+import { type JSX } from "@solidjs/web";
+import { omit } from "solid-js";
 import { clsx } from "clsx";
 
 import styles from "./elm-notion-callout.module.css";
@@ -34,42 +35,32 @@ export interface ElmNotionCalloutProps extends JSX.HTMLAttributes<HTMLDivElement
 }
 
 export const ElmNotionCallout = (props: ElmNotionCalloutProps) => {
-  const merged = mergeProps(
-    { color: "gray" as const, variant: "filled" as const },
-    props,
-  );
-  const [local, rest] = splitProps(merged, [
-    "class",
-    "children",
-    "icon",
-    "color",
-    "variant",
-  ]);
+  const rest = omit(props, "class", "children", "icon", "color", "variant");
 
   return (
     <div
       {...rest}
       class={clsx(
         styles["elm-notion-callout"],
-        styles[local.color],
-        styles[local.variant],
-        local.class,
+        styles[props.color ?? "gray"],
+        styles[props.variant ?? "filled"],
+        props.class,
       )}
     >
-      {local.icon?.kind === "emoji" ? (
+      {props.icon?.kind === "emoji" ? (
         <span class={styles.icon} role="img">
-          {local.icon.emoji}
+          {props.icon.emoji}
         </span>
-      ) : local.icon?.kind === "image" ? (
+      ) : props.icon?.kind === "image" ? (
         <ElmInlineIcon
           class={styles.icon}
-          src={local.icon.src}
-          alt={local.icon.alt}
+          src={props.icon.src}
+          alt={props.icon.alt}
           size={20}
         />
       ) : null}
 
-      <div class={styles.content}>{local.children}</div>
+      <div class={styles.content}>{props.children}</div>
     </div>
   );
 };

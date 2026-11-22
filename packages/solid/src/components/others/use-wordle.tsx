@@ -1,11 +1,11 @@
+import { type JSX } from "@solidjs/web";
 import {
   createMemo,
   createSignal,
   For,
-  onCleanup,
-  onMount,
+  onSettled,
+  untrack,
   type Component,
-  type JSX,
 } from "solid-js";
 import { clsx } from "clsx";
 
@@ -202,10 +202,10 @@ function getCell(
 }
 
 export const useWordle = (options?: UseWordleOptions) => {
-  const hasInitialWord = options?.initialWord !== undefined;
+  const initialWord = untrack(() => options?.initialWord);
   const [state, setState] = createSignal<WordleState>({
     // Keep server and hydration state equal; the client selects a random word on mount.
-    answer: options?.initialWord ?? WORDS[0],
+    answer: initialWord ?? WORDS[0],
     board: [],
     currentGuess: "",
     gameStatus: "playing",
@@ -223,8 +223,8 @@ export const useWordle = (options?: UseWordleOptions) => {
   const reset = (): void =>
     dispatch({ type: "reset", answer: getRandomWord() });
 
-  onMount(() => {
-    if (!hasInitialWord) {
+  onSettled(() => {
+    if (initialWord === undefined) {
       dispatch({ type: "reset", answer: getRandomWord() });
     }
   });
@@ -244,9 +244,9 @@ export const useWordle = (options?: UseWordleOptions) => {
       }
     };
 
-    onMount(() => {
+    onSettled(() => {
       document.addEventListener("keydown", onKeyDown);
-      onCleanup(() => document.removeEventListener("keydown", onKeyDown));
+      return () => document.removeEventListener("keydown", onKeyDown);
     });
 
     const onKeyboardClick: JSX.EventHandler<HTMLDivElement, MouseEvent> = (

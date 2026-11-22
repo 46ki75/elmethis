@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { flush, createSignal } from "solid-js";
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("./elm-shiki-highlighter", () => ({
@@ -62,6 +62,7 @@ describe("[CSR] ElmCodeBlock", () => {
     setCode("new");
     setLanguage("typescript");
     setCaption("main.ts");
+    flush();
 
     expect(rendered.getByTestId("highlighter")).toHaveTextContent("new");
     expect(rendered.getByTestId("highlighter")).toHaveAttribute(

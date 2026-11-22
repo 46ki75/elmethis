@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { ElmPageTop } from "./elm-page-top";
@@ -32,6 +32,7 @@ describe("[CSR] ElmPageTop", () => {
     );
 
     setPosition("left");
+    flush();
     expect(control).toHaveStyle({ left: "0px", right: "auto" });
   });
 
@@ -45,6 +46,7 @@ describe("[CSR] ElmPageTop", () => {
 
     scrollY = 101;
     window.dispatchEvent(new Event("scroll"));
+    flush();
     expect(control.className).not.toBe(initialClass);
     expect(control).toHaveAttribute("aria-hidden", "false");
     expect(control).toHaveAttribute("tabindex", "0");

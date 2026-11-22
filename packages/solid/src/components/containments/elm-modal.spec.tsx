@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { describe, expect, it, vi } from "vitest";
 
 import { ElmModal } from "./elm-modal";
@@ -45,6 +45,7 @@ describe("[CSR] ElmModal", () => {
 
     setDelay(350);
     setLabel("Second");
+    flush();
 
     expect(dialog.style.getPropertyValue("--elmethis-scoped-modal-delay")).toBe(
       "350ms",

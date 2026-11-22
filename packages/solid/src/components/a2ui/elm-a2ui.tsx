@@ -1,13 +1,12 @@
 import {
   createEffect,
   createMemo,
-  createRenderEffect,
   createSignal,
   For,
   onCleanup,
-  splitProps,
-  type JSX,
+  omit,
 } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { clsx } from "clsx";
 
 import { MessageProcessor, type SurfaceModel } from "@a2ui/web_core/v0_9";
@@ -37,17 +36,16 @@ export interface A2uiSurfaceProps {
 
 /** Renders an existing v0.9 surface with the Solid-native recursive host. */
 export const A2uiSurface = (props: A2uiSurfaceProps) => {
-  const [local] = splitProps(props, ["catalog", "surface"]);
-  const catalog = createMemo(() => local.catalog ?? notionBlockCatalog);
-  const surface = createMemo(() => local.surface);
+  const catalog = createMemo(() => props.catalog ?? notionBlockCatalog);
+  const surface = createMemo(() => props.surface);
   return (
-    <A2uiCatalogContext.Provider value={catalog}>
-      <A2uiSurfaceContext.Provider value={surface}>
-        <div class={styles.surface} data-a2ui-surface-id={local.surface.id}>
+    <A2uiCatalogContext value={catalog}>
+      <A2uiSurfaceContext value={surface}>
+        <div class={styles.surface} data-a2ui-surface-id={props.surface.id}>
           <ComponentHost id={ROOT_COMPONENT_ID} basePath="/" />
         </div>
-      </A2uiSurfaceContext.Provider>
-    </A2uiCatalogContext.Provider>
+      </A2uiSurfaceContext>
+    </A2uiCatalogContext>
   );
 };
 
@@ -71,17 +69,68 @@ export interface ElmA2uiProps extends Omit<
   catalog?: CatalogRenderer;
 }
 
-interface ProcessorState {
-  processor: MessageProcessor<SolidRendererEntry>;
-  subscriptions: Array<{ unsubscribe(): void }>;
-  processed: number;
+interface ProcessorInput {
   messages: object[];
   catalogId: string | undefined;
   catalog: CatalogRenderer;
 }
 
+interface ProcessorState extends ProcessorInput {
+  processor: MessageProcessor<SolidRendererEntry>;
+}
+
+const processMessages = (state: ProcessorState, messages: object[]) => {
+  for (const message of messages.slice(state.messages.length)) {
+    try {
+      state.processor.processMessages([message] as never);
+    } catch (error) {
+      console.warn("[ElmA2ui] skipped invalid A2UI message:", message, error);
+    }
+  }
+  state.messages = messages;
+};
+
+const createProcessor = ({
+  messages,
+  catalogId,
+  catalog,
+}: ProcessorInput): ProcessorState => {
+  const ids = new Set([BASIC_CATALOG_ID, NOTION_BLOCK_CATALOG_ID]);
+  if (catalogId) {
+    ids.add(catalogId);
+  }
+  for (const message of messages) {
+    if (
+      message != null &&
+      typeof message === "object" &&
+      "createSurface" in message
+    ) {
+      const id = (message as { createSurface?: { catalogId?: string } })
+        .createSurface?.catalogId;
+      if (id) {
+        ids.add(id);
+      }
+    }
+  }
+  const state = {
+    processor: new MessageProcessor<SolidRendererEntry>(
+      [...ids].map((id) => catalog.toCatalog(id)),
+    ),
+    messages: [],
+    catalogId,
+    catalog,
+  };
+  processMessages(state, messages);
+  return state;
+};
+
+const listSurfaces = (state: ProcessorState) => [
+  ...state.processor.model.surfacesMap.values(),
+];
+
 export const ElmA2ui = (props: ElmA2uiProps) => {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     "class",
     "style",
     "url",
@@ -89,156 +138,109 @@ export const ElmA2ui = (props: ElmA2uiProps) => {
     "messages",
     "catalogId",
     "catalog",
-  ]);
+  );
   const [streamMessages, setStreamMessages] = createSignal<object[]>([]);
-  const [surfaces, setSurfaces] = createSignal<
-    SurfaceModel<SolidRendererEntry>[]
-  >([]);
-  let current: ProcessorState | undefined;
+  createEffect(
+    () => ({
+      controlled: props.messages !== undefined,
+      url: props.url,
+      headers: props.headers,
+    }),
+    ({ controlled, url, headers }) => {
+      if (controlled || !url) {
+        return undefined;
+      }
 
-  const disposeCurrent = () => {
-    if (current == null) {
-      return;
-    }
-    for (const subscription of current.subscriptions) {
-      subscription.unsubscribe();
-    }
-    current.processor.model.dispose();
-    current = undefined;
-  };
-  onCleanup(disposeCurrent);
-
-  createEffect(() => {
-    const controlledMessages = local.messages;
-    const url = local.url;
-    const headers = local.headers;
-    if (controlledMessages !== undefined || !url) {
-      return;
-    }
-
-    const controller = new AbortController();
-    setStreamMessages([]);
-    fetch(url, { headers, signal: controller.signal })
-      .then(async (response) => {
-        if (response.body == null) {
-          return;
-        }
-        await streamJsonLines(response.body, {
-          signal: controller.signal,
-          onMessage: (message) => {
-            if (message != null && typeof message === "object") {
-              setStreamMessages((previous) => [...previous, message]);
-            }
-          },
-          onError: (error, line) => {
-            console.warn("[ElmA2ui] skipped invalid JSON line:", line, error);
-          },
+      const controller = new AbortController();
+      setStreamMessages([]);
+      fetch(url, { headers, signal: controller.signal })
+        .then(async (response) => {
+          if (response.body == null) {
+            return;
+          }
+          await streamJsonLines(response.body, {
+            signal: controller.signal,
+            onMessage: (message) => {
+              if (message != null && typeof message === "object") {
+                setStreamMessages((previous) => [...previous, message]);
+              }
+            },
+            onError: (error, line) => {
+              console.warn("[ElmA2ui] skipped invalid JSON line:", line, error);
+            },
+          });
+        })
+        .catch((error: unknown) => {
+          if (!(error instanceof Error) || error.name !== "AbortError") {
+            console.error("[ElmA2ui] stream error:", error);
+          }
         });
-      })
-      .catch((error: unknown) => {
-        if (!(error instanceof Error) || error.name !== "AbortError") {
-          console.error("[ElmA2ui] stream error:", error);
-        }
-      });
-    onCleanup(() => controller.abort());
+      return () => controller.abort();
+    },
+  );
+
+  const effective = () => props.messages ?? streamMessages();
+  const allocated = new Set<ProcessorState>();
+  onCleanup(() => {
+    for (const state of allocated) {
+      state.processor.model.dispose();
+    }
+    allocated.clear();
   });
 
-  createRenderEffect(() => {
-    const effective = local.messages ?? streamMessages();
-    const catalogId = local.catalogId;
-    const catalog = local.catalog ?? notionBlockCatalog;
-    const isExtension =
-      current != null &&
-      current.catalog === catalog &&
-      current.catalogId === catalogId &&
-      effective.length >= current.messages.length &&
-      current.messages.every((message, index) => message === effective[index]);
-
-    if (isExtension && current != null) {
-      for (const message of effective.slice(current.processed)) {
-        try {
-          current.processor.processMessages([message] as never);
-        } catch (error) {
-          console.warn(
-            "[ElmA2ui] skipped invalid A2UI message:",
-            message,
-            error,
-          );
-        }
-      }
-      current.processed = effective.length;
-      current.messages = effective;
-      return;
+  // Build a private initial model synchronously for SSR and hydration. Appending
+  // to a live model notifies existing binders, so do that in the effect phase.
+  const current = createMemo<ProcessorState>((previous) => {
+    const messages = effective();
+    const catalogId = props.catalogId;
+    const catalog = props.catalog ?? notionBlockCatalog;
+    if (
+      previous?.catalog === catalog &&
+      previous.catalogId === catalogId &&
+      messages.length >= previous.messages.length &&
+      previous.messages.every((message, index) => messages[index] === message)
+    ) {
+      return previous;
     }
+    const next = createProcessor({ messages, catalogId, catalog });
+    allocated.add(next);
+    return next;
+  });
+  const [surfaces, setSurfaces] = createSignal(() => listSurfaces(current()));
 
-    disposeCurrent();
-    const ids = new Set([BASIC_CATALOG_ID, NOTION_BLOCK_CATALOG_ID]);
-    if (catalogId) {
-      ids.add(catalogId);
-    }
-    for (const message of effective) {
-      if (
-        message != null &&
-        typeof message === "object" &&
-        "createSurface" in message
-      ) {
-        const id = (message as { createSurface?: { catalogId?: string } })
-          .createSurface?.catalogId;
-        if (id) {
-          ids.add(id);
-        }
-      }
-    }
-
-    const processor = new MessageProcessor<SolidRendererEntry>(
-      [...ids].map((id) => catalog.toCatalog(id)),
-    );
-    const surfaceMap = new Map<string, SurfaceModel<SolidRendererEntry>>();
-    const syncSurfaces = () => setSurfaces([...surfaceMap.values()]);
-    const subscriptions = [
-      processor.model.onSurfaceCreated.subscribe(
-        (surface: SurfaceModel<SolidRendererEntry>) => {
-          surfaceMap.set(surface.id, surface);
-          syncSurfaces();
-        },
-      ),
-      processor.model.onSurfaceDeleted.subscribe((id: string) => {
-        surfaceMap.delete(id);
-        syncSurfaces();
-      }),
-    ];
-
-    current = {
-      processor,
-      subscriptions,
-      processed: 0,
-      messages: effective,
-      catalogId,
-      catalog,
+  createEffect(current, (state) => {
+    const sync = () => {
+      setSurfaces(listSurfaces(state));
     };
-
-    for (const message of effective) {
-      try {
-        processor.processMessages([message] as never);
-      } catch (error) {
-        console.warn("[ElmA2ui] skipped invalid A2UI message:", message, error);
+    const model = state.processor.model;
+    const created = model.onSurfaceCreated.subscribe(sync);
+    const deleted = model.onSurfaceDeleted.subscribe(sync);
+    return () => {
+      created.unsubscribe();
+      deleted.unsubscribe();
+      if (allocated.delete(state)) {
+        model.dispose();
       }
-    }
-    current.processed = effective.length;
-    syncSurfaces();
+    };
   });
+  createEffect(
+    () => ({ state: current(), messages: effective() }),
+    ({ state, messages }) => {
+      processMessages(state, messages);
+    },
+  );
 
   return (
     <div
       {...rest}
-      class={clsx(styles["elm-a2ui"], local.class)}
-      style={local.style}
+      class={clsx(styles["elm-a2ui"], props.class)}
+      style={props.style}
     >
       <For each={surfaces()}>
         {(surface) => (
           <A2uiSurface
             surface={surface}
-            catalog={local.catalog ?? notionBlockCatalog}
+            catalog={props.catalog ?? notionBlockCatalog}
           />
         )}
       </For>

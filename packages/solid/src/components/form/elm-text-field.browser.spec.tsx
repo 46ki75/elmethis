@@ -64,9 +64,9 @@ describe("[Browser] ElmTextField", () => {
     const screen = page.elementLocator(rendered.baseElement);
     const input = rendered.getByTestId("password");
 
-    expect(input.type).toBe("password");
+    expect(input).toHaveAttribute("type", "password");
     await screen.getByRole("button", { name: "Show password" }).click();
-    expect(input.type).toBe("text");
+    expect(input).toHaveAttribute("type", "text");
     await screen.getByRole("button", { name: "Clear text" }).click();
     await expect.element(screen.getByTestId("submits")).toHaveTextContent("0");
   });

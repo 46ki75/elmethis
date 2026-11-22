@@ -1,4 +1,5 @@
-import { createMemo, Show, splitProps, type JSX } from "solid-js";
+import { createMemo, omit, Show } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { clsx } from "clsx";
 import {
   mdiAccountQuestionOutline,
@@ -98,17 +99,11 @@ const resolveView = (
 };
 
 export const ElmAgUiStatus = (props: ElmAgUiStatusProps) => {
-  const [local, rest] = splitProps(props, [
-    "class",
-    "children",
-    "status",
-    "activity",
-    "label",
-  ]);
+  const rest = omit(props, "class", "children", "status", "activity", "label");
   const view = createMemo(() => {
-    const resolved = resolveView(local.status, local.activity ?? "idle");
+    const resolved = resolveView(props.status, props.activity ?? "idle");
     return resolved
-      ? { ...resolved, label: local.label ?? resolved.label }
+      ? { ...resolved, label: props.label ?? resolved.label }
       : undefined;
   });
 
@@ -117,7 +112,7 @@ export const ElmAgUiStatus = (props: ElmAgUiStatusProps) => {
       {(current) => (
         <div
           {...rest}
-          class={clsx(styles["elm-ag-ui-status"], local.class)}
+          class={clsx(styles["elm-ag-ui-status"], props.class)}
           role="status"
           aria-live="polite"
         >

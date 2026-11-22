@@ -1,4 +1,5 @@
-import { splitProps, type JSX } from "solid-js";
+import { omit } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { clsx } from "clsx";
 import { mdiImage, mdiTextBox } from "@mdi/js";
 import type { UserMessage } from "@ag-ui/client";
@@ -14,13 +15,13 @@ export interface ElmAgUiInputContentImageProps extends Omit<
 }
 
 export const ElmAgUiInputContent = (props: ElmAgUiInputContentImageProps) => {
-  const [local, rest] = splitProps(props, ["class", "inputContent"]);
+  const rest = omit(props, "class", "inputContent");
   const renderText = (text: string) => (
     <div class={styles["message-content-user-content"]}>{text}</div>
   );
 
   const renderContent = () => {
-    const input = local.inputContent;
+    const input = props.inputContent;
     if (typeof input === "string") {
       return renderText(input);
     }
@@ -84,7 +85,7 @@ export const ElmAgUiInputContent = (props: ElmAgUiInputContentImageProps) => {
   };
 
   return (
-    <div {...rest} class={clsx(styles["elm-ag-ui-input-content"], local.class)}>
+    <div {...rest} class={clsx(styles["elm-ag-ui-input-content"], props.class)}>
       {renderContent()}
     </div>
   );

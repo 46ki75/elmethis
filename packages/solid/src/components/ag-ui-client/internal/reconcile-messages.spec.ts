@@ -1,6 +1,10 @@
-/* oxlint-disable solid/reactivity -- This test intentionally inspects a mutable store. */
-import { createEffect, createRoot } from "solid-js";
-import { createMutable } from "solid-js/store";
+import {
+  createEffect,
+  createRoot,
+  createStore,
+  flush,
+  untrack,
+} from "solid-js";
 import type { Message } from "@ag-ui/client";
 import { describe, expect, it, vi } from "vitest";
 
@@ -13,28 +17,26 @@ const assistant = (id: string, content: string): Message => ({
 });
 
 describe("reconcileMessages", () => {
-  it("preserves identities and notifies Solid for streamed content", async () => {
-    let dispose: () => void = () => undefined;
-    let messages!: Message[];
-    let array!: Message[];
-    let message!: Message;
-    const observe = vi.fn((content: Message["content"] | undefined) => content);
-    createRoot((rootDispose) => {
-      dispose = rootDispose;
-      messages = createMutable<Message[]>([]);
-      reconcileMessages(messages, [assistant("a", "He")]);
-      array = messages;
-      message = messages[0];
-      createEffect(() => observe(messages[0]?.content));
+  it("preserves identities and notifies Solid for streamed content", () => {
+    const [messages, setMessages] = createStore([assistant("a", "He")]);
+    const message = untrack(() => messages[0]);
+    const observe = vi.fn<(content: Message["content"] | undefined) => void>();
+    const dispose = createRoot((dispose) => {
+      createEffect(
+        () => messages[0]?.content,
+        (content) => observe(content),
+      );
+      return dispose;
     });
-    await Promise.resolve();
+    flush();
 
-    reconcileMessages(messages, [assistant("a", "Hello")]);
-    await Promise.resolve();
+    setMessages((draft) => reconcileMessages(draft, [assistant("a", "Hello")]));
+    flush();
 
-    expect(messages).toBe(array);
-    expect(messages[0]).toBe(message);
-    expect(messages[0].content).toBe("Hello");
+    untrack(() => {
+      expect(messages[0]).toBe(message);
+      expect(messages[0].content).toBe("Hello");
+    });
     expect(observe).toHaveBeenLastCalledWith("Hello");
     dispose();
   });

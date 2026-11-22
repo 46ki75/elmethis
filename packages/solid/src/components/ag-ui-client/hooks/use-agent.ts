@@ -1,6 +1,4 @@
-/* oxlint-disable solid/reactivity -- AG-UI requires identity-preserving mutable state. */
-import { onCleanup, onMount, type Accessor } from "solid-js";
-import { createMutable } from "solid-js/store";
+import { createStore, onSettled, type Accessor } from "solid-js";
 import {
   type AbstractAgent,
   HttpAgent,
@@ -93,7 +91,7 @@ export function useAgent(options: UseAgentOptions): UseAgentReturn {
   let staticTools: ToolRegistry | undefined =
     typeof options.tools === "function" ? undefined : options.tools;
   let agent: AbstractAgent | undefined;
-  const state = createMutable<AgentState>({
+  const [state, setState] = createStore<AgentState>({
     error: null,
     messages: [...(options.initialMessages ?? [])],
     context: options.context,
@@ -110,25 +108,29 @@ export function useAgent(options: UseAgentOptions): UseAgentReturn {
     if (!agent) {
       return;
     }
-    state.error = null;
+    let context: AgentContext[] | undefined;
+    setState((draft) => {
+      draft.error = null;
+      // Stateless backends reconstruct each run. Read the draft so a context
+      // update immediately followed by send() reaches the transport too.
+      context = draft.context?.map(({ value, description }) => ({
+        value,
+        description,
+      }));
+    });
     try {
-      await agent.runAgent({
-        tools: getToolDefinitions(getTools()),
-        // Stateless backends reconstruct each run, including tool continuations.
-        context: state.context?.map(({ value, description }) => ({
-          value,
-          description,
-        })),
-      });
+      await agent.runAgent({ tools: getToolDefinitions(getTools()), context });
     } catch {
-      state.isRunning = false;
-      if (state.status === "running") {
-        state.status = "error";
-      }
+      setState((draft) => {
+        draft.isRunning = false;
+        if (draft.status === "running") {
+          draft.status = "error";
+        }
+      });
     }
   };
 
-  onMount(() => {
+  onSettled(() => {
     agent =
       options.url === undefined
         ? options.agentFactory()
@@ -140,7 +142,7 @@ export function useAgent(options: UseAgentOptions): UseAgentReturn {
     const mountedAgent = agent;
     const subscription = mountedAgent.subscribe(
       createAgentSubscriber({
-        state,
+        setState,
         getTools,
         onNeedsReRun: async (pending) => {
           if (!agent) {
@@ -150,44 +152,59 @@ export function useAgent(options: UseAgentOptions): UseAgentReturn {
           await executeRun();
         },
         onIdle: async () => {
-          if (!agent || state.status !== "success") {
+          if (!agent) {
             return;
           }
-          const next = state.queue.shift();
-          if (!next) {
+          let userMessage: UserMessage | undefined;
+          setState((draft) => {
+            if (draft.status !== "success") {
+              return;
+            }
+            const next = draft.queue.shift();
+            if (next) {
+              userMessage = {
+                id: next.id,
+                role: "user",
+                content: next.content.map((item) => ({ ...item })),
+              };
+              draft.messages.push(userMessage);
+            }
+          });
+          if (!userMessage) {
             return;
           }
-          const userMessage: UserMessage = {
-            id: next.id,
-            role: "user",
-            content: next.content.map((item) => ({ ...item })),
-          };
           agent.messages.push(userMessage);
-          state.messages.push(userMessage);
           await executeRun();
         },
       }),
     );
-    onCleanup(() => {
+    return () => {
       mountedAgent.abortRun();
       subscription.unsubscribe();
       if (agent === mountedAgent) {
         agent = undefined;
       }
-    });
+    };
   });
 
   const send = async (content: InputContent[]) => {
     if (!agent) {
       return;
     }
-    if (state.isRunning) {
-      state.queue.push({ id: v7(), content });
+    const userMessage: UserMessage = { id: v7(), role: "user", content };
+    let queued = false;
+    setState((draft) => {
+      if (draft.isRunning) {
+        draft.queue.push({ id: userMessage.id, content });
+        queued = true;
+      } else {
+        draft.messages.push(userMessage);
+      }
+    });
+    if (queued) {
       return;
     }
-    const userMessage: UserMessage = { id: v7(), role: "user", content };
     agent.messages.push(userMessage);
-    state.messages.push(userMessage);
     await executeRun();
   };
 
@@ -195,7 +212,7 @@ export function useAgent(options: UseAgentOptions): UseAgentReturn {
     if (!agent) {
       return;
     }
-    const lastUserMessageIndex = state.messages.findLastIndex(
+    const lastUserMessageIndex = agent.messages.findLastIndex(
       (message) => message.role === "user",
     );
     if (lastUserMessageIndex === -1) {
@@ -203,7 +220,9 @@ export function useAgent(options: UseAgentOptions): UseAgentReturn {
     }
     const messages = agent.messages.slice(0, lastUserMessageIndex + 1);
     agent.messages = [...messages];
-    state.messages = [...messages];
+    setState((draft) => {
+      draft.messages = [...messages];
+    });
     await executeRun();
   };
 
@@ -215,20 +234,28 @@ export function useAgent(options: UseAgentOptions): UseAgentReturn {
       if (!agent) {
         return;
       }
-      if (state.queue.length > 0) {
-        state.queue.pop();
-        return;
+      let abortedRun = false;
+      setState((draft) => {
+        if (draft.queue.length > 0) {
+          draft.queue.pop();
+          return;
+        }
+        abortedRun = true;
+        draft.status = "aborted";
+        draft.isRunning = false;
+        draft.activity = "idle";
+      });
+      if (abortedRun) {
+        agent.abortRun();
       }
-      agent.abortRun();
-      state.status = "aborted";
-      state.isRunning = false;
-      state.activity = "idle";
     },
     dequeue: (id) => {
-      const index = state.queue.findIndex((queued) => queued.id === id);
-      if (index !== -1) {
-        state.queue.splice(index, 1);
-      }
+      setState((draft) => {
+        const index = draft.queue.findIndex((queued) => queued.id === id);
+        if (index !== -1) {
+          draft.queue.splice(index, 1);
+        }
+      });
     },
     addTool: (name, tool) => {
       if (!dynamicTools) {
@@ -236,10 +263,14 @@ export function useAgent(options: UseAgentOptions): UseAgentReturn {
       }
     },
     setContext: (context) => {
-      state.context = context;
+      setState((draft) => {
+        draft.context = context;
+      });
     },
     setPromptTemplates: (templates) => {
-      state.promptTemplates = normalizePromptTemplates(templates);
+      setState((draft) => {
+        draft.promptTemplates = normalizePromptTemplates(templates);
+      });
     },
   };
 }

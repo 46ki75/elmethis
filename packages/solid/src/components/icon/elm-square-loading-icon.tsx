@@ -1,4 +1,5 @@
-import { createMemo, For, mergeProps, splitProps, type JSX } from "solid-js";
+import { type JSX } from "@solidjs/web";
+import { createMemo, For, omit } from "solid-js";
 import { clsx } from "clsx";
 
 import styles from "./elm-square-loading-icon.module.css";
@@ -12,24 +13,17 @@ export interface ElmSquareLoadingIconProps extends JSX.HTMLAttributes<HTMLSpanEl
 const DURATION = 1200;
 
 export const ElmSquareLoadingIcon = (props: ElmSquareLoadingIconProps) => {
-  const merged = mergeProps({ size: "3rem", dimensions: 4 }, props);
-  const [local, rest] = splitProps(merged, [
-    "class",
-    "style",
-    "children",
-    "size",
-    "dimensions",
-  ]);
+  const rest = omit(props, "class", "style", "children", "size", "dimensions");
   const indexes = createMemo(() =>
-    new Array(local.dimensions).fill(null).map((_, index) => index),
+    new Array(props.dimensions ?? 4).fill(null).map((_, index) => index),
   );
 
   return (
     <span
-      class={clsx(styles["elm-square-loading-icon"], local.class)}
-      style={mergeStyle(local.style, {
-        "--elmethis-scoped-size": local.size,
-        "--elmethis-scoped-dimensions": local.dimensions,
+      class={clsx(styles["elm-square-loading-icon"], props.class)}
+      style={mergeStyle(props.style, {
+        "--elmethis-scoped-size": props.size ?? "3rem",
+        "--elmethis-scoped-dimensions": props.dimensions ?? 4,
         "--elmethis-scoped-duration": `${DURATION}ms`,
       })}
       {...rest}
@@ -42,7 +36,7 @@ export const ElmSquareLoadingIcon = (props: ElmSquareLoadingIconProps) => {
                 class={styles.square}
                 style={{
                   "--elmethis-scoped-delay": `${
-                    (DURATION / (local.dimensions * 3)) *
+                    (DURATION / ((props.dimensions ?? 4) * 3)) *
                     (rowIndex + columnIndex)
                   }ms`,
                 }}

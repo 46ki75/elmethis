@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createRoot, createSignal, flush, useContext } from "solid-js";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
@@ -20,10 +20,14 @@ afterEach(() => {
 
 describe("[CSR] ElmTable composition", () => {
   it("exports accessor contexts with safe standalone defaults", () => {
-    const section: TableSection = TableSectionContext.defaultValue();
+    createRoot((dispose) => {
+      const section: TableSection = useContext(TableSectionContext)();
+      const hasRowHeader = useContext(HasRowHeaderContext)();
+      dispose();
 
-    expect(section).toBe("body");
-    expect(HasRowHeaderContext.defaultValue()).toBe(false);
+      expect(section).toBe("body");
+      expect(hasRowHeader).toBe(false);
+    });
   });
 
   it("renders valid native sections and derives column and row headers", () => {
@@ -108,6 +112,7 @@ describe("[CSR] ElmTable composition", () => {
     setPromote(true);
     setCaption("Revenue");
     setText("February");
+    flush();
 
     expect(
       rendered.getByRole("rowheader", { name: "February" }),
@@ -136,7 +141,7 @@ describe("[CSR] ElmTable composition", () => {
             <ElmTableCell
               ref={(element) => (cellRef = element)}
               class="cell"
-              colSpan={2}
+              colspan={2}
               style={{ color: "red" }}
               text="value"
             />

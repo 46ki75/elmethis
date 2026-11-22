@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { flush, createSignal } from "solid-js";
 import { describe, expect, it } from "vitest";
 
 import { ElmSquareLoadingIcon } from "./elm-square-loading-icon";
@@ -53,6 +53,7 @@ describe("[CSR] ElmSquareLoadingIcon", () => {
     ).toBe("200ms");
 
     setDimensions(3);
+    flush();
 
     expect(squares(grid)).toHaveLength(9);
     expect(grid.style.getPropertyValue("--elmethis-scoped-size")).toBe("6rem");

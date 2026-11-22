@@ -1,12 +1,5 @@
-import {
-  createMemo,
-  createUniqueId,
-  For,
-  mergeProps,
-  splitProps,
-  type JSX,
-} from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { dynamic, type JSX } from "@solidjs/web";
+import { createMemo, createUniqueId, For } from "solid-js";
 import type { LanguageIcon, SvgNode } from "@elmethis/core";
 
 export interface LanguageGlyphProps {
@@ -27,35 +20,30 @@ const renderNode = (node: SvgNode, suffix: string): JSX.Element => {
     attrs[key] = scopeId(value, key, suffix);
   }
 
+  const Tag = dynamic(() => node.tag as keyof JSX.IntrinsicElements);
   return (
-    <Dynamic
-      component={node.tag as keyof JSX.IntrinsicElements}
-      {...attrs}
-      style={node.style}
-    >
+    <Tag {...attrs} style={node.style}>
       <For each={node.children}>{(child) => renderNode(child, suffix)}</For>
-    </Dynamic>
+    </Tag>
   );
 };
 
 /** Renders core language artwork with gradient ids scoped per instance. */
 export const LanguageGlyph = (props: LanguageGlyphProps) => {
-  const merged = mergeProps({ size: 24 }, props);
-  const [local] = splitProps(merged, ["icon", "size", "class", "style"]);
   const suffix = createUniqueId();
-  const rootAttrs = createMemo(() => local.icon.attrs ?? {});
+  const rootAttrs = createMemo(() => props.icon.attrs ?? {});
 
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox={local.icon.viewBox}
-      width={local.size}
-      height={local.size}
-      class={local.class}
-      style={local.style}
+      viewBox={props.icon.viewBox}
+      width={props.size ?? 24}
+      height={props.size ?? 24}
+      class={props.class}
+      style={props.style}
       {...rootAttrs()}
     >
-      <For each={local.icon.children}>
+      <For each={props.icon.children}>
         {(child) => renderNode(child, suffix)}
       </For>
     </svg>

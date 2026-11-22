@@ -1,13 +1,13 @@
-import type { JSX } from "solid-js";
+import type { JSX } from "@solidjs/web";
 
-type Style = JSX.CSSProperties | string | undefined;
+type Style = JSX.HTMLAttributes<HTMLElement>["style"];
 
 export const mergeStyle = (
   style: Style,
   scopedStyle: JSX.CSSProperties,
 ): JSX.CSSProperties | string => {
   if (typeof style !== "string") {
-    return { ...scopedStyle, ...(style ?? {}) };
+    return { ...scopedStyle, ...(style || {}) };
   }
 
   const serializedScopedStyle = Object.entries(scopedStyle)

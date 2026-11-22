@@ -1,4 +1,5 @@
-import { mergeProps, splitProps, type JSX } from "solid-js";
+import { type JSX } from "@solidjs/web";
+import { omit } from "solid-js";
 import { clsx } from "clsx";
 
 import { ElmCopyIcon } from "../icon/elm-copy-icon";
@@ -19,36 +20,32 @@ export interface ElmCodeBlockProps extends JSX.HTMLAttributes<HTMLElement> {
 }
 
 export const ElmCodeBlock = (props: ElmCodeBlockProps) => {
-  const merged = mergeProps({ language: "txt" }, props);
-  const [local, rest] = splitProps(merged, [
-    "class",
-    "children",
-    "code",
-    "language",
-    "caption",
-  ]);
+  const rest = omit(props, "class", "children", "code", "language", "caption");
 
   return (
-    <figure {...rest} class={clsx(styles["elm-code-block"], local.class)}>
+    <figure {...rest} class={clsx(styles["elm-code-block"], props.class)}>
       <span class={styles["language-icon"]}>
-        <ElmLanguageIcon language={local.language} />
+        <ElmLanguageIcon language={props.language ?? "txt"} />
       </span>
 
       <span class={styles.caption}>
         <ElmInlineText>
-          {local.caption || local.language}
-          {local.children}
+          {props.caption || (props.language ?? "txt")}
+          {props.children}
         </ElmInlineText>
       </span>
 
       <div class={styles["copy-icon"]}>
-        <ElmCopyIcon content={local.code} />
+        <ElmCopyIcon content={props.code} />
       </div>
 
       <hr class={styles.divider} />
 
       <div class={styles.code}>
-        <ElmShikiHighlighter code={local.code} language={local.language} />
+        <ElmShikiHighlighter
+          code={props.code}
+          language={props.language ?? "txt"}
+        />
       </div>
     </figure>
   );

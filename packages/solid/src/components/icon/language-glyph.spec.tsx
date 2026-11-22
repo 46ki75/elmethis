@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { flush, createSignal } from "solid-js";
 import { languageIcons, type GlyphLanguage } from "@elmethis/core";
 import { describe, expect, it } from "vitest";
 
@@ -39,6 +39,7 @@ describe("[CSR] LanguageGlyph", () => {
     expect(container.innerHTML.toLowerCase()).toContain('fill="#a84f33"');
 
     setLanguage("typescript");
+    flush();
 
     expect(container.innerHTML.toLowerCase()).toContain('fill="#007acc"');
     expect(icon).toHaveAttribute("width", "48");

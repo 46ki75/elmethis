@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { describe, expect, it } from "vitest";
 
 import { ElmBookmark } from "./elm-bookmark";
@@ -35,9 +35,11 @@ describe("[CSR] ElmBookmark", () => {
     const imageElement = container.querySelector<HTMLImageElement>("img")!;
 
     fireEvent.error(imageElement);
+    flush();
     expect(imageElement).toHaveStyle({ visibility: "hidden", width: "0" });
 
     setImage("https://example.com/replacement.png");
+    flush();
 
     expect(imageElement).toHaveAttribute(
       "src",
@@ -56,6 +58,7 @@ describe("[CSR] ElmBookmark", () => {
     expect(iconContainer.querySelector("svg")).toBeInTheDocument();
 
     setFavicon("https://example.com/favicon.ico");
+    flush();
 
     expect(iconContainer.querySelector("svg")).not.toBeInTheDocument();
     expect(iconContainer.querySelector("img")).toHaveAttribute(

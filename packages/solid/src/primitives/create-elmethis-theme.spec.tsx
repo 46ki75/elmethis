@@ -1,4 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
+import { flush } from "solid-js";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
@@ -108,6 +109,7 @@ describe("[CSR] createElmethisTheme", () => {
       expect(localStorage.getItem(KEY)).toBeNull();
 
       preferenceListener?.({ matches } as MediaQueryListEvent);
+      flush();
       expect(rendered.getByTestId("dark")).toHaveTextContent(
         String(theme === "dark"),
       );
@@ -126,6 +128,7 @@ describe("[CSR] createElmethisTheme", () => {
     document.documentElement.setAttribute("data-theme", "dark");
 
     fireEvent.click(rendered.getByRole("button", { name: "Toggle" }));
+    flush();
 
     expect(rendered.getByTestId("dark")).toHaveTextContent("false");
     expect(document.documentElement.style.colorScheme).toBe("light");
@@ -142,6 +145,7 @@ describe("[CSR] createElmethisTheme", () => {
     window.addEventListener(THEME_CHANGE_EVENT, listener);
 
     fireEvent.click(rendered.getByRole("button", { name: "Toggle" }));
+    flush();
 
     expect(rendered.getByTestId("dark")).toHaveTextContent("true");
     expect(localStorage.getItem(KEY)).toBe("dark");
@@ -153,6 +157,7 @@ describe("[CSR] createElmethisTheme", () => {
     const rendered = render(() => <ThemePair />);
 
     fireEvent.click(rendered.getByRole("button", { name: "Toggle" }));
+    flush();
 
     expect(rendered.getByTestId("first")).toHaveTextContent("true");
     expect(rendered.getByTestId("second")).toHaveTextContent("true");
@@ -164,18 +169,21 @@ describe("[CSR] createElmethisTheme", () => {
     window.dispatchEvent(
       new StorageEvent("storage", { key: KEY, newValue: "dark" }),
     );
+    flush();
     expect(rendered.getByTestId("dark")).toHaveTextContent("true");
     expect(document.documentElement).toHaveAttribute("data-theme", "dark");
 
     window.dispatchEvent(
       new StorageEvent("storage", { key: null, newValue: null }),
     );
+    flush();
     expect(rendered.getByTestId("dark")).toHaveTextContent("false");
     expect(document.documentElement).not.toHaveAttribute("data-theme");
 
     window.dispatchEvent(
       new StorageEvent("storage", { key: KEY, newValue: "unknown" }),
     );
+    flush();
     expect(rendered.getByTestId("dark")).toHaveTextContent("false");
     expect(document.documentElement).not.toHaveAttribute("data-theme");
     expect(document.documentElement.style.colorScheme).toBe("");
@@ -186,10 +194,12 @@ describe("[CSR] createElmethisTheme", () => {
 
     matches = true;
     preferenceListener?.({ matches: true } as MediaQueryListEvent);
+    flush();
     expect(rendered.getByTestId("dark")).toHaveTextContent("true");
 
     localStorage.setItem(KEY, "light");
     preferenceListener?.({ matches: false } as MediaQueryListEvent);
+    flush();
     expect(rendered.getByTestId("dark")).toHaveTextContent("true");
   });
 
@@ -203,6 +213,7 @@ describe("[CSR] createElmethisTheme", () => {
 
     const rendered = render(() => <ThemeHarness />);
     fireEvent.click(rendered.getByRole("button", { name: "Toggle" }));
+    flush();
 
     expect(rendered.getByTestId("dark")).toHaveTextContent("true");
     expect(document.documentElement.style.colorScheme).toBe("dark");

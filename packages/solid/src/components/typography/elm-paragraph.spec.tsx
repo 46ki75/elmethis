@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { flush, createSignal } from "solid-js";
 import { describe, expect, it } from "vitest";
 
 import { ElmParagraph } from "./elm-paragraph";
@@ -40,6 +40,7 @@ describe("[CSR] ElmParagraph", () => {
     setColor("blue");
     setBackgroundColor("pink");
     setText("updated");
+    flush();
 
     expect(paragraph).toHaveTextContent("updated");
     expect(paragraph.style.getPropertyValue("--elmethis-scoped-color")).toBe(

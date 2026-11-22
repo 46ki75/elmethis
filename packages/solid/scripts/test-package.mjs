@@ -85,12 +85,13 @@ try {
         dependencies: {
           "@elmethis/core": `file:${coreTarball}`,
           "@elmethis/solid": `file:${solidTarball}`,
+          "@solidjs/vite-plugin":
+            solidPackage.devDependencies["@solidjs/vite-plugin"],
+          "@solidjs/web": solidPackage.devDependencies["@solidjs/web"],
           "happy-dom": solidPackage.devDependencies["happy-dom"],
           "solid-js": solidPackage.devDependencies["solid-js"],
           typescript: solidPackage.devDependencies.typescript,
           vite: solidPackage.devDependencies.vite,
-          "vite-plugin-solid":
-            solidPackage.devDependencies["vite-plugin-solid"],
         },
         // Packed workspace ranges target npm by default. Use the local core
         // tarball transitively too, including before its version is published.
@@ -172,7 +173,7 @@ export default defineConfig({
   );
   await write(
     "src/client.tsx",
-    `import { render } from "solid-js/web";
+    `import { render } from "@solidjs/web";
 import { ElmDivider, ElmInlineText } from "@elmethis/solid";
 import "@elmethis/solid/style.css";
 const root = document.querySelector<HTMLDivElement>("#app");
@@ -183,7 +184,7 @@ render(() => <><ElmInlineText>client</ElmInlineText><ElmDivider data-package-smo
   await write(
     "vite.solid.config.mjs",
     `import { defineConfig } from "vite";
-import solid from "vite-plugin-solid";
+import solid from "@solidjs/vite-plugin";
 export default defineConfig({
   plugins: [solid()],
   build: { outDir: "dist-solid" },
@@ -200,7 +201,7 @@ export default defineConfig({
 
   await write(
     "src/server.tsx",
-    `import { renderToString } from "solid-js/web";
+    `import { renderToString } from "@solidjs/web";
 import { ElmA2ui, ElmDivider, ElmInlineText, ElmShikiHighlighter } from "@elmethis/solid";
 const html = renderToString(() => <><ElmInlineText bold>ssr</ElmInlineText><ElmDivider data-package-smoke="ssr" /><ElmA2ui messages={[]} /><ElmShikiHighlighter code={'const value = "<safe>";'} language="typescript" /></>);
 if (!html.includes("<hr") || !html.includes("data-package-smoke") || !html.includes("elm-a2ui") || !html.includes("ssr") || !html.includes("&lt;safe>")) {
@@ -212,7 +213,7 @@ console.log(html);
   await write(
     "vite.ssr.config.mjs",
     `import { defineConfig } from "vite";
-import solid from "vite-plugin-solid";
+import solid from "@solidjs/vite-plugin";
 export default defineConfig({
   plugins: [solid({ ssr: true })],
   ssr: { noExternal: ["@elmethis/core", "@elmethis/solid"] },
@@ -318,7 +319,7 @@ export const components = <><ElmInlineText {...textProps}>Text</ElmInlineText><E
         compilerOptions: {
           customConditions: ["solid"],
           jsx: "preserve",
-          jsxImportSource: "solid-js",
+          jsxImportSource: "@solidjs/web",
           module: "ESNext",
           moduleResolution: "Bundler",
           noEmit: true,

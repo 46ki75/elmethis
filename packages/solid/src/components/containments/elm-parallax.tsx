@@ -1,4 +1,5 @@
-import { For, onCleanup, onMount, splitProps, type JSX } from "solid-js";
+import { createSignal, For, omit, onSettled } from "solid-js";
+import type { JSX } from "@solidjs/web";
 import { clsx } from "clsx";
 
 import styles from "./elm-parallax.module.css";
@@ -11,25 +12,17 @@ export interface ElmParallaxProps extends JSX.HTMLAttributes<HTMLDivElement> {
 }
 
 export const ElmParallax = (props: ElmParallaxProps) => {
-  const [local, rest] = splitProps(props, ["class", "images"]);
-  let root: HTMLDivElement | undefined;
-  let appliedY = 0;
+  const rest = omit(props, "class", "images");
+  const [offset, setOffset] = createSignal(0);
 
-  onMount(() => {
+  onSettled(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let frame: number | undefined;
     let scrollY = window.scrollY;
 
     const updateLayers = () => {
       frame = undefined;
-      const y = reducedMotion.matches ? 0 : scrollY;
-      appliedY = y;
-
-      root
-        ?.querySelectorAll<HTMLElement>(`.${styles.parallax}`)
-        .forEach((layer, index) => {
-          layer.style.transform = getTransform(y, index);
-        });
+      setOffset(reducedMotion.matches ? 0 : scrollY);
     };
     const scheduleUpdate = () => {
       scrollY = window.scrollY;
@@ -40,31 +33,25 @@ export const ElmParallax = (props: ElmParallaxProps) => {
     reducedMotion.addEventListener("change", scheduleUpdate);
     scheduleUpdate();
 
-    onCleanup(() => {
+    return () => {
       window.removeEventListener("scroll", scheduleUpdate);
       reducedMotion.removeEventListener("change", scheduleUpdate);
       if (frame !== undefined) {
         window.cancelAnimationFrame(frame);
       }
-    });
+    };
   });
 
   return (
-    <div
-      ref={(element) => {
-        root = element;
-      }}
-      class={clsx(styles["elm-parallax"], local.class)}
-      {...rest}
-    >
-      <For each={local.images}>
+    <div class={clsx(styles["elm-parallax"], props.class)} {...rest}>
+      <For each={props.images}>
         {(image, index) => (
           <div
             aria-hidden="true"
             class={styles.parallax}
             style={{
               "background-image": `url(${JSON.stringify(image)})`,
-              transform: getTransform(appliedY, index()),
+              transform: getTransform(offset(), index()),
               "transform-origin": "bottom",
             }}
           />

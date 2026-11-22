@@ -1,4 +1,5 @@
-import { createMemo, mergeProps, Show, type JSX } from "solid-js";
+import { type JSX } from "@solidjs/web";
+import { createMemo, Show } from "solid-js";
 import {
   LANGUAGES,
   languageIcons,
@@ -24,9 +25,8 @@ const MDI_CODE_TAGS =
   "M14.6,16.6L19.2,12L14.6,7.4L16,6L22,12L16,18L14.6,16.6M9.4,16.6L4.8,12L9.4,7.4L8,6L2,12L8,18L9.4,16.6Z";
 
 export const ElmLanguageIcon = (props: ElmLanguageIconProps) => {
-  const merged = mergeProps({ size: 24 }, props);
   const glyph = createMemo(() => {
-    const language = normalizeLanguage(merged.language);
+    const language = normalizeLanguage(props.language);
     return language === "file" ? undefined : languageIcons[language];
   });
 
@@ -37,18 +37,18 @@ export const ElmLanguageIcon = (props: ElmLanguageIconProps) => {
       fallback={
         <ElmMdiIcon
           path={MDI_CODE_TAGS}
-          size={String(merged.size)}
-          class={merged.class}
-          style={merged.style}
+          size={String(props.size ?? 24)}
+          class={props.class}
+          style={props.style}
         />
       }
     >
       {(icon) => (
         <LanguageGlyph
           icon={icon}
-          size={merged.size}
-          class={merged.class}
-          style={merged.style}
+          size={props.size ?? 24}
+          class={props.class}
+          style={props.style}
         />
       )}
     </Show>

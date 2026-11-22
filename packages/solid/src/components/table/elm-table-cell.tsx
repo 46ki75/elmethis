@@ -1,5 +1,5 @@
-import { createMemo, splitProps, useContext, type JSX } from "solid-js";
-import { Dynamic } from "solid-js/web";
+import { dynamic, type JSX } from "@solidjs/web";
+import { createMemo, omit, useContext } from "solid-js";
 import { clsx } from "clsx";
 
 import styles from "./elm-table-cell.module.css";
@@ -17,42 +17,43 @@ export interface ElmTableCellProps extends JSX.TdHTMLAttributes<HTMLTableCellEle
 }
 
 export const ElmTableCell = (props: ElmTableCellProps) => {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     "class",
     "children",
     "isHeader",
     "columnIndex",
     "text",
     "scope",
-  ]);
+  );
   const section = useContext(TableSectionContext);
   const hasRowHeader = useContext(HasRowHeaderContext);
   const inHead = createMemo(() => section() === "head");
   const isRowHeader = createMemo(
     () =>
-      !inHead() && !local.isHeader && local.columnIndex === 0 && hasRowHeader(),
+      !inHead() && !props.isHeader && props.columnIndex === 0 && hasRowHeader(),
   );
   const renderAsHeader = createMemo(
-    () => inHead() || Boolean(local.isHeader) || isRowHeader(),
+    () => inHead() || Boolean(props.isHeader) || isRowHeader(),
   );
   const scope = createMemo(() =>
     renderAsHeader()
-      ? (local.scope ?? (inHead() ? "col" : isRowHeader() ? "row" : undefined))
+      ? (props.scope ?? (inHead() ? "col" : isRowHeader() ? "row" : undefined))
       : undefined,
   );
 
+  const Cell = dynamic(() => (renderAsHeader() ? "th" : "td"));
   return (
-    <Dynamic
-      component={renderAsHeader() ? "th" : "td"}
+    <Cell
       {...rest}
       class={clsx(
         styles["elm-table-cell"],
         renderAsHeader() ? styles.th : styles.td,
-        local.class,
+        props.class,
       )}
       scope={scope()}
     >
-      {local.text != null ? local.text : local.children}
-    </Dynamic>
+      {props.text != null ? props.text : props.children}
+    </Cell>
   );
 };

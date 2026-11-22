@@ -1,5 +1,5 @@
 import { render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { flush, createSignal } from "solid-js";
 import { describe, expect, it } from "vitest";
 
 import { ElmHeading, type ElmHeadingLevel } from "./elm-heading";
@@ -40,6 +40,7 @@ describe("[CSR] ElmHeading", () => {
     setLevel(2);
     setId("section");
     setText("Updated");
+    flush();
 
     heading = rendered.getByTestId("heading");
     expect(heading.tagName).toBe("H2");

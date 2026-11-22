@@ -1,4 +1,5 @@
 import { render } from "@solidjs/testing-library";
+import { flush } from "solid-js";
 import type {
   AbstractAgent,
   AgentSubscriber,
@@ -97,6 +98,7 @@ describe("useAgent", () => {
     ]);
 
     agent.abort();
+    flush();
     expect(agent.state.queue).toHaveLength(1);
     expect(fake.aborted).toBe(0);
 
@@ -109,6 +111,19 @@ describe("useAgent", () => {
     expect(
       agent.state.messages.filter((message) => message.role === "user"),
     ).toHaveLength(2);
+  });
+
+  it("queues sends and cancels the newest before staged state commits", async () => {
+    const first = agent.send([{ type: "text", text: "first" }]);
+    const second = agent.send([{ type: "text", text: "second" }]);
+    agent.abort();
+    await second;
+
+    expect(fake.runs).toHaveLength(1);
+    expect(fake.aborted).toBe(0);
+    expect(agent.state.queue).toHaveLength(0);
+    fake.finish();
+    await first;
   });
 
   it("sends current application context on frontend-tool continuations", async () => {
@@ -145,6 +160,7 @@ describe("useAgent", () => {
     await agent.send([{ type: "text", text: "third" }]);
 
     agent.dequeue(agent.state.queue[0].id);
+    flush();
 
     expect(agent.state.queue).toHaveLength(1);
     expect(fake.aborted).toBe(0);
@@ -155,6 +171,7 @@ describe("useAgent", () => {
     await vi.waitFor(() => expect(agent.state.isRunning).toBe(true));
 
     agent.abort();
+    flush();
 
     expect(fake.aborted).toBe(1);
     expect(agent.state.status).toBe("aborted");

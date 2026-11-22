@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@solidjs/testing-library";
-import { createSignal } from "solid-js";
+import { createSignal, flush } from "solid-js";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { ElmSlider } from "./elm-slider";
@@ -123,13 +123,17 @@ describe("[CSR] ElmSlider rendering", () => {
     const wrapper = getWrapper(rendered.container);
 
     setValue(90);
+    flush();
     expect(slider).toHaveAttribute("aria-valuenow", "80");
     setInnerMax(70);
+    flush();
     expect(slider).toHaveAttribute("aria-valuenow", "70");
     setVertical(true);
+    flush();
     expect(slider).toHaveAttribute("aria-orientation", "vertical");
     expect(wrapper).toHaveClass(styles.vertical);
     setDisabled(true);
+    flush();
     expect(slider).toHaveAttribute("aria-disabled", "true");
     expect(slider).toHaveAttribute("tabindex", "-1");
   });
@@ -273,7 +277,7 @@ describe("[CSR] ElmSlider markers", () => {
 
   it("updates marker labels without replacing marks on formatter changes", () => {
     const [formatter, setFormatter] = createSignal<(value: number) => string>(
-      (value) => `${value}%`,
+      () => (value) => `${value}%`,
     );
     const rendered = render(() => (
       <ElmSlider
@@ -290,6 +294,7 @@ describe("[CSR] ElmSlider markers", () => {
     );
 
     setFormatter(() => (value: number) => `${value} units`);
+    flush();
 
     expect(getLabels(rendered.container)).toEqual([
       "0 units",
@@ -310,21 +315,44 @@ describe("[CSR] ElmSlider keyboard and callbacks", () => {
     const slider = getSlider(rendered.container);
 
     fireEvent.keyDown(slider, { key: "ArrowRight" });
+    flush();
     expect(slider).toHaveAttribute("aria-valuenow", "53");
     fireEvent.keyDown(slider, { key: "ArrowUp" });
+    flush();
     expect(slider).toHaveAttribute("aria-valuenow", "56");
     fireEvent.keyDown(slider, { key: "PageUp" });
+    flush();
     expect(slider).toHaveAttribute("aria-valuenow", "80");
     fireEvent.keyDown(slider, { key: "PageDown" });
+    flush();
     expect(slider).toHaveAttribute("aria-valuenow", "50");
     fireEvent.keyDown(slider, { key: "Home" });
+    flush();
     expect(slider).toHaveAttribute("aria-valuenow", "20");
     fireEvent.keyDown(slider, { key: "End" });
+    flush();
     expect(slider).toHaveAttribute("aria-valuenow", "80");
     fireEvent.keyDown(slider, { key: "ArrowDown" });
+    flush();
     expect(slider).toHaveAttribute("aria-valuenow", "77");
     fireEvent.keyDown(slider, { key: "ArrowLeft" });
+    flush();
     expect(slider).toHaveAttribute("aria-valuenow", "74");
+  });
+
+  it("accumulates keyboard increments dispatched before the next commit", () => {
+    const onValueChange = vi.fn();
+    const rendered = render(() => (
+      <ElmSlider defaultValue={50} onValueChange={onValueChange} />
+    ));
+    const slider = getSlider(rendered.container);
+
+    fireEvent.keyDown(slider, { key: "ArrowRight" });
+    fireEvent.keyDown(slider, { key: "ArrowRight" });
+    flush();
+
+    expect(onValueChange.mock.calls).toEqual([[51], [52]]);
+    expect(slider).toHaveAttribute("aria-valuenow", "52");
   });
 
   it("moves exactly one absolute step from controlled off-grid and clamped values", () => {
@@ -333,6 +361,7 @@ describe("[CSR] ElmSlider keyboard and callbacks", () => {
       <ElmSlider value={7} step={-10} onValueChange={offGridChange} />
     ));
     fireEvent.keyDown(getSlider(offGrid.container), { key: "ArrowRight" });
+    flush();
     expect(offGridChange).toHaveBeenCalledWith(17);
 
     const [value, setValue] = createSignal(95);
@@ -346,6 +375,7 @@ describe("[CSR] ElmSlider keyboard and callbacks", () => {
     ));
     const slider = getSlider(clamped.container);
     fireEvent.keyDown(slider, { key: "ArrowLeft" });
+    flush();
     expect(slider).toHaveAttribute("aria-valuenow", "79");
   });
 
@@ -362,7 +392,9 @@ describe("[CSR] ElmSlider keyboard and callbacks", () => {
     const slider = getSlider(rendered.container);
 
     fireEvent.keyDown(slider, { key: "ArrowRight" });
+    flush();
     fireEvent.pointerMove(slider, { pointerId: 7, clientX: 10 });
+    flush();
 
     expect(slider).toHaveAttribute("aria-valuenow", "51");
     expect(onKeyDown).toHaveBeenCalledOnce();
@@ -383,7 +415,9 @@ describe("[CSR] ElmSlider keyboard and callbacks", () => {
     const slider = getSlider(rendered.container);
 
     fireEvent.keyDown(slider, { key: "ArrowRight" });
+    flush();
     fireEvent.pointerDown(slider, { pointerId: 1, clientX: 10 });
+    flush();
 
     expect(slider).toHaveAttribute("aria-valuenow", "50");
     expect(onKeyDown).not.toHaveBeenCalled();
@@ -425,8 +459,10 @@ describe("[CSR] ElmSlider lifecycle", () => {
     });
 
     fireEvent.pointerDown(slider, { pointerId: 9, clientX: 0, clientY: 0 });
+    flush();
     expect(captured).toBe(9);
     setDisabled(true);
+    flush();
     expect(releasePointerCapture).toHaveBeenCalledWith(9);
     expect(captured).toBeUndefined();
     expect(observe).toHaveBeenCalledTimes(3);
@@ -455,6 +491,7 @@ describe("[CSR] ElmSlider lifecycle", () => {
     });
 
     fireEvent.pointerDown(slider, { pointerId: 4 });
+    flush();
     rendered.unmount();
 
     expect(releasePointerCapture).toHaveBeenCalledWith(4);
