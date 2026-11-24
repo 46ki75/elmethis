@@ -32,6 +32,8 @@
   --elmethis-scoped-duration: initial;
   --elmethis-scoped-modal-delay: initial;
   --elmethis-scoped-progress: initial;
+  --elmethis-scoped-progress-max: initial;
+  --elmethis-scoped-progress-value: initial;
   --elmethis-scoped-hover: initial;
   --elmethis-scoped-volume: initial;
   --elmethis-scoped-value-ratio: initial;

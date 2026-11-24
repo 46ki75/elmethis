@@ -1,0 +1,42 @@
+.elm-progress {
+  position: relative;
+  width: 100%;
+  height: var(--elmethis-scoped-height);
+  overflow: hidden;
+  border-radius: calc(var(--elmethis-scoped-height) / 2);
+
+  /* after -> foreground */
+  &::after {
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: scaleX(
+      calc(
+        var(--elmethis-scoped-progress-value) /
+          var(--elmethis-scoped-progress-max)
+      )
+    );
+    transform-origin: left;
+    background-color: var(--elmethis-scoped-color);
+  }
+
+  &.transition-enabled {
+    &::after {
+      transition: transform 100ms;
+    }
+  }
+
+  /* before -> background */
+  &::before {
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--elmethis-color-surface-sunken);
+  }
+}
