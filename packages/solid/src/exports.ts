@@ -1,4 +1,8 @@
 export {
+  ElmProgress,
+  type ElmProgressProps,
+} from "./components/data/elm-progress.jsx";
+export {
   ElmBlockFallback,
   type ElmBlockFallbackProps,
 } from "./components/fallback/elm-block-fallback.jsx";
