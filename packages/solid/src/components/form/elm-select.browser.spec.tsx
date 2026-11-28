@@ -45,6 +45,34 @@ describe("[Browser] ElmSelect", () => {
     expect(select).not.toHaveClass(styles.active);
   });
 
+  it("hides the select frame without changing dropdown behavior", async () => {
+    const rendered = render(() => (
+      <ElmSelect
+        data-testid="select"
+        label="Fruit"
+        options={[{ id: "a", label: "Apple" }]}
+        frameless
+        style={{ transition: "none" }}
+      />
+    ));
+    const screen = page.elementLocator(rendered.baseElement);
+    const select = rendered.getByTestId("select");
+    const style = getComputedStyle(select);
+
+    expect(style.backgroundColor).toBe("rgba(0, 0, 0, 0)");
+    expect(style.boxShadow).toBe("none");
+
+    await screen.getByText("Select an option").click();
+    expect(select).toHaveClass(styles.active);
+    expect(getComputedStyle(select).borderTopColor).toBe("rgba(0, 0, 0, 0)");
+
+    await screen.getByText("Apple").click();
+    expect(select).not.toHaveClass(styles.active);
+    expect(
+      select.querySelector(`.${styles["selected-option"]}`),
+    ).toHaveTextContent("Apple");
+  });
+
   it("applies native interaction and open transition styles", async () => {
     const rendered = render(() => (
       <ElmSelect
