@@ -65,6 +65,8 @@ export const Disabled: Story = {
   args: { disabled: true },
 };
 
+export const Frameless: Story = { args: { frameless: true } };
+
 export const Loading: Story = {
   args: { isLoading: true },
 };

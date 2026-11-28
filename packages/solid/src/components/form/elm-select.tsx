@@ -53,6 +53,9 @@ export interface ElmSelectProps extends Omit<
 
   /** Optional icon rendered before the label. */
   icon?: JSX.Element;
+
+  /** Hides the outer frame without changing dropdown behavior. */
+  frameless?: boolean;
 }
 
 export const ElmSelect = (props: ElmSelectProps) => {
@@ -72,6 +75,7 @@ export const ElmSelect = (props: ElmSelectProps) => {
     "defaultSelectedOptionId",
     "onSelectedOptionIdChange",
     "icon",
+    "frameless",
   );
   const [selected, setSelected] = createControllableSignal<string | null>({
     value: () => props.selectedOptionId,
@@ -114,6 +118,7 @@ export const ElmSelect = (props: ElmSelectProps) => {
       ]}
       class={clsx(
         styles["elm-select"],
+        props.frameless && styles.frameless,
         isOpen() && styles.active,
         (props.disabled || props.isLoading) && styles.disabled,
         props.class,

@@ -1,3 +1,4 @@
+import "@elmethis/core/tokens.css";
 import { render } from "vitest-browser-vue";
 import { defineComponent, h, ref } from "vue";
 import { describe, expect, test, vi } from "vitest";
@@ -62,5 +63,30 @@ describe("[browser] ElmSelect option selection", () => {
       expect(screen.getByTestId("selected").element().textContent).toBe("c"),
     );
     await vi.waitFor(() => expect(isActive()).toBe(false));
+  });
+
+  test("hides the select frame without changing dropdown behavior", async () => {
+    const screen = await render(ElmSelect, {
+      props: {
+        label: "Pick",
+        options: [{ id: "a", label: "Apple" }],
+        frameless: true,
+        style: { transition: "none" },
+      },
+    });
+    const select = selectRoot();
+    const style = getComputedStyle(select);
+
+    expect(style.backgroundColor).toBe("rgba(0, 0, 0, 0)");
+    expect(style.boxShadow).toBe("none");
+    expect(select.hasAttribute("frameless")).toBe(false);
+
+    await screen.getByText("Select an option").click();
+    await expect.poll(isActive).toBe(true);
+    expect(style.borderTopColor).toBe("rgba(0, 0, 0, 0)");
+
+    await screen.getByText("Apple").click();
+    await expect.poll(isActive).toBe(false);
+    expect(selectedText()).toBe("Apple");
   });
 });

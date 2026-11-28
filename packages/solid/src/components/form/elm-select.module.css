@@ -28,6 +28,12 @@
     border-color: var(--elmethis-scoped-highlight-color);
   }
 
+  &.frameless {
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
+  }
+
   .label {
     display: inline-flex;
     align-items: center;

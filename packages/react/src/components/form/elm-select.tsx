@@ -55,6 +55,9 @@ export interface ElmSelectProps extends Omit<
    */
   isLoading?: boolean;
 
+  /** Hides the outer frame without changing dropdown behavior. */
+  frameless?: boolean;
+
   /**
    * Options to display in the dropdown.
    */
@@ -88,6 +91,7 @@ export const ElmSelect = ({
   placeholder,
   disabled,
   isLoading,
+  frameless,
   options,
   selectedOptionId,
   defaultSelectedOptionId = null,
@@ -135,6 +139,7 @@ export const ElmSelect = ({
       ref={containerRef}
       className={clsx(
         styles["elm-select"],
+        frameless && styles["frameless"],
         isOpen && styles["active"],
         (disabled || isLoading) && styles["disabled"],
         className,
