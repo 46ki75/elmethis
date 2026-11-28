@@ -162,8 +162,8 @@ importers:
         version: 3.25.2(zod@3.25.76)
     devDependencies:
       '@a2ui/web_core':
-        specifier: ^0.14.0
-        version: 0.14.0
+        specifier: ^0.15.0
+        version: 0.15.0
       '@google/design.md':
         specifier: 0.4.0
         version: 0.4.0
@@ -273,11 +273,11 @@ importers:
         specifier: ^0.0.10
         version: 0.0.10
       '@a2ui/react':
-        specifier: ^0.14.0
-        version: 0.14.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(zod@3.25.76)
+        specifier: ^0.15.0
+        version: 0.15.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(zod@3.25.76)
       '@a2ui/web_core':
-        specifier: ^0.14.0
-        version: 0.14.0
+        specifier: ^0.15.0
+        version: 0.15.0
       '@elmethis/core':
         specifier: workspace:^
         version: link:../core
@@ -421,8 +421,8 @@ importers:
         specifier: ^0.0.10
         version: 0.0.10
       '@a2ui/web_core':
-        specifier: ^0.14.0
-        version: 0.14.0
+        specifier: ^0.15.0
+        version: 0.15.0
       '@ag-ui/client':
         specifier: ^1.0.2
         version: 1.0.2
@@ -542,8 +542,8 @@ importers:
         specifier: ^0.0.10
         version: 0.0.10
       '@a2ui/web_core':
-        specifier: ^0.14.0
-        version: 0.14.0
+        specifier: ^0.15.0
+        version: 0.15.0
       '@elmethis/core':
         specifier: workspace:^
         version: link:../core
@@ -656,21 +656,21 @@ packages:
   '@46ki75/ikuma-theme@0.0.10':
     resolution: {integrity: sha512-3r6ZpQutfFo4vXPXpmrNSQ0JnfA1RUwKKvasJiYwSp168zlSFOWmj/PNzspWxDDlrPHaxX+Duh9ZSM+53WvzPA==}
 
-  '@a2ui/markdown-it@0.2.2':
-    resolution: {integrity: sha512-oj58ybxIPwnRzN2NpvgxrOOwDlZuBKoEtW5U6wRs6SOq1dDjk/zAAkRtb0U52WPSu01gHJOFSGEkuE+Xe09dcQ==}
+  '@a2ui/markdown-it@0.2.4':
+    resolution: {integrity: sha512-7gqKNyIxkFfkjtxXuDtJ0Lu07NFtf15x1JdyXC7VE0Q+tpk4LjD2RL+GRM19SyDFPc3dbN7bTQnD+wnsmMY/Sg==}
     peerDependencies:
-      '@a2ui/web_core': ^0.14.0
+      '@a2ui/web_core': ^0.16.1
 
-  '@a2ui/react@0.14.0':
-    resolution: {integrity: sha512-kew3gVx4/U4qZ41FwyanDndCuBsx3s+5kPzjBt5N9w8E6UKSfwJpOmWD3Vy5WN5bxuiQKmorN+Ozh59ZLrwkMA==}
+  '@a2ui/react@0.15.0':
+    resolution: {integrity: sha512-SkbdIMoRgtYNGh+nSEvK8YHDSAgS8LVFggDMCYdDqrUAWMLb2PS1unYOL8lfkXjskYK/+VoD7sa6X+I2F+F62w==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
       zod: ^3.25.76
 
-  '@a2ui/web_core@0.14.0':
-    resolution: {integrity: sha512-OEJOgcfRMW0lwActVl1NKToxE2Ff5G3mIBHDB6gKm0elGZSwAhB7bj+Ef2a/h2nrL+57VPnSR67YSNz9JVV4yw==}
+  '@a2ui/web_core@0.15.0':
+    resolution: {integrity: sha512-S3k9rAJ9O55z5TlDeWy22ly3yQnDLO+XBWihlL5JQSuyxaCUmd7jgFnxO4eq/Bn6dSgdBF0WG8cve/euMoz8SA==}
 
   '@adobe/css-tools@4.5.0':
     resolution: {integrity: sha512-6OzddxPio9UiWTCemp4N8cYLV2ZN1ncRnV1cVGtve7dhPOtRkleRyx32GQCYSwDYgaHU3USMm84tNsvKzRCa1Q==}
@@ -2599,8 +2599,8 @@ packages:
   '@polka/url@1.0.0-next.29':
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
 
-  '@preact/signals-core@1.14.4':
-    resolution: {integrity: sha512-HNB6HYeYKhQbJ1aKl+YRjrS4+QWHLKX6qKoUsfS/m0vqzsVaEBiZiaKbG/e+NKk2ch5ALQr/ihWaMHxiCuuWHA==}
+  '@preact/signals-core@1.14.5':
+    resolution: {integrity: sha512-vcRv7Ityz5JVmeiVqIluLFzT/PDS/AlhHUpw3/aUWqcVUs6bDGIPXE/6RSC4evBNWYvnniozg5Syfj33al3gkg==}
 
   '@protobuf-ts/protoc@2.11.1':
     resolution: {integrity: sha512-mUZJaV0daGO6HUX90o/atzQ6A7bbN2RSuHtdwo8SSF2Qoe3zHwa4IHyCN1evftTeHfLmdz+45qo47sL+5P8nyg==}
@@ -7141,26 +7141,26 @@ snapshots:
 
   '@46ki75/ikuma-theme@0.0.10': {}
 
-  '@a2ui/markdown-it@0.2.2(@a2ui/web_core@0.14.0)':
+  '@a2ui/markdown-it@0.2.4(@a2ui/web_core@0.15.0)':
     dependencies:
-      '@a2ui/web_core': 0.14.0
+      '@a2ui/web_core': 0.15.0
       dompurify: 3.4.17
       markdown-it: 14.3.3
 
-  '@a2ui/react@0.14.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(zod@3.25.76)':
+  '@a2ui/react@0.15.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(zod@3.25.76)':
     dependencies:
-      '@a2ui/markdown-it': 0.2.2(@a2ui/web_core@0.14.0)
-      '@a2ui/web_core': 0.14.0
+      '@a2ui/markdown-it': 0.2.4(@a2ui/web_core@0.15.0)
+      '@a2ui/web_core': 0.15.0
       clsx: 2.1.1
       markdown-it: 14.3.3
       react: 19.3.1
       react-dom: 19.3.1(react@19.3.1)
       zod: 3.25.76
 
-  '@a2ui/web_core@0.14.0':
+  '@a2ui/web_core@0.15.0':
     dependencies:
       '@lit/context': 1.1.6
-      '@preact/signals-core': 1.14.4
+      '@preact/signals-core': 1.14.5
       lit: 3.3.3
       redos-detector: 6.1.4
       validate-color: 2.2.4
@@ -9130,7 +9130,7 @@ snapshots:
 
   '@polka/url@1.0.0-next.29': {}
 
-  '@preact/signals-core@1.14.4': {}
+  '@preact/signals-core@1.14.5': {}
 
   '@protobuf-ts/protoc@2.11.1': {}
 
